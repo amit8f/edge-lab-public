@@ -1,0 +1,40 @@
+# Risk and cost rules per track (docs/PLAN_V2.md, "Risk rules"). A pre-registration may override a value
+# for its own idea, and must say so. Fractions, not percent: 0.005 = 0.5%.
+account:
+  paper_start_usd: 5000
+  pause_drawdown: 0.15          # whole paper account: stop opening positions below -15% from its peak
+
+tracks:
+  main:
+    risk_per_trade: 0.005       # equity at risk to the stop
+    max_positions: 10
+    max_per_industry: 2
+    pause_drawdown: 0.10        # track sleeve
+    atr_mult: 3.0
+    long_stop_cap: 0.15         # stop distance never wider than this
+    short_stop_cap: 0.20
+    take_profit: null
+    round_trip_cost: 0.002      # spread + slippage, both sides together
+    borrow_per_year: 0.03
+  penny:
+    risk_per_trade: 0.0025
+    max_positions: 5
+    max_per_industry: 2
+    pause_drawdown: 0.10
+    atr_mult: 3.0
+    long_stop_cap: 0.25
+    short_stop_cap: 0.35
+    take_profit: null
+    round_trip_cost: 0.02
+    borrow_per_year: 0.20
+  news:
+    risk_per_trade: 0.005
+    max_positions: 5
+    max_per_industry: 2
+    pause_drawdown: 0.10
+    atr_mult: 2.5
+    long_stop_cap: 0.12
+    short_stop_cap: 0.15
+    take_profit: null
+    round_trip_cost: 0.002      # news trades in $5+ stocks; a penny news idea must use penny costs
+    borrow_per_year: 0.03
