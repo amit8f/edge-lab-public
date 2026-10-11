@@ -1,0 +1,61 @@
+# News track step 1: log Benzinga headlines from Alpaca every 30 minutes (tracks/news/collect.py).
+# State (raw headlines + cursor) lives on the orphan branch `state`; each run restores it, appends, and
+# commits it back. Scheduled runs start only after the repository variable NEWS_ENABLED is set to true
+# (after the secrets ALPACA_API_KEY_ID and ALPACA_API_SECRET_KEY are added).
+name: news
+
+on:
+  schedule:
+    - cron: "*/30 11-23 * * 1-5"   # 07:00-19:30 ET in EDT (06:00-18:30 in EST), weekdays
+    - cron: "0 3 * * 2-6"          # one overnight run to catch late headlines
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    if: github.event_name == 'workflow_dispatch' || vars.NEWS_ENABLED == 'true'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash deploy/state.sh restore
+
+      - name: Collect headlines
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: .venv/bin/python -m tracks.news.collect --state state
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_LABEL: news ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
