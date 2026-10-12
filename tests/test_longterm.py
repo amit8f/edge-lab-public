@@ -326,3 +326,54 @@ def test_screen_m5_end_to_end_with_fakes(tmp_path, monkeypatch):
     res = screen_m5.run(tmp_path / "cache", tmp_path / "out5")
     assert res["primary"]["n_dates"] > 10 and res["funnel"]["picks_with_any_buy"] > 0
     assert (tmp_path / "out5" / "M5_calibration.json").exists()
+
+
+def test_analyst_classify_rules():
+    from tracks.main.longterm.analyst import classify
+    assert classify("Goldman Sachs Upgrades Apple to Buy, Raises Price Target to $250") == 1
+    assert classify("Morgan Stanley Downgrades XYZ to Equal-Weight, Lowers Price Target to $40") == -1
+    assert classify("Citigroup Maintains Buy on Apple, Raises Price Target to $240") == 1
+    assert classify("Barclays Maintains Overweight on MSFT, Lowers Price Target to $400") == -1
+    assert classify("Apple Price Target Raised to $300 at UBS") == 1
+    assert classify("Citi Maintains Neutral on XYZ, Maintains $20 Price Target") == 0
+    assert classify("Analyst upgrades and downgrades roundup") == 0
+    assert classify("Citigroup Maintains Buy on Apple, Raises Price Target to $240", ratings_only=True) == 0
+
+
+def test_analyst_events_and_score(tmp_path):
+    from tracks.main.longterm import analyst, news_history
+    arts = pd.DataFrame({
+        "headline": ["UBS Upgrades AAA to Buy", "UBS Upgrades AAA to Buy", "Citi Downgrades BBB to Sell",
+                     "Jefferies Raises Price Target on AAA", "Upgrades AAA and BBB", "Random news on CCC"],
+        "created_at": ["2020-05-01T14:00:00Z", "2020-05-02T14:00:00Z", "2020-05-03T14:00:00Z",
+                       "2020-06-29T23:30:00Z", "2020-05-04T14:00:00Z", "2020-05-05T14:00:00Z"],
+        "symbols": ["AAA", "AAA", "BBB", "AAA", "AAA,BBB", "CCC"]})
+    ev = analyst.events(arts)
+    assert list(ev["symbol"]) == ["AAA", "BBB", "AAA"]          # repeat and two-symbol rows dropped
+    assert ev["day"].iloc[2] == pd.Timestamp("2020-06-29")      # 23:30 UTC is still June 29 in New York
+    uni = pd.DataFrame({"symbol": ["AAA", "BBB", "CCC"], "date": pd.Timestamp("2020-06-30"), "ret6": 0.0})
+    s = analyst.score_m6(uni, ev, seed=1)
+    assert list(s["symbol"]) == ["AAA", "CCC", "BBB"] and s["an_up"].iloc[0] == 2
+    # resumable monthly download with a fake feed
+    pages = {"2020-01": [{"news": [{"id": 1, "created_at": "2020-01-02T00:00:00Z", "headline": "h", "symbols": ["A"]}],
+                          "next_page_token": "p"}, {"news": [], "next_page_token": None}]}
+    calls = []
+
+    def fake(start, end=None, page_token=None):
+        calls.append(page_token)
+        return pages["2020-01"][0 if page_token is None else 1]
+    assert news_history.fetch_range("2020-01", "2020-01", tmp_path, fetch=fake)
+    assert calls == [None, "p"] and len(news_history.load_range("2020-01", "2020-01", tmp_path)) == 1
+
+
+def test_screen_m6_end_to_end_with_fakes(tmp_path, monkeypatch):
+    from tracks.main.longterm import screen_m6
+    _fake_screen(tmp_path, monkeypatch)
+    days = pd.date_range("2021-06-01", periods=40, freq="7D")
+    rows = pd.DataFrame({"id": range(80), "headline": ["X Upgrades S3 to Buy", "Y Downgrades S5 to Sell"] * 40,
+                         "created_at": np.repeat(days.strftime("%Y-%m-%dT15:00:00Z"), 2),
+                         "symbols": ["S3", "S5"] * 40})
+    monkeypatch.setattr(screen_m6.news_history, "fetch_range", lambda *a, **k: True)
+    monkeypatch.setattr(screen_m6, "classified_rows", lambda *a, **k: (rows, 1000))
+    res = screen_m6.run(tmp_path / "cache", tmp_path / "out6")
+    assert res["primary"]["n_dates"] > 10 and res["funnel"]["events_after_dedupe"] > 0
