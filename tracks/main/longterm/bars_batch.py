@@ -70,3 +70,29 @@ def assets_all():
     for status in ("active", "inactive"):
         rows += alpaca.get(f"{alpaca.TRADE}/assets", {"status": status, "asset_class": "us_equity"})
     return classify(pd.DataFrame(rows))
+
+
+def run_live(symbols, start, end, t, keep=None, size=500, fetch=fetch_three):
+    """Today's feature rows (signal date t, no forward returns), split points, and all-adjusted open/close
+    frames for every symbol (small: ~1.5 years of daily bars), in batches of `size`."""
+    feats, rts, closes = [], [], {}
+    symbols = sorted(set(symbols))
+    for b in range(0, len(symbols), size):
+        batch = symbols[b:b + size]
+        fr = fetch(batch, start, end)
+        for sym in batch:
+            if sym in fr["all"]:
+                closes[sym] = fr["all"][sym][["o", "c"]]
+            if sym not in fr["raw"] or sym not in fr["split"] or sym not in fr["all"]:
+                continue
+            d = align(fr["all"][sym], fr["raw"][sym], fr["split"][sym])
+            if d.empty:
+                continue
+            rts.append(split_points(sym, d))
+            f = features(sym, d, [t], {})
+            if len(f):
+                feats.append(f)
+        print(f"[bars] live batch {b // size + 1}/{-(-len(symbols) // size)}")
+    feat = pd.concat(feats, ignore_index=True) if feats else pd.DataFrame()
+    rtab = pd.concat(rts, ignore_index=True) if rts else pd.DataFrame(columns=["symbol", "date", "R"])
+    return feat, rtab, closes

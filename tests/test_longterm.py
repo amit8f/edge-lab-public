@@ -199,3 +199,51 @@ def test_batch_process_with_fake_fetch():
     ends = prices.horizon_ends(a.index, dates)
     f, rt, n = bars_batch.process(["X", "MISSING"], "x", "y", dates, ends, fetch=fake)
     assert n == 1 and len(f) == len(dates) and f["ret6"].notna().sum() >= 1 and len(rt) == 1
+
+
+def test_reasons_and_expectation():
+    from tracks.main.longterm import explain
+    row = {"f_mom": 0.95, "mom": 0.42, "f_lowvol": 0.2, "vol": 0.55, "f_quality": 0.8, "gpa": 0.4, "roa": 0.12,
+           "f_value": 0.5, "ep": 0.05, "f_issuance": 0.9, "issuance": -0.03, "f_assetgrowth": None, "assetgrowth": None}
+    good, bad = explain.reasons(row)
+    assert good[0].startswith("Strong trend: up 42%") and "buybacks" in " ".join(good)
+    assert bad == ["Volatile: 55% annualised, expect big swings"]
+    cal = {"buckets": [{"lo": -0.001, "hi": 0.5, "median": 0.0, "p25": -.1, "p75": .1, "beat_spy": .4, "n": 9},
+                       {"lo": 0.5, "hi": 1.0, "median": 0.1, "p25": 0, "p75": .2, "beat_spy": .62, "n": 9}]}
+    e = explain.expectation(cal, 0.99, 100.0, 0.3)
+    assert e["median"] == 0.1 and e["band_low"] < 110 < e["band_high"]
+    assert explain.confidence_label(e["beat_spy"]) == "higher"
+    assert explain.expectation(cal, 0.2, 10, 0.3)["beat_spy"] == .4
+
+
+def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
+    from core import ledger as ledger_mod
+    from tracks.main.longterm import live
+    syms = [f"S{i}" for i in range(30)]
+    bars = {s: _bars(n=420, start="2024-09-02", seed=i, drift=0.0002 * (i % 7)) for i, s in enumerate(syms + ["SPY"])}
+    t = bars["S0"][0].index[-1]
+    fake = lambda batch, start, end: {k: {s: bars[s][j] for s in batch if s in bars}
+                                      for j, k in enumerate(("all", "raw", "split"))}
+    monkeypatch.setattr(live, "last_session", lambda now: (t, True))
+    monkeypatch.setattr(live.bars_batch, "assets_all", lambda: pd.DataFrame(
+        {"base_symbol": syms, "symbol": syms, "name": [f"Co {s}" for s in syms], "status": "active", "excl_reason": None}))
+    monkeypatch.setattr(live.sec_data, "current_ticker_map", lambda: pd.DataFrame(
+        {"symbol": syms, "cik": range(1, 31), "title": syms}))
+    real_run_live = live.bars_batch.run_live
+    monkeypatch.setattr(live.bars_batch, "run_live", lambda s, a, b, tt: real_run_live(s, a, b, tt, fetch=fake))
+    monkeypatch.setattr(live.sec_data, "download_companyfacts", lambda p: p)
+    facts = pd.concat([fu.extract(_cf(c, [2023, 2024], [("2025-07-31", 2e8 + c * 1e6, "10-Q", "2025-08-05", f"q{c}"),
+                                                         ("2024-07-31", 2e8, "10-Q", "2024-08-05", f"p{c}")],
+                                       ni=5 + c, growth=0.01 * c)) for c in range(1, 31)])
+    monkeypatch.setattr(live.sec_data, "facts_for", lambda *a, **k: facts)
+    monkeypatch.setattr(live, "news_for", lambda s, since: [{"time": "2026-10-01", "headline": f"{s} </script> news", "source": "x", "url": "https://e.x"}])
+    monkeypatch.setattr(live, "reddit_mentions", lambda s: None)
+    now = pd.Timestamp("2026-10-12T03:30:00Z")
+    data = live.run(tmp_path / "state", tmp_path / "cache", now=now)
+    assert len(data["picks"]) == 20 and data["ledger_ok"] and data["ledger_entries"] == 1
+    html = (tmp_path / "state" / "longterm" / "dashboard.html").read_text()
+    assert "</script> news" not in html and "<title>Long-Horizon Picks</title>" in html
+    led = ledger_mod.Ledger(tmp_path / "state" / "longterm")
+    assert led.has("M4_picks", f"{t:%Y-%m-%d}")
+    again = live.run(tmp_path / "state", tmp_path / "cache", now=now)      # second run the same night: no new entry
+    assert again["ledger_entries"] == 1 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
