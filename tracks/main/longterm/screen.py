@@ -97,12 +97,10 @@ def calibration(scored, spy6):
     return {"buckets": out, "top20": out_top}
 
 
-def run(cache, out):
-    cache, out = Path(cache), Path(out)
-    out.mkdir(parents=True, exist_ok=True)
-    res = {"idea": "M4", "prereg": "research/prereg/M4.md", "phase2_count": 1, "main_count": 1,
-           "phase1_plus_phase2": 16}
-
+def prepare(cache):
+    """Shared by M4 and M5: signal dates, SPY returns, and the eligible universe with price features and
+    fundamentals. Returns (uni, ends, spy_r, funnel)."""
+    cache = Path(cache)
     spy = to_frames(fetch_daily_bars(["SPY"], BARS_START, alpaca.sip_end(BARS_END), adjustment="all",
                                      headers=alpaca_headers()))["SPY"]
     dates = month_ends(spy.index, FIRST_SIGNAL, LAST_SIGNAL)
@@ -136,6 +134,15 @@ def run(cache, out):
     funnel["with_mcap"] = int(full["mcap"].notna().sum())
     uni = eligible(full)
     funnel["eligible_price_mcap_dv"] = int(len(uni))
+    return uni, ends, spy_r, funnel
+
+
+def run(cache, out):
+    cache, out = Path(cache), Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    res = {"idea": "M4", "prereg": "research/prereg/M4.md", "phase2_count": 1, "main_count": 1,
+           "phase1_plus_phase2": 16}
+    uni, ends, spy_r, funnel = prepare(cache)
     scored = composite(uni)
     funnel["with_4_families"] = int(len(scored))
     per_date = scored.groupby("date").size()

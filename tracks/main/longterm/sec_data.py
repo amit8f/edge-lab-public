@@ -132,3 +132,51 @@ def facts_for(zip_path, ciks, out_dir, batch=500):
     facts = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame()
     print(f"[facts] {len(facts)} rows for {facts['cik'].nunique() if len(facts) else 0} of {len(ciks)} CIKs")
     return facts
+
+
+def parse_dera_buys(sub_bytes, owner_bytes, trans_bytes):
+    """Open-market purchases (code P, acquired) on original Form 4s by officers or directors, one row per
+    transaction: (cik, filed, accn, owner_ciks, shares, price, value)."""
+    rd = lambda b, cols: pd.read_csv(io.BytesIO(b), sep="\t", dtype=str, usecols=cols)
+    sub = rd(sub_bytes, ["ACCESSION_NUMBER", "FILING_DATE", "DOCUMENT_TYPE", "ISSUERCIK"])
+    sub = sub[sub["DOCUMENT_TYPE"].str.strip() == "4"]
+    own = rd(owner_bytes, ["ACCESSION_NUMBER", "RPTOWNERCIK", "RPTOWNER_RELATIONSHIP"])
+    rel = own["RPTOWNER_RELATIONSHIP"].fillna("").str.upper()
+    own = own[rel.str.contains("OFFICER") | rel.str.contains("DIRECTOR")]
+    owners = own.groupby("ACCESSION_NUMBER")["RPTOWNERCIK"].agg(lambda x: ",".join(sorted(set(x)))).rename("owners")
+    tr = rd(trans_bytes, ["ACCESSION_NUMBER", "NONDERIV_TRANS_SK", "TRANS_CODE", "TRANS_SHARES",
+                          "TRANS_PRICEPERSHARE", "TRANS_ACQUIRED_DISP_CD"])
+    tr = tr[(tr["TRANS_CODE"].str.strip() == "P") & (tr["TRANS_ACQUIRED_DISP_CD"].str.strip() == "A")]
+    tr = tr.assign(shares=pd.to_numeric(tr["TRANS_SHARES"], errors="coerce"),
+                   price=pd.to_numeric(tr["TRANS_PRICEPERSHARE"], errors="coerce"))
+    tr = tr[(tr["shares"] > 0) & (tr["price"] > 0)].drop_duplicates(["ACCESSION_NUMBER", "NONDERIV_TRANS_SK"])
+    m = tr.merge(sub, on="ACCESSION_NUMBER").merge(owners, left_on="ACCESSION_NUMBER", right_index=True)
+    out = pd.DataFrame({"cik": pd.to_numeric(m["ISSUERCIK"], errors="coerce"), "filed": _dates(m["FILING_DATE"]),
+                        "accn": m["ACCESSION_NUMBER"], "owners": m["owners"], "shares": m["shares"],
+                        "price": m["price"]})
+    out["value"] = out["shares"] * out["price"]
+    return out.dropna(subset=["cik", "filed"]).astype({"cik": "int64"}).reset_index(drop=True)
+
+
+def dera_insider_buys(start_year, end_quarter, cache_dir):
+    """Officer/director open-market purchases from every quarterly data set, cached per quarter."""
+    cache = Path(cache_dir)
+    cache.mkdir(parents=True, exist_ok=True)
+    frames = []
+    for per in pd.period_range(pd.Period(f"{start_year}Q1"), end_quarter, freq="Q"):
+        f = cache / f"buys_{per.year}q{per.quarter}.parquet"
+        if not f.exists():
+            r = sec.get(DERA.format(y=per.year, q=per.quarter))
+            if r is None:
+                print(f"[dera] {per} not published")
+                continue
+            with zipfile.ZipFile(io.BytesIO(r.content)) as z:
+                pick = lambda stem: z.read(next(n for n in z.namelist() if n.upper().endswith(stem)))
+                part = parse_dera_buys(pick("SUBMISSION.TSV"), pick("REPORTINGOWNER.TSV"), pick("NONDERIV_TRANS.TSV"))
+            tmp = f.with_suffix(".tmp")
+            part.to_parquet(tmp)
+            tmp.replace(f)
+        frames.append(pd.read_parquet(f))
+    b = pd.concat(frames, ignore_index=True)
+    print(f"[dera] {len(b)} officer/director purchase rows, {b['cik'].nunique()} issuers")
+    return b

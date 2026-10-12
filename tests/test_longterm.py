@@ -249,7 +249,7 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert again["ledger_entries"] == 1 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
 
 
-def test_screen_run_end_to_end_with_fakes(tmp_path, monkeypatch):
+def _fake_screen(tmp_path, monkeypatch):
     from tracks.main.longterm import screen
     syms = [f"S{i}" for i in range(60)]
     bars = {s: _bars(n=1100, start="2021-01-04", seed=i, drift=0.0001 * (i % 9)) for i, s in enumerate(syms + ["SPY"])}
@@ -273,6 +273,11 @@ def test_screen_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     sh = lambda c: [(f"{y}-07-31", 2e8 * (1 + 0.002 * c) ** k, "10-Q", f"{y}-08-05", f"q{c}{y}") for k, y in enumerate(years)]
     facts = pd.concat([fu.extract(_cf(c, years, sh(c), ni=5 + c, growth=0.01 * c)) for c in range(1, 61)])
     monkeypatch.setattr(screen.sec_data, "facts_for", lambda *a, **k: facts)
+    return screen
+
+
+def test_screen_run_end_to_end_with_fakes(tmp_path, monkeypatch):
+    screen = _fake_screen(tmp_path, monkeypatch)
     res = screen.run(tmp_path / "cache", tmp_path / "out")
     assert res["primary"]["n_dates"] > 10 and "passes" in res["primary"]
     assert (tmp_path / "out" / "M4_calibration.json").exists()
@@ -286,3 +291,38 @@ def test_zero_share_count_does_not_crash():
     panel = pd.DataFrame({"symbol": ["X"], "date": [pd.Timestamp("2021-03-31")], "cik": [7], "price": [10.0]})
     out = score.attach_fundamentals(panel, rows, rtab)
     assert np.isnan(out["issuance"].iloc[0]) and out["mcap"].iloc[0] == pytest.approx(1000)
+
+
+def test_parse_dera_buys_filters_and_dedupes():
+    sub = (b"ACCESSION_NUMBER\tFILING_DATE\tDOCUMENT_TYPE\tISSUERCIK\n"
+           b"a1\t15-MAR-2020\t4\t11\na2\t16-MAR-2020\t4/A\t11\na3\t17-MAR-2020\t4\t12\n")
+    own = (b"ACCESSION_NUMBER\tRPTOWNERCIK\tRPTOWNER_RELATIONSHIP\n"
+           b"a1\t900\tDirector\na1\t901\tOfficer,TenPercentOwner\na2\t900\tDirector\na3\t902\tTenPercentOwner\n")
+    tr = (b"ACCESSION_NUMBER\tNONDERIV_TRANS_SK\tTRANS_CODE\tTRANS_SHARES\tTRANS_PRICEPERSHARE\tTRANS_ACQUIRED_DISP_CD\n"
+          b"a1\t1\tP\t100\t10\tA\na1\t2\tS\t50\t10\tD\na1\t3\tP\t0\t10\tA\na2\t4\tP\t100\t10\tA\na3\t5\tP\t100\t10\tA\n")
+    b = sec_data.parse_dera_buys(sub, own, tr)
+    assert len(b) == 1 and b["value"].iloc[0] == 1000 and b["owners"].iloc[0] == "900,901"
+
+
+def test_trailing_buys_window_and_m5_score():
+    from tracks.main.longterm import insider
+    buys = pd.DataFrame({"cik": [1, 1, 1], "filed": pd.to_datetime(["2020-01-01", "2020-05-01", "2020-07-01"]),
+                         "owners": ["a", "b", "a,c"], "value": [100.0, 200.0, 400.0]})
+    keys = pd.DataFrame({"cik": [1, 1, 2], "date": pd.to_datetime(["2020-06-30", "2020-07-01", "2020-07-01"])})
+    v, n = insider.trailing_buys(keys, buys)
+    assert list(v) == [300.0, 600.0, 0.0] and list(n) == [2, 3, 0]
+    uni = pd.DataFrame({"cik": [1, 2, 3], "symbol": ["A", "B", "C"], "date": pd.Timestamp("2020-07-01"),
+                        "mcap": [1e6, 1e6, 1e6], "issuance": [-0.05, 0.1, np.nan]})
+    s = insider.score_m5(uni, buys)
+    assert list(s.sort_values("rank")["symbol"]) == ["A", "B"]
+
+
+def test_screen_m5_end_to_end_with_fakes(tmp_path, monkeypatch):
+    from tracks.main.longterm import screen_m5
+    _fake_screen(tmp_path, monkeypatch)
+    buys = pd.DataFrame({"cik": [3, 5, 7] * 30, "filed": np.repeat(pd.date_range("2021-06-01", periods=30, freq="MS"), 3),
+                         "accn": "x", "owners": "o1", "shares": 100.0, "price": 10.0, "value": 1000.0})
+    monkeypatch.setattr(screen_m5.sec_data, "dera_insider_buys", lambda *a: buys)
+    res = screen_m5.run(tmp_path / "cache", tmp_path / "out5")
+    assert res["primary"]["n_dates"] > 10 and res["funnel"]["picks_with_any_buy"] > 0
+    assert (tmp_path / "out5" / "M5_calibration.json").exists()
