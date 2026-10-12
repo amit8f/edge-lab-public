@@ -250,15 +250,30 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     monkeypatch.setattr(live.sec_data, "facts_for", lambda *a, **k: facts)
     monkeypatch.setattr(live, "news_for", lambda s, since: [{"time": "2026-10-01", "headline": f"{s} </script> news", "source": "x", "url": "https://e.x"}])
     monkeypatch.setattr(live, "reddit_mentions", lambda s: None)
+    windows = []
+
+    def fake_window(start, end, **k):
+        windows.append((start, end))
+        day = (t - pd.Timedelta(days=10)).strftime("%Y-%m-%dT15:00:00Z")
+        return pd.DataFrame({"id": [1, 2, 3, 4], "created_at": day, "symbols": ["S7", "S7", "S3", "S3,S7"],
+                             "headline": ["UBS Upgrades S7 to Buy", "Jefferies Raises Price Target on S7",
+                                          "Citi Downgrades S3 to Sell", "Upgrades S3 and S7"]})
+    monkeypatch.setattr(live.news_history, "fetch_window", fake_window)
     now = pd.Timestamp("2026-10-12T03:30:00Z")
     data = live.run(tmp_path / "state", tmp_path / "cache", now=now)
-    assert len(data["picks"]) == 20 and data["ledger_ok"] and data["ledger_entries"] == 1
+    assert len(data["picks"]) == 20 and data["ledger_ok"] and data["ledger_entries"] == 2
+    assert windows[0][1] == (t + pd.Timedelta(days=1)).tz_localize("America/New_York").tz_convert("UTC")
+    m8 = data["live_tests"]["M8"]["latest"]
+    assert m8["as_of"] == f"{t:%Y-%m-%d}" and m8["picks"][0]["symbol"] == "S7" and m8["picks"][0]["up"] == 2
+    assert "S3" not in [p["symbol"] for p in m8["picks"]] and m8["picks"][0]["name"] == "Co S7"
     html = (tmp_path / "state" / "longterm" / "dashboard.html").read_text()
     assert "</script> news" not in html and "<title>Long-Horizon Picks</title>" in html
     led = ledger_mod.Ledger(tmp_path / "state" / "longterm")
-    assert led.has("M4_picks", f"{t:%Y-%m-%d}")
+    assert led.has("M4_picks", f"{t:%Y-%m-%d}") and led.has("M8_picks", f"{t:%Y-%m-%d}")
+    assert "Under live test" in html
     again = live.run(tmp_path / "state", tmp_path / "cache", now=now)      # second run the same night: no new entry
-    assert again["ledger_entries"] == 1 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
+    assert again["ledger_entries"] == 2 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
+    assert again["live_tests"]["M8"]["record"][0]["date"] == f"{t:%Y-%m-%d}" and len(windows) == 1
 
 
 def _fake_screen(tmp_path, monkeypatch):

@@ -88,6 +88,12 @@ th:first-child, td:first-child { text-align: left }
     <p class="fine" style="margin:0" id="record-note"></p>
     <div class="table-wrap" id="record"></div>
   </section>
+  <section style="display:grid;gap:10px">
+    <h2>Under live test: analyst upgrades (M8)</h2>
+    <p class="fine" style="margin:0">Analyst upgrades and price-target raises came closest of every idea tested here (about +3% per 6 months over the average stock, 2017–2025, not enough to pass). Rather than call it proven, the top 20 by analyst actions in the last 91 days are logged each month-end before their returns exist, with 20 random stocks beside them. The verdict comes after 12 and 24 logged months. These are test entries, not Buy calls.</p>
+    <div class="table-wrap" id="m8"></div>
+    <div class="table-wrap" id="m8-record"></div>
+  </section>
   <p class="fine" id="foot"></p>
 </main>
 
@@ -171,11 +177,20 @@ function record() {
   el.innerHTML = `<table><thead><tr><th>Picked on</th><th>Days held</th><th>Picks</th><th>Random 20</th><th>All eligible</th><th>SPY</th><th>Picks minus all</th></tr></thead><tbody>${rows.map(r => `<tr><td class="num">${r.date}</td><td class="num">${r.days}</td><td class="num">${pct(r.picks, 1)}</td><td class="num">${pct(r.control, 1)}</td><td class="num">${pct(r.universe, 1)}</td><td class="num">${pct(r.spy, 1)}</td><td class="num">${r.picks != null && r.universe != null ? pct(r.picks - r.universe, 1) : "–"}</td></tr>`).join("")}</tbody></table>`;
 }
 
+function m8() {
+  const L = (D.live_tests || {}).M8 || {}, el = document.getElementById("m8"), rec = document.getElementById("m8-record");
+  if (!L.latest) { el.innerHTML = `<p class="fine">Nothing logged yet. The first list is logged on the last trading day of the month.</p>`; rec.innerHTML = ""; return; }
+  el.innerHTML = `<p class="fine" style="margin:0 0 6px">Logged on ${esc(L.latest.as_of)}.</p><table><thead><tr><th>#</th><th>Stock</th><th>Upgrades and raises</th><th>Downgrades and cuts</th><th>Price then</th></tr></thead><tbody>${L.latest.picks.map(p => `<tr><td class="num">${p.rank}</td><td><strong>${esc(p.symbol)}</strong> <span class="muted">${esc(p.name)}</span></td><td class="num">${p.up}</td><td class="num">${p.down}</td><td class="num">${usd(p.price)}</td></tr>`).join("")}</tbody></table>`;
+  const rows = L.record || [];
+  rec.innerHTML = rows.length ? `<table><thead><tr><th>Picked on</th><th>Days held</th><th>Picks</th><th>Random 20</th><th>All eligible</th><th>SPY</th><th>Picks minus all</th></tr></thead><tbody>${rows.map(r => `<tr><td class="num">${r.date}</td><td class="num">${r.days}</td><td class="num">${pct(r.picks, 1)}</td><td class="num">${pct(r.control, 1)}</td><td class="num">${pct(r.universe, 1)}</td><td class="num">${pct(r.spy, 1)}</td><td class="num">${r.picks != null && r.universe != null ? pct(r.picks - r.universe, 1) : "–"}</td></tr>`).join("")}</tbody></table>` : "";
+}
+
 if (D) {
   document.getElementById("asof").textContent = `Prices as of the close on ${D.as_of}. ${D.universe_size.toLocaleString()} stocks ranked. Refreshed nightly; built ${D.generated_utc.replace("T", " ").slice(0, 16)} UTC.`;
   verdict();
   document.getElementById("list").innerHTML = D.picks.map(pick).join("");
   record();
+  m8();
   document.getElementById("foot").textContent = `Research output from a paper-trading project, not investment advice. Prices from Alpaca (SIP), fundamentals from SEC filings counted from their filing date, headlines from Benzinga via Alpaca, Reddit from its public search. Forward log ${D.ledger_ok ? "verified" : "FAILED verification"} (${D.ledger_entries} entries).`;
 }
 </script>

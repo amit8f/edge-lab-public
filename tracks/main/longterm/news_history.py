@@ -9,7 +9,11 @@ from core import alpaca
 
 def fetch_month(month, fetch=alpaca.news):
     start = pd.Timestamp(f"{month}-01", tz="UTC")
-    end = start + pd.offsets.MonthBegin(1)
+    return fetch_window(start, start + pd.offsets.MonthBegin(1), fetch)
+
+
+def fetch_window(start, end, fetch=alpaca.news):
+    """Every article created in [start, end), all symbols, as (id, created_at, headline, symbols)."""
     rows, token = [], None
     while True:
         page = fetch(start.strftime("%Y-%m-%dT%H:%M:%SZ"), end=end.strftime("%Y-%m-%dT%H:%M:%SZ"),
