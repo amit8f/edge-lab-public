@@ -1,0 +1,62 @@
+# M4 nightly: today's long-horizon ranking and dashboard (tracks/main/longterm/live.py).
+# Runs after 10pm ET on weekdays. Writes state/longterm/ (latest.json, dashboard.html and, on month-ends,
+# the hash-chained forward log) to the orphan branch `state`.
+name: m4-daily
+
+on:
+  schedule:
+    - cron: "30 3 * * 2-6"   # 23:30 ET in EDT, 22:30 in EST, after each weekday session
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [".github/workflows/m4-daily.yml"]
+
+permissions: {}
+
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
+jobs:
+  rank:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash deploy/state.sh restore
+
+      - name: Rank and build the dashboard
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: .venv/bin/python -m tracks.main.longterm.live --state state --cache cache/m4live
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_LABEL: m4-daily ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save

@@ -1,0 +1,339 @@
+{
+  "name": "Three-AI stock-pick comparison",
+  "logged_utc": "2026-10-12T17:00:00Z",
+  "note": "Not a pre-registered idea and not counted in IDEAS.md. Amit asked Claude, Gemini and ChatGPT the same prompt on 2026-10-12. Each list is held equal-weight for 6 months. final_combined (6 names, equal weight) was added at 2026-10-12T17:05Z after rechecking all 15. source_4 and source_5 are two more AI answers Amit pasted at 17:00Z (models not named). final_combined_v2 (7 names, equal weight) supersedes final_combined for Amit; both are scored. claude_boom_bets (2026-10-12T17:10Z): Amit asked for high-upside 'could boom' guesses, no test; scored also at 2 years (2028-10-12). boom_* lists (2026-10-12T17:20Z) are 2-year bets, scored 2028-10-12; the AI answers saw Claude's six in the prompt, so overlap is partly anchoring.",
+  "scoring": {
+    "entry": "2026-10-12 close, Alpaca SIP, adjustment=all (dividends included)",
+    "exit": "2027-04-12 close, same source (next trading day if closed)",
+    "metric": "equal-weight mean return of the 5 picks minus SPY return over the same window",
+    "also_report": "each pick's return and whether it beat SPY; each model's stated probability vs the outcome"
+  },
+  "lists": {
+    "claude": [
+      {
+        "symbol": "EXEL",
+        "quoted_price": 59.86,
+        "middle_case": 0.05,
+        "p_beat_spy": 0.53
+      },
+      {
+        "symbol": "RNR",
+        "quoted_price": 331.38,
+        "middle_case": 0.05,
+        "p_beat_spy": 0.53
+      },
+      {
+        "symbol": "CQP",
+        "quoted_price": 63.54,
+        "middle_case": 0.05,
+        "p_beat_spy": 0.51
+      },
+      {
+        "symbol": "ACT",
+        "quoted_price": 45.97,
+        "middle_case": 0.05,
+        "p_beat_spy": 0.52
+      },
+      {
+        "symbol": "MATX",
+        "quoted_price": 225.67,
+        "middle_case": 0.05,
+        "p_beat_spy": 0.5
+      }
+    ],
+    "gemini": [
+      {
+        "symbol": "PLTR",
+        "quoted_price": 209.05,
+        "middle_case": 0.05,
+        "p_beat_spy": 0.52
+      },
+      {
+        "symbol": "CEG",
+        "quoted_price": 299.34,
+        "middle_case": 0.07,
+        "p_beat_spy": 0.55
+      },
+      {
+        "symbol": "HOOD",
+        "quoted_price": 108.9,
+        "middle_case": 0.1,
+        "p_beat_spy": 0.51
+      },
+      {
+        "symbol": "APP",
+        "quoted_price": 274.46,
+        "middle_case": 0.09,
+        "p_beat_spy": 0.53
+      },
+      {
+        "symbol": "UBER",
+        "quoted_price": 70.98,
+        "middle_case": 0.1,
+        "p_beat_spy": 0.54
+      }
+    ],
+    "chatgpt": [
+      {
+        "symbol": "NVDA",
+        "quoted_price": 226.63,
+        "middle_case": 0.12,
+        "p_beat_spy": 0.55
+      },
+      {
+        "symbol": "GOOGL",
+        "quoted_price": 354.43,
+        "middle_case": 0.1,
+        "p_beat_spy": 0.54
+      },
+      {
+        "symbol": "LLY",
+        "quoted_price": 1174.23,
+        "middle_case": 0.08,
+        "p_beat_spy": 0.53
+      },
+      {
+        "symbol": "RTX",
+        "quoted_price": 186.85,
+        "middle_case": 0.06,
+        "p_beat_spy": 0.53
+      },
+      {
+        "symbol": "GEV",
+        "quoted_price": 1000.71,
+        "middle_case": 0.08,
+        "p_beat_spy": 0.52
+      }
+    ],
+    "final_combined": [
+      {
+        "symbol": "NVDA",
+        "quoted_price": 226.43
+      },
+      {
+        "symbol": "GOOGL",
+        "quoted_price": 354.08
+      },
+      {
+        "symbol": "EXEL",
+        "quoted_price": 59.86
+      },
+      {
+        "symbol": "RNR",
+        "quoted_price": 331.38
+      },
+      {
+        "symbol": "ACT",
+        "quoted_price": 45.97
+      },
+      {
+        "symbol": "MATX",
+        "quoted_price": 228.78
+      }
+    ],
+    "source_4": [
+      {
+        "symbol": "DELL",
+        "quoted_price": 578.96
+      },
+      {
+        "symbol": "MSFT",
+        "quoted_price": 542.4
+      },
+      {
+        "symbol": "MRNA",
+        "quoted_price": 225.0
+      },
+      {
+        "symbol": "PLTR",
+        "quoted_price": 209.05
+      },
+      {
+        "symbol": "CRWD",
+        "quoted_price": 275.04
+      }
+    ],
+    "source_5": [
+      {
+        "symbol": "VRT",
+        "quoted_price": 241.0
+      },
+      {
+        "symbol": "MU",
+        "quoted_price": 1029.0
+      },
+      {
+        "symbol": "VST",
+        "quoted_price": 161.0
+      },
+      {
+        "symbol": "PWR",
+        "quoted_price": 704.0
+      },
+      {
+        "symbol": "GEV",
+        "quoted_price": 1000.0
+      }
+    ],
+    "final_combined_v2": [
+      {
+        "symbol": "NVDA",
+        "quoted_price": 226.43
+      },
+      {
+        "symbol": "GOOGL",
+        "quoted_price": 354.08
+      },
+      {
+        "symbol": "DELL",
+        "quoted_price": 571.6
+      },
+      {
+        "symbol": "EXEL",
+        "quoted_price": 59.86
+      },
+      {
+        "symbol": "RNR",
+        "quoted_price": 331.38
+      },
+      {
+        "symbol": "ACT",
+        "quoted_price": 45.97
+      },
+      {
+        "symbol": "MATX",
+        "quoted_price": 228.78
+      }
+    ],
+    "claude_boom_bets": [
+      {
+        "symbol": "CRDO",
+        "quoted_price": 203.32,
+        "horizon": "2 years",
+        "p_double": 0.3
+      },
+      {
+        "symbol": "VKTX",
+        "quoted_price": 28.63,
+        "horizon": "2 years",
+        "p_double": 0.3
+      },
+      {
+        "symbol": "MU",
+        "quoted_price": 997.11,
+        "horizon": "2 years",
+        "p_double": 0.2
+      },
+      {
+        "symbol": "TEM",
+        "quoted_price": 67.52,
+        "horizon": "2 years",
+        "p_double": 0.25
+      },
+      {
+        "symbol": "RKLB",
+        "quoted_price": 65.51,
+        "horizon": "2 years",
+        "p_double": 0.25
+      },
+      {
+        "symbol": "OKLO",
+        "quoted_price": 32.75,
+        "horizon": "2 years",
+        "p_double": 0.25
+      }
+    ],
+    "boom_grok": [
+      {
+        "symbol": "CRDO"
+      },
+      {
+        "symbol": "RKLB"
+      },
+      {
+        "symbol": "TEM"
+      },
+      {
+        "symbol": "OKLO"
+      },
+      {
+        "symbol": "NBIS"
+      },
+      {
+        "symbol": "BE"
+      }
+    ],
+    "boom_gemini": [
+      {
+        "symbol": "CRDO"
+      },
+      {
+        "symbol": "ASTS"
+      },
+      {
+        "symbol": "TEM"
+      },
+      {
+        "symbol": "VKTX"
+      },
+      {
+        "symbol": "RKLB"
+      },
+      {
+        "symbol": "OKLO"
+      }
+    ],
+    "boom_chatgpt": [
+      {
+        "symbol": "CRDO"
+      },
+      {
+        "symbol": "NBIS"
+      },
+      {
+        "symbol": "RKLB"
+      },
+      {
+        "symbol": "VKTX"
+      },
+      {
+        "symbol": "TEM"
+      },
+      {
+        "symbol": "OKLO"
+      }
+    ],
+    "boom_final": [
+      {
+        "symbol": "CRDO",
+        "quoted_price": 203.32,
+        "weight": 0.3
+      },
+      {
+        "symbol": "NBIS",
+        "quoted_price": 209.56,
+        "weight": 0.15
+      },
+      {
+        "symbol": "RKLB",
+        "quoted_price": 65.51,
+        "weight": 0.15
+      },
+      {
+        "symbol": "VKTX",
+        "quoted_price": 28.63,
+        "weight": 0.15
+      },
+      {
+        "symbol": "TEM",
+        "quoted_price": 67.52,
+        "weight": 0.15
+      },
+      {
+        "symbol": "OKLO",
+        "quoted_price": 32.75,
+        "weight": 0.1
+      }
+    ]
+  }
+}
