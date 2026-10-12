@@ -87,7 +87,22 @@ def share_records(rows):
         return pd.DataFrame(columns=["cik", "sh_end", "avail", "shares"])
     r = r.assign(val=pd.to_numeric(r["val"], errors="coerce").astype(float))
     g = r.groupby(["cik", "accn"]).agg(shares=("val", "sum"), sh_end=("end", "max"), avail=("filed", "min"))
-    return g.reset_index()[["cik", "sh_end", "avail", "shares"]]
+    g = drop_scale_errors(g.reset_index())
+    return g[["cik", "sh_end", "avail", "shares"]]
+
+
+SCALE_JUMP = 100.0
+
+
+def drop_scale_errors(g):
+    """Drop share counts >= SCALE_JUMP x away from the median of the company's filings (XBRL values
+    tagged in thousands or millions). Companies with fewer than 3 filings are left alone."""
+    g = g.sort_values(["cik", "avail", "sh_end"]).reset_index(drop=True)
+    lr = np.log(g["shares"].where(g["shares"] > 0))
+    med = lr.groupby(g["cik"]).transform("median")
+    n = g.groupby("cik")["shares"].transform("size")
+    bad = ((lr - med).abs() >= np.log(SCALE_JUMP)) & (n >= 3)
+    return g[~bad].reset_index(drop=True)
 
 
 def as_of(keys, table, on="date", stale_days=None, end_col=None):

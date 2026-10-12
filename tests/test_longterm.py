@@ -126,6 +126,18 @@ def test_shares_sum_classes_and_split_correction():
     assert out2["roa"].iloc[0] == pytest.approx(10 / 110)
 
 
+def test_share_scale_errors_dropped():
+    g = pd.DataFrame({"cik": [1, 1, 1, 1, 2, 2], "accn": list("abcdef"),
+                      "sh_end": pd.to_datetime(["2018-01-01", "2018-04-01", "2018-07-01", "2018-10-01",
+                                                "2018-01-01", "2018-04-01"]),
+                      "avail": pd.to_datetime(["2018-02-01", "2018-05-01", "2018-08-01", "2018-11-01",
+                                               "2018-02-01", "2018-05-01"]),
+                      # cik 1: one value in thousands; cik 2: a real 200x level shift is kept
+                      "shares": [17e6, 17e3, 17.1e6, 17.2e6, 1e6, 2e8]})
+    out = fu.drop_scale_errors(g)
+    assert list(out["accn"]) == ["a", "c", "d", "e", "f"]
+
+
 def _scored_panel(n=60, dates=3, seed=1):
     rng = np.random.default_rng(seed)
     rows = []
