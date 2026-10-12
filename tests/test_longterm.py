@@ -389,3 +389,74 @@ def test_screen_m6_end_to_end_with_fakes(tmp_path, monkeypatch):
     monkeypatch.setattr(screen_m6, "classified_rows", lambda *a, **k: (rows, 1000))
     res = screen_m6.run(tmp_path / "cache", tmp_path / "out6")
     assert res["primary"]["n_dates"] > 10 and res["funnel"]["events_after_dedupe"] > 0
+
+
+def _qrows(cik, quarters, base=10.0, step=1.0, jump_at=None, q4_from_annual=False):
+    """Synthetic quarterly NetIncomeLoss rows: one 10-Q per quarter end, filed 35 days later."""
+    from tracks.main.longterm import earnings
+    rows = []
+    for k, end in enumerate(pd.date_range("2016-03-31", periods=quarters, freq="QE")):
+        v = base + step * k + (50.0 if jump_at is not None and k == jump_at else 0.0)
+        start, filed = end - pd.Timedelta(days=90), end + pd.Timedelta(days=35)
+        if q4_from_annual and end.month == 12:
+            ys = pd.Timestamp(f"{end.year}-01-01")
+            rows.append((cik, "NetIncomeLoss", ys, end, 4 * v, "10-K", filed + pd.Timedelta(days=30), f"k{k}"))
+            rows.append((cik, "NetIncomeLoss", ys, end - pd.Timedelta(days=92), 3 * v, "10-Q",
+                         end - pd.Timedelta(days=60), f"n{k}"))
+            continue
+        rows.append((cik, "NetIncomeLoss", start, end, v, "10-Q", filed, f"q{k}"))
+    return pd.DataFrame(rows, columns=fu.COLS)
+
+
+def test_quarterly_ni_derives_q4_and_keeps_originals():
+    from tracks.main.longterm import earnings
+    r = _qrows(1, 8, q4_from_annual=True)
+    # a later restatement of the first quarter must not replace the original
+    r = pd.concat([r, pd.DataFrame([(1, "NetIncomeLoss", pd.Timestamp("2015-12-31") + pd.Timedelta(days=1),
+                                     pd.Timestamp("2016-03-31"), 999.0, "10-Q", pd.Timestamp("2017-05-05"), "x")],
+                                   columns=fu.COLS)])
+    q = earnings.quarterly_ni(r)
+    assert len(q) == 8
+    first = q.iloc[0]
+    assert first["ni"] == 10.0 and first["avail"] == pd.Timestamp("2016-05-05")
+    q4 = q[q["end"] == pd.Timestamp("2016-12-31")].iloc[0]
+    assert q4["ni"] == pytest.approx(4 * 13.0 - 3 * 13.0)   # annual minus nine months
+    assert q4["avail"] == pd.Timestamp("2016-12-31") + pd.Timedelta(days=65)
+
+
+def test_sue_needs_history_and_flags_the_jump():
+    from tracks.main.longterm import earnings
+    rng = np.random.default_rng(0)
+    r = _qrows(1, 16, step=0.0, jump_at=12)
+    r["val"] = r["val"] + rng.normal(0, 1, len(r))
+    t = earnings.sue_table(earnings.quarterly_ni(r))
+    assert t["sue"].iloc[:8].isna().all()          # 4 quarters to get a change, 4 changes of history
+    assert t["sue"].iloc[12] > 5                     # the +50 quarter stands out
+    assert t["sue"].iloc[13:].dropna().abs().max() < t["sue"].iloc[12]
+
+
+def test_score_m7_uses_only_fresh_filed_sue():
+    from tracks.main.longterm import earnings
+    sue = pd.DataFrame({"cik": [1, 2, 3], "end": pd.to_datetime(["2020-03-31"] * 3),
+                        "avail": pd.to_datetime(["2020-05-01", "2020-07-01", "2019-12-01"]),
+                        "sue": [2.0, 9.0, 5.0]})
+    uni = pd.DataFrame({"cik": [1, 2, 3], "symbol": ["A", "B", "C"], "date": pd.Timestamp("2020-06-30")})
+    s = earnings.score_m7(uni, sue, 1)
+    assert list(s["symbol"]) == ["A"]   # B filed after t (look-ahead), C older than 120 days
+
+
+def test_screen_m7_end_to_end_with_fakes(tmp_path, monkeypatch):
+    from tracks.main.longterm import screen_m7
+    screen = _fake_screen(tmp_path, monkeypatch)
+    annual = screen.sec_data.facts_for()
+    rng = np.random.default_rng(3)
+    qs = []
+    for c in range(1, 61):
+        r = _qrows(c, 32, base=5 + c, step=0.1 * (c % 7))
+        r["val"] = r["val"] + rng.normal(0, 1, len(r))
+        qs.append(r)
+    facts = pd.concat([annual] + qs, ignore_index=True)
+    monkeypatch.setattr(screen.sec_data, "facts_for", lambda *a, **k: facts)
+    res = screen_m7.run(tmp_path / "cache", tmp_path / "out7")
+    assert res["primary"]["n_dates"] > 10 and res["funnel"]["sue_filed_after_signal_date"] == 0
+    assert (tmp_path / "out7" / "M7_screen.json").exists()
