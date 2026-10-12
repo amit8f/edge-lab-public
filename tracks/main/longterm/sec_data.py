@@ -96,6 +96,7 @@ def current_ticker_map():
 def download_companyfacts(path):
     """Stream the companyfacts bulk zip (~1.3 GB) to `path` atomically."""
     path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(".part")
     sec._wait_turn()
     with requests.get(COMPANYFACTS, headers=sec_headers(), stream=True, timeout=600) as r:
