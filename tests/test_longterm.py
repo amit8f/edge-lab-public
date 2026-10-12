@@ -1,0 +1,201 @@
+"""M4 long-term ranking on synthetic data (no network)."""
+import numpy as np
+import pandas as pd
+import pytest
+
+from tracks.main.longterm import bars_batch, fundamentals as fu, prices, score, sec_data, stats
+from tracks.main.longterm.screen import excess_series, month_ends
+
+
+def _bars(n=400, start="2020-01-01", drift=0.0005, split_at=None, seed=0, gap_at=None):
+    rng = np.random.default_rng(seed)
+    idx = pd.bdate_range(start, periods=n)
+    if gap_at is not None:
+        idx = idx[:gap_at].append(idx[gap_at:] + pd.Timedelta(days=30))
+    c = 50 * np.exp(np.cumsum(drift + 0.01 * rng.standard_normal(n)))
+    raw = c.copy()
+    split = c.copy()
+    if split_at is not None:          # 2-for-1 split: raw halves from split_at on; adjusted series halve before
+        raw[split_at:] /= 2
+        split = raw.copy()
+        split[:split_at] /= 2
+        c = split.copy()
+    f = lambda x: pd.DataFrame({"o": x * 0.999, "c": x, "v": 1e6}, index=idx)
+    return f(c), f(raw), f(split)
+
+
+def test_features_momentum_vol_and_forward_return():
+    a, r, s = _bars()
+    d = prices.align(a, r, s)
+    t = d.index[300]
+    ends = prices.horizon_ends(d.index, [t])
+    f = prices.features("X", d, [t], ends).iloc[0]
+    assert f["mom"] == pytest.approx(d["c"].iloc[279] / d["c"].iloc[48] - 1)
+    # 6m window runs past the data (400 bars): horizon_ends leaves it out
+    assert t not in ends["ret6"]
+    assert np.isnan(f["ret6"])
+    t2 = d.index[260]
+    ends2 = prices.horizon_ends(d.index, [t2])
+    f2 = prices.features("X", d, [t2], ends2).iloc[0]
+    assert f2["ret6"] == pytest.approx(d["c"].iloc[386] / d["o"].iloc[261] - 1)
+    assert not f2["ret6_trunc"]
+
+
+def test_holdout_guard_blocks_windows_reaching_label_end():
+    a, r, s = _bars(n=600)
+    cal = a.index
+    t = cal[300]
+    ok = prices.horizon_ends(cal, [t], label_end=cal[426] + pd.Timedelta(days=1))
+    blocked = prices.horizon_ends(cal, [t], label_end=cal[426])
+    assert t in ok["ret6"] and t not in blocked["ret6"]
+
+
+def test_gap_ends_series_and_truncates():
+    a, r, s = _bars(n=600, gap_at=400)
+    d = prices.align(a, r, s)
+    cal = pd.bdate_range(d.index[0], d.index[-1])
+    t = d.index[300]
+    f = prices.features("X", d, [t], prices.horizon_ends(cal, [t])).iloc[0]
+    assert f["ret6_trunc"] and f["ret6"] == pytest.approx(d["c"].iloc[399] / d["o"].iloc[301] - 1)
+    # right after the gap there is no full lookback in the new series
+    assert prices.features("X", d, [d.index[420]], {}).empty
+
+
+def test_split_points_and_r_lookup():
+    a, r, s = _bars(split_at=200)
+    d = prices.align(a, r, s)
+    rt = prices.split_points("X", d)
+    assert len(rt) == 2 and rt["R"].iloc[0] == pytest.approx(2) and rt["R"].iloc[1] == pytest.approx(1)
+    got = score.r_at(rt, ["X", "X", "X"], [d.index[0] - pd.Timedelta(days=50), d.index[100], d.index[300]])
+    assert list(np.round(got, 6)) == [2, 2, 1]
+
+
+def _cf(cik, years, shares, ni=10.0, gp=40.0, assets=100.0, equity=50.0, growth=0.1, restate=False):
+    us = {"Assets": [], "NetIncomeLoss": [], "GrossProfit": [], "StockholdersEquity": []}
+    for k, y in enumerate(years):
+        end, filed = f"{y}-12-31", f"{y + 1}-02-20"
+        a = assets * (1 + growth) ** k
+        for e_, v, fl in ((end, a, filed), (f"{y - 1}-12-31", a / (1 + growth), filed)):
+            us["Assets"].append({"end": e_, "val": v, "form": "10-K", "filed": fl, "accn": f"a{y}"})
+        us["StockholdersEquity"].append({"end": end, "val": equity, "form": "10-K", "filed": filed, "accn": f"a{y}"})
+        us["NetIncomeLoss"].append({"start": f"{y}-01-01", "end": end, "val": ni, "form": "10-K", "filed": filed, "accn": f"a{y}"})
+        us["GrossProfit"].append({"start": f"{y}-01-01", "end": end, "val": gp, "form": "10-K", "filed": filed, "accn": f"a{y}"})
+        if restate:   # a later 10-K restates last year's NI; the original must win
+            us["NetIncomeLoss"].append({"start": f"{y - 1}-01-01", "end": f"{y - 1}-12-31", "val": 999.0,
+                                        "form": "10-K", "filed": filed, "accn": f"a{y}"})
+    dei = [{"end": e, "val": v, "form": fm, "filed": f, "accn": acc} for e, v, fm, f, acc in shares]
+    return {"cik": cik, "facts": {"us-gaap": {k: {"units": {"USD": v}} for k, v in us.items()},
+                                  "dei": {fu.SHARES: {"units": {"shares": dei}}}}}
+
+
+def test_annual_records_point_in_time_and_originals():
+    rows = fu.extract(_cf(7, [2019, 2020, 2021], [], restate=True))
+    rec = fu.annual_records(rows)
+    r20 = rec[rec["end"] == "2020-12-31"].iloc[0]
+    assert r20["ni"] == 10.0                      # not the 999 restatement filed in 2022
+    assert r20["avail"] == pd.Timestamp("2021-02-20")
+    assert r20["assets_prev"] == pytest.approx(100 * 1.1 ** 1 / 1.1)
+    keys = pd.DataFrame({"cik": [7, 7], "date": pd.to_datetime(["2021-02-19", "2021-02-22"])})
+    got = fu.as_of(keys, rec, stale_days=fu.STALE_DAYS, end_col="end")
+    assert list(got["end"]) == [pd.Timestamp("2019-12-31"), pd.Timestamp("2020-12-31")]
+
+
+def test_stale_annual_record_is_dropped():
+    rec = fu.annual_records(fu.extract(_cf(7, [2019], [])))
+    got = fu.as_of(pd.DataFrame({"cik": [7], "date": [pd.Timestamp("2022-01-03")]}), rec,
+                   stale_days=fu.STALE_DAYS, end_col="end")
+    assert np.isnan(got["ni"].iloc[0])
+
+
+def test_shares_sum_classes_and_split_correction():
+    sh = [("2020-01-31", 60, "10-K", "2020-02-20", "s1"), ("2020-01-31", 40, "10-K", "2020-02-20", "s1"),
+          ("2021-01-31", 100, "10-K", "2021-02-20", "s2")]
+    rows = fu.extract(_cf(7, [2019, 2020], sh))
+    srec = fu.share_records(rows)
+    assert sorted(srec["shares"]) == [100, 100]
+    # 2-for-1 split on 2020-09-01: old 100 shares are 200 in today's terms, so issuance = log(100/200)
+    rtab = pd.DataFrame({"symbol": ["X", "X"], "date": pd.to_datetime(["2015-01-01", "2020-09-01"]), "R": [2.0, 1.0]})
+    panel = pd.DataFrame({"symbol": ["X"], "date": [pd.Timestamp("2021-03-31")], "cik": [7], "price": [10.0]})
+    out = score.attach_fundamentals(panel, rows, rtab)
+    assert out["mcap"].iloc[0] == pytest.approx(1000)
+    # the split sits within 6 months of the old share date, so issuance is undefined (pre-registered)
+    assert np.isnan(out["issuance"].iloc[0])
+    rtab2 = pd.DataFrame({"symbol": ["X"], "date": pd.to_datetime(["2015-01-01"]), "R": [1.0]})
+    out2 = score.attach_fundamentals(panel, rows, rtab2)
+    assert out2["issuance"].iloc[0] == pytest.approx(0.0)
+    assert out2["roa"].iloc[0] == pytest.approx(10 / 110)
+
+
+def _scored_panel(n=60, dates=3, seed=1):
+    rng = np.random.default_rng(seed)
+    rows = []
+    for t in pd.date_range("2020-01-31", periods=dates, freq="ME"):
+        for i in range(n):
+            rows.append({"symbol": f"S{i}", "cik": i, "date": t, "price": 20.0, "mcap": 1e9, "dv20": 5e6,
+                         "mom": rng.normal(), "vol": abs(rng.normal()), "gpa": rng.normal(), "roa": rng.normal(),
+                         "ep": rng.normal(), "bm": rng.normal(), "issuance": rng.normal(),
+                         "assetgrowth": rng.normal(), "ret6": rng.normal(0, .2)})
+    return pd.DataFrame(rows)
+
+
+def test_eligible_filters_and_dedupes_dual_class():
+    p = _scored_panel(n=3, dates=1)
+    p.loc[0, "price"] = 4.99
+    p.loc[1, "mcap"] = 2.99e8
+    extra = p.iloc[[2]].assign(symbol="S2B", dv20=1e7)
+    e = score.eligible(pd.concat([p, extra]))
+    assert list(e["symbol"]) == ["S2B"]
+
+
+def test_composite_ranks_and_family_minimum():
+    p = _scored_panel()
+    p.loc[0, ["gpa", "roa", "ep", "bm", "issuance"]] = np.nan     # 3 families left: dropped
+    p.loc[1, ["issuance", "assetgrowth"]] = np.nan                # 4 left: kept
+    s = score.composite(p)
+    assert "S0" not in set(s[s["date"] == s["date"].min()]["symbol"])
+    assert s.groupby("date")["rank"].apply(lambda r: sorted(r) == list(range(1, len(r) + 1))).all()
+    best = s[s["rank"] == 1].iloc[0]
+    assert best["score"] == s[s["date"] == best["date"]]["score"].max()
+
+
+def test_excess_series_and_control():
+    p = score.composite(_scored_panel(n=200, dates=4))
+    p.loc[p["rank"] <= 20, "ret6"] += 0.10
+    ex = excess_series(p, "ret6", 20, 0.002)
+    assert (ex["excess"] > 0.05).all()
+    ctrl = excess_series(p, "ret6", 20, 0.002, rng_seed=1)
+    assert ctrl["excess"].abs().mean() < 0.08
+
+
+def test_nw_and_bootstrap():
+    x = np.full(50, 0.01) + np.random.default_rng(0).normal(0, 0.001, 50)
+    m, se, t = stats.nw_tstat(x, 5)
+    assert m == pytest.approx(0.01, abs=1e-3) and t > 10
+    lo, hi = stats.block_bootstrap_ci(x, 6, 500, 1)
+    assert lo < m < hi
+
+
+def test_norm_symbol_and_cik_map():
+    assert sec_data.norm_symbol("NYSE: BRK/B") == "BRK.B"
+    assert sec_data.norm_symbol("nasdaq:opi") == "OPI"
+    assert sec_data.norm_symbol("NONE ") == "NONE" and sec_data.norm_symbol("12AB") is None
+    tmap = pd.DataFrame({"cik": [1, 2], "symbol": ["ABC", "ABC"],
+                         "filed": pd.to_datetime(["2015-01-01", "2020-01-01"])})
+    keys = pd.DataFrame({"symbol": ["ABC", "ABC", "ABC"], "date": pd.to_datetime(["2016-01-01", "2021-01-01", "2014-01-01"])})
+    got = sec_data.map_ciks(keys, tmap)
+    assert got[0] == 1 and got[1] == 2 and np.isnan(got[2])
+
+
+def test_parse_dera_dates():
+    tsv = b"ACCESSION_NUMBER\tFILING_DATE\tISSUERCIK\tISSUERTRADINGSYMBOL\nx\t31-MAR-2016\t320193\tAAPL\n"
+    d = sec_data.parse_dera_submission(tsv)
+    assert d.iloc[0].tolist() == [320193, "AAPL", pd.Timestamp("2016-03-31")]
+
+
+def test_batch_process_with_fake_fetch():
+    a, r, s = _bars(n=500)
+    fake = lambda syms, start, end: {"all": {"X": a}, "raw": {"X": r}, "split": {"X": s}}
+    dates = month_ends(a.index, a.index[260], a.index[-1])
+    ends = prices.horizon_ends(a.index, dates)
+    f, rt, n = bars_batch.process(["X", "MISSING"], "x", "y", dates, ends, fetch=fake)
+    assert n == 1 and len(f) == len(dates) and f["ret6"].notna().sum() >= 1 and len(rt) == 1
