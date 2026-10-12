@@ -9,4 +9,4 @@ An idea is counted when its pre-registration is committed.
 
 | ID | Track | Registered | Idea | Source | Pre-registration | Outcome |
 |---|---|---|---|---|---|---|
-| M4 | main | 2026-10-12 | Long-term ranking: equal-weight composite of momentum, low volatility, quality, value, net issuance and asset growth; top 20 vs universe over 6 months (feeds the picks dashboard) | Amit's dashboard request; published factor literature | [prereg/M4.md](prereg/M4.md) | |
+| M4 | main | 2026-10-12 | Long-term ranking: equal-weight composite of momentum, low volatility, quality, value, net issuance and asset growth; top 20 vs universe over 6 months (feeds the picks dashboard) | Amit's dashboard request; published factor literature | [prereg/M4.md](prereg/M4.md) | 2026-10-12 screen FAILED: +1.2% per 6m vs universe after costs, t 0.94, CI -1.4%..+3.8% (99 dates, 2017-01..2025-03). Not paper traded; dashboard labelled "no measured edge". [Report](results/M4/REPORT.md) |

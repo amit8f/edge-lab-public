@@ -85,7 +85,7 @@ th:first-child, td:first-child { text-align: left }
   </section>
   <section style="display:grid;gap:10px">
     <h2>Forward record</h2>
-    <p class="fine" style="margin:0">Each month-end's 20 picks are logged in a hash-chained file before their returns exist, next to 20 random stocks from the same universe. This table is the real test; the backtest above can only rule the method out.</p>
+    <p class="fine" style="margin:0" id="record-note"></p>
     <div class="table-wrap" id="record"></div>
   </section>
   <p class="fine" id="foot"></p>
@@ -164,6 +164,9 @@ function pick(p) {
 
 function record() {
   const el = document.getElementById("record"), rows = D.track_record || [];
+  const passed = D.screen && D.screen.primary && D.screen.primary.passes;
+  document.getElementById("record-note").textContent = "Each month-end's 20 picks are logged in a hash-chained file before their returns exist, next to 20 random stocks from the same universe. "
+    + (passed ? "This is the pre-registered forward test." : "The method failed its backtest, so this record is kept for transparency, not as a test that could rescue it.");
   if (!rows.length) { el.innerHTML = `<p class="fine">Nothing logged yet. The first set of picks is logged on the last trading day of the month.</p>`; return; }
   el.innerHTML = `<table><thead><tr><th>Picked on</th><th>Days held</th><th>Picks</th><th>Random 20</th><th>All eligible</th><th>SPY</th><th>Picks minus all</th></tr></thead><tbody>${rows.map(r => `<tr><td class="num">${r.date}</td><td class="num">${r.days}</td><td class="num">${pct(r.picks, 1)}</td><td class="num">${pct(r.control, 1)}</td><td class="num">${pct(r.universe, 1)}</td><td class="num">${pct(r.spy, 1)}</td><td class="num">${r.picks != null && r.universe != null ? pct(r.picks - r.universe, 1) : "–"}</td></tr>`).join("")}</tbody></table>`;
 }
