@@ -77,7 +77,9 @@ def map_ciks(keys, tmap, max_age_days=730):
     symbol, within max_age_days. Unmapped rows get NaN."""
     k = keys.reset_index(drop=True).copy()
     k["_row"] = range(len(k))
-    t = tmap.rename(columns={"filed": "date_f"}).sort_values("date_f")
+    k["date"] = k["date"].astype("datetime64[ns]")
+    t = tmap.rename(columns={"filed": "date_f"})
+    t = t.assign(date_f=t["date_f"].astype("datetime64[ns]")).sort_values("date_f")
     m = pd.merge_asof(k.sort_values("date"), t, left_on="date", right_on="date_f", by="symbol",
                       direction="backward", tolerance=pd.Timedelta(days=max_age_days))
     return m.sort_values("_row")["cik"].to_numpy()

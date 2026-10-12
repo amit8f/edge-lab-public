@@ -18,10 +18,11 @@ FAMILY_NAMES = {"f_mom": "momentum", "f_lowvol": "low volatility", "f_quality": 
 def r_at(rtab, symbols, dates):
     """R (raw / split-adjusted close) for each (symbol, date): the step function in rtab, back-filled
     before a symbol's first bar."""
-    q = pd.DataFrame({"symbol": list(symbols), "d": pd.to_datetime(list(dates))})
+    q = pd.DataFrame({"symbol": list(symbols), "d": pd.to_datetime(list(dates)).astype("datetime64[ns]")})
     q["_row"] = np.arange(len(q))
     ok = q.dropna(subset=["d"]).sort_values("d")
-    rt = rtab.rename(columns={"date": "d"}).sort_values("d")
+    rt = rtab.rename(columns={"date": "d"})
+    rt = rt.assign(d=rt["d"].astype("datetime64[ns]")).sort_values("d")
     m = pd.merge_asof(ok, rt, on="d", by="symbol", direction="backward")
     first = rtab.sort_values("date").groupby("symbol")["R"].first()
     m["R"] = m["R"].fillna(m["symbol"].map(first))

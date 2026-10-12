@@ -247,3 +247,33 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert led.has("M4_picks", f"{t:%Y-%m-%d}")
     again = live.run(tmp_path / "state", tmp_path / "cache", now=now)      # second run the same night: no new entry
     assert again["ledger_entries"] == 1 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
+
+
+def test_screen_run_end_to_end_with_fakes(tmp_path, monkeypatch):
+    from tracks.main.longterm import screen
+    syms = [f"S{i}" for i in range(60)]
+    bars = {s: _bars(n=1100, start="2021-01-04", seed=i, drift=0.0001 * (i % 9)) for i, s in enumerate(syms + ["SPY"])}
+    cal = bars["SPY"][0].index
+    fake = lambda batch, start, end: {k: {s: bars[s][j] for s in batch if s in bars}
+                                      for j, k in enumerate(("all", "raw", "split"))}
+    monkeypatch.setattr(screen, "FIRST_SIGNAL", cal[260])
+    monkeypatch.setattr(screen, "LAST_SIGNAL", cal[700])
+    monkeypatch.setattr(screen, "LABEL_END", cal[-1])
+    monkeypatch.setattr(screen, "fetch_daily_bars", lambda *a, **k: {})
+    monkeypatch.setattr(screen, "to_frames", lambda raw: {"SPY": bars["SPY"][0]})
+    monkeypatch.setattr(screen, "alpaca_headers", lambda: {})
+    monkeypatch.setattr(screen.bars_batch, "assets_all", lambda: pd.DataFrame(
+        {"base_symbol": syms, "symbol": syms, "name": syms, "status": "active", "excl_reason": None}))
+    monkeypatch.setattr(screen.sec_data, "dera_ticker_map", lambda *a: pd.DataFrame(
+        {"cik": range(1, 61), "symbol": syms, "filed": pd.Timestamp("2021-06-01")}))
+    real = screen.bars_batch.run_batches
+    monkeypatch.setattr(screen.bars_batch, "run_batches", lambda *a: real(*a, fetch=fake))
+    monkeypatch.setattr(screen.sec_data, "download_companyfacts", lambda p: p)
+    years = list(range(2020, 2025))
+    sh = lambda c: [(f"{y}-07-31", 2e8 * (1 + 0.002 * c) ** k, "10-Q", f"{y}-08-05", f"q{c}{y}") for k, y in enumerate(years)]
+    facts = pd.concat([fu.extract(_cf(c, years, sh(c), ni=5 + c, growth=0.01 * c)) for c in range(1, 61)])
+    monkeypatch.setattr(screen.sec_data, "facts_for", lambda *a, **k: facts)
+    res = screen.run(tmp_path / "cache", tmp_path / "out")
+    assert res["primary"]["n_dates"] > 10 and "passes" in res["primary"]
+    assert (tmp_path / "out" / "M4_calibration.json").exists()
+    assert res["funnel"]["with_4_families"] > 0

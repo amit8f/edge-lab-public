@@ -44,7 +44,7 @@ jobs:
           [[ -n "$SEC_USER_AGENT" ]] || { echo "::error::secret SEC_USER_AGENT is missing (your name and email, required by SEC)"; exit 1; }
 
       - name: Restore the data cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: cache/m4
           key: m4-screen-v1-${{ github.run_id }}
@@ -56,6 +56,13 @@ jobs:
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: .venv/bin/python -m tracks.main.longterm.screen --cache cache/m4 --out research/results/M4
+
+      - name: Save the data cache (also after a failure, so a rerun skips the downloads)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/m4
+          key: m4-screen-v1-${{ github.run_id }}
 
       - name: Commit the results to this branch
         env:

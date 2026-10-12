@@ -182,7 +182,7 @@ def run(cache, out):
     exp["vs_spy"] = summarize(vs_spy, 5)
     exp["per_year"] = {str(y): float(g["excess"].mean()) for y, g in ex.groupby(ex["date"].dt.year)}
     s6d = s6[s6["ret6"].notna()].copy()
-    s6d["decile"] = s6d.groupby("date")["score"].transform(lambda x: pd.qcut(x.rank(method="first"), 10, labels=False) + 1)
+    s6d["decile"] = np.ceil(s6d.groupby("date")["score"].rank(pct=True, method="first") * 10).astype(int)
     s6d["uni"] = s6d.groupby("date")["ret6"].transform("mean")
     exp["deciles_mean_excess"] = {int(k): float(v) for k, v in
                                   (s6d["ret6"] - s6d["uni"]).groupby(s6d["decile"]).mean().items()}

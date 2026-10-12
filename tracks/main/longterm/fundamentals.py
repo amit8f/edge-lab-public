@@ -96,6 +96,8 @@ def as_of(keys, table, on="date", stale_days=None, end_col=None):
     k["cik"] = k["cik"].astype("int64")
     t = table.copy()
     t["cik"] = t["cik"].astype("int64")
+    k[on] = k[on].astype("datetime64[ns]")
+    t["avail"] = t["avail"].astype("datetime64[ns]")
     t = t.dropna(subset=["avail"]).sort_values("avail")
     m = pd.merge_asof(k.dropna(subset=[on]).sort_values(on), t, left_on=on, right_on="avail", by="cik",
                       direction="backward")
