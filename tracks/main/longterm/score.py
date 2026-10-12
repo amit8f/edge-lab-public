@@ -41,8 +41,8 @@ def attach_fundamentals(panel, facts, rtab):
     r_t = r_at(rtab, p["symbol"], p["date"])
     r_now = r_at(rtab, p["symbol"], s_now["sh_end"])
     r_old = r_at(rtab, p["symbol"], s_old["sh_end"])
-    shares_t = s_now["shares"].to_numpy() * r_now / r_t
-    shares_old_t = s_old["shares"].to_numpy() * r_old / r_t
+    shares_t = s_now["shares"].to_numpy(dtype=float) * r_now / r_t
+    shares_old_t = s_old["shares"].to_numpy(dtype=float) * r_old / r_t
     out = p.copy()
     out["mcap"] = out["price"].to_numpy() * shares_t
     # pre-registered: net issuance is undefined when a split happened within 6 months of either share date

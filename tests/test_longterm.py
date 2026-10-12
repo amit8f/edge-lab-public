@@ -277,3 +277,12 @@ def test_screen_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert res["primary"]["n_dates"] > 10 and "passes" in res["primary"]
     assert (tmp_path / "out" / "M4_calibration.json").exists()
     assert res["funnel"]["with_4_families"] > 0
+
+
+def test_zero_share_count_does_not_crash():
+    sh = [("2020-01-31", 0, "10-K", "2020-02-20", "s1"), ("2021-01-31", 100, "10-K", "2021-02-20", "s2")]
+    rows = fu.extract(_cf(7, [2019, 2020], sh)).astype({"val": object})
+    rtab = pd.DataFrame({"symbol": ["X"], "date": pd.to_datetime(["2015-01-01"]), "R": [1.0]})
+    panel = pd.DataFrame({"symbol": ["X"], "date": [pd.Timestamp("2021-03-31")], "cik": [7], "price": [10.0]})
+    out = score.attach_fundamentals(panel, rows, rtab)
+    assert np.isnan(out["issuance"].iloc[0]) and out["mcap"].iloc[0] == pytest.approx(1000)

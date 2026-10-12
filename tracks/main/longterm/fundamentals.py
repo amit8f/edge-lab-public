@@ -39,6 +39,7 @@ def extract(cf):
     df = pd.DataFrame(rows, columns=COLS)
     for c in ("start", "end", "filed"):
         df[c] = pd.to_datetime(df[c], errors="coerce")
+    df["val"] = pd.to_numeric(df["val"], errors="coerce").astype(float)
     return df
 
 
@@ -84,6 +85,7 @@ def share_records(rows):
     r = rows[(rows["concept"] == SHARES) & rows["form"].isin(["10-K", "10-Q"])]
     if r.empty:
         return pd.DataFrame(columns=["cik", "sh_end", "avail", "shares"])
+    r = r.assign(val=pd.to_numeric(r["val"], errors="coerce").astype(float))
     g = r.groupby(["cik", "accn"]).agg(shares=("val", "sum"), sh_end=("end", "max"), avail=("filed", "min"))
     return g.reset_index()[["cik", "sh_end", "avail", "shares"]]
 
