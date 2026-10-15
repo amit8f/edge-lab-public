@@ -1,0 +1,90 @@
+# Validation studies and screens on demand (Actions tab, "Run workflow", or the API): runs
+# `python -m <module>` (validation.v*_* or tracks.*.*.screen_*) with the shared data cache. Results go to
+# research/results/<id>/ and are committed back to the branch that ran it.
+name: study
+
+on:
+  workflow_dispatch:
+    inputs:
+      study:
+        description: "Module to run, e.g. validation.v1_known_answers or tracks.main.shortterm.screen_m12"
+        required: true
+      budget:
+        description: "Minutes the study may spend downloading before it stops and resumes next run"
+        required: false
+        default: "290"
+
+permissions: {}
+
+jobs:
+  study:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Check secrets are present
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          [[ -n "$ALPACA_API_KEY_ID" ]] || { echo "::error::secret ALPACA_API_KEY_ID is missing"; exit 1; }
+          [[ -n "$SEC_USER_AGENT" ]] || { echo "::error::secret SEC_USER_AGENT is missing (your name and email, required by SEC)"; exit 1; }
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/m4
+          key: m4-screen-v1-${{ github.run_id }}
+          restore-keys: m4-screen-v1-
+
+      - name: Run the study
+        env:
+          STUDY: ${{ inputs.study }}
+          BUDGET: ${{ inputs.budget }}
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          [[ "$STUDY" =~ ^(validation\.v[0-9]+_[a-z0-9_]+|tracks\.[a-z]+\.[a-z]+\.screen_[a-z0-9]+)$ && -f "${STUDY//.//}.py" ]] || { echo "::error::unknown module"; exit 1; }
+          [[ "$BUDGET" =~ ^[0-9]+$ ]] || { echo "::error::budget must be whole minutes"; exit 1; }
+          .venv/bin/python -m "$STUDY" --cache cache/m4 --budget-min "$BUDGET"
+
+      - name: Save the data cache (also after a failure, so a rerun skips the downloads)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/m4
+          key: m4-screen-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STUDY: ${{ inputs.study }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results
+          if git diff --cached --quiet; then echo "no results yet (data still being downloaded)"; exit 0; fi
+          git commit -q -m "Study ${STUDY} results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"

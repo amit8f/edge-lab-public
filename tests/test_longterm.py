@@ -287,6 +287,8 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert led.has("M4_picks", f"{t:%Y-%m-%d}") and led.has("M8_picks", f"{t:%Y-%m-%d}")
     assert "Under live test" in html and "High risk, experimental" in html
     assert led.has("M10_watch", f"{t:%Y-%m-%d}")
+    rec8 = json.loads((tmp_path / "state" / "longterm" / led.entry("M8_picks", f"{t:%Y-%m-%d}")["file"]).read_text())
+    assert len(rec8["universe_scores"]) == len(rec8["universe"]) and rec8["universe_scores"][0][0] == "S7" and rec8["universe_scores"][0][2:] == [2, 0]
     again = live.run(tmp_path / "state", tmp_path / "cache", now=now)      # second run the same night: no new entry
     assert again["ledger_entries"] == 3 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
     assert again["live_tests"]["M8"]["record"][0]["date"] == f"{t:%Y-%m-%d}" and len(windows) == 2
