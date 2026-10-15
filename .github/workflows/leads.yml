@@ -1,5 +1,5 @@
-# Leading sources, forward only (core/leads.py): clinicaltrials.gov updates of industry-sponsored studies,
-# saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
+# Leading sources, forward only: clinicaltrials.gov updates of industry-sponsored studies (core/leads.py)
+# and SEC filings that often precede headlines (core/leads_sec.py), saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
 # servers, so they are not collected here.) Runs once a night; the cursor fills any day a skipped run
 # missed.
 name: leads
@@ -45,8 +45,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: bash deploy/state.sh restore
 
-      - name: Collect
+      - name: Collect trials
         run: .venv/bin/python -m core.leads --state state
+
+      - name: Collect SEC filings
+        if: always()
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: .venv/bin/python -m core.leads_sec --state state
 
       - name: Commit the state back
         if: always()
