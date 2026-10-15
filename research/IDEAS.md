@@ -1,10 +1,14 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 8** (main 7, penny 1, news 0). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 23.
+**Phase 2 count: 13** (main 9, penny 3, news 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 28.
 
-Planned, not registered (see `docs/PLAN_V2.md`): M1 filing changes, M2 options direction on big movers,
-M3 residual momentum, P1 penny event shorts, P2 penny guidance raises, N1 two-LLM headline labels.
+Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
+M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC). The counts written inside M1, N1, P1, P2 and
+M3 were computed without M10 and P3; their true running counts are 8 to 12. This header is the
+reference count.
+
+Planned, not registered (see `docs/PLAN_V2.md`): M2 options direction on big movers.
 An idea is counted when its pre-registration is committed.
 
 | ID | Track | Registered | Idea | Source | Pre-registration | Outcome |
@@ -16,4 +20,9 @@ An idea is counted when its pre-registration is committed.
 | M8 | main | 2026-10-12 | Forward paper test of M6's analyst-action ranking: top 20 logged each month-end from 2026-10-30 | Amit chose a live test after M6 narrowly failed (post-hoc, disclosed) | [prereg/M8.md](prereg/M8.md) | 2026-10-15 amended before any log (Amit's choice): weekly picks held 21 trading days, first read at 26 weeks, final at 52. |
 | M10 | main | 2026-10-15 | Short-term boom model: XGBoost classifier for the top 2% of 21-day returns on price, volume, news and analyst features; weekly top 20 vs universe, yearly walk-forward 2019-2025, pass at t >= 3 | Amit's request (short-term booms, XGBoost, multiple models) | [prereg/M10.md](prereg/M10.md) | 2026-10-15 screen FAILED: +0.55% per 21 days vs universe after costs, t 0.51, CI -1.6%..+2.6% (348 weeks, 2019-2025); median week -1.2%. The model finds big movers (13% of picks in the top 2%, 6.5x chance) in both directions. Not paper traded; shown on the dashboard as high-risk, failed. [Report](results/M10/REPORT.md) |
 | P3 | penny | 2026-10-15 | Penny twin of M10 ($1-5, $1M median dollar volume), own models, 2% round trip | Amit's request | [prereg/P3.md](prereg/P3.md) | 2026-10-15 screen FAILED: -2.19% per 21 days vs universe after 2% costs, t -3.99 (348 weeks); slightly worse than the universe even before costs. QA: WOLF 2025-08 reorganisation shows +2,264% (not a pick; negligible). [Report](results/P3/REPORT.md) |
+| M1 | main | 2026-10-15 | Filing changes ("Lazy Prices"): long the decile of 10-K/10-Q filings least changed from a year earlier, short the most changed; 1 month | Plan v2; Cohen, Malloy & Nguyen (2020) | [prereg/M1.md](prereg/M1.md) | |
+| N1 | news | 2026-10-15 | Two LLMs (Gemini Flash, Llama on Groq) both label a headline NEG: short from the next open for 3 days, market-adjusted; screen only on dates after both models' cutoffs | Plan v2; Lopez-Lira & Tang; Gao, Jiang & Yan (memorization) | [prereg/N1.md](prereg/N1.md) | |
+| P1 | penny | 2026-10-15 | Forward paper shorts after offerings, delisting notices, reverse splits and late filings (phase 1 rules), easy-to-borrow only; 20 days, stops, 2% costs, 20% borrow | Plan v2; phase 1 descriptive study (in-sample, disclosed), I-12, I-14 | [prereg/P1.md](prereg/P1.md) | |
+| P2 | penny | 2026-10-15 | Forward paper longs after guidance raises (phase 1 rule) minus offerings, pumps and reverse splits; 5 days | Plan v2; phase 1 I-13 (in-sample, disclosed) | [prereg/P2.md](prereg/P2.md) | |
+| M3 | main | 2026-10-15 | Residual momentum (Fama-French 3-factor residuals, months t-11..t-1, scaled): top 25 vs universe, 1 month | Plan v2; Blitz, Huij & Martens (2011) | [prereg/M3.md](prereg/M3.md) | |
 | M11 | main | 2026-10-15 | Calculated-risk boom picks: M10's top 100 by boom probability, keep the 20 best on quality, value and buybacks; weekly, 21-day hold, t >= 3 | Amit's request (underpriced and could explode); post-hoc to M10's volatility finding (disclosed) | [prereg/M11.md](prereg/M11.md) | |

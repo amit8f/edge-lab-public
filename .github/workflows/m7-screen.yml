@@ -1,12 +1,9 @@
-# M7 historical screen (research/prereg/M7.md); reuses the M4 data cache. Runs on demand, or when this file changes on a branch.
+# M7 historical screen (research/prereg/M7.md); reuses the M4 data cache. Runs on demand only (Actions tab, "Run workflow").
 # Writes research/results/M7/ and commits it back to the branch that ran it.
 name: m7-screen
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["claude/**"]
-    paths: [".github/workflows/m7-screen.yml"]
 
 permissions: {}
 

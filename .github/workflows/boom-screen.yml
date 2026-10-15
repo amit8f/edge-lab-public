@@ -1,12 +1,9 @@
-# M10 + P3 historical screens (research/prereg/M10.md, P3.md): weekly short-term boom models. Builds a weekly bar panel in cached batches (resumable: rerun until it reports results), reusing the M4 cache for headlines and SEC data. Runs on demand, or when this file changes on a branch.
+# M10 + P3 historical screens (research/prereg/M10.md, P3.md): weekly short-term boom models. Builds a weekly bar panel in cached batches (resumable: rerun until it reports results), reusing the M4 cache for headlines and SEC data. Runs on demand only (Actions tab, "Run workflow").
 # Writes research/results/M10/ and research/results/P3/ and commits them back to the branch that ran it.
 name: boom-screen
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["claude/**"]
-    paths: [".github/workflows/boom-screen.yml"]
 
 permissions: {}
 

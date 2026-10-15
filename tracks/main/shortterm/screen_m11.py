@@ -17,7 +17,7 @@ from tracks.main.longterm.screen import SEED, excess_series, summarize
 from tracks.main.shortterm import evaluate, panel as pn, screen_m10
 
 TOP_N, POOL = 20, 100
-COUNTS = {"phase2_count": 8, "main_count": 7, "phase1_plus_phase2": 23}
+COUNTS = {"phase2_count": 13, "main_count": 9, "phase1_plus_phase2": 28}
 
 
 def fundamentals_score(uni):

@@ -1,4 +1,5 @@
-# News track step 1: log Benzinga headlines from Alpaca every 30 minutes (tracks/news/collect.py).
+# News track step 1: log Benzinga headlines from Alpaca three times a weekday (tracks/news/collect.py).
+# The cursor makes each run fetch everything since the last one, so fewer runs lose no headlines.
 # State (raw headlines + cursor) lives on the orphan branch `state`; each run restores it, appends, and
 # commits it back. Scheduled runs start only after the repository variable NEWS_ENABLED is set to true
 # (after the secrets ALPACA_API_KEY_ID and ALPACA_API_SECRET_KEY are added).
@@ -6,8 +7,9 @@ name: news
 
 on:
   schedule:
-    - cron: "*/30 11-23 * * 1-5"   # 07:00-19:30 ET in EDT (06:00-18:30 in EST), weekdays
-    - cron: "0 3 * * 2-6"          # one overnight run to catch late headlines
+    - cron: "0 13 * * 1-5"   # 09:00 ET in EDT, before the open
+    - cron: "0 21 * * 1-5"   # 17:00 ET, after the close
+    - cron: "0 3 * * 2-6"    # 23:00 ET, overnight
   workflow_dispatch:
 
 permissions: {}
