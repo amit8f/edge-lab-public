@@ -140,7 +140,9 @@ def summary(ex, lags):
             "hit_rate": float((ex["excess"] > 0).mean())}
 
 
-def run(cache, out):
+def prepare(cache):
+    """Shared by M3 and M1 (same 116 dates): month-end rows of the eligible universe with scores and
+    forward returns, plus the factor file, SPY, the horizon ends and the funnel."""
     cache.mkdir(parents=True, exist_ok=True)
     raw = requests.get(FF_URL, timeout=120).content
     ff = parse_ff(raw)
@@ -193,7 +195,14 @@ def run(cache, out):
     funnel.update({"eligible_stock_months": int(len(uni)), "with_score": int(uni["score"].notna().sum()),
                    "dates": int(uni["date"].nunique())})
     print("FUNNEL", json.dumps(funnel))
+    return {"uni": uni, "ff": ff, "ff_raw": raw, "ff_ok": ff_ok, "spy": spy, "ends1": ends1, "ends3": ends3,
+            "funnel": funnel}
 
+
+def run(cache, out):
+    p = prepare(cache)
+    uni, ff, raw, ff_ok, ends1, ends3, funnel = (p[k] for k in ("uni", "ff", "ff_raw", "ff_ok", "ends1", "ends3",
+                                                                  "funnel"))
     s1 = uni[uni["date"].isin(ends1.keys())]
     prim = summary(excess(s1, "ret1", "score", TOP_N), 3)
     prim["passes"] = bool(prim["mean"] > 0 and prim["t_hac"] >= 2.0 and prim["ci95"][0] > 0)
