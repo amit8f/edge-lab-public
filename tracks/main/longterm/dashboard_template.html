@@ -84,6 +84,7 @@ th:first-child, td:first-child { text-align: left }
       <span class="fine" id="refresh-msg" role="status"></span>
     </div>
   </header>
+  <section class="verdict" id="plan" hidden style="border-left-color:var(--accent)"></section>
   <section class="verdict" id="scorecard"></section>
   <details class="ref">
     <summary><h2 style="display:inline">Six-factor ranking (failed its test; for reference)</h2></summary>
@@ -149,6 +150,18 @@ function verdict() {
     <p class="fine">These numbers describe how stocks ranked this way did from 2016 to 2025, not a promise for these ones. Ideas tested in this project so far: ${D.screen.phase1_plus_phase2 ?? "–"} (phase 1 and 2), so expect some winners by luck.</p>`;
 }
 
+function plan() {
+  const P = D.plan, el = document.getElementById("plan");
+  if (!P) return;
+  const tbl = (head, rows) => `<div class="table-wrap"><table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${esc(String(c))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const h3 = t => `<h3 style="margin:6px 0 0;font-family:var(--display)">${esc(t)}</h3>`;
+  el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p>`
+    + P.owners.map(o => h3(o.name + ": sell") + tbl(["Ticker", "Shares", "Action", "Why", "Who says so"], o.sell) + `<p class="fine">${esc(o.keep)}</p>`).join("")
+    + h3("Buy (each of you)") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "From"],
+        P.buy.map(b => [b[0], b[1], b[2], b[3].toFixed(2), Math.round(b[2] * b[3]), b[4]]))
+    + `<p class="fine">${esc(P.buy_note)}</p>`;
+  el.hidden = false;
+}
 function scorecard() {
   const S = D.scorecard || {}, el = document.getElementById("scorecard"), rows = S.ideas || [];
   el.classList.toggle("pass", !!S.any_survives);
@@ -254,6 +267,7 @@ const REFRESH_TRIGGER = "trig_01EWG9yrrB3KNMcssLPzUsgm";
 
 if (D) {
   document.getElementById("asof").textContent = `Prices as of the close on ${D.as_of}. ${D.universe_size.toLocaleString()} stocks ranked. Refreshed nightly; built ${D.generated_utc.replace("T", " ").slice(0, 16)} UTC.`;
+  plan();
   scorecard();
   verdict();
   document.getElementById("list").innerHTML = D.picks.map(pick).join("");

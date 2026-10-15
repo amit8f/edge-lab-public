@@ -26,6 +26,12 @@ ROOT = Path(__file__).resolve().parents[3]
 CALIBRATION = ROOT / "research" / "results" / "M4" / "M4_calibration.json"
 SCREEN = ROOT / "research" / "results" / "M4" / "M4_screen.json"
 RESULTS_DIR = ROOT / "research" / "results"
+PLAN_FILE = ROOT / "research" / "plans" / "latest.json"
+
+
+def _plan():
+    """The family buy/sell plan (opinions, not a tested result), or None."""
+    return json.loads(PLAN_FILE.read_text()) if PLAN_FILE.exists() else None
 SEED = 20261012
 LOOKBACK_DAYS = 420
 TRACK_DAYS = 252
@@ -267,7 +273,8 @@ def run(state, cache, now=None, log_days_only=False):
             "screen": None if screen is None else {k: screen.get(k) for k in ("primary", "control", "funnel", "phase2_count", "phase1_plus_phase2")},
             "calibration": cal, "track_record": track_record(ledger, closes, t), "live_tests": live_tests, "boom": boom,
             "ledger_ok": not problems, "ledger_entries": len(ledger.entries()),
-            "scorecard": scorecard.build(RESULTS_DIR, state)}
+            "scorecard": scorecard.build(RESULTS_DIR, state),
+            "plan": _plan()}
     (root / "latest.json").write_text(json.dumps(data, indent=1, default=str))
     (root / "dashboard.html").write_text(render(data), encoding="utf-8")
     print(f"wrote dashboard: {len(picks)} picks, ledger ok: {not problems}")
