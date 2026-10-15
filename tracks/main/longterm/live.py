@@ -16,7 +16,7 @@ import requests
 
 from core import alpaca
 from core.ledger import Ledger
-from tracks.main.longterm import analyst, bars_batch, explain, news_history, sec_data
+from tracks.main.longterm import analyst, bars_batch, explain, news_history, scorecard, sec_data
 from tracks.main.longterm.prices import align
 from tracks.main.longterm.render import render
 from tracks.main.longterm.score import FAMILIES, FAMILY_NAMES, TOP_N, attach_fundamentals, composite, eligible
@@ -25,6 +25,7 @@ from tracks.main.shortterm import live_boom
 ROOT = Path(__file__).resolve().parents[3]
 CALIBRATION = ROOT / "research" / "results" / "M4" / "M4_calibration.json"
 SCREEN = ROOT / "research" / "results" / "M4" / "M4_screen.json"
+RESULTS_DIR = ROOT / "research" / "results"
 SEED = 20261012
 LOOKBACK_DAYS = 420
 TRACK_DAYS = 252
@@ -244,7 +245,10 @@ def run(state, cache, now=None, log_days_only=False):
                 "picks": [{"rank": int(r["rank"]), "symbol": r["symbol"], "score": float(r["score"]),
                            "up": int(r["an_up"]), "down": int(r["an_down"]), "price": float(r["price"])}
                           for _, r in top8.iterrows()],
-                "control": ctrl8, "control_seed": SEED + t.toordinal(), "universe": m8["symbol"].tolist()})
+                "control": ctrl8, "control_seed": SEED + t.toordinal(), "universe": m8["symbol"].tolist(),
+                # every universe stock's inputs, so a whole-cross-section statistic can be pre-registered later
+                "universe_scores": [[r["symbol"], float(r["score"]), int(r["an_up"]), int(r["an_down"])]
+                                    for _, r in m8.iterrows()]})
             print(f"logged M8 picks for {t:%Y-%m-%d} ({n_ev} analyst actions)")
     problems = ledger.verify()
     m8_latest = None
@@ -262,7 +266,8 @@ def run(state, cache, now=None, log_days_only=False):
             "universe_size": int(len(scored)), "picks": picks,
             "screen": None if screen is None else {k: screen.get(k) for k in ("primary", "control", "funnel", "phase2_count", "phase1_plus_phase2")},
             "calibration": cal, "track_record": track_record(ledger, closes, t), "live_tests": live_tests, "boom": boom,
-            "ledger_ok": not problems, "ledger_entries": len(ledger.entries())}
+            "ledger_ok": not problems, "ledger_entries": len(ledger.entries()),
+            "scorecard": scorecard.build(RESULTS_DIR, state)}
     (root / "latest.json").write_text(json.dumps(data, indent=1, default=str))
     (root / "dashboard.html").write_text(render(data), encoding="utf-8")
     print(f"wrote dashboard: {len(picks)} picks, ledger ok: {not problems}")
