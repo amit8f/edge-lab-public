@@ -244,7 +244,10 @@ def run(state, cache, now=None, log_days_only=False):
                 "picks": [{"rank": int(r["rank"]), "symbol": r["symbol"], "score": float(r["score"]),
                            "up": int(r["an_up"]), "down": int(r["an_down"]), "price": float(r["price"])}
                           for _, r in top8.iterrows()],
-                "control": ctrl8, "control_seed": SEED + t.toordinal(), "universe": m8["symbol"].tolist()})
+                "control": ctrl8, "control_seed": SEED + t.toordinal(), "universe": m8["symbol"].tolist(),
+                # every universe stock's inputs, so a whole-cross-section statistic can be pre-registered later
+                "universe_scores": [[r["symbol"], float(r["score"]), int(r["an_up"]), int(r["an_down"])]
+                                    for _, r in m8.iterrows()]})
             print(f"logged M8 picks for {t:%Y-%m-%d} ({n_ev} analyst actions)")
     problems = ledger.verify()
     m8_latest = None

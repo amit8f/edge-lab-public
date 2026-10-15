@@ -53,6 +53,24 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: .venv/bin/python -m tracks.main.longterm.live --state state --cache cache/m4live ${{ github.event_name == 'schedule' && '--log-days-only' || '' }}
 
+      - name: Timestamp the ledger head outside GitHub (OpenTimestamps; never blocks the run)
+        if: always()
+        continue-on-error: true
+        run: |
+          led=state/longterm/ledger.jsonl
+          [[ -s "$led" ]] || exit 0
+          mkdir -p state/ots
+          uv pip install --python .venv/bin/python opentimestamps-client==0.7.2
+          head_line=$(tail -n 1 "$led")
+          last=$(ls state/ots/head-*.txt 2>/dev/null | sort | tail -n 1 || true)
+          if [[ -z "$last" || "$(cat "$last")" != "$head_line" ]]; then
+            f="state/ots/head-$(date -u +%Y%m%dT%H%M%SZ).txt"
+            printf '%s' "$head_line" > "$f"
+            .venv/bin/ots stamp "$f"
+          fi
+          # turn pending proofs into Bitcoin-anchored ones once they confirm (a few hours later)
+          for p in state/ots/*.ots; do .venv/bin/ots upgrade "$p" || true; done
+
       - name: Commit the state back
         if: always()
         env:

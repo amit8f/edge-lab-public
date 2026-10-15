@@ -26,3 +26,13 @@ An idea is counted when its pre-registration is committed.
 | P2 | penny | 2026-10-15 | Forward paper longs after guidance raises (phase 1 rule) minus offerings, pumps and reverse splits; 5 days | Plan v2; phase 1 I-13 (in-sample, disclosed) | [prereg/P2.md](prereg/P2.md) | |
 | M3 | main | 2026-10-15 | Residual momentum (Fama-French 3-factor residuals, months t-11..t-1, scaled): top 25 vs universe, 1 month | Plan v2; Blitz, Huij & Martens (2011) | [prereg/M3.md](prereg/M3.md) | |
 | M11 | main | 2026-10-15 | Calculated-risk boom picks: M10's top 100 by boom probability, keep the 20 best on quality, value and buybacks; weekly, 21-day hold, t >= 3 | Amit's request (underpriced and could explode); post-hoc to M10's volatility finding (disclosed) | [prereg/M11.md](prereg/M11.md) | |
+
+## Validation studies (not trading ideas; not counted)
+
+They test the pipeline and re-judge finished results. A failure here can invalidate results above.
+
+| ID | Registered | Study | Pre-registration | Outcome |
+|---|---|---|---|---|
+| V1 | 2026-10-15 | Known answers: rebuild the Fama-French market, SMB, HML, momentum and reversal factors and the MAX effect from our data and compare with Kenneth French's published series; reconcile 50 prices with an outside source and 20 SEC values with SEC's Financial Statement Data Sets | [prereg/V1.md](prereg/V1.md) | |
+| V2 | 2026-10-15 | Re-judge every finished screen: factor-adjusted excess (FF5 + momentum), Romano-Wolf and Holm adjustment, deflated Sharpe ratios with 28 trials, misaligned-calendar placebo | [prereg/V2.md](prereg/V2.md) | |
+| V3 | 2026-10-15 | Power of M8's forward test; M6's ranking at 21 days on historical weekly data with whole-universe statistics; OpenTimestamps for the forward ledger | [prereg/V3.md](prereg/V3.md) | |
