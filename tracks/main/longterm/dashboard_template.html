@@ -33,6 +33,9 @@ header { display: grid; gap: 6px }
 .stats div { display: grid; gap: 2px }
 .stats b { font-family: var(--mono); font-weight: 500; font-size: 1.05rem }
 .list { display: grid; gap: 0; border-top: 1px solid var(--line) }
+#refresh { font: inherit; font-weight: 600; color: var(--surface); background: var(--accent); border: 0; border-radius: 6px; padding: 8px 14px; min-height: 40px; cursor: pointer }
+#refresh:disabled { opacity: .6; cursor: default }
+#refresh:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px }
 details { border-bottom: 1px solid var(--line) }
 summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 4px }
 summary::-webkit-details-marker { display: none }
@@ -76,6 +79,10 @@ th:first-child, td:first-child { text-align: left }
     <span class="label">edge-lab · idea M4 · main track · US stocks $5+ and $300M+</span>
     <h1>Long-horizon picks</h1>
     <p class="muted" id="asof" style="margin:0"></p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
+      <button id="refresh" type="button" hidden>Refresh now</button>
+      <span class="fine" id="refresh-msg" role="status"></span>
+    </div>
   </header>
   <section class="verdict" id="verdict"></section>
   <section style="display:grid;gap:10px">
@@ -90,9 +97,14 @@ th:first-child, td:first-child { text-align: left }
   </section>
   <section style="display:grid;gap:10px">
     <h2>Under live test: analyst upgrades (M8)</h2>
-    <p class="fine" style="margin:0">Analyst upgrades and price-target raises came closest of every idea tested here (about +3% per 6 months over the average stock, 2017–2025, not enough to pass). Rather than call it proven, the top 20 by analyst actions in the last 91 days are logged each month-end before their returns exist, with 20 random stocks beside them. The verdict comes after 12 and 24 logged months. These are test entries, not Buy calls.</p>
+    <p class="fine" style="margin:0">Analyst upgrades and price-target raises came closest of every idea tested here (about +3% per 6 months over the average stock, 2017–2025, not enough to pass). Rather than call it proven, the top 20 by analyst actions in the last 91 days are logged at the end of every week before their returns exist, with 20 random stocks beside them, and each list is judged one month later. A first verdict comes after 26 weeks, the final one after 52. These are test entries, not Buy calls.</p>
     <div class="table-wrap" id="m8"></div>
     <div class="table-wrap" id="m8-record"></div>
+  </section>
+  <section style="display:grid;gap:10px">
+    <h2>High risk, experimental: short-term boom models</h2>
+    <p class="fine" style="margin:0">Two XGBoost models trained to spot stocks likely to land in the top 2% of returns over the next month, one for regular stocks ($5+) and one for penny stocks ($1–5). Both failed their 2019–2025 backtest. They find stocks about to move a lot, in either direction, not stocks about to rise. Shown because you asked to see them; these are lottery tickets, not Buy calls.</p>
+    <div id="boom"></div>
   </section>
   <p class="fine" id="foot"></p>
 </main>
@@ -179,11 +191,47 @@ function record() {
 
 function m8() {
   const L = (D.live_tests || {}).M8 || {}, el = document.getElementById("m8"), rec = document.getElementById("m8-record");
-  if (!L.latest) { el.innerHTML = `<p class="fine">Nothing logged yet. The first list is logged on the last trading day of the month.</p>`; rec.innerHTML = ""; return; }
+  if (!L.latest) { el.innerHTML = `<p class="fine">Nothing logged yet. The first list is logged on the last trading day of the week.</p>`; rec.innerHTML = ""; return; }
   el.innerHTML = `<p class="fine" style="margin:0 0 6px">Logged on ${esc(L.latest.as_of)}.</p><table><thead><tr><th>#</th><th>Stock</th><th>Upgrades and raises</th><th>Downgrades and cuts</th><th>Price then</th></tr></thead><tbody>${L.latest.picks.map(p => `<tr><td class="num">${p.rank}</td><td><strong>${esc(p.symbol)}</strong> <span class="muted">${esc(p.name)}</span></td><td class="num">${p.up}</td><td class="num">${p.down}</td><td class="num">${usd(p.price)}</td></tr>`).join("")}</tbody></table>`;
   const rows = L.record || [];
   rec.innerHTML = rows.length ? `<table><thead><tr><th>Picked on</th><th>Days held</th><th>Picks</th><th>Random 20</th><th>All eligible</th><th>SPY</th><th>Picks minus all</th></tr></thead><tbody>${rows.map(r => `<tr><td class="num">${r.date}</td><td class="num">${r.days}</td><td class="num">${pct(r.picks, 1)}</td><td class="num">${pct(r.control, 1)}</td><td class="num">${pct(r.universe, 1)}</td><td class="num">${pct(r.spy, 1)}</td><td class="num">${r.picks != null && r.universe != null ? pct(r.picks - r.universe, 1) : "–"}</td></tr>`).join("")}</tbody></table>` : "";
 }
+
+function boom() {
+  const B = D.boom || {}, el = document.getElementById("boom");
+  const title = { M10: "Regular stocks ($5+, $300M+)", P3: "Penny stocks ($1–5)" };
+  const parts = ["M10", "P3"].filter(k => B[k]).map(k => {
+    const b = B[k], v = b.verdict || {}, c = v.calibration || {};
+    const head = v.mean == null ? "" : `<p class="fine" style="margin:0">Backtest: the top 20 ${v.mean >= 0 ? "beat" : "trailed"} the average stock by <b class="num">${pct(Math.abs(v.mean), 1)}</b> per month after costs (t = ${v.t.toFixed(1)}, ${v.weeks} weeks): <strong>${v.passes ? "passed" : "failed"}</strong>. Of past picks, ${pl(c.share_top2pct)} landed in the month's top 2% (chance: ${pl(v.label_rate)}), ${pl(c.share_up_30pct)} rose 30% or more, ${pl(c.share_down_30pct)} fell 30% or more; the median pick returned ${pct(c.median, 1)}.</p>`;
+    const rows = b.picks.map(p => `<tr><td class="num">${p.rank}</td><td><strong>${esc(p.symbol)}</strong> <span class="muted">${esc(p.name)}</span></td><td class="num">${usd(p.price)}</td><td class="num">${pl(p.prob, 0)}</td><td class="num">${pct(p.r21, 0)}</td><td class="num">${pl(p.vol21, 0)}</td></tr>`).join("");
+    const rec = (b.record || []).length ? `<table><thead><tr><th>Week of</th><th>Days</th><th>Picks</th><th>Random 20</th><th>All in group</th></tr></thead><tbody>${b.record.map(r => `<tr><td class="num">${r.date}</td><td class="num">${r.days}</td><td class="num">${pct(r.picks, 1)}</td><td class="num">${pct(r.control, 1)}</td><td class="num">${pct(r.universe, 1)}</td></tr>`).join("")}</tbody></table>` : `<p class="fine">Weekly lists are logged on the last trading day of each week; their one-month results appear here.</p>`;
+    return `<h3 style="margin:14px 0 4px">${title[k]}</h3>${head}${b.news ? "" : `<p class="fine">Headlines were unavailable tonight, so news features are missing.</p>`}
+      <div class="table-wrap"><table><thead><tr><th>#</th><th>Stock</th><th>Price</th><th title="Model's estimate that the stock lands in the top 2% next month">Boom odds</th><th>Last month</th><th>Volatility</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="table-wrap">${rec}</div>`;
+  });
+  el.innerHTML = parts.length ? parts.join("") : `<p class="fine">The boom models did not run tonight.</p>`;
+}
+
+const REFRESH_TRIGGER = "trig_01EWG9yrrB3KNMcssLPzUsgm";
+(async () => {
+  const btn = document.getElementById("refresh"), msg = document.getElementById("refresh-msg");
+  const mcp = window.claude && window.claude.use ? await window.claude.use("mcp") : null;
+  if (!mcp) return;
+  btn.hidden = false;
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    msg.textContent = "Starting a new scan…";
+    try {
+      await mcp.callTool("Claude Code Remote", "fire_trigger", { trigger_id: REFRESH_TRIGGER }, { cache: false });
+      msg.textContent = "Scan started. It takes about 20–30 minutes; this page reloads with the new picks when it's done.";
+    } catch (e) {
+      btn.disabled = false;
+      msg.textContent = e && e.code === "not_in_manifest" ? "Refreshing isn't allowed for this view." :
+        e && (e.code === "server_not_connected" || e.code === "needs_reauth") ? "Connect Claude Code Remote in claude.ai Settings → Connectors to refresh from here." :
+        "The refresh didn't start. Try again in a minute.";
+    }
+  });
+})();
 
 if (D) {
   document.getElementById("asof").textContent = `Prices as of the close on ${D.as_of}. ${D.universe_size.toLocaleString()} stocks ranked. Refreshed nightly; built ${D.generated_utc.replace("T", " ").slice(0, 16)} UTC.`;
@@ -191,6 +239,7 @@ if (D) {
   document.getElementById("list").innerHTML = D.picks.map(pick).join("");
   record();
   m8();
+  boom();
   document.getElementById("foot").textContent = `Research output from a paper-trading project, not investment advice. Prices from Alpaca (SIP), fundamentals from SEC filings counted from their filing date, headlines from Benzinga via Alpaca, Reddit from its public search. Forward log ${D.ledger_ok ? "verified" : "FAILED verification"} (${D.ledger_entries} entries).`;
 }
 </script>

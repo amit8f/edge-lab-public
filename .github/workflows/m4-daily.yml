@@ -1,6 +1,8 @@
 # M4 nightly: today's long-horizon ranking and dashboard (tracks/main/longterm/live.py).
-# Runs after 10pm ET on weekdays. Writes state/longterm/ (latest.json, dashboard.html and, on month-ends,
-# the hash-chained forward log) to the orphan branch `state`.
+# Scheduled runs after 10pm ET only do work on the last session of a week or month (the forward logs);
+# the dashboard otherwise refreshes on demand (workflow_dispatch, started by the dashboard's button).
+# Writes state/longterm/ (latest.json, dashboard.html and the hash-chained forward log) to the orphan
+# branch `state`.
 name: m4-daily
 
 on:
@@ -49,7 +51,7 @@ jobs:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-        run: .venv/bin/python -m tracks.main.longterm.live --state state --cache cache/m4live
+        run: .venv/bin/python -m tracks.main.longterm.live --state state --cache cache/m4live ${{ github.event_name == 'schedule' && '--log-days-only' || '' }}
 
       - name: Commit the state back
         if: always()
