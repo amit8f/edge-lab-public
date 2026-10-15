@@ -1,12 +1,9 @@
-# M6 historical screen (research/prereg/M6.md); reuses the M4 data cache and adds the headline history (resumable: rerun until it reports results). Runs on demand, or when this file changes on a branch.
+# M6 historical screen (research/prereg/M6.md); reuses the M4 data cache and adds the headline history (resumable: rerun until it reports results). Runs on demand only (Actions tab, "Run workflow").
 # Writes research/results/M6/ and commits it back to the branch that ran it.
 name: m6-screen
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["claude/**"]
-    paths: [".github/workflows/m6-screen.yml"]
 
 permissions: {}
 
