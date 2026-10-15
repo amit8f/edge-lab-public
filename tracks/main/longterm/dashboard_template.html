@@ -174,14 +174,15 @@ function scorecard() {
     : "<strong>Nothing has passed.</strong> No idea beats the market once standard risk factors and the number of ideas tried are accounted for. The lists further down are records of failed or untested ideas, not recommendations.";
   const t = x => x == null || !isFinite(x) ? "–" : x.toFixed(1);
   const p2 = x => x == null || !isFinite(x) ? "–" : x < 0.001 ? "<0.001" : x.toFixed(3);
-  const body = rows.map(r => `<tr><td><strong>${esc(r.idea)}</strong> <span class="muted">${esc(r.name)}</span></td><td class="num">${esc(r.hold)}</td><td class="num">${pct(r.raw_mean, 1)}</td><td class="num">${t(r.raw_t)}</td><td class="num">${r.rejudged ? pct(r.alpha, 1) : "–"}</td><td class="num">${r.rejudged ? t(r.alpha_t) : "–"}</td><td class="num">${p2(r.p_romano_wolf)}</td><td>${r.survives ? "<strong>survives</strong>" : r.rejudged ? "fails" : "not re-judged yet"}</td></tr>`).join("");
+  const body = rows.map(r => `<tr><td><strong>${esc(r.idea)}</strong> <span class="muted">${esc(r.name)}</span></td><td class="num">${esc(r.hold)}</td><td class="num">${pct(r.raw_mean, 1)}</td><td class="num">${t(r.raw_t)}</td><td class="num">${r.rejudged ? pct(r.alpha, 1) : "–"}</td><td class="num">${r.rejudged ? t(r.alpha_t) : "–"}</td><td class="num">${p2(r.p_romano_wolf)}</td><td>${r.survives ? (r.robust === false ? "passes rule, fragile*" : "<strong>survives</strong>") : r.rejudged ? "fails" : "not re-judged yet"}</td></tr>`).join("");
+  const notes = rows.filter(r => r.caveat).map(r => `<p class="fine">* ${esc(r.caveat)}</p>`).join("");
   const F = S.forward, T = S.timestamps || {};
   const fwd = F == null ? "" : `<p class="fine">The analyst-upgrade live test (M8) would need about <b class="num">${F.m8_years_needed == null ? "–" : Math.round(F.m8_years_needed)}</b> years of weekly logs to reach a verdict if its backtest effect is real (chance of passing at 52 weeks: ${pl(F.m8_p_pass_52w)}).${F.decision ? " " + esc(F.decision) + "." : ""}</p>`;
   const ts = T.count ? `<p class="fine">The forward log has been stamped outside GitHub (OpenTimestamps) ${T.count} times; latest ${esc(T.latest)}, ${T.latest_bitcoin_confirmed ? "confirmed in Bitcoin" : "waiting for Bitcoin confirmation"}.</p>`
     : `<p class="fine">The forward log has not been stamped outside GitHub yet.</p>`;
   el.innerHTML = `<p>${head}</p><p class="fine">${pipe}</p>
     <div class="table-wrap"><table><thead><tr><th>Idea</th><th>Hold</th><th title="Picks minus the average stock, after costs">Raw edge</th><th>t</th><th title="Intercept after Fama-French 5 factors and momentum">After factors</th><th>t</th><th title="Romano-Wolf adjusted for every idea tested">Luck-adjusted p</th><th>Verdict</th></tr></thead><tbody>${body}</tbody></table></div>
-    ${fwd}${ts}`;
+    ${notes}${fwd}${ts}`;
 }
 
 function pick(p) {
