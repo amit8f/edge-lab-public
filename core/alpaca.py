@@ -64,3 +64,25 @@ def news(start, end=None, page_token=None, limit=50):
     if page_token:
         p["page_token"] = page_token
     return get(NEWS_URL, p)
+
+
+def post(url, body, headers=None, tries=4):
+    """POST to the paper trading API only. Returns (HTTP status, JSON body); a refusal (4xx, e.g. a
+    duplicate client_order_id or an unshortable symbol) is returned, not raised, so the caller logs it."""
+    assert url.startswith(TRADE + "/"), "orders go to the paper account only"
+    headers = headers or alpaca_headers()
+    for attempt in range(tries):
+        try:
+            r = requests.post(url, headers=headers, json=body, timeout=60)
+        except requests.RequestException:
+            time.sleep(5 * (attempt + 1))
+            continue
+        if r.status_code == 429 or r.status_code >= 500:
+            time.sleep(min(60, 5 * (attempt + 1)))
+            continue
+        try:
+            js = r.json()
+        except ValueError:
+            js = {"message": r.text[:200]}
+        return r.status_code, js if isinstance(js, dict) else {"body": js}
+    return 599, {"message": f"no answer after {tries} tries"}

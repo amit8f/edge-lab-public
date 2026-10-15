@@ -140,8 +140,8 @@ def build(cache, deadline=None):
     panel["cik"] = sec_data.map_ciks(panel[["symbol", "date"]], tmap)
     funnel["unmapped_rows"] = int(panel["cik"].isna().sum())
     panel = panel.dropna(subset=["cik"]).astype({"cik": "int64"}).reset_index(drop=True)
-    # The shared cache can come back without the headline months (another screen saved it last), so
-    # fetch whatever is missing; months already cached are skipped.
+    # the monthly news files come from the M6 screen's cache; a run without that cache (e.g. on main)
+    # fetches the missing months first, resumably
     if not news_history.fetch_range(NEWS_FIRST, NEWS_LAST, cache / "news", deadline):
         return None
     ev_days, ev = news_events(cache / "news")
