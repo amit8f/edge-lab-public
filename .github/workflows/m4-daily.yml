@@ -7,9 +7,6 @@ on:
   schedule:
     - cron: "30 3 * * 2-6"   # 23:30 ET in EDT, 22:30 in EST, after each weekday session
   workflow_dispatch:
-  push:
-    branches: ["claude/**"]
-    paths: [".github/workflows/m4-daily.yml"]
 
 permissions: {}
 

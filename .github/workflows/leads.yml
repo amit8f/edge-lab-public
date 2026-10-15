@@ -1,0 +1,56 @@
+# Leading sources, forward only (core/leads.py): clinicaltrials.gov updates of industry-sponsored studies,
+# saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
+# servers, so they are not collected here.) Runs once a night; the cursor fills any day a skipped run
+# missed.
+name: leads
+
+on:
+  schedule:
+    - cron: "30 3 * * 2-6"    # 23:30 ET (EDT), Mon-Fri evenings
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash deploy/state.sh restore
+
+      - name: Collect
+        run: .venv/bin/python -m core.leads --state state
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_LABEL: leads ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save

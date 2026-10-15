@@ -1,12 +1,9 @@
-# M4 historical screen (research/prereg/M4.md). Runs on demand, or when this file changes on a branch.
+# M4 historical screen (research/prereg/M4.md). Runs on demand only (Actions tab, "Run workflow").
 # Writes research/results/M4/ and commits it back to the branch that ran it.
 name: m4-screen
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["claude/**"]
-    paths: [".github/workflows/m4-screen.yml"]
 
 permissions: {}
 
