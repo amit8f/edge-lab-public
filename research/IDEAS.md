@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 5** (main 5, penny 0, news 0). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 20.
+**Phase 2 count: 7** (main 6, penny 1, news 0). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 22.
 
 Planned, not registered (see `docs/PLAN_V2.md`): M1 filing changes, M2 options direction on big movers,
 M3 residual momentum, P1 penny event shorts, P2 penny guidance raises, N1 two-LLM headline labels.
@@ -14,3 +14,5 @@ An idea is counted when its pre-registration is committed.
 | M6 | main | 2026-10-12 | Net analyst upgrades/target raises minus downgrades/cuts over 90 days, read from Benzinga headlines; top 20 vs universe over 6 months | Amit's request (free substitute for paid analyst data); analyst-revision literature | [prereg/M6.md](prereg/M6.md) | 2026-10-12 screen FAILED (closest so far): +3.0% per 6m vs universe after costs, t 1.61, CI -0.6%..+6.8% (99 dates); median date +3.2%, beat universe on 72% of dates, calibration monotonic. Classifier sample 50/50 correct. Dashboard unchanged. [Report](results/M6/REPORT.md) |
 | M7 | main | 2026-10-12 | Standardized earnings surprise (quarterly net income vs the same quarter a year earlier, scaled by its own history) from SEC filings; top 20 vs universe over 6 months | Amit's request (free substitute for earnings-estimate data); post-earnings drift literature | [prereg/M7.md](prereg/M7.md) | 2026-10-12 screen FAILED: -0.7% per 6m vs universe after costs, t -0.58, CI -3.2%..+1.3% (99 dates); deciles flat; top picks skewed to one-off gains. Dashboard unchanged. [Report](results/M7/REPORT.md) |
 | M8 | main | 2026-10-12 | Forward paper test of M6's analyst-action ranking: top 20 logged each month-end from 2026-10-30 | Amit chose a live test after M6 narrowly failed (post-hoc, disclosed) | [prereg/M8.md](prereg/M8.md) | |
+| M10 | main | 2026-10-15 | Short-term boom model: XGBoost classifier for the top 2% of 21-day returns on price, volume, news and analyst features; weekly top 20 vs universe, yearly walk-forward 2019-2025, pass at t >= 3 | Amit's request (short-term booms, XGBoost, multiple models) | [prereg/M10.md](prereg/M10.md) | |
+| P3 | penny | 2026-10-15 | Penny twin of M10 ($1-5, $1M median dollar volume), own models, 2% round trip | Amit's request | [prereg/P3.md](prereg/P3.md) | |
