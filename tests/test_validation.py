@@ -248,3 +248,79 @@ def test_v3_part_b_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert b["coverage"]["weeks"] > 50 and set(b) >= {"top20", "random20", "ic", "net_spread"}
     w = pd.read_csv(tmp_path / "out" / "V3_weekly.csv")
     assert w["ic"].dropna().between(-1, 1).all() and w["ic"].notna().any() and "decision" in res
+
+
+def test_v4_spreads_windows_and_costs(tmp_path):
+    from validation import v4_raw as v4
+    q = [{"bp": 9.9, "ap": 10.1}, {"bp": 9.95, "ap": 10.05}, {"bp": 0, "ap": 10}, {"bp": 10, "ap": 9.9}]
+    rs, n = v4.rel_spread(q)
+    assert n == 2 and rs == pytest.approx((0.02 + 0.01) / 2)
+    days = pd.bdate_range("2020-01-01", periods=60)
+    cal = pd.DataFrame({"date": days, "open": "09:30", "close": "16:00"})
+    cal.loc[25, "close"] = "13:00"
+    w = v4.windows(cal, days[3], 22)
+    assert w[0] == days[4] and w[2] == days[25] and w[3][1] == pd.Timestamp("2020-02-05 13:00", tz="America/New_York")
+    assert w[1][0] == pd.Timestamp("2020-01-07 09:31", tz="America/New_York")
+    # fake quote server: S1 always 1% wide; S2 has no exit quotes at all (stopped trading)
+    def get(url, params):
+        sym = url.split("/")[-2]
+        start = pd.Timestamp(params["start"])
+        if sym == "S2" and start.date() >= days[25].date():
+            return {"quotes": []}
+        return {"quotes": [{"bp": 99.5, "ap": 100.5}] * 3}
+    picks = pd.DataFrame({"key": ["a", "b"], "symbol": ["S1", "S2"], "date": [days[3], days[3]], "h": 22})
+    c = v4.cost_picks(picks, cal, tmp_path / "q", deadline=time_far(), get=get)
+    assert c.loc[0, "entry_spread"] == pytest.approx(0.01) and c.loc[1, "exit_day_quotes"] == 0
+    assert v4.cost_picks(picks, cal, tmp_path / "q", deadline=0, get=None) is not None      # cached: no fetch
+
+
+def time_far():
+    import time
+    return time.monotonic() + 3600
+
+
+def test_v4_summarize_costs_and_delisting_bound(tmp_path):
+    from validation import v4_raw as v4
+    dates = pd.date_range("2020-01-03", periods=30, freq="W-FRI")
+    picks = pd.DataFrame({"date": np.repeat(dates, 2), "symbol": ["A", "B"] * 30, "ret": 0.05, "idea": "P3",
+                          "h": 21, "flat": 0.02})
+    picks["key"] = [f"k{i}" for i in range(60)]
+    costs = pd.DataFrame({"key": picks["key"], "entry_spread": 0.04, "exit_spread": 0.04, "exit_day_quotes": -1})
+    costs.loc[1, ["exit_spread", "exit_day_quotes"]] = [np.nan, 0]                  # B stops trading in week 1
+    (tmp_path / "P3").mkdir()
+    pd.DataFrame({"date": dates, "uni_mean": 0.01, "excess": 0.0}).to_csv(tmp_path / "P3" / "P3_primary_series.csv", index=False)
+    out, d = v4.summarize_costs(picks, costs, pd.Series({"A": "NYSE", "B": "NASDAQ"}), results=tmp_path)
+    r = out["P3"]
+    assert r["measured_mean"] == pytest.approx(0.04) and r["share_above_flat"] == 1.0 and r["no_exit_quotes"] == 1
+    assert r["primary_measured_costs"]["mean"] == pytest.approx(0.05 - 0.04 - 0.01)
+    week1 = ((0.05 - 0.04) + ((1.05 * 0.45 - 1) - 0.04)) / 2 - 0.01
+    assert r["primary_with_delisting_bound"]["mean"] == pytest.approx((week1 + 29 * 0.0) / 30)
+
+
+def test_v4_headline_sample_keeps_regex_labels_apart(tmp_path):
+    from validation import v4_raw as v4
+    rows = []
+    for k in range(300):
+        rows.append({"id": k, "created_at": "2020-01-02T15:00:00Z", "symbols": "X" if k % 7 else "X,Y",
+                     "headline": ["UBS Upgrades X to Buy", "Analyst maintains X at Hold", "X opens new plant",
+                                  "Citi Lowers Price Target on X"][k % 4]})
+    pd.DataFrame(rows).to_parquet(tmp_path / "news_2020-01.parquet")
+    lab, regex, counts = v4.headline_sample(tmp_path, n=20, months=[pd.Period("2020-01", "M")])
+    assert list(lab.columns) == ["sid", "symbol", "headline"] and len(lab) == 40
+    assert set(regex["regex"]) == {"up", "down", "none"} and (lab["symbol"] == "X").all()
+    assert set(regex.loc[regex["stratum"] == "no_action_with_analyst_word", "regex"]) == {"none"}
+
+
+def test_v5_diagnostics_end_to_end_with_fakes(tmp_path, monkeypatch):
+    from tests.test_shortterm import _fake_world
+    from validation import v5_boom_diagnostics as v5
+    pn, facts = _fake_world(tmp_path, monkeypatch)
+    monkeypatch.setattr(v5.sec_data, "facts_for", lambda *a, **k: facts)
+    (tmp_path / "cache" / "companyfacts.zip").write_bytes(b"")
+    res = v5.run(tmp_path / "cache", tmp_path / "out", years=[2022, 2023])
+    for idea in ("M10", "P3"):
+        d = res[idea]
+        assert sum(d["shap_share_all_rows"].values()) == pytest.approx(1.0)
+        assert 0 <= d["pick_percentiles"]["vol21"] <= 1 and d["placebo_stale_signal"]["n_dates"] > 10
+        assert 0 <= d["placebo_shuffled_labels"]["hit_rate_top2pct"] <= 1
+    assert "lmcap" not in res["P3"]["pick_percentiles"] and set(res["predictions"]) >= {"leakage_flag"}

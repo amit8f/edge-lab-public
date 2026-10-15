@@ -69,7 +69,11 @@ jobs:
             .venv/bin/ots stamp "$f"
           fi
           # turn pending proofs into Bitcoin-anchored ones once they confirm (a few hours later)
-          for p in state/ots/*.ots; do .venv/bin/ots upgrade "$p" || true; done
+          for p in state/ots/*.ots; do
+            [[ -f "$p.btc" ]] && continue
+            .venv/bin/ots upgrade "$p" || true
+            .venv/bin/ots info "$p" 2>/dev/null | grep -q BitcoinBlockHeaderAttestation && touch "$p.btc"
+          done
 
       - name: Commit the state back
         if: always()

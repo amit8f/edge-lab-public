@@ -1,13 +1,13 @@
-# Validation studies (research/prereg/V*.md): runs `python -m validation.<study>` on demand (Actions tab,
-# "Run workflow", or the API) with the shared data cache. Results go to research/results/<study id>/ and
-# are committed back to the branch that ran it.
+# Validation studies and screens on demand (Actions tab, "Run workflow", or the API): runs
+# `python -m <module>` (validation.v*_* or tracks.*.*.screen_*) with the shared data cache. Results go to
+# research/results/<id>/ and are committed back to the branch that ran it.
 name: study
 
 on:
   workflow_dispatch:
     inputs:
       study:
-        description: "Module name under validation/ (e.g. v1_known_answers)"
+        description: "Module to run, e.g. validation.v1_known_answers or tracks.main.shortterm.screen_m12"
         required: true
       budget:
         description: "Minutes the study may spend downloading before it stops and resumes next run"
@@ -64,9 +64,9 @@ jobs:
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: |
-          [[ "$STUDY" =~ ^v[0-9]+_[a-z0-9_]+$ && -f "validation/$STUDY.py" ]] || { echo "::error::unknown study"; exit 1; }
+          [[ "$STUDY" =~ ^(validation\.v[0-9]+_[a-z0-9_]+|tracks\.[a-z]+\.[a-z]+\.screen_[a-z0-9]+)$ && -f "${STUDY//.//}.py" ]] || { echo "::error::unknown module"; exit 1; }
           [[ "$BUDGET" =~ ^[0-9]+$ ]] || { echo "::error::budget must be whole minutes"; exit 1; }
-          .venv/bin/python -m "validation.$STUDY" --cache cache/m4 --budget-min "$BUDGET"
+          .venv/bin/python -m "$STUDY" --cache cache/m4 --budget-min "$BUDGET"
 
       - name: Save the data cache (also after a failure, so a rerun skips the downloads)
         if: always()
