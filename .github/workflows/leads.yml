@@ -1,12 +1,13 @@
 # Leading sources, forward only: clinicaltrials.gov updates of industry-sponsored studies (core/leads.py)
 # and SEC filings that often precede headlines (core/leads_sec.py), saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
 # servers, so they are not collected here.) Runs once a night; the cursor fills any day a skipped run
-# missed.
+# missed. The same job runs the penny track's P1/P2 paper trading (tracks/penny/nightly.py), which does
+# nothing before the night of 2026-11-02 and needs the night's articles up to 23:30 ET.
 name: leads
 
 on:
   schedule:
-    - cron: "30 3 * * 2-6"    # 23:30 ET (EDT), Mon-Fri evenings
+    - cron: "45 4 * * 2-6"    # 23:45 ET (EST, from Nov 1; 00:45 in EDT), Mon-Fri nights
   workflow_dispatch:
 
 permissions: {}
@@ -20,7 +21,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Check out the code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -53,6 +54,14 @@ jobs:
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: .venv/bin/python -m core.leads_sec --state state
+
+      - name: Paper trading, P1 and P2 (Alpaca paper account only)
+        if: always()
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: .venv/bin/python -m tracks.penny.nightly --state state
 
       - name: Commit the state back
         if: always()
