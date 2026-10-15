@@ -17,7 +17,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from core import alpaca
+from core import alpaca, stats
 from core.bars import fetch_daily_bars, to_frames
 from core.env import alpaca_headers
 from tracks.main.longterm import bars_batch, news_history, sec_data
@@ -266,10 +266,19 @@ def stage_returns(cache, out, models):
     ctrl = pd.DataFrame(rows, columns=["entry", "symbol", "ctrl"]).dropna()
 
     prim = daily_stats(shorts, f"short{HOLD}")
-    prim["passes"] = bool(prim["n_trades"] >= MIN_TRADES and prim["mean"] > 0 and prim["t_hac"] >= 2.0
-                          and prim["ci95"][0] > 0)
-    res = {"idea": "N1", "prereg": "research/prereg/N1.md", "phase2_count": 10, "news_count": 1,
-           "phase1_plus_phase2": 25, "models": models, "window_start": f"{window_start(models):%Y-%m-%d}",
+    per_day = shorts.groupby("entry")[f"short{HOLD}"].mean().sort_index()
+    ffd, sha5 = stats.fetch_french(stats.FF5 + "_daily")
+    umdd, shau = stats.fetch_french(stats.UMD + "_daily")
+    fac = ffd.join(umdd, how="inner")[["Mkt-RF", "SMB", "HML", "RMW", "CMA", umdd.columns[0]]]
+    wins = [cal[cal.searchsorted(e):cal.searchsorted(e) + HOLD] for e in per_day.index]
+    alpha = stats.ols_hac(per_day.to_numpy(), stats.window_factors(fac, wins), 2)
+    alpha["factors"] = list(fac.columns) + ["(summed over each trade's 3 days, close to close)"]
+    p2, both = stats.idea_counts()
+    prim["factor_alpha"] = alpha
+    prim["deflated_sharpe"] = stats.deflated_sharpe(per_day.to_numpy(), both)
+    prim["passes"] = bool(prim["n_trades"] >= MIN_TRADES) and stats.screen_pass(prim, alpha)
+    res = {"idea": "N1", "prereg": "research/prereg/N1.md", "phase2_count": p2, "phase1_plus_phase2": both,
+           "ff5_daily_sha256": sha5, "umd_daily_sha256": shau, "models": models, "window_start": f"{window_start(models):%Y-%m-%d}",
            "funnel": {**funnel, "stock_days_with_signal": int(sig["side"].notna().sum()),
                       "short_trades": int(len(shorts)), "skipped_conflicting": int(sig["side"].isna().sum())},
            "primary": prim, "control": daily_stats(ctrl, "ctrl") if len(ctrl) else None}
