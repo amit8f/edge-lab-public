@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 7** (main 6, penny 1, news 0). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 22.
+**Phase 2 count: 8** (main 7, penny 1, news 0). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 23.
 
 Planned, not registered (see `docs/PLAN_V2.md`): M1 filing changes, M2 options direction on big movers,
 M3 residual momentum, P1 penny event shorts, P2 penny guidance raises, N1 two-LLM headline labels.
@@ -16,3 +16,4 @@ An idea is counted when its pre-registration is committed.
 | M8 | main | 2026-10-12 | Forward paper test of M6's analyst-action ranking: top 20 logged each month-end from 2026-10-30 | Amit chose a live test after M6 narrowly failed (post-hoc, disclosed) | [prereg/M8.md](prereg/M8.md) | 2026-10-15 amended before any log (Amit's choice): weekly picks held 21 trading days, first read at 26 weeks, final at 52. |
 | M10 | main | 2026-10-15 | Short-term boom model: XGBoost classifier for the top 2% of 21-day returns on price, volume, news and analyst features; weekly top 20 vs universe, yearly walk-forward 2019-2025, pass at t >= 3 | Amit's request (short-term booms, XGBoost, multiple models) | [prereg/M10.md](prereg/M10.md) | 2026-10-15 screen FAILED: +0.55% per 21 days vs universe after costs, t 0.51, CI -1.6%..+2.6% (348 weeks, 2019-2025); median week -1.2%. The model finds big movers (13% of picks in the top 2%, 6.5x chance) in both directions. Not paper traded; shown on the dashboard as high-risk, failed. [Report](results/M10/REPORT.md) |
 | P3 | penny | 2026-10-15 | Penny twin of M10 ($1-5, $1M median dollar volume), own models, 2% round trip | Amit's request | [prereg/P3.md](prereg/P3.md) | 2026-10-15 screen FAILED: -2.19% per 21 days vs universe after 2% costs, t -3.99 (348 weeks); slightly worse than the universe even before costs. QA: WOLF 2025-08 reorganisation shows +2,264% (not a pick; negligible). [Report](results/P3/REPORT.md) |
+| M11 | main | 2026-10-15 | Calculated-risk boom picks: M10's top 100 by boom probability, keep the 20 best on quality, value and buybacks; weekly, 21-day hold, t >= 3 | Amit's request (underpriced and could explode); post-hoc to M10's volatility finding (disclosed) | [prereg/M11.md](prereg/M11.md) | |
