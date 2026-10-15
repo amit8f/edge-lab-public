@@ -1,5 +1,6 @@
-# Leading sources, forward only (core/leads.py): Pentagon contract pages and clinicaltrials.gov updates,
-# saved to the orphan branch `state` under leads/. Runs nightly after the 5pm ET contract post; a second
+# Leading sources, forward only (core/leads.py): clinicaltrials.gov updates of industry-sponsored studies,
+# saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
+# servers, so they are not collected here.) Runs nightly; a second
 # run in the morning covers a dropped schedule (GitHub skips some scheduled runs). A push that changes
 # this file on a claude/** branch runs a probe into a throwaway directory and saves nothing.
 name: leads

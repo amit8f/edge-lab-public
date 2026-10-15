@@ -5,13 +5,14 @@ later pre-registered idea can test them; nothing here scores or trades.
 
 - dod:    the daily "Contracts for <date>" page (posted ~5pm ET; contracts of $7.5M or more), saved as raw
           HTML to <state>/leads/dod/<date>.html. Days are taken from the RSS feed; a page that fails to
-          download is retried on the next run.
+          download is retried on the next run. Opt-in (--dod): war.gov's CDN refuses cloud IPs (GitHub
+          Actions got 403 on every page on 2026-10-15), so it only works from a home connection.
 - trials: every industry-sponsored study whose last-update post date is d, one JSONL file per day
           (<state>/leads/trials/<d>.jsonl). Each run fills the days from the cursor to yesterday (ET).
           A study updated again before its day is fetched shows only its newer date, so a day fetched
           late can miss it; `fetched_utc` records when each day was read.
 
-Usage: python -m core.leads --state <dir> [--first-day YYYY-MM-DD]
+Usage: python -m core.leads --state <dir> [--first-day YYYY-MM-DD] [--dod]
 """
 import argparse
 import email.utils
@@ -141,8 +142,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--state", required=True)
     ap.add_argument("--first-day")
+    ap.add_argument("--dod", action="store_true")
     a = ap.parse_args()
-    run_dod(a.state)
+    if a.dod:
+        run_dod(a.state)
     run_trials(a.state, first_day=a.first_day)
 
 
