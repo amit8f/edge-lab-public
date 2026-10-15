@@ -8,6 +8,8 @@ Rules (docs/PLAN_V2.md, "Risk rules"):
 - The stop sits one stop distance away from the entry fill. Stops are checked on the close and filled
   at the next open (gaps go through intraday stops anyway).
 - Time exit at the close of the hold_days-th trading day, counting the entry day as day 1.
+- A signal may carry a `limit` price: the entry is then a day limit order (see limit_fill), filled or
+  dropped on the entry day, and pays no entry cost when it fills (the X1 comparison book).
 - No take-profit. Costs: half the round trip on entry, half on exit. Shorts pay borrow every held day and
   need the stock to be shortable and easy to borrow on the signal date.
 - New entries stop when a track's P&L falls pause_drawdown x its sleeve (start x the track's share in
@@ -86,6 +88,15 @@ def _close(state, pos, day, price, reason, half_cost):
     state["cash_pnl"] += gross - costs
 
 
+def limit_fill(side, limit, b):
+    """Fill price of a day limit order placed before the open, from the day's raw bar: the open when it
+    is already through the limit, the limit when the day's range trades strictly through it, else None.
+    Buys (long entries) fill at or below the limit, sells (short entries) at or above it."""
+    if side == "long":
+        return b["o"] if b["o"] <= limit else (limit if b.get("l", b["o"]) < limit else None)
+    return b["o"] if b["o"] >= limit else (limit if b.get("h", b["o"]) > limit else None)
+
+
 def process_day(state, cfg, day, bars, signals, calendar):
     """Advance the book through trading day `day` (after its close).
 
@@ -110,9 +121,16 @@ def process_day(state, cfg, day, bars, signals, calendar):
             s["rejected"].append(dict(e, reason="no bar on entry day"))
             continue
         half = tc[e["track"]]["round_trip_cost"] / 2
+        px = b["o"]
+        if e.get("limit") is not None:
+            px = limit_fill(e["side"], e["limit"], b)
+            if px is None:
+                s["rejected"].append(dict(e, reason="limit not filled"))
+                continue
+            half = 0.0                        # a filled limit order crosses no spread on the way in
         d = e["stop_dist"]
-        stop = b["o"] * (1 - d) if e["side"] == "long" else b["o"] * (1 + d)
-        s["open"].append(dict(e, entry_price=b["o"], last_price=b["o"], stop_price=stop,
+        stop = px * (1 - d) if e["side"] == "long" else px * (1 + d)
+        s["open"].append(dict(e, entry_price=px, last_price=px, stop_price=stop,
                               costs=e["notional"] * half, days_held=0, pending_exit=None))
     s["pending_entries"] = still_pending
 

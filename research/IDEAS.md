@@ -1,16 +1,16 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 16** (main 10, penny 3, news 2, cross-track 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 31.
+**Phase 2 count: 17** (main 10, penny 4, news 2, cross-track 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 32.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
-M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC) and M12 (13:02 UTC). The counts written inside M1, N1, P1, P2 and
+M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). The counts written inside M1, N1, P1, P2 and
 M3 were computed without M10 and P3; their true running counts are 8 to 12. This header is the
 reference count.
 
 Planned, not registered (see `docs/PLAN_V2.md`): M2 options direction on big movers.
 An idea is counted when its pre-registration is committed. C0 ([prereg/C0.md](prereg/C0.md), trading-cost
-measurement) tests no edge and is not counted. From 2026-10-15 the rules in `PROTOCOL.md` 10-15 apply;
+measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entries) test no edge and are not counted. From 2026-10-15 the rules in `PROTOCOL.md` 10-15 apply;
 `MECHANISMS.md` says who loses money to each earlier idea.
 
 | ID | Track | Registered | Idea | Source | Pre-registration | Outcome |
@@ -31,6 +31,7 @@ measurement) tests no edge and is not counted. From 2026-10-15 the rules in `PRO
 | L1 | news | 2026-10-15 | First-public-moment lags: how long after EDGAR acceptance (offerings, late filings, delisting notices, auditor changes, officer departures, 13Ds, insider buys) the headline and the price move come; a category is a candidate only at a 60-minute median lag and a signed return t >= 3 after costs | Amit's news-clues request (deeper plan) | [prereg/L1.md](prereg/L1.md) | |
 | B0 | main+penny | 2026-10-15 | Burst base rates: what was visible before +30%-in-10-days jumps vs matched non-jumpers (short interest, short volume, fails-to-deliver, lockups, insider buys, filings, price, news); logistic model, pass at test AUC >= 0.60 | Amit's burst request (deeper plan) | [prereg/B0.md](prereg/B0.md) | |
 | M12 | main | 2026-10-15 | Boom model with volatility, size and industry regressed out of features and label; top 20 with a 4-per-industry cap, inverse-volatility weights; FF5+momentum-adjusted, t >= 3 | Amit's request (prompt 5; registered 13:02 UTC, after L1 and B0); post-hoc to M10 (disclosed); expected to fail per the lottery-stock literature | [prereg/M12.md](prereg/M12.md) | |
+| T1 | penny | 2026-10-15 | Turn of the year: buy the bottom-decile year-to-date penny losers at the last December open, sell at the 5th January close; 9 historical years vs a random control, t >= 3 | Amit's choice from the professional-additions list; Roll (1983), Reinganum (1983) | [prereg/T1.md](prereg/T1.md) | |
 
 ## Validation studies (not trading ideas; not counted)
 

@@ -55,6 +55,10 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: .venv/bin/python -m core.leads_sec --state state
 
+      - name: Borrow fees (Interactive Brokers' public stock-loan file)
+        if: always()
+        run: .venv/bin/python -m core.borrow --state state
+
       - name: Paper trading, P1 and P2 (Alpaca paper account only)
         if: always()
         env:

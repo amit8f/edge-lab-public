@@ -28,7 +28,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from core import alpaca, leads_sec, sec, stats
+from core import alpaca, borrow, leads_sec, sec, stats
 from core.ledger import Ledger
 from paper import book as B
 from tracks.penny.frozen import rules as R
@@ -48,6 +48,7 @@ CONTROL_WINDOW = 20                      # trading days, the signal day included
 DILUTION_DAYS, A9_DAYS, PUMP = 90, 180, 0.50
 MIN_PRICE, MAX_PRICE, MIN_DV20, MIN_BARS = 1.0, 5.0, 5e5, 60
 GAP_DAYS = 15
+LIMIT_OFFSET = 0.01                      # X1: limit 1% through the signal close (buy above, sell below)
 EVENT_COLS = ["event_id", "night_day", "cls", "sign", "symbol", "series_id", "cik", "T", "source", "src", "id",
               "accession", "headline"]
 
@@ -500,6 +501,7 @@ def run(state_dir, now=None, api=None, start=START, mirror=True):
     last = _read(led, "paper_day", logged[-1]) if logged else None
     state = last["book"] if last and last.get("book") else B.new_state(cfg)
     cstate = last["control_book"] if last and last.get("control_book") else B.new_state(ccfg)
+    lstate = last["limit_book"] if last and last.get("limit_book") else B.new_state(cfg)
     if todo:
         assets = api.assets()
         common = assets[assets["excl_reason"].isna()]
@@ -507,7 +509,7 @@ def run(state_dir, now=None, api=None, start=START, mirror=True):
         tk = api.tickers()
         ciks = dict(zip(tk["symbol"], tk["cik"]))
         names = R.symbol_names(dict(zip(common["symbol"], common["name"])), dict(zip(tk["symbol"], tk["title"])))
-        held = {x["symbol"] for s in (state, cstate) for x in s["open"] + s["pending_entries"]}
+        held = {x["symbol"] for s in (state, cstate, lstate) for x in s["open"] + s["pending_entries"]}
         raw = api.bars(set(common["symbol"]) | held, todo[0] - BARS_BACK, todo[-1], "raw")
         ann = annotate(raw)
         unis = {d: universe_on(ann, d, ciks) for d in todo}
@@ -517,6 +519,8 @@ def run(state_dir, now=None, api=None, start=START, mirror=True):
         a0 = (first_cut or todo[0] + RUN_AFTER - pd.Timedelta(days=1) - LOOKBACK_FIRST) - pd.Timedelta(days=HIST_DAYS)
         arts_all = api.news(a0, todo[-1] + RUN_AFTER)
         store = _store(led)
+        fees, fee_day = borrow.latest(state_dir)
+        fee_by = fees.set_index("symbol")[["fee", "available"]].to_dict("index") if fees is not None else {}
         prev_cutoff = first_cut
         for d in todo:
             u = unis[d]
@@ -534,7 +538,7 @@ def run(state_dir, now=None, api=None, start=START, mirror=True):
                    "assets_fetched_utc": f"{pd.Timestamp.now(tz='UTC'):%Y-%m-%dT%H:%M:%SZ}"}
             if d >= start:
                 splits = []
-                for st in (state, cstate):
+                for st in (state, cstate, lstate):
                     for sym in sorted({p["symbol"] for p in st["open"]}):
                         k = split_ratio(raw, adj, sym, d)
                         if k:
@@ -543,14 +547,22 @@ def run(state_dir, now=None, api=None, start=START, mirror=True):
                     for x in splits:
                         state = B.apply_split(state, x["symbol"], x["ratio"])
                         cstate = B.apply_split(cstate, x["symbol"], x["ratio"])
-                bars = {(r.symbol, ds): {"o": float(r.o), "c": float(r.c)}
+                        lstate = B.apply_split(lstate, x["symbol"], x["ratio"])
+                bars = {(r.symbol, ds): {"o": float(r.o), "h": float(r.h), "l": float(r.l), "c": float(r.c)}
                         for r in raw[raw["date"] == d].itertuples(index=False)}
                 sig, skipped = make_signals(api, d, events, u, store, raw, adj, tdays)
+                for x in sig:          # P1 clarification 11: the night's IBKR fee, logged, not used by the book
+                    f = fee_by.get(x["symbol"]) or {}
+                    x.update({k: (None if pd.isna(f.get(c)) else float(f[c])) for k, c in
+                              (("borrow_fee", "fee"), ("borrow_available", "available"))}, borrow_day=fee_day)
                 state = B.process_day(state, cfg, ds, bars, sig, tds)
                 accepted = [x for x in state["pending_entries"] if x["signal_date"] == ds]
                 ctrl = draw_controls(d, accepted, u, store, tdays, cstate)
                 cstate = B.process_day(cstate, ccfg, ds, bars, [c for c in ctrl if c.get("symbol")], tds)
-                rec.update(signals=sig, skipped=skipped, controls=ctrl, splits=splits, book=state, control_book=cstate,
+                lsig = [dict(x, limit=round(x["close"] * (1 + LIMIT_OFFSET if x["side"] == "long" else 1 - LIMIT_OFFSET), 4))
+                        for x in sig]
+                lstate = B.process_day(lstate, cfg, ds, bars, lsig, tds)
+                rec.update(signals=sig, skipped=skipped, controls=ctrl, splits=splits, book=state, control_book=cstate, limit_book=lstate,
                            summary=B.summary(state, cfg))
             led.write_json("paper_day", ds, f"days/{ds}.json", rec)
             print(f"paper: {ds}: {funnel.get('events', 0)} events, {len(rec.get('signals', []))} signals"

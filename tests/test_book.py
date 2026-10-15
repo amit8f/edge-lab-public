@@ -98,3 +98,20 @@ def test_account_caps_across_tracks():
     cfg = dict(CFG, account=dict(CFG["account"], max_gross=0.05))
     s = process_day(new_state(cfg), cfg, day, {}, [sig(atr=2.0)], CAL)
     assert [r["reason"] for r in s["rejected"]] == ["account gross exposure cap"]
+
+
+def test_limit_entries():
+    from paper.book import limit_fill
+    assert limit_fill("long", 10.1, {"o": 10.0, "l": 9.8}) == 10.0          # open already below the limit
+    assert limit_fill("long", 10.1, {"o": 10.5, "l": 10.0}) == 10.1         # trades through it later
+    assert limit_fill("long", 10.1, {"o": 10.5, "l": 10.1}) is None         # only touches it
+    assert limit_fill("short", 9.9, {"o": 9.7, "h": 10.0}) == 9.9
+    assert limit_fill("short", 9.9, {"o": 9.7, "h": 9.8}) is None
+    day0, day1 = CAL[0], CAL[1]
+    s = new_state(CFG)
+    s = process_day(s, CFG, day0, {("AAA", day0): {"o": 100, "c": 100}}, [sig(limit=101.0), sig("BBB", limit=99.0)], CAL)
+    s = process_day(s, CFG, day1, {("AAA", day1): {"o": 100.5, "h": 102, "l": 99, "c": 101},
+                                   ("BBB", day1): {"o": 101, "h": 102, "l": 100, "c": 101}}, [], CAL)
+    (p,) = s["open"]
+    assert p["symbol"] == "AAA" and p["entry_price"] == 100.5 and p["costs"] == 0
+    assert s["rejected"][-1]["symbol"] == "BBB" and s["rejected"][-1]["reason"] == "limit not filled"
