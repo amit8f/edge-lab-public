@@ -122,6 +122,9 @@ def test_first_night_signals_controls_and_mirror(tmp_path):
         s["event_id"] for s in rec["signals"] if s["idea"] == "P2")
     assert len(rec["control_book"]["pending_entries"]) == 2
     assert N._read(led, "paper_day", "2026-10-30")["warmup"] is True
+    lim = {e["symbol"]: e["limit"] for e in rec["limit_book"]["pending_entries"]}
+    assert lim == {"XPEN": pytest.approx(2.97), "YPEN": pytest.approx(3.03)}
+    assert all(s["borrow_day"] is None for s in rec["signals"])
     sides = {b["symbol"]: (b["side"], b["time_in_force"]) for b in api.sent}
     assert sides == {"XPEN": ("sell", "opg"), "YPEN": ("buy", "opg")}
     assert all(b["client_order_id"].startswith("el-20261102-") and int(b["qty"]) >= 1 for b in api.sent)
@@ -134,6 +137,11 @@ def test_first_night_signals_controls_and_mirror(tmp_path):
     N.run(tmp_path, now=et("2026-11-04 05:00"), api=api)
     rec2 = N._read(led, "paper_day", "2026-11-03")
     assert {p["symbol"] for p in rec2["book"]["open"]} == {"XPEN", "YPEN"}
+    # flat synthetic bars (open 3.00, range 2.91-3.09): both limits trade through, at the open
+    lb = {p["symbol"]: p for p in rec2["limit_book"]["open"]}
+    assert {k: p["entry_price"] for k, p in lb.items()} == {"XPEN": 3.0, "YPEN": 3.0}
+    assert lb["YPEN"]["costs"] == 0                     # no entry cost; the short pays one day of borrow
+    assert lb["XPEN"]["costs"] == pytest.approx(lb["XPEN"]["notional"] * 0.20 / 252)
     m = N._read(led, "paper_mirror", "2026-11-03")
     assert len(m["fills"]) == 2
     assert sorted(x["is_vs_book_open"] for x in m["shortfall"]) == pytest.approx([-0.01, 0.01])

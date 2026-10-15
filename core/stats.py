@@ -42,6 +42,30 @@ def ols_hac(y, F, lags):
             "betas": [float(v) for v in b[1:]], "r2": float(r2), "n": int(len(y))}
 
 
+def ols_cluster(y, F, groups):
+    """y = a + F b + e with standard errors clustered by `groups` (CR1 small-sample factor). Returns
+    dict(alpha, se, t, betas, n, clusters) on rows where y and every factor are finite."""
+    y = np.asarray(y, dtype=float)
+    F = np.asarray(F, dtype=float).reshape(len(y), -1)
+    g = np.asarray(groups)
+    ok = np.isfinite(y) & np.isfinite(F).all(axis=1)
+    y, F, g = y[ok], F[ok], g[ok]
+    X = np.c_[np.ones(len(y)), F]
+    b, *_ = np.linalg.lstsq(X, y, rcond=None)
+    e = y - X @ b
+    inv = np.linalg.pinv(X.T @ X)
+    meat = np.zeros((X.shape[1], X.shape[1]))
+    cl = np.unique(g)
+    for c in cl:
+        s = X[g == c].T @ e[g == c]
+        meat += np.outer(s, s)
+    n, k, G = len(y), X.shape[1], len(cl)
+    adj = G / (G - 1) * (n - 1) / (n - k) if G > 1 and n > k else float("nan")
+    se = np.sqrt(np.diag(inv @ meat @ inv) * adj)
+    return {"alpha": float(b[0]), "se": float(se[0]), "t": float(b[0] / se[0]) if se[0] > 0 else float("nan"),
+            "betas": [float(v) for v in b[1:]], "n": int(n), "clusters": int(G)}
+
+
 def parse_french(raw_zip):
     """Monthly table of a Ken French CSV zip as decimals, indexed by month period, columns as in the file
     header (e.g. Mkt-RF, SMB, HML, RMW, CMA, RF; or Mom). Stops at the annual section."""
