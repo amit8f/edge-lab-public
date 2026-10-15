@@ -25,6 +25,7 @@ def _load(path):
 
 def ideas(results):
     v2 = (_load(Path(results) / "V2" / "V2_results.json") or {}).get("ideas", {})
+    caveats = _load(Path(results) / "V2" / "caveats.json") or {}
     rows = []
     for idea, name in NAMES.items():
         s = _load(Path(results) / idea / f"{idea}_screen.json")
@@ -38,7 +39,8 @@ def ideas(results):
                      "raw_passes": bool(p.get("passes")),
                      "alpha": a.get("alpha"), "alpha_t": a.get("alpha_t"), "p_romano_wolf": a.get("p_romano_wolf"),
                      "dsr": a.get("dsr"), "survives": bool(a.get("survives", False)),
-                     "rejudged": bool(a)})
+                     "rejudged": bool(a), "caveat": (caveats.get(idea) or {}).get("text"),
+                     "robust": (caveats.get(idea) or {}).get("robust", True)})
     return rows
 
 
@@ -70,5 +72,5 @@ def build(results, state):
                                                  default=None),
                    "decision": v3.get("decision")}
     rows = ideas(results)
-    return {"pipeline": pipeline, "ideas": rows, "any_survives": any(r["survives"] for r in rows),
+    return {"pipeline": pipeline, "ideas": rows, "any_survives": any(r["survives"] and r["robust"] for r in rows),
             "forward": forward, "timestamps": timestamps(state)}
