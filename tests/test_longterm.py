@@ -491,3 +491,13 @@ def test_screen_m7_end_to_end_with_fakes(tmp_path, monkeypatch):
     res = screen_m7.run(tmp_path / "cache", tmp_path / "out7")
     assert res["primary"]["n_dates"] > 10 and res["funnel"]["sue_filed_after_signal_date"] == 0
     assert (tmp_path / "out7" / "M7_screen.json").exists()
+
+
+def test_scheduled_run_skips_days_without_a_log(tmp_path, monkeypatch):
+    from tracks.main.longterm import live
+    t = pd.Timestamp("2026-10-14")
+    monkeypatch.setattr(live, "last_session", lambda now: (t, False))
+    monkeypatch.setattr(live, "week_end", lambda d: False)
+    monkeypatch.setattr(live.bars_batch, "assets_all", lambda: (_ for _ in ()).throw(AssertionError("no work expected")))
+    assert live.run(tmp_path / "state", tmp_path / "cache", now=pd.Timestamp("2026-10-15T03:30:00Z"), log_days_only=True) is None
+    assert not (tmp_path / "state" / "longterm" / "dashboard.html").exists()

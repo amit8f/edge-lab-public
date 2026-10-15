@@ -137,13 +137,17 @@ def track_record(ledger, closes, today, kind="M4_picks", cap_days=int(TRACK_DAYS
     return out
 
 
-def run(state, cache, now=None):
+def run(state, cache, now=None, log_days_only=False):
     now = now if now is not None else alpaca.utcnow()
     state, cache = Path(state), Path(cache)
     root = state / "longterm"
     root.mkdir(parents=True, exist_ok=True)
     ledger = Ledger(root)
     t, is_month_end = last_session(now)
+    is_week_end = week_end(t)
+    if log_days_only and not (is_month_end or is_week_end):
+        print(f"{t:%Y-%m-%d} is not a logging day (week or month end); the dashboard refreshes on demand")
+        return None
     start = (t - pd.Timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
     end = alpaca.sip_end(t, now)
     print(f"as of {t:%Y-%m-%d} (month end: {is_month_end})")
@@ -211,7 +215,7 @@ def run(state, cache, now=None):
     except Exception as e:  # the experimental section must never take the main dashboard down
         print(f"[boom] section skipped: {type(e).__name__}: {e}")
         boom, boom_scored = {}, {}
-    if boom_scored and week_end(t):
+    if boom_scored and is_week_end:
         for idea, s in boom_scored.items():
             if ledger.has(f"{idea}_watch", f"{t:%Y-%m-%d}"):
                 continue
@@ -223,7 +227,7 @@ def run(state, cache, now=None):
                           for i, r in s.head(TOP_N).iterrows()],
                 "control": ctrl, "control_seed": SEED + t.toordinal(), "universe": s["symbol"].tolist()})
             print(f"logged {idea} watch list for {t:%Y-%m-%d}")
-    if is_month_end and not ledger.has("M8_picks", f"{t:%Y-%m-%d}"):
+    if is_week_end and not ledger.has("M8_picks", f"{t:%Y-%m-%d}"):
         try:
             if news_rows is None:
                 raise RuntimeError("no headlines")
@@ -250,7 +254,7 @@ def run(state, cache, now=None):
     live_tests = {"M8": {"latest": None if m8_latest is None else
                          {"as_of": m8_latest["as_of"], "picks": [dict(p, name=names.get(p["symbol"]) or "")
                                                                  for p in m8_latest["picks"]]},
-                         "record": track_record(ledger, closes, t, kind="M8_picks")}}
+                         "record": track_record(ledger, closes, t, kind="M8_picks", cap_days=BOOM_TRACK_DAYS)}}
     for idea in boom:
         boom[idea]["record"] = track_record(ledger, closes, t, kind=f"{idea}_watch", cap_days=BOOM_TRACK_DAYS)[-12:]
 
@@ -269,8 +273,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--state", required=True)
     ap.add_argument("--cache", required=True)
+    ap.add_argument("--log-days-only", action="store_true",
+                    help="scheduled runs: only run on the last session of a week or month (forward logs)")
     a = ap.parse_args()
-    run(a.state, a.cache)
+    run(a.state, a.cache, log_days_only=a.log_days_only)
 
 
 if __name__ == "__main__":
