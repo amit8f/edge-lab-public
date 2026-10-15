@@ -150,3 +150,13 @@ def test_panel_build_resumes_after_budget(tmp_path, monkeypatch):
     pn, _ = _fake_world(tmp_path, monkeypatch)
     assert pn.build(tmp_path / "cache", deadline=0) is None               # budget already spent: nothing done
     assert pn.build(tmp_path / "cache") is not None
+
+
+def test_panel_build_fetches_missing_news_months(tmp_path, monkeypatch):
+    # a run without the M6 news cache (e.g. on main) fetches the missing months instead of crashing
+    pn, _ = _fake_world(tmp_path, monkeypatch)
+    (tmp_path / "cache" / "news" / "news_2023-02.parquet").unlink()
+    got = []
+    monkeypatch.setattr(pn.news_history, "fetch_month", lambda month, fetch=None: got.append(month) or pd.DataFrame(
+        {"id": [9], "created_at": ["2023-02-01T15:00:00Z"], "headline": ["x"], "symbols": ["P1"]}))
+    assert pn.build(tmp_path / "cache") is not None and got == ["2023-02"]
