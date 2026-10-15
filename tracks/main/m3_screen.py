@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-from core import alpaca
+from core import alpaca, stats
 from core.bars import fetch_daily_bars, to_frames
 from core.env import alpaca_headers
 from tracks.main.longterm import bars_batch, sec_data
@@ -140,6 +140,31 @@ def summary(ex, lags):
             "hit_rate": float((ex["excess"] > 0).mean())}
 
 
+REP_CORR_UMD, REP_CORR_MKT, REP_MEAN_DIFF = 0.80, 0.95, 0.005
+
+
+def replication(s1, ff5, umd):
+    """research/REPLICATION.md: rebuild Ken French's momentum factor (2x3 value-weighted sort on size and
+    12-1 momentum) and the value-weighted market on our month-end panel, and compare month by month."""
+    rows = []
+    for t, g in s1.dropna(subset=["ret1", "mcap", "mom"]).groupby("date", sort=True):
+        big = g["mcap"] >= g["mcap"].median()
+        lo, hi = g["mom"].quantile([0.3, 0.7])
+        vw = lambda m: np.average(g.loc[m, "ret1"], weights=g.loc[m, "mcap"]) if m.any() else np.nan
+        up = 0.5 * (vw(~big & (g["mom"] >= hi)) + vw(big & (g["mom"] >= hi)))
+        dn = 0.5 * (vw(~big & (g["mom"] <= lo)) + vw(big & (g["mom"] <= lo)))
+        rows.append({"m": pd.Period(t, "M") + 1, "umd": up - dn, "mkt": vw(g["mcap"] > 0)})
+    ours = pd.DataFrame(rows).set_index("m")
+    ref = ff5.join(umd, how="inner").reindex(ours.index)
+    ours["mkt"] -= ref["RF"]
+    c_umd = float(ours["umd"].corr(ref[umd.columns[0]]))
+    c_mkt = float(ours["mkt"].corr(ref["Mkt-RF"]))
+    d_umd = float((ours["umd"] - ref[umd.columns[0]]).mean())
+    return {"months": int(ours["umd"].notna().sum()), "corr_umd": c_umd, "corr_mkt": c_mkt,
+            "mean_diff_umd": d_umd, "passes": bool(c_umd >= REP_CORR_UMD and c_mkt >= REP_CORR_MKT
+                                                   and abs(d_umd) <= REP_MEAN_DIFF)}
+
+
 def prepare(cache):
     """Shared by M3 and M1 (same 116 dates): month-end rows of the eligible universe with scores and
     forward returns, plus the factor file, SPY, the horizon ends and the funnel."""
@@ -204,10 +229,19 @@ def run(cache, out):
     uni, ff, raw, ff_ok, ends1, ends3, funnel = (p[k] for k in ("uni", "ff", "ff_raw", "ff_ok", "ends1", "ends3",
                                                                   "funnel"))
     s1 = uni[uni["date"].isin(ends1.keys())]
-    prim = summary(excess(s1, "ret1", "score", TOP_N), 3)
-    prim["passes"] = bool(prim["mean"] > 0 and prim["t_hac"] >= 2.0 and prim["ci95"][0] > 0)
-    res = {"idea": "M3", "prereg": "research/prereg/M3.md", "phase2_count": 10, "main_count": 7,
-           "phase1_plus_phase2": 25, "ff_sha256": hashlib.sha256(raw).hexdigest(),
+    ff5, sha5 = stats.fetch_french(stats.FF5)
+    umd, shau = stats.fetch_french(stats.UMD)
+    rep = replication(s1, ff5, umd)
+    ex1 = excess(s1, "ret1", "score", TOP_N)
+    prim = summary(ex1, 3)
+    p2, both = stats.idea_counts()
+    alpha = stats.factor_alpha(ex1["excess"], stats.month_after(ex1["date"]), ff5, umd, 3)
+    prim["factor_alpha"] = alpha
+    prim["deflated_sharpe"] = stats.deflated_sharpe(ex1["excess"], both)
+    prim["passes"] = stats.screen_pass(prim, alpha) and rep["passes"]
+    res = {"idea": "M3", "prereg": "research/prereg/M3.md", "phase2_count": p2,
+           "phase1_plus_phase2": both, "ff_sha256": hashlib.sha256(raw).hexdigest(),
+           "ff5_sha256": sha5, "umd_sha256": shau, "replication": rep,
            "ff_months": [str(ff.index.min()), str(ff.index.max())], "ff_covers_all_windows": ff_ok, "funnel": funnel, "primary": prim,
            "control": summary(excess(s1, "ret1", "score", TOP_N, rng_seed=SEED), 3)}
     s3 = uni[uni["date"].isin(ends3.keys())]

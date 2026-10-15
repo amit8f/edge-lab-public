@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 13** (main 9, penny 3, news 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 28.
+**Phase 2 count: 15** (main 9, penny 3, news 2, cross-track 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 30.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC). The counts written inside M1, N1, P1, P2 and
@@ -9,7 +9,9 @@ M3 were computed without M10 and P3; their true running counts are 8 to 12. This
 reference count.
 
 Planned, not registered (see `docs/PLAN_V2.md`): M2 options direction on big movers.
-An idea is counted when its pre-registration is committed.
+An idea is counted when its pre-registration is committed. C0 ([prereg/C0.md](prereg/C0.md), trading-cost
+measurement) tests no edge and is not counted. From 2026-10-15 the rules in `PROTOCOL.md` 10-15 apply;
+`MECHANISMS.md` says who loses money to each earlier idea.
 
 | ID | Track | Registered | Idea | Source | Pre-registration | Outcome |
 |---|---|---|---|---|---|---|
@@ -26,3 +28,5 @@ An idea is counted when its pre-registration is committed.
 | P2 | penny | 2026-10-15 | Forward paper longs after guidance raises (phase 1 rule) minus offerings, pumps and reverse splits; 5 days | Plan v2; phase 1 I-13 (in-sample, disclosed) | [prereg/P2.md](prereg/P2.md) | |
 | M3 | main | 2026-10-15 | Residual momentum (Fama-French 3-factor residuals, months t-11..t-1, scaled): top 25 vs universe, 1 month | Plan v2; Blitz, Huij & Martens (2011) | [prereg/M3.md](prereg/M3.md) | |
 | M11 | main | 2026-10-15 | Calculated-risk boom picks: M10's top 100 by boom probability, keep the 20 best on quality, value and buybacks; weekly, 21-day hold, t >= 3 | Amit's request (underpriced and could explode); post-hoc to M10's volatility finding (disclosed) | [prereg/M11.md](prereg/M11.md) | |
+| L1 | news | 2026-10-15 | First-public-moment lags: how long after EDGAR acceptance (offerings, late filings, delisting notices, auditor changes, officer departures, 13Ds, insider buys) the headline and the price move come; a category is a candidate only at a 60-minute median lag and a signed return t >= 3 after costs | Amit's news-clues request (deeper plan) | [prereg/L1.md](prereg/L1.md) | |
+| B0 | main+penny | 2026-10-15 | Burst base rates: what was visible before +30%-in-10-days jumps vs matched non-jumpers (short interest, short volume, fails-to-deliver, lockups, insider buys, filings, price, news); logistic model, pass at test AUC >= 0.60 | Amit's burst request (deeper plan) | [prereg/B0.md](prereg/B0.md) | |

@@ -86,3 +86,21 @@ def test_excess_picks_before_returns():
     # top 2 are a (no return, dropped) and b; universe mean over names with a return
     assert np.isclose(ex["excess"].iloc[0], 0.10 - np.mean([0.10, 0.0, -0.02]) - m3.COST)
     assert ex["n"].iloc[0] == 1 and ex["dropped"].iloc[0] == 1
+
+
+def test_replication_matches_a_momentum_world():
+    rng = np.random.default_rng(7)
+    months = pd.date_range("2016-01-31", periods=60, freq="ME")
+    f, mk = rng.normal(0, 0.03, 60), rng.normal(0.01, 0.04, 60)
+    rows = []
+    for k, t in enumerate(months):
+        mom = rng.normal(0, 1, 300)
+        rows.append(pd.DataFrame({"date": t, "mom": mom, "mcap": rng.lognormal(22, 1, 300),
+                                  "ret1": mk[k] + f[k] * np.sign(mom) + rng.normal(0, 0.001, 300)}))
+    per = [pd.Period(t, "M") + 1 for t in months]
+    ff5 = pd.DataFrame({"Mkt-RF": mk - 0.001, "RF": 0.001, "SMB": 0, "HML": 0, "RMW": 0, "CMA": 0}, index=per)
+    umd = pd.DataFrame({"Mom": 2 * f}, index=per)
+    rep = m3.replication(pd.concat(rows), ff5, umd)
+    assert rep["months"] == 60 and rep["corr_umd"] > 0.99 and rep["corr_mkt"] > 0.95 and rep["passes"]
+    rep_bad = m3.replication(pd.concat(rows), ff5, umd.assign(Mom=rng.normal(0, 0.03, 60)))
+    assert not rep_bad["passes"]
