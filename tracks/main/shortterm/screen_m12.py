@@ -130,8 +130,8 @@ def factor_test(ex, f):
             "sharpe_per_period": sr, "skew": sk, "kurtosis": ku, "T": T}
 
 
-def cost_used(results=ROOT / "research" / "results"):
-    p = Path(results) / "V4" / "V4_results.json"
+def cost_used(results=None):
+    p = Path(results or ROOT / "research" / "results") / "V4" / "V4_results.json"
     if p.exists():
         m = json.loads(p.read_text()).get("costs", {}).get("M10", {}).get("measured_mean")
         if m is not None and m > COST_FLAT:
