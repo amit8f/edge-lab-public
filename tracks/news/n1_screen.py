@@ -24,7 +24,7 @@ from tracks.main.longterm import bars_batch, news_history, sec_data
 from tracks.main.longterm.prices import align, segment_ids, split_points
 from tracks.main.longterm.score import attach_fundamentals, eligible
 from tracks.main.longterm.stats import block_bootstrap_ci, nw_tstat
-from tracks.news import llm
+from tracks.news import llm, lm
 
 ET = "America/New_York"
 NEWS_FIRST, NEWS_LAST = "2025-01", "2025-09"
@@ -126,6 +126,24 @@ def daily_stats(trades, col):
             "n_days": int(per_day.notna().sum()), "hit_rate": float((trades[col] > 0).mean())}
 
 
+def dictionary_baseline(sig, col):
+    """N1 amendment (dictionary baseline): the same short trade on Loughran-McDonald NEG headlines, the
+    per-day difference LLM minus dictionary on days both trade, and the trades only one of them takes.
+    Reported beside the primary test; it does not change the decision."""
+    ok = sig[sig[col].notna()]
+    llm_s, lm_s = ok[ok["side"] == "short"], ok[ok["lm_side"] == "short"]
+    out = {"dictionary_short": daily_stats(lm_s, col) if len(lm_s) > 2 else None,
+           "llm_only": daily_stats(llm_s[llm_s["lm_side"] != "short"], col) if (llm_s["lm_side"] != "short").sum() > 2 else None,
+           "dictionary_only": daily_stats(lm_s[lm_s["side"] != "short"], col) if (lm_s["side"] != "short").sum() > 2 else None,
+           "overlap_trades": int(((ok["side"] == "short") & (ok["lm_side"] == "short")).sum())}
+    a, b = llm_s.groupby("entry")[col].mean(), lm_s.groupby("entry")[col].mean()
+    d = (a - b).dropna()
+    if len(d) > 2:
+        m, se, t = nw_tstat(d.to_numpy(), 2)
+        out["llm_minus_dictionary_per_day"] = {"mean": m, "t_hac": t, "n_days": int(len(d))}
+    return out
+
+
 # ---------- stages ----------
 
 def stage_data(cache):
@@ -221,6 +239,7 @@ def stage_returns(cache, out, models):
     la, lb = llm.load_cache(cache / "labels_gemini.jsonl"), llm.load_cache(cache / "labels_groq.jsonl")
     inu["gemini"], inu["groq"] = inu["key"].map(la), inu["key"].map(lb)
     assert inu["gemini"].notna().all() and inu["groq"].notna().all(), "labels incomplete"
+    inu["lm"] = inu["headline"].map(lm.label)
     pxf = pd.read_parquet(cache / "px.parquet")
     px = {s: g.set_index("date") for s, g in pxf.groupby("symbol")}
     spy = pd.read_parquet(cache / "spy.parquet")
@@ -242,7 +261,8 @@ def stage_returns(cache, out, models):
         t0 = g["t"].min()
         inside = t0.weekday() < 5 and pd.Timedelta(hours=9, minutes=30) <= t0 - t0.normalize() < pd.Timedelta(hours=16)
         sig.append({"symbol": s, "entry": e, "prev": g["prev"].iloc[0], "side": side, "gemini_neg": bool(g_neg),
-                    "groq_neg": bool(q_neg), "inside_hours": bool(inside), "month": f"{e:%Y-%m}"})
+                    "groq_neg": bool(q_neg), "inside_hours": bool(inside), "month": f"{e:%Y-%m}",
+                    "lm_side": decide(list(zip(g["lm"], g["lm"])))})
     sig = pd.DataFrame(sig)
     for k in (1, HOLD, 5):
         ex = sig["entry"].map(lambda e: exits(e, k) if cal.searchsorted(e) + k - 1 < len(cal) else pd.NaT)
@@ -293,6 +313,7 @@ def stage_returns(cache, out, models):
         "hold_1": daily_stats(sig[(sig["side"] == "short") & sig["short1"].notna()], "short1"),
         "hold_5": daily_stats(sig[(sig["side"] == "short") & sig["short5"].notna()], "short5"),
         "per_month": shorts.groupby("month")[f"short{HOLD}"].agg(["mean", "count"]).reset_index().to_dict("records")}
+    res["dictionary_baseline"] = dictionary_baseline(sig, f"short{HOLD}")
     out.mkdir(parents=True, exist_ok=True)
     (out / "N1_screen.json").write_text(json.dumps(res, indent=1, default=str))
     shorts.sort_values(f"short{HOLD}").to_csv(out / "N1_trades.csv", index=False)
