@@ -1,6 +1,7 @@
 """Nightly short-borrow fees and shares available, from Interactive Brokers' public stock-loan file.
 
-IBKR publishes its shortable-stock list on a public FTP server (user "shortstock", no password),
+IBKR publishes its shortable-stock list on a public FTP server (user "shortstock", no password;
+ftp2 answers from GitHub's servers, ftp3 timed out there on 2026-10-15, so ftp3 is only the fallback),
 updated through the day: one pipe-separated line per stock with the rebate rate, the fee rate (% a
 year) and the shares available to borrow. Alpaca only says yes/no to "easy to borrow", and P1 assumes
 a flat 20% a year; this log gives each P1 trade the real fee on the night it was decided (P1
@@ -18,16 +19,25 @@ import pandas as pd
 
 from core.ledger import Ledger
 
-HOST, USER, FILE = "ftp3.interactivebrokers.com", "shortstock", "usa.txt"
+HOSTS = ("ftp2.interactivebrokers.com", "ftp3.interactivebrokers.com")
+USER, FILE = "shortstock", "usa.txt"
 ET = "America/New_York"
 
 
-def fetch(host=HOST):
-    buf = io.BytesIO()
-    with ftplib.FTP(host, timeout=120) as f:
-        f.login(USER, "")
-        f.retrbinary(f"RETR {FILE}", buf.write)
-    return buf.getvalue().decode("latin-1")
+def fetch(hosts=HOSTS):
+    """The file's text from the first host that answers; raises the last error when none does."""
+    err = None
+    for host in hosts:
+        try:
+            buf = io.BytesIO()
+            with ftplib.FTP(host, timeout=120) as f:
+                f.login(USER, "")
+                f.retrbinary(f"RETR {FILE}", buf.write)
+            return buf.getvalue().decode("latin-1")
+        except (OSError, ftplib.Error) as e:
+            print(f"borrow: {host} failed ({type(e).__name__})")
+            err = e
+    raise err
 
 
 def parse(text):

@@ -26,13 +26,23 @@ def http(url, n=600, headers=None, method="get", **kw):
 
 
 def ibkr():
-    buf = io.BytesIO()
-    with ftplib.FTP("ftp3.interactivebrokers.com", timeout=60) as f:
-        f.login("shortstock", "")
-        names = f.nlst()
-        f.retrbinary("RETR usa.txt", buf.write)
-    lines = buf.getvalue().decode("latin-1").splitlines()
-    return f"files: {names[:10]}\nlines: {len(lines)}\n" + "\n".join(lines[:4])
+    """Each IBKR host in turn: a bare TCP connect to port 21 first (tells a blocked port from a slow
+    data channel), then login, listing and the file itself."""
+    import socket
+    out = []
+    for host in ("ftp2.interactivebrokers.com", "ftp3.interactivebrokers.com", "ftp.interactivebrokers.com"):
+        try:
+            socket.create_connection((host, 21), timeout=20).close()
+            buf = io.BytesIO()
+            with ftplib.FTP(host, timeout=60) as f:
+                f.login("shortstock", "")
+                names = f.nlst()
+                f.retrbinary("RETR usa.txt", buf.write)
+            lines = buf.getvalue().decode("latin-1").splitlines()
+            out.append(f"{host}: OK files {names[:6]} lines {len(lines)}\n" + "\n".join(lines[:3]))
+        except Exception as e:  # noqa: BLE001
+            out.append(f"{host}: FAILED {type(e).__name__}: {str(e)[:200]}")
+    return "\n".join(out)
 
 
 def ftd():
