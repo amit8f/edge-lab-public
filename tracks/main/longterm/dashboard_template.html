@@ -158,7 +158,7 @@ function plan() {
   const h3 = t => `<h3 style="margin:6px 0 0;font-family:var(--display)">${esc(t)}</h3>`;
   el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p>`
     + P.owners.map(o => h3(o.name + ": sell") + tbl(["Ticker", "Shares", "Action", "Why", "Who says so"], o.sell) + `<p class="fine">${esc(o.keep)}</p>`).join("")
-    + h3("Buy (each of you)") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "From"],
+    + h3("Buy, in steps") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "When and why"],
         P.buy.map(b => [b[0], b[1], b[2], b[3].toFixed(2), Math.round(b[2] * b[3]), b[4]]))
     + `<p class="fine">${esc(P.buy_note)}</p>`;
   el.hidden = false;
