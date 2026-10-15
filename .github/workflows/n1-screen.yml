@@ -1,0 +1,81 @@
+# N1 historical screen (research/prereg/N1.md, tracks/news/n1_screen.py). Run by hand in order:
+#   stage=data once; stage=labels once a day until it reports "labels complete" (free-tier daily quotas;
+#   the daily schedule does this when the repository variable N1_LABELS is true); then, after the hand
+#   check is committed as research/results/N1/label_check.md, stage=returns.
+# Results are committed back to the branch that ran it.
+name: n1-screen
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "data, labels or returns"
+        required: true
+        default: labels
+  schedule:
+    - cron: "15 8 * * *"     # daily labels run (quotas reset at midnight Pacific)
+
+permissions: {}
+
+jobs:
+  screen:
+    if: github.event_name == 'workflow_dispatch' || vars.N1_LABELS == 'true'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/n1
+          key: n1-v1-${{ github.run_id }}
+          restore-keys: n1-v1-
+
+      - name: Run the stage
+        env:
+          STAGE: ${{ github.event.inputs.stage || 'labels' }}
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: .venv/bin/python -m tracks.news.n1_screen --stage "$STAGE" --cache cache/n1 --out research/results/N1 --budget-min 90
+
+      - name: Save the data cache (also after a failure)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/n1
+          key: n1-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/N1
+          if git diff --cached --quiet; then echo "no new results"; exit 0; fi
+          git commit -q -m "N1 screen output (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
