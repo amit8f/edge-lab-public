@@ -10,8 +10,12 @@ Rules (docs/PLAN_V2.md, "Risk rules"):
 - Time exit at the close of the hold_days-th trading day, counting the entry day as day 1.
 - No take-profit. Costs: half the round trip on entry, half on exit. Shorts pay borrow every held day and
   need the stock to be shortable and easy to borrow on the signal date.
-- New entries stop when a track's P&L falls pause_drawdown x (start / 3) below its peak, or when the
-  account falls pause_drawdown below its peak.
+- New entries stop when a track's P&L falls pause_drawdown x its sleeve (start x the track's share in
+  account.sleeves, or start / 3 without it) below its peak, or when the account falls pause_drawdown
+  below its peak.
+- Account-wide caps across all tracks (PROTOCOL rule 15's one book), when set in account: total
+  long + short notional <= max_gross x equity; notional in one symbol <= max_name x equity; the sum of
+  notional x stop distance (money lost if every stop is hit) <= max_open_risk x equity.
 
 Fills use raw prices (adjustment=raw), as a broker would. When a held stock splits, the nightly job calls
 apply_split so entry, stop and last prices stay on the new share basis. Cash dividends are not modelled
@@ -150,13 +154,16 @@ def process_day(state, cfg, day, bars, signals, calendar):
     eq = equity(s, cfg)
     s["peak_equity"] = max(s["peak_equity"], eq)
     account_paused = eq < s["peak_equity"] * (1 - cfg["account"]["pause_drawdown"])
-    sleeve = float(cfg["account"]["paper_start_usd"]) / len(TRACKS)
+    start = float(cfg["account"]["paper_start_usd"])
+    shares = cfg["account"].get("sleeves") or {t: 1 / len(TRACKS) for t in TRACKS}
     paused = {}
     for t in TRACKS:
         pnl = _track_pnl_now(s, t)
         s["track_pnl"][t] = pnl
         s["track_peak"][t] = max(s["track_peak"][t], pnl)
-        paused[t] = account_paused or (s["track_peak"][t] - pnl) > tc[t]["pause_drawdown"] * sleeve
+        paused[t] = account_paused or (s["track_peak"][t] - pnl) > tc[t]["pause_drawdown"] * start * shares[t]
+    acct = cfg["account"]
+    book = s["open"] + s["pending_entries"]
 
     # 4. new signals -> pending entries for the next open
     for sig in signals:
@@ -182,8 +189,20 @@ def process_day(state, cfg, day, bars, signals, calendar):
         cap = rc["long_stop_cap"] if sig["side"] == "long" else rc["short_stop_cap"]
         dist = min(rc["atr_mult"] * sig["atr20"] / sig["close"], cap)
         notional = min(eq * rc["risk_per_trade"] / dist, eq / rc["max_positions"])
-        s["pending_entries"].append(dict(sig, signal_date=day, entry_date=next_day, notional=notional,
-                                         stop_dist=dist))
+        if "max_gross" in acct and sum(x["notional"] for x in book) + notional > acct["max_gross"] * eq:
+            reason = "account gross exposure cap"
+        elif "max_name" in acct and sum(x["notional"] for x in book if x["symbol"] == sig["symbol"]) + notional \
+                > acct["max_name"] * eq:
+            reason = "account per-symbol cap"
+        elif "max_open_risk" in acct and sum(x["notional"] * x["stop_dist"] for x in book) + notional * dist \
+                > acct["max_open_risk"] * eq:
+            reason = "account open-risk cap"
+        if reason:
+            s["rejected"].append(dict(sig, signal_date=day, reason=reason))
+            continue
+        entry = dict(sig, signal_date=day, entry_date=next_day, notional=notional, stop_dist=dist)
+        s["pending_entries"].append(entry)
+        book.append(entry)
     s["last_day"] = day
     return s
 

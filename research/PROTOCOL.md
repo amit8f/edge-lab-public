@@ -24,3 +24,29 @@ count, shorting allowed, and per-track ledgers.
 8. **Post-hoc work is labelled** and feeds `IDEAS.md` only as hypotheses.
 9. **Going live.** Real money needs, per track: at least 100 closed paper trades, the idea's forward
    pre-registered test passed after costs, and the owner's written sign-off in this file.
+
+## Added 2026-10-15 (Amit approved the "deeper" plan, `rethink/DEEPER_2026-10-15.md` in the project files)
+
+These apply to every idea registered from 2026-10-15 13:00 UTC on, and to the screens M1, M3 and N1,
+which had no result then. Screens with results keep their verdicts; M11 keeps its own registered rules
+(it already passes only at t >= 3).
+
+10. **Mechanism first.** A pre-registration opens with three answers, written before any data is
+    touched: who is on the other side of the trade and why they keep accepting a bad price; why a fund
+    with $1B can't take the trade away while a $5k account can; and whether it is published, with the
+    expected decay. `research/MECHANISMS.md` answers them for the ideas registered before this rule.
+11. **Factor alpha.** Every screen and forward test also reports its monthly return's alpha on the
+    Fama-French 5 factors plus momentum (Ken French's files, sha256 saved; Newey-West errors,
+    `core/stats.py`). A screen passes only if its pre-registered test passes **and** that alpha is > 0
+    with t >= 2.0. Event ideas report a market-model CAR test with the Kolari-Pynnonen correction.
+12. **Higher bar for the count.** A historical screen passes only at a HAC t >= 3.0 (Harvey, Liu & Zhu
+    2016), not 2.0, and reports the deflated Sharpe ratio with the phase 1 + phase 2 idea count as the
+    number of trials. The forward test keeps its own pre-registered bar.
+13. **Outside timestamps.** Each pre-registration's sha256 is stamped with OpenTimestamps (anchored in
+    the Bitcoin blockchain; only the hash leaves the repo) when it lands on main. The `.ots` proofs and a
+    manifest live on the `state` branch under `timestamps/` (`core/timestamps.py`).
+14. **Pipeline replication.** Before a new data pipeline's screen counts, it reproduces a known result
+    to a pre-set tolerance (for the month-end stock panel: Ken French's momentum and market factors; see
+    `research/REPLICATION.md`). A failed replication stops the screens that use that pipeline.
+15. **Project deadline.** If no idea has passed its forward test by 2027-12-31, the project's output is
+    the research write-up, and no real-money track opens without a new written decision here.

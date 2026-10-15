@@ -3,6 +3,12 @@
 account:
   paper_start_usd: 5000
   pause_drawdown: 0.15          # whole paper account: stop opening positions below -15% from its peak
+  # One book across tracks (research/PROTOCOL.md, added 2026-10-15). A future burst sleeve (B1, if B0
+  # passes) would take 10% out of main and penny.
+  sleeves: {main: 0.45, penny: 0.25, news: 0.30}   # shares of the start used for each track's drawdown brake
+  max_gross: 1.5                # long + short notional, all tracks, <= 1.5 x equity
+  max_name: 0.20                # one symbol across all tracks <= 20% of equity (the largest single position)
+  max_open_risk: 0.06           # sum of notional x stop distance <= 6% of equity (all stops hit at once)
 
 tracks:
   main:

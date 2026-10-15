@@ -84,3 +84,17 @@ def test_split_rescales_prices():
     s = run([(CAL[2], {"AAA": (50, 50)})], state=s)
     (p,) = s["open"]
     assert p["entry_price"] == 50 and equity(s, CFG) == pytest.approx(5000 - p["costs"])
+
+
+def test_account_caps_across_tracks():
+    day = CAL[0]
+    # AAA main: notional 416.67, 25 at risk; AAA news: 2.5% stop -> 1000 notional, over the 20% name cap
+    s = process_day(new_state(CFG), CFG, day, {}, [sig(atr=2.0), sig(track="news", atr=1.0)], CAL)
+    assert [r["reason"] for r in s["rejected"]] == ["account per-symbol cap"]
+    # open-risk cap at 0.6% of equity (30): the second 25-at-risk trade is refused
+    cfg = dict(CFG, account=dict(CFG["account"], max_open_risk=0.006))
+    s = process_day(new_state(cfg), cfg, day, {}, [sig(atr=2.0), sig("BBB", atr=2.0)], CAL)
+    assert [r["reason"] for r in s["rejected"]] == ["account open-risk cap"]
+    cfg = dict(CFG, account=dict(CFG["account"], max_gross=0.05))
+    s = process_day(new_state(cfg), cfg, day, {}, [sig(atr=2.0)], CAL)
+    assert [r["reason"] for r in s["rejected"]] == ["account gross exposure cap"]

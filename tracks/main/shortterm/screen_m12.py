@@ -23,8 +23,8 @@ from validation.stats import deflated_sr, expected_max_sr, ols_hac, period_sr
 ROOT = Path(__file__).resolve().parents[3]
 TOP_N, IND_CAP, W_CAP = 20, 4, 0.10
 COST_FLAT, LAGS, BLOCK, T_BAR, SEED = 0.002, 6, 8, 3.0, 20261012
-N_TRIALS = 29
-COUNTS = {"phase2_count": 14, "main_count": 10, "phase1_plus_phase2": 29}
+N_TRIALS = 31
+COUNTS = {"phase2_count": 16, "main_count": 10, "phase1_plus_phase2": 31}
 CONTROLS = ["vol63", "lmcap"]
 NEUTRAL_FEATURES = [f for f in screen_m10.FEATURES if f not in CONTROLS]
 
@@ -32,21 +32,23 @@ NEUTRAL_FEATURES = [f for f in screen_m10.FEATURES if f not in CONTROLS]
 def neutralize(df, cols, ind_col="ind"):
     """Per date: OLS residual of each column on the vol63 rank, the lmcap rank and industry dummies
     (rows missing a regressor get NaN; a column's own NaNs stay NaN)."""
-    out = pd.DataFrame(index=df.index, columns=cols, dtype="float64")
-    for _, g in df.groupby("date", sort=False):
-        X0 = g[[f"rk_{c}" for c in CONTROLS]]
-        dummies = pd.get_dummies(g[ind_col], prefix="i", drop_first=True, dtype=float)
-        X = pd.concat([X0, dummies], axis=1)
-        okx = X.notna().all(axis=1)
-        for c in cols:
-            ok = okx & g[c].notna()
-            if ok.sum() <= X.shape[1] + 2:
+    out = np.full((len(df), len(cols)), np.nan)
+    ctrl = df[[f"rk_{c}" for c in CONTROLS]].to_numpy(float)
+    vals = df[cols].to_numpy(float)
+    ind = df[ind_col].to_numpy()
+    for idx in df.groupby("date", sort=False).indices.values():
+        levels = np.unique(ind[idx])
+        dummies = (ind[idx][:, None] == levels[None, 1:]).astype(float)
+        X = np.c_[np.ones(len(idx)), ctrl[idx], dummies]
+        okx = np.isfinite(X).all(axis=1)
+        for j in range(len(cols)):
+            y = vals[idx, j]
+            ok = okx & np.isfinite(y)
+            if ok.sum() <= X.shape[1] + 1:
                 continue
-            A = np.c_[np.ones(ok.sum()), X[ok].to_numpy(float)]
-            y = g.loc[ok, c].to_numpy(float)
-            beta, *_ = np.linalg.lstsq(A, y, rcond=None)
-            out.loc[g.index[ok], c] = y - A @ beta
-    return out
+            beta, *_ = np.linalg.lstsq(X[ok], y[ok], rcond=None)
+            out[idx[ok], j] = y[ok] - X[ok] @ beta
+    return pd.DataFrame(out, index=df.index, columns=cols)
 
 
 def neutral_panel(uni):

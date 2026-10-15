@@ -63,9 +63,8 @@ def test_m12_end_to_end_with_fakes(tmp_path, monkeypatch):
     monkeypatch.setattr(v2.french, "fetch", lambda name, cache: (files[name], "sha"))
     monkeypatch.setattr(m12, "ROOT", tmp_path)                                  # no V2/V4 results: flat cost, no DSR
     ind = pd.Series({c: 1 + c % 5 for c in range(1, 61)})
-    monkeypatch.setattr(m12, "TOP_N", 10)
     res = m12.run(tmp_path / "cache", tmp_path / "out", years=[2022, 2023], industries=ind)
     assert res["cost"] == 0.002 and res["primary"]["n_weeks"] > 20 and "passes" in res["primary"]
     ser = pd.read_csv(tmp_path / "out" / "M12_primary_series.csv")
-    assert (ser["max_per_industry"] <= 4).all() and (ser["n_picks"] == 10).all()
+    assert (ser["max_per_industry"] <= 4).all() and (ser["n_picks"] == 20).all()
     assert set(res["exploratory"]) >= {"not_neutralised_same_portfolio", "equal_weight", "no_industry_cap"}

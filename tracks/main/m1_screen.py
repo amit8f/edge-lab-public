@@ -22,7 +22,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from core import sec
+from core import sec, stats
 from tracks.main import m3_screen as m3
 from tracks.main.longterm.stats import block_bootstrap_ci, nw_tstat
 
@@ -273,16 +273,24 @@ def run(cache, out, budget_min):
     per_date = pan.groupby("date").agg(universe=("cik", "size"), scored=("score", lambda x: int(x.notna().sum())))
     funnel["scored_per_date_median"] = float(per_date["scored"].median())
     print("FUNNEL", json.dumps(funnel))
-    prim = summary(long_short(pan, "ret1"), 3)
-    prim["passes"] = bool(prim["mean"] > 0 and prim["t_hac"] >= 2.0 and prim["ci95"][0] > 0)
+    ls1 = long_short(pan, "ret1")
+    prim = summary(ls1, 3)
+    ff5, sha5 = stats.fetch_french(stats.FF5)
+    umd, shau = stats.fetch_french(stats.UMD)
+    p2, both = stats.idea_counts()
+    rep = m3.replication(uni[uni["date"].isin(dates)], ff5, umd)
+    alpha = stats.factor_alpha(ls1["excess"], stats.month_after(ls1["date"]), ff5, umd, 3)
+    prim["factor_alpha"] = alpha
+    prim["deflated_sharpe"] = stats.deflated_sharpe(ls1["excess"], both)
+    prim["passes"] = stats.screen_pass(prim, alpha) and rep["passes"]
     ctrl = summary(long_short(pan, "ret1", rng_seed=SEED), 3)
     d3 = sorted(ends3)
     ex = long_short(pan, "ret1").assign(year=lambda e: e["date"].dt.year)
     spy = spy_ret1(p["spy"], ends1)
     uni_vs_spy = pan.groupby("date")["ret1"].mean() - pd.Series(spy)
     sim["year"] = sim["filed"].dt.year
-    res = {"idea": "M1", "prereg": "research/prereg/M1.md", "phase2_count": 10, "main_count": 7,
-           "phase1_plus_phase2": 25, "funnel": funnel, "primary": prim, "control": ctrl,
+    res = {"idea": "M1", "prereg": "research/prereg/M1.md", "phase2_count": p2, "phase1_plus_phase2": both,
+           "ff5_sha256": sha5, "umd_sha256": shau, "replication": rep, "funnel": funnel, "primary": prim, "control": ctrl,
            "exploratory": {
                "long_only": summary(long_only(pan, "ret1"), 3),
                "quintiles": summary(long_short(pan, "ret1", q=5), 3),
