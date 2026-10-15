@@ -66,9 +66,9 @@ def excess_series(scored, col, n, cost, rng_seed=None):
     return pd.DataFrame(rows)
 
 
-def summarize(ex, lags):
+def summarize(ex, lags, block=6):
     m, se, t = nw_tstat(ex["excess"], lags)
-    lo, hi = block_bootstrap_ci(ex["excess"].to_numpy(), 6, 10_000, SEED)
+    lo, hi = block_bootstrap_ci(ex["excess"].to_numpy(), block, 10_000, SEED)
     return {"mean": m, "se_hac": se, "t_hac": t, "ci95": [lo, hi], "n_dates": int(ex["excess"].notna().sum()),
             "hit_rate": float((ex["excess"] > 0).mean()),
             "mean_pick_return": float(ex["pick_mean"].mean()), "mean_universe_return": float(ex["uni_mean"].mean())}
