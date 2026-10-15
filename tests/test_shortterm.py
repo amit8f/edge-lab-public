@@ -131,6 +131,13 @@ def test_m10_and_p3_screens_end_to_end_with_fakes(tmp_path, monkeypatch):
     s3 = panel[(panel["symbol"] == "S3") & (panel["date"] >= "2023-01-10") & (panel["date"] < "2023-04-10")]
     assert len(s3) and (s3["an_up"] == 1).all() and panel.loc[panel["symbol"] == "S4", "news30"].max() == 0
     assert panel["date"].max() < pn.LABEL_END
+    from tracks.main.shortterm import screen_m11
+    monkeypatch.setattr(screen_m11.sec_data, "facts_for", lambda *a, **k: facts)
+    (tmp_path / "cache" / "companyfacts.zip").write_bytes(b"")
+    r11 = screen_m11.run(tmp_path / "cache", tmp_path / "out_m11")
+    assert r11["primary"]["n_dates"] == res["primary"]["n_dates"] and "share_down_30pct" in r11["primary"]
+    p11 = pd.read_csv(tmp_path / "out_m11" / "M11_screen_picks.csv")
+    assert (p11.groupby("date").size() <= 20).all() and p11["fscore"].notna().all()
     res_p = screen_p3.run(tmp_path / "cache", tmp_path / "out_p3")         # reuses the cached panel
     assert "mean_without_best_pick" in res_p["primary"]
     picks = pd.read_csv(tmp_path / "out_p3" / "P3_screen_picks.csv")
