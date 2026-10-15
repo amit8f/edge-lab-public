@@ -13,7 +13,7 @@ import pandas as pd
 from core import alpaca, shortterm as st
 from core.bars import fetch_daily_bars, to_frames
 from core.env import alpaca_headers
-from tracks.main.longterm import analyst, bars_batch, sec_data
+from tracks.main.longterm import analyst, bars_batch, news_history, sec_data
 from tracks.main.longterm.prices import align, split_points
 
 FIRST_SIGNAL = pd.Timestamp("2017-01-06")
@@ -140,6 +140,10 @@ def build(cache, deadline=None):
     panel["cik"] = sec_data.map_ciks(panel[["symbol", "date"]], tmap)
     funnel["unmapped_rows"] = int(panel["cik"].isna().sum())
     panel = panel.dropna(subset=["cik"]).astype({"cik": "int64"}).reset_index(drop=True)
+    # the monthly news files come from the M6 screen's cache; a run without that cache (e.g. on main)
+    # fetches the missing months first, resumably
+    if not news_history.fetch_range(NEWS_FIRST, NEWS_LAST, cache / "news", deadline):
+        return None
     ev_days, ev = news_events(cache / "news")
     funnel["single_symbol_headlines"] = int(len(ev_days))
     funnel["analyst_events"] = int(len(ev))
