@@ -70,7 +70,18 @@ def pick_percentiles(uni, picks):
     return {c: float(m[c].median()) for c in CHARS if c in m}
 
 
-def placebo_shuffled(panel, end21, feats, years, cost):
+def vol_baseline(uni, panel, end21, years):
+    """Top-2% hit rate and excess of the 20 highest-vol63 stocks each week (amendment after the
+    placebo flag): what picking extremes alone does, with no model."""
+    p = panel[(panel["date"].dt.year.isin(years)) & panel["date"].isin(list(end21)) & panel["y"].notna()]
+    v = uni[["symbol", "date", "vol63"]]
+    p = p.drop(columns=[c for c in ("vol63",) if c in p]).merge(v, on=["symbol", "date"], how="left")
+    r = ranked(p, "vol63")
+    top = r[r["rank"] <= TOP_N]
+    return {"hit_rate_top2pct": float(top["y"].mean()), "n_picks": int(len(top))}
+
+
+def placebo_shuffled(panel, end21, feats, years, cost, uni=None):
     """Labels permuted within each date before fitting; picks scored on the real returns."""
     p = panel.copy()
     out = []
@@ -83,7 +94,10 @@ def placebo_shuffled(panel, end21, feats, years, cost):
     r = ranked(wf, "p_xgb")
     ex = excess_series(r, "ret21", TOP_N, cost)
     top = r[(r["rank"] <= TOP_N) & r["y_real"].notna()]
-    return {**evaluate._summ(ex), "hit_rate_top2pct": float(top["y_real"].mean())}
+    res = {**evaluate._summ(ex), "hit_rate_top2pct": float(top["y_real"].mean())}
+    if uni is not None:
+        res["pick_percentiles"] = pick_percentiles(uni, top)
+    return res
 
 
 def placebo_stale(wf, cost):
@@ -112,7 +126,8 @@ def diagnose(uni, feats, end21, cost, years):
             "pick_percentiles": pick_percentiles(uni, picks),
             "shap_share_all_rows": shap_shares(wf, feats),
             "shap_share_picks": shap_shares(picks, feats),
-            "placebo_shuffled_labels": placebo_shuffled(panel, end21, feats, years, cost),
+            "placebo_shuffled_labels": placebo_shuffled(panel, end21, feats, years, cost, uni),
+            "baseline_top20_vol63": vol_baseline(uni, panel, end21, years),
             "placebo_stale_signal": placebo_stale(wf, cost)}
 
 
