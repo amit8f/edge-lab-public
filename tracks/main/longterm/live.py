@@ -20,6 +20,7 @@ from tracks.main.longterm import analyst, bars_batch, explain, news_history, sec
 from tracks.main.longterm.prices import align
 from tracks.main.longterm.render import render
 from tracks.main.longterm.score import FAMILIES, FAMILY_NAMES, TOP_N, attach_fundamentals, composite, eligible
+from tracks.main.shortterm import live_boom
 
 ROOT = Path(__file__).resolve().parents[3]
 CALIBRATION = ROOT / "research" / "results" / "M4" / "M4_calibration.json"
@@ -27,16 +28,22 @@ SCREEN = ROOT / "research" / "results" / "M4" / "M4_screen.json"
 SEED = 20261012
 LOOKBACK_DAYS = 420
 TRACK_DAYS = 252
-LOGGED_KINDS = ("M4_picks", "M8_picks")
+LOGGED_KINDS = ("M4_picks", "M8_picks", "M10_watch", "P3_watch")
+BOOM_TRACK_DAYS = 30                 # calendar days, about the 21 trading days the boom models predict
 M8_WINDOW_DAYS = 91
 
 
-def m8_ranking(uni, t, fetch=None):
-    """M8 (research/prereg/M8.md): M6's analyst-action score on the live universe, from every Benzinga
-    headline created in the 91 days up to t's close."""
+def news_window(t, fetch=None):
+    """Every Benzinga headline created in the 91 days up to t's close (New York)."""
     end = (t + pd.Timedelta(days=1)).tz_localize("America/New_York").tz_convert("UTC")
     start = end - pd.Timedelta(days=M8_WINDOW_DAYS)
-    rows = news_history.fetch_window(start, end, **({"fetch": fetch} if fetch else {}))
+    return news_history.fetch_window(start, end, **({"fetch": fetch} if fetch else {}))
+
+
+def m8_ranking(uni, t, fetch=None, rows=None):
+    """M8 (research/prereg/M8.md): M6's analyst-action score on the live universe, from every Benzinga
+    headline created in the 91 days up to t's close."""
+    rows = news_window(t, fetch) if rows is None else rows
     rows = rows[~rows["symbols"].fillna("").str.contains(",") & (rows["symbols"].fillna("") != "")]
     ev = analyst.events(rows)
     return analyst.score_m6(uni, ev, SEED), len(rows), len(ev)
@@ -53,6 +60,13 @@ def last_session(now_utc):
     later = nxt[nxt["date"] > t]["date"]
     month_end = later.empty or later.iloc[0].month != t.month
     return t, bool(month_end)
+
+
+def week_end(t):
+    """True when the next trading day after t falls in a later week."""
+    nxt = alpaca.trading_calendar(t.date(), (t + pd.Timedelta(days=10)).date())
+    later = nxt[nxt["date"] > t]["date"]
+    return later.empty or later.iloc[0].to_period("W-SUN") != t.to_period("W-SUN")
 
 
 def news_for(symbol, since, limit=6):
@@ -101,16 +115,16 @@ def _ret(fr, sym, entry_day, last_day):
     return float(upto["c"].iloc[-1] / after["o"].iloc[0] - 1)
 
 
-def track_record(ledger, closes, today, kind="M4_picks"):
-    """Forward results of every logged month of `kind`: picks, random control, universe and SPY, from
-    the next open to today's close (capped at 12 months)."""
+def track_record(ledger, closes, today, kind="M4_picks", cap_days=int(TRACK_DAYS * 365 / 252)):
+    """Forward results of every logged date of `kind`: picks, random control, universe and SPY, from
+    the next open to today's close (capped at `cap_days` calendar days, 12 months by default)."""
     out = []
     for e in ledger.entries():
         if e["kind"] != kind:
             continue
         rec = json.loads((ledger.root / e["file"]).read_text())
         t = pd.Timestamp(e["date"])
-        horizon_end = min(today, t + pd.Timedelta(days=int(TRACK_DAYS * 365 / 252)))
+        horizon_end = min(today, t + pd.Timedelta(days=cap_days))
         row = {"date": e["date"], "days": int((horizon_end - t).days)}
         for k, syms in (("picks", [p["symbol"] for p in rec["picks"]]), ("control", rec["control"]),
                         ("universe", rec["universe"])):
@@ -144,7 +158,8 @@ def run(state, cache, now=None):
         if e["kind"] in LOGGED_KINDS:
             rec = json.loads((root / e["file"]).read_text())
             logged |= {p["symbol"] for p in rec["picks"]} | set(rec["control"]) | set(rec["universe"])
-    feat, rtab, closes = bars_batch.run_live(sorted(set(syms) | logged | {"SPY"}), start, end, t)
+    boom_rows = []
+    feat, rtab, closes = bars_batch.run_live(sorted(set(syms) | logged | {"SPY"}), start, end, t, boom=boom_rows)
     feat = feat.merge(tmap[["symbol", "cik"]], on="symbol", how="inner")
     zp = cache / "companyfacts.zip"
     sec_data.download_companyfacts(zp)
@@ -186,9 +201,33 @@ def run(state, cache, now=None):
             "picks": [{"rank": p["rank"], "symbol": p["symbol"], "score": p["score"], "price": p["price"]} for p in picks],
             "control": ctrl, "control_seed": SEED + t.toordinal(), "universe": scored["symbol"].tolist()})
         print(f"logged M4 picks for {t:%Y-%m-%d}")
+    try:
+        news_rows = news_window(t)
+    except Exception as e:  # without headlines the boom models run with news features missing; M8 skips
+        print(f"[news] 91-day window failed: {type(e).__name__}: {e}")
+        news_rows = None
+    try:
+        boom, boom_scored = live_boom.section(boom_rows, uni, tmap, names, news_rows)
+    except Exception as e:  # the experimental section must never take the main dashboard down
+        print(f"[boom] section skipped: {type(e).__name__}: {e}")
+        boom, boom_scored = {}, {}
+    if boom_scored and week_end(t):
+        for idea, s in boom_scored.items():
+            if ledger.has(f"{idea}_watch", f"{t:%Y-%m-%d}"):
+                continue
+            rng = np.random.default_rng(SEED + t.toordinal())
+            ctrl = s.iloc[rng.choice(len(s), size=TOP_N, replace=False)]["symbol"].tolist()
+            ledger.write_json(f"{idea}_watch", f"{t:%Y-%m-%d}", f"{idea.lower()}/{t:%Y-%m-%d}.json", {
+                "idea": idea, "as_of": f"{t:%Y-%m-%d}", "note": "screen failed; logged for the dashboard only",
+                "picks": [{"rank": i + 1, "symbol": r["symbol"], "prob": float(r["prob"]), "price": float(r["price"])}
+                          for i, r in s.head(TOP_N).iterrows()],
+                "control": ctrl, "control_seed": SEED + t.toordinal(), "universe": s["symbol"].tolist()})
+            print(f"logged {idea} watch list for {t:%Y-%m-%d}")
     if is_month_end and not ledger.has("M8_picks", f"{t:%Y-%m-%d}"):
         try:
-            m8, n_rows, n_ev = m8_ranking(uni, t)
+            if news_rows is None:
+                raise RuntimeError("no headlines")
+            m8, n_rows, n_ev = m8_ranking(uni, t, rows=news_rows)
         except Exception as e:  # a failed news download skips this month's M8 log; M4 is unaffected
             print(f"[M8] not logged for {t:%Y-%m-%d}: {type(e).__name__}: {e}")
             m8 = None
@@ -212,11 +251,13 @@ def run(state, cache, now=None):
                          {"as_of": m8_latest["as_of"], "picks": [dict(p, name=names.get(p["symbol"]) or "")
                                                                  for p in m8_latest["picks"]]},
                          "record": track_record(ledger, closes, t, kind="M8_picks")}}
+    for idea in boom:
+        boom[idea]["record"] = track_record(ledger, closes, t, kind=f"{idea}_watch", cap_days=BOOM_TRACK_DAYS)[-12:]
 
     data = {"generated_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "as_of": f"{t:%Y-%m-%d}",
             "universe_size": int(len(scored)), "picks": picks,
             "screen": None if screen is None else {k: screen.get(k) for k in ("primary", "control", "funnel", "phase2_count", "phase1_plus_phase2")},
-            "calibration": cal, "track_record": track_record(ledger, closes, t), "live_tests": live_tests,
+            "calibration": cal, "track_record": track_record(ledger, closes, t), "live_tests": live_tests, "boom": boom,
             "ledger_ok": not problems, "ledger_entries": len(ledger.entries())}
     (root / "latest.json").write_text(json.dumps(data, indent=1, default=str))
     (root / "dashboard.html").write_text(render(data), encoding="utf-8")

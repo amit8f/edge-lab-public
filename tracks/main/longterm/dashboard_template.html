@@ -94,6 +94,11 @@ th:first-child, td:first-child { text-align: left }
     <div class="table-wrap" id="m8"></div>
     <div class="table-wrap" id="m8-record"></div>
   </section>
+  <section style="display:grid;gap:10px">
+    <h2>High risk, experimental: short-term boom models</h2>
+    <p class="fine" style="margin:0">Two XGBoost models trained to spot stocks likely to land in the top 2% of returns over the next month, one for regular stocks ($5+) and one for penny stocks ($1–5). Both failed their 2019–2025 backtest. They find stocks about to move a lot, in either direction, not stocks about to rise. Shown because you asked to see them; these are lottery tickets, not Buy calls.</p>
+    <div id="boom"></div>
+  </section>
   <p class="fine" id="foot"></p>
 </main>
 
@@ -185,12 +190,28 @@ function m8() {
   rec.innerHTML = rows.length ? `<table><thead><tr><th>Picked on</th><th>Days held</th><th>Picks</th><th>Random 20</th><th>All eligible</th><th>SPY</th><th>Picks minus all</th></tr></thead><tbody>${rows.map(r => `<tr><td class="num">${r.date}</td><td class="num">${r.days}</td><td class="num">${pct(r.picks, 1)}</td><td class="num">${pct(r.control, 1)}</td><td class="num">${pct(r.universe, 1)}</td><td class="num">${pct(r.spy, 1)}</td><td class="num">${r.picks != null && r.universe != null ? pct(r.picks - r.universe, 1) : "–"}</td></tr>`).join("")}</tbody></table>` : "";
 }
 
+function boom() {
+  const B = D.boom || {}, el = document.getElementById("boom");
+  const title = { M10: "Regular stocks ($5+, $300M+)", P3: "Penny stocks ($1–5)" };
+  const parts = ["M10", "P3"].filter(k => B[k]).map(k => {
+    const b = B[k], v = b.verdict || {}, c = v.calibration || {};
+    const head = v.mean == null ? "" : `<p class="fine" style="margin:0">Backtest: the top 20 ${v.mean >= 0 ? "beat" : "trailed"} the average stock by <b class="num">${pct(Math.abs(v.mean), 1)}</b> per month after costs (t = ${v.t.toFixed(1)}, ${v.weeks} weeks): <strong>${v.passes ? "passed" : "failed"}</strong>. Of past picks, ${pl(c.share_top2pct)} landed in the month's top 2% (chance: ${pl(v.label_rate)}), ${pl(c.share_up_30pct)} rose 30% or more, ${pl(c.share_down_30pct)} fell 30% or more; the median pick returned ${pct(c.median, 1)}.</p>`;
+    const rows = b.picks.map(p => `<tr><td class="num">${p.rank}</td><td><strong>${esc(p.symbol)}</strong> <span class="muted">${esc(p.name)}</span></td><td class="num">${usd(p.price)}</td><td class="num">${pl(p.prob, 0)}</td><td class="num">${pct(p.r21, 0)}</td><td class="num">${pl(p.vol21, 0)}</td></tr>`).join("");
+    const rec = (b.record || []).length ? `<table><thead><tr><th>Week of</th><th>Days</th><th>Picks</th><th>Random 20</th><th>All in group</th></tr></thead><tbody>${b.record.map(r => `<tr><td class="num">${r.date}</td><td class="num">${r.days}</td><td class="num">${pct(r.picks, 1)}</td><td class="num">${pct(r.control, 1)}</td><td class="num">${pct(r.universe, 1)}</td></tr>`).join("")}</tbody></table>` : `<p class="fine">Weekly lists are logged on the last trading day of each week; their one-month results appear here.</p>`;
+    return `<h3 style="margin:14px 0 4px">${title[k]}</h3>${head}${b.news ? "" : `<p class="fine">Headlines were unavailable tonight, so news features are missing.</p>`}
+      <div class="table-wrap"><table><thead><tr><th>#</th><th>Stock</th><th>Price</th><th title="Model's estimate that the stock lands in the top 2% next month">Boom odds</th><th>Last month</th><th>Volatility</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="table-wrap">${rec}</div>`;
+  });
+  el.innerHTML = parts.length ? parts.join("") : `<p class="fine">The boom models did not run tonight.</p>`;
+}
+
 if (D) {
   document.getElementById("asof").textContent = `Prices as of the close on ${D.as_of}. ${D.universe_size.toLocaleString()} stocks ranked. Refreshed nightly; built ${D.generated_utc.replace("T", " ").slice(0, 16)} UTC.`;
   verdict();
   document.getElementById("list").innerHTML = D.picks.map(pick).join("");
   record();
   m8();
+  boom();
   document.getElementById("foot").textContent = `Research output from a paper-trading project, not investment advice. Prices from Alpaca (SIP), fundamentals from SEC filings counted from their filing date, headlines from Benzinga via Alpaca, Reddit from its public search. Forward log ${D.ledger_ok ? "verified" : "FAILED verification"} (${D.ledger_entries} entries).`;
 }
 </script>

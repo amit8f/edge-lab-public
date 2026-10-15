@@ -1,4 +1,5 @@
 """M4 long-term ranking on synthetic data (no network)."""
+import json
 import numpy as np
 import pandas as pd
 import pytest
@@ -242,7 +243,18 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     monkeypatch.setattr(live.sec_data, "current_ticker_map", lambda: pd.DataFrame(
         {"symbol": syms, "cik": range(1, 31), "title": syms}))
     real_run_live = live.bars_batch.run_live
-    monkeypatch.setattr(live.bars_batch, "run_live", lambda s, a, b, tt: real_run_live(s, a, b, tt, fetch=fake))
+    monkeypatch.setattr(live.bars_batch, "run_live", lambda s, a, b, tt, **k: real_run_live(s, a, b, tt, fetch=fake, **k))
+    monkeypatch.setattr(live, "week_end", lambda t: True)
+    from xgboost import XGBClassifier
+    from tracks.main.shortterm import live_boom
+    res = tmp_path / "results"
+    (res / "M10").mkdir(parents=True)
+    rng = np.random.default_rng(0)
+    nf = len(live_boom.M10_FEATURES)
+    XGBClassifier(n_estimators=5, max_depth=2).fit(rng.random((200, nf)), rng.random(200) > 0.9).save_model(res / "M10" / "M10_xgb.json")
+    (res / "M10" / "M10_screen.json").write_text(json.dumps({"primary": {"mean": 0.005, "t_hac": 0.5, "passes": False, "n_dates": 348},
+                                                             "calibration": {"share_top2pct": 0.13}, "funnel_universe": {"label_rate": 0.02}}))
+    monkeypatch.setattr(live_boom, "RESULTS", res)
     monkeypatch.setattr(live.sec_data, "download_companyfacts", lambda p: p)
     facts = pd.concat([fu.extract(_cf(c, [2023, 2024], [("2025-07-31", 2e8 + c * 1e6, "10-Q", "2025-08-05", f"q{c}"),
                                                          ("2024-07-31", 2e8, "10-Q", "2024-08-05", f"p{c}")],
@@ -261,7 +273,10 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     monkeypatch.setattr(live.news_history, "fetch_window", fake_window)
     now = pd.Timestamp("2026-10-12T03:30:00Z")
     data = live.run(tmp_path / "state", tmp_path / "cache", now=now)
-    assert len(data["picks"]) == 20 and data["ledger_ok"] and data["ledger_entries"] == 2
+    assert len(data["picks"]) == 20 and data["ledger_ok"] and data["ledger_entries"] == 3
+    b = data["boom"]["M10"]
+    assert len(b["picks"]) == 20 and b["news"] and b["verdict"]["passes"] is False and "P3" not in data["boom"]
+    assert b["picks"][0]["prob"] >= b["picks"][-1]["prob"] and b["record"][0]["date"] == f"{t:%Y-%m-%d}"
     assert windows[0][1] == (t + pd.Timedelta(days=1)).tz_localize("America/New_York").tz_convert("UTC")
     m8 = data["live_tests"]["M8"]["latest"]
     assert m8["as_of"] == f"{t:%Y-%m-%d}" and m8["picks"][0]["symbol"] == "S7" and m8["picks"][0]["up"] == 2
@@ -270,10 +285,11 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert "</script> news" not in html and "<title>Long-Horizon Picks</title>" in html
     led = ledger_mod.Ledger(tmp_path / "state" / "longterm")
     assert led.has("M4_picks", f"{t:%Y-%m-%d}") and led.has("M8_picks", f"{t:%Y-%m-%d}")
-    assert "Under live test" in html
+    assert "Under live test" in html and "High risk, experimental" in html
+    assert led.has("M10_watch", f"{t:%Y-%m-%d}")
     again = live.run(tmp_path / "state", tmp_path / "cache", now=now)      # second run the same night: no new entry
-    assert again["ledger_entries"] == 2 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
-    assert again["live_tests"]["M8"]["record"][0]["date"] == f"{t:%Y-%m-%d}" and len(windows) == 1
+    assert again["ledger_entries"] == 3 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
+    assert again["live_tests"]["M8"]["record"][0]["date"] == f"{t:%Y-%m-%d}" and len(windows) == 2
 
 
 def _fake_screen(tmp_path, monkeypatch):
