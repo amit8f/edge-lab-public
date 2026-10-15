@@ -77,3 +77,20 @@ def test_panel_rows_series_break():
     first = r.iloc[0]
     assert first["nbars"] == 1 and np.isnan(first["dv20"])
     assert r.iloc[19]["dv20"] == 10.0 * np.median(np.arange(41, 61))
+
+
+def test_lm_labels_and_dictionary_baseline():
+    import numpy as np
+    import pandas as pd
+    from tracks.news import lm
+    from tracks.news.n1_screen import dictionary_baseline
+    assert lm.label("Acme misses estimates, cuts guidance") == "NEG"
+    assert lm.label("Acme to present at conference") == "NEU"
+    days = pd.bdate_range("2025-02-03", periods=40)
+    rng = np.random.default_rng(0)
+    sig = pd.DataFrame({"entry": list(days) * 2, "side": ["short"] * 40 + [None] * 40,
+                        "lm_side": ["short"] * 20 + [None] * 20 + ["short"] * 40,
+                        "short3": np.r_[0.02 + rng.normal(0, 0.01, 40), rng.normal(0, 0.01, 40)]})
+    r = dictionary_baseline(sig, "short3")
+    assert r["overlap_trades"] == 20 and r["llm_only"]["n_trades"] == 20 and r["dictionary_only"]["n_trades"] == 40
+    assert r["llm_minus_dictionary_per_day"]["mean"] > 0
