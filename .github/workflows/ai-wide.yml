@@ -1,0 +1,101 @@
+# K4: the whole-market $100 AI bot C (tracks/main/ai_wide.py, research/prereg/K4.md), every 10 minutes in
+# market hours. Logs to the orphan branch `state-wide` (C's first runs were logged under wide/ on `state-ai`;
+# the first run here copies them over and leaves the originals in place).
+# Each run queues the next one itself (GitHub's cron is unreliable here): the `next` job waits until the next
+# minute ending in 7 (hourly outside 13-21 UTC on weekdays) and dispatches this workflow again, unless another
+# run is already queued. Free on a public repo; no Claude involved. Disable the workflow to stop the chain.
+name: ai-wide
+
+on:
+  schedule:
+    - cron: "17 13-21 * * 1-5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: wide-state
+  cancel-in-progress: false
+
+jobs:
+  trade:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch (and carry over C's runs from state-ai once)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-wide
+        run: |
+          bash deploy/state.sh restore
+          if [[ ! -d state/wide ]]; then
+            auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+            if git -c "http.extraheader=$auth" clone -q --depth 1 --branch state-ai \
+                 "https://github.com/${GITHUB_REPOSITORY}.git" /tmp/state-ai 2>/dev/null && [[ -d /tmp/state-ai/wide ]]; then
+              cp -r /tmp/state-ai/wide state/wide && echo "copied wide/ from state-ai"
+            fi
+          fi
+
+      - name: One step of bot C
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          ALPACA_MIRROR_B_KEY_ID: ${{ secrets.ALPACA_MIRROR_B_KEY_ID }}
+          ALPACA_MIRROR_B_SECRET_KEY: ${{ secrets.ALPACA_MIRROR_B_SECRET_KEY }}
+        run: .venv/bin/python -m tracks.main.ai_wide --state state
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-wide
+          RUN_LABEL: ai-wide ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
+
+  next:
+    needs: trade
+    if: always() && github.repository != 'amit8f/edge-lab'
+    permissions:
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Wait for the next slot and queue it
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          now=$(date -u +%s)
+          next=$(( (now - 420) / 600 * 600 + 600 + 420 ))      # next minute ending in 7
+          h=$(date -u -d @$next +%H); d=$(date -u -d @$next +%u)
+          if (( d > 5 || 10#$h < 13 || 10#$h > 21 )); then      # market closed: once an hour
+            next=$(( now / 3600 * 3600 + 3600 + 420 ))
+          fi
+          echo "sleeping $(( next - now ))s until $(date -u -d @$next +%H:%M) UTC"
+          sleep $(( next - now ))
+          others=$(gh run list -R "$REPO" --workflow ai-wide.yml --limit 20 --json databaseId,status \
+            --jq "[.[] | select(.databaseId != $RUN_ID and (.status == \"queued\" or .status == \"in_progress\" or .status == \"pending\" or .status == \"waiting\"))] | length")
+          if [[ "$others" == "0" ]]; then gh workflow run ai-wide.yml -R "$REPO" --ref main; echo queued; else echo "another run is queued; not chaining"; fi

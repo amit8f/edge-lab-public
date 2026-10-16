@@ -98,7 +98,7 @@ def test_run_logs_universe_and_hour_once_and_mirrors_c(tmp_path, monkeypatch):
     rec = w.run(tmp_path, now=px_time + pd.Timedelta(minutes=16), **kw)
     assert rec["equity"]["C"] < 100 and rec["headline_counts"] == {"S49": 1} and "SPY" in seen[0]
     led = Ledger(tmp_path / "wide")
-    assert led.has("universe", "2026-10-19") and led.has("run", px_time.strftime("%Y-%m-%dT%H"))
+    assert led.has("universe", "2026-10-19") and led.has("run", "2026-10-19T15:00")
     assert w.run(tmp_path, now=px_time + pd.Timedelta(minutes=16), **kw) is None
     readme = (tmp_path / "wide" / "README.md").read_text()
     assert "long S49" in readme and "bought S49" in readme
