@@ -1,6 +1,7 @@
-"""Copies each $100 AI bot's position (K2) into its own Alpaca PAPER account at 25x size, so Amit can watch
-and compare them in Alpaca's app: book A (the TikTok setup) and book B (the careful version) each get a
-$2,500 paper account (research/prereg/K2.md, amendments 2026-10-16).
+"""Copies each $100 AI bot's positions into its own Alpaca PAPER account at 25x size, so Amit can watch
+and compare them in Alpaca's app: book A (K2, the TikTok setup) and book C (K4, whole market, up to five
+stocks) each get a $2,500 paper account. C took over B's account when B was stopped (research/prereg/K2.md
+amendments 2026-10-16, research/prereg/K4.md).
 
 Display only: the official K2 result stays the simulated $100 books. Longs may be fractional; shorts are
 rounded to whole shares because Alpaca can't short fractions. Orders go only to the paper API (core.alpaca.post
@@ -14,7 +15,7 @@ from core import alpaca
 
 SCALE = 25            # $100 books -> a $2,500 paper account
 ACCOUNTS = {"A": ("ALPACA_MIRROR_KEY_ID", "ALPACA_MIRROR_SECRET_KEY"),
-            "B": ("ALPACA_MIRROR_B_KEY_ID", "ALPACA_MIRROR_B_SECRET_KEY")}
+            "C": ("ALPACA_MIRROR_B_KEY_ID", "ALPACA_MIRROR_B_SECRET_KEY")}   # B's old account
 MIN_USD = 1.0         # skip changes smaller than this
 
 
@@ -26,10 +27,10 @@ def mirror_headers(book):
 
 def targets(state, book):
     """{symbol: signed share count} the book's account should hold."""
-    out = {}
     p = state["books"][book]["pos"]
-    if p:
-        out[p["sym"]] = p["side"] * p["qty"] * SCALE
+    if p and "sym" in p:          # K2 books hold one position
+        p = {p["sym"]: p}
+    out = {s: x["side"] * x["qty"] * SCALE for s, x in (p or {}).items()}
     for s, q in out.items():
         out[s] = float(round(q)) if q < 0 else round(q, 4)
     return out
@@ -70,6 +71,8 @@ def run(state, prices, log_path, headers_for=mirror_headers, post=alpaca.post, p
     Never raises: the bot's own run must not fail."""
     results = {}
     for book in ACCOUNTS:
+        if book not in state.get("books", {}):
+            continue
         h = headers_for(book)
         if h is None:
             continue

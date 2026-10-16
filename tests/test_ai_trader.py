@@ -93,12 +93,12 @@ def test_parse():
 
 
 def test_run_twins_hold_trend_and_ledger(tmp_path):
-    answers = iter(['{"action":"long","symbol":"NVDA","reason":"a"}', "nonsense"])
+    answers = iter(['{"action":"long","symbol":"NVDA","reason":"a"}'])   # B is retired: never asked
     d = data(PR)
     rec = k.run(tmp_path, fetch=lambda now: d, ask=lambda s, t: next(answers))
     st = json.loads((tmp_path / "ai/books.json").read_text())["books"]
     assert st["A"]["pos"]["sym"] == "NVDA" and st["A-coin"]["pos"]["side"] == k.coin_side("A", T0)
-    assert st["B"]["pos"] is None and rec["decisions"]["B"]["parsed"]["valid"] is False
+    assert st["B"]["pos"] is None and "B" not in rec["decisions"] and st["B-coin"]["pos"] is None
     assert st["HOLD"]["pos"]["sym"] == "SPY" and st["TREND"]["pos"] is not None
     assert Ledger(tmp_path / "ai").verify() == []
     assert k.run(tmp_path, fetch=lambda now: d, ask=lambda s, t: "x") is None   # same hour: no-op

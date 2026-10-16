@@ -21,7 +21,8 @@ def test_plan_orders_flip_closes_first_and_skips_dust():
 
 
 def test_each_book_goes_to_its_own_account_and_errors_never_raise(tmp_path):
-    st = {"books": {"A": book("QQQ", -1, 0.1734), "B": book("NVDA", 1, 0.2302)}}
+    st = {"books": {"A": book("QQQ", -1, 0.1734), "B": book("TSLA", 1, 1.0),       # B is retired: not copied
+                    "C": {"pos": {"NVDA": {"side": 1, "qty": 0.2302}}}}}
     sent = []
     def post(url, body, headers):
         sent.append((headers["k"], body["symbol"], body["side"], body["qty"]))
@@ -29,7 +30,7 @@ def test_each_book_goes_to_its_own_account_and_errors_never_raise(tmp_path):
     log = tmp_path / "mirror.jsonl"
     out = m.run(st, {"QQQ": 720.0, "NVDA": 217.0}, log, headers_for=lambda b: {"k": b}, post=post,
                 positions=lambda h: {}, wait=lambda h, i: "filled")
-    assert sent == [("A", "QQQ", "sell", "4.0"), ("B", "NVDA", "buy", "5.755")]
+    assert sent == [("A", "QQQ", "sell", "4.0"), ("C", "NVDA", "buy", "5.755")]
     assert out["A"]["orders"][0]["fill"] == "filled" and len(log.read_text().splitlines()) == 2
     only_a = m.run(st, {}, log, headers_for=lambda b: {"k": b} if b == "A" else None,
                    positions=lambda h: (_ for _ in ()).throw(RuntimeError("down")))
@@ -38,6 +39,7 @@ def test_each_book_goes_to_its_own_account_and_errors_never_raise(tmp_path):
 
 
 def test_no_keys_does_nothing(tmp_path, monkeypatch):
+    assert m.ACCOUNTS["C"][0] == "ALPACA_MIRROR_B_KEY_ID"     # C took over B's paper account
     for k in ("ALPACA_MIRROR_KEY_ID", "ALPACA_MIRROR_B_KEY_ID"):
         monkeypatch.delenv(k, raising=False)
     assert m.run({"books": {}}, {}, tmp_path / "x") is None and not (tmp_path / "x").exists()

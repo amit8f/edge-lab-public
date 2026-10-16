@@ -1,10 +1,10 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 21** (main 13, penny 4, news 2, cross-track 1, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 36.
+**Phase 2 count: 22** (main 14, penny 4, news 2, cross-track 1, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 37.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
-M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2 and K3 followed on 2026-10-16. The counts written inside M1, N1, P1, P2 and
+M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16. The counts written inside M1, N1, P1, P2 and
 M3 were computed without M10 and P3; their true running counts are 8 to 12. This header is the
 reference count.
 
@@ -34,8 +34,9 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | T1 | penny | 2026-10-15 | Turn of the year: buy the bottom-decile year-to-date penny losers at the last December open, sell at the 5th January close; 9 historical years vs a random control, t >= 3 | Amit's choice from the professional-additions list; Roll (1983), Reinganum (1983) | [prereg/T1.md](prereg/T1.md) | |
 | M13 | main | 2026-10-16 | Micha.Stocks' 150-day rule: hold every stock above a rising 150-day average (MA150 above its value 21 trading days earlier); allowed set vs universe, 1 month, turnover-scaled costs, t >= 3 and FF5+momentum alpha | Amit's request (Micha.Stocks video, 2025-10-18); moving-average literature; expected to fail after momentum | [prereg/M13.md](prereg/M13.md) | 2026-10-16 screen FAILED: +0.08% a month vs universe after costs, t 0.66, CI -0.13%..+0.31%, FF5+momentum alpha t 1.28 (108 months). Mostly momentum; fewer big losers (2.8% vs 3.6%) but no better mean. Prediction confirmed. [Report](results/M13/REPORT.md) |
 | K1 | crypto | 2026-10-16 | AI crypto trader, $100 paper: Gemini 2.5 Flash reads hourly candles for BTC/ETH/SOL and goes long/short/close/hold (her 5x setup, and a 2x version with a stop and daily candles); each book vs 10,000 coin-flip replays of its own trades, 180 days, >= 30 round trips, Holm | Amit's request after @laeshaai's TikTok bot; outside the three tracks (disclosed) | [prereg/K1.md](prereg/K1.md) | 2026-10-16: STOPPED after one run (10:13 UTC, both AI books held cash) at Amit's request: he wants the bot on stocks, which is K2. No result. |
-| K2 | main | 2026-10-16 | AI stock trader, $100 paper: Gemini 2.5 Flash reads hourly SIP bars for SPY, QQQ and 8 mega-caps and goes long/short/close/hold (her 1.25x setup, and a 0.5x version with a 5% stop and daily bars); each book vs 10,000 coin-flip replays of its own trades, 6 months, >= 30 round trips, Holm | Amit's request (K1 moved to stocks) | [prereg/K2.md](prereg/K2.md) | |
+| K2 | main | 2026-10-16 | AI stock trader, $100 paper: Gemini 2.5 Flash reads hourly SIP bars for SPY, QQQ and 8 mega-caps and goes long/short/close/hold (her 1.25x setup, and a 0.5x version with a 5% stop and daily bars); each book vs 10,000 coin-flip replays of its own trades, 6 months, >= 30 round trips, Holm | Amit's request (K1 moved to stocks) | [prereg/K2.md](prereg/K2.md) | 2026-10-16 19:02 UTC: book B stopped after one round trip and replaced by K4 at Amit's request; B: no conclusion. Book A continues. |
 | K3 | main | 2026-10-16 | Kronos weekly picks, forward only: the pinned Kronos-small candlestick model forecasts 21-day returns for the 500 most traded $5+ stocks each Friday; top 20 vs universe and a random 20, 1-month hold, 0.2% costs, Newey-West t >= 3 plus FF5+momentum alpha, verdict at 52 weeks | Amit's request (shiyu-coder/Kronos); forward only because the model's training data likely covers our history | [prereg/K3.md](prereg/K3.md) | |
+| K4 | main | 2026-10-16 | AI stock trader, $100 paper, whole market: each hour Gemini 2.5 Flash sees the 40 biggest movers among the 300 most traded $5+ stocks (hourly closes, headlines) and holds up to 5 positions, long or short; vs 10,000 random-side replays of its own trips, 6 months, >= 30 round trips | Amit's request (replaces K2's book B) | [prereg/K4.md](prereg/K4.md) | |
 
 ## Validation studies (not trading ideas; not counted)
 
