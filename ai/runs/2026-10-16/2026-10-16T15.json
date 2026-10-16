@@ -1,0 +1,224 @@
+{
+ "decisions": {
+  "A": {
+   "parsed": {
+    "action": "hold",
+    "reason": "QQQ is in a clear downtrend, and the current short position is profitable. The recent 1-hour bar shows a drop from open, indicating continued bearish momentum.",
+    "symbol": "QQQ",
+    "valid": true
+   },
+   "prompt_sha256": "c3318ec62979370766812c547f7c3e0fa47c18d3c6c0b4e0e5929f1925b1a661",
+   "raw": "{\n  \"action\": \"hold\",\n  \"symbol\": \"QQQ\",\n  \"reason\": \"QQQ is in a clear downtrend, and the current short position is profitable. The recent 1-hour bar shows a drop from open, indicating continued bearish momentum.\"\n}"
+  },
+  "B": {
+   "parsed": {
+    "action": "hold",
+    "reason": "Daily trends are mixed or consolidating for most symbols, and recent hourly bars do not consistently align with a clear daily direction to warrant a new position. Holding cash is prudent.",
+    "symbol": "SPY",
+    "valid": true
+   },
+   "prompt_sha256": "1e4e017a62ea85793627135c0169e479324bda642a5801b979a746800a14e2ff",
+   "raw": "{\n  \"action\": \"hold\",\n  \"symbol\": \"SPY\",\n  \"reason\": \"Daily trends are mixed or consolidating for most symbols, and recent hourly bars do not consistently align with a clear daily direction to warrant a new position. Holding cash is prudent.\"\n}"
+  }
+ },
+ "equity": {
+  "A": 100.333222,
+  "A-coin": 99.416209,
+  "B": 100.0,
+  "B-coin": 100.0,
+  "HOLD": 99.738152,
+  "TREND": 99.738152
+ },
+ "fills": {
+  "A": [],
+  "A-coin": [],
+  "B": [],
+  "B-coin": [],
+  "HOLD": [],
+  "TREND": []
+ },
+ "kind": "run",
+ "new_1h": {
+  "AAPL": [
+   [
+    1792157400,
+    346.06,
+    347.82,
+    342.03,
+    344.3,
+    15421764.0,
+    1792161000
+   ]
+  ],
+  "AMD": [
+   [
+    1792157400,
+    547.23,
+    550.955,
+    540.08,
+    543.88,
+    4467853.0,
+    1792161000
+   ]
+  ],
+  "AMZN": [
+   [
+    1792157400,
+    255.09,
+    255.54,
+    252.9,
+    253.28,
+    7002057.0,
+    1792161000
+   ]
+  ],
+  "GOOGL": [
+   [
+    1792157400,
+    348.01,
+    350.66,
+    343.69,
+    345.44,
+    5013820.0,
+    1792161000
+   ]
+  ],
+  "META": [
+   [
+    1792157400,
+    736.16,
+    738.49,
+    722.315,
+    722.315,
+    3551308.0,
+    1792161000
+   ]
+  ],
+  "MSFT": [
+   [
+    1792157400,
+    541.31,
+    543.82,
+    534.84,
+    535.33,
+    4886198.0,
+    1792161000
+   ]
+  ],
+  "NVDA": [
+   [
+    1792157400,
+    216.56,
+    217.6399,
+    215.07,
+    217.6,
+    25999851.0,
+    1792161000
+   ]
+  ],
+  "QQQ": [
+   [
+    1792157400,
+    725.52,
+    725.96,
+    719.77,
+    720.43,
+    8807787.0,
+    1792161000
+   ]
+  ],
+  "SPY": [
+   [
+    1792157400,
+    773.24,
+    773.25,
+    770.48,
+    770.91,
+    6497226.0,
+    1792161000
+   ]
+  ],
+  "TSLA": [
+   [
+    1792157400,
+    369.145,
+    370.5799,
+    363.37,
+    364.52,
+    17177912.0,
+    1792161000
+   ]
+  ]
+ },
+ "positions": {
+  "A": {
+   "call": 998.2453846153846,
+   "carry": 0.03,
+   "charged": 1792163820,
+   "checked": 1792160700,
+   "entry": 720.955,
+   "notional": 125.0,
+   "opened": 1792160700,
+   "qty": 0.17338114029308346,
+   "side": -1,
+   "stop": null,
+   "sym": "QQQ"
+  },
+  "A-coin": {
+   "call": 192.25466666666662,
+   "carry": 0.015999999999999997,
+   "charged": 1792163820,
+   "checked": 1792160700,
+   "entry": 720.955,
+   "notional": 125.0,
+   "opened": 1792160700,
+   "qty": 0.17338114029308346,
+   "side": 1,
+   "stop": null,
+   "sym": "QQQ"
+  },
+  "B": null,
+  "B-coin": null,
+  "HOLD": {
+   "call": null,
+   "carry": 0.0,
+   "charged": 1792163820,
+   "checked": 1792160700,
+   "entry": 771.08,
+   "notional": 99.90009990009992,
+   "opened": 1792160700,
+   "qty": 0.12955867082546546,
+   "side": 1,
+   "stop": null,
+   "sym": "SPY"
+  },
+  "TREND": {
+   "call": null,
+   "carry": 0.0,
+   "charged": 1792163820,
+   "checked": 1792160700,
+   "entry": 771.08,
+   "notional": 99.90009990009992,
+   "opened": 1792160700,
+   "qty": 0.12955867082546546,
+   "side": 1,
+   "stop": null,
+   "sym": "SPY"
+  }
+ },
+ "prev_sha256": "8d5d951f3c7e662b6481ce3f4e998a4e175dac8bcacf557679a67b47c6a3213f",
+ "prices": {
+  "AAPL": 345.94,
+  "AMD": 542.105,
+  "AMZN": 254.455,
+  "GOOGL": 344.59,
+  "META": 720.605,
+  "MSFT": 532.49,
+  "NVDA": 216.77,
+  "QQQ": 718.31,
+  "SPY": 769.83,
+  "TSLA": 360.045
+ },
+ "t": 1792163820,
+ "written_utc": "2026-10-16T15:33:28.459804Z"
+}
