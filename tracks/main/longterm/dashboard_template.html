@@ -43,6 +43,16 @@ summary::-webkit-details-marker { display: none }
 summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
 summary:hover { background: var(--accent-soft) }
 .rank { font-family: var(--mono); color: var(--muted); text-align: right }
+.plan-item summary { grid-template-columns: minmax(0, 1fr) auto }
+.plan-body { display: grid; gap: 8px; padding: 0 4px 14px }
+.conf { display: inline-flex; align-items: center; gap: 3px }
+.conf i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--muted) }
+.conf i.on { background: var(--accent); border-color: var(--accent) }
+.conf .num { font-size: .8rem; color: var(--muted); margin-left: 4px }
+.tag { font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap }
+.tag.buy { background: var(--accent-soft); color: var(--good) }
+.tag.sell { background: color-mix(in srgb, var(--bad) 14%, transparent); color: var(--bad) }
+.tag.keep { background: color-mix(in srgb, var(--muted) 14%, transparent); color: var(--ink) }
 .who { min-width: 0 }
 .who strong { font-family: var(--display); font-size: 1.15rem; font-weight: 600; margin-right: 8px }
 .who span { color: var(--muted); overflow-wrap: anywhere }
@@ -70,6 +80,8 @@ th:first-child, td:first-child { text-align: left }
 @media (max-width: 560px) {
   summary { grid-template-columns: 1.8rem minmax(0, 1fr) }
   .right { grid-column: 2; justify-content: flex-start }
+  .plan-item summary { grid-template-columns: minmax(0, 1fr) }
+  .plan-item .right { grid-column: 1 }
   .body { padding-left: 4px }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
@@ -154,13 +166,38 @@ function verdict() {
 function plan() {
   const P = D.plan, el = document.getElementById("plan");
   if (!P) return;
-  const tbl = (head, rows) => `<div class="table-wrap"><table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${esc(String(c))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
-  const h3 = t => `<h3 style="margin:6px 0 0;font-family:var(--display)">${esc(t)}</h3>`;
-  el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p>`
-    + P.owners.map(o => h3(o.name + ": sell") + tbl(["Ticker", "Shares", "Action", "Why", "Who says so"], o.sell) + `<p class="fine">${esc(o.keep)}</p>`).join("")
-    + h3("Buy, in steps") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "When and why"],
-        P.buy.map(b => [b[0], b[1], b[2], b[3].toFixed(2), Math.round(b[2] * b[3]), b[4]]))
-    + `<p class="fine">${esc(P.buy_note)}</p>`;
+  const h3 = t => `<h3 style="margin:10px 0 0;font-family:var(--display)">${esc(t)}</h3>`;
+  if (P.version !== 2) {   // older plans: plain tables
+    const tbl = (head, rows) => `<div class="table-wrap"><table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${esc(String(c))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p>`
+      + P.owners.map(o => h3(o.name + ": sell") + tbl(["Ticker", "Shares", "Action", "Why", "Who says so"], o.sell) + `<p class="fine">${esc(o.keep)}</p>`).join("")
+      + h3("Buy, in steps") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "When and why"],
+          P.buy.map(b => [b[0], b[1], b[2], b[3].toFixed(2), Math.round(b[2] * b[3]), b[4]]))
+      + `<p class="fine">${esc(P.buy_note)}</p>`;
+    el.hidden = false;
+    return;
+  }
+  const dots = c => `<span class="conf" title="Confidence ${c} of 5" aria-label="Confidence ${c} of 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= c ? "on" : ""}"></i>`).join("")}<span class="num">${c}/5</span></span>`;
+  const tag = (txt, kind) => `<span class="tag ${kind}">${esc(txt)}</span>`;
+  const kindOf = a => /^sell/i.test(a) ? "sell" : /^buy/i.test(a) ? "buy" : "keep";
+  const list = xs => `<ul style="margin:4px 0 0;padding-left:18px">${xs.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  const buyCard = b => `<details class="plan-item"><summary>
+      <span class="who"><strong>${esc(b.t)}</strong><span>${esc(b.name)} · ${esc(b.sector)}</span></span>
+      <span class="right">${tag(b.rating, b.conf >= 3 ? "buy" : "keep")}${dots(b.conf)}<span class="num muted">${b.shares} × ${usd(b.price)}</span></span>
+    </summary><div class="plan-body">
+      <p style="margin:0"><b>When:</b> ${esc(b.when)} · <b>Next results:</b> ${esc(b.earnings)} · <b>Analyst targets:</b> ${esc(b.targets)} · <b>ChatGPT:</b> ${esc(b.chatgpt)}</p>
+      <div><b>Why</b>${list(b.why)}</div><div><b>Risks</b>${list(b.risks)}</div>
+      <p style="margin:0"><b>What would prove this wrong:</b> ${esc(b.wrong)}</p></div></details>`;
+  const rowCard = (r, verdict) => `<details class="plan-item"><summary>
+      <span class="who"><strong>${esc(r.t)}</strong><span>${r.shares} share${r.shares === 1 ? "" : "s"}${r.next ? " · " + esc(r.next) : ""}</span></span>
+      <span class="right">${tag(verdict, kindOf(verdict))}${dots(r.conf)}</span>
+    </summary><div class="plan-body"><p style="margin:0">${esc(r.why)}</p><p class="fine" style="margin:0">ChatGPT: ${esc(r.chatgpt)}</p></div></details>`;
+  const cost = P.buy.reduce((a, b) => a + b.shares * b.price, 0);
+  el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p><p class="fine">${esc(P.confidence_note)}</p>`
+    + h3(`Buy, in steps (about ${usd(cost)} for one of each)`) + `<div class="list">${P.buy.map(buyCard).join("")}</div><p class="fine">${esc(P.buy_note)}</p>`
+    + P.owners.map(o => h3(`${o.name}: sell`) + `<div class="list">${o.sell.map(r => rowCard(r, r.action)).join("")}</div>`
+        + h3(`${o.name}: keep`) + `<div class="list">${o.keep_rows.map(r => rowCard(r, r.verdict)).join("")}</div>`).join("")
+    + (P.research_note ? `<p class="fine">${esc(P.research_note)}</p>` : "");
   el.hidden = false;
 }
 function scorecard() {
