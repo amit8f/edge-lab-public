@@ -167,7 +167,8 @@ def fetch_hour(now, uni, held):
     for ch in _chunks(syms):
         latest.update(iex_latest(ch))
     for s, (p, ts) in latest.items():
-        if o <= ts <= min(c, now) and s in out and ts > pd.Timestamp(out[s]["last_t"]):
+        if o <= ts <= c and s in out and ts > pd.Timestamp(out[s]["last_t"]):   # not capped at the run start: the
+            # daily universe build can take minutes, and every trade fetched here already happened
             out[s].update(last=p, last_t=ts.isoformat(), src="iex")
     return px_time, out, sessions
 
@@ -318,8 +319,8 @@ def summary(state, rec, runs):
     def et(t):
         return f"{pd.Timestamp(t, unit='s', tz='UTC').tz_convert(ET):%Y-%m-%d %H:%M}"
     lines = [f"# $100 AI bot C: whole market, up to 5 stocks (paper, K4)\n\nStarted {et(state['started'])} ET "
-             f"with $100 per book. **Last update {et(rec['t'])} ET.** Paper money only; fills use real SIP prices "
-             "with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random "
+             f"with $100 per book. **Last update {et(rec['t'])} ET.** Paper money only; fills use real-time IEX prices "
+             "(16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random "
              "direction: C has to beat it to show skill (research/prereg/K4.md).\n",
              "| Book | Equity | Return | Closed trades | Won | Holding now |", "|---|---|---|---|---|---|"]
     for n, b in state["books"].items():
@@ -369,7 +370,8 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
         return None
     syms = [s for s in shortlist(uni, data, held) if s in data]
     hours(data, set(syms) | {"SPY"}, now, px_time, sessions)
-    t = int(now.timestamp()) if any(d.get("src") == "iex" for d in data.values()) else int(px_time.timestamp())
+    iex = [pd.Timestamp(d["last_t"]) for d in data.values() if d.get("src") == "iex"]
+    t = int(max(iex).timestamp()) if iex else int(px_time.timestamp())   # the latest price used
     state = state or init_state(t)
     missing = [s for b in state["books"].values() for s in b["pos"] if s not in data]
     if missing:   # a held stock with no trade in the last hour keeps its last price
