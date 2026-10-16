@@ -1,10 +1,10 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 17** (main 10, penny 4, news 2, cross-track 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 32.
+**Phase 2 count: 18** (main 11, penny 4, news 2, cross-track 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 33.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
-M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). The counts written inside M1, N1, P1, P2 and
+M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13 followed on 2026-10-16. The counts written inside M1, N1, P1, P2 and
 M3 were computed without M10 and P3; their true running counts are 8 to 12. This header is the
 reference count.
 
@@ -32,6 +32,7 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | B0 | main+penny | 2026-10-15 | Burst base rates: what was visible before +30%-in-10-days jumps vs matched non-jumpers (short interest, short volume, fails-to-deliver, lockups, insider buys, filings, price, news); logistic model, pass at test AUC >= 0.60 | Amit's burst request (deeper plan) | [prereg/B0.md](prereg/B0.md) | |
 | M12 | main | 2026-10-15 | Boom model with volatility, size and industry regressed out of features and label; top 20 with a 4-per-industry cap, inverse-volatility weights; FF5+momentum-adjusted, t >= 3 | Amit's request (prompt 5; registered 13:02 UTC, after L1 and B0); post-hoc to M10 (disclosed); expected to fail per the lottery-stock literature | [prereg/M12.md](prereg/M12.md) | |
 | T1 | penny | 2026-10-15 | Turn of the year: buy the bottom-decile year-to-date penny losers at the last December open, sell at the 5th January close; 9 historical years vs a random control, t >= 3 | Amit's choice from the professional-additions list; Roll (1983), Reinganum (1983) | [prereg/T1.md](prereg/T1.md) | |
+| M13 | main | 2026-10-16 | Micha.Stocks' 150-day rule: hold every stock above a rising 150-day average (MA150 above its value 21 trading days earlier); allowed set vs universe, 1 month, turnover-scaled costs, t >= 3 and FF5+momentum alpha | Amit's request (Micha.Stocks video, 2025-10-18); moving-average literature; expected to fail after momentum | [prereg/M13.md](prereg/M13.md) | |
 
 ## Validation studies (not trading ideas; not counted)
 
