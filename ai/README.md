@@ -1,20 +1,21 @@
 # $100 AI stock bot (paper, K2)
 
-Started 2026-10-16 10:25 ET with $100 per book. **Last update 2026-10-16 14:43 ET** (updates every trading hour). Paper money only; fills use real SIP prices with costs. The coin-flip twins trade at the same moments in a random direction: an AI book has to beat its twin to show skill. Verdict on 2027-04-16 (research/prereg/K2.md).
+Started 2026-10-16 10:25 ET with $100 per book. **Last update 2026-10-16 15:51 ET** (updates every trading hour). Paper money only; fills use real SIP prices with costs. The coin-flip twins trade at the same moments in a random direction: an AI book has to beat its twin to show skill. Verdict on 2027-04-16 (research/prereg/K2.md).
 
 | Book | Equity | Return | Closed trades | Won | Margin calls | Now holding |
 |---|---|---|---|---|---|---|
-| AI bot A (her setup: 1.25x, no stop) | $101.80 | +1.80% | 0 | 0 | 0 | short QQQ from $720.96 |
-| Coin flip on A's timing | $97.95 | -2.05% | 0 | 0 | 0 | long QQQ from $720.96 |
-| AI bot B (careful: 0.5x, 5% stop, daily trend) | $100.43 | +0.43% | 1 | 1 | 0 | cash |
+| AI bot A (her setup: 1.25x, no stop) | $101.92 | +1.92% | 0 | 0 | 0 | short QQQ from $720.96 |
+| Coin flip on A's timing | $97.83 | -2.17% | 0 | 0 | 0 | long QQQ from $720.96 |
+| AI bot B (careful: 0.5x, 5% stop; stopped 2026-10-16, replaced by bot C) | $100.43 | +0.43% | 1 | 1 | 0 | cash |
 | Coin flip on B's timing | $100.43 | +0.43% | 1 | 1 | 0 | cash |
-| Just hold SPY | $98.73 | -1.27% | 0 | 0 | 0 | long SPY from $771.08 |
-| SPY above its 20-day average | $98.73 | -1.27% | 0 | 0 | 0 | long SPY from $771.08 |
+| Just hold SPY | $98.84 | -1.16% | 0 | 0 | 0 | long SPY from $771.08 |
+| SPY above its 20-day average | $98.84 | -1.16% | 0 | 0 | 0 | long SPY from $771.08 |
 
 ## Decisions and trades, newest first
 
 | Time (ET) | Bot | Decision | Trade | Why |
 |---|---|---|---|---|
+| 2026-10-16 15:51 | A | hold | none | QQQ is in a strong downtrend today, and the current short position is profitable. The market (SPY, QQQ) is showing continued weakness, suggesting further downside or at least no immediate reversal. Holding the profitable short position is prudent. |
 | 2026-10-16 14:43 | B | close NVDA | closed short NVDA @ $214.66 | NVDA daily trend is strongly down, but recent hourly bars show a bounce from lows. The overall market (SPY, QQQ) is also showing signs of a potential bounce after a sharp decline. Closing the profitable short position to avoid reversal risk and re-evaluate. |
 | 2026-10-16 14:43 | A | hold | none | The short QQQ position is profitable, and the price action on the 1-hour bars shows a clear downtrend continuing today, with lower lows and lower highs. |
 | 2026-10-16 13:06 | B | hold | none | Daily trend for NVDA is bearish, and the current price is below recent hourly closes, indicating continued downward momentum. Stop-loss is not hit. |
