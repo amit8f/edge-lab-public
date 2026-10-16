@@ -6,13 +6,14 @@
 set -euo pipefail
 mode="$1"
 repo_url="${STATE_REMOTE:-https://github.com/${GITHUB_REPOSITORY:-}.git}"
+branch="${STATE_BRANCH:-state}"   # the crypto track keeps its own branch so hourly runs never race the others
 auth=(-c "http.extraheader=AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)")
 
 if [[ "$mode" == "restore" ]]; then
-  if git "${auth[@]}" ls-remote --exit-code --heads "$repo_url" state >/dev/null 2>&1; then
-    git "${auth[@]}" clone -q --depth 1 --branch state "$repo_url" state
+  if git "${auth[@]}" ls-remote --exit-code --heads "$repo_url" "$branch" >/dev/null 2>&1; then
+    git "${auth[@]}" clone -q --depth 1 --branch "$branch" "$repo_url" state
   else
-    mkdir -p state && cd state && git init -q -b state && git remote add origin "$repo_url"
+    mkdir -p state && cd state && git init -q -b "$branch" && git remote add origin "$repo_url"
     echo "forward data written by the GitHub Actions jobs; never edit by hand" > README.md
   fi
 elif [[ "$mode" == "save" ]]; then
@@ -25,7 +26,7 @@ elif [[ "$mode" == "save" ]]; then
     echo "no state change"
   else
     git commit -q -m "state: ${RUN_LABEL:-manual}"
-    git "${auth[@]}" push -q origin HEAD:state
+    git "${auth[@]}" push -q origin "HEAD:$branch"
     git log --oneline -1
   fi
 else
