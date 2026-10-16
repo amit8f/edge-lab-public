@@ -1,0 +1,266 @@
+{
+ "decisions": {
+  "A": {
+   "parsed": {
+    "action": "hold",
+    "reason": "The market, including QQQ, is in a strong downtrend, and the current short position is profitable and aligns with the prevailing trend.",
+    "symbol": "QQQ",
+    "valid": true
+   },
+   "prompt_sha256": "f05cc9fe668b46e223af65cd3a7dfde3717e1b42856c831a8117047764f50d47",
+   "raw": "{\n  \"action\": \"hold\",\n  \"symbol\": \"QQQ\",\n  \"reason\": \"The market, including QQQ, is in a strong downtrend, and the current short position is profitable and aligns with the prevailing trend.\"\n}"
+  },
+  "B": {
+   "parsed": {
+    "action": "short",
+    "reason": "NVDA's daily trend shows a significant drop over the last two days, breaking its recent uptrend. Recent hourly bars also show strong bearish momentum, aligning for a short position.",
+    "symbol": "NVDA",
+    "valid": true
+   },
+   "prompt_sha256": "5dc1b38a125406575474c340f2b49ddf7be552df4a50e50f4a8ba67a05e5f3d2",
+   "raw": "{\n  \"action\": \"short\",\n  \"symbol\": \"NVDA\",\n  \"reason\": \"NVDA's daily trend shows a significant drop over the last two days, breaking its recent uptrend. Recent hourly bars also show strong bearish momentum, aligning for a short position.\"\n}"
+  }
+ },
+ "equity": {
+  "A": 100.742073,
+  "A-coin": 99.006854,
+  "B": 99.95,
+  "B-coin": 99.95,
+  "HOLD": 99.36567,
+  "TREND": 99.36567
+ },
+ "fills": {
+  "A": [],
+  "A-coin": [],
+  "B": [
+   {
+    "action": "open",
+    "notional": 50.0,
+    "price": 216.94,
+    "side": -1,
+    "sym": "NVDA",
+    "t": 1792166580
+   }
+  ],
+  "B-coin": [
+   {
+    "action": "open",
+    "notional": 50.0,
+    "price": 216.94,
+    "side": -1,
+    "sym": "NVDA",
+    "t": 1792166580
+   }
+  ],
+  "HOLD": [],
+  "TREND": []
+ },
+ "kind": "run",
+ "new_1h": {
+  "AAPL": [
+   [
+    1792161000,
+    344.285,
+    346.62,
+    343.92,
+    345.54,
+    5367471.0,
+    1792164600
+   ]
+  ],
+  "AMD": [
+   [
+    1792161000,
+    543.84,
+    550.29,
+    538.82,
+    542.775,
+    2646242.0,
+    1792164600
+   ]
+  ],
+  "AMZN": [
+   [
+    1792161000,
+    253.275,
+    255.25,
+    253.18,
+    253.55,
+    4012830.0,
+    1792164600
+   ]
+  ],
+  "GOOGL": [
+   [
+    1792161000,
+    345.41,
+    347.27,
+    343.4,
+    343.58,
+    3661772.0,
+    1792164600
+   ]
+  ],
+  "META": [
+   [
+    1792161000,
+    722.25,
+    725.96,
+    719.18,
+    720.35,
+    2473593.0,
+    1792164600
+   ]
+  ],
+  "MSFT": [
+   [
+    1792161000,
+    535.3,
+    537.5,
+    530.24,
+    530.475,
+    2539577.0,
+    1792164600
+   ]
+  ],
+  "NVDA": [
+   [
+    1792161000,
+    217.595,
+    218.676,
+    216.15,
+    216.5099,
+    14467345.0,
+    1792164600
+   ]
+  ],
+  "QQQ": [
+   [
+    1792161000,
+    720.43,
+    723.59,
+    716.34,
+    717.22,
+    6844160.0,
+    1792164600
+   ]
+  ],
+  "SPY": [
+   [
+    1792161000,
+    770.89,
+    772.62,
+    768.4469,
+    768.745,
+    4443273.0,
+    1792164600
+   ]
+  ],
+  "TSLA": [
+   [
+    1792161000,
+    364.5479,
+    365.73,
+    357.5,
+    358.37,
+    9602551.0,
+    1792164600
+   ]
+  ]
+ },
+ "positions": {
+  "A": {
+   "call": 998.2453846153846,
+   "carry": 0.03,
+   "charged": 1792166580,
+   "checked": 1792164600,
+   "entry": 720.955,
+   "notional": 125.0,
+   "opened": 1792160700,
+   "qty": 0.17338114029308346,
+   "side": -1,
+   "stop": null,
+   "sym": "QQQ"
+  },
+  "A-coin": {
+   "call": 192.25466666666662,
+   "carry": 0.015999999999999997,
+   "charged": 1792166580,
+   "checked": 1792164600,
+   "entry": 720.955,
+   "notional": 125.0,
+   "opened": 1792160700,
+   "qty": 0.17338114029308346,
+   "side": 1,
+   "stop": null,
+   "sym": "QQQ"
+  },
+  "B": {
+   "call": 500.63076923076915,
+   "carry": 0.03,
+   "charged": 1792166580,
+   "checked": 1792166580,
+   "entry": 216.94,
+   "notional": 50.0,
+   "opened": 1792166580,
+   "qty": 0.2304784733105928,
+   "side": -1,
+   "stop": 227.787,
+   "sym": "NVDA"
+  },
+  "B-coin": {
+   "call": 500.63076923076915,
+   "carry": 0.03,
+   "charged": 1792166580,
+   "checked": 1792166580,
+   "entry": 216.94,
+   "notional": 50.0,
+   "opened": 1792166580,
+   "qty": 0.2304784733105928,
+   "side": -1,
+   "stop": 227.787,
+   "sym": "NVDA"
+  },
+  "HOLD": {
+   "call": null,
+   "carry": 0.0,
+   "charged": 1792166580,
+   "checked": 1792164600,
+   "entry": 771.08,
+   "notional": 99.90009990009992,
+   "opened": 1792160700,
+   "qty": 0.12955867082546546,
+   "side": 1,
+   "stop": null,
+   "sym": "SPY"
+  },
+  "TREND": {
+   "call": null,
+   "carry": 0.0,
+   "charged": 1792166580,
+   "checked": 1792164600,
+   "entry": 771.08,
+   "notional": 99.90009990009992,
+   "opened": 1792160700,
+   "qty": 0.12955867082546546,
+   "side": 1,
+   "stop": null,
+   "sym": "SPY"
+  }
+ },
+ "prev_sha256": "25ddf80b9a8893d800e3dd469c548dc68145e80895ab671efd643de2994e7eaf",
+ "prices": {
+  "AAPL": 344.345,
+  "AMD": 541.685,
+  "AMZN": 252.765,
+  "GOOGL": 343.33,
+  "META": 719.02,
+  "MSFT": 528.5,
+  "NVDA": 216.94,
+  "QQQ": 715.95,
+  "SPY": 766.955,
+  "TSLA": 357.37
+ },
+ "t": 1792166580,
+ "written_utc": "2026-10-16T16:20:15.724095Z"
+}
