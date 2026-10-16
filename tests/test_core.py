@@ -34,3 +34,13 @@ def test_parse_form_index():
     df = parse_form_index(text)
     assert list(df["form"]) == ["4", "NT 10-K"] and list(df["cik"]) == [123456, 789]
     assert df["filed"].iloc[0] == pd.Timestamp("2026-10-12")
+
+
+def test_secrets_with_trailing_newline_are_stripped(monkeypatch):
+    from core import env
+    monkeypatch.setattr(env, "_load_dotenv", lambda: None)
+    monkeypatch.setenv("SEC_USER_AGENT", "Name name@example.com\n")
+    monkeypatch.setenv("ALPACA_API_KEY_ID", " key\n")
+    monkeypatch.setenv("ALPACA_API_SECRET_KEY", "secret\r\n")
+    assert env.sec_headers() == {"User-Agent": "Name name@example.com"}
+    assert env.alpaca_headers() == {"APCA-API-KEY-ID": "key", "APCA-API-SECRET-KEY": "secret"}

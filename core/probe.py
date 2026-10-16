@@ -48,7 +48,7 @@ def ibkr():
 def ftd():
     import os
     r = requests.get("https://www.sec.gov/files/data/fails-deliver-data/cnsfails202401a.zip",
-                     headers={"User-Agent": os.environ.get("SEC_USER_AGENT", "edge-lab probe")}, timeout=60)
+                     headers={"User-Agent": os.environ.get("SEC_USER_AGENT", "edge-lab probe").strip()}, timeout=60)
     if r.status_code != 200:
         return f"HTTP {r.status_code}"
     z = zipfile.ZipFile(io.BytesIO(r.content))

@@ -62,7 +62,7 @@ def _post(url, headers, body, provider):
 
 
 def gemini(model, text):
-    key = os.environ["GEMINI_API_KEY"]
+    key = os.environ["GEMINI_API_KEY"].strip()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
     body = {"systemInstruction": {"parts": [{"text": SYSTEM}]},
             "contents": [{"role": "user", "parts": [{"text": text}]}],
@@ -73,7 +73,7 @@ def gemini(model, text):
 
 
 def groq(model, text):
-    key = os.environ["GROQ_API_KEY"]
+    key = os.environ["GROQ_API_KEY"].strip()
     body = {"model": model, "temperature": 0,
             "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": text}]}
     j = _post("https://api.groq.com/openai/v1/chat/completions", {"Authorization": f"Bearer {key}"}, body, "groq")
