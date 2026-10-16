@@ -29,6 +29,7 @@ CHUNK = 25
 MIN_PRICE = 5.0
 DV_DAYS = 20
 GAP_DAYS = 15
+JUMP_DOWN, JUMP_UP = -0.5, 1.0   # a one-day close move outside this is treated as a data break (QA rule)
 COST = 0.002
 KRONOS_COMMIT = "67b630e67f6a18c9e9be918d9b4337c960db1e9a"
 MODEL = "NeoQuasar/Kronos-small"
@@ -69,6 +70,10 @@ def model_inputs(adj, symbols, t):
             dropped.append(sym)
             continue
         s = s.tail(LOOKBACK)
+        r = s["c"].pct_change().dropna()
+        if len(r) and (r.min() <= JUMP_DOWN or r.max() >= JUMP_UP):
+            dropped.append(sym)   # likely an unadjusted spin-off or similar; it would dominate Kronos's scaling
+            continue
         inputs[sym] = pd.DataFrame({"open": s["o"], "high": s["h"], "low": s["l"], "close": s["c"],
                                     "volume": s["v"]}).astype(float)
     return inputs, dropped
