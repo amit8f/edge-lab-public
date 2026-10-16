@@ -484,6 +484,10 @@ def run(state_dir, now=None, fetch=fetch_all, ask=ask_gemini):
     rec = step(state, data, t, ask)
     led.write_json("run", key, f"runs/{key[:10]}/{key}.json", rec)
     _atomic(bpath, json.dumps(state, indent=1, sort_keys=True))
+    from tracks.main import ai_mirror
+    m = ai_mirror.run(state, rec["prices"], root / "mirror.jsonl")
+    if m is not None:
+        print(f"Alpaca mirror: {len(m['orders'])} orders" + (f", error {m['error']}" if "error" in m else ""))
     fd = feed(state, led)
     _atomic(root / "feed.json", json.dumps(fd))
     _atomic(root / "README.md", summary(state, rec, fd))
