@@ -1,17 +1,18 @@
 # $100 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-16 15:18 ET with $100 per book. **Last update 2026-10-16 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-16 15:18 ET with $100 per book. **Last update 2026-10-16 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $100.81 | +0.81% | 0 | 0 | short APLD, short CIFR, short CRWV, short IREN, short NBIS |
-| Coin flip on C's picks | $99.36 | -0.64% | 0 | 0 | long APLD, long CIFR, short CRWV, short IREN, long NBIS |
-| Just hold SPY | $99.95 | -0.05% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $99.01 | -0.99% | 0 | 0 | short APLD, short CIFR, short CRWV, short IREN, short NBIS |
+| Coin flip on C's picks | $99.70 | -0.30% | 0 | 0 | long APLD, long CIFR, short CRWV, short IREN, long NBIS |
+| Just hold SPY | $100.10 | +0.10% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-16 15:57 | short APLD, short CIFR, short CRWV, short IREN, short NBIS | none | Maintaining existing short positions in APLD, CIFR, IREN, NBIS, and CRWV as the strong downtrend in these tech/crypto-related stocks appears to be continuing, with most showing persistent weakness in hourly closes. |
 | 2026-10-16 15:47 | short APLD, short CIFR, short CRWV, short IREN, short NBIS | none | All existing short positions are profitable and continue to show strong downward momentum, aligning with the overall negative sentiment in the sector. Maintaining these positions to capitalize on further declines. |
 | 2026-10-16 15:37 | short APLD, short CIFR, short CRWV, short IREN, short NBIS | none | Maintaining all existing short positions as they are profitable or have minimal losses, and the underlying stocks continue to show strong negative momentum today. |
 | 2026-10-16 15:27 | short APLD, short CIFR, short CRWV, short IREN, short NBIS | none | All existing short positions are maintained due to continued strong downtrends across the board, with all held stocks showing significant declines today and over longer periods, reinforcing the bearish outlook. |
