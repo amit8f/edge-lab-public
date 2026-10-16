@@ -1,8 +1,8 @@
-"""Copies the $100 AI bot's positions (K2, books A and B) into a separate Alpaca PAPER account at 25x size,
-so Amit can watch them in Alpaca's app (research/prereg/K2.md, amendment 2026-10-16).
+"""Copies each $100 AI bot's position (K2) into its own Alpaca PAPER account at 25x size, so Amit can watch
+and compare them in Alpaca's app: book A (the TikTok setup) and book B (the careful version) each get a
+$2,500 paper account (research/prereg/K2.md, amendments 2026-10-16).
 
-Display only: the official K2 result stays the simulated $100 books. The two books' positions are netted per
-symbol (one Alpaca account can't be long and short the same stock). Longs may be fractional; shorts are
+Display only: the official K2 result stays the simulated $100 books. Longs may be fractional; shorts are
 rounded to whole shares because Alpaca can't short fractions. Orders go only to the paper API (core.alpaca.post
 refuses anything else). Without the mirror keys this does nothing.
 """
@@ -13,22 +13,23 @@ import time
 from core import alpaca
 
 SCALE = 25            # $100 books -> a $2,500 paper account
-BOOKS = ("A", "B")
+ACCOUNTS = {"A": ("ALPACA_MIRROR_KEY_ID", "ALPACA_MIRROR_SECRET_KEY"),
+            "B": ("ALPACA_MIRROR_B_KEY_ID", "ALPACA_MIRROR_B_SECRET_KEY")}
 MIN_USD = 1.0         # skip changes smaller than this
 
 
-def mirror_headers():
-    key, secret = os.environ.get("ALPACA_MIRROR_KEY_ID"), os.environ.get("ALPACA_MIRROR_SECRET_KEY")
+def mirror_headers(book):
+    ki, si = ACCOUNTS[book]
+    key, secret = os.environ.get(ki), os.environ.get(si)
     return {"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": secret} if key and secret else None
 
 
-def targets(state):
-    """{symbol: signed share count} the account should hold."""
+def targets(state, book):
+    """{symbol: signed share count} the book's account should hold."""
     out = {}
-    for n in BOOKS:
-        p = state["books"][n]["pos"]
-        if p:
-            out[p["sym"]] = out.get(p["sym"], 0.0) + p["side"] * p["qty"] * SCALE
+    p = state["books"][book]["pos"]
+    if p:
+        out[p["sym"]] = p["side"] * p["qty"] * SCALE
     for s, q in out.items():
         out[s] = float(round(q)) if q < 0 else round(q, 4)
     return out
@@ -64,24 +65,28 @@ def _wait(h, oid, seconds=30):
     return "pending"
 
 
-def run(state, prices, log_path, headers=None, post=alpaca.post, positions=_positions, wait=_wait):
-    """Send the orders; append what happened to log_path. Never raises: the bot's own run must not fail."""
-    h = headers or mirror_headers()
-    if h is None:
-        return None
-    out = {"t": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "orders": []}
-    try:
-        tgt = targets(state)
-        out["target"] = tgt
-        for sym, side, qty in plan_orders(tgt, positions(h), prices):
-            body = {"symbol": sym, "qty": str(qty), "side": side, "type": "market", "time_in_force": "day"}
-            code, js = post(f"{alpaca.TRADE}/orders", body, headers=h)
-            row = {"symbol": sym, "side": side, "qty": qty, "status": code, "message": js.get("message")}
-            if code < 300 and js.get("id"):
-                row["fill"] = wait(h, js["id"])
-            out["orders"].append(row)
-    except Exception as e:  # logged, never fatal
-        out["error"] = f"{type(e).__name__}: {e}"
-    with open(log_path, "a", encoding="utf-8") as f:
-        f.write(json.dumps(out) + "\n")
-    return out
+def run(state, prices, log_path, headers_for=mirror_headers, post=alpaca.post, positions=_positions, wait=_wait):
+    """For each book with keys, send the orders to its account and append what happened to log_path.
+    Never raises: the bot's own run must not fail."""
+    results = {}
+    for book in ACCOUNTS:
+        h = headers_for(book)
+        if h is None:
+            continue
+        out = {"t": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "book": book, "orders": []}
+        try:
+            tgt = targets(state, book)
+            out["target"] = tgt
+            for sym, side, qty in plan_orders(tgt, positions(h), prices):
+                body = {"symbol": sym, "qty": str(qty), "side": side, "type": "market", "time_in_force": "day"}
+                code, js = post(f"{alpaca.TRADE}/orders", body, headers=h)
+                row = {"symbol": sym, "side": side, "qty": qty, "status": code, "message": js.get("message")}
+                if code < 300 and js.get("id"):
+                    row["fill"] = wait(h, js["id"])
+                out["orders"].append(row)
+        except Exception as e:  # logged, never fatal
+            out["error"] = f"{type(e).__name__}: {e}"
+        with open(log_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(out) + "\n")
+        results[book] = out
+    return results or None
