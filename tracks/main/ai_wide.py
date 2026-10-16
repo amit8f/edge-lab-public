@@ -2,7 +2,7 @@
 (research/prereg/K4.md).
 
 Once a day: the 300 most traded $5+ US common stocks (median raw dollar volume over 20 sessions) and which
-of them Alpaca can short. Every trading hour: the 40 of those that moved most since the previous close
+of them Alpaca can short. Every 10 minutes of the session: the 40 of those that moved most since the previous close
 (plus anything held), shown to Gemini with their recent hourly closes; it answers with up to five
 positions, long or short. Book C follows the answer, C-coin takes the same symbols at the same moments
 with random sides, HOLD buys SPY once. Fills are simulated at the latest IEX trade (SIP 16 minutes back when IEX has nothing newer) with main-track costs and logged in
@@ -35,13 +35,13 @@ SEED = 20261019
 FEE, BORROW = k2.FEE, k2.BORROW
 ET = k2.ET
 
-PROMPT = f"""You manage a $100 paper US stock account. Each hour you see the {SHORTLIST} most traded US stocks
+PROMPT = f"""You manage a $100 paper US stock account. Every 10 minutes of the trading day you see the {SHORTLIST} most traded US stocks
 that moved most today (from the {N_UNIVERSE} most traded stocks over $5) plus anything you hold, with their
 recent hourly closes, up to three news headlines from the last 24 hours, and your account.
 Rules: hold up to {MAX_POS} positions, long or short. Each new position is sized at one fifth of equity; a
 position you keep stays as it is. Only symbols marked shortable can be shorted. Costs: 0.1% per side, shorts
 pay 3% a year borrow.
-Name the full set of positions you want to hold after this hour (an empty list means all cash). Anything
+Name the full set of positions you want to hold now (an empty list means all cash). Anything
 you hold and leave out is sold. Reply with JSON only:
 {{"positions": [{{"symbol": "XYZ", "side": "long|short", "reason": "one line"}}], "summary": "one line"}}"""
 
@@ -363,7 +363,7 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
     if px_time is None:
         print(f"{now}: market closed at now - 16 min; nothing to do")
         return None
-    key = px_time.strftime("%Y-%m-%dT%H")
+    key = f"{now:%Y-%m-%dT%H}:{now.minute // 10 * 10:02d}"   # one decision per 10-minute slot
     if led.has("run", key):
         print(f"{key} already logged")
         return None
@@ -385,7 +385,7 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
     rec = step(state, uni, data, syms, t, ask, news)
     rec["price_source"] = {s: data[s].get("src", "sip") for s in syms if s in data}
     rec["headline_counts"] = {s: len(v) for s, v in news.items() if v}
-    led.write_json("run", key, f"runs/{key[:10]}/{key}.json", rec)
+    led.write_json("run", key, f"runs/{key[:10]}/{key.replace(':', '')}.json", rec)
     k2._atomic(bpath, json.dumps(state, indent=1, sort_keys=True))
     from tracks.main import ai_mirror
     m = ai_mirror.run(state, rec["prices"] | {s: d["last"] for s, d in data.items()}, root / "mirror.jsonl")
