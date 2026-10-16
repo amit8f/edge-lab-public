@@ -67,6 +67,14 @@ def test_model_inputs_need_256_clean_bars_ending_on_t():
     assert list(inputs["OK"].columns) == ["open", "high", "low", "close", "volume"]
 
 
+def test_model_inputs_drop_series_with_a_data_break():
+    d = sessions(n=300)
+    jump = bars(d)
+    jump.iloc[-10:, jump.columns.get_loc("c")] = 4.0   # -60% in one day, e.g. an unadjusted spin-off
+    inputs, dropped = k.model_inputs({"OK": bars(d), "JUMP": jump}, ["OK", "JUMP"], T)
+    assert list(inputs) == ["OK"] and dropped == ["JUMP"]
+
+
 def test_forecast_chunks_and_pick_is_deterministic():
     d = sessions()
     inputs = {f"S{i:02d}": k.model_inputs({"x": bars(d, 10, 100, step=0.001 * (i - 25))}, ["x"], T)[0]["x"]
