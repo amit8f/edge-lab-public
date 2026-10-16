@@ -104,3 +104,17 @@ def test_run_logs_universe_and_hour_once_and_mirrors_c(tmp_path, monkeypatch):
     assert "long S49" in readme and "bought S49" in readme
     assert ai_mirror.targets({"books": {"C": {"pos": {"S49": {"side": 1, "qty": 0.2}, "S01": {"side": -1, "qty": 0.17}}}}}, "C") \
         == {"S49": 5.0, "S01": -4.0}
+
+
+def test_fetch_hour_uses_newer_iex_trades_inside_the_session(monkeypatch):
+    now = pd.Timestamp("2026-10-19 15:07", tz="UTC")
+    px = now - pd.Timedelta(minutes=16)
+    o, c = pd.Timestamp("2026-10-19 13:30", tz="UTC"), pd.Timestamp("2026-10-19 20:00", tz="UTC")
+    monkeypatch.setattr(w.k2, "market_window", lambda n: (px, {px.tz_convert(w.ET).date(): (o, c)}))
+    bar = lambda p: [{"t": (px - pd.Timedelta(minutes=1)).isoformat(), "c": p, "v": 10}]
+    monkeypatch.setattr(w.k2, "_bars", lambda syms, *a: {s: bar(10.0) for s in syms})
+    monkeypatch.setattr(w, "iex_latest", lambda syms: {"S00": (11.0, now - pd.Timedelta(seconds=5)),
+                                                       "S01": (9.0, px - pd.Timedelta(minutes=30))})
+    _, d, _ = w.fetch_hour(now, uni(3), [])
+    assert d["S00"]["last"] == 11.0 and d["S00"]["src"] == "iex"
+    assert d["S01"]["last"] == 10.0 and d["S01"]["src"] == "sip"      # older IEX trade: SIP kept

@@ -5,7 +5,7 @@ Once a day: the 300 most traded $5+ US common stocks (median raw dollar volume o
 of them Alpaca can short. Every trading hour: the 40 of those that moved most since the previous close
 (plus anything held), shown to Gemini with their recent hourly closes; it answers with up to five
 positions, long or short. Book C follows the answer, C-coin takes the same symbols at the same moments
-with random sides, HOLD buys SPY once. Fills are simulated at SIP prices with main-track costs and logged in
+with random sides, HOLD buys SPY once. Fills are simulated at the latest IEX trade (SIP 16 minutes back when IEX has nothing newer) with main-track costs and logged in
 the hash-chained ledger; the Alpaca mirror only copies book C for display.
 
     python -m tracks.main.ai_wide --state state
@@ -161,8 +161,23 @@ def fetch_hour(now, uni, held):
     for s in syms:
         m = [r for r in mins.get(s, []) if r["v"]]
         if m:
-            out[s] = {"last": float(m[-1]["c"]), "last_t": m[-1]["t"], "1h": []}
+            out[s] = {"last": float(m[-1]["c"]), "last_t": m[-1]["t"], "src": "sip", "1h": []}
+    o, c = sessions[px_time.tz_convert(ET).date()]
+    latest = {}
+    for ch in _chunks(syms):
+        latest.update(iex_latest(ch))
+    for s, (p, ts) in latest.items():
+        if o <= ts <= min(c, now) and s in out and ts > pd.Timestamp(out[s]["last_t"]):
+            out[s].update(last=p, last_t=ts.isoformat(), src="iex")
     return px_time, out, sessions
+
+
+def iex_latest(syms):
+    """{symbol: (price, time)} of the latest IEX trade: Alpaca's free real-time feed (one exchange, ~2-3% of
+    volume). K4 uses it for current prices only (amendment 2026-10-16, Amit's OK); history stays SIP."""
+    from core import alpaca
+    j = alpaca.get("https://data.alpaca.markets/v2/stocks/trades/latest", {"symbols": ",".join(syms), "feed": "iex"})
+    return {s: (float(x["p"]), pd.Timestamp(x["t"])) for s, x in (j.get("trades") or {}).items() if x.get("p")}
 
 
 def add_hours(data, syms, now, px_time, sessions):
@@ -354,7 +369,7 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
         return None
     syms = [s for s in shortlist(uni, data, held) if s in data]
     hours(data, set(syms) | {"SPY"}, now, px_time, sessions)
-    t = int(px_time.timestamp())
+    t = int(now.timestamp()) if any(d.get("src") == "iex" for d in data.values()) else int(px_time.timestamp())
     state = state or init_state(t)
     missing = [s for b in state["books"].values() for s in b["pos"] if s not in data]
     if missing:   # a held stock with no trade in the last hour keeps its last price
@@ -363,11 +378,12 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
             p = next(b["pos"][s] for b in state["books"].values() if s in b["pos"])
             data[s] = {"last": p["last"], "last_t": None, "1h": []}
     try:
-        news = headlines(syms, px_time)
+        news = headlines(syms, pd.Timestamp(t, unit="s", tz="UTC"))
     except Exception as e:  # news is optional input; logged, the run goes on
         print(f"news unavailable: {type(e).__name__}")
         news = {}
     rec = step(state, uni, data, syms, t, ask, news)
+    rec["price_source"] = {s: data[s].get("src", "sip") for s in syms if s in data}
     rec["headline_counts"] = {s: len(v) for s, v in news.items() if v}
     led.write_json("run", key, f"runs/{key[:10]}/{key}.json", rec)
     k2._atomic(bpath, json.dumps(state, indent=1, sort_keys=True))
