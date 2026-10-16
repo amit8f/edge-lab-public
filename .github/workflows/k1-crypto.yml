@@ -1,0 +1,60 @@
+# K1 hourly: the $100 AI crypto paper bot (tracks/crypto/llm_bot.py, research/prereg/K1.md).
+# Reads Kraken's public prices, asks Gemini, and logs to the orphan branch `state-crypto` (its own
+# branch, so hourly runs never race the stock jobs on `state`). Paper only: nothing is sent to an exchange.
+name: k1-crypto
+
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: crypto-state
+  cancel-in-progress: false
+
+jobs:
+  trade:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the crypto state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-crypto
+        run: bash deploy/state.sh restore
+
+      - name: One hourly step
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: .venv/bin/python -m tracks.crypto.llm_bot --state state
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-crypto
+          RUN_LABEL: k1-crypto ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
