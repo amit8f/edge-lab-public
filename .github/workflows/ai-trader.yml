@@ -1,6 +1,10 @@
 # K2 hourly: the $100 AI stock paper trader (tracks/main/ai_trader.py, research/prereg/K2.md).
 # Runs each hour of the US session (the code skips runs whose price time, now - 16 min, is outside it),
 # logs to the orphan branch `state-ai` so hourly runs never race the nightly jobs on `state`.
+# GitHub's cron never fired for this new repo on 2026-10-16, so each run also queues the next one itself:
+# the `next` job waits until minute 7 of the coming hour and dispatches this workflow again (free on a public
+# repo; no Claude involved). Only one chain runs: it skips the dispatch when another run is already queued.
+# On Saturdays around 03:07 UTC it also starts the weekly Kronos job (which logs at most once per week).
 name: ai-trader
 
 on:
@@ -64,3 +68,28 @@ jobs:
           STATE_BRANCH: state-ai
           RUN_LABEL: ai-trader ${{ github.run_id }}-${{ github.run_attempt }}
         run: bash deploy/state.sh save
+
+  next:
+    needs: trade
+    if: always() && github.repository != 'amit8f/edge-lab'
+    permissions:
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Wait for the next hour and queue it
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          now=$(date -u +%s)
+          next=$(( (now / 3600 + 1) * 3600 + 7 * 60 ))
+          echo "sleeping $(( next - now ))s until $(date -u -d @$next +%H:%M) UTC"
+          sleep $(( next - now ))
+          others=$(gh run list -R "$REPO" --workflow ai-trader.yml --limit 20 --json databaseId,status \
+            --jq "[.[] | select(.databaseId != $RUN_ID and (.status == \"queued\" or .status == \"in_progress\" or .status == \"pending\" or .status == \"waiting\"))] | length")
+          if [[ "$others" == "0" ]]; then gh workflow run ai-trader.yml -R "$REPO" --ref main; echo queued; else echo "another run is queued; not chaining"; fi
+          if [[ "$(date -u +%u)" == "6" && "$(date -u +%H)" == "03" ]]; then
+            gh workflow run kronos-weekly.yml -R "$REPO" --ref main -f dry_run=false && echo "kronos queued"
+          fi
