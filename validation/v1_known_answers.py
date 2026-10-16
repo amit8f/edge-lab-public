@@ -189,10 +189,27 @@ def french_monthly(cache):
 
 # ---------- reconciliation with outside sources ----------
 
+_FAILS = {}
+
+
+def _safe_get(host, get, url, **kw):
+    """get(url) or None on a network error; after 5 straight errors from one host, stop asking it."""
+    if _FAILS.get(host, 0) >= 5:
+        return None
+    try:
+        r = get(url, **kw)
+    except requests.RequestException as e:
+        _FAILS[host] = _FAILS.get(host, 0) + 1
+        print(f"[reconcile] {host}: {type(e).__name__} ({_FAILS[host]} in a row)")
+        return None
+    _FAILS[host] = 0
+    return r
+
+
 def stooq_closes(sym, get=requests.get):
-    r = get(f"https://stooq.com/q/d/l/?s={sym.lower().replace('.', '-')}.us&i=d", timeout=30,
+    r = _safe_get("stooq", get, f"https://stooq.com/q/d/l/?s={sym.lower().replace('.', '-')}.us&i=d", timeout=30,
             headers={"User-Agent": "edge-lab research"})
-    if r.status_code != 200 or not r.text.startswith("Date"):
+    if r is None or r.status_code != 200 or not r.text.startswith("Date"):
         return None
     df = pd.read_csv(io.StringIO(r.text), parse_dates=["Date"])
     return df.set_index("Date")["Close"] if len(df) else None
@@ -201,8 +218,9 @@ def stooq_closes(sym, get=requests.get):
 def nasdaq_closes(sym, get=requests.get):
     url = (f"https://api.nasdaq.com/api/quote/{sym.replace('.', '/')}/historical?assetclass=stocks"
            f"&fromdate=2015-01-01&todate=2025-09-30&limit=9999")
-    r = get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0 edge-lab research", "Accept": "application/json"})
-    if r.status_code != 200:
+    r = _safe_get("nasdaq", get, url, timeout=30,
+                  headers={"User-Agent": "Mozilla/5.0 edge-lab research", "Accept": "application/json"})
+    if r is None or r.status_code != 200:
         return None
     rows = (((r.json() or {}).get("data") or {}).get("tradesTable") or {}).get("rows") or []
     if not rows:

@@ -324,3 +324,18 @@ def test_v5_diagnostics_end_to_end_with_fakes(tmp_path, monkeypatch):
         assert 0 <= d["pick_percentiles"]["vol21"] <= 1 and d["placebo_stale_signal"]["n_dates"] > 10
         assert 0 <= d["placebo_shuffled_labels"]["hit_rate_top2pct"] <= 1
     assert "lmcap" not in res["P3"]["pick_percentiles"] and set(res["predictions"]) >= {"leakage_flag"}
+
+
+def test_v1_outside_prices_survive_network_errors():
+    import requests
+    from validation import v1_known_answers as v1
+    v1._FAILS.clear()
+    calls = []
+
+    def boom(url, **kw):
+        calls.append(url)
+        raise requests.ConnectTimeout("down")
+    assert all(v1.stooq_closes(f"S{i}", get=boom) is None for i in range(8))
+    assert len(calls) == 5                     # stops asking after 5 straight errors
+    assert v1.nasdaq_closes("ABC", get=boom) is None
+    v1._FAILS.clear()

@@ -19,6 +19,7 @@
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); padding-inline: 16px; padding-block: 24px 48px }
 main { max-width: 980px; margin: 0 auto; display: grid; gap: 28px }
+main > *, main section > * { min-width: 0 }
 h1, h2 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; letter-spacing: .01em }
 h1 { font-size: 2rem; line-height: 1.15 }
 h2 { font-size: 1.25rem }
@@ -157,7 +158,7 @@ function plan() {
   const h3 = t => `<h3 style="margin:6px 0 0;font-family:var(--display)">${esc(t)}</h3>`;
   el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p>`
     + P.owners.map(o => h3(o.name + ": sell") + tbl(["Ticker", "Shares", "Action", "Why", "Who says so"], o.sell) + `<p class="fine">${esc(o.keep)}</p>`).join("")
-    + h3("Buy (each of you)") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "From"],
+    + h3("Buy, in steps") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "When and why"],
         P.buy.map(b => [b[0], b[1], b[2], b[3].toFixed(2), Math.round(b[2] * b[3]), b[4]]))
     + `<p class="fine">${esc(P.buy_note)}</p>`;
   el.hidden = false;
