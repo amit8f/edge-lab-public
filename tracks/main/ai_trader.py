@@ -398,22 +398,66 @@ def init_state(t):
     return {"started": t, "books": {n: new_book() for n in BOOKS}, "seen_1h": {}}
 
 
-def summary(state, rec):
+NAMES = {"A": "AI bot A (her setup: 1.25x, no stop)", "B": "AI bot B (careful: 0.5x, 5% stop, daily trend)",
+         "A-coin": "Coin flip on A's timing", "B-coin": "Coin flip on B's timing", "HOLD": "Just hold SPY",
+         "TREND": "SPY above its 20-day average"}
+
+
+def summary(state, rec, fd=None):
+    """The live page on the state-ai branch (GitHub renders it): books, then every AI decision with its reason."""
     def et(t):
         return f"{pd.Timestamp(t, unit='s', tz='UTC').tz_convert(ET):%Y-%m-%d %H:%M}"
-    lines = [f"# K2 AI stock trader (paper)\n\nStarted {et(state['started'])} ET with $100 per book. "
-             f"Last prices {et(rec['t'])} ET. No real money; verdict on 2027-04-16 (research/prereg/K2.md).\n",
-             "| Book | Equity | Round trips | Margin calls | Open position |", "|---|---|---|---|---|"]
+    lines = [f"# $100 AI stock bot (paper, K2)\n\nStarted {et(state['started'])} ET with $100 per book. "
+             f"**Last update {et(rec['t'])} ET** (updates every trading hour). Paper money only; fills use real "
+             "SIP prices with costs. The coin-flip twins trade at the same moments in a random direction: an AI book "
+             "has to beat its twin to show skill. Verdict on 2027-04-16 (research/prereg/K2.md).\n",
+             "| Book | Equity | Return | Closed trades | Won | Margin calls | Now holding |", "|---|---|---|---|---|---|---|"]
     for n, b in state["books"].items():
         p = b["pos"]
-        pos = f"{'long' if p['side'] > 0 else 'short'} {p['sym']} @ {p['entry']:g}" if p else "cash"
+        pos = f"{'long' if p['side'] > 0 else 'short'} {p['sym']} from ${p['entry']:,.2f}" if p else "cash"
         calls = sum(x["why"] == "margin call" for x in b["trips"])
-        lines.append(f"| {n} | ${rec['equity'][n]:.2f} | {len(b['trips'])} | {calls} | {pos} |")
-    for n in ("A", "B"):
-        d = rec["decisions"].get(n)
-        if d:
-            lines.append(f"\n{n} said: {d['parsed']['action']} {d['parsed']['symbol'] or ''}: {d['parsed']['reason']}")
+        wins = sum(x.get("pnl", 0) > 0 for x in b["trips"])
+        eq = rec["equity"][n]
+        lines.append(f"| {NAMES.get(n, n)} | ${eq:.2f} | {eq - 100:+.2f}% | {len(b['trips'])} | {wins} | {calls} | {pos} |")
+    if fd and fd["log"]:
+        lines += ["\n## Decisions and trades, newest first\n", "| Time (ET) | Bot | Decision | Trade | Why |",
+                  "|---|---|---|---|---|"]
+        for x in fd["log"]:
+            fills = "; ".join(f"{'opened' if f['action'] == 'open' else 'closed'} "
+                              f"{'long' if (f['side'] or 0) > 0 else 'short'} {f['sym']} @ ${f['price']:,.2f}"
+                              + (f" ({f['why']})" if f.get("why") and f["why"] != "decision" else "")
+                              for f in x["fills"]) or "none"
+            act = x["action"] + (f" {x['symbol']}" if x["symbol"] and x["action"] != "hold" else "")
+            why = (x["reason"] or "no answer, counted as hold").replace("|", "/").replace("\n", " ")
+            lines.append(f"| {x['t']} | {x['book']} | {act} | {fills} | {why} |")
     return "\n".join(lines) + "\n"
+
+
+def feed(state, led, keep=60):
+    """Compact summary for the dashboard: each book's equity and open position, the equity path, and the
+    AI books' latest decisions with their reasons and fills (newest first). Rebuilt from the ledger."""
+    def et(t):
+        return f"{pd.Timestamp(t, unit='s', tz='UTC').tz_convert(ET):%Y-%m-%d %H:%M}"
+    runs = [json.loads((led.root / e["file"]).read_text()) for e in led.entries() if e["kind"] == "run"]
+    books = {}
+    last = runs[-1] if runs else {"equity": {}}
+    for n, b in state["books"].items():
+        p = b["pos"]
+        books[n] = {"equity": last["equity"].get(n), "trips": len(b["trips"]),
+                    "wins": sum(x.get("pnl", 0) > 0 for x in b["trips"]),
+                    "open": f"{'long' if p['side'] > 0 else 'short'} {p['sym']} @ {p['entry']:g}" if p else None}
+    log = []
+    for r in runs:
+        for n in ("A", "B"):
+            d = (r.get("decisions") or {}).get(n)
+            if d:
+                log.append({"t": et(r["t"]), "book": n, "action": d["parsed"]["action"],
+                            "symbol": d["parsed"].get("symbol"), "reason": d["parsed"].get("reason"),
+                            "fills": [{"action": f["action"], "side": f.get("side"), "sym": f.get("sym"),
+                                       "price": f.get("price", f.get("exit")), "why": f.get("why")} for f in r["fills"].get(n, [])]})
+    return {"started": et(state["started"]), "updated": et(last["t"]) if runs else None, "runs": len(runs),
+            "books": books, "history": [{"t": et(r["t"]), "eq": r["equity"]} for r in runs],
+            "log": log[::-1][:keep]}
 
 
 def _atomic(path, text):
@@ -440,7 +484,9 @@ def run(state_dir, now=None, fetch=fetch_all, ask=ask_gemini):
     rec = step(state, data, t, ask)
     led.write_json("run", key, f"runs/{key[:10]}/{key}.json", rec)
     _atomic(bpath, json.dumps(state, indent=1, sort_keys=True))
-    _atomic(root / "README.md", summary(state, rec))
+    fd = feed(state, led)
+    _atomic(root / "feed.json", json.dumps(fd))
+    _atomic(root / "README.md", summary(state, rec, fd))
     print(summary(state, rec))
     return rec
 
