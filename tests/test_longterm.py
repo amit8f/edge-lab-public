@@ -285,7 +285,7 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert "</script> news" not in html and "<title>Long-Horizon Picks</title>" in html
     led = ledger_mod.Ledger(tmp_path / "state" / "longterm")
     assert led.has("M4_picks", f"{t:%Y-%m-%d}") and led.has("M8_picks", f"{t:%Y-%m-%d}")
-    assert "Under live test" in html and "High risk, experimental" in html
+    assert "Live test: analyst upgrades" in html and "High risk: short-term boom models" in html
     assert led.has("M10_watch", f"{t:%Y-%m-%d}")
     rec8 = json.loads((tmp_path / "state" / "longterm" / led.entry("M8_picks", f"{t:%Y-%m-%d}")["file"]).read_text())
     assert len(rec8["universe_scores"]) == len(rec8["universe"]) and rec8["universe_scores"][0][0] == "S7" and rec8["universe_scores"][0][2:] == [2, 0]

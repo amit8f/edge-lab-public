@@ -84,42 +84,92 @@ th:first-child, td:first-child { text-align: left }
   .plan-item .right { grid-column: 1 }
   .body { padding-left: 4px }
 }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto }
+.tabs button { font: inherit; font-weight: 600; color: var(--muted); background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 12px; min-height: 44px; cursor: pointer; white-space: nowrap }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent) }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px }
+.pane { display: grid; gap: 14px }
+.pane.tests { gap: 22px }
+.pane[hidden] { display: none }
+.summary-strip { display: flex; flex-wrap: wrap; gap: 10px 28px; background: var(--surface); border: 1px solid var(--line); padding: 14px 16px }
+.summary-strip div { display: grid; gap: 2px }
+.summary-strip b { font-family: var(--mono); font-weight: 500; font-size: 1.05rem }
+.rk { border-top: 1px solid var(--line); background: var(--surface) }
+.rk details { border-bottom: 1px solid var(--line) }
+.rk summary, .rk .head { display: grid; grid-template-columns: 2rem minmax(7rem, 1.4fr) 6.5rem 6rem 4.6rem 4.6rem 4.6rem minmax(6rem, 1fr); gap: 10px; align-items: center; padding: 10px 8px }
+.rk .head { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding-block: 8px }
+.rk.hold summary, .rk.hold .head { grid-template-columns: minmax(6rem, 1fr) 11rem 6rem minmax(6rem, 1fr) }
+.rk .trio { display: contents }
+.rk .rnum { font-family: var(--mono); font-size: 1.1rem; font-weight: 500; color: var(--accent); text-align: right }
+.rk .who strong { font-size: 1.05rem }
+.rk .who span { display: block; font-size: .82rem }
+.up { color: var(--good) } .down { color: var(--bad) }
+.rk .when { font-size: .85rem }
+.detail { display: grid; gap: 10px; padding: 4px 10px 16px 3rem }
+.detail .facts { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: .88rem }
+.detail .facts span b { font-weight: 600 }
+.cell-label { display: none }
+@media (max-width: 760px) {
+  .rk .head { display: none }
+  .rk summary { grid-template-columns: 1.8rem minmax(0, 1fr) auto; row-gap: 6px }
+  .rk.hold summary { grid-template-columns: minmax(0, 1fr) auto }
+  .rk summary > .c { grid-column: 2 / -1; display: flex; gap: 6px; align-items: baseline }
+  .rk.hold summary > .c { grid-column: 1 / -1 }
+  .rk summary > .rnum { grid-column: 1; grid-row: 1 }
+  .rk summary > .who { grid-column: 2; grid-row: 1 }
+  .rk summary > .c.tagc { grid-column: 3; grid-row: 1; justify-self: end }
+  .rk.hold summary > .who { grid-column: 1 }
+  .rk.hold summary > .c.tagc { grid-column: 2 }
+  .rk summary > .c.trio { display: flex; gap: 14px }
+  .cell-label { display: inline; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em }
+  .detail { padding-left: 10px }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
 
 <main>
   <header>
-    <span class="label">edge-lab · idea M4 · main track · US stocks $5+ and $300M+</span>
-    <h1>Long-horizon picks</h1>
+    <h1>Stock picks</h1>
     <p class="muted" id="asof" style="margin:0"></p>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
       <button id="refresh" type="button" hidden>Refresh now</button>
       <span class="fine" id="refresh-msg" role="status"></span>
     </div>
   </header>
-  <section class="verdict" id="plan" hidden style="border-left-color:var(--accent)"></section>
-  <section class="verdict" id="scorecard"></section>
-  <details class="ref">
-    <summary><h2 style="display:inline">Six-factor ranking (failed its test; for reference)</h2></summary>
-    <section class="verdict" id="verdict" style="margin-top:10px"></section>
-    <p class="fine">Ranked by an equal mix of six measures with decades of published evidence: momentum, low volatility, profitability, valuation, buybacks versus dilution, and asset growth. Open a row for the reasons, recent headlines and Reddit chatter. No rating, confidence or price range is shown, because the ranking has no tested edge.</p>
-    <div class="list" id="list"></div>
-  </details>
-  <section style="display:grid;gap:10px">
-    <h2>Forward record</h2>
-    <p class="fine" style="margin:0" id="record-note"></p>
-    <div class="table-wrap" id="record"></div>
-  </section>
-  <section style="display:grid;gap:10px">
-    <h2>Under live test: analyst upgrades (M8)</h2>
-    <p class="fine" style="margin:0">Analyst upgrades and price-target raises came closest of every idea tested here (about +3% per 6 months over the average stock, 2017–2025, not enough to pass). Rather than call it proven, the top 20 by analyst actions in the last 91 days are logged at the end of every week before their returns exist, with 20 random stocks beside them, and each list is judged one month later. A first verdict comes after 26 weeks, the final one after 52. These are test entries, not Buy calls.</p>
-    <div class="table-wrap" id="m8"></div>
-    <div class="table-wrap" id="m8-record"></div>
-  </section>
-  <section style="display:grid;gap:10px">
-    <h2>High risk, experimental: short-term boom models</h2>
-    <p class="fine" style="margin:0">Two XGBoost models trained to spot stocks likely to land in the top 2% of returns over the next month, one for regular stocks ($5+) and one for penny stocks ($1–5). Both failed their 2019–2025 backtest. They find stocks about to move a lot, in either direction, not stocks about to rise. Shown because you asked to see them; these are lottery tickets, not Buy calls.</p>
-    <div id="boom"></div>
+  <nav class="tabs" role="tablist" aria-label="Dashboard sections">
+    <button type="button" role="tab" data-tab="buy" aria-selected="true">Buy list</button>
+    <button type="button" role="tab" data-tab="holdings" aria-selected="false">Your stocks</button>
+    <button type="button" role="tab" data-tab="tests" aria-selected="false">Tests</button>
+  </nav>
+
+  <section class="pane" data-pane="buy" id="buy-pane"></section>
+  <section class="pane" data-pane="holdings" id="holdings-pane" hidden></section>
+
+  <section class="pane tests" data-pane="tests" hidden>
+    <p class="fine" style="margin:0">Everything on this tab is a measured model or a live experiment. None has passed its test, so none of it is a buy call.</p>
+    <section class="verdict" id="scorecard"></section>
+    <details class="ref">
+      <summary><h2 style="display:inline">Six-factor ranking (failed its test)</h2></summary>
+      <section class="verdict" id="verdict" style="margin-top:10px"></section>
+      <p class="fine">Ranked by an equal mix of six measures with decades of published evidence: momentum, low volatility, profitability, valuation, buybacks versus dilution, and asset growth. Open a row for the reasons, recent headlines and Reddit chatter.</p>
+      <div class="list" id="list"></div>
+    </details>
+    <details class="ref">
+      <summary><h2 style="display:inline">Forward record of the six-factor ranking</h2></summary>
+      <p class="fine" id="record-note"></p>
+      <div class="table-wrap" id="record"></div>
+    </details>
+    <details class="ref">
+      <summary><h2 style="display:inline">Live test: analyst upgrades (M8)</h2></summary>
+      <p class="fine">Analyst upgrades and price-target raises came closest of every idea tested here (about +3% per 6 months over the average stock, 2017–2025, not enough to pass). The top 20 by analyst actions in the last 91 days are logged at the end of every week before their returns exist, with 20 random stocks beside them, and each list is judged one month later.</p>
+      <div class="table-wrap" id="m8"></div>
+      <div class="table-wrap" id="m8-record"></div>
+    </details>
+    <details class="ref">
+      <summary><h2 style="display:inline">High risk: short-term boom models</h2></summary>
+      <p class="fine">Two XGBoost models trained to spot stocks likely to land in the top 2% of returns over the next month, one for regular stocks ($5+) and one for penny stocks ($1–5). Both failed their 2019–2025 backtest. They find stocks about to move a lot, in either direction. Lottery tickets, not buy calls.</p>
+      <div id="boom"></div>
+    </details>
   </section>
   <p class="fine" id="foot"></p>
 </main>
@@ -163,42 +213,106 @@ function verdict() {
     <p class="fine">These numbers describe how stocks ranked this way did from 2016 to 2025, not a promise for these ones. Ideas tested in this project so far: ${D.screen.phase1_plus_phase2 ?? "–"} (phase 1 and 2), so expect some winners by luck.</p>`;
 }
 
+const dots = c => `<span class="conf" title="Confidence ${c} of 5" aria-label="Confidence ${c} of 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= c ? "on" : ""}"></i>`).join("")}<span class="num">${c}/5</span></span>`;
+const tag = (txt, kind) => `<span class="tag ${kind}">${esc(txt)}</span>`;
+const kindOf = a => /^sell/i.test(a) ? "sell" : /^buy/i.test(a) ? "buy" : "keep";
+const ul = xs => `<ul style="margin:4px 0 0;padding-left:18px">${xs.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+const signed = x => x == null || !isFinite(x) ? `<span class="muted">–</span>` : `<span class="num ${x >= 0 ? "up" : "down"}">${pct(x, 0)}</span>`;
+
+// Analyst targets: "$208-$292" -> [208, 292]; the average is b.target_avg when the research found one,
+// otherwise the middle of the range. The 3- and 6-month figures assume a straight line to that target.
+function outlook(b) {
+  const nums = String(b.targets || "").replace(/,/g, "").match(/\d+(\.\d+)?/g) || [];
+  const lo = nums.length ? +nums[0] : null, hi = nums.length > 1 ? +nums[1] : lo;
+  const avg = b.target_avg ?? (lo != null ? (lo + hi) / 2 : null);
+  const y = avg == null || !b.price ? null : avg / b.price - 1;
+  return { lo, hi, avg, avgKnown: b.target_avg != null, m3: y == null ? null : y / 4, m6: y == null ? null : y / 2, m12: y };
+}
+
+function buyRow(b, i) {
+  const o = outlook(b), rank = b.rank ?? i + 1;
+  const rng = o.lo == null ? esc(b.targets) : `${usd(o.lo)} to ${usd(o.hi)} (${pct(o.lo / b.price - 1, 0)} to ${pct(o.hi / b.price - 1, 0)})`;
+  return `<details><summary>
+      <span class="rnum">${rank}</span>
+      <span class="who"><strong>${esc(b.t)}</strong><span class="muted">${esc(b.name)}</span></span>
+      <span class="c tagc">${tag(b.rating, b.conf >= 3 ? "buy" : "keep")}</span>
+      <span class="c"><span class="cell-label">Confidence</span>${dots(b.conf)}</span>
+      <span class="c trio"><span><span class="cell-label">3 mo </span>${signed(o.m3)}</span><span><span class="cell-label">6 mo </span>${signed(o.m6)}</span><span><span class="cell-label">12 mo </span>${signed(o.m12)}</span></span>
+      <span class="c when"><span class="cell-label">When </span>${esc(b.when)}</span>
+    </summary><div class="detail">
+      <div class="facts">
+        <span><b>Buy:</b> <span class="num">${b.shares} × ${usd(b.price)} = ${usd(b.shares * b.price)}</span></span>
+        <span><b>Analyst targets:</b> ${rng}</span>
+        <span><b>${o.avgKnown ? "Average target" : "Middle of range"}:</b> <span class="num">${usd(o.avg)}</span></span>
+        <span><b>Next results:</b> ${esc(b.earnings)}</span>
+        <span><b>Business:</b> ${esc(b.sector)}</span>
+        <span><b>ChatGPT:</b> ${esc(b.chatgpt)}</span>
+      </div>
+      <div><b>Why buy</b>${ul(b.why || [])}</div>
+      <div><b>Risks</b>${ul(b.risks || [])}</div>
+      <p style="margin:0"><b>What would prove this wrong:</b> ${esc(b.wrong)}</p>
+    </div></details>`;
+}
+
+function holdRow(r, verdict) {
+  const short = String(r.why || "").split(/(?<=\.)\s/)[0];
+  return `<details><summary>
+      <span class="who"><strong>${esc(r.t)}</strong><span class="muted">${r.shares} share${r.shares === 1 ? "" : "s"}</span></span>
+      <span class="c tagc">${tag(verdict, kindOf(verdict))}</span>
+      <span class="c"><span class="cell-label">Confidence</span>${dots(r.conf)}</span>
+      <span class="c when muted">${esc(r.next || short)}</span>
+    </summary><div class="detail">
+      <p style="margin:0">${esc(r.why)}</p>
+      <p class="fine" style="margin:0"><b>ChatGPT:</b> ${esc(r.chatgpt)}</p>
+    </div></details>`;
+}
+
 function plan() {
-  const P = D.plan, el = document.getElementById("plan");
-  if (!P) return;
-  const h3 = t => `<h3 style="margin:10px 0 0;font-family:var(--display)">${esc(t)}</h3>`;
-  if (P.version !== 2) {   // older plans: plain tables
-    const tbl = (head, rows) => `<div class="table-wrap"><table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${esc(String(c))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
-    el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p>`
-      + P.owners.map(o => h3(o.name + ": sell") + tbl(["Ticker", "Shares", "Action", "Why", "Who says so"], o.sell) + `<p class="fine">${esc(o.keep)}</p>`).join("")
-      + h3("Buy, in steps") + tbl(["Ticker", "Business", "Shares", "Price", "Cost $", "When and why"],
-          P.buy.map(b => [b[0], b[1], b[2], b[3].toFixed(2), Math.round(b[2] * b[3]), b[4]]))
-      + `<p class="fine">${esc(P.buy_note)}</p>`;
-    el.hidden = false;
+  const P = D.plan, buy = document.getElementById("buy-pane"), hold = document.getElementById("holdings-pane");
+  if (!P || P.version !== 2) {
+    buy.innerHTML = `<p class="fine">No family plan is loaded in this copy of the dashboard. The Tests tab still works.</p>`;
+    hold.innerHTML = buy.innerHTML;
     return;
   }
-  const dots = c => `<span class="conf" title="Confidence ${c} of 5" aria-label="Confidence ${c} of 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= c ? "on" : ""}"></i>`).join("")}<span class="num">${c}/5</span></span>`;
-  const tag = (txt, kind) => `<span class="tag ${kind}">${esc(txt)}</span>`;
-  const kindOf = a => /^sell/i.test(a) ? "sell" : /^buy/i.test(a) ? "buy" : "keep";
-  const list = xs => `<ul style="margin:4px 0 0;padding-left:18px">${xs.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
-  const buyCard = b => `<details class="plan-item"><summary>
-      <span class="who"><strong>${esc(b.t)}</strong><span>${esc(b.name)} · ${esc(b.sector)}</span></span>
-      <span class="right">${tag(b.rating, b.conf >= 3 ? "buy" : "keep")}${dots(b.conf)}<span class="num muted">${b.shares} × ${usd(b.price)}</span></span>
-    </summary><div class="plan-body">
-      <p style="margin:0"><b>When:</b> ${esc(b.when)} · <b>Next results:</b> ${esc(b.earnings)} · <b>Analyst targets:</b> ${esc(b.targets)} · <b>ChatGPT:</b> ${esc(b.chatgpt)}</p>
-      <div><b>Why</b>${list(b.why)}</div><div><b>Risks</b>${list(b.risks)}</div>
-      <p style="margin:0"><b>What would prove this wrong:</b> ${esc(b.wrong)}</p></div></details>`;
-  const rowCard = (r, verdict) => `<details class="plan-item"><summary>
-      <span class="who"><strong>${esc(r.t)}</strong><span>${r.shares} share${r.shares === 1 ? "" : "s"}${r.next ? " · " + esc(r.next) : ""}</span></span>
-      <span class="right">${tag(verdict, kindOf(verdict))}${dots(r.conf)}</span>
-    </summary><div class="plan-body"><p style="margin:0">${esc(r.why)}</p><p class="fine" style="margin:0">ChatGPT: ${esc(r.chatgpt)}</p></div></details>`;
-  const cost = P.buy.reduce((a, b) => a + b.shares * b.price, 0);
-  el.innerHTML = `<span class="label">${esc(P.date)} · ${esc(P.label)}</span><h2>What to sell and what to buy</h2><p>${esc(P.note)}</p><p class="fine">${esc(P.confidence_note)}</p>`
-    + h3(`Buy, in steps (about ${usd(cost)} for one of each)`) + `<div class="list">${P.buy.map(buyCard).join("")}</div><p class="fine">${esc(P.buy_note)}</p>`
-    + P.owners.map(o => h3(`${o.name}: sell`) + `<div class="list">${o.sell.map(r => rowCard(r, r.action)).join("")}</div>`
-        + h3(`${o.name}: keep`) + `<div class="list">${o.keep_rows.map(r => rowCard(r, r.verdict)).join("")}</div>`).join("")
-    + (P.research_note ? `<p class="fine">${esc(P.research_note)}</p>` : "");
-  el.hidden = false;
+  const items = P.buy.map((b, i) => ({ ...b, rank: b.rank ?? i + 1 })).sort((a, b) => a.rank - b.rank);
+  const now = items.filter(b => /^now/i.test(b.when)), cost = x => x.reduce((a, b) => a + b.shares * b.price, 0);
+  buy.innerHTML = `
+    <div class="summary-strip">
+      <div><span class="label">Plan date</span><b>${esc(String(P.date).slice(0, 10))}</b></div>
+      <div><span class="label">Buy now</span><b>${now.length} stocks · ${usd(cost(now))}</b></div>
+      <div><span class="label">Later, after results</span><b>${items.length - now.length} stocks · ${usd(cost(items) - cost(now))}</b></div>
+      <div><span class="label">Highest confidence</span><b>${Math.max(...items.map(b => b.conf))}/5</b></div>
+    </div>
+    <p class="fine" style="margin:0">Ranked 1 = most suggested to buy right now. Open a row for the reasons, risks and targets. ${esc(P.confidence_note)}</p>
+    <div class="rk">
+      <div class="head" aria-hidden="true"><span>#</span><span>Stock</span><span>Rating</span><span>Confidence</span><span>3 mo</span><span>6 mo</span><span>12 mo</span><span>When to buy</span></div>
+      ${items.map(buyRow).join("")}
+    </div>
+    <p class="fine" style="margin:0">The 3, 6 and 12-month figures are rough: the gap between today's price and the analysts' average 12-month target (or the middle of their range when no average was found), spread evenly over the year. Analyst targets miss often; they are a reference, not a forecast that has been tested here.</p>
+    <p class="fine" style="margin:0">${esc(P.buy_note)}</p>
+    <p class="fine" style="margin:0">${esc(P.note)}</p>`;
+  const order = rows => [...rows].sort((a, b) => b.conf - a.conf);
+  hold.innerHTML = P.owners.map(o => `
+    <h2>${esc(o.name)}</h2>
+    <div class="rk hold">
+      <div class="head" aria-hidden="true"><span>Stock</span><span>What to do</span><span>Confidence</span><span>Next</span></div>
+      ${order(o.sell).map(r => holdRow(r, r.action)).join("")}
+      ${order(o.keep_rows).map(r => holdRow(r, r.verdict)).join("")}
+    </div>`).join("")
+    + `<p class="fine" style="margin:0">Sells first, then holdings to keep, each sorted by confidence. ${esc(P.research_note || "")}</p>`;
+}
+
+function tabs() {
+  const btns = [...document.querySelectorAll(".tabs button")], panes = [...document.querySelectorAll(".pane")];
+  const show = name => {
+    btns.forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === name)));
+    panes.forEach(p => p.hidden = p.dataset.pane !== name);
+    try { localStorage.setItem("tab", name); } catch (e) {}
+  };
+  btns.forEach(b => b.addEventListener("click", () => show(b.dataset.tab)));
+  let saved = null;
+  try { saved = localStorage.getItem("tab"); } catch (e) {}
+  if (saved && btns.some(b => b.dataset.tab === saved)) show(saved);
 }
 function scorecard() {
   const S = D.scorecard || {}, el = document.getElementById("scorecard"), rows = S.ideas || [];
@@ -283,6 +397,8 @@ function boom() {
   el.innerHTML = parts.length ? parts.join("") : `<p class="fine">The boom models did not run tonight.</p>`;
 }
 
+
+
 const REFRESH_TRIGGER = "trig_01EWG9yrrB3KNMcssLPzUsgm";
 (async () => {
   const btn = document.getElementById("refresh"), msg = document.getElementById("refresh-msg");
@@ -305,7 +421,8 @@ const REFRESH_TRIGGER = "trig_01EWG9yrrB3KNMcssLPzUsgm";
 })();
 
 if (D) {
-  document.getElementById("asof").textContent = `Prices as of the close on ${D.as_of}. ${D.universe_size.toLocaleString()} stocks ranked. Refreshed nightly; built ${D.generated_utc.replace("T", " ").slice(0, 16)} UTC.`;
+  document.getElementById("asof").textContent = `Prices as of the close on ${D.as_of}. Built ${D.generated_utc.replace("T", " ").slice(0, 16)} UTC. Paper research, not a tested edge.`;
+  tabs();
   plan();
   scorecard();
   verdict();

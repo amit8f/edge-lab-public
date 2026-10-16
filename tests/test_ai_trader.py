@@ -110,6 +110,12 @@ def test_run_twins_hold_trend_and_ledger(tmp_path):
     assert st["A"]["pos"] is None and st["A-coin"]["pos"] is None and st["TREND"]["pos"] is None
     assert rec2["fills"]["A"][0]["why"] == "decision"
     assert Ledger(tmp_path / "ai").verify() == []
+    f = json.loads((tmp_path / "ai/feed.json").read_text())
+    assert f["runs"] == 2 and f["books"]["A"]["trips"] == 1 and f["books"]["A"]["open"] is None
+    assert f["log"][0]["action"] == "close" and f["log"][-1]["reason"] == "a" and f["log"][-1]["fills"][0]["sym"] == "NVDA"
+    assert [h["eq"]["HOLD"] for h in f["history"]][0] is not None
+    page = (tmp_path / "ai/README.md").read_text()
+    assert "Decisions and trades" in page and "opened long NVDA" in page and "| a |" in page
 
 
 def test_closed_market_does_nothing(tmp_path):
