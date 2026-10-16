@@ -1,0 +1,106 @@
+"""K4 whole-market AI bot: accounting, parsing, shortlist, twins and one logged run, on synthetic data."""
+import json
+
+import pandas as pd
+import pytest
+
+from core.ledger import Ledger
+from tracks.main import ai_mirror
+from tracks.main import ai_wide as w
+
+T0 = int(pd.Timestamp("2026-10-19 14:51", tz="UTC").timestamp())
+
+
+def uni(n=50):
+    return {"date": "2026-10-19", "as_of": "2026-10-16", "candidates": 5000,
+            "stocks": [{"symbol": f"S{i:02d}", "dv": 1e9 - i, "prev": 100.0, "c5": 100.0, "c20": 100.0} for i in range(n)],
+            "shortable": [f"S{i:02d}" for i in range(0, n, 2)]}
+
+
+def data(n=50, move=lambda i: 1 + i / 1000):
+    d = {f"S{i:02d}": {"last": 100.0 * move(i), "last_t": "x", "1h": [[T0 - 3600, 1, 1, 1, 100.0, 1, T0]]} for i in range(n)}
+    d["SPY"] = {"last": 700.0, "last_t": "x", "1h": []}
+    return d
+
+
+def test_rebalance_sizes_fifths_keeps_and_closes():
+    b = w.new_book()
+    px = {"A": 10.0, "B": 20.0, "C": 50.0}
+    f = w.rebalance(b, {"A": 1, "B": -1}, px, T0)
+    assert [x["action"] for x in f] == ["open", "open"] and b["pos"]["A"]["notional"] == pytest.approx(20.0)
+    assert b["cash"] == pytest.approx(100 - 2 * 20 * w.FEE)
+    px2 = {"A": 11.0, "B": 18.0, "C": 50.0}
+    f = w.rebalance(b, {"A": 1, "C": 1}, px2, T0 + 3600)
+    assert [(x["action"], x["sym"]) for x in f] == [("close", "B"), ("open", "C")]
+    assert b["pos"]["A"]["entry"] == 10.0                         # kept as it was
+    assert b["trips"][0]["pnl"] == pytest.approx(20 / 20 * 2 - (20 / 20) * 18 * w.FEE)
+    assert w.equity(b, px2) == pytest.approx(b["cash"] + 2.0 * 1)
+
+
+def test_short_pays_borrow_and_cap_of_five():
+    b = w.new_book()
+    px = {f"X{i}": 10.0 for i in range(7)}
+    w.rebalance(b, {f"X{i}": -1 for i in range(7)}, px, T0)
+    assert len(b["pos"]) == w.MAX_POS
+    cash = b["cash"]
+    w.charge(b, T0 + 365 * 24 * 3600)
+    assert cash - b["cash"] == pytest.approx(5 * 20 * w.BORROW)
+
+
+def test_parse_drops_bad_symbols_unshortable_shorts_and_extras():
+    allowed, short = {"AA", "BB", "CC", "DD", "EE", "FF", "GG"}, {"AA"}
+    txt = json.dumps({"positions": [{"symbol": "aa", "side": "short", "reason": "r"}, {"symbol": "BB", "side": "short"},
+                                    {"symbol": "ZZ", "side": "long"}, {"symbol": "CC", "side": "long"},
+                                    {"symbol": "DD", "side": "long"}, {"symbol": "EE", "side": "long"},
+                                    {"symbol": "FF", "side": "long"}, {"symbol": "GG", "side": "long"}], "summary": "s"})
+    want, dropped, summ = w.parse(txt, allowed, short)
+    assert want == {"AA": -1, "CC": 1, "DD": 1, "EE": 1, "FF": 1} and "short BB" in dropped and "long ZZ" in dropped
+    assert w.parse("no idea", allowed, short)[0] is None
+    assert w.parse('{"positions": []}', allowed, short)[0] == {}
+
+
+def test_shortlist_biggest_absolute_moves_plus_holdings():
+    d = data(move=lambda i: 1 + (i - 25) / 100)
+    s = w.shortlist(uni(), d, ["S25"], n=4)
+    assert s[:4] == ["S00", "S01", "S49", "S02"] and s[-1] == "S25"
+
+
+def test_step_twin_follows_symbols_with_coin_sides_and_hold_buys_spy():
+    st = w.init_state(T0)
+    d, u = data(), uni()
+    syms = w.shortlist(u, d, [])
+    ans = json.dumps({"positions": [{"symbol": "S49", "side": "long"}, {"symbol": "S48", "side": "short"}], "summary": "x"})
+    rec = w.step(st, u, d, syms, T0, ask=lambda s, t: ans, news={"S49": ["S49 beats estimates"]})
+    assert set(st["books"]["C"]["pos"]) == {"S49", "S48"} and set(st["books"]["C-coin"]["pos"]) == {"S49", "S48"}
+    assert {s: p["side"] for s, p in st["books"]["C-coin"]["pos"].items()} == {s: w.coin_side(s, T0) for s in ("S48", "S49")}
+    assert st["books"]["HOLD"]["pos"]["SPY"]["notional"] == pytest.approx(100 / (1 + w.FEE))
+    assert rec["decision"]["want"] == {"S49": 1, "S48": -1}
+    rec2 = w.step(st, u, d, syms, T0 + 3600, ask=lambda s, t: '{"positions": [{"symbol": "S49", "side": "long"}]}')
+    assert set(st["books"]["C-coin"]["pos"]) == {"S49"} and rec2["fills"]["C-coin"][0]["sym"] == "S48"
+    w.step(st, u, d, syms, T0 + 7200, ask=lambda s, t: "garbage")     # unreadable: nothing changes
+    assert set(st["books"]["C"]["pos"]) == {"S49"}
+
+
+def test_context_shows_news_and_shortable():
+    st = w.init_state(T0)
+    txt = w.context(st["books"]["C"], uni(), data(), ["S00", "S01"], "2026-10-19 10:35", {"S00": ["Big news"]})
+    assert "S00, 100, +0.0" in txt and "news: Big news" in txt and "S01, 100.1, +0.1, +0.1, +0.1, no" in txt
+
+
+def test_run_logs_universe_and_hour_once_and_mirrors_c(tmp_path, monkeypatch):
+    px_time = pd.Timestamp(T0, unit="s", tz="UTC")
+    seen = []
+    monkeypatch.setattr(ai_mirror, "mirror_headers", lambda b: None)
+    kw = dict(universe=lambda now: uni(), fetch=lambda now, u, held: (px_time, data(), {}),
+              hours=lambda d, s, now, p, ses: seen.append(sorted(s)),
+              ask=lambda s, t: '{"positions": [{"symbol": "S49", "side": "long"}], "summary": "up"}',
+              headlines=lambda syms, p: {"S49": ["h"]})
+    rec = w.run(tmp_path, now=px_time + pd.Timedelta(minutes=16), **kw)
+    assert rec["equity"]["C"] < 100 and rec["headline_counts"] == {"S49": 1} and "SPY" in seen[0]
+    led = Ledger(tmp_path / "wide")
+    assert led.has("universe", "2026-10-19") and led.has("run", px_time.strftime("%Y-%m-%dT%H"))
+    assert w.run(tmp_path, now=px_time + pd.Timedelta(minutes=16), **kw) is None
+    readme = (tmp_path / "wide" / "README.md").read_text()
+    assert "long S49" in readme and "bought S49" in readme
+    assert ai_mirror.targets({"books": {"C": {"pos": {"S49": {"side": 1, "qty": 0.2}, "S01": {"side": -1, "qty": 0.17}}}}}, "C") \
+        == {"S49": 5.0, "S01": -4.0}

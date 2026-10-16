@@ -45,6 +45,9 @@ BOOKS = {
     "TREND": dict(kind="trend", exposure=1.0, stop=None),
 }
 
+# B stopped 2026-10-16 19:02 UTC (Amit: replace B with the whole-market bot C, K4); its result is final.
+RETIRED = {"B"}
+
 SYMS_TXT = ", ".join(SYMBOLS)
 PROMPT_A = f"""You trade a paper US stock account. Symbols: {SYMS_TXT}.
 Rules: one position at a time, long or short, position size 1.25x account equity, no stop-loss, 0.1%
@@ -365,7 +368,7 @@ def step(state, data, t, ask=ask_gemini):
     now_txt = f"{pd.Timestamp(t, unit='s', tz='UTC').tz_convert(ET):%Y-%m-%d %H:%M}"
     for name in ("A", "B"):
         cfg, b, f = BOOKS[name], books[name], []
-        if not b["stopped"]:
+        if not b["stopped"] and name not in RETIRED:
             f = decide(rec, name, cfg, b, data, prices, t, now_txt, ask)
         ended[name] = ended[name] or any(x["action"] == "close" for x in f)
         tw, tf = books[f"{name}-coin"], []
@@ -398,7 +401,7 @@ def init_state(t):
     return {"started": t, "books": {n: new_book() for n in BOOKS}, "seen_1h": {}}
 
 
-NAMES = {"A": "AI bot A (her setup: 1.25x, no stop)", "B": "AI bot B (careful: 0.5x, 5% stop, daily trend)",
+NAMES = {"A": "AI bot A (her setup: 1.25x, no stop)", "B": "AI bot B (careful: 0.5x, 5% stop; stopped 2026-10-16, replaced by bot C)",
          "A-coin": "Coin flip on A's timing", "B-coin": "Coin flip on B's timing", "HOLD": "Just hold SPY",
          "TREND": "SPY above its 20-day average"}
 
