@@ -113,8 +113,8 @@ def test_fetch_hour_uses_newer_iex_trades_inside_the_session(monkeypatch):
     monkeypatch.setattr(w.k2, "market_window", lambda n: (px, {px.tz_convert(w.ET).date(): (o, c)}))
     bar = lambda p: [{"t": (px - pd.Timedelta(minutes=1)).isoformat(), "c": p, "v": 10}]
     monkeypatch.setattr(w.k2, "_bars", lambda syms, *a: {s: bar(10.0) for s in syms})
-    monkeypatch.setattr(w, "iex_latest", lambda syms: {"S00": (11.0, now - pd.Timedelta(seconds=5)),
+    monkeypatch.setattr(w, "iex_latest", lambda syms: {"S00": (11.0, now + pd.Timedelta(minutes=3)),
                                                        "S01": (9.0, px - pd.Timedelta(minutes=30))})
     _, d, _ = w.fetch_hour(now, uni(3), [])
-    assert d["S00"]["last"] == 11.0 and d["S00"]["src"] == "iex"
+    assert d["S00"]["last"] == 11.0 and d["S00"]["src"] == "iex"     # traded after the run began: still used
     assert d["S01"]["last"] == 10.0 and d["S01"]["src"] == "sip"      # older IEX trade: SIP kept
