@@ -1,0 +1,76 @@
+# K3 weekly: Kronos forward-test picks (tracks/main/kronos_weekly.py, research/prereg/K3.md).
+# Runs Saturday 03:30 UTC (after 10pm ET Friday); logs only when the last finished session is the last of
+# its week. Writes to the orphan branch `state-kronos`. A manual run with dry_run forecasts the last
+# session without logging (to time the job).
+name: kronos-weekly
+
+on:
+  schedule:
+    - cron: "30 3 * * 6"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Forecast the last session but log nothing"
+        type: boolean
+        default: true
+
+permissions: {}
+
+concurrency:
+  group: kronos-state
+  cancel-in-progress: false
+
+jobs:
+  forecast:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages (CPU torch and Kronos's own pins, minus its pandas)
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+          uv pip install --python .venv/bin/python --index-url https://download.pytorch.org/whl/cpu torch==2.7.1
+          uv pip install --python .venv/bin/python einops==0.8.1 huggingface_hub==0.33.1 safetensors==0.6.2 tqdm==4.67.1
+
+      - name: Kronos code at the pinned commit
+        run: |
+          git clone -q https://github.com/shiyu-coder/Kronos.git ext/Kronos
+          git -C ext/Kronos checkout -q 67b630e67f6a18c9e9be918d9b4337c960db1e9a
+          test "$(git -C ext/Kronos rev-parse HEAD)" = 67b630e67f6a18c9e9be918d9b4337c960db1e9a
+
+      - name: Restore the Kronos state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-kronos
+        run: bash deploy/state.sh restore
+
+      - name: Forecast and log
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          DRY: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '--dry-run' || '' }}
+        run: .venv/bin/python -m tracks.main.kronos_weekly --state state --kronos ext/Kronos $DRY
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-kronos
+          RUN_LABEL: kronos-weekly ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
