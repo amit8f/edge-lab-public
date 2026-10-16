@@ -1,17 +1,17 @@
-# K1 hourly: the $100 AI crypto paper bot (tracks/crypto/llm_bot.py, research/prereg/K1.md).
-# Reads Kraken's public prices, asks Gemini, and logs to the orphan branch `state-crypto` (its own
-# branch, so hourly runs never race the stock jobs on `state`). Paper only: nothing is sent to an exchange.
-name: k1-crypto
+# K2 hourly: the $100 AI stock paper trader (tracks/main/ai_trader.py, research/prereg/K2.md).
+# Runs each hour of the US session (the code skips runs whose price time, now - 16 min, is outside it),
+# logs to the orphan branch `state-ai` so hourly runs never race the nightly jobs on `state`.
+name: ai-trader
 
 on:
   schedule:
-    - cron: "7 * * * *"
+    - cron: "7 13-21 * * 1-5"
   workflow_dispatch:
 
 permissions: {}
 
 concurrency:
-  group: crypto-state
+  group: ai-state
   cancel-in-progress: false
 
 jobs:
@@ -40,21 +40,23 @@ jobs:
           uv venv --python 3.12.10 .venv
           uv pip install --python .venv/bin/python -r requirements.txt
 
-      - name: Restore the crypto state branch
+      - name: Restore the AI-trader state branch
         env:
           GH_TOKEN: ${{ github.token }}
-          STATE_BRANCH: state-crypto
+          STATE_BRANCH: state-ai
         run: bash deploy/state.sh restore
 
       - name: One hourly step
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: .venv/bin/python -m tracks.crypto.llm_bot --state state
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: .venv/bin/python -m tracks.main.ai_trader --state state
 
       - name: Commit the state back
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-          STATE_BRANCH: state-crypto
-          RUN_LABEL: k1-crypto ${{ github.run_id }}-${{ github.run_attempt }}
+          STATE_BRANCH: state-ai
+          RUN_LABEL: ai-trader ${{ github.run_id }}-${{ github.run_attempt }}
         run: bash deploy/state.sh save
