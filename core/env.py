@@ -18,7 +18,8 @@ def _load_dotenv():
 
 def _need(*names):
     _load_dotenv()
-    vals = [os.environ.get(n) for n in names]
+    # pasted secrets often carry a trailing newline, which HTTP header values reject
+    vals = [(os.environ.get(n) or "").strip() for n in names]
     missing = [n for n, v in zip(names, vals) if not v]
     if missing:
         raise RuntimeError(f"Missing environment variable(s): {', '.join(missing)} (set them as secrets or in .env)")

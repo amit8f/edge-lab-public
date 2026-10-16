@@ -44,3 +44,7 @@ tracks:
     take_profit: null
     round_trip_cost: 0.002      # news trades in $5+ stocks; a penny news idea must use penny costs
     borrow_per_year: 0.03
+  crypto:                       # K1 only (research/prereg/K1.md); outside the three tracks
+    fee_per_side: 0.0005        # taker fee on notional, each side
+    funding_per_8h: 0.0001      # charged to longs and shorts alike
+    maintenance_margin: 0.005   # of notional; liquidation loses the whole margin
