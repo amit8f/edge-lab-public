@@ -48,3 +48,9 @@ tracks:
     fee_per_side: 0.0005        # taker fee on notional, each side
     funding_per_8h: 0.0001      # charged to longs and shorts alike
     maintenance_margin: 0.005   # of notional; liquidation loses the whole margin
+  ai_trader:                    # K2 only (research/prereg/K2.md); main-track costs plus margin terms
+    fee_per_side: 0.001         # half of main round_trip_cost
+    borrow_per_year: 0.03       # shorts, on notional
+    margin_rate_per_year: 0.08  # on exposure above 1x
+    maint_long: 0.25
+    maint_short: 0.30
