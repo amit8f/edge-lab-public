@@ -108,3 +108,21 @@ def test_stock_bars_keep_regular_session_only(monkeypatch):
     assert d.index.min() == pd.Timestamp("2024-01-03 14:30", tz="UTC")
     assert d.index.max() == pd.Timestamp("2024-01-03 20:55", tz="UTC") and len(d) == 77   # 78 bars, one zero-volume
     assert set(d["session"]) == {"2024-01-03"}
+
+
+def test_stock_universe_requests_base_symbols(monkeypatch):
+    import core.bars
+    import core.env
+    a = pd.DataFrame({"symbol": ["AAA", "BBB_DELISTED"], "base_symbol": ["AAA", "BBB"]})
+    seen = []
+
+    def fake_bars(syms, start, end, adjustment, headers, **kw):
+        seen.extend(syms)
+        return {}
+
+    monkeypatch.setattr(s, "_assets", lambda: a)
+    monkeypatch.setattr(core.env, "alpaca_headers", lambda: {})
+    monkeypatch.setattr(core.bars, "fetch_daily_bars", fake_bars)
+    monkeypatch.setattr(core.bars, "to_frames", lambda raw: {})
+    s.stock_universe(log=lambda m: None)
+    assert seen == ["AAA", "BBB"]
