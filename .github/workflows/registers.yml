@@ -1,0 +1,65 @@
+# Forward loggers for public registers (W1 amendments; core/registers.py): Form 144 from EDGAR's daily
+# index, SEC litigation releases, FTC early-termination notices. Nightly after the EDGAR day closes,
+# about a minute. Writes the hash-chained ledger on its own branch, state-registers.
+name: registers
+
+on:
+  schedule:
+    - cron: "0 5 * * 2-6"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: registers-writer
+  cancel-in-progress: false
+
+jobs:
+  log:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Check secrets are present
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          [[ -n "$SEC_USER_AGENT" ]] || { echo "::error::secret SEC_USER_AGENT is missing (your name and email, required by SEC)"; exit 1; }
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-registers
+        run: bash deploy/state.sh restore
+
+      - name: Log the registers
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: .venv/bin/python -m core.registers --state state/registers
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-registers
+          RUN_LABEL: registers ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
