@@ -125,3 +125,36 @@ def test_sec_release_parsing():
     snip = B.candidate(text)
     assert snip and "February 16, 2023 announcement" in snip
     assert B.candidate("The SEC charged a Ponzi scheme operator with fraud.") is None
+
+
+def _day_trades(n=390, informed=True, seed=3):
+    rng = np.random.default_rng(seed)
+    t0 = pd.Timestamp("2024-03-05 14:30", tz="UTC")
+    side = rng.choice([-1, 1], n)
+    s = rng.integers(100, 2000, n)
+    p = 10 * np.exp(np.cumsum(side * s * (2e-6 if informed else 0) + rng.normal(0, 1e-4, n)))
+    return pd.DataFrame({"t": [t0 + pd.Timedelta(minutes=i) for i in range(n)], "p": p, "s": s, "x": "V"}), pd.Series(side)
+
+
+def test_kyle_lambda_and_bvc():
+    t, side = _day_trades()
+    lam = B.kyle_lambda(t, side)
+    assert lam > 0                                                  # price moves with signed flow
+    t2, side2 = _day_trades(informed=False)
+    assert abs(B.kyle_lambda(t2, side2)) < lam / 3
+    up = t.assign(p=np.linspace(10, 11, len(t)) + np.random.default_rng(0).normal(0, 1e-3, len(t)))
+    assert B.bvc_imbalance(up) > 0.3
+    assert np.isnan(B.kyle_lambda(t.head(20), side.head(20)))      # too few 5-minute buckets
+
+
+def test_split_runup():
+    rows = []
+    for e in range(3):
+        for rel in range(-B.RUNUP_DAYS, 2):
+            rumour = rel == -5
+            ar = 0.05 if rumour else (0.001 if rel < 0 else 0.2)
+            rows.append((e, rel, ar, rumour))
+    s = B.split_runup(pd.DataFrame(rows, columns=["event", "rel", "ar", "rumour"]))
+    assert s["events"] == 3 and abs(s["mean_rumour_part"] - 0.05) < 1e-12
+    assert abs(s["mean_quiet_part"] - 0.041) < 1e-12 and abs(s["mean_markup"] - 0.4) < 1e-12
+    assert s["share_with_rumour_day"] == 1.0

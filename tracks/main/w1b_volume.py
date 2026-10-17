@@ -15,8 +15,9 @@ Stages (each resumable; run in order):
 7. seclist: every SEC litigation release 2016-01 .. 2025-09, keeping those whose text charges insider
    trading ahead of an announcement, as W1b_sec_candidates.csv; Claude reads them in date order and fills
    W1b_sec_cases.csv (clarification 20).
+8. runup: merger targets' run-up over days -42 .. -1 split into rumour days and quiet days (clarification 22).
 
-Usage: python -m tracks.main.w1b_volume --cache <dir> --out <dir> [--stage data|signals|report|proxy|footprints|finra]
+Usage: python -m tracks.main.w1b_volume --cache <dir> --out <dir> [--stage data|signals|report|proxy|footprints|finra|seclist|runup]
 """
 import argparse
 import html
@@ -49,6 +50,7 @@ COST = {"main": 0.002, "penny": 0.02}
 BORROW = L1.BORROW
 FOOT_PER_CAT, FOOT_DV_MAX, BLOCK, FOOT_DAYS = 400, 5e7, 10_000, 10
 SEC_CTRL_LO, SEC_CTRL_HI = 250, 500
+LAMBDA_MIN, RUNUP_DAYS = 5, 42
 EMPTY = pd.DataFrame({"symbol": pd.Series(dtype=str), "cik": pd.Series(dtype="int64"),
                       "date": pd.Series(dtype="datetime64[ns]"), "kind": pd.Series(dtype=str),
                       "group": pd.Series(dtype=str), "side": pd.Series(dtype="int64"),
@@ -118,9 +120,38 @@ def subpenny_retail(p, x):
     return (np.asarray(x) == "D") & ~np.isclose(frac, 0) & ~np.isclose(frac, 1) & ~np.isclose(frac, 0.5)
 
 
+def kyle_lambda(t, side, minutes=LAMBDA_MIN):
+    """Kyle's lambda for one day (clarification 21): the OLS slope of each 5-minute bucket's log price
+    change on its signed dollar volume, in basis points per $1M; NaN with fewer than 12 buckets."""
+    b = t.assign(sv=side * t["p"] * t["s"]).set_index("t").resample(f"{minutes}min")
+    px = b["p"].last().dropna()
+    sv = b["sv"].sum().reindex(px.index)
+    x, y = sv.iloc[1:].to_numpy() / 1e6, np.diff(np.log(px.to_numpy())) * 1e4
+    if len(x) < 12 or np.var(x) == 0:
+        return float("nan")
+    return float(np.cov(x, y, bias=True)[0, 1] / np.var(x))
+
+
+def bvc_imbalance(t, minutes=1):
+    """Bulk volume classification (Easley, Lopez de Prado & O'Hara): each 1-minute bucket's volume is split
+    into buys by the normal CDF of its price change over the day's standard deviation of those changes;
+    returns (buys - sells) / volume, or NaN with fewer than 10 buckets."""
+    from scipy.stats import norm
+    b = t.set_index("t").resample(f"{minutes}min")
+    px, v = b["p"].last(), b["s"].sum()
+    ok = px.notna()
+    px, v = px[ok], v[ok]
+    dp = np.diff(np.log(px.to_numpy()))
+    if len(dp) < 10 or np.std(dp) == 0:
+        return float("nan")
+    sd = np.std(dp)
+    vv = v.to_numpy()[1:]
+    return float((vv * (2 * norm.cdf(dp / sd) - 1)).sum() / vv.sum())
+
+
 def footprint_day(trades, quotes):
     """One stock-day's footprint: off-exchange share, block share (10,000+ shares), midpoint buy-sell
-    imbalance, retail share and retail imbalance (all by shares)."""
+    imbalance, retail share and retail imbalance (all by shares), Kyle's lambda and the BVC imbalance."""
     if trades.empty:
         return None
     side, t = sign_mid(trades, quotes)
@@ -134,7 +165,8 @@ def footprint_day(trades, quotes):
     return {"shares": float(vol), "off_share": float(t["s"][off].sum() / vol), "block_share": float(t["s"][t["s"] >= BLOCK].sum() / vol),
             "imbalance": float(signed / signed_n) if signed_n else float("nan"),
             "retail_share": float(t["s"][ret].sum() / vol), "retail_imbalance": float(r_signed / r_n) if r_n else float("nan"),
-            "unsigned_share": float(t["s"][side == 0].sum() / vol)}
+            "unsigned_share": float(t["s"][side == 0].sum() / vol),
+            "kyle_lambda": kyle_lambda(t, side), "bvc_imbalance": bvc_imbalance(t)}
 
 
 def recall_test(cases, sig_days, cal, rng):
@@ -330,7 +362,7 @@ def footprint_table(fp):
     for cat in sorted(set(days["cat"]) - {"control"}):
         x = days[days["cat"] == cat]
         out[cat] = {}
-        for m in ("off_share", "block_share", "imbalance", "retail_share", "retail_imbalance"):
+        for m in ("off_share", "block_share", "imbalance", "retail_share", "retail_imbalance", "kyle_lambda", "bvc_imbalance"):
             a, b = x[m].dropna(), ctrl[m].dropna()
             if len(a) > 5 and len(b) > 5:
                 ks = ks_2samp(a, b)
@@ -360,6 +392,63 @@ def announcements(filings):
     c = pd.DataFrame(ann, columns=["cik", "filed", "category"])
     allx = pd.concat([a[["cik", "filed", "category"]], b[["cik", "filed", "category"]], c], ignore_index=True)
     return allx[(allx["filed"] >= FIRST) & (allx["filed"] <= LAST)].rename(columns={"filed": "date"})
+
+
+def split_runup(rows):
+    """Clarification 22: per merger target, the abnormal run-up over days -42 .. -1 split into days with a
+    Benzinga article naming the stock and days without, and the markup (days 0 and +1). rows: (event,
+    rel, ar, rumour). Returns the summary dict."""
+    r = rows.dropna(subset=["ar"])
+    pre = r[r["rel"] < 0]
+    g = pre.groupby("event")
+    ev = pd.DataFrame({"runup": g["ar"].sum(), "rumour_part": pre[pre["rumour"]].groupby("event")["ar"].sum(),
+                       "rumour_days": g["rumour"].sum(), "days": g["ar"].size()})
+    ev = ev[ev["days"] >= RUNUP_DAYS - 2].fillna({"rumour_part": 0.0})
+    ev["quiet_part"] = ev["runup"] - ev["rumour_part"]
+    ev = ev.join(r[r["rel"] >= 0].groupby("event")["ar"].sum().rename("markup"), how="left")
+    if ev.empty:
+        return {"events": 0}
+    t = lambda x: float(x.mean() / (x.std(ddof=1) / math.sqrt(len(x)))) if len(x) > 2 and x.std(ddof=1) > 0 else float("nan")  # noqa: E731
+    m = ev["runup"].mean()
+    return {"events": int(len(ev)), "mean_runup": float(m), "median_runup": float(ev["runup"].median()),
+            "mean_rumour_part": float(ev["rumour_part"].mean()), "mean_quiet_part": float(ev["quiet_part"].mean()),
+            "t_quiet_part": t(ev["quiet_part"]), "quiet_share_of_runup": float(ev["quiet_part"].mean() / m) if m else float("nan"),
+            "share_with_rumour_day": float((ev["rumour_days"] > 0).mean()),
+            "mean_rumour_days": float(ev["rumour_days"].mean()), "mean_markup": float(ev["markup"].mean())}
+
+
+def stage_runup(cache, out):
+    cal = D.calendar()
+    days = pd.DatetimeIndex(cal["date"])
+    fil = D.load_filings(cache, ["cik", "form", "filed", "items"])
+    fil["items"] = fil["items"].map(lambda x: list(x) if x is not None else [])
+    tg = announcements(fil)
+    tg = tg[tg["category"] == "merger_target"].copy()
+    tg["i"] = days.searchsorted(tg["date"])
+    tg = tg[(tg["i"] - RUNUP_DAYS - 1 >= 0) & (tg["i"] + 1 < len(days))].reset_index(drop=True)
+    tg["prior_day"] = days[tg["i"] - 1]
+    tg["event"] = np.arange(len(tg))
+    spy_r = spy_daily()["ac"].pct_change()
+    nd = D.news_symbol_days(cache)
+    nd = nd.assign(day=days[np.minimum(days.searchsorted(nd["date"]), len(days) - 1)])   # weekend articles count on Monday
+    rumour = set(zip(nd["symbol"], nd["day"]))
+    rows, seen = [], set()
+    for p in D.batch_files(cache):
+        d = pd.read_parquet(p, columns=["symbol", "date", "ac", "cik"]).dropna(subset=["cik"]).astype({"cik": "int64"})
+        e = tg[~tg["event"].isin(seen)].merge(d[["symbol", "date", "cik"]].rename(columns={"date": "prior_day"}),
+                                              on=["cik", "prior_day"]).sort_values(["event", "symbol"]).drop_duplicates("event")
+        by = {s: g.set_index("date")["ac"] for s, g in d[d["symbol"].isin(e["symbol"])].groupby("symbol")}
+        for ev in e.itertuples(index=False):
+            win = days[ev.i - RUNUP_DAYS - 1:ev.i + 2]
+            ar = (by[ev.symbol].reindex(win).pct_change() - spy_r.reindex(win)).iloc[1:]
+            rows += [(ev.event, rel, a, (ev.symbol, dd) in rumour) for rel, dd, a in zip(range(-RUNUP_DAYS, 2), win[1:], ar)]
+            seen.add(ev.event)
+    res = {"part": "W1b run-up split (clarification 22, descriptive)", "targets": int(len(tg)),
+           "matched": int(len(seen)),
+           **split_runup(pd.DataFrame(rows, columns=["event", "rel", "ar", "rumour"]))}
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "W1b_runup.json").write_text(json.dumps(res, indent=1, default=str))
+    print(json.dumps(res, indent=1, default=str))
 
 
 def stage_proxy(cache, out):
@@ -564,7 +653,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", required=True)
     ap.add_argument("--out", required=True)
-    ap.add_argument("--stage", default="signals", choices=["data", "signals", "report", "proxy", "footprints", "finra", "seclist"])
+    ap.add_argument("--stage", default="signals", choices=["data", "signals", "report", "proxy", "footprints", "finra", "seclist", "runup"])
     ap.add_argument("--budget-min", type=float, default=290)
     a = ap.parse_args()
     cache, out = Path(a.cache), Path(a.out)
@@ -584,6 +673,8 @@ def main():
         stage_finra(cache, a.budget_min)
     elif a.stage == "seclist":
         stage_seclist(out, a.budget_min)
+    elif a.stage == "runup":
+        stage_runup(cache, out)
 
 
 if __name__ == "__main__":

@@ -37,3 +37,12 @@ def test_one_per_window():
     sig = pd.DataFrame({"symbol": ["A", "A", "A", "B"], "date": [DAYS[0], DAYS[5], DAYS[10], DAYS[5]]})
     k = C.one_per_window(sig, DAYS)
     assert list(zip(k["symbol"], k["date"])) == [("A", DAYS[0]), ("A", DAYS[10]), ("B", DAYS[5])]
+
+
+def test_pre_deal_test():
+    days = pd.bdate_range("2024-01-02", "2025-09-30")
+    tg = pd.DataFrame({"symbol": [f"S{i}" for i in range(30)], "date": [days[300]] * 30})
+    ud = pd.DataFrame({"symbol": [f"S{i}" for i in range(30)], "date": [days[298]] * 30})
+    r = C.pre_deal_test(tg, ud, days, np.random.default_rng(0))
+    assert r["targets"] == 30 and r["share_before"] == 1.0 and r["share_control_window"] == 0.0 and r["reproduces"]
+    assert C.pre_deal_test(tg.assign(date=days[25]), ud, days, np.random.default_rng(0)) == {"targets": 0}

@@ -2,13 +2,15 @@
 screen, and the per-stock link card.
 
 Stages:
+  contracts  material-contract links from universe companies' 8-K item 1.01 text (exploratory, G1
+          clarification 8); resumes per 500-company batch; writes a 20-link hand check.
   links   customer links from universe companies' 10-Ks, shared-insider links from SEC's quarterly
           insider data sets, news co-mention links from Benzinga history; writes the 50-link hand check
           (research/results/G1/G1_links_check.csv). Resumes per 500-company batch.
   screen  the primary test; runs only after the hand check is filled in with at least 40 of 50 right.
   card    one stock's links as of today, as markdown (a reading aid; no score).
 
-Usage: python -m tracks.main.g1_links --stage links|screen --cache <dir> --out <dir> [--budget-min 290]
+Usage: python -m tracks.main.g1_links --stage links|contracts|screen --cache <dir> --out <dir> [--budget-min 290]
        python -m tracks.main.g1_links --stage card --symbol XYZ --cache <dir> --out <dir>
 """
 import argparse
@@ -33,6 +35,8 @@ LINK_MONTHS, INSIDER_MONTHS = 15, 24
 MIN_RANKED, Q = 50, 5
 NEWS_FIRST, NEWS_LAST, CO_MIN, CO_MAX_SYMBOLS, CO_MONTHS = "2015-10", "2025-08", 3, 4, 3
 CHECK_N, CHECK_PASS = 50, 40
+HUB_MAX, CONTRACT_CHECK_N = 50, 20
+_ITEM = re.compile(r"\bItem\s+(\d{1,2}\.\d{2})\b", re.I)
 FULL_INDEX = "https://www.sec.gov/Archives/edgar/full-index/{y}/QTR{q}/company.idx"
 SUFFIX = {"inc", "incorporated", "corp", "corporation", "co", "company", "ltd", "limited", "plc", "holdings",
           "group", "lp", "llc"}
@@ -158,6 +162,132 @@ def ten_k_rows(cik, names, get=sec.get):
                 "n_sentences": len(customer_sentences(text))}
         rows += [dict(base, customer_cik=c, phrase=ph, pct=p, sentence=s) for c, ph, p, s in found] or [base]
     return rows
+
+
+def item_101(text):
+    """The text of an 8-K's Item 1.01 (Entry into a Material Definitive Agreement): from its heading to the
+    next item heading, or '' when there is none."""
+    hits = list(_ITEM.finditer(text))
+    for k, h in enumerate(hits):
+        if h.group(1) == "1.01":
+            nxt = next((x.start() for x in hits[k + 1:] if x.group(1) != "1.01"), len(text))
+            return text[h.end():nxt]
+    return ""
+
+
+def contract_links(text, names, self_cik):
+    """(counterparty_cik, phrase, sentence) for universe companies named in an 8-K's Item 1.01."""
+    rows, seen = [], set()
+    for s in _SENT.split(item_101(text)):
+        s = " ".join(s.split())
+        if not s or len(s) > 800:
+            continue
+        taken = []
+        for ph in phrases(s):
+            if any(ph in t for t in taken):
+                continue
+            c = names.match(ph)
+            if c is None or c == int(self_cik):
+                continue
+            taken.append(ph)
+            if c not in seen:
+                seen.add(c)
+                rows.append((c, ph, s))
+    return rows
+
+
+def contract_rows(cik, names, get=sec.get):
+    from tracks.news import l1_study as L1
+    subs = L1.submissions_rows(cik, get, first=m1.FILED_FROM, last=m1.FILED_TO, docs=True)
+    rows = []
+    for r in subs:
+        if r["form"] != "8-K" or "1.01" not in r["items"] or not r.get("doc"):
+            continue
+        resp = get(m1.DOC.format(cik=int(cik), accn=r["accession"].replace("-", ""), doc=r["doc"]))
+        base = {"filer_cik": int(cik), "filed": pd.Timestamp(r["filed"]), "accn": r["accession"], "doc": r["doc"],
+                "parsed": resp is not None}
+        if resp is None:
+            rows.append(base)
+            continue
+        found = contract_links(m1.clean_text(resp.content.decode("utf-8", errors="replace")), names, cik)
+        rows += [dict(base, other_cik=c, phrase=ph, sentence=s) for c, ph, s in found] or [base]
+    return rows
+
+
+def run_contracts(ciks, names, cache_dir, deadline, get=sec.get):
+    root = Path(cache_dir)
+    root.mkdir(parents=True, exist_ok=True)
+    ciks = sorted({int(c) for c in ciks})
+    nb = -(-len(ciks) // BATCH)
+    for b in range(nb):
+        path = root / f"k8_{b:04d}.parquet"
+        if path.exists():
+            continue
+        if time.monotonic() + BATCH_MINUTES * 60 > deadline:
+            print(f"[contracts] budget reached; {b}/{nb} batches done, rerun to continue")
+            return None
+
+        def one(c):
+            try:
+                return contract_rows(c, names, get)
+            except RuntimeError as e:
+                print(f"[contracts] CIK {c}: {e}")
+                return [{"filer_cik": c, "parsed": False}]
+
+        with ThreadPoolExecutor(WORKERS) as ex:
+            rows = [r for rs in ex.map(one, ciks[b * BATCH:(b + 1) * BATCH]) for r in rs]
+        df = pd.DataFrame(rows)
+        tmp = path.with_suffix(".tmp")
+        df.to_parquet(tmp)
+        tmp.replace(path)
+        print(f"[contracts] batch {b + 1}/{nb}: {int(df.get('other_cik', pd.Series(dtype=float)).notna().sum())} links")
+    return pd.concat([pd.read_parquet(p) for p in sorted(root.glob("k8_*.parquet"))], ignore_index=True)
+
+
+def contract_valid(rows):
+    """Contract links without hubs (a counterparty named by more than HUB_MAX filers in the same calendar
+    year, such as a bank acting as lender's agent), each valid for LINK_MONTHS months from its 8-K."""
+    k = rows.dropna(subset=["other_cik"]).astype({"other_cik": "int64", "filer_cik": "int64"})
+    k = k.assign(y=k["filed"].dt.year)
+    n = k.groupby(["y", "other_cik"])["filer_cik"].nunique()
+    hubs = set(n[n > HUB_MAX].index)
+    k = k[[(y, c) not in hubs for y, c in zip(k["y"], k["other_cik"])]]
+    return k.assign(until=k["filed"] + pd.DateOffset(months=LINK_MONTHS)).drop(columns="y")
+
+
+def contract_pairs(links, dates):
+    """(date, src, dst) in both directions for contract links valid at each date."""
+    out = []
+    for t in dates:
+        v = links[(links["filed"] <= t) & (links["until"] > t)][["filer_cik", "other_cik"]].drop_duplicates()
+        out.append(pd.concat([v.rename(columns={"filer_cik": "src", "other_cik": "dst"}),
+                              v.rename(columns={"other_cik": "src", "filer_cik": "dst"})]).drop_duplicates().assign(date=t))
+    return pd.concat(out, ignore_index=True) if out else pd.DataFrame(columns=["src", "dst", "date"])
+
+
+def stage_contracts(cache, out, budget_min):
+    deadline = time.monotonic() + budget_min * 60
+    p = m3.prepare(cache)
+    ciks = p["uni"]["cik"].unique()
+    nm = company_names(cache / "g1", ciks)
+    rows = run_contracts(ciks, Names(nm.itertuples(index=False)), cache / "g1" / "contracts", deadline)
+    if rows is None:
+        return
+    links = contract_valid(rows)
+    tmp = cache / "g1" / "contract_links.tmp"
+    links.to_parquet(tmp)
+    tmp.replace(cache / "g1" / "contract_links.parquet")
+    out.mkdir(parents=True, exist_ok=True)
+    f = out / "G1_contracts_check.csv"
+    if not f.exists() and len(links):
+        s = links.sample(n=min(CONTRACT_CHECK_N, len(links)), random_state=SEED)
+        url = [m1.DOC.format(cik=c, accn=a.replace("-", ""), doc=d) for c, a, d in zip(s["filer_cik"], s["accn"], s["doc"])]
+        s.assign(url=url, ok="", note="")[["filer_cik", "other_cik", "phrase", "filed", "sentence", "url", "ok", "note"]].to_csv(f, index=False)
+    parsed = rows[rows["parsed"].fillna(False).astype(bool)].drop_duplicates("accn")
+    cov = {"eight_ks_item_101": int(len(parsed)), "with_link": int(parsed["accn"].isin(links["accn"]).sum()),
+           "links_after_hub_filter": int(len(links)), "raw_links": int(rows["other_cik"].notna().sum()) if "other_cik" in rows else 0}
+    (out / "G1_contracts_coverage.json").write_text(json.dumps(cov, indent=1))
+    print("CONTRACTS", json.dumps(cov))
 
 
 def company_names(cache, ciks, get=sec.get):
@@ -436,6 +566,9 @@ def stage_screen(cache, out):
             "revenue_share_weighted": m1.summary(ls_quintiles(base.merge(wsig, on=["date", "cik"], how="left"))[0], 3),
             "shared_insiders": m1.summary(ls_quintiles(linked_signal(base, prev, ip, "src", "dst"))[0], 3),
             "news_comentions": m1.summary(ls_quintiles(linked_signal(base, prev, cm, "src", "dst"))[0], 3),
+            "material_contracts": (m1.summary(ls_quintiles(linked_signal(
+                base, prev, contract_pairs(pd.read_parquet(cache / "g1" / "contract_links.parquet"), dates), "src", "dst"))[0], 3)
+                if (cache / "g1" / "contract_links.parquet").exists() else "contracts stage not run"),
             "per_year": ls.assign(y=ls["date"].dt.year).groupby("y")["excess"].mean().to_dict()}
     cov = cp.assign(y=cp["date"].dt.year).groupby("y").agg(
         suppliers=("supplier_cik", "nunique"), links=("customer_cik", "size")).to_dict("index")
@@ -449,8 +582,8 @@ def stage_screen(cache, out):
 
 def card(symbol, cache, out, get=sec.get):
     """Markdown card for one stock today: customers named in its latest 10-K, companies whose 10-Ks name
-    it (historical table), companies sharing an officer or director in the last 24 months, and the
-    latest 8-K date of each linked company. A reading aid: no score."""
+    it (historical table), companies sharing an officer or director in the last 24 months, and companies
+    named in its 8-K material agreements of the last 24 months. A reading aid: no score."""
     from tracks.main.longterm import sec_data
     tick = sec_data.current_ticker_map().set_index("symbol")
     if symbol not in tick.index:
@@ -490,6 +623,19 @@ def card(symbol, cache, out, get=sec.get):
         lines.append(f"- {nm}: {r.owner_name}")
     if not len(il):
         lines.append("- none")
+    lines += ["", "## Companies named in its material agreements (8-K item 1.01, last 24 months)", ""]
+    from tracks.news import l1_study as L1
+    k8 = [r for r in L1.submissions_rows(cik, get, first=now - pd.DateOffset(months=24), last=now, docs=True)
+          if r["form"] == "8-K" and "1.01" in r["items"] and r.get("doc")]
+    found_k8 = 0
+    for r in k8:
+        url = m1.DOC.format(cik=cik, accn=r["accession"].replace("-", ""), doc=r["doc"])
+        resp = get(url)
+        for c, _, s in (contract_links(m1.clean_text(resp.content.decode("utf-8", errors="replace")), names, cik) if resp else []):
+            found_k8 += 1
+            lines.append(f"- {by_cik.at[c, 'title']} ({by_cik.at[c, 'symbol']}), 8-K filed {r['filed']}: \"{s[:300]}\" {url}")
+    if not found_k8:
+        lines.append(f"- none matched ({len(k8)} item 1.01 filings read)")
     out.mkdir(parents=True, exist_ok=True)
     (out / f"card_{symbol}.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
@@ -497,7 +643,7 @@ def card(symbol, cache, out, get=sec.get):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["links", "screen", "card"])
+    ap.add_argument("--stage", required=True, choices=["links", "contracts", "screen", "card"])
     ap.add_argument("--cache", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--symbol")
@@ -506,6 +652,8 @@ def main():
     cache, out = Path(a.cache), Path(a.out)
     if a.stage == "links":
         stage_links(cache, out, a.budget_min)
+    elif a.stage == "contracts":
+        stage_contracts(cache, out, a.budget_min)
     elif a.stage == "screen":
         stage_screen(cache, out)
     else:

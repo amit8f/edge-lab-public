@@ -4,7 +4,11 @@ hash-chained ledger (core/ledger.py) on the `state-registers` branch:
 
 - form144: EDGAR's daily form index rows for Form 144 (notice of a planned insider sale) and 144/A;
 - sec_litigation: SEC litigation releases from the SEC's RSS feed (title, link, date, summary);
-- ftc_early_termination: the FTC's early-termination notices page (acquiring and acquired party, date).
+- ftc_early_termination: the FTC's early-termination notices page (acquiring and acquired party, date);
+- house_ptr: the House Clerk's index of members' periodic transaction reports (stock trades, filed up to
+  45 days late) filed in the 30 days to the date: name, state and district, filing date, document id and
+  PDF link. Log only: published studies since 2013 mostly find no edge in following them. The Senate's
+  equivalent site requires accepting terms in a browser session, so it isn't logged.
 
 FINRA's weekly OTC volume needs no logger: its API serves the history on request (tracks/main/w1b_volume.py).
 
@@ -12,7 +16,9 @@ Usage: python -m core.registers --state <dir> [--date YYYY-MM-DD]
 """
 import argparse
 import html
+import io
 import re
+import zipfile
 import xml.etree.ElementTree as ET
 
 import pandas as pd
@@ -23,6 +29,9 @@ from core.ledger import Ledger
 LIT_FEEDS = ["https://www.sec.gov/enforcement-litigation/litigation-releases/rss",
              "https://www.sec.gov/rss/litigation/litreleases.xml"]
 FTC_URL = "https://www.ftc.gov/legal-library/browse/early-termination-notices"
+HOUSE_ZIP = "https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{y}FD.zip"
+HOUSE_PDF = "https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/{y}/{doc}.pdf"
+PTR_DAYS = 30
 
 
 def form144_rows(index):
@@ -53,6 +62,40 @@ def parse_ftc(page):
                  for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, flags=re.S | re.I)]
         if cells and any(cells):
             rows.append(cells)
+    return rows
+
+
+def parse_house(xml_bytes, day, days=PTR_DAYS):
+    """Periodic transaction reports (FilingType P) in the House index filed in the `days` days to `day`."""
+    root = ET.fromstring(xml_bytes)
+    d1 = pd.Timestamp(day)
+    out = []
+    for m in root.iter("Member"):
+        g = lambda tag: (m.findtext(tag) or "").strip()  # noqa: E731
+        if g("FilingType") != "P":
+            continue
+        f = pd.to_datetime(g("FilingDate"), format="%m/%d/%Y", errors="coerce")
+        if pd.isna(f) or not (d1 - pd.Timedelta(days=days) < f <= d1):
+            continue
+        name = " ".join(x for x in (g("Prefix"), g("First"), g("Last"), g("Suffix")) if x)
+        out.append({"name": name, "state_district": g("StateDst"), "filed": f"{f:%Y-%m-%d}", "doc_id": g("DocID"),
+                    "pdf": HOUSE_PDF.format(y=g("Year") or f.year, doc=g("DocID"))})
+    return out
+
+
+def fetch_house(day, get=sec.get):
+    rows = []
+    years = sorted({pd.Timestamp(day).year, (pd.Timestamp(day) - pd.Timedelta(days=PTR_DAYS)).year})
+    for y in years:
+        r = get(HOUSE_ZIP.format(y=y))
+        if r is None:
+            return None
+        try:
+            with zipfile.ZipFile(io.BytesIO(r.content)) as z:
+                xml = z.read(next(n for n in z.namelist() if n.lower().endswith(".xml")))
+        except (zipfile.BadZipFile, StopIteration):
+            return None
+        rows += parse_house(xml, day)
     return rows
 
 
@@ -97,6 +140,12 @@ def run(state, day, get=sec.get, index_fn=sec.daily_form_index):
                        {"date": d, "source": FTC_URL, "status": "ok" if rows is not None else "unreadable",
                         "rows": rows or []})
         done.append(f"ftc {len(rows or [])}")
+    if not led.has("house_ptr", d):
+        rows = fetch_house(day, get)
+        led.write_json("house_ptr", d, f"house_ptr/{d}.json",
+                       {"date": d, "source": HOUSE_ZIP.format(y=pd.Timestamp(day).year),
+                        "status": "ok" if rows is not None else "unreadable", "rows": rows or []})
+        done.append(f"house_ptr {len(rows or [])}")
     print("[registers]", d, ", ".join(done) or "nothing new")
 
 
