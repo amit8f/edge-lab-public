@@ -12,12 +12,17 @@ Stages (each resumable; run in order):
    "Background of the Merger" dates.
 5. footprints: SIP trades and quotes on trading days -10 .. -1 before sampled announcements and controls.
 6. finra: FINRA OTC Transparency weekly rows per ATS and per non-ATS firm for the same events.
+7. seclist: every SEC litigation release 2016-01 .. 2025-09, keeping those whose text charges insider
+   trading ahead of an announcement, as W1b_sec_candidates.csv; Claude reads them in date order and fills
+   W1b_sec_cases.csv (clarification 20).
 
 Usage: python -m tracks.main.w1b_volume --cache <dir> --out <dir> [--stage data|signals|report|proxy|footprints|finra]
 """
 import argparse
+import html
 import json
 import math
+import re
 import time
 from pathlib import Path
 
@@ -50,6 +55,10 @@ EMPTY = pd.DataFrame({"symbol": pd.Series(dtype=str), "cik": pd.Series(dtype="in
                       "ctrl_side": pd.Series(dtype="int64"), "r": pd.Series(dtype=float),
                       "r_spy": pd.Series(dtype=float), "held": pd.Series(dtype="int64")})
 TRADES_URL = "https://data.alpaca.markets/v2/stocks/trades"
+LIT_LIST = "https://www.sec.gov/enforcement-litigation/litigation-releases?year={y}&month={m}"
+_INSIDER = re.compile(r"(?i)insider trading|traded (?:on|while in possession of) (?:material,? )?non-?public|"
+                      r"tipped|tippee|misappropriat")
+_EVENT = re.compile(r"(?i)\b(?:announc\w*|acqui\w+|merger|tender offer|takeover|buyout)\b")
 FINRA_URL = "https://api.finra.org/data/group/otcMarket/name/weeklySummary"
 WHOLESALERS = r"(?i)citadel|virtu|jane street|g1 execution|two sigma|ubs securities|de minimis"
 
@@ -497,11 +506,65 @@ def stage_finra(cache, budget_min):
     return True
 
 
+def release_links(page):
+    """(release id, href) of each litigation release linked from one monthly listing page."""
+    out, seen = [], set()
+    for href in re.findall(r'href="([^"]*(?:litigation-releases|litreleases)/(?:\d{4}/)?lr-?\d{4,6}[^"]*)"', page):
+        rid = re.search(r"lr-?(\d{4,6})", href).group(1)
+        if rid not in seen:
+            seen.add(rid)
+            out.append((rid, href if href.startswith("http") else "https://www.sec.gov" + href))
+    return out
+
+
+def release_text(page):
+    t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", page)
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", t))).strip()
+
+
+def candidate(text):
+    """Snippet of the sentences that mention the announcement, or None when the release doesn't charge
+    insider trading around a corporate announcement."""
+    if not (_INSIDER.search(text) and _EVENT.search(text)):
+        return None
+    sents = re.split(r"(?<=[.;])\s+", text)
+    keep = [x for x in sents if _EVENT.search(x)]
+    return " | ".join(keep)[:800] if keep else None
+
+
+def stage_seclist(out, budget_min, get=None):
+    from core import sec
+    get = get or sec.get
+    deadline = time.monotonic() + budget_min * 60
+    f = out / "W1b_sec_candidates.csv"
+    have = pd.read_csv(f, dtype=str) if f.exists() else pd.DataFrame(columns=["release", "month", "url", "snippet"])
+    done_months = set(have["month"])
+    rows = have.to_dict("records")
+    for per in pd.period_range("2016-01", "2025-09", freq="M"):
+        if str(per) in done_months:
+            continue
+        if time.monotonic() > deadline:
+            break
+        r = get(LIT_LIST.format(y=per.year, m=per.month))
+        if r is None:
+            continue
+        for rid, url in release_links(r.content.decode("utf-8", "replace")):
+            rr = get(url)
+            snip = candidate(release_text(rr.content.decode("utf-8", "replace"))) if rr is not None else None
+            if snip:
+                rows.append({"release": rid, "month": str(per), "url": url, "snippet": snip})
+        rows.append({"release": "", "month": str(per), "url": "", "snippet": ""})     # marks the month done
+        out.mkdir(parents=True, exist_ok=True)
+        tmp = f.with_suffix(".tmp")
+        pd.DataFrame(rows).to_csv(tmp, index=False)
+        tmp.replace(f)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", required=True)
     ap.add_argument("--out", required=True)
-    ap.add_argument("--stage", default="signals", choices=["data", "signals", "report", "proxy", "footprints", "finra"])
+    ap.add_argument("--stage", default="signals", choices=["data", "signals", "report", "proxy", "footprints", "finra", "seclist"])
     ap.add_argument("--budget-min", type=float, default=290)
     a = ap.parse_args()
     cache, out = Path(a.cache), Path(a.out)
@@ -519,6 +582,8 @@ def main():
         stage_footprints(cache, a.budget_min)
     elif a.stage == "finra":
         stage_finra(cache, a.budget_min)
+    elif a.stage == "seclist":
+        stage_seclist(out, a.budget_min)
 
 
 if __name__ == "__main__":

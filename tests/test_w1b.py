@@ -112,3 +112,16 @@ def test_quiet_mask():
     fil = pd.DataFrame({"cik": [2], "date": pd.to_datetime(["2024-03-14"])})          # 4 sessions before 03-20
     q = D.quiet_mask(keys, news, fil, 3, cal)
     assert list(q) == [False, True, True]
+
+
+def test_sec_release_parsing():
+    page = ('<a href="/enforcement-litigation/litigation-releases/lr-25985">x</a>'
+            '<a href="https://www.sec.gov/litigation/litreleases/2016/lr23456.htm">y</a>'
+            '<a href="/enforcement-litigation/litigation-releases/lr-25985">dup</a>')
+    assert B.release_links(page) == [("25985", "https://www.sec.gov/enforcement-litigation/litigation-releases/lr-25985"),
+                                     ("23456", "https://www.sec.gov/litigation/litreleases/2016/lr23456.htm")]
+    text = B.release_text("<p>The SEC charged Jane Doe with insider trading.</p><p>She bought shares of Target Inc. "
+                          "the day before the February 16, 2023 announcement that Buyer would acquire it.</p>")
+    snip = B.candidate(text)
+    assert snip and "February 16, 2023 announcement" in snip
+    assert B.candidate("The SEC charged a Ponzi scheme operator with fraud.") is None
