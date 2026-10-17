@@ -5,9 +5,9 @@
 # nothing before the night of 2026-11-02 and needs the night's articles up to 23:30 ET.
 name: leads
 
+# No schedule in this public copy: the private edge-lab repo runs this job nightly, and two copies
+# would log twice and (from Nov 2) send the same paper orders twice. Run by hand only if that one stops.
 on:
-  schedule:
-    - cron: "45 4 * * 2-6"    # 23:45 ET (EST, from Nov 1; 00:45 in EDT), Mon-Fri nights
   workflow_dispatch:
 
 permissions: {}
