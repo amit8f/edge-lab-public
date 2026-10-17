@@ -214,9 +214,9 @@ def first_headline(symbol, start, end, headers):
     return None, None, None
 
 
-def submissions_rows(cik, get=sec.get):
-    """(accession, form, filed, items) of one company's filings dated FIRST .. LAST, from the recent block
-    and the older files of its submissions record."""
+def submissions_rows(cik, get=sec.get, first=FIRST, last=LAST):
+    """(accession, form, filed, items) of one company's filings dated first .. last (default L1's FIRST ..
+    LAST), from the recent block and the older files of its submissions record."""
     base = "https://data.sec.gov/submissions/"
     r = get(f"{base}CIK{int(cik):010d}.json")
     if r is None:
@@ -224,7 +224,7 @@ def submissions_rows(cik, get=sec.get):
     j = r.json()
     blocks = [j.get("filings", {}).get("recent", {})]
     for f in j.get("filings", {}).get("files", []):
-        if pd.Timestamp(f.get("filingTo", "1900-01-01")) >= FIRST:
+        if pd.Timestamp(f.get("filingTo", "1900-01-01")) >= first:
             rr = get(base + f["name"])
             if rr is not None:
                 blocks.append(rr.json())
@@ -232,7 +232,7 @@ def submissions_rows(cik, get=sec.get):
     for b in blocks:
         for acc, form, filed, items in zip(b.get("accessionNumber", []), b.get("form", []), b.get("filingDate", []),
                                            b.get("items", [""] * len(b.get("form", [])))):
-            if FIRST <= pd.Timestamp(filed) <= LAST:
+            if first <= pd.Timestamp(filed) <= last:
                 out.append({"cik": int(cik), "accession": acc, "form": form, "filed": filed,
                             "items": [i.strip() for i in (items or "").split(",") if i.strip()]})
     return out
