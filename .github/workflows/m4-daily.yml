@@ -5,9 +5,10 @@
 # branch `state`.
 name: m4-daily
 
-# No schedule in this public copy: the private edge-lab repo runs this job nightly, and two copies
-# would log every day twice. Run by hand only if that one stops.
+# This public copy is the one that runs nightly (the private repo skips scheduled jobs).
 on:
+  schedule:
+    - cron: "30 3 * * 2-6"   # 23:30 ET in EDT, 22:30 in EST, after each weekday session
   workflow_dispatch:
 
 permissions: {}

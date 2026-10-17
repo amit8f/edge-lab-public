@@ -158,3 +158,15 @@ def test_split_runup():
     assert s["events"] == 3 and abs(s["mean_rumour_part"] - 0.05) < 1e-12
     assert abs(s["mean_quiet_part"] - 0.041) < 1e-12 and abs(s["mean_markup"] - 0.4) < 1e-12
     assert s["share_with_rumour_day"] == 1.0
+
+
+def test_seclist_needs_links(tmp_path):
+    assert B.release_links("<td>Release No. LR-24434</td>") == [
+        ("24434", "https://www.sec.gov/enforcement-litigation/litigation-releases/lr-24434")]
+
+    class R:
+        status_code, content = 200, b"<html><title>Access Denied</title></html>"
+    import pytest
+    with pytest.raises(SystemExit):
+        B.stage_seclist(tmp_path, 1, get=lambda u: R())
+    assert not (tmp_path / "W1b_sec_candidates.csv").exists()      # no month was marked done

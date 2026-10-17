@@ -2,12 +2,15 @@
 # and SEC filings that often precede headlines (core/leads_sec.py), saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
 # servers, so they are not collected here.) Runs once a night; the cursor fills any day a skipped run
 # missed. The same job runs the penny track's P1/P2 paper trading (tracks/penny/nightly.py), which does
-# nothing before the night of 2026-11-02 and needs the night's articles up to 23:30 ET.
+# nothing before the night of 2026-10-19 and needs the night's articles up to 23:30 ET.
 name: leads
 
-# No schedule in this public copy: the private edge-lab repo runs this job nightly, and two copies
-# would log twice and (from Nov 2) send the same paper orders twice. Run by hand only if that one stops.
+# This public copy is the one that runs nightly: the private repo has used its Actions minutes and
+# skips scheduled jobs (only its news logger runs there). Headline text isn't stored here
+# (NO_HEADLINE_TEXT), since Benzinga's terms don't allow republishing it.
 on:
+  schedule:
+    - cron: "45 4 * * 2-6"    # 23:45 ET (EST, from Nov 1; 00:45 in EDT), Mon-Fri nights
   workflow_dispatch:
 
 permissions: {}
@@ -65,6 +68,7 @@ jobs:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          NO_HEADLINE_TEXT: "1"
         run: .venv/bin/python -m tracks.penny.nightly --state state
 
       - name: Commit the state back

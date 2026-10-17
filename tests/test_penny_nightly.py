@@ -93,7 +93,7 @@ def test_nothing_runs_before_the_first_night(tmp_path):
     class Boom:
         def __getattr__(self, k):
             raise AssertionError("no network before START")
-    assert N.run(tmp_path, now=et("2026-11-02 20:00"), api=Boom()) == 0
+    assert N.run(tmp_path, now=et("2026-11-02 20:00"), api=Boom(), start=NIGHT) == 0
     assert not (tmp_path / "paper").exists()
 
 
@@ -108,7 +108,7 @@ def test_universe_rules():
 
 def test_first_night_signals_controls_and_mirror(tmp_path):
     api = standard_api()
-    n = N.run(tmp_path, now=et("2026-11-03 05:00"), api=api)
+    n = N.run(tmp_path, now=et("2026-11-03 05:00"), api=api, start=NIGHT)
     led = Ledger(tmp_path / "paper")
     assert led.verify() == []
     days = [e["date"] for e in led.entries() if e["kind"] == "paper_day"]
@@ -130,11 +130,11 @@ def test_first_night_signals_controls_and_mirror(tmp_path):
     assert all(b["client_order_id"].startswith("el-20261102-") and int(b["qty"]) >= 1 for b in api.sent)
 
     # same night again: nothing new, no order sent twice
-    assert N.run(tmp_path, now=et("2026-11-03 06:00"), api=api) == 0
+    assert N.run(tmp_path, now=et("2026-11-03 06:00"), api=api, start=NIGHT) == 0
     assert len(api.sent) == 2
 
     # next night: entries filled at the open, Alpaca fills read back with their shortfall
-    N.run(tmp_path, now=et("2026-11-04 05:00"), api=api)
+    N.run(tmp_path, now=et("2026-11-04 05:00"), api=api, start=NIGHT)
     rec2 = N._read(led, "paper_day", "2026-11-03")
     assert {p["symbol"] for p in rec2["book"]["open"]} == {"XPEN", "YPEN"}
     # flat synthetic bars (open 3.00, range 2.91-3.09): both limits trade through, at the open
@@ -150,14 +150,14 @@ def test_first_night_signals_controls_and_mirror(tmp_path):
 
 def test_mirror_not_sent_after_the_open(tmp_path):
     api = standard_api()
-    N.run(tmp_path, now=et("2026-11-03 10:00"), api=api)
+    N.run(tmp_path, now=et("2026-11-03 10:00"), api=api, start=NIGHT)
     m = N._read(Ledger(tmp_path / "paper"), "paper_mirror", "2026-11-02")
     assert m["status"].startswith("not sent") and api.sent == []
 
 
 def test_stops_when_the_sec_index_is_missing(tmp_path):
     api = standard_api(index_until=pd.Timestamp("2026-10-30"))
-    N.run(tmp_path, now=et("2026-11-03 05:00"), api=api)
+    N.run(tmp_path, now=et("2026-11-03 05:00"), api=api, start=NIGHT)
     led = Ledger(tmp_path / "paper")
     assert led.entries()[-1]["date"] == "2026-10-30" and api.sent == []
 
@@ -165,7 +165,7 @@ def test_stops_when_the_sec_index_is_missing(tmp_path):
 def test_p2_skips_after_dilution(tmp_path):
     subs = {CIK["YPEN"]: {"filings": {"recent": {"form": ["424B5"], "filingDate": ["2026-09-15"], "items": [""]}}}}
     api = standard_api(subs=subs)
-    N.run(tmp_path, now=et("2026-11-03 05:00"), api=api, mirror=False)
+    N.run(tmp_path, now=et("2026-11-03 05:00"), api=api, mirror=False, start=NIGHT)
     rec = N._read(Ledger(tmp_path / "paper"), "paper_day", "2026-11-02")
     assert [s["idea"] for s in rec["signals"]] == ["P1"]
     assert rec["skipped"] == [{"event_id": rec["skipped"][0]["event_id"], "idea": "P2", "symbol": "YPEN",
@@ -218,3 +218,10 @@ def test_control_pool_excludes_recent_events():
     store = pd.DataFrame([{"night_day": f"{days[days.index(NIGHT) - 19]:%Y-%m-%d}", "cls": "A6", "series_id": "A"}])
     assert list(N.control_pool(u, store, N.P1_CLASSES, NIGHT, days, set(), True)["symbol"]) == []
     assert list(N.control_pool(u, store, N.P1_CLASSES, NIGHT, days, set(), False)["symbol"]) == ["B"]
+
+
+def test_no_headline_text_in_public_runs(tmp_path, monkeypatch):
+    monkeypatch.setenv("NO_HEADLINE_TEXT", "1")
+    N.run(tmp_path, now=et("2026-11-03 05:00"), api=standard_api(), start=NIGHT)
+    text = "".join(p.read_text() for p in (tmp_path / "paper").rglob("*") if p.is_file())
+    assert "raises full-year revenue guidance" not in text

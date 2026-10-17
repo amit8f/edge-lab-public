@@ -34,7 +34,7 @@ from paper import book as B
 from tracks.penny.frozen import rules as R
 
 ET = "America/New_York"
-START = pd.Timestamp("2026-11-02")      # first signal day (entries from the open of 2026-11-03)
+START = pd.Timestamp("2026-10-19")      # first signal day (entries from the open of 2026-10-20; P1 clarification 12)
 WARMUP = pd.Timedelta(days=30)
 RUN_AFTER = pd.Timedelta(hours=23, minutes=30)
 LOOKBACK_FIRST = pd.Timedelta(days=3)
@@ -313,7 +313,7 @@ def find_events(api, d, u, names, store, arts_all, prev_cutoff, raw, adj):
         return pd.DataFrame(columns=EVENT_COLS), funnel
     new["sign"] = ["-" if c == "NT" else s for c, s in zip(new["cls"], R.signs(new, text_by_id, rows_all))]
     hl = dict(zip(rows_all["id"], rows_all["headline"]))
-    new["headline"] = [hl.get(i) for i in new["id"]]
+    new["headline"] = [None if os.environ.get("NO_HEADLINE_TEXT") else hl.get(i) for i in new["id"]]
     new["night_day"] = f"{d:%Y-%m-%d}"
     new["event_id"] = [f"{d:%Y%m%d}-{i:04d}" for i in range(len(new))]
     for c in EVENT_COLS:
