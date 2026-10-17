@@ -58,6 +58,7 @@ EMPTY = pd.DataFrame({"symbol": pd.Series(dtype=str), "cik": pd.Series(dtype="in
                       "r_spy": pd.Series(dtype=float), "held": pd.Series(dtype="int64")})
 TRADES_URL = "https://data.alpaca.markets/v2/stocks/trades"
 LIT_LIST = "https://www.sec.gov/enforcement-litigation/litigation-releases?year={y}&month={m}"
+LIT_RELEASE = "https://www.sec.gov/enforcement-litigation/litigation-releases/lr-{n}"
 _INSIDER = re.compile(r"(?i)insider trading|traded (?:on|while in possession of) (?:material,? )?non-?public|"
                       r"tipped|tippee|misappropriat")
 _EVENT = re.compile(r"(?i)\b(?:announc\w*|acqui\w+|merger|tender offer|takeover|buyout)\b")
@@ -598,11 +599,15 @@ def stage_finra(cache, budget_min):
 def release_links(page):
     """(release id, href) of each litigation release linked from one monthly listing page."""
     out, seen = [], set()
-    for href in re.findall(r'href="([^"]*(?:litigation-releases|litreleases)/(?:\d{4}/)?lr-?\d{4,6}[^"]*)"', page):
-        rid = re.search(r"lr-?(\d{4,6})", href).group(1)
+    for href in re.findall(r'href=["\']([^"\']*(?:litigation-releases|litreleases)/(?:\d{4}/)?lr-?\d{4,6}[^"\']*)["\']', page, re.I):
+        rid = re.search(r"lr-?(\d{4,6})", href, re.I).group(1)
         if rid not in seen:
             seen.add(rid)
             out.append((rid, href if href.startswith("http") else "https://www.sec.gov" + href))
+    for rid in re.findall(r"\bLR-(\d{4,6})\b", page):          # "Release No. LR-24434" beside each link
+        if rid not in seen:
+            seen.add(rid)
+            out.append((rid, LIT_RELEASE.format(n=rid)))
     return out
 
 
@@ -629,6 +634,7 @@ def stage_seclist(out, budget_min, get=None):
     have = pd.read_csv(f, dtype=str) if f.exists() else pd.DataFrame(columns=["release", "month", "url", "snippet"])
     done_months = set(have["month"])
     rows = have.to_dict("records")
+    empty = 0
     for per in pd.period_range("2016-01", "2025-09", freq="M"):
         if str(per) in done_months:
             continue
@@ -637,7 +643,19 @@ def stage_seclist(out, budget_min, get=None):
         r = get(LIT_LIST.format(y=per.year, m=per.month))
         if r is None:
             continue
-        for rid, url in release_links(r.content.decode("utf-8", "replace")):
+        page = r.content.decode("utf-8", "replace")
+        links = release_links(page)
+        if not links:               # every month has releases: an empty list means the page wasn't the listing
+            title = re.search(r"(?is)<title>(.*?)</title>", page)
+            print(f"[seclist] {per}: no release links (HTTP {r.status_code}, {len(page)} chars, "
+                  f"title {title.group(1).strip()[:80] if title else None!r}); month not marked done")
+            empty += 1
+            if empty >= 3:
+                raise SystemExit("[seclist] three listing pages without links; stopping")
+            continue
+        empty = 0
+        print(f"[seclist] {per}: {len(links)} releases")
+        for rid, url in links:
             rr = get(url)
             snip = candidate(release_text(rr.content.decode("utf-8", "replace"))) if rr is not None else None
             if snip:
