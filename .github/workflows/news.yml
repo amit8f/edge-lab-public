@@ -5,11 +5,9 @@
 # (after the secrets ALPACA_API_KEY_ID and ALPACA_API_SECRET_KEY are added).
 name: news
 
+# No schedule in this public copy: the private edge-lab repo collects the headlines. Raw Benzinga headlines
+# can't be republished, and this repo is public, so don't run this job here.
 on:
-  schedule:
-    - cron: "0 13 * * 1-5"   # 09:00 ET in EDT, before the open
-    - cron: "0 21 * * 1-5"   # 17:00 ET, after the close
-    - cron: "0 3 * * 2-6"    # 23:00 ET, overnight
   workflow_dispatch:
 
 permissions: {}
