@@ -125,3 +125,13 @@ def test_beta_post_and_brier():
     assert abs(b["mean"] - 2 / 6) < 1e-12 and b["ci95"][0] < b["mean"] < b["ci95"][1]
     assert W.brier([1.0, 0.0], [1, 1]) == 0.5
     assert np.isnan(W.brier([], []))
+
+
+def test_replication():
+    rv = pd.DataFrame({"group": ["big"] * 30, "sign": [1] * 30, "hit": [True] * 10 + [False] * 20})
+    okr = pd.DataFrame({"group": ["big"] * 6, "sign": [1] * 6, "resolvable": [True] * 6, "hit": [False] * 6,
+                        "r": [-0.02] * 6, "r_spy": [0.0] * 6})
+    r = W.replication(rv, okr)
+    assert r["rate_reproduces"] and r["unconfirmed_lose"] and r["unconfirmed_n"] == 6
+    r2 = W.replication(rv.assign(hit=[True] * 28 + [False] * 2), okr)
+    assert not r2["rate_reproduces"]

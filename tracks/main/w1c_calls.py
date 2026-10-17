@@ -7,7 +7,8 @@ Stages (each resumable; run in order):
    If not, W1c is logged "no data" and the later stages refuse to run.
 3. options: per underlying (main-track stocks), every call and put expiring 2024-02-01 .. 2025-11-15 and
    their daily bars, reduced to one row per underlying-day; 50 underlyings per batch file.
-4. report: signals, trades, controls and the primary test.
+4. report: signals, trades, controls and the primary test, plus the pre-deal call-buying replication
+   (clarification 23).
 
 Usage: python -m tracks.main.w1c_calls --cache <dir> --out <dir> [--stage data|probe|options|report]
 """
@@ -32,6 +33,8 @@ DTE, OTM, RATIO, MIN_CALLS, CALL_PUT, MEAN_DAYS, CTRL_RATIO = 45, 1.05, 5.0, 100
 HOLD, QUIET, COST, MIN_EVENTS, LAGS, BATCH = 10, 3, 0.002, 150, 5, 50
 CONTRACTS_URL = f"{alpaca.TRADE}/options/contracts"
 OPT_BARS_URL = "https://data.alpaca.markets/v1beta1/options/bars"
+OPT_QUOTES_URL = "https://data.alpaca.markets/v1beta1/options/quotes"
+PRE_DAYS = 5
 
 
 # ------------------------------------------------------------------ pure rules (tested offline)
@@ -82,6 +85,33 @@ def one_per_window(sig, days, hold=HOLD):
 
 
 # ------------------------------------------------------------------ stages
+
+def pre_deal_test(targets, unusual_days, days, rng, pre=PRE_DAYS):
+    """Clarification 23 (the Augustin, Brenner & Subrahmanyam pattern): share of merger targets with an
+    unusual call day (news filter not applied) in the `pre` trading days before the announcement, against
+    one random earlier `pre`-day window of the same stock that ends at least 20 trading days before it and
+    lies inside the option data; one-sided Fisher exact test."""
+    from scipy.stats import fisher_exact
+    by = {s: set(g["date"]) for s, g in unusual_days.groupby("symbol")}
+    have = {s: (g["date"].min(), g["date"].max()) for s, g in unusual_days.groupby("symbol")}
+    lo = days.searchsorted(FIRST)
+    hit, ctrl = [], []
+    for t in targets.itertuples(index=False):
+        i = days.searchsorted(pd.Timestamp(t.date))
+        if i - 20 - pre < lo:
+            continue
+        s = by.get(t.symbol, set())
+        win = lambda end: any(d in s for d in days[end - pre:end])  # noqa: E731
+        hit.append(win(i))
+        ctrl.append(win(int(rng.integers(lo + pre, i - 20 + 1))))
+    n = len(hit)
+    if not n:
+        return {"targets": 0}
+    a, b = sum(hit), sum(ctrl)
+    p = fisher_exact([[a, n - a], [b, n - b]], alternative="greater")[1]
+    return {"targets": n, "share_before": a / n, "share_control_window": b / n, "fisher_p": float(p),
+            "reproduces": bool(a >= 2 * max(b, 1) and p < 0.05), "symbols_with_unusual_days": len(have)}
+
 
 def contracts_for(underlying, headers, status):
     rows, tok = [], None
@@ -138,6 +168,13 @@ def stage_probe(out):
         b = option_bars(old["symbol"].head(20).tolist(), h)
         res["bars_rows_for_20_expired"] = int(len(b))
     res["usable"] = bool(res.get("bars_rows_for_20_expired", 0) > 0)
+    if len(old):                      # clarification 24: the IV smirk needs historical option quotes
+        try:
+            q = alpaca.get(OPT_QUOTES_URL, {"symbols": old["symbol"].iloc[0], "limit": 10,
+                                            "start": f"{old['expiration'].iloc[0] - pd.Timedelta(days=10):%Y-%m-%d}"}, headers=h)
+            res["historical_quotes_rows"] = int(sum(len(v) for v in (q.get("quotes") or {}).values()))
+        except Exception as e:        # noqa: BLE001 (any refusal means no quotes history)
+            res["historical_quotes_rows"], res["historical_quotes_error"] = 0, type(e).__name__
     out.mkdir(parents=True, exist_ok=True)
     (out / "W1c_probe.json").write_text(json.dumps(res, indent=1))
     print(res)
@@ -257,6 +294,11 @@ def stage_report(cache, out):
            "primary": prim, "control": B.stats_block(ctrl) if len(ctrl) else None,
            "exploratory": {"share_followed_by_8k_or_13d_30d": followed(sig),
                            "control_share": followed(ctrl_cik.dropna(subset=["cik"])) if len(ctrl) else None}}
+    tg = B.announcements(fil)
+    tg = tg[(tg["category"] == "merger_target") & (tg["date"] >= FIRST) & (tg["date"] <= D.FILE_LAST)]
+    tg = tg.merge(m[["cik", "symbol"]].drop_duplicates("cik").astype({"cik": "int64"}), on="cik")
+    ud = m[unusual(m)][["symbol", "date"]]
+    res["replication_augustin"] = pre_deal_test(tg, ud, days, np.random.default_rng(SEED))
     res["passes"] = bool(prim.get("passes", False))
     out.mkdir(parents=True, exist_ok=True)
     (out / "W1c_result.json").write_text(json.dumps(res, indent=1, default=str))

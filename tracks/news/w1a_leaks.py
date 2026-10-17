@@ -41,6 +41,7 @@ WAIT_MIN, HOLD_DAYS, DEDUP_DAYS, STORY_DAYS = 30, 5, 5, 2
 MIN_EVENTS, CHECK_N, CHECK_PASS = 100, 50, 40
 RESOLVE_DAYS, RESOLVE_LAST = 365, pd.Timestamp("2025-09-30")
 PRIOR_A, PRIOR_B, MIN_RESOLVED, GAP, PREMIUM = 1.0, 2.0, 5, 0.15, 0.30
+AS_CI = (0.29, 0.38)
 GROUPS = ["short_seller", "small", "foreign", "big", "unnamed"]   # first match wins, in this order
 
 # Cue words that make an ambiguous outlet name a citation ("according to The Deal", "The Information
@@ -261,6 +262,20 @@ def implied_prob(entry_px, prior_close):
 def gap_side(h, p):
     d = h - p
     return +1 if d > GAP else -1 if d < -GAP else 0
+
+
+def replication(rv, okr):
+    """Clarification 23: big-outlet deal rumours should come true about a third of the time within a year
+    (Ahern & Sosyura: 501 rumours, 95% interval 0.29-0.38) and unconfirmed ones should lose money from
+    entry. Reproduces if our flat-prior 95% interval overlaps theirs."""
+    x = rv[(rv["group"] == "big") & (rv["sign"] > 0)]
+    hr = beta_post(int(x["hit"].sum()), len(x), 1, 1)
+    u = okr[(okr["group"] == "big") & (okr["sign"] > 0) & (okr["resolvable"] == True) & (okr["hit"] == False)]  # noqa: E712
+    gross = (u["r"] - u["r_spy"]).dropna()
+    return {"big_deal_hit_rate": hr, "published_ci95": list(AS_CI),
+            "rate_reproduces": bool(len(x) >= MIN_RESOLVED and hr["ci95"][0] <= AS_CI[1] and hr["ci95"][1] >= AS_CI[0]),
+            "unconfirmed_n": int(len(gross)), "unconfirmed_mean_gross": float(gross.mean()) if len(gross) else float("nan"),
+            "unconfirmed_lose": bool(len(gross) >= MIN_RESOLVED and gross.mean() < 0)}
 
 
 def brier(p, y):
@@ -525,6 +540,8 @@ def stage_report(cache, out):
                                      for (g, s), x in rv.groupby(["group", "sign"])},
                         "by_author": {a: beta_post(int(x["hit"].sum()), len(x))
                                       for a, x in rv[rv["sign"] > 0].groupby("author") if a and len(x) >= MIN_RESOLVED}}
+    res["replication_ahern_sosyura"] = replication(rv, okm.merge(allev[["id", "symbol", "resolvable", "hit"]],
+                                                                  on=["id", "symbol"], how="left"))
     gap = okm[okm["sign"] > 0].copy()
     hs, ps, sides = [], [], []
     for e in gap.itertuples(index=False):

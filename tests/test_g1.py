@@ -83,3 +83,22 @@ def test_check_gate(tmp_path):
     assert g1.check_passed(tmp_path) is None
     pd.DataFrame({"ok": ["y"] * 41 + ["n"] * 9}).to_csv(tmp_path / "G1_links_check.csv", index=False)
     assert g1.check_passed(tmp_path) == 41
+
+
+def test_item_101_contract_links():
+    text = ("FORM 8-K. Item 1.01 Entry into a Material Definitive Agreement. On May 1, 2020, the Company entered "
+            "into a Supply Agreement with General Motors Co. under which it will deliver widgets. "
+            "Item 9.01 Financial Statements and Exhibits. Exhibit 10.1 Agreement with Apple Inc.")
+    assert "General Motors" in g1.item_101(text) and "Apple" not in g1.item_101(text)
+    assert [c for c, *_ in g1.contract_links(text, NAMES, self_cik=5)] == [7]
+    assert g1.item_101("Item 2.02 Results of Operations.") == ""
+
+
+def test_contract_hubs_and_pairs():
+    filed = pd.Timestamp("2020-05-01")
+    rows = pd.DataFrame({"filer_cik": list(range(100, 100 + g1.HUB_MAX + 1)) + [5],
+                         "other_cik": [9.0] * (g1.HUB_MAX + 1) + [7.0], "filed": filed, "accn": "a", "doc": "d"})
+    v = g1.contract_valid(rows)
+    assert list(v["other_cik"]) == [7]                  # the bank named by 51 filers is a hub
+    p = g1.contract_pairs(v, [pd.Timestamp("2020-06-30"), pd.Timestamp("2021-09-30")])
+    assert set(zip(p["src"], p["dst"])) == {(5, 7), (7, 5)} and set(p["date"]) == {pd.Timestamp("2020-06-30")}

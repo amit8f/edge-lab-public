@@ -3,7 +3,7 @@
 # resumes from its cache; rerun a stage until it finishes. Order:
 #   part=w1a stage=data (shared by all three), then w1a events, details (writes the hand check), gdelt;
 #   the hand check of research/results/W1/W1a_check.csv; then w1a measure, report.
-#   part=w1b stage=signals, proxy, footprints, finra, seclist; report after W1b_sec_cases.csv is filled.
+#   part=w1b stage=signals, proxy, footprints, finra, seclist, runup; report after W1b_sec_cases.csv is filled.
 #   part=w1c stage=probe, options, report.
 # Own data cache (cache/w1). Results are committed back to the branch that ran it.
 name: w1-study

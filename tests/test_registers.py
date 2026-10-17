@@ -50,3 +50,26 @@ def test_run_logs_once_and_retries_late_index(tmp_path):
 def test_last_business_day():
     assert R.last_business_day(pd.Timestamp("2026-10-17 01:00", tz="America/New_York")) == pd.Timestamp("2026-10-16")
     assert R.last_business_day(pd.Timestamp("2026-10-20 01:00", tz="America/New_York")) == pd.Timestamp("2026-10-19")
+
+
+HOUSE = b"""<?xml version="1.0" encoding="utf-8"?><FinancialDisclosure>
+<Member><Prefix>Hon.</Prefix><Last>Doe</Last><First>Jane</First><Suffix /><FilingType>P</FilingType><StateDst>CA12</StateDst>
+<Year>2026</Year><FilingDate>10/14/2026</FilingDate><DocID>20031234</DocID></Member>
+<Member><Prefix /><Last>Roe</Last><First>Rick</First><Suffix /><FilingType>O</FilingType><StateDst>TX01</StateDst>
+<Year>2026</Year><FilingDate>10/14/2026</FilingDate><DocID>10061234</DocID></Member>
+<Member><Prefix /><Last>Old</Last><First>Ann</First><Suffix /><FilingType>P</FilingType><StateDst>NY03</StateDst>
+<Year>2026</Year><FilingDate>08/01/2026</FilingDate><DocID>20030001</DocID></Member>
+</FinancialDisclosure>"""
+
+
+def test_house_ptr():
+    rows = R.parse_house(HOUSE, pd.Timestamp("2026-10-16"))
+    assert rows == [{"name": "Hon. Jane Doe", "state_district": "CA12", "filed": "2026-10-14", "doc_id": "20031234",
+                     "pdf": "https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2026/20031234.pdf"}]
+    import io
+    import zipfile
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("2026FD.xml", HOUSE)
+    assert len(R.fetch_house(pd.Timestamp("2026-10-16"), get=lambda u: Resp(buf.getvalue()))) == 1
+    assert R.fetch_house(pd.Timestamp("2026-10-16"), get=lambda u: Resp(b"not a zip")) is None
