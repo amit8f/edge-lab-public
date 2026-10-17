@@ -84,3 +84,27 @@ def test_primary_needs_200_trades_and_uses_day_differences():
     r = s.primary(tr, "crypto")
     assert r["trades"] == 300 and r["mean"] == pytest.approx(np.mean([x["net"] + 0.001 for x in tr]))
     assert r["verdict"] == "PASS"
+
+
+def test_crypto_bars_binance_microseconds_and_period_cut(monkeypatch):
+    def month(sym, ym):
+        t0 = pd.Timestamp(f"{ym}-01", tz="UTC")
+        idx = pd.date_range(t0, periods=3, freq="5min")
+        return pd.DataFrame({"o": 1.0, "h": 1.0, "l": 1.0, "c": 1.0, "v": [1.0, 0.0, 2.0]}, index=idx)
+    monkeypatch.setattr(s, "binance_month", month)
+    d, src = s.crypto_bars("BTCUSDT")
+    assert src == "binance" and (d["v"] > 0).all() and d.index.max() < pd.Timestamp("2025-10-01", tz="UTC")
+    assert d["session"].iloc[0] == "2021-01-01"
+
+
+def test_stock_bars_keep_regular_session_only(monkeypatch):
+    day = pd.Timestamp("2024-01-03")
+    sessions = pd.DataFrame({"open": [pd.Timestamp("2024-01-03 14:30", tz="UTC")],
+                             "close": [pd.Timestamp("2024-01-03 21:00", tz="UTC")]}, index=pd.DatetimeIndex([day]))
+    ts = pd.date_range("2024-01-03 14:00", "2024-01-03 21:30", freq="5min", tz="UTC")
+    rows = [{"t": t.isoformat(), "o": 1, "h": 1, "l": 1, "c": 1, "v": 0 if i == 10 else 5} for i, t in enumerate(ts)]
+    monkeypatch.setattr(s, "_pages", lambda url, params: rows)
+    d = s.stock_bars("SPY", day, day, sessions)
+    assert d.index.min() == pd.Timestamp("2024-01-03 14:30", tz="UTC")
+    assert d.index.max() == pd.Timestamp("2024-01-03 20:55", tz="UTC") and len(d) == 77   # 78 bars, one zero-volume
+    assert set(d["session"]) == {"2024-01-03"}
