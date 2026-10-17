@@ -222,7 +222,7 @@ def crypto_bars(sym, log=print):
         d.index = pd.to_datetime(d.pop("t"), utc=True)
         d = d[["o", "h", "l", "c", "v"]]
         src = "alpaca"
-    d = d[(d["v"] > 0) & (d.index < CRYPTO_END + pd.Timedelta(days=1))].sort_index()
+    d = d[(d["v"] > 0) & (d.index < (CRYPTO_END + pd.Timedelta(days=1)).tz_localize("UTC"))].sort_index()
     d = d[~d.index.duplicated()]
     d["session"] = d.index.strftime("%Y-%m-%d")
     return d, src
