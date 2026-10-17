@@ -116,11 +116,10 @@ def stock_universe(log=print):
     from core.bars import fetch_daily_bars, to_frames
     from core.env import alpaca_headers
     a = _assets()
-    syms = sorted(set(a["symbol"]))
+    syms = sorted(set(a["base_symbol"]))  # delisted lines carry a _DELISTED suffix the data API rejects
     h, rows = alpaca_headers(), []
     for b in range(0, len(syms), 500):
-        fr = to_frames(fetch_daily_bars(syms[b:b + 500], "2017-01-01", "2024-12-31", adjustment="raw", headers=h,
-                                        batch_size=100))
+        fr = to_frames(fetch_daily_bars(syms[b:b + 500], "2017-01-01", "2024-12-31", adjustment="raw", headers=h))
         for s, df in fr.items():
             for y, g in df.groupby(df.index.year):
                 rows.append((s, y, float((g["c"] * g["v"]).median()), float(g["c"].iloc[-1]), g.index[-1]))
