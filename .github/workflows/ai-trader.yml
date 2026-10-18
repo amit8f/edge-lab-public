@@ -1,10 +1,9 @@
-# K2 hourly: the $100 AI stock paper trader (tracks/main/ai_trader.py, research/prereg/K2.md).
-# Runs each hour of the US session (the code skips runs whose price time, now - 16 min, is outside it),
-# logs to the orphan branch `state-ai` so hourly runs never race the nightly jobs on `state`.
-# GitHub's cron never fired for this new repo on 2026-10-16, so each run also queues the next one itself:
-# the `next` job waits until minute 7 of the coming hour and dispatches this workflow again (free on a public
-# repo; no Claude involved). Only one chain runs: it skips the dispatch when another run is already queued.
-# On Saturdays around 03:07 UTC it also starts the weekly Kronos job (which logs at most once per week).
+# K5 (bot A, research/prereg/K5.md): the intraday momentum bot on SPY, $10,000 paper (tracks/main/ai_spy.py).
+# Replaces K2's hourly AI book A (K2 stopped 2026-10-18; its $100 runs are archived under archive/ on state-ai).
+# Runs every 10 minutes in market hours. Each run queues the next one itself (GitHub's cron is unreliable here):
+# the `next` job waits until the next minute ending in 7 (hourly outside 13-21 UTC on weekdays) and dispatches
+# this workflow again, unless another run is already queued. Logs to the orphan branch `state-ai` under spy/.
+# On Saturdays around 03:07 UTC it still starts the weekly Kronos job (which logs at most once per week).
 name: ai-trader
 
 on:
@@ -44,20 +43,19 @@ jobs:
           uv venv --python 3.12.10 .venv
           uv pip install --python .venv/bin/python -r requirements.txt
 
-      - name: Restore the AI-trader state branch
+      - name: Restore the state branch
         env:
           GH_TOKEN: ${{ github.token }}
           STATE_BRANCH: state-ai
         run: bash deploy/state.sh restore
 
-      - name: One hourly step
+      - name: One 10-minute step of bot A
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           ALPACA_MIRROR_KEY_ID: ${{ secrets.ALPACA_MIRROR_KEY_ID }}
           ALPACA_MIRROR_SECRET_KEY: ${{ secrets.ALPACA_MIRROR_SECRET_KEY }}
-        run: .venv/bin/python -m tracks.main.ai_trader --state state
+        run: .venv/bin/python -m tracks.main.ai_spy --state state
 
       - name: Commit the state back
         if: always()
@@ -75,14 +73,18 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     steps:
-      - name: Wait for the next hour and queue it
+      - name: Wait for the next slot and queue it
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           RUN_ID: ${{ github.run_id }}
         run: |
           now=$(date -u +%s)
-          next=$(( (now / 3600 + 1) * 3600 + 7 * 60 ))
+          next=$(( (now - 420) / 600 * 600 + 600 + 420 ))      # next minute ending in 7
+          h=$(date -u -d @$next +%H); d=$(date -u -d @$next +%u)
+          if (( d > 5 || 10#$h < 13 || 10#$h > 21 )); then      # market closed: once an hour
+            next=$(( now / 3600 * 3600 + 3600 + 420 ))
+          fi
           echo "sleeping $(( next - now ))s until $(date -u -d @$next +%H:%M) UTC"
           sleep $(( next - now ))
           others=$(gh run list -R "$REPO" --workflow ai-trader.yml --limit 20 --json databaseId,status \

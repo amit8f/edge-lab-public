@@ -13,7 +13,7 @@ import time
 
 from core import alpaca
 
-SCALE = 25            # $100 books -> a $2,500 paper account
+SCALE = 1             # $10,000 books -> $10,000 paper accounts (1x)
 ACCOUNTS = {"A": ("ALPACA_MIRROR_KEY_ID", "ALPACA_MIRROR_SECRET_KEY"),
             "C": ("ALPACA_MIRROR_B_KEY_ID", "ALPACA_MIRROR_B_SECRET_KEY")}   # B's old account
 MIN_USD = 1.0         # skip changes smaller than this
