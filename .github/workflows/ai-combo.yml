@@ -1,0 +1,86 @@
+# K6 (bot B, research/prereg/K6.md): the combined tape, news and peer rule on the top 100, $10,000 paper
+# (tracks/main/ai_combo.py). Runs beside bot A (K5) so the two can be compared.
+name: ai-combo
+
+on:
+  schedule:
+    - cron: "7 13-21 * * 1-5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ai-state
+  cancel-in-progress: false
+
+jobs:
+  trade:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-ai
+        run: bash deploy/state.sh restore
+
+      - name: One 10-minute step of bot B
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: .venv/bin/python -m tracks.main.ai_combo --state state
+
+      - name: Commit the state back
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-ai
+          RUN_LABEL: ai-combo ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
+
+  next:
+    needs: trade
+    if: always() && github.repository != 'amit8f/edge-lab'
+    permissions:
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Wait for the next slot and queue it
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          now=$(date -u +%s)
+          next=$(( (now - 420) / 600 * 600 + 600 + 420 ))      # next minute ending in 7
+          h=$(date -u -d @$next +%H); d=$(date -u -d @$next +%u)
+          if (( d > 5 || 10#$h < 13 || 10#$h > 21 )); then      # market closed: once an hour
+            next=$(( now / 3600 * 3600 + 3600 + 420 ))
+          fi
+          echo "sleeping $(( next - now ))s until $(date -u -d @$next +%H:%M) UTC"
+          sleep $(( next - now ))
+          others=$(gh run list -R "$REPO" --workflow ai-combo.yml --limit 20 --json databaseId,status \
+            --jq "[.[] | select(.databaseId != $RUN_ID and (.status == \"queued\" or .status == \"in_progress\" or .status == \"pending\" or .status == \"waiting\"))] | length")
+          if [[ "$others" == "0" ]]; then gh workflow run ai-combo.yml -R "$REPO" --ref main; echo queued; else echo "another run is queued; not chaining"; fi
