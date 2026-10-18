@@ -34,7 +34,7 @@ def test_plan_orders_flip_closes_first_and_skips_dust():
 
 
 def test_each_book_goes_to_its_own_account_and_errors_never_raise(tmp_path):
-    st = {"books": {"A": book("QQQ", -1, 0.1734), "B": book("TSLA", 1, 1.0),       # B is retired: not copied
+    st = {"books": {"A": book("QQQ", -1, 0.1734),
                     "C": {"pos": {"NVDA": {"side": 1, "qty": 0.2302}}}}}
     sent = []
     def post(url, body, headers):
@@ -53,6 +53,7 @@ def test_each_book_goes_to_its_own_account_and_errors_never_raise(tmp_path):
 
 def test_no_keys_does_nothing(tmp_path, monkeypatch):
     assert m.ACCOUNTS["C"][0] == "ALPACA_MIRROR_B_KEY_ID"     # C took over B's paper account
+    assert m.ACCOUNTS["B"][0] == "ALPACA_API_KEY_ID"          # combo bot B mirrors to the main account
     for k in ("ALPACA_MIRROR_KEY_ID", "ALPACA_MIRROR_B_KEY_ID"):
         monkeypatch.delenv(k, raising=False)
     assert m.run({"books": {}}, {}, tmp_path / "x") is None and not (tmp_path / "x").exists()
