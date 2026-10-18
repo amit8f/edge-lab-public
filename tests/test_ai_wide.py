@@ -27,14 +27,14 @@ def test_rebalance_sizes_fifths_keeps_and_closes():
     b = w.new_book()
     px = {"A": 10.0, "B": 20.0, "C": 50.0}
     f = w.rebalance(b, {"A": 1, "B": -1}, px, T0)
-    assert [x["action"] for x in f] == ["open", "open"] and b["pos"]["A"]["notional"] == pytest.approx(20.0)
-    assert b["cash"] == pytest.approx(100 - 2 * 20 * w.FEE)
+    assert [x["action"] for x in f] == ["open", "open"] and b["pos"]["A"]["notional"] == pytest.approx(w.START_USD * w.SLOT)
+    assert b["cash"] == pytest.approx(w.START_USD - 2 * w.START_USD * w.SLOT * w.FEE)
     px2 = {"A": 11.0, "B": 18.0, "C": 50.0}
     f = w.rebalance(b, {"A": 1, "C": 1}, px2, T0 + 3600)
     assert [(x["action"], x["sym"]) for x in f] == [("close", "B"), ("open", "C")]
     assert b["pos"]["A"]["entry"] == 10.0                         # kept as it was
-    assert b["trips"][0]["pnl"] == pytest.approx(20 / 20 * 2 - (20 / 20) * 18 * w.FEE)
-    assert w.equity(b, px2) == pytest.approx(b["cash"] + 2.0 * 1)
+    assert b["trips"][0]["pnl"] == pytest.approx(200.0 - 100 * 18 * w.FEE)
+    assert w.equity(b, px2) == pytest.approx(b["cash"] + 200.0)   # A: 200 shares up $1; B was closed; C is flat
 
 
 def test_short_pays_borrow_and_cap_of_five():
@@ -44,7 +44,7 @@ def test_short_pays_borrow_and_cap_of_five():
     assert len(b["pos"]) == w.MAX_POS
     cash = b["cash"]
     w.charge(b, T0 + 365 * 24 * 3600)
-    assert cash - b["cash"] == pytest.approx(5 * 20 * w.BORROW)
+    assert cash - b["cash"] == pytest.approx(5 * w.START_USD * w.SLOT * w.BORROW)
 
 
 def test_parse_drops_bad_symbols_unshortable_shorts_and_extras():
@@ -73,7 +73,7 @@ def test_step_twin_follows_symbols_with_coin_sides_and_hold_buys_spy():
     rec = w.step(st, u, d, syms, T0, ask=lambda s, t: ans, news={"S49": ["S49 beats estimates"]})
     assert set(st["books"]["C"]["pos"]) == {"S49", "S48"} and set(st["books"]["C-coin"]["pos"]) == {"S49", "S48"}
     assert {s: p["side"] for s, p in st["books"]["C-coin"]["pos"].items()} == {s: w.coin_side(s, T0) for s in ("S48", "S49")}
-    assert st["books"]["HOLD"]["pos"]["SPY"]["notional"] == pytest.approx(100 / (1 + w.FEE))
+    assert st["books"]["HOLD"]["pos"]["SPY"]["notional"] == pytest.approx(w.START_USD / (1 + w.FEE))
     assert rec["decision"]["want"] == {"S49": 1, "S48": -1}
     rec2 = w.step(st, u, d, syms, T0 + 3600, ask=lambda s, t: '{"positions": [{"symbol": "S49", "side": "long"}]}')
     assert set(st["books"]["C-coin"]["pos"]) == {"S49"} and rec2["fills"]["C-coin"][0]["sym"] == "S48"
@@ -96,14 +96,14 @@ def test_run_logs_universe_and_hour_once_and_mirrors_c(tmp_path, monkeypatch):
               ask=lambda s, t: '{"positions": [{"symbol": "S49", "side": "long"}], "summary": "up"}',
               headlines=lambda syms, p: {"S49": ["h"]})
     rec = w.run(tmp_path, now=px_time + pd.Timedelta(minutes=16), **kw)
-    assert rec["equity"]["C"] < 100 and rec["headline_counts"] == {"S49": 1} and "SPY" in seen[0]
+    assert rec["equity"]["C"] < w.START_USD and rec["headline_counts"] == {"S49": 1} and "SPY" in seen[0]
     led = Ledger(tmp_path / "wide")
     assert led.has("universe", "2026-10-19") and led.has("run", "2026-10-19T15:00")
     assert w.run(tmp_path, now=px_time + pd.Timedelta(minutes=16), **kw) is None
     readme = (tmp_path / "wide" / "README.md").read_text()
     assert "long S49" in readme and "bought S49" in readme
     assert ai_mirror.targets({"books": {"C": {"pos": {"S49": {"side": 1, "qty": 0.2}, "S01": {"side": -1, "qty": 0.17}}}}}, "C") \
-        == {"S49": 5.0, "S01": -4.0}
+        == {"S49": 0.2, "S01": 0.0}      # SCALE 1: a 0.17-share short rounds to no shares
 
 
 def test_fetch_hour_uses_newer_iex_trades_inside_the_session(monkeypatch):

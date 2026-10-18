@@ -30,12 +30,12 @@ MAX_POS = 5
 SLOT = 1 / MAX_POS          # each new position: a fifth of equity, so gross exposure stays near 1x
 MIN_PRICE = 5.0
 DV_DAYS = 20
-START_USD, FLOOR_USD = 100.0, 5.0
+START_USD, FLOOR_USD = 10_000.0, 500.0   # K4 amendment 2026-10-18: $10,000; floor kept at 5%
 SEED = 20261019
 FEE, BORROW = k2.FEE, k2.BORROW
 ET = k2.ET
 
-PROMPT = f"""You manage a $100 paper US stock account. Every 10 minutes of the trading day you see the {SHORTLIST} most traded US stocks
+PROMPT = f"""You manage a $10,000 paper US stock account. Every 10 minutes of the trading day you see the {SHORTLIST} most traded US stocks
 that moved most today (from the {N_UNIVERSE} most traded stocks over $5) plus anything you hold, with their
 recent hourly closes, up to three news headlines from the last 24 hours, and your account.
 Rules: hold up to {MAX_POS} positions, long or short. Each new position is sized at one fifth of equity; a
@@ -318,15 +318,15 @@ NAMES = {"C": "AI bot C (whole market, up to 5 stocks)", "C-coin": "Coin flip on
 def summary(state, rec, runs):
     def et(t):
         return f"{pd.Timestamp(t, unit='s', tz='UTC').tz_convert(ET):%Y-%m-%d %H:%M}"
-    lines = [f"# $100 AI bot C: whole market, up to 5 stocks (paper, K4)\n\nStarted {et(state['started'])} ET "
-             f"with $100 per book. **Last update {et(rec['t'])} ET.** Paper money only; fills use real-time IEX prices "
+    lines = [f"# $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)\n\nStarted {et(state['started'])} ET "
+             f"with $10,000 per book. **Last update {et(rec['t'])} ET.** Paper money only; fills use real-time IEX prices "
              "(16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random "
              "direction: C has to beat it to show skill (research/prereg/K4.md).\n",
              "| Book | Equity | Return | Closed trades | Won | Holding now |", "|---|---|---|---|---|---|"]
     for n, b in state["books"].items():
         pos = ", ".join(f"{'long' if p['side'] > 0 else 'short'} {s}" for s, p in sorted(b["pos"].items())) or "cash"
         eq = rec["equity"][n]
-        lines.append(f"| {NAMES[n]} | ${eq:.2f} | {eq - 100:+.2f}% | {len(b['trips'])} | "
+        lines.append(f"| {NAMES[n]} | ${eq:.2f} | {eq - START_USD:+.2f}% | {len(b['trips'])} | "
                      f"{sum(x['pnl'] > 0 for x in b['trips'])} | {pos} |")
     lines += ["\n## C's decisions, newest first\n", "| Time (ET) | Wants | Trades | Why |", "|---|---|---|---|"]
     for r in runs[::-1][:60]:

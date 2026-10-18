@@ -1,7 +1,20 @@
-"""Alpaca mirrors of the $100 bots: one paper account per book; order planning and the no-keys path (no network)."""
+"""Alpaca mirrors of the paper bots: one paper account per book; order planning and the no-keys path (no network).
+The planning tests pin SCALE 25 to their old sizes; the bots now run at SCALE 1."""
 import json
 
+import pytest
+
 from tracks.main import ai_mirror as m
+
+
+@pytest.fixture(autouse=True)
+def scale_25(monkeypatch):
+    monkeypatch.setattr(m, "SCALE", 25)
+
+
+def test_mirror_is_one_to_one_for_the_10k_books(monkeypatch):
+    monkeypatch.undo()
+    assert m.SCALE == 1
 
 
 def book(sym=None, side=1, qty=0.0):
