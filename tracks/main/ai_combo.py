@@ -225,6 +225,8 @@ def run(state_dir, now=None, universe_fn=w.build_universe, minute_fn=None, lates
     rec = step(state, day, feats, news2, peers, set(uni.get("shortable", [])), syms, prices, t, now_et, rng)
     led.write_json("run", key, f"runs/{day}/{key.replace(':', '')}.json", rec)
     k2._atomic(bpath, json.dumps(state, indent=1, sort_keys=True))
+    from tracks.main import ai_mirror
+    ai_mirror.run(state, prices, root / "mirror.jsonl")
     print(f"{key}: equity {rec['equity']}")
     return rec
 
