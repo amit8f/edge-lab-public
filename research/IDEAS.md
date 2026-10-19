@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 30** (main 19, penny 4, news 3, cross-track 3, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 45.
+**Phase 2 count: 31** (main 19, penny 5, news 3, cross-track 3, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 46.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
@@ -57,3 +57,4 @@ They test the pipeline and re-judge finished results. A failure here can invalid
 | V3 | 2026-10-15 | Power of M8's forward test; M6's ranking at 21 days on historical weekly data with whole-universe statistics; OpenTimestamps for the forward ledger | [prereg/V3.md](prereg/V3.md) | 2026-10-15: M8 needs 49 years for 80% power (5.6% chance of passing at 52 weeks); M6's rule at 21 days has t 0.60 and IC t 1.04. M8 stays a record. [Report](results/V3/REPORT.md) |
 | V4 | 2026-10-15 | Raw inputs instead of assumptions: every M10 and P3 pick (and 300 each of M4-M7) costed from SIP quotes at entry and exit; Shumway delisting bound; 200 headlines to audit the analyst classifier | [prereg/V4.md](prereg/V4.md) | 2026-10-15: measured costs are 0.41% for M10 picks (assumed 0.20%) and 0.65% for P3 (assumed 2%); M10 re-scored t 0.32, P3 t -1.54; both still fail. Headline audit pending. [Report](results/V4/REPORT.md) |
 | V5 | 2026-10-15 | What M10 and P3 learned: pick volatility and MAX percentiles, tree-SHAP by feature group, shuffled-label and stale-signal placebos, literature predictions written first | [prereg/V5.md](prereg/V5.md) | 2026-10-15: M10 is a volatility screen (picks at the 97th-98th volatility percentile); stale signals work as well as fresh ones; P3's shuffled-label placebo loses almost as much as the real model. Leakage flag (shuffled hit rate 4.5% vs 4%) not resolved under the amendment's rule; judged a threshold problem, not leakage (labels are shuffled before every fit). [Report](results/V5/REPORT.md) |
+| P4 | penny | 2026-10-19 | Insider cluster buys (2+ insiders, $25k+, one opportunistic) in $1-5 stocks; next open, stop -20%, take-profit +40%, else 21 days; vs same-volatility random penny stock, 2% costs | Amit's request (strict small account, stop-loss and take-profit); Lakonishok & Lee 2001; Cohen, Malloy & Pomorski 2012 | [prereg/P4.md](prereg/P4.md) | |
