@@ -96,6 +96,12 @@ def eligible(f, news2, peer_ret, shortable):
     return side, abs(f["ret60"] * f["rv"])
 
 
+def peer_ret_of(sym, peers, feats):
+    """Average 60-minute return of the peers named with sym that have features today (None if none)."""
+    names = [p for p in peers.get(sym, ()) if feats.get(p)]
+    return round(sum(feats[p]["ret60"] for p in names) / len(names), 5) if names else None
+
+
 def funnel(feats, news2, peers, universe):
     """How many stocks pass each entry test this run (logged only; the rule is unchanged)."""
     out = {"stocks": len(universe), "features": 0, "volume": 0, "move": 0, "news": 0, "peers": 0, "all": 0}
@@ -244,6 +250,8 @@ def run(state_dir, now=None, universe_fn=w.build_universe, minute_fn=None, lates
     rng = random.Random(f"{SEED}-{key}")
     rec = step(state, day, feats, news2, peers, set(uni.get("shortable", [])), syms, prices, t, now_et, rng)
     rec["funnel"] = funnel(feats, news2, peers, syms)
+    rec["features"] = {s: {"ret60": round(f["ret60"], 5), "rv": round(f["rv"], 3), "news": news2.get(s, 0),
+                           "peers": peer_ret_of(s, peers, feats)} for s, f in sorted(feats.items())}
     led.write_json("run", key, f"runs/{day}/{key.replace(':', '')}.json", rec)
     k2._atomic(bpath, json.dumps(state, indent=1, sort_keys=True))
     from tracks.main import ai_mirror

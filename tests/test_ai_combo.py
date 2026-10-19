@@ -88,3 +88,16 @@ def test_funnel_counts_each_test():
     peers = {"AAA": {"BBB"}, "BBB": {"AAA"}, "CCC": set()}
     f = b.funnel(feats, news2, peers, ["AAA", "BBB", "CCC", "DDD"])
     assert f == {"stocks": 4, "features": 3, "volume": 2, "move": 2, "news": 2, "peers": 2, "all": 1}
+
+
+def test_run_record_keeps_each_stocks_volume_and_return(tmp_path, monkeypatch):
+    from tracks.main import ai_trader as k2
+    now = pd.Timestamp(f"{DAY} 15:47", tz="America/New_York").tz_convert("UTC")
+    monkeypatch.setattr(k2, "market_window", lambda n: (now, {now.tz_convert(b.ET).date(): (now - pd.Timedelta(hours=7), now + pd.Timedelta(hours=1))}))
+    uni = {"stocks": [{"symbol": "AAA"}], "shortable": []}
+    kw = dict(universe_fn=lambda n: uni, minute_fn=lambda d, s, p: {"AAA": minute_bars(10.0, 10.1)},
+              latest_fn=lambda s: {"AAA": (10.1, now)}, news_fn=lambda t, s: [])
+    rec = b.run(tmp_path, now=now, **kw)
+    row = rec["features"]["AAA"]
+    assert set(row) == {"ret60", "rv", "news", "peers"}
+    assert rec["funnel"]["features"] == 1
