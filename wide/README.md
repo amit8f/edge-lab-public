@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-19 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-19 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9956.18 | -43.82% | 7 | 1 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK |
-| Coin flip on C's picks | $9985.46 | -14.54% | 7 | 5 | short AMZN, long DDOG, short MRNA, short PLTR, short SNDK |
-| C's prompt on Groq (K7) | $9969.80 | -30.20% | 9 | 4 | long ACN, long AMZN, short CBRS, long DDOG, long MRNA |
-| Coin flip on C-groq's picks | $9953.44 | -46.56% | 9 | 5 | short ACN, long AMZN, short CBRS, short DDOG, long MRNA |
-| Just hold SPY | $9987.54 | -12.46% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9964.43 | -35.57% | 7 | 1 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK |
+| Coin flip on C's picks | $9974.74 | -25.26% | 7 | 5 | short AMZN, long DDOG, short MRNA, short PLTR, short SNDK |
+| C's prompt on Groq (K7) | $9961.77 | -38.23% | 12 | 4 | long APLD, long AXTI, short CBRS, long MRNA, long WDC |
+| Coin flip on C-groq's picks | $9951.19 | -48.81% | 12 | 6 | long APLD, long AXTI, short CBRS, long MRNA, short WDC |
+| Just hold SPY | $9987.41 | -12.59% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-19 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-19 15:57 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | none | Maintaining all existing long positions as they are generally performing well today and align with positive sector sentiment, especially in tech and AI-related stocks. |
 | 2026-10-19 15:47 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | sold WDC @ $352.14; bought SNDK @ $1,382.93 | Maintaining profitable long positions in AMZN, DDOG, MRNA, and PLTR due to continued positive momentum and news, while selling WDC to open a new long position in SNDK, which shows strong daily performance and positive sentiment in the chip sector. |
 | 2026-10-19 15:37 | long AMZN, long DDOG, long MRNA, long PLTR, long WDC | sold SNDK @ $1,387.21; bought WDC @ $352.51 | Maintaining profitable long positions in AMZN, DDOG, MRNA, and PLTR, and replacing the losing SNDK position with a new long in WDC, which shows strong daily momentum and positive sector news. |
