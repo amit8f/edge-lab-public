@@ -217,7 +217,7 @@ def run(state_dir, now=None, universe_fn=w.build_universe, minute_fn=None, lates
         f = features(mb, px, t)
         if f:
             feats[s] = f
-    arts = news_fn(syms, t)
+    arts = news_fn(t, syms)
     news2, peers = peer_and_news(arts, t, syms)
     bpath = root / "books.json"
     state = json.loads(bpath.read_text()) if bpath.exists() else {"books": {n: new_book() for n in NAMES}, "days": {}}

@@ -62,6 +62,21 @@ def test_run_logs_once_per_slot(tmp_path, monkeypatch):
     monkeypatch.setattr(k2, "market_window", lambda n: (now - pd.Timedelta(minutes=0), {now.tz_convert(b.ET).date(): (now - pd.Timedelta(hours=7), now + pd.Timedelta(hours=1))}))
     uni = {"stocks": [{"symbol": "AAA"}], "shortable": []}
     kw = dict(universe_fn=lambda n: uni, minute_fn=lambda d, s, p: {"AAA": minute_bars(10.0, 10.1)},
-              latest_fn=lambda s: {"AAA": (10.1, now)}, news_fn=lambda s, t: [])
+              latest_fn=lambda s: {"AAA": (10.1, now)}, news_fn=lambda t, s: [])
     assert b.run(tmp_path, now=now, **kw) is not None
     assert b.run(tmp_path, now=now + pd.Timedelta(minutes=2), **kw) is None
+
+
+def test_run_calls_news_with_time_then_symbols(tmp_path, monkeypatch):
+    # articles() takes (t, syms); a swapped call crashed the first market-open run on 2026-10-19
+    from tracks.main import ai_trader as k2
+    seen = {}
+    def news(t, syms):
+        seen["args"] = (t, list(syms))
+        return []
+    now = pd.Timestamp("2026-10-19T14:00:00Z")
+    monkeypatch.setattr(k2, "market_window", lambda n: (now, {now.tz_convert(b.ET).date(): (now - pd.Timedelta(hours=4), now + pd.Timedelta(hours=3))}))
+    uni = {"stocks": [{"symbol": "AAA"}], "shortable": []}
+    b.run(tmp_path, now=now, universe_fn=lambda n: uni, minute_fn=lambda d, s, p: {"AAA": minute_bars(10.0, 10.1)},
+          latest_fn=lambda s: {"AAA": (10.1, now)}, news_fn=news)
+    assert isinstance(seen["args"][0], int) and "AAA" in seen["args"][1]
