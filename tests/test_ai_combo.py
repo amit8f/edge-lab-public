@@ -80,3 +80,11 @@ def test_run_calls_news_with_time_then_symbols(tmp_path, monkeypatch):
     b.run(tmp_path, now=now, universe_fn=lambda n: uni, minute_fn=lambda d, s, p: {"AAA": minute_bars(10.0, 10.1)},
           latest_fn=lambda s: {"AAA": (10.1, now)}, news_fn=news)
     assert isinstance(seen["args"][0], int) and "AAA" in seen["args"][1]
+
+
+def test_funnel_counts_each_test():
+    feats = {"AAA": {"ret60": 0.02, "rv": 2.0}, "BBB": {"ret60": 0.015, "rv": 0.5}, "CCC": {"ret60": 0.001, "rv": 3.0}}
+    news2 = {"AAA": 1, "BBB": 2, "CCC": 0}
+    peers = {"AAA": {"BBB"}, "BBB": {"AAA"}, "CCC": set()}
+    f = b.funnel(feats, news2, peers, ["AAA", "BBB", "CCC", "DDD"])
+    assert f == {"stocks": 4, "features": 3, "volume": 2, "move": 2, "news": 2, "peers": 2, "all": 1}
