@@ -96,6 +96,26 @@ def eligible(f, news2, peer_ret, shortable):
     return side, abs(f["ret60"] * f["rv"])
 
 
+def funnel(feats, news2, peers, universe):
+    """How many stocks pass each entry test this run (logged only; the rule is unchanged)."""
+    out = {"stocks": len(universe), "features": 0, "volume": 0, "move": 0, "news": 0, "peers": 0, "all": 0}
+    for sym in universe:
+        f = feats.get(sym)
+        if f is None:
+            continue
+        out["features"] += 1
+        v, m, n = f["rv"] >= MIN_RV, abs(f["ret60"]) >= MIN_RET, news2.get(sym, 0) >= 1
+        names = [p for p in peers.get(sym, ()) if feats.get(p)]
+        pr = sum(feats[p]["ret60"] for p in names) / len(names) if names else None
+        agree = pr is not None and pr * f["ret60"] > 0
+        out["volume"] += v
+        out["move"] += m
+        out["news"] += n
+        out["peers"] += agree
+        out["all"] += v and m and n and agree
+    return out
+
+
 def step(state, day, feats, news2, peers, shortable, universe, prices, t, now_et, rng):
     books = state["books"]
     b, c = books["B"], books["B-coin"]
@@ -223,11 +243,12 @@ def run(state_dir, now=None, universe_fn=w.build_universe, minute_fn=None, lates
     state = json.loads(bpath.read_text()) if bpath.exists() else {"books": {n: new_book() for n in NAMES}, "days": {}}
     rng = random.Random(f"{SEED}-{key}")
     rec = step(state, day, feats, news2, peers, set(uni.get("shortable", [])), syms, prices, t, now_et, rng)
+    rec["funnel"] = funnel(feats, news2, peers, syms)
     led.write_json("run", key, f"runs/{day}/{key.replace(':', '')}.json", rec)
     k2._atomic(bpath, json.dumps(state, indent=1, sort_keys=True))
     from tracks.main import ai_mirror
     ai_mirror.run(state, prices, root / "mirror.jsonl")
-    print(f"{key}: equity {rec['equity']}")
+    print(f"{key}: equity {rec['equity']}, passing each test {rec['funnel']}")
     return rec
 
 
