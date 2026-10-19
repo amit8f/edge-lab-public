@@ -1,0 +1,76 @@
+# P4 historical screen (research/prereg/P4.md); its own cache. Runs on demand only (Actions tab, "Run workflow").
+# Resumable: each run continues from the cached batches; rerun until the log stops saying "BUDGET USED".
+# Writes research/results/P4/ and commits it back to the branch that ran it.
+name: p4-screen
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  screen:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Check secrets are present
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          [[ -n "$ALPACA_API_KEY_ID" ]] || { echo "::error::secret ALPACA_API_KEY_ID is missing"; exit 1; }
+          [[ -n "$SEC_USER_AGENT" ]] || { echo "::error::secret SEC_USER_AGENT is missing"; exit 1; }
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/p4
+          key: p4-screen-v1-${{ github.run_id }}
+          restore-keys: p4-screen-v1-
+
+      - name: Run the screen
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: .venv/bin/python -m tracks.penny.p4_screen --cache cache/p4 --out research/results/P4 --budget-min 300
+
+      - name: Save the data cache (also after a failure, so a rerun skips the downloads)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/p4
+          key: p4-screen-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/P4 || true
+          if git diff --cached --quiet; then echo "no new results"; exit 0; fi
+          git commit -q -m "P4 screen results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
