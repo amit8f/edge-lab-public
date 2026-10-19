@@ -1,0 +1,488 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "a086a13424bf4e24a643df655d1247c96634b3fb0457deb6c32269f84606fca4",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"AMZN\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily performance and positive news, maintaining upward momentum.\"\n    },\n    {\n      \"symbol\": \"DDOG\",\n      \"side\": \"long\",\n      \"reason\": \"Significant analyst upgrade and strong daily surge, indicating potential for further upside.\"\n    },\n    {\n      \"symbol\": \"MRNA\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily performance and positive hourly trend, showing resilience after an initial surge.\"\n    },\n    {\n      \"symbol\": \"PLTR\",\n      \"side\": \"long\",\n      \"reason\": \"Positive news regarding AI deployment partnerships and a steady hourly trend, suggesting continued strength.\"\n    },\n    {\n      \"symbol\": \"SNDK\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily performance and positive news for chip stocks, despite a slight hourly pullback, indicating a potential rebound from recent lows.\"\n    }\n  ],\n  \"summary\": \"Maintaining all current long positions as they show strong daily performance and positive news, with a focus on potential continued upward momentum in the tech and biotech sectors.\"\n}",
+  "summary": "Maintaining all current long positions as they show strong daily performance and positive news, with a focus on potential continued upward momentum in the tech and biotech sectors.",
+  "want": {
+   "AMZN": 1,
+   "DDOG": 1,
+   "MRNA": 1,
+   "PLTR": 1,
+   "SNDK": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "61f1c666a36fd0fb34ddc6f3ffeffb32227fe654c4502efeb5ab83231819749e",
+  "raw": "{\"positions\":[{\"symbol\":\"AMZN\",\"side\":\"long\",\"reason\":\"Continues strong +5.3% today, solid momentum and positive news\"},{\"symbol\":\"MRNA\",\"side\":\"long\",\"reason\":\"Up +5% today, strong recent gains and positive news\"},{\"symbol\":\"DDOG\",\"side\":\"long\",\"reason\":\"Up +5.7% today, bullish momentum and analyst upgrades\"},{\"symbol\":\"AXTI\",\"side\":\"long\",\"reason\":\"Largest intraday gain +10.8%, breakout from multi\u2011day downtrend\"},{\"symbol\":\"APLD\",\"side\":\"long\",\"reason\":\"Strong +7.8% move, reversal from deep multi\u2011day decline\"}],\"summary\":\"Hold AMZN, MRNA, DDOG, AXTI, APLD; sell AMD and MRVL\"}",
+  "summary": "Hold AMZN, MRNA, DDOG, AXTI, APLD; sell AMD and MRVL",
+  "want": {
+   "AMZN": 1,
+   "APLD": 1,
+   "AXTI": 1,
+   "DDOG": 1,
+   "MRNA": 1
+  }
+ },
+ "equity": {
+  "C": 10011.813272,
+  "C-coin": 9958.237863,
+  "C-groq": 9989.731122,
+  "C-groq-coin": 9953.223428,
+  "HOLD": 10003.683697
+ },
+ "fills": {
+  "C": [],
+  "C-coin": [],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1792437603,
+    "entry": 553.91,
+    "exit": 540.83,
+    "notional": 2026.4059170512528,
+    "open_t": 1792424290,
+    "pnl": -49.829991,
+    "side": 1,
+    "sym": "AMD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1792437603,
+    "entry": 242.58,
+    "exit": 238.37,
+    "notional": 2000.0,
+    "open_t": 1792423046,
+    "pnl": -36.675488,
+    "side": 1,
+    "sym": "MRVL",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1998.745723,
+    "price": 19.465,
+    "side": 1,
+    "sym": "APLD",
+    "t": 1792437603
+   },
+   {
+    "action": "open",
+    "notional": 1998.745723,
+    "price": 57.03,
+    "side": 1,
+    "sym": "AXTI",
+    "t": 1792437603
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1792437603,
+    "entry": 553.91,
+    "exit": 540.83,
+    "notional": 1989.042678100657,
+    "open_t": 1792424290,
+    "pnl": 45.02707,
+    "side": -1,
+    "sym": "AMD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1792437603,
+    "entry": 242.58,
+    "exit": 238.37,
+    "notional": 2000.0,
+    "open_t": 1792423046,
+    "pnl": -36.675488,
+    "side": 1,
+    "sym": "MRVL",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1991.441262,
+    "price": 19.465,
+    "side": -1,
+    "sym": "APLD",
+    "t": 1792437603
+   },
+   {
+    "action": "open",
+    "notional": 1991.441262,
+    "price": 57.03,
+    "side": -1,
+    "sym": "AXTI",
+    "t": 1792437603
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "ACN": 1,
+  "AMD": 3,
+  "AMZN": 3,
+  "APLD": 3,
+  "ASTS": 3,
+  "AXTI": 1,
+  "CBRS": 1,
+  "DDOG": 3,
+  "DHI": 1,
+  "IBM": 3,
+  "INTC": 3,
+  "IREN": 3,
+  "LRCX": 3,
+  "MRNA": 1,
+  "MRVL": 3,
+  "MU": 3,
+  "NBIS": 3,
+  "PLTR": 3,
+  "RVMD": 1,
+  "SNDK": 3,
+  "SNOW": 1,
+  "TEAM": 2,
+  "TER": 2,
+  "TSLA": 3,
+  "TWLO": 1,
+  "WDC": 3,
+  "WULF": 3
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "AMZN": {
+    "charged": 1792437603,
+    "entry": 259.21,
+    "last": 263.315,
+    "notional": 1998.9009442311901,
+    "opened": 1792420640,
+    "qty": 7.711511686397864,
+    "side": 1
+   },
+   "DDOG": {
+    "charged": 1792437603,
+    "entry": 257.7,
+    "last": 261.23,
+    "notional": 2000.0,
+    "opened": 1792417712,
+    "qty": 7.760962359332558,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792437603,
+    "entry": 224.345,
+    "last": 229.0,
+    "notional": 1995.634180363248,
+    "opened": 1792423046,
+    "qty": 8.895380687616163,
+    "side": 1
+   },
+   "PLTR": {
+    "charged": 1792437603,
+    "entry": 193.51,
+    "last": 194.5,
+    "notional": 2003.2168151332335,
+    "opened": 1792420042,
+    "qty": 10.352006692849121,
+    "side": 1
+   },
+   "SNDK": {
+    "charged": 1792437603,
+    "entry": 1394.38,
+    "last": 1381.0,
+    "notional": 2000.0,
+    "opened": 1792417712,
+    "qty": 1.434329235932816,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "AMZN": {
+    "charged": 1792437603,
+    "entry": 259.21,
+    "last": 263.315,
+    "notional": 2002.304980941158,
+    "opened": 1792420640,
+    "qty": 7.724644037425864,
+    "side": -1
+   },
+   "DDOG": {
+    "charged": 1792437603,
+    "entry": 257.7,
+    "last": 261.23,
+    "notional": 2000.0,
+    "opened": 1792417712,
+    "qty": 7.760962359332558,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792437603,
+    "entry": 224.345,
+    "last": 229.0,
+    "notional": 1998.6238152314236,
+    "opened": 1792423046,
+    "qty": 8.908706747337465,
+    "side": -1
+   },
+   "PLTR": {
+    "charged": 1792437603,
+    "entry": 193.51,
+    "last": 194.5,
+    "notional": 2003.1418191066386,
+    "opened": 1792420042,
+    "qty": 10.351619136513042,
+    "side": -1
+   },
+   "SNDK": {
+    "charged": 1792437603,
+    "entry": 1394.38,
+    "last": 1381.0,
+    "notional": 2000.0,
+    "opened": 1792417712,
+    "qty": 1.434329235932816,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "AMZN": {
+    "charged": 1792437603,
+    "entry": 263.28,
+    "last": 263.315,
+    "notional": 2026.4059170512528,
+    "opened": 1792424290,
+    "qty": 7.696771182965866,
+    "side": 1
+   },
+   "APLD": {
+    "charged": 1792437603,
+    "entry": 19.465,
+    "last": 19.465,
+    "notional": 1998.745722663738,
+    "opened": 1792437603,
+    "qty": 102.68408541812165,
+    "side": 1
+   },
+   "AXTI": {
+    "charged": 1792437603,
+    "entry": 57.03,
+    "last": 57.03,
+    "notional": 1998.745722663738,
+    "opened": 1792437603,
+    "qty": 35.04726850190668,
+    "side": 1
+   },
+   "DDOG": {
+    "charged": 1792437603,
+    "entry": 263.81,
+    "last": 261.23,
+    "notional": 2016.5088132867386,
+    "opened": 1792423645,
+    "qty": 7.643792173483714,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792437603,
+    "entry": 225.35,
+    "last": 229.0,
+    "notional": 2016.5088132867386,
+    "opened": 1792423645,
+    "qty": 8.948341749663806,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "AMZN": {
+    "charged": 1792437603,
+    "entry": 263.28,
+    "last": 263.315,
+    "notional": 1989.042678100657,
+    "opened": 1792424290,
+    "qty": 7.554856723262903,
+    "side": 1
+   },
+   "APLD": {
+    "charged": 1792437603,
+    "entry": 19.465,
+    "last": 19.465,
+    "notional": 1991.4412620983649,
+    "opened": 1792437603,
+    "qty": 102.30882415095633,
+    "side": -1
+   },
+   "AXTI": {
+    "charged": 1792437603,
+    "entry": 57.03,
+    "last": 57.03,
+    "notional": 1991.4412620983649,
+    "opened": 1792437603,
+    "qty": 34.91918748199833,
+    "side": -1
+   },
+   "DDOG": {
+    "charged": 1792437603,
+    "entry": 263.81,
+    "last": 261.23,
+    "notional": 1991.0653272787094,
+    "opened": 1792423645,
+    "qty": 7.547345920468175,
+    "side": -1
+   },
+   "MRNA": {
+    "charged": 1792437603,
+    "entry": 225.35,
+    "last": 229.0,
+    "notional": 1991.0653272787094,
+    "opened": 1792423645,
+    "qty": 8.83543522200448,
+    "side": 1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1792437603,
+    "entry": 767.13,
+    "last": 768.18,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "30b03934d6be419298c0bab2c8656db6032a5d08c8b9613a1ea6273cdc174356",
+ "price_source": {
+  "AAOI": "iex",
+  "ACN": "iex",
+  "AMD": "iex",
+  "AMZN": "iex",
+  "ANET": "iex",
+  "APLD": "iex",
+  "ASTS": "iex",
+  "AXTI": "iex",
+  "CBRS": "iex",
+  "CEG": "iex",
+  "CIEN": "iex",
+  "DASH": "iex",
+  "DDOG": "iex",
+  "DHI": "iex",
+  "IBM": "iex",
+  "INTC": "iex",
+  "IREN": "iex",
+  "LRCX": "iex",
+  "MDB": "iex",
+  "MNST": "iex",
+  "MPWR": "iex",
+  "MRNA": "iex",
+  "MRVL": "iex",
+  "MU": "iex",
+  "NBIS": "iex",
+  "P": "iex",
+  "PLTR": "iex",
+  "PWR": "iex",
+  "RVMD": "iex",
+  "SMTC": "iex",
+  "SNDK": "iex",
+  "SNOW": "iex",
+  "STX": "iex",
+  "TEAM": "iex",
+  "TER": "iex",
+  "TSLA": "iex",
+  "TWLO": "iex",
+  "TWST": "iex",
+  "WDC": "iex",
+  "WULF": "iex",
+  "ZS": "iex"
+ },
+ "prices": {
+  "AAOI": 77.97,
+  "ACN": 236.42,
+  "AMD": 540.83,
+  "AMZN": 263.315,
+  "ANET": 183.75,
+  "APLD": 19.465,
+  "ASTS": 42.31,
+  "AXTI": 57.03,
+  "CBRS": 121.96,
+  "CEG": 264.08,
+  "CIEN": 346.02,
+  "DASH": 194.15,
+  "DDOG": 261.23,
+  "DHI": 135.665,
+  "IBM": 238.15,
+  "INTC": 92.68,
+  "IREN": 27.965,
+  "LRCX": 273.06,
+  "MDB": 350.295,
+  "MNST": 46.965,
+  "MPWR": 1260.06,
+  "MRNA": 229.0,
+  "MRVL": 238.37,
+  "MU": 909.58,
+  "NBIS": 170.1,
+  "P": 127.365,
+  "PLTR": 194.5,
+  "PWR": 615.49,
+  "RVMD": 182.56,
+  "SMTC": 143.04,
+  "SNDK": 1381.0,
+  "SNOW": 317.21,
+  "STX": 658.31,
+  "TEAM": 213.55,
+  "TER": 337.97,
+  "TSLA": 369.03,
+  "TWLO": 257.375,
+  "TWST": 140.23,
+  "WDC": 348.565,
+  "WULF": 12.225,
+  "ZS": 213.18
+ },
+ "shortlist": [
+  "AXTI",
+  "APLD",
+  "SNDK",
+  "DDOG",
+  "TWST",
+  "AMZN",
+  "TWLO",
+  "MRNA",
+  "WDC",
+  "WULF",
+  "MRVL",
+  "SMTC",
+  "PLTR",
+  "CBRS",
+  "MPWR",
+  "ASTS",
+  "TSLA",
+  "CIEN",
+  "TER",
+  "ANET",
+  "MDB",
+  "IREN",
+  "MU",
+  "LRCX",
+  "SNOW",
+  "AAOI",
+  "INTC",
+  "STX",
+  "ACN",
+  "NBIS",
+  "ZS",
+  "TEAM",
+  "P",
+  "MNST",
+  "CEG",
+  "DHI",
+  "DASH",
+  "PWR",
+  "IBM",
+  "RVMD",
+  "AMD"
+ ],
+ "t": 1792437603,
+ "universe_date": "2026-10-19",
+ "written_utc": "2026-10-19T19:20:20.662052Z"
+}
