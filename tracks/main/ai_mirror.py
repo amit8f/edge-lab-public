@@ -16,7 +16,8 @@ from core import alpaca
 SCALE = 1             # $10,000 books -> $10,000 paper accounts (1x)
 ACCOUNTS = {"A": ("ALPACA_MIRROR_KEY_ID", "ALPACA_MIRROR_SECRET_KEY"),
             "C": ("ALPACA_MIRROR_B_KEY_ID", "ALPACA_MIRROR_B_SECRET_KEY"),   # B's old account
-            "B": ("ALPACA_API_KEY_ID", "ALPACA_API_SECRET_KEY")}   # bot B's account is the main key pair
+            "B": ("ALPACA_API_KEY_ID", "ALPACA_API_SECRET_KEY"),   # bot B's account is the main key pair
+            "C-groq": ("ALPACA_MIRROR_D_KEY_ID", "ALPACA_MIRROR_D_SECRET_KEY")}   # K7, Amit's second Alpaca login
 MIN_USD = 1.0         # skip changes smaller than this
 
 

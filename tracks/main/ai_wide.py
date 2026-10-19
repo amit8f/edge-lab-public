@@ -272,38 +272,59 @@ def parse(text, allowed, shortable):
 # ---------- one run ----------
 
 def init_state(t):
-    return {"started": t, "books": {"C": new_book(), "C-coin": new_book(), "HOLD": new_book()}}
+    return {"started": t, "books": {n: new_book() for n in NAMES}}
 
 
-def step(state, uni, data, syms, t, ask=k2.ask_gemini, news=None):
+GROQ_MODEL = "openai/gpt-oss-120b"   # K7: the same prompt as C on Groq's free tier
+
+
+def ask_groq(system, text):
+    from tracks.news.llm import _post
+    key = (os.environ.get("GROQ_API_KEY") or "").strip()
+    if not key:
+        raise RuntimeError("GROQ_API_KEY missing")
+    body = {"model": GROQ_MODEL, "temperature": 0, "response_format": {"type": "json_object"},
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": text}]}
+    j = _post("https://api.groq.com/openai/v1/chat/completions", {"Authorization": f"Bearer {key}"}, body, "groq")
+    return j["choices"][0]["message"]["content"]
+
+
+AI_BOOKS = (("C", "C-coin"), ("C-groq", "C-groq-coin"))   # (AI book, its coin twin)
+
+
+def step(state, uni, data, syms, t, ask=k2.ask_gemini, news=None, ask_b=ask_groq):
     prices = {s: d["last"] for s, d in data.items()}
     books = state["books"]
+    for n in NAMES:
+        books.setdefault(n, new_book())   # C-groq joined on 2026-10-19 (K7)
     for b in books.values():
         mark(b, prices)
         charge(b, t)
     rec = {"t": t, "universe_date": uni["date"], "shortlist": syms, "prices": {s: prices[s] for s in syms if s in prices},
            "fills": {n: [] for n in books}}
     now_txt = f"{pd.Timestamp(t, unit='s', tz='UTC').tz_convert(ET):%Y-%m-%d %H:%M}"
-    c = books["C"]
-    if not c["stopped"]:
+    for (name, twin), fn in zip(AI_BOOKS, (ask, ask_b)):
+        c = books[name]
+        if c["stopped"]:
+            continue
         text = context(c, uni, data, syms, now_txt, news)
         dec = {"prompt_sha256": hashlib.sha256((PROMPT + "\n\n" + text).encode()).hexdigest()}
         try:
-            raw = ask(PROMPT, text)
+            raw = fn(PROMPT, text)
             dec["raw"] = raw
         except Exception as e:  # quota, network: logged, nothing changes
             raw, dec["error"] = "", f"{type(e).__name__}: {str(e)[:200]}"
         want, dropped, summ = parse(raw, set(syms), set(uni["shortable"]))
         dec.update({"want": want, "dropped": dropped, "summary": summ})
-        rec["decision"] = dec
+        rec["decision" if name == "C" else f"decision_{name}"] = dec
         if want is not None:
-            rec["fills"]["C"] = rebalance(c, want, prices, t)
-            tw = books["C-coin"]
-            opened = {f["sym"] for f in rec["fills"]["C"] if f["action"] == "open"}
-            closed = {f["sym"] for f in rec["fills"]["C"] if f["action"] == "close"}
+            rec["fills"][name] = rebalance(c, want, prices, t)
+            tw = books[twin]
+            opened = {f["sym"] for f in rec["fills"][name] if f["action"] == "open"}
+            closed = {f["sym"] for f in rec["fills"][name] if f["action"] == "close"}
             tw_target = {s: p["side"] for s, p in tw["pos"].items() if s not in closed and s not in opened}
             tw_target.update({s: coin_side(s, t) for s in opened})
-            rec["fills"]["C-coin"] = rebalance(tw, tw_target, prices, t)
+            rec["fills"][twin] = rebalance(tw, tw_target, prices, t)
     h = books["HOLD"]
     if not h["pos"] and not h["trips"] and "SPY" in prices:
         rec["fills"]["HOLD"].append(open_pos(h, "SPY", 1, prices["SPY"], t, START_USD / SLOT / (1 + FEE)))
@@ -312,7 +333,8 @@ def step(state, uni, data, syms, t, ask=k2.ask_gemini, news=None):
     return rec
 
 
-NAMES = {"C": "AI bot C (whole market, up to 5 stocks)", "C-coin": "Coin flip on C's picks", "HOLD": "Just hold SPY"}
+NAMES = {"C": "AI bot C (whole market, up to 5 stocks)", "C-coin": "Coin flip on C's picks", "HOLD": "Just hold SPY",
+         "C-groq": "C's prompt on Groq (K7)", "C-groq-coin": "Coin flip on C-groq's picks"}
 
 
 def summary(state, rec, runs):
@@ -349,7 +371,7 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
     led = Ledger(root)
     bpath = root / "books.json"
     state = json.loads(bpath.read_text()) if bpath.exists() else None
-    held = sorted(state["books"]["C"]["pos"]) + sorted(state["books"]["C-coin"]["pos"]) if state else []
+    held = sorted({s for n, b in state["books"].items() if n != "HOLD" for s in b["pos"]}) if state else []
     day = f"{now.tz_convert(ET):%Y-%m-%d}"
     upath = root / "universe" / f"{day}.json"
     if fetch is fetch_hour and k2.market_window(now)[0] is None:   # don't build a universe on closed hours
