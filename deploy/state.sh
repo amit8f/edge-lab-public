@@ -26,7 +26,15 @@ elif [[ "$mode" == "save" ]]; then
     echo "no state change"
   else
     git commit -q -m "state: ${RUN_LABEL:-manual}"
-    git "${auth[@]}" push -q origin "HEAD:$branch"
+    # Bots can save at the same time (each has its own concurrency group). Rebase onto the newer state and retry.
+    pushed=0
+    for try in 1 2 3 4; do
+      if git "${auth[@]}" push -q origin "HEAD:$branch"; then pushed=1; break; fi
+      sleep $((try * 2))
+      git "${auth[@]}" fetch -q origin "$branch"
+      git rebase -q FETCH_HEAD
+    done
+    [[ "$pushed" == 1 ]] || { echo "could not push the state after 4 tries" >&2; exit 1; }
     git log --oneline -1
   fi
 else

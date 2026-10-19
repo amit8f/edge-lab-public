@@ -10,7 +10,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: ai-state
+  group: ai-combo        # its own group, so bot A's runs don't cancel or hold it; state.sh rebases on push
   cancel-in-progress: false
 
 jobs:
