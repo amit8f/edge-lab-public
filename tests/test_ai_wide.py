@@ -118,3 +118,19 @@ def test_fetch_hour_uses_newer_iex_trades_inside_the_session(monkeypatch):
     _, d, _ = w.fetch_hour(now, uni(3), [])
     assert d["S00"]["last"] == 11.0 and d["S00"]["src"] == "iex"     # traded after the run began: still used
     assert d["S01"]["last"] == 10.0 and d["S01"]["src"] == "sip"      # older IEX trade: SIP kept
+
+
+def test_groq_book_trades_on_its_own_answer_and_old_state_gains_it():
+    st = w.init_state(T0)
+    for n in ("C-groq", "C-groq-coin"):
+        del st["books"][n]                       # a state saved before K7
+    d, u = data(), uni()
+    syms = w.shortlist(u, d, [])
+    gem = json.dumps({"positions": [{"symbol": "S49", "side": "long"}]})
+    grq = json.dumps({"positions": [{"symbol": "S48", "side": "short"}, {"symbol": "S47", "side": "long"}]})
+    rec = w.step(st, u, d, syms, T0, ask=lambda s, t: gem, ask_b=lambda s, t: grq)
+    assert set(st["books"]["C"]["pos"]) == {"S49"} and set(st["books"]["C-groq"]["pos"]) == {"S48", "S47"}
+    assert set(st["books"]["C-groq-coin"]["pos"]) == {"S48", "S47"}
+    assert rec["decision_C-groq"]["want"] == {"S48": -1, "S47": 1}
+    w.step(st, u, d, syms, T0 + 600, ask=lambda s, t: gem, ask_b=lambda s, t: (_ for _ in ()).throw(RuntimeError("429")))
+    assert set(st["books"]["C-groq"]["pos"]) == {"S48", "S47"}   # a failed call changes nothing

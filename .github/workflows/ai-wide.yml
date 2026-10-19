@@ -64,6 +64,9 @@ jobs:
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           ALPACA_MIRROR_B_KEY_ID: ${{ secrets.ALPACA_MIRROR_B_KEY_ID }}
           ALPACA_MIRROR_B_SECRET_KEY: ${{ secrets.ALPACA_MIRROR_B_SECRET_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          ALPACA_MIRROR_D_KEY_ID: ${{ secrets.ALPACA_MIRROR_D_KEY_ID }}
+          ALPACA_MIRROR_D_SECRET_KEY: ${{ secrets.ALPACA_MIRROR_D_SECRET_KEY }}
         run: .venv/bin/python -m tracks.main.ai_wide --state state
 
       - name: Commit the state back
