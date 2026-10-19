@@ -1,17 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-19 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-19 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9988.31 | -11.69% | 4 | 0 | long AMZN, long AXTI, long DDOG, long PLTR, long SNDK |
-| Coin flip on C's picks | $9994.61 | -5.39% | 4 | 2 | short AMZN, long AXTI, long DDOG, short PLTR, short SNDK |
-| Just hold SPY | $10012.41 | +12.41% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9976.18 | -23.82% | 5 | 1 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK |
+| Coin flip on C's picks | $9991.12 | -8.88% | 5 | 3 | short AMZN, long DDOG, short MRNA, short PLTR, short SNDK |
+| Just hold SPY | $10011.24 | +11.24% | 0 | 0 | long SPY |
+| C's prompt on Groq (K7) | $9990.00 | -10.00% | 0 | 0 | long APLD, long AXTI, long MRVL, long SMTC, long SNDK |
+| Coin flip on C-groq's picks | $9990.00 | -10.00% | 0 | 0 | short APLD, long AXTI, long MRVL, short SMTC, short SNDK |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-19 11:17 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | sold AXTI @ $58.09; bought MRNA @ $224.34 | Closed AXTI due to its volatile hourly chart and significant negative trends over 5 and 20 sessions despite today's gain. Opened a new long position in MRNA, which shows strong long-term growth and recent positive momentum, replacing AXTI. Maintained existing profitable positions in AMZN, DDOG, and  |
 | 2026-10-19 11:07 | long AMZN, long AXTI, long DDOG, long PLTR, long SNDK | none | Maintaining all five existing long positions as they are all showing strong positive momentum today, with several having positive news catalysts. |
 | 2026-10-19 10:57 | long AMZN, long AXTI, long DDOG, long PLTR, long SNDK | none | Maintaining all existing long positions due to strong recent hourly momentum across the board, with positive news supporting AMZN, DDOG, and PLTR, and a strong bounce in AXTI and SNDK. |
 | 2026-10-19 10:47 | long AMZN, long AXTI, long DDOG, long PLTR, long SNDK | sold MRNA @ $224.03; bought AXTI @ $57.94 | Maintaining profitable long positions in AMZN, DDOG, PLTR, and SNDK due to strong momentum and positive news. Selling MRNA to free up a slot and initiating a new long position in AXTI, which shows the strongest relative strength today. |
