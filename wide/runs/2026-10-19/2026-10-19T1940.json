@@ -1,0 +1,488 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "a97985b9e904730829eb48adc98028abf0ac40ef8d72ab1e32dbb173dbd46f0f",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"AMZN\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily performance, positive news, and good recent hourly closes, maintaining current profitable position.\"\n    },\n    {\n      \"symbol\": \"DDOG\",\n      \"side\": \"long\",\n      \"reason\": \"Significant analyst upgrade and strong daily performance, maintaining current profitable position.\"\n    },\n    {\n      \"symbol\": \"MRNA\",\n      \"side\": \"long\",\n      \"reason\": \"Strong long-term trend and positive daily momentum, maintaining current profitable position.\"\n    },\n    {\n      \"symbol\": \"PLTR\",\n      \"side\": \"long\",\n      \"reason\": \"Positive news regarding AI deployment partnership and good daily performance, maintaining current profitable position.\"\n    },\n    {\n      \"symbol\": \"SNDK\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily gain with positive news about AI chip rebound, indicating potential for continued upward movement.\"\n    }\n  ],\n  \"summary\": \"Maintaining profitable long positions in AMZN, DDOG, MRNA, and PLTR due to continued positive momentum and news, while selling WDC to open a new long position in SNDK, which shows strong daily performance and positive sentiment in the chip sector.\"\n}",
+  "summary": "Maintaining profitable long positions in AMZN, DDOG, MRNA, and PLTR due to continued positive momentum and news, while selling WDC to open a new long position in SNDK, which shows strong daily performance and positive sentiment in the chip sector.",
+  "want": {
+   "AMZN": 1,
+   "DDOG": 1,
+   "MRNA": 1,
+   "PLTR": 1,
+   "SNDK": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "758ff0d3a26b72cf3539008346f669a6b5e42581005dce4b444d88e244b05fe4",
+  "raw": "{\"positions\":[{\"symbol\":\"AMZN\",\"side\":\"long\",\"reason\":\"Strong 5% intraday gain, positive 20\u2011day trend and bullish AI cloud news\"},{\"symbol\":\"AXTI\",\"side\":\"long\",\"reason\":\"Largest intraday jump (+10.8%) despite recent downtrend, potential rebound\"},{\"symbol\":\"CBRS\",\"side\":\"short\",\"reason\":\"Sharp 4.2% drop today and deep multi\u2011week decline, short already profitable\"},{\"symbol\":\"MRNA\",\"side\":\"long\",\"reason\":\"Consistent upward momentum (+4.1% today, +47% over 20 days) with positive vaccine news\"},{\"symbol\":\"DDOG\",\"side\":\"long\",\"reason\":\"Solid 5.6% rise, strong 20\u2011day performance (+13.5%) and analyst upgrades\"}],\"summary\":\"Hold AMZN, AXTI, MRNA, DDOG long and keep CBRS short; drop APLD\"}",
+  "summary": "Hold AMZN, AXTI, MRNA, DDOG long and keep CBRS short; drop APLD",
+  "want": {
+   "AMZN": 1,
+   "AXTI": 1,
+   "CBRS": -1,
+   "DDOG": 1,
+   "MRNA": 1
+  }
+ },
+ "equity": {
+  "C": 9990.429478,
+  "C-coin": 9957.843503,
+  "C-groq": 9977.177876,
+  "C-groq-coin": 9935.807265,
+  "HOLD": 10000.297826
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1792439248,
+    "entry": 352.51,
+    "exit": 352.14,
+    "notional": 2006.61591911112,
+    "open_t": 1792438645,
+    "pnl": -4.110685,
+    "side": 1,
+    "sym": "WDC",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1998.485593,
+    "price": 1382.93,
+    "side": 1,
+    "sym": "SNDK",
+    "t": 1792439248
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1792439248,
+    "entry": 352.51,
+    "exit": 352.14,
+    "notional": 1988.1770077393835,
+    "open_t": 1792438645,
+    "pnl": 0.100731,
+    "side": -1,
+    "sym": "WDC",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1991.967094,
+    "price": 1382.93,
+    "side": -1,
+    "sym": "SNDK",
+    "t": 1792439248
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1792439248,
+    "entry": 19.465,
+    "exit": 19.445,
+    "notional": 1998.745722663738,
+    "open_t": 1792437603,
+    "pnl": -4.050374,
+    "side": 1,
+    "sym": "APLD",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1995.834742,
+    "price": 260.855,
+    "side": 1,
+    "sym": "DDOG",
+    "t": 1792439248
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1792439248,
+    "entry": 19.465,
+    "exit": 19.445,
+    "notional": 1991.4412620983649,
+    "open_t": 1792437603,
+    "pnl": 0.056781,
+    "side": -1,
+    "sym": "APLD",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1987.558965,
+    "price": 260.855,
+    "side": -1,
+    "sym": "DDOG",
+    "t": 1792439248
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "ACN": 1,
+  "AMZN": 3,
+  "APLD": 3,
+  "ASTS": 3,
+  "AXTI": 1,
+  "BE": 1,
+  "CBRS": 1,
+  "CRDO": 1,
+  "DDOG": 3,
+  "DHI": 1,
+  "INTC": 3,
+  "IREN": 3,
+  "LRCX": 3,
+  "MRNA": 1,
+  "MRVL": 3,
+  "MU": 3,
+  "NBIS": 3,
+  "PLTR": 3,
+  "SCHW": 1,
+  "SNDK": 3,
+  "SNOW": 1,
+  "TEAM": 2,
+  "TER": 2,
+  "TSEM": 1,
+  "TSLA": 3,
+  "TWLO": 1,
+  "WDC": 3,
+  "WULF": 3
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "AMZN": {
+    "charged": 1792439248,
+    "entry": 259.21,
+    "last": 263.2,
+    "notional": 1998.9009442311901,
+    "opened": 1792420640,
+    "qty": 7.711511686397864,
+    "side": 1
+   },
+   "DDOG": {
+    "charged": 1792439248,
+    "entry": 257.7,
+    "last": 260.855,
+    "notional": 2000.0,
+    "opened": 1792417712,
+    "qty": 7.760962359332558,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792439248,
+    "entry": 224.345,
+    "last": 226.89,
+    "notional": 1995.634180363248,
+    "opened": 1792423046,
+    "qty": 8.895380687616163,
+    "side": 1
+   },
+   "PLTR": {
+    "charged": 1792439248,
+    "entry": 193.51,
+    "last": 194.73,
+    "notional": 2003.2168151332335,
+    "opened": 1792420042,
+    "qty": 10.352006692849121,
+    "side": 1
+   },
+   "SNDK": {
+    "charged": 1792439248,
+    "entry": 1382.93,
+    "last": 1382.93,
+    "notional": 1998.4855927219644,
+    "opened": 1792439248,
+    "qty": 1.445109725526212,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "AMZN": {
+    "charged": 1792439248,
+    "entry": 259.21,
+    "last": 263.2,
+    "notional": 2002.304980941158,
+    "opened": 1792420640,
+    "qty": 7.724644037425864,
+    "side": -1
+   },
+   "DDOG": {
+    "charged": 1792439248,
+    "entry": 257.7,
+    "last": 260.855,
+    "notional": 2000.0,
+    "opened": 1792417712,
+    "qty": 7.760962359332558,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792439248,
+    "entry": 224.345,
+    "last": 226.89,
+    "notional": 1998.6238152314236,
+    "opened": 1792423046,
+    "qty": 8.908706747337465,
+    "side": -1
+   },
+   "PLTR": {
+    "charged": 1792439248,
+    "entry": 193.51,
+    "last": 194.73,
+    "notional": 2003.1418191066386,
+    "opened": 1792420042,
+    "qty": 10.351619136513042,
+    "side": -1
+   },
+   "SNDK": {
+    "charged": 1792439248,
+    "entry": 1382.93,
+    "last": 1382.93,
+    "notional": 1991.9670940811695,
+    "opened": 1792439248,
+    "qty": 1.4403961835242343,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "AMZN": {
+    "charged": 1792439248,
+    "entry": 263.28,
+    "last": 263.2,
+    "notional": 2026.4059170512528,
+    "opened": 1792424290,
+    "qty": 7.696771182965866,
+    "side": 1
+   },
+   "AXTI": {
+    "charged": 1792439248,
+    "entry": 57.03,
+    "last": 57.05,
+    "notional": 1998.745722663738,
+    "opened": 1792437603,
+    "qty": 35.04726850190668,
+    "side": 1
+   },
+   "CBRS": {
+    "charged": 1792439248,
+    "entry": 122.705,
+    "last": 121.93,
+    "notional": 2005.5920931947703,
+    "opened": 1792438645,
+    "qty": 16.344827783666275,
+    "side": -1
+   },
+   "DDOG": {
+    "charged": 1792439248,
+    "entry": 260.855,
+    "last": 260.855,
+    "notional": 1995.8347421064636,
+    "opened": 1792439248,
+    "qty": 7.651127032667434,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792439248,
+    "entry": 225.35,
+    "last": 226.89,
+    "notional": 2016.5088132867386,
+    "opened": 1792423645,
+    "qty": 8.948341749663806,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "AMZN": {
+    "charged": 1792439248,
+    "entry": 263.28,
+    "last": 263.2,
+    "notional": 1989.042678100657,
+    "opened": 1792424290,
+    "qty": 7.554856723262903,
+    "side": 1
+   },
+   "AXTI": {
+    "charged": 1792439248,
+    "entry": 57.03,
+    "last": 57.05,
+    "notional": 1991.4412620983649,
+    "opened": 1792437603,
+    "qty": 34.91918748199833,
+    "side": -1
+   },
+   "CBRS": {
+    "charged": 1792439248,
+    "entry": 122.705,
+    "last": 121.93,
+    "notional": 1986.1901706625897,
+    "opened": 1792438645,
+    "qty": 16.186709348947392,
+    "side": -1
+   },
+   "DDOG": {
+    "charged": 1792439248,
+    "entry": 260.855,
+    "last": 260.855,
+    "notional": 1987.5589647806937,
+    "opened": 1792439248,
+    "qty": 7.619401448240185,
+    "side": -1
+   },
+   "MRNA": {
+    "charged": 1792439248,
+    "entry": 225.35,
+    "last": 226.89,
+    "notional": 1991.0653272787094,
+    "opened": 1792423645,
+    "qty": 8.83543522200448,
+    "side": 1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1792439248,
+    "entry": 767.13,
+    "last": 767.92,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "6ae3e757bc9e4d1afa783fdb371b2550728c0b65f9d210cc26754aa9e5c30693",
+ "price_source": {
+  "AAOI": "iex",
+  "ACN": "iex",
+  "AMZN": "iex",
+  "ANET": "iex",
+  "APLD": "iex",
+  "ASTS": "iex",
+  "AXTI": "iex",
+  "BE": "iex",
+  "CBRS": "iex",
+  "CEG": "iex",
+  "CIEN": "iex",
+  "CRDO": "iex",
+  "DASH": "iex",
+  "DDOG": "iex",
+  "DHI": "iex",
+  "INTC": "iex",
+  "IREN": "iex",
+  "LRCX": "iex",
+  "MDB": "iex",
+  "MPWR": "iex",
+  "MRNA": "iex",
+  "MRVL": "iex",
+  "MTSI": "iex",
+  "MU": "iex",
+  "NBIS": "iex",
+  "P": "iex",
+  "PLTR": "iex",
+  "SCHW": "iex",
+  "SMTC": "iex",
+  "SNDK": "iex",
+  "SNOW": "iex",
+  "STX": "iex",
+  "TEAM": "iex",
+  "TER": "iex",
+  "TSEM": "iex",
+  "TSLA": "iex",
+  "TWLO": "iex",
+  "TWST": "iex",
+  "WDC": "iex",
+  "WULF": "iex"
+ },
+ "prices": {
+  "AAOI": 78.72,
+  "ACN": 235.96,
+  "AMZN": 263.2,
+  "ANET": 183.16,
+  "APLD": 19.445,
+  "ASTS": 42.095,
+  "AXTI": 57.05,
+  "BE": 228.66,
+  "CBRS": 121.93,
+  "CEG": 263.02,
+  "CIEN": 344.205,
+  "CRDO": 174.545,
+  "DASH": 194.3,
+  "DDOG": 260.855,
+  "DHI": 135.54,
+  "INTC": 92.785,
+  "IREN": 28.115,
+  "LRCX": 274.29,
+  "MDB": 350.7,
+  "MPWR": 1266.475,
+  "MRNA": 226.89,
+  "MRVL": 238.37,
+  "MTSI": 269.32,
+  "MU": 912.485,
+  "NBIS": 172.29,
+  "P": 127.79,
+  "PLTR": 194.73,
+  "SCHW": 89.51,
+  "SMTC": 143.935,
+  "SNDK": 1382.93,
+  "SNOW": 315.96,
+  "STX": 661.95,
+  "TEAM": 214.865,
+  "TER": 338.965,
+  "TSEM": 201.37,
+  "TSLA": 368.425,
+  "TWLO": 258.32,
+  "TWST": 140.78,
+  "WDC": 352.14,
+  "WULF": 12.23
+ },
+ "shortlist": [
+  "AXTI",
+  "APLD",
+  "SNDK",
+  "WDC",
+  "TWST",
+  "TWLO",
+  "DDOG",
+  "AMZN",
+  "SMTC",
+  "WULF",
+  "PLTR",
+  "MRVL",
+  "MPWR",
+  "TER",
+  "AAOI",
+  "IREN",
+  "CBRS",
+  "NBIS",
+  "MRNA",
+  "LRCX",
+  "MDB",
+  "TSLA",
+  "MU",
+  "STX",
+  "ASTS",
+  "ANET",
+  "CIEN",
+  "TEAM",
+  "BE",
+  "INTC",
+  "CEG",
+  "P",
+  "SNOW",
+  "TSEM",
+  "CRDO",
+  "DHI",
+  "ACN",
+  "DASH",
+  "MTSI",
+  "SCHW"
+ ],
+ "t": 1792439248,
+ "universe_date": "2026-10-19",
+ "written_utc": "2026-10-19T19:47:43.589550Z"
+}
