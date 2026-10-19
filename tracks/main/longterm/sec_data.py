@@ -180,3 +180,58 @@ def dera_insider_buys(start_year, end_quarter, cache_dir):
     b = pd.concat(frames, ignore_index=True)
     print(f"[dera] {len(b)} officer/director purchase rows, {b['cik'].nunique()} issuers")
     return b
+
+
+TEN_PCT_DOCS = ("4", "5")
+
+
+def parse_dera_owner_buys(sub_bytes, owner_bytes, trans_bytes):
+    """P4: open-market purchases (non-derivative, code P, acquired) on original Forms 4 and 5 whose
+    reporting owner is an officer, a director or a 10% owner. One row per (transaction, owner):
+    (cik, filed, accn, sk, owner, tdate, value). A joint filing gives one row per qualifying owner with the
+    same (accn, sk), so a transaction's value is counted once by de-duplicating on (accn, sk)."""
+    rd = lambda b, cols: pd.read_csv(io.BytesIO(b), sep="\t", dtype=str, usecols=cols)
+    sub = rd(sub_bytes, ["ACCESSION_NUMBER", "FILING_DATE", "DOCUMENT_TYPE", "ISSUERCIK"])
+    sub = sub[sub["DOCUMENT_TYPE"].str.strip().isin(TEN_PCT_DOCS)]
+    own = rd(owner_bytes, ["ACCESSION_NUMBER", "RPTOWNERCIK", "RPTOWNER_RELATIONSHIP"])
+    rel = own["RPTOWNER_RELATIONSHIP"].fillna("").str.upper().str.replace(r"[\s%_-]", "", regex=True)
+    own = own[rel.str.contains("OFFICER") | rel.str.contains("DIRECTOR") | rel.str.contains("TENPERCENT")
+              | rel.str.contains("10OWNER")][["ACCESSION_NUMBER", "RPTOWNERCIK"]].drop_duplicates()
+    tr = rd(trans_bytes, ["ACCESSION_NUMBER", "NONDERIV_TRANS_SK", "TRANS_DATE", "TRANS_CODE", "TRANS_SHARES",
+                          "TRANS_PRICEPERSHARE", "TRANS_ACQUIRED_DISP_CD"])
+    tr = tr[(tr["TRANS_CODE"].str.strip() == "P") & (tr["TRANS_ACQUIRED_DISP_CD"].str.strip() == "A")]
+    tr = tr.assign(shares=pd.to_numeric(tr["TRANS_SHARES"], errors="coerce"),
+                   price=pd.to_numeric(tr["TRANS_PRICEPERSHARE"], errors="coerce"))
+    tr = tr[(tr["shares"] > 0) & (tr["price"] > 0)].drop_duplicates(["ACCESSION_NUMBER", "NONDERIV_TRANS_SK"])
+    m = tr.merge(sub, on="ACCESSION_NUMBER").merge(own, on="ACCESSION_NUMBER")
+    out = pd.DataFrame({"cik": pd.to_numeric(m["ISSUERCIK"], errors="coerce"), "filed": _dates(m["FILING_DATE"]),
+                        "accn": m["ACCESSION_NUMBER"].to_numpy(), "sk": m["NONDERIV_TRANS_SK"].to_numpy(),
+                        "owner": pd.to_numeric(m["RPTOWNERCIK"], errors="coerce"), "tdate": _dates(m["TRANS_DATE"]),
+                        "value": (m["shares"] * m["price"]).to_numpy()})
+    out = out.dropna(subset=["cik", "filed", "owner"]).astype({"cik": "int64", "owner": "int64"})
+    return out.reset_index(drop=True)
+
+
+def dera_owner_buys(start_year, end_quarter, cache_dir):
+    """parse_dera_owner_buys over every quarterly data set, cached per quarter (atomic writes)."""
+    cache = Path(cache_dir)
+    cache.mkdir(parents=True, exist_ok=True)
+    frames = []
+    for per in pd.period_range(pd.Period(f"{start_year}Q1"), end_quarter, freq="Q"):
+        f = cache / f"owner_buys_{per.year}q{per.quarter}.parquet"
+        if not f.exists():
+            r = sec.get(DERA.format(y=per.year, q=per.quarter))
+            if r is None:
+                print(f"[dera] {per} not published")
+                continue
+            with zipfile.ZipFile(io.BytesIO(r.content)) as z:
+                pick = lambda stem: z.read(next(n for n in z.namelist() if n.upper().endswith(stem)))
+                part = parse_dera_owner_buys(pick("SUBMISSION.TSV"), pick("REPORTINGOWNER.TSV"),
+                                             pick("NONDERIV_TRANS.TSV"))
+            tmp = f.with_suffix(".tmp")
+            part.to_parquet(tmp)
+            tmp.replace(f)
+        frames.append(pd.read_parquet(f))
+    b = pd.concat(frames, ignore_index=True)
+    print(f"[dera] {len(b)} officer/director/10% owner purchase rows, {b['cik'].nunique()} issuers")
+    return b
