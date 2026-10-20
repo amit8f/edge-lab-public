@@ -46,3 +46,14 @@ with the number of weeks left to the 100-trade read at the current pace.
 
 Pass: the learning rule may go to real money under PROTOCOL rule 9, with Amit's sign-off. Fail: the frozen
 copy and the strategies are judged on their own, and the learning rule is dropped or re-registered.
+
+## Clarification 1 (2026-10-20, before any result; Amit's choice in the planning thread)
+
+- Book sizes: the main system is a $5,000 book and the penny system a $1,000 book (replacing the 50% / 20%
+  of $5,000 above). P1/P2 are unchanged.
+- Accounts: each strategy that holds paper money gets its own Alpaca paper account, so Amit can follow it
+  on its own. The learner's weights set each account's trade budget (weight x the system's book), and
+  nothing moves between accounts. Every account keeps over $25,000 of paper equity (PLAN_V3 addition 8).
+  The frozen copy and the random control are ledger-only books with no account. Shadow rules are
+  ledger-only too.
+- The learning rule, promotion bar, caps and primary test are unchanged.
