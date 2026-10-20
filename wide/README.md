@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9668.74 | -331.26% | 16 | 1 | long AMZN, short GM, long LLY, long NOC, long RVMD |
-| Coin flip on C's picks | $10063.42 | +63.42% | 16 | 10 | short AMZN, long GM, long LLY, short NOC, long RVMD |
-| C's prompt on Groq (K7) | $9571.64 | -428.36% | 30 | 8 | short GM, long LLY, long MMM, long MRNA, long NOC |
-| Coin flip on C-groq's picks | $9790.12 | -209.88% | 30 | 16 | short GM, short LLY, short MMM, short MRNA, long NOC |
-| Just hold SPY | $10017.10 | +17.10% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9679.17 | -320.83% | 16 | 1 | long AMZN, short GM, long LLY, long NOC, long RVMD |
+| Coin flip on C's picks | $10039.35 | +39.35% | 16 | 10 | short AMZN, long GM, long LLY, short NOC, long RVMD |
+| C's prompt on Groq (K7) | $9572.17 | -427.83% | 32 | 8 | short GM, long LLY, long MMM, long RKT, long RVMD |
+| Coin flip on C-groq's picks | $9813.34 | -186.66% | 32 | 17 | short GM, short LLY, short MMM, short RKT, short RVMD |
+| Just hold SPY | $10010.59 | +10.59% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-20 11:37 | long AMZN, short GM, long LLY, long NOC, long RVMD | none | Maintaining all existing positions as they show positive momentum or strong fundamental reasons to hold, with GM short performing well on negative news and others showing positive daily gains or strong trends. |
 | 2026-10-20 11:27 | long AMZN, short GM, long LLY, long NOC, long RVMD | none | Maintaining all existing positions as they align with current market momentum and news, with AMZN, LLY, and RVMD showing strong positive trends, GM confirming its short thesis, and NOC maintaining positive momentum despite a slight recent pullback. |
 | 2026-10-20 11:17 | long AMZN, short GM, long LLY, long NOC, long RVMD | sold MMM @ $170.40; bought RVMD @ $194.56 | Kept existing AMZN, GM, LLY, NOC positions based on their current trends and news, and initiated a new long position in RVMD due to strong positive news and price action. |
 | 2026-10-20 11:07 | long AMZN, short GM, long LLY, long MMM, long NOC | none | Maintaining all existing positions as they show either profitability or strong momentum/news supporting the current direction, despite some being slightly underwater from entry. |
