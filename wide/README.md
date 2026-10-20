@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 09:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 10:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9769.79 | -230.21% | 11 | 1 | long AMZN, long FICO, long INTU, long LLY, long NOC |
-| Coin flip on C's picks | $10007.95 | +7.95% | 11 | 8 | short AMZN, long FICO, short INTU, long LLY, short NOC |
-| C's prompt on Groq (K7) | $9710.83 | -289.17% | 17 | 6 | long INTU, short IREN, long LLY, long MMM, long MRNA |
-| Coin flip on C-groq's picks | $9736.15 | -263.85% | 17 | 9 | short INTU, long IREN, long LLY, short MMM, long MRNA |
-| Just hold SPY | $9989.23 | -10.77% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9745.78 | -254.22% | 11 | 1 | long AMZN, long FICO, long INTU, long LLY, long NOC |
+| Coin flip on C's picks | $10012.53 | +12.53% | 11 | 8 | short AMZN, long FICO, short INTU, long LLY, short NOC |
+| C's prompt on Groq (K7) | $9692.50 | -307.50% | 20 | 6 | short GM, long LLY, long MMM, long NOC, long UNH |
+| Coin flip on C-groq's picks | $9812.52 | -187.48% | 20 | 11 | long GM, long LLY, short MMM, long NOC, long UNH |
+| Just hold SPY | $10007.33 | +7.33% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-20 10:07 | long AMZN, long FICO, long INTU, long LLY, long NOC | none | Maintaining all current long positions as they are showing positive momentum or strong fundamental news today, indicating potential for further gains. |
 | 2026-10-20 09:57 | long AMZN, long FICO, long INTU, long LLY, long NOC | none | Maintaining all existing long positions as they are showing positive momentum or stability, with strong news catalysts for NOC, INTU, and FICO. |
 | 2026-10-20 09:48 | long AMZN, long FICO, long INTU, long LLY, long NOC | sold DDOG @ $254.14; sold MRNA @ $220.62; sold PLTR @ $191.38; sold SNDK @ $1,347.85; bought FICO @ $809.64; bought INTU @ $338.94; bought LLY @ $1,298.86; bought NOC @ $544.71 | Sold underperforming positions (DDOG, MRNA, PLTR, SNDK) and initiated new long positions in NOC, LLY, INTU, and FICO, which are showing strong positive momentum and/or positive news, while holding onto the profitable AMZN position. |
 | 2026-10-19 15:59 | no answer, nothing changed | none | unreadable answer |
