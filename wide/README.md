@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9619.01 | -380.99% | 26 | 2 | short FIX, short GE, short GM, short IREN, short TSEM |
-| Coin flip on C's picks | $10017.47 | +17.47% | 26 | 15 | long FIX, short GE, long GM, long IREN, short TSEM |
-| C's prompt on Groq (K7) | $9431.51 | -568.49% | 60 | 9 | short GM, short IREN, long MRNA, long NOC, long UNH |
-| Coin flip on C-groq's picks | $9716.57 | -283.43% | 60 | 32 | short GM, long IREN, short MRNA, long NOC, short UNH |
-| Just hold SPY | $10008.70 | +8.70% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9606.02 | -393.98% | 28 | 2 | short FIX, short GM, short LRCX, short SMTC, short TSEM |
+| Coin flip on C's picks | $10019.77 | +19.77% | 28 | 16 | long FIX, long GM, short LRCX, long SMTC, short TSEM |
+| C's prompt on Groq (K7) | $9414.53 | -585.47% | 63 | 10 | short FIX, short GM, long MRNA, long RVMD, short TSEM |
+| Coin flip on C-groq's picks | $9699.58 | -300.42% | 63 | 35 | long FIX, short GM, short MRNA, short RVMD, long TSEM |
+| Just hold SPY | $10015.53 | +15.53% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-20 15:59 | short FIX, short GM, short LRCX, short SMTC, short TSEM | bought GE @ $299.92; bought IREN @ $26.73; sold LRCX @ $263.38; sold SMTC @ $136.20 | Closed GE and IREN due to hourly bounces and less clear bearish signals. Maintained profitable shorts in FIX, GM, and TSEM. Initiated new short positions in LRCX and SMTC due to strong negative momentum and clear downtrends across multiple timeframes. |
 | 2026-10-20 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 15:37 | no answer, nothing changed | none | unreadable answer |
