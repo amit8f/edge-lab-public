@@ -1,0 +1,489 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "a3dfabef4bb6937cb4c67ba351b127a896cf3b99788e9f7f12ae3f95537cadd2",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"GM\",\n      \"side\": \"short\",\n      \"reason\": \"Strong downtrend today (-8.5%) and over 5/20 sessions, with negative news on commodity costs, confirming continued weakness.\"\n    },\n    {\n      \"symbol\": \"TSEM\",\n      \"side\": \"short\",\n      \"reason\": \"Significant drop today (-8.3%) and over 5/20 sessions, showing consistent bearish momentum.\"\n    },\n    {\n      \"symbol\": \"HWM\",\n      \"side\": \"short\",\n      \"reason\": \"Continued weakness today (-5.8%) and over 5/20 sessions, maintaining a clear downtrend.\"\n    },\n    {\n      \"symbol\": \"FIX\",\n      \"side\": \"short\",\n      \"reason\": \"Persistent decline today (-4.7%) and over 5/20 sessions, indicating strong bearish sentiment.\"\n    },\n    {\n      \"symbol\": \"PWR\",\n      \"side\": \"short\",\n      \"reason\": \"Significant drop today (-3.7%) and over 5/20 sessions, with a clear hourly downtrend, suggesting further downside.\"\n    }\n  ],\n  \"summary\": \"Maintaining current profitable short positions in GM, TSEM, HWM, and FIX due to continued weakness, and adding a new short in PWR which shows strong intraday and multi-session decline, while closing the slightly negative GE short.\"\n}",
+  "summary": "Maintaining current profitable short positions in GM, TSEM, HWM, and FIX due to continued weakness, and adding a new short in PWR which shows strong intraday and multi-session decline, while closing the slightly negative GE short.",
+  "want": {
+   "FIX": -1,
+   "GM": -1,
+   "HWM": -1,
+   "PWR": -1,
+   "TSEM": -1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "9f2636b008a345aa5c1db055f6222a82086ffe816d34035e83e5c1267879adb9",
+  "raw": "{\"positions\":[{\"symbol\":\"GM\",\"side\":\"short\",\"reason\":\"Continues steep decline, -8.5% today, shortable\"},{\"symbol\":\"TSEM\",\"side\":\"short\",\"reason\":\"Sharp drop -8.3% today and -21.4% over 20 sessions\"},{\"symbol\":\"MRNA\",\"side\":\"long\",\"reason\":\"Strong uptrend +6.1% today, +39.3% over 20 sessions\"},{\"symbol\":\"RVMD\",\"side\":\"long\",\"reason\":\"Positive momentum +7.2% today\"},{\"symbol\":\"TEM\",\"side\":\"long\",\"reason\":\"Solid rebound +6.9% today after prior lows\"}],\"summary\":\"Hold shorts on GM and TSEM, longs on MRNA, RVMD, TEM\"}",
+  "summary": "Hold shorts on GM and TSEM, longs on MRNA, RVMD, TEM",
+  "want": {
+   "GM": -1,
+   "MRNA": 1,
+   "RVMD": 1,
+   "TEM": 1,
+   "TSEM": -1
+  }
+ },
+ "equity": {
+  "C": 9727.240657,
+  "C-coin": 9945.255765,
+  "C-groq": 9536.262082,
+  "C-groq-coin": 9780.640836,
+  "HOLD": 10019.636354
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1792519649,
+    "entry": 298.04,
+    "exit": 298.85,
+    "notional": 1935.1538351966906,
+    "open_t": 1792513051,
+    "pnl": -7.199689,
+    "side": -1,
+    "sym": "GE",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1945.837299,
+    "price": 595.42,
+    "side": -1,
+    "sym": "PWR",
+    "t": 1792519649
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1792519649,
+    "entry": 298.04,
+    "exit": 298.85,
+    "notional": 1995.4633552974294,
+    "open_t": 1792513051,
+    "pnl": 3.422296,
+    "side": 1,
+    "sym": "GE",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1989.449043,
+    "price": 595.42,
+    "side": 1,
+    "sym": "PWR",
+    "t": 1792519649
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1792519649,
+    "entry": 595.43,
+    "exit": 595.42,
+    "notional": 1910.5870863547898,
+    "open_t": 1792519043,
+    "pnl": -1.878467,
+    "side": -1,
+    "sym": "PWR",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1907.633943,
+    "price": 183.675,
+    "side": -1,
+    "sym": "TSEM",
+    "t": 1792519649
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1792519649,
+    "entry": 595.43,
+    "exit": 595.42,
+    "notional": 1954.9869991611733,
+    "open_t": 1792519043,
+    "pnl": -1.922121,
+    "side": -1,
+    "sym": "PWR",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1956.519471,
+    "price": 183.675,
+    "side": -1,
+    "sym": "TSEM",
+    "t": 1792519649
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "AAL": 2,
+  "ADBE": 2,
+  "AXON": 1,
+  "BMNR": 1,
+  "BX": 1,
+  "CRCL": 1,
+  "DHI": 1,
+  "FIX": 1,
+  "GE": 3,
+  "GM": 3,
+  "HLT": 1,
+  "HWM": 1,
+  "INTU": 2,
+  "IREN": 3,
+  "LEN": 1,
+  "LLY": 2,
+  "MMM": 3,
+  "MRK": 3,
+  "MSTR": 3,
+  "NOC": 3,
+  "NU": 1,
+  "NXPI": 1,
+  "RKT": 1,
+  "RVMD": 2,
+  "SOFI": 1,
+  "TEAM": 3,
+  "TSEM": 1,
+  "UNH": 3,
+  "WDC": 3
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "FIX": {
+    "charged": 1792519649,
+    "entry": 1407.56,
+    "last": 1395.53,
+    "notional": 1935.1538351966906,
+    "opened": 1792513051,
+    "qty": 1.374828664637167,
+    "side": -1
+   },
+   "GM": {
+    "charged": 1792519649,
+    "entry": 78.16,
+    "last": 75.715,
+    "notional": 1947.120130202505,
+    "opened": 1792506453,
+    "qty": 24.911977100850883,
+    "side": -1
+   },
+   "HWM": {
+    "charged": 1792519649,
+    "entry": 208.63,
+    "last": 207.31,
+    "notional": 1935.1538351966906,
+    "opened": 1792513051,
+    "qty": 9.27553005414701,
+    "side": -1
+   },
+   "PWR": {
+    "charged": 1792519649,
+    "entry": 595.42,
+    "last": 595.42,
+    "notional": 1945.8372988228339,
+    "opened": 1792519649,
+    "qty": 3.2680079587901547,
+    "side": -1
+   },
+   "TSEM": {
+    "charged": 1792519649,
+    "entry": 185.77,
+    "last": 183.675,
+    "notional": 1935.1538351966906,
+    "opened": 1792513051,
+    "qty": 10.416934032387848,
+    "side": -1
+   }
+  },
+  "C-coin": {
+   "FIX": {
+    "charged": 1792519649,
+    "entry": 1407.56,
+    "last": 1395.53,
+    "notional": 1995.4633552974294,
+    "opened": 1792513051,
+    "qty": 1.4176755202601874,
+    "side": 1
+   },
+   "GM": {
+    "charged": 1792519649,
+    "entry": 78.16,
+    "last": 75.715,
+    "notional": 2002.9922594370303,
+    "opened": 1792506453,
+    "qty": 25.626820105386777,
+    "side": 1
+   },
+   "HWM": {
+    "charged": 1792519649,
+    "entry": 208.63,
+    "last": 207.31,
+    "notional": 1995.4633552974294,
+    "opened": 1792513051,
+    "qty": 9.564604109176194,
+    "side": 1
+   },
+   "PWR": {
+    "charged": 1792519649,
+    "entry": 595.42,
+    "last": 595.42,
+    "notional": 1989.4490428954407,
+    "opened": 1792519649,
+    "qty": 3.341253305054316,
+    "side": 1
+   },
+   "TSEM": {
+    "charged": 1792519649,
+    "entry": 185.77,
+    "last": 183.675,
+    "notional": 1995.4633552974294,
+    "opened": 1792513051,
+    "qty": 10.74158020830828,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "GM": {
+    "charged": 1792519649,
+    "entry": 78.86,
+    "last": 75.715,
+    "notional": 1909.3230722549722,
+    "opened": 1792509454,
+    "qty": 24.21155303392052,
+    "side": -1
+   },
+   "MRNA": {
+    "charged": 1792519649,
+    "entry": 234.35,
+    "last": 240.825,
+    "notional": 1914.3094579177339,
+    "opened": 1792512449,
+    "qty": 8.168591670227155,
+    "side": 1
+   },
+   "RVMD": {
+    "charged": 1792519649,
+    "entry": 195.44,
+    "last": 195.26,
+    "notional": 1910.5870863547898,
+    "opened": 1792519043,
+    "qty": 9.775824224083042,
+    "side": 1
+   },
+   "TEM": {
+    "charged": 1792519649,
+    "entry": 68.82,
+    "last": 68.81,
+    "notional": 1910.5870863547898,
+    "opened": 1792519043,
+    "qty": 27.762090763655767,
+    "side": 1
+   },
+   "TSEM": {
+    "charged": 1792519649,
+    "entry": 183.675,
+    "last": 183.675,
+    "notional": 1907.6339431934962,
+    "opened": 1792519649,
+    "qty": 10.385920474716189,
+    "side": -1
+   }
+  },
+  "C-groq-coin": {
+   "GM": {
+    "charged": 1792519649,
+    "entry": 78.86,
+    "last": 75.715,
+    "notional": 1954.3783118739536,
+    "opened": 1792509454,
+    "qty": 24.782885009814272,
+    "side": -1
+   },
+   "MRNA": {
+    "charged": 1792519649,
+    "entry": 234.35,
+    "last": 240.825,
+    "notional": 1964.9544734112603,
+    "opened": 1792512449,
+    "qty": 8.384700121234308,
+    "side": -1
+   },
+   "RVMD": {
+    "charged": 1792519649,
+    "entry": 195.44,
+    "last": 195.26,
+    "notional": 1954.9869991611733,
+    "opened": 1792519043,
+    "qty": 10.003003475036703,
+    "side": -1
+   },
+   "TEM": {
+    "charged": 1792519649,
+    "entry": 68.82,
+    "last": 68.81,
+    "notional": 1954.9869991611733,
+    "opened": 1792519043,
+    "qty": 28.40725078699758,
+    "side": 1
+   },
+   "TSEM": {
+    "charged": 1792519649,
+    "entry": 183.675,
+    "last": 183.675,
+    "notional": 1956.5194710003034,
+    "opened": 1792519649,
+    "qty": 10.652072797061676,
+    "side": -1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1792519649,
+    "entry": 767.13,
+    "last": 769.405,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "a74174a038eb9ff7ba169bfb54ed9067b3c9051526f977468d26cb8b3db36b04",
+ "price_source": {
+  "AAL": "iex",
+  "ADBE": "iex",
+  "AXON": "iex",
+  "BMNR": "iex",
+  "BMY": "iex",
+  "BX": "iex",
+  "CRCL": "iex",
+  "DHI": "iex",
+  "EXPE": "iex",
+  "FIX": "iex",
+  "GE": "iex",
+  "GM": "iex",
+  "HLT": "iex",
+  "HUM": "iex",
+  "HWM": "iex",
+  "INTU": "iex",
+  "IREN": "iex",
+  "LEN": "iex",
+  "LLY": "iex",
+  "MDB": "iex",
+  "MMM": "iex",
+  "MRK": "iex",
+  "MRNA": "iex",
+  "MSTR": "iex",
+  "NOC": "iex",
+  "NOW": "iex",
+  "NU": "iex",
+  "NXPI": "iex",
+  "ON": "iex",
+  "PWR": "iex",
+  "RKT": "iex",
+  "RVMD": "iex",
+  "SOFI": "iex",
+  "TEAM": "iex",
+  "TEM": "iex",
+  "TSEM": "iex",
+  "TWST": "iex",
+  "UNH": "iex",
+  "WDAY": "iex",
+  "WDC": "iex"
+ },
+ "prices": {
+  "AAL": 12.155,
+  "ADBE": 255.43,
+  "AXON": 397.1,
+  "BMNR": 22.965,
+  "BMY": 61.625,
+  "BX": 110.72,
+  "CRCL": 85.805,
+  "DHI": 139.47,
+  "EXPE": 301.19,
+  "FIX": 1395.53,
+  "GE": 298.85,
+  "GM": 75.715,
+  "HLT": 358.01,
+  "HUM": 428.63,
+  "HWM": 207.31,
+  "INTU": 336.475,
+  "IREN": 26.67,
+  "LEN": 78.3,
+  "LLY": 1291.27,
+  "MDB": 363.72,
+  "MMM": 171.29,
+  "MRK": 148.22,
+  "MRNA": 240.825,
+  "MSTR": 143.71,
+  "NOC": 536.68,
+  "NOW": 149.65,
+  "NU": 15.165,
+  "NXPI": 238.52,
+  "ON": 76.08,
+  "PWR": 595.42,
+  "RKT": 11.22,
+  "RVMD": 195.26,
+  "SOFI": 14.715,
+  "TEAM": 221.69,
+  "TEM": 68.81,
+  "TSEM": 183.675,
+  "TWST": 147.35,
+  "UNH": 419.795,
+  "WDAY": 202.16,
+  "WDC": 362.85
+ },
+ "shortlist": [
+  "GM",
+  "TSEM",
+  "RVMD",
+  "TEM",
+  "BMNR",
+  "MRNA",
+  "HWM",
+  "MMM",
+  "MSTR",
+  "CRCL",
+  "TWST",
+  "NOC",
+  "RKT",
+  "BMY",
+  "FIX",
+  "NU",
+  "MDB",
+  "LLY",
+  "AAL",
+  "ON",
+  "GE",
+  "IREN",
+  "PWR",
+  "AXON",
+  "NXPI",
+  "WDAY",
+  "HLT",
+  "BX",
+  "ADBE",
+  "INTU",
+  "HUM",
+  "EXPE",
+  "TEAM",
+  "LEN",
+  "MRK",
+  "UNH",
+  "DHI",
+  "WDC",
+  "NOW",
+  "SOFI"
+ ],
+ "t": 1792519649,
+ "universe_date": "2026-10-20",
+ "written_utc": "2026-10-20T18:07:47.339332Z"
+}
