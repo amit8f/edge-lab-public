@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 15:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9609.67 | -390.33% | 26 | 2 | short FIX, short GE, short GM, short IREN, short TSEM |
-| Coin flip on C's picks | $9977.56 | -22.44% | 26 | 15 | long FIX, short GE, long GM, long IREN, short TSEM |
-| C's prompt on Groq (K7) | $9457.84 | -542.16% | 56 | 9 | short FIX, short GM, short IREN, long MRNA, long NOC |
-| Coin flip on C-groq's picks | $9731.47 | -268.53% | 56 | 31 | short FIX, short GM, long IREN, short MRNA, long NOC |
-| Just hold SPY | $10009.80 | +9.80% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9611.07 | -388.93% | 26 | 2 | short FIX, short GE, short GM, short IREN, short TSEM |
+| Coin flip on C's picks | $9976.66 | -23.34% | 26 | 15 | long FIX, short GE, long GM, long IREN, short TSEM |
+| C's prompt on Groq (K7) | $9462.13 | -537.87% | 56 | 9 | short FIX, short GM, short IREN, long MRNA, long NOC |
+| Coin flip on C-groq's picks | $9738.36 | -261.64% | 56 | 31 | short FIX, short GM, long IREN, short MRNA, long NOC |
+| Just hold SPY | $10006.81 | +6.81% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-20 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 15:07 | short FIX, short GE, short GM, short IREN, short TSEM | none | Maintaining all existing short positions as they continue to show negative momentum and align with the strategy of shorting underperforming stocks with negative news or strong downtrends. |
 | 2026-10-20 14:57 | short FIX, short GE, short GM, short IREN, short TSEM | bought HWM @ $210.38; bought PWR @ $598.77; sold GE @ $299.12; sold IREN @ $26.43 | Maintaining profitable short positions in FIX, GM, and TSEM due to continued downtrends. Closing HWM and PWR shorts due to price moving against positions. Initiating new short positions in IREN and GE based on strong bearish momentum and recent price action. |
