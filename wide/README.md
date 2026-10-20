@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 13:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 13:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9783.22 | -216.78% | 23 | 2 | short FIX, short GE, short GM, short HWM, short TSEM |
-| Coin flip on C's picks | $9964.51 | -35.49% | 23 | 12 | long FIX, long GE, long GM, long HWM, short TSEM |
-| C's prompt on Groq (K7) | $9588.37 | -411.63% | 42 | 8 | short GM, long MMM, long MRNA, long NOC, short TSEM |
-| Coin flip on C-groq's picks | $9782.58 | -217.42% | 42 | 23 | short GM, short MMM, short MRNA, short NOC, long TSEM |
-| Just hold SPY | $10013.97 | +13.97% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9793.49 | -206.51% | 23 | 2 | short FIX, short GE, short GM, short HWM, short TSEM |
+| Coin flip on C's picks | $9972.40 | -27.60% | 23 | 12 | long FIX, long GE, long GM, long HWM, short TSEM |
+| C's prompt on Groq (K7) | $9569.36 | -430.64% | 45 | 8 | short GM, long HLT, long MRNA, long MSTR, long RVMD |
+| Coin flip on C-groq's picks | $9787.01 | -212.99% | 45 | 26 | short GM, long HLT, short MRNA, short MSTR, short RVMD |
+| Just hold SPY | $10020.22 | +20.22% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-20 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 13:17 | short FIX, short GE, short GM, short HWM, short TSEM | none | All five existing short positions are profitable and the underlying stocks continue to show strong negative momentum today, so I will maintain all current positions. |
 | 2026-10-20 13:07 | short FIX, short GE, short GM, short HWM, short TSEM | none | All existing short positions are performing well with significant drops today, confirming the bearish outlook for these stocks. Maintaining all current profitable short positions. |
 | 2026-10-20 12:57 | short FIX, short GE, short GM, short HWM, short TSEM | none | All existing short positions are profitable and show continued bearish momentum today, so they are maintained. |
