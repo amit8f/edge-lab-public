@@ -1,0 +1,42 @@
+# Checks every Plan v3 paper account's keys (adaptive/accounts.py). Run by hand after adding secrets.
+# Prints status, equity and the last 4 digits of each account number; never a key.
+name: accounts-check
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        run: |
+          python3 -m pip install --quiet requests pandas
+
+      - name: Check the accounts
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          ALPACA_P1P2_KEY_ID: ${{ secrets.ALPACA_P1P2_KEY_ID }}
+          ALPACA_P1P2_SECRET_KEY: ${{ secrets.ALPACA_P1P2_SECRET_KEY }}
+          ALPACA_M3_KEY_ID: ${{ secrets.ALPACA_M3_KEY_ID }}
+          ALPACA_M3_SECRET_KEY: ${{ secrets.ALPACA_M3_SECRET_KEY }}
+          ALPACA_M4_KEY_ID: ${{ secrets.ALPACA_M4_KEY_ID }}
+          ALPACA_M4_SECRET_KEY: ${{ secrets.ALPACA_M4_SECRET_KEY }}
+          ALPACA_M6_KEY_ID: ${{ secrets.ALPACA_M6_KEY_ID }}
+          ALPACA_M6_SECRET_KEY: ${{ secrets.ALPACA_M6_SECRET_KEY }}
+          ALPACA_P4_KEY_ID: ${{ secrets.ALPACA_P4_KEY_ID }}
+          ALPACA_P4_SECRET_KEY: ${{ secrets.ALPACA_P4_SECRET_KEY }}
+          ALPACA_PICK_MAIN_KEY_ID: ${{ secrets.ALPACA_PICK_MAIN_KEY_ID }}
+          ALPACA_PICK_MAIN_SECRET_KEY: ${{ secrets.ALPACA_PICK_MAIN_SECRET_KEY }}
+          ALPACA_PICK_PENNY_KEY_ID: ${{ secrets.ALPACA_PICK_PENNY_KEY_ID }}
+          ALPACA_PICK_PENNY_SECRET_KEY: ${{ secrets.ALPACA_PICK_PENNY_SECRET_KEY }}
+        run: python3 -m adaptive.accounts
