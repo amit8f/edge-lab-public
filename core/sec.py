@@ -8,6 +8,7 @@ import time
 
 import pandas as pd
 import requests
+from pandas.tseries.holiday import USFederalHolidayCalendar
 
 from core.env import sec_headers
 
@@ -60,9 +61,19 @@ def parse_form_index(text):
     return df
 
 
+def edgar_holiday(d):
+    """EDGAR is closed on US federal holidays, some of which are stock-market days (Columbus Day, Veterans
+    Day). No index is published for them, and SEC answers the request with 403, not 404."""
+    d = pd.Timestamp(d).normalize()
+    return len(USFederalHolidayCalendar().holidays(d, d)) > 0
+
+
 def daily_form_index(d):
-    """EDGAR daily form index for date d, or None when not published (yet, or a holiday)."""
+    """EDGAR daily form index for date d: empty on a federal holiday (no filings are dated that day), None
+    when not published yet."""
     d = pd.Timestamp(d)
+    if edgar_holiday(d):
+        return parse_form_index("----\n")
     q = (d.month - 1) // 3 + 1
     r = get(f"https://www.sec.gov/Archives/edgar/daily-index/{d.year}/QTR{q}/form.{d:%Y%m%d}.idx")
     return None if r is None else parse_form_index(r.content.decode("latin-1"))
