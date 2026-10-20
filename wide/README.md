@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9751.97 | -248.03% | 23 | 2 | short FIX, short GE, short GM, short HWM, short TSEM |
-| Coin flip on C's picks | $9985.12 | -14.88% | 23 | 12 | long FIX, long GE, long GM, long HWM, short TSEM |
-| C's prompt on Groq (K7) | $9589.33 | -410.67% | 46 | 9 | short GM, long HLT, long MRNA, long MSTR, short TSEM |
-| Coin flip on C-groq's picks | $9765.36 | -234.64% | 46 | 26 | short GM, long HLT, short MRNA, short MSTR, long TSEM |
-| Just hold SPY | $10023.35 | +23.35% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9726.18 | -273.82% | 23 | 2 | short FIX, short GE, short GM, short HWM, short TSEM |
+| Coin flip on C's picks | $9969.71 | -30.29% | 23 | 12 | long FIX, long GE, long GM, long HWM, short TSEM |
+| C's prompt on Groq (K7) | $9547.20 | -452.80% | 49 | 9 | short GM, long MRNA, short PWR, long RVMD, long TEM |
+| Coin flip on C-groq's picks | $9769.07 | -230.93% | 49 | 28 | short GM, short MRNA, short PWR, short RVMD, long TEM |
+| Just hold SPY | $10020.29 | +20.29% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-20 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 13:27 | no answer, nothing changed | none | unreadable answer |
