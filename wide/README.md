@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-20 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9668.03 | -331.97% | 23 | 2 | short FIX, short GE, short GM, short HWM, short TSEM |
-| Coin flip on C's picks | $9969.33 | -30.67% | 23 | 12 | long FIX, long GE, long GM, long HWM, short TSEM |
-| C's prompt on Groq (K7) | $9561.69 | -438.31% | 38 | 8 | short GM, long LLY, long MRNA, long NOC, long NU |
-| Coin flip on C-groq's picks | $9829.90 | -170.10% | 38 | 21 | short GM, short LLY, short MRNA, short NOC, long NU |
-| Just hold SPY | $10011.76 | +11.76% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9686.13 | -313.87% | 23 | 2 | short FIX, short GE, short GM, short HWM, short TSEM |
+| Coin flip on C's picks | $9961.00 | -39.00% | 23 | 12 | long FIX, long GE, long GM, long HWM, short TSEM |
+| C's prompt on Groq (K7) | $9574.77 | -425.23% | 38 | 8 | short GM, long LLY, long MRNA, long NOC, long NU |
+| Coin flip on C-groq's picks | $9834.36 | -165.64% | 38 | 21 | short GM, short LLY, short MRNA, short NOC, long NU |
+| Just hold SPY | $10013.58 | +13.58% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-20 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 12:17 | short FIX, short GE, short GM, short HWM, short TSEM | sold AMZN @ $263.21; sold LLY @ $1,296.15; sold NOC @ $535.85; sold RVMD @ $193.72; sold FIX @ $1,407.56; sold GE @ $298.04; sold HWM @ $208.63; sold TSEM @ $185.77 | Sold AMZN, LLY, NOC, RVMD to consolidate into short positions on stocks showing strong negative momentum and poor news, adding TSEM, HWM, GE, and FIX to the existing GM short. |
 | 2026-10-20 12:07 | long AMZN, short GM, long LLY, long NOC, long RVMD | sold MMM @ $170.26; bought RVMD @ $194.22 | Maintaining profitable long positions in AMZN, LLY, and NOC, and a profitable short in GM due to strong trends and news. Selling MMM due to underperformance and initiating a new long position in RVMD based on positive news and strong price action. |
 | 2026-10-20 11:57 | long AMZN, short GM, long LLY, long MMM, long NOC | sold RVMD @ $194.59; bought NOC @ $536.65 | Maintaining existing profitable positions in AMZN, GM (short), LLY, and MMM, while adding a new long position in NOC due to strong daily performance, positive momentum, and favorable news. |
