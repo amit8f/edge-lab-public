@@ -65,8 +65,9 @@ jobs:
       - name: Paper trading, P1 and P2 (Alpaca paper account only)
         if: always()
         env:
-          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
-          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          # Its own paper account (EL-P1P2) once those secrets exist; the shared key until then.
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_P1P2_KEY_ID || secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_P1P2_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           NO_HEADLINE_TEXT: "1"
         run: .venv/bin/python -m tracks.penny.nightly --state state
