@@ -104,3 +104,21 @@ def test_allocate_respects_weights_and_control():
     c1 = books.random_control(cands, uni, 7)
     assert c1 == books.random_control(cands, uni, 7)
     assert len({c["symbol"] for c in c1}) == 5 and all(c["control"] for c in c1)
+
+
+def test_accounts_check(monkeypatch):
+    from adaptive import accounts
+
+    class R:
+        status_code = 200
+
+        def json(self):
+            return {"status": "ACTIVE", "equity": "100000", "account_number": "PA12345678",
+                    "pattern_day_trader": False, "shorting_enabled": True}
+
+    monkeypatch.setenv("ALPACA_M3_KEY_ID", "k")
+    monkeypatch.setenv("ALPACA_M3_SECRET_KEY", "s")
+    monkeypatch.delenv("ALPACA_M4_KEY_ID", raising=False)
+    out = accounts.check("EL-M3", get=lambda *a, **k: R())
+    assert "OK" in out and "...5678" in out and "k" not in out.split("account")[0].replace("OK", "")
+    assert accounts.check("EL-M4") == "EL-M4: secrets not set"
