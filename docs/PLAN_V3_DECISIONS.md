@@ -60,6 +60,7 @@ Format: question, Amit's answer, date. Open items are at the bottom.
 - Q47: Alpaca Benzinga news stream + SEC filings. Standing rule: Claude flags better free sources and any paid option that would clearly improve results, for anything we use.
 - Q48: promotion bar starts ~80% confidence, rises to ~90% (not 95%) as rules pile up; adjustable later.
 - Q49: no leverage: 1x, shorts count toward it.
+- 2026-10-20 (after approval): Amit set paper money: main system $5,000, penny system $1,000; P1/P2 unchanged (frozen). He chose ONE PAPER ACCOUNT PER STRATEGY that has earned paper money (option b), so he can follow each one in Alpaca; the learner works by changing each account's trade size. Shadow rules need no account. He'll add Alpaca logins as needed (3 paper accounts each). P1/P2 account = secrets ALPACA_API_KEY_ID/SECRET (to be named EL-P1P2).
 
 ## Open
 - 2026-10-20: Amit confirmed the summary and APPROVED PLAN_V3_2026-10-20.md. Pro review (PRO_REVIEW_2026-10-20.md, 12 items) awaits his yes before Stage 1.

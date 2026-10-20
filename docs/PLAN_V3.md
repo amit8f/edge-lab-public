@@ -13,7 +13,11 @@ random control, and Amit's signature in `research/PROTOCOL.md`.
 - Kept as before: P1/P2 run untouched as the frozen baseline (Q11), M8's forward test continues, the holdout
   stays untouched, and every trade log stays append-only and hash-chained.
 
-## 2. The money (paper, sized as a $5,000 account)
+## 2. The money (paper)
+
+Updated 2026-10-20 after approval: main is a $5,000 book and penny a $1,000 book, and each strategy
+holding paper money has its own Alpaca paper account (`research/prereg/SYS1.md`, clarification 1). The
+table below is the original split.
 
 | Book | Share | Alpaca paper account |
 |---|---|---|
