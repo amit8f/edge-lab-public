@@ -1,0 +1,450 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "1e567194fb7f51402e6d93e34e5e17ec23257f69d5c5010ef485be4d387b9755",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"AMZN\",\n      \"side\": \"long\",\n      \"reason\": \"Holding a profitable position with positive news and stable hourly trend.\"\n    },\n    {\n      \"symbol\": \"GM\",\n      \"side\": \"short\",\n      \"reason\": \"Holding a short position with strong negative momentum today and disappointing earnings news.\"\n    },\n    {\n      \"symbol\": \"LLY\",\n      \"side\": \"long\",\n      \"reason\": \"Holding a long position with strong positive momentum today and a clear upward hourly trend.\"\n    },\n    {\n      \"symbol\": \"RVMD\",\n      \"side\": \"long\",\n      \"reason\": \"Holding a profitable position with strong positive momentum today and positive news.\"\n    },\n    {\n      \"symbol\": \"NOC\",\n      \"side\": \"long\",\n      \"reason\": \"Holding a long position with strong positive momentum today and positive earnings news, despite a slight dip from the last hourly close.\"\n    }\n  ],\n  \"summary\": \"Maintaining all existing positions as they align with current market momentum and news, with AMZN, LLY, and RVMD showing strong positive trends, GM confirming its short thesis, and NOC maintaining positive momentum despite a slight recent pullback.\"\n}",
+  "summary": "Maintaining all existing positions as they align with current market momentum and news, with AMZN, LLY, and RVMD showing strong positive trends, GM confirming its short thesis, and NOC maintaining positive momentum despite a slight recent pullback.",
+  "want": {
+   "AMZN": 1,
+   "GM": -1,
+   "LLY": 1,
+   "NOC": 1,
+   "RVMD": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "42ae1ef409dfbe3f2aafacd304b07a5af918bbaa03f25fe2610d5b2647d15616",
+  "raw": "{\"positions\":[{\"symbol\":\"GM\",\"side\":\"short\",\"reason\":\"Price down 5% today, negative outlook, short already profitable\"},{\"symbol\":\"LLY\",\"side\":\"long\",\"reason\":\"Strong uptrend +4.6% today, +11% 20\u2011day\"},{\"symbol\":\"NOC\",\"side\":\"long\",\"reason\":\"Solid gains +4.9% today, +10% 5\u2011day\"},{\"symbol\":\"MMM\",\"side\":\"long\",\"reason\":\"Consistent rise +5.2% today, +6% 5\u2011day\"},{\"symbol\":\"MRNA\",\"side\":\"long\",\"reason\":\"High momentum +3.3% today, +35% 20\u2011day\"}],\"summary\":\"Keep short GM; go long LLY, NOC, MMM, MRNA; exit RVMD\"}",
+  "summary": "Keep short GM; go long LLY, NOC, MMM, MRNA; exit RVMD",
+  "want": {
+   "GM": -1,
+   "LLY": 1,
+   "MMM": 1,
+   "MRNA": 1,
+   "NOC": 1
+  }
+ },
+ "equity": {
+  "C": 9668.737175,
+  "C-coin": 10063.422813,
+  "C-groq": 9571.636799,
+  "C-groq-coin": 9790.115687,
+  "HOLD": 10017.096952
+ },
+ "fills": {
+  "C": [],
+  "C-coin": [],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1792510046,
+    "entry": 194.31,
+    "exit": 195.885,
+    "notional": 1933.007944461564,
+    "open_t": 1792508251,
+    "pnl": 13.719522,
+    "side": 1,
+    "sym": "RVMD",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1914.710302,
+    "price": 234.4,
+    "side": 1,
+    "sym": "MRNA",
+    "t": 1792510046
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1792510046,
+    "entry": 194.31,
+    "exit": 195.885,
+    "notional": 1950.3508094874696,
+    "open_t": 1792508251,
+    "pnl": 13.842613,
+    "side": 1,
+    "sym": "RVMD",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1958.41482,
+    "price": 234.4,
+    "side": -1,
+    "sym": "MRNA",
+    "t": 1792510046
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "AAL": 1,
+  "AMZN": 3,
+  "AXON": 1,
+  "BMNR": 1,
+  "BX": 1,
+  "CCL": 1,
+  "CRCL": 1,
+  "CVNA": 1,
+  "DAL": 2,
+  "DHI": 1,
+  "GE": 3,
+  "GM": 3,
+  "HLT": 1,
+  "HUT": 1,
+  "IREN": 3,
+  "KKR": 2,
+  "LEN": 1,
+  "LLY": 2,
+  "LRCX": 2,
+  "MMM": 3,
+  "MRK": 3,
+  "MSTR": 3,
+  "NOC": 3,
+  "NU": 1,
+  "NXPI": 1,
+  "RCL": 2,
+  "RVMD": 1,
+  "UAL": 3,
+  "UNH": 3
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "AMZN": {
+    "charged": 1792510046,
+    "entry": 259.21,
+    "last": 263.56,
+    "notional": 1998.9009442311901,
+    "opened": 1792420640,
+    "qty": 7.711511686397864,
+    "side": 1
+   },
+   "GM": {
+    "charged": 1792510046,
+    "entry": 78.16,
+    "last": 78.44,
+    "notional": 1947.120130202505,
+    "opened": 1792506453,
+    "qty": 24.911977100850883,
+    "side": -1
+   },
+   "LLY": {
+    "charged": 1792510046,
+    "entry": 1298.855,
+    "last": 1296.79,
+    "notional": 1955.1550502166137,
+    "opened": 1792504124,
+    "qty": 1.5052912374488405,
+    "side": 1
+   },
+   "NOC": {
+    "charged": 1792510046,
+    "entry": 544.71,
+    "last": 535.67,
+    "notional": 1955.1550502166137,
+    "opened": 1792504124,
+    "qty": 3.58935038867767,
+    "side": 1
+   },
+   "RVMD": {
+    "charged": 1792510046,
+    "entry": 194.555,
+    "last": 195.885,
+    "notional": 1927.8922985247227,
+    "opened": 1792509454,
+    "qty": 9.909240567061874,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "AMZN": {
+    "charged": 1792510046,
+    "entry": 259.21,
+    "last": 263.56,
+    "notional": 2002.304980941158,
+    "opened": 1792420640,
+    "qty": 7.724644037425864,
+    "side": -1
+   },
+   "GM": {
+    "charged": 1792510046,
+    "entry": 78.16,
+    "last": 78.44,
+    "notional": 2002.9922594370303,
+    "opened": 1792506453,
+    "qty": 25.626820105386777,
+    "side": 1
+   },
+   "LLY": {
+    "charged": 1792510046,
+    "entry": 1298.855,
+    "last": 1296.79,
+    "notional": 2010.3980429542842,
+    "opened": 1792504124,
+    "qty": 1.547823308186275,
+    "side": 1
+   },
+   "NOC": {
+    "charged": 1792510046,
+    "entry": 544.71,
+    "last": 535.67,
+    "notional": 2010.3980429542842,
+    "opened": 1792504124,
+    "qty": 3.6907676432492225,
+    "side": -1
+   },
+   "RVMD": {
+    "charged": 1792510046,
+    "entry": 194.555,
+    "last": 195.885,
+    "notional": 2012.9178110359576,
+    "opened": 1792509454,
+    "qty": 10.346266151144702,
+    "side": 1
+   }
+  },
+  "C-groq": {
+   "GM": {
+    "charged": 1792510046,
+    "entry": 78.86,
+    "last": 78.44,
+    "notional": 1909.3230722549722,
+    "opened": 1792509454,
+    "qty": 24.21155303392052,
+    "side": -1
+   },
+   "LLY": {
+    "charged": 1792510046,
+    "entry": 1296.025,
+    "last": 1296.79,
+    "notional": 1921.4508281670714,
+    "opened": 1792508855,
+    "qty": 1.482572348656138,
+    "side": 1
+   },
+   "MMM": {
+    "charged": 1792510046,
+    "entry": 171.91,
+    "last": 170.475,
+    "notional": 1921.4508281670714,
+    "opened": 1792508855,
+    "qty": 11.177074214222975,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792510046,
+    "entry": 234.4,
+    "last": 234.4,
+    "notional": 1914.7103018284033,
+    "opened": 1792510046,
+    "qty": 8.168559308141653,
+    "side": 1
+   },
+   "NOC": {
+    "charged": 1792510046,
+    "entry": 545.79,
+    "last": 535.67,
+    "notional": 1939.6630409565864,
+    "opened": 1792505249,
+    "qty": 3.5538632825016703,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "GM": {
+    "charged": 1792510046,
+    "entry": 78.86,
+    "last": 78.44,
+    "notional": 1954.3783118739536,
+    "opened": 1792509454,
+    "qty": 24.782885009814272,
+    "side": -1
+   },
+   "LLY": {
+    "charged": 1792510046,
+    "entry": 1296.025,
+    "last": 1296.79,
+    "notional": 1949.825254468181,
+    "opened": 1792508855,
+    "qty": 1.5044657737838243,
+    "side": -1
+   },
+   "MMM": {
+    "charged": 1792510046,
+    "entry": 171.91,
+    "last": 170.475,
+    "notional": 1949.825254468181,
+    "opened": 1792508855,
+    "qty": 11.342128174441166,
+    "side": -1
+   },
+   "MRNA": {
+    "charged": 1792510046,
+    "entry": 234.4,
+    "last": 234.4,
+    "notional": 1958.414820300763,
+    "opened": 1792510046,
+    "qty": 8.355012031999841,
+    "side": -1
+   },
+   "NOC": {
+    "charged": 1792510046,
+    "entry": 545.79,
+    "last": 535.67,
+    "notional": 1963.6812791090515,
+    "opened": 1792505249,
+    "qty": 3.5978696551953164,
+    "side": 1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1792510046,
+    "entry": 767.13,
+    "last": 769.21,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "0836e56d0dbcd5291925a19517bee6cf32e5e72eed9a017bb58737d73c7a7321",
+ "price_source": {
+  "AAL": "iex",
+  "AMZN": "iex",
+  "AXON": "iex",
+  "BMNR": "iex",
+  "BMY": "iex",
+  "BX": "iex",
+  "CCL": "iex",
+  "CRCL": "iex",
+  "CVNA": "iex",
+  "DAL": "iex",
+  "DHI": "iex",
+  "FIX": "iex",
+  "GE": "iex",
+  "GM": "iex",
+  "HLT": "iex",
+  "HUT": "iex",
+  "HWM": "iex",
+  "IREN": "iex",
+  "KKR": "iex",
+  "LEN": "iex",
+  "LLY": "iex",
+  "LRCX": "iex",
+  "MMM": "iex",
+  "MRK": "iex",
+  "MRNA": "iex",
+  "MSTR": "iex",
+  "NOC": "iex",
+  "NU": "iex",
+  "NXPI": "iex",
+  "ON": "iex",
+  "PWR": "iex",
+  "RCL": "iex",
+  "RKT": "iex",
+  "RVMD": "iex",
+  "SOFI": "iex",
+  "TEM": "iex",
+  "TSEM": "iex",
+  "TWST": "iex",
+  "UAL": "iex",
+  "UNH": "iex",
+  "WDAY": "iex"
+ },
+ "prices": {
+  "AAL": 12.36,
+  "AMZN": 263.56,
+  "AXON": 396.53,
+  "BMNR": 22.86,
+  "BMY": 61.3,
+  "BX": 111.56,
+  "CCL": 27.355,
+  "CRCL": 84.96,
+  "CVNA": 60.58,
+  "DAL": 77.05,
+  "DHI": 139.605,
+  "FIX": 1409.78,
+  "GE": 300.795,
+  "GM": 78.44,
+  "HLT": 358.83,
+  "HUT": 70.31,
+  "HWM": 209.93,
+  "IREN": 26.895,
+  "KKR": 89.81,
+  "LEN": 78.75,
+  "LLY": 1296.79,
+  "LRCX": 263.965,
+  "MMM": 170.475,
+  "MRK": 148.08,
+  "MRNA": 234.4,
+  "MSTR": 144.03,
+  "NOC": 535.67,
+  "NU": 15.245,
+  "NXPI": 237.06,
+  "ON": 75.42,
+  "PWR": 599.89,
+  "RCL": 290.86,
+  "RKT": 11.35,
+  "RVMD": 195.885,
+  "SOFI": 14.855,
+  "TEM": 67.24,
+  "TSEM": 190.865,
+  "TWST": 145.37,
+  "UAL": 98.93,
+  "UNH": 419.185,
+  "WDAY": 201.275
+ },
+ "shortlist": [
+  "RVMD",
+  "BMNR",
+  "RKT",
+  "MSTR",
+  "AAL",
+  "MMM",
+  "GM",
+  "NU",
+  "NOC",
+  "TSEM",
+  "HWM",
+  "LLY",
+  "TEM",
+  "CRCL",
+  "BMY",
+  "BX",
+  "TWST",
+  "SOFI",
+  "LEN",
+  "FIX",
+  "HLT",
+  "AXON",
+  "UAL",
+  "CCL",
+  "GE",
+  "MRNA",
+  "DAL",
+  "KKR",
+  "CVNA",
+  "DHI",
+  "RCL",
+  "ON",
+  "HUT",
+  "WDAY",
+  "MRK",
+  "LRCX",
+  "UNH",
+  "IREN",
+  "PWR",
+  "NXPI",
+  "AMZN"
+ ],
+ "t": 1792510046,
+ "universe_date": "2026-10-20",
+ "written_utc": "2026-10-20T15:27:41.348990Z"
+}
