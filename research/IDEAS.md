@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 31** (main 19, penny 5, news 3, cross-track 3, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 46.
+**Phase 2 count: 32** (main 19, penny 5, news 3, cross-track 4, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 47.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
@@ -44,6 +44,7 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | G1 | main | 2026-10-17 | Linked companies: customers named in suppliers' 10-Ks (10%+ of revenue, matched to EDGAR names); long suppliers whose customers rose most last month, short those whose customers fell most (quintiles, 1 month, Cohen & Frazzini 2008 replication); shared-insider and news co-mention links exploratory; NW t >= 3 and FF5+UMD alpha t >= 2; plus a per-stock link card (reading aid, no claim) | Amit's request (information passing between companies and their people) | [prereg/G1.md](prereg/G1.md) | |
 | W1a | news | 2026-10-17 | Published leak and rumour reports by source group (big outlets, small English outlets, foreign-language press, unnamed sources, short sellers) in Benzinga headlines; enter 30 minutes after the article, exit day +5, signed vs SPY; source coverage counted first | Amit's request (find leak reports, including small outlets that get little notice); Ahern & Sosyura (2015) | [prereg/W1.md](prereg/W1.md) | |
 | W1b | cross-track | 2026-10-17 | Unexplained heavy trading: volume z >= 3 with no article or filing in 4 days, buying (close near high) long / selling short, next open to day +10, main and penny separately; pre-announcement footprints descriptive | Amit's request (find buying and selling trends ourselves); Gervais, Kaniel & Mingelgrin (2001) | [prereg/W1.md](prereg/W1.md) | |
+| E1 | cross-track | 2026-10-20 | Macro-release blackout filter: are trades entered on CPI, jobs-report or FOMC days worse than the same idea's other trades? Per-idea demeaned difference on finished screens' trade lists (P4), date-clustered, filter helps if t <= -3 with 100+ macro-day trades | Amit's request (TikTok "AI agents" post, news-timing agent); Savor & Wilson (2013) | [prereg/E1.md](prereg/E1.md) | |
 | W1c | main | 2026-10-17 | Unusual short-dated OTM call buying (5x its 20-day mean, 3x puts, no news) predicts the stock over 10 days; Alpaca options 2024-02..2025-09 | Amit's request; Augustin, Brenner & Subrahmanyam (2019) | [prereg/W1.md](prereg/W1.md) | |
 | P4 | penny | 2026-10-19 | Insider cluster buys (2+ insiders, $25k+, one opportunistic) in $1-5 stocks; next open, stop -20%, take-profit +40%, else 21 days; vs same-volatility random penny stock, 2% costs | Amit's request (strict small account, stop-loss and take-profit); Lakonishok & Lee 2001; Cohen, Malloy & Pomorski 2012 | [prereg/P4.md](prereg/P4.md) | |
 
