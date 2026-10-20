@@ -50,3 +50,15 @@ which had no result then. Screens with results keep their verdicts; M11 keeps it
     `research/REPLICATION.md`). A failed replication stops the screens that use that pipeline.
 15. **Project deadline.** If no idea has passed its forward test by 2027-12-31, the project's output is
     the research write-up, and no real-money track opens without a new written decision here.
+
+## Added 2026-10-20 (Amit approved Plan v3, `docs/PLAN_V3.md`; his merge of this change is his signature)
+
+16. **No historical gate for Plan v3 strategies.** Ideas that enter the Plan v3 system skip the historical
+    t >= 3 screen of rules 4 and 12. They get a bug and look-ahead check, then start in the shadow book, and
+    the forward record is their test. Historical screens already registered keep their own rules.
+17. **Rules the system makes itself.** The weekly coach may create new rules. Each is logged in
+    `research/IDEAS.md` (and counted) before it starts in the shadow book, with no orders and no money. It is
+    promoted only under `research/prereg/SYS1.md` (beat the frozen copy over at least 4 weeks and 30
+    trades after costs, at the confidence that SYS1 sets for the number of rules tried). The learning rule
+    itself is frozen in SYS1, and any change to it is a new registration.
+18. **Going live is unchanged.** Rule 9 still applies to every Plan v3 book.
