@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 10:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9339.59 | -660.41% | 35 | 4 | long DELL, long DHR, long SMCI, long SPCX, long VRT |
-| Coin flip on C's picks | $10116.01 | +116.01% | 35 | 20 | short DELL, long DHR, short SMCI, short SPCX, short VRT |
-| C's prompt on Groq (K7) | $9433.41 | -566.59% | 67 | 10 | long DDOG, short GM, long MRNA, long RVMD, long SPCX |
-| Coin flip on C-groq's picks | $9718.47 | -281.53% | 67 | 39 | long DDOG, short GM, short MRNA, short RVMD, short SPCX |
-| Just hold SPY | $10010.19 | +10.19% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9331.81 | -668.19% | 35 | 4 | long DELL, long DHR, long SMCI, long SPCX, long VRT |
+| Coin flip on C's picks | $10122.94 | +122.94% | 35 | 20 | short DELL, long DHR, short SMCI, short SPCX, short VRT |
+| C's prompt on Groq (K7) | $9457.31 | -542.69% | 67 | 10 | long DDOG, short GM, long MRNA, long RVMD, long SPCX |
+| Coin flip on C-groq's picks | $9725.28 | -274.72% | 67 | 39 | long DDOG, short GM, short MRNA, short RVMD, short SPCX |
+| Just hold SPY | $10018.27 | +18.27% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 10:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 10:07 | long DELL, long DHR, long SMCI, long SPCX, long VRT | none | Maintaining all current long positions due to strong positive momentum today for most holdings and favorable news, particularly in the AI sector. |
 | 2026-10-21 09:57 | long DELL, long DHR, long SMCI, long SPCX, long VRT | bought NFLX @ $67.00; bought T @ $22.46; bought SPCX @ $163.93; bought VRT @ $215.59 | Closed losing short positions in NFLX and T to reduce risk. Maintained long positions in SMCI, DELL, and DHR due to positive news and strong daily performance. Initiated new long positions in SPCX and VRT, both showing strong upward momentum and positive AI-related news, to capitalize on current mar |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 10:1
 | 2026-10-19 10:27 | long AXTI, long DDOG, long MRNA, long PLTR, long SNDK | sold ASTS @ $43.00; bought PLTR @ $193.51 | Maintaining existing strong long positions in AXTI, DDOG, MRNA, and SNDK due to continued positive momentum and adding PLTR long based on strong daily performance and positive news, while selling ASTS due to recent hourly weakness despite overall daily gain. |
 | 2026-10-19 10:17 | long ASTS, long AXTI, long DDOG, long MRNA, long SNDK | sold INTC @ $94.19; bought MRNA @ $226.99 | Maintaining long positions in ASTS, AXTI, DDOG, and SNDK due to strong daily gains and positive momentum. Selling INTC due to underperformance and replacing it with MRNA, which shows strong short-term and long-term positive trends. |
 | 2026-10-19 10:07 | long ASTS, long AXTI, long DDOG, long INTC, long SNDK | none | Maintaining all existing long positions due to positive daily performance, favorable news, or analyst upgrades, with an expectation of continued upward momentum. |
-| 2026-10-19 09:57 | long ASTS, long AXTI, long DDOG, long INTC, long SNDK | none | Maintaining all existing long positions as they are showing strong positive momentum today, supported by positive news for several holdings and the broader chip sector, suggesting a potential market bounce. |
