@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9305.85 | -694.15% | 38 | 4 | long APLD, long DHR, long MSTR, long SMCI, long SPCX |
-| Coin flip on C's picks | $10158.40 | +158.40% | 38 | 23 | long APLD, long DHR, short MSTR, long SMCI, short SPCX |
-| C's prompt on Groq (K7) | $9433.27 | -566.73% | 73 | 11 | long DDOG, short GM, long ILMN, long MRNA, long SPCX |
-| Coin flip on C-groq's picks | $9718.91 | -281.09% | 73 | 41 | long DDOG, short GM, long ILMN, short MRNA, long SPCX |
-| Just hold SPY | $10061.50 | +61.50% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9286.96 | -713.04% | 38 | 4 | long APLD, long DHR, long MSTR, long SMCI, long SPCX |
+| Coin flip on C's picks | $10133.17 | +133.17% | 38 | 23 | long APLD, long DHR, short MSTR, long SMCI, short SPCX |
+| C's prompt on Groq (K7) | $9435.90 | -564.10% | 73 | 11 | long DDOG, short GM, long ILMN, long MRNA, long SPCX |
+| Coin flip on C-groq's picks | $9697.45 | -302.55% | 73 | 41 | long DDOG, short GM, long ILMN, short MRNA, long SPCX |
+| Just hold SPY | $10056.95 | +56.95% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 12:17 | long APLD, long DHR, long MSTR, long SMCI, long SPCX | sold DELL @ $483.67; bought SMCI @ $35.50 | Sold DELL to free up a slot and initiated a new long position in SMCI due to its strong daily momentum and positive AI-related news, while maintaining other strong performers and those showing potential reversals. |
 | 2026-10-21 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 11:57 | long APLD, long DELL, long DHR, long MSTR, long SPCX | sold SMCI @ $35.76; bought MSTR @ $153.91 | Maintaining strong performers APLD, DELL, DHR, and SPCX, while closing SMCI due to underperformance and opening a new long position in MSTR based on strong daily performance and positive news. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 12:1
 | 2026-10-19 15:57 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | none | Maintaining all existing long positions as they are generally performing well today and align with positive sector sentiment, especially in tech and AI-related stocks. |
 | 2026-10-19 15:47 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | sold WDC @ $352.14; bought SNDK @ $1,382.93 | Maintaining profitable long positions in AMZN, DDOG, MRNA, and PLTR due to continued positive momentum and news, while selling WDC to open a new long position in SNDK, which shows strong daily performance and positive sentiment in the chip sector. |
 | 2026-10-19 15:37 | long AMZN, long DDOG, long MRNA, long PLTR, long WDC | sold SNDK @ $1,387.21; bought WDC @ $352.51 | Maintaining profitable long positions in AMZN, DDOG, MRNA, and PLTR, and replacing the losing SNDK position with a new long in WDC, which shows strong daily momentum and positive sector news. |
-| 2026-10-19 15:27 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | none | Maintaining all five existing long positions due to strong positive daily momentum across the board and supportive news, anticipating further recovery and gains. |
