@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9253.62 | -746.38% | 43 | 4 | long APLD, long BE, long DHR, long SMCI, long ZS |
-| Coin flip on C's picks | $10225.87 | +225.87% | 43 | 25 | long APLD, short BE, long DHR, short SMCI, short ZS |
-| C's prompt on Groq (K7) | $9219.44 | -780.56% | 93 | 16 | long BE, long MRNA, long SMCI, long SPCX, long ZS |
-| Coin flip on C-groq's picks | $9621.63 | -378.37% | 93 | 52 | long BE, short MRNA, short SMCI, short SPCX, long ZS |
-| Just hold SPY | $10072.25 | +72.25% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9237.55 | -762.45% | 44 | 4 | long APLD, long DHR, long MDB, long SMCI, long ZS |
+| Coin flip on C's picks | $10220.78 | +220.78% | 44 | 26 | long APLD, long DHR, long MDB, short SMCI, short ZS |
+| C's prompt on Groq (K7) | $9200.08 | -799.92% | 95 | 16 | long APLD, long MRNA, long OKTA, long SMCI, long ZS |
+| Coin flip on C-groq's picks | $9612.97 | -387.03% | 95 | 53 | short APLD, short MRNA, long OKTA, short SMCI, long ZS |
+| Just hold SPY | $10073.35 | +73.35% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 15:59 | long APLD, long DHR, long MDB, long SMCI, long ZS | sold BE @ $238.78; bought MDB @ $390.87 | Maintaining APLD, ZS, DHR, SMCI due to strong daily performance and positive news/momentum. Selling BE due to underperformance and replacing it with MDB, which shows strong hourly and daily momentum. |
 | 2026-10-21 15:57 | long APLD, long BE, long DHR, long SMCI, long ZS | sold MSTR @ $153.61; bought SMCI @ $35.53 | Maintaining profitable positions in APLD, DHR, ZS, and BE due to strong daily performance and positive news, while selling MSTR due to underperformance and replacing it with SMCI, which shows strong momentum and positive news. |
 | 2026-10-21 15:47 | long APLD, long BE, long DHR, long MSTR, long ZS | none | Maintaining all current long positions as they show continued positive momentum and/or strong fundamental news, aligning with the strategy of holding winning trades. |
 | 2026-10-21 15:37 | long APLD, long BE, long DHR, long MSTR, long ZS | sold OKTA @ $208.34; bought ZS @ $231.19 | Maintaining existing profitable positions in APLD, BE, DHR, and MSTR due to strong daily momentum and positive news, and replacing OKTA with ZS which shows stronger overall momentum and positive news. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 15:5
 | 2026-10-20 13:07 | short FIX, short GE, short GM, short HWM, short TSEM | none | All existing short positions are performing well with significant drops today, confirming the bearish outlook for these stocks. Maintaining all current profitable short positions. |
 | 2026-10-20 12:57 | short FIX, short GE, short GM, short HWM, short TSEM | none | All existing short positions are profitable and show continued bearish momentum today, so they are maintained. |
 | 2026-10-20 12:47 | short FIX, short GE, short GM, short HWM, short TSEM | none | Maintaining all existing short positions as they continue to show strong negative momentum and are profitable or near breakeven, aligning with the initial short theses. |
-| 2026-10-20 12:37 | short FIX, short GE, short GM, short HWM, short TSEM | none | Maintaining all existing short positions due to strong bearish momentum and negative news catalysts across the board, with all positions showing or nearing profitability. |
