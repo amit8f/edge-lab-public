@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9311.65 | -688.35% | 36 | 4 | long APLD, long DELL, long DHR, long SMCI, long SPCX |
-| Coin flip on C's picks | $10195.73 | +195.73% | 36 | 21 | long APLD, short DELL, long DHR, short SMCI, short SPCX |
-| C's prompt on Groq (K7) | $9426.87 | -573.13% | 73 | 11 | long DDOG, short GM, long ILMN, long MRNA, long SPCX |
-| Coin flip on C-groq's picks | $9680.09 | -319.91% | 73 | 41 | long DDOG, short GM, long ILMN, short MRNA, long SPCX |
-| Just hold SPY | $10050.30 | +50.30% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9337.74 | -662.26% | 36 | 4 | long APLD, long DELL, long DHR, long SMCI, long SPCX |
+| Coin flip on C's picks | $10194.23 | +194.23% | 36 | 21 | long APLD, short DELL, long DHR, short SMCI, short SPCX |
+| C's prompt on Groq (K7) | $9425.52 | -574.48% | 73 | 11 | long DDOG, short GM, long ILMN, long MRNA, long SPCX |
+| Coin flip on C-groq's picks | $9711.83 | -288.17% | 73 | 41 | long DDOG, short GM, long ILMN, short MRNA, long SPCX |
+| Just hold SPY | $10062.16 | +62.16% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 11:07 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 11:2
 | 2026-10-19 11:38 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | none | Maintaining all existing long positions due to strong positive momentum today, profitability, and supportive news for the respective sectors. |
 | 2026-10-19 11:27 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | none | All five existing long positions are profitable and showing strong positive momentum today, with several supported by positive news, so maintaining the current portfolio. |
 | 2026-10-19 11:17 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | sold AXTI @ $58.09; bought MRNA @ $224.34 | Closed AXTI due to its volatile hourly chart and significant negative trends over 5 and 20 sessions despite today's gain. Opened a new long position in MRNA, which shows strong long-term growth and recent positive momentum, replacing AXTI. Maintained existing profitable positions in AMZN, DDOG, and  |
-| 2026-10-19 11:07 | long AMZN, long AXTI, long DDOG, long PLTR, long SNDK | none | Maintaining all five existing long positions as they are all showing strong positive momentum today, with several having positive news catalysts. |
