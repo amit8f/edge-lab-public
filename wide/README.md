@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 14:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9298.22 | -701.78% | 39 | 4 | long APLD, long DDOG, long DHR, long MSTR, long SMCI |
-| Coin flip on C's picks | $10218.65 | +218.65% | 39 | 24 | long APLD, long DDOG, long DHR, short MSTR, long SMCI |
-| C's prompt on Groq (K7) | $9401.13 | -598.87% | 81 | 13 | long DDOG, long ILMN, long MRNA, long SMCI, short T |
-| Coin flip on C-groq's picks | $9608.73 | -391.27% | 81 | 44 | long DDOG, long ILMN, short MRNA, long SMCI, long T |
-| Just hold SPY | $10083.38 | +83.38% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9320.98 | -679.02% | 40 | 4 | long APLD, long BE, long DDOG, long DHR, long MSTR |
+| Coin flip on C's picks | $10252.73 | +252.73% | 40 | 24 | long APLD, short BE, long DDOG, long DHR, short MSTR |
+| C's prompt on Groq (K7) | $9371.33 | -628.67% | 83 | 13 | long APLD, long BE, long DDOG, long ILMN, long MRNA |
+| Coin flip on C-groq's picks | $9615.25 | -384.75% | 83 | 45 | short APLD, short BE, long DDOG, long ILMN, short MRNA |
+| Just hold SPY | $10082.93 | +82.93% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 14:37 | long APLD, long BE, long DDOG, long DHR, long MSTR | sold SMCI @ $35.34; bought BE @ $240.68 | Maintaining profitable long positions in APLD, DDOG, DHR, and MSTR due to strong momentum and positive news. Selling SMCI due to slight underperformance relative to entry and replacing it with a new long position in BE, which shows strong upward momentum and positive analyst sentiment. |
 | 2026-10-21 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 14:17 | long APLD, long DDOG, long DHR, long MSTR, long SMCI | none | Maintaining all existing long positions due to strong positive momentum today, favorable news, and current profitability or positive outlook. |
 | 2026-10-21 14:07 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 14:2
 | 2026-10-20 11:37 | long AMZN, short GM, long LLY, long NOC, long RVMD | none | Maintaining all existing positions as they show positive momentum or strong fundamental reasons to hold, with GM short performing well on negative news and others showing positive daily gains or strong trends. |
 | 2026-10-20 11:27 | long AMZN, short GM, long LLY, long NOC, long RVMD | none | Maintaining all existing positions as they align with current market momentum and news, with AMZN, LLY, and RVMD showing strong positive trends, GM confirming its short thesis, and NOC maintaining positive momentum despite a slight recent pullback. |
 | 2026-10-20 11:17 | long AMZN, short GM, long LLY, long NOC, long RVMD | sold MMM @ $170.40; bought RVMD @ $194.56 | Kept existing AMZN, GM, LLY, NOC positions based on their current trends and news, and initiated a new long position in RVMD due to strong positive news and price action. |
-| 2026-10-20 11:07 | long AMZN, short GM, long LLY, long MMM, long NOC | none | Maintaining all existing positions as they show either profitability or strong momentum/news supporting the current direction, despite some being slightly underwater from entry. |
