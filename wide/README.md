@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 15:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9255.38 | -744.62% | 41 | 4 | long APLD, long BE, long DHR, long MSTR, long OKTA |
-| Coin flip on C's picks | $10239.09 | +239.09% | 41 | 24 | long APLD, short BE, long DHR, short MSTR, short OKTA |
-| C's prompt on Groq (K7) | $9309.09 | -690.91% | 87 | 13 | long APLD, long DDOG, long ILMN, long MRNA, long SMCI |
-| Coin flip on C-groq's picks | $9591.70 | -408.30% | 87 | 48 | long APLD, long DDOG, long ILMN, short MRNA, long SMCI |
-| Just hold SPY | $10055.38 | +55.38% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9256.23 | -743.77% | 41 | 4 | long APLD, long BE, long DHR, long MSTR, long OKTA |
+| Coin flip on C's picks | $10235.37 | +235.37% | 41 | 24 | long APLD, short BE, long DHR, short MSTR, short OKTA |
+| C's prompt on Groq (K7) | $9301.93 | -698.07% | 88 | 14 | long APLD, long DDOG, long ILMN, long MRNA, long ZS |
+| Coin flip on C-groq's picks | $9579.60 | -420.40% | 88 | 49 | long APLD, long DDOG, long ILMN, short MRNA, long ZS |
+| Just hold SPY | $10066.39 | +66.39% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 14:57 | long APLD, long BE, long DHR, long MSTR, long OKTA | sold DDOG @ $274.11; bought OKTA @ $208.45 | Maintaining strong long positions in APLD, BE, MSTR, and DHR due to continued positive momentum and news, while replacing DDOG with OKTA for its strong recent performance and positive catalyst. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 15:1
 | 2026-10-20 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 12:17 | short FIX, short GE, short GM, short HWM, short TSEM | sold AMZN @ $263.21; sold LLY @ $1,296.15; sold NOC @ $535.85; sold RVMD @ $193.72; sold FIX @ $1,407.56; sold GE @ $298.04; sold HWM @ $208.63; sold TSEM @ $185.77 | Sold AMZN, LLY, NOC, RVMD to consolidate into short positions on stocks showing strong negative momentum and poor news, adding TSEM, HWM, GE, and FIX to the existing GM short. |
 | 2026-10-20 12:07 | long AMZN, short GM, long LLY, long NOC, long RVMD | sold MMM @ $170.26; bought RVMD @ $194.22 | Maintaining profitable long positions in AMZN, LLY, and NOC, and a profitable short in GM due to strong trends and news. Selling MMM due to underperformance and initiating a new long position in RVMD based on positive news and strong price action. |
-| 2026-10-20 11:57 | long AMZN, short GM, long LLY, long MMM, long NOC | sold RVMD @ $194.59; bought NOC @ $536.65 | Maintaining existing profitable positions in AMZN, GM (short), LLY, and MMM, while adding a new long position in NOC due to strong daily performance, positive momentum, and favorable news. |
