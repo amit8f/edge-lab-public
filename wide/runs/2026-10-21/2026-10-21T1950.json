@@ -1,0 +1,578 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "33e48fe35ce2b4338d200251e36008721e38e313b95b0dd0e036fe8acfa21ea7",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"APLD\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily performance and positive news about AI data center partnership, despite slight hourly pullback.\"\n    },\n    {\n      \"symbol\": \"BE\",\n      \"side\": \"long\",\n      \"reason\": \"Positive Q3 preview with high revenue growth expectations and analyst price target raise, strong daily move.\"\n    },\n    {\n      \"symbol\": \"DHR\",\n      \"side\": \"long\",\n      \"reason\": \"Beat profit estimates and raised outlook, showing strong fundamental performance and positive price action.\"\n    },\n    {\n      \"symbol\": \"ZS\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily gain with positive news about what's driving the stock higher, indicating continued momentum.\"\n    },\n    {\n      \"symbol\": \"SMCI\",\n      \"side\": \"long\",\n      \"reason\": \"Significant daily gain on preliminary gross margin update, showing strong positive market reaction.\"\n    }\n  ],\n  \"summary\": \"Maintaining profitable positions in APLD, DHR, ZS, and BE due to strong daily performance and positive news, while selling MSTR due to underperformance and replacing it with SMCI, which shows strong momentum and positive news.\"\n}",
+  "summary": "Maintaining profitable positions in APLD, DHR, ZS, and BE due to strong daily performance and positive news, while selling MSTR due to underperformance and replacing it with SMCI, which shows strong momentum and positive news.",
+  "want": {
+   "APLD": 1,
+   "BE": 1,
+   "DHR": 1,
+   "SMCI": 1,
+   "ZS": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "7c1ab789f23b7b1ef1d7d49fdfebfd29a5c9fe3e47d8091a8cf59f832ab9cde5",
+  "raw": "{\"positions\":[{\"symbol\":\"MRNA\",\"side\":\"long\",\"reason\":\"Large unrealized gain and strong 13.8% 5\u2011day momentum\"},{\"symbol\":\"SMCI\",\"side\":\"long\",\"reason\":\"Highest intraday gain (+9.4%) with AI data\u2011center news\"},{\"symbol\":\"SPCX\",\"side\":\"long\",\"reason\":\"Strong +8.1% move and bullish SpaceX\u2011related coverage\"},{\"symbol\":\"BE\",\"side\":\"long\",\"reason\":\"Solid +7.5% rise and AI\u2011demand catalyst\"},{\"symbol\":\"ZS\",\"side\":\"long\",\"reason\":\"Consistent +8% momentum and positive cloud\u2011security news\"}],\"summary\":\"Hold MRNA and add SMCI, SPCX, BE, ZS to capture today\u2019s top movers\"}",
+  "summary": "Hold MRNA and add SMCI, SPCX, BE, ZS to capture today\u2019s top movers",
+  "want": {
+   "BE": 1,
+   "MRNA": 1,
+   "SMCI": 1,
+   "SPCX": 1,
+   "ZS": 1
+  }
+ },
+ "equity": {
+  "C": 9253.620661,
+  "C-coin": 10225.869859,
+  "C-groq": 9219.4426,
+  "C-groq-coin": 9621.629443,
+  "HOLD": 10072.247568
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 153.91,
+    "exit": 153.61,
+    "notional": 1866.1081786274965,
+    "open_t": 1792598247,
+    "pnl": -5.499872,
+    "side": 1,
+    "sym": "MSTR",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1851.094351,
+    "price": 35.535,
+    "side": 1,
+    "sym": "SMCI",
+    "t": 1792612643
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 153.91,
+    "exit": 153.61,
+    "notional": 2033.4561261418178,
+    "open_t": 1792598247,
+    "pnl": 1.934102,
+    "side": -1,
+    "sym": "MSTR",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 2045.583088,
+    "price": 35.535,
+    "side": -1,
+    "sym": "SMCI",
+    "t": 1792612643
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 21.12,
+    "exit": 21.055,
+    "notional": 1861.1474579778414,
+    "open_t": 1792612049,
+    "pnl": -7.583383,
+    "side": 1,
+    "sym": "APLD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 271.85,
+    "exit": 273.35,
+    "notional": 1887.0589797612402,
+    "open_t": 1792592248,
+    "pnl": 8.514846,
+    "side": 1,
+    "sym": "DDOG",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 282.32,
+    "exit": 283.4,
+    "notional": 1885.7505105780417,
+    "open_t": 1792596452,
+    "pnl": 5.320873,
+    "side": 1,
+    "sym": "ILMN",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1844.995517,
+    "price": 239.31,
+    "side": 1,
+    "sym": "BE",
+    "t": 1792612643
+   },
+   {
+    "action": "open",
+    "notional": 1844.995517,
+    "price": 35.535,
+    "side": 1,
+    "sym": "SMCI",
+    "t": 1792612643
+   },
+   {
+    "action": "open",
+    "notional": 1844.995517,
+    "price": 159.715,
+    "side": 1,
+    "sym": "SPCX",
+    "t": 1792612643
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 21.12,
+    "exit": 21.055,
+    "notional": 1914.3221790567723,
+    "open_t": 1792612049,
+    "pnl": 3.983186,
+    "side": -1,
+    "sym": "APLD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 271.85,
+    "exit": 273.35,
+    "notional": 1944.083317984603,
+    "open_t": 1792592248,
+    "pnl": 8.772153,
+    "side": 1,
+    "sym": "DDOG",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1792612643,
+    "entry": 282.32,
+    "exit": 283.4,
+    "notional": 1936.4046473215021,
+    "open_t": 1792596452,
+    "pnl": 5.4638,
+    "side": 1,
+    "sym": "ILMN",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1925.481177,
+    "price": 239.31,
+    "side": 1,
+    "sym": "BE",
+    "t": 1792612643
+   },
+   {
+    "action": "open",
+    "notional": 1925.481177,
+    "price": 35.535,
+    "side": -1,
+    "sym": "SMCI",
+    "t": 1792612643
+   },
+   {
+    "action": "open",
+    "notional": 1925.481177,
+    "price": 159.715,
+    "side": -1,
+    "sym": "SPCX",
+    "t": 1792612643
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "APLD": 3,
+  "BE": 3,
+  "BMNR": 2,
+  "CEG": 3,
+  "CMG": 3,
+  "COIN": 3,
+  "CRCL": 3,
+  "CRDO": 1,
+  "CRWD": 3,
+  "DDOG": 1,
+  "DELL": 3,
+  "DHR": 3,
+  "EXPE": 1,
+  "GEV": 2,
+  "HOOD": 3,
+  "HPE": 3,
+  "IBM": 3,
+  "ILMN": 3,
+  "IREN": 3,
+  "MRNA": 2,
+  "MSTR": 3,
+  "NET": 3,
+  "NFLX": 3,
+  "OKTA": 1,
+  "PLTR": 3,
+  "RKLB": 3,
+  "SMCI": 3,
+  "SPCX": 3,
+  "T": 3,
+  "UAL": 3,
+  "VRT": 3,
+  "VST": 3,
+  "WDC": 3,
+  "WULF": 1,
+  "ZS": 3
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "APLD": {
+    "charged": 1792612643,
+    "entry": 20.68,
+    "last": 21.055,
+    "notional": 1866.1378649016344,
+    "opened": 1792594641,
+    "qty": 90.23877489853164,
+    "side": 1
+   },
+   "BE": {
+    "charged": 1792612643,
+    "entry": 240.675,
+    "last": 239.31,
+    "notional": 1864.5695961886054,
+    "opened": 1792607842,
+    "qty": 7.747250841128515,
+    "side": 1
+   },
+   "DHR": {
+    "charged": 1792612643,
+    "entry": 231.3,
+    "last": 233.99,
+    "notional": 1893.019979289099,
+    "opened": 1792590516,
+    "qty": 8.18426277254258,
+    "side": 1
+   },
+   "SMCI": {
+    "charged": 1792612643,
+    "entry": 35.535,
+    "last": 35.535,
+    "notional": 1851.0943509923554,
+    "opened": 1792612643,
+    "qty": 52.092144392636996,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1792612643,
+    "entry": 231.195,
+    "last": 231.61,
+    "notional": 1850.4606266540595,
+    "opened": 1792611446,
+    "qty": 8.0038955282513,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "APLD": {
+    "charged": 1792612643,
+    "entry": 20.68,
+    "last": 21.055,
+    "notional": 2029.5806989645607,
+    "opened": 1792594641,
+    "qty": 98.142200143354,
+    "side": 1
+   },
+   "BE": {
+    "charged": 1792612643,
+    "entry": 240.675,
+    "last": 239.31,
+    "notional": 2050.9556457346443,
+    "opened": 1792607842,
+    "qty": 8.521681295251456,
+    "side": -1
+   },
+   "DHR": {
+    "charged": 1792612643,
+    "entry": 231.3,
+    "last": 233.99,
+    "notional": 2010.839691851269,
+    "opened": 1792590516,
+    "qty": 8.693643285133026,
+    "side": 1
+   },
+   "SMCI": {
+    "charged": 1792612643,
+    "entry": 35.535,
+    "last": 35.535,
+    "notional": 2045.5830884269985,
+    "opened": 1792612643,
+    "qty": 57.565304303559834,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1792612643,
+    "entry": 231.195,
+    "last": 231.61,
+    "notional": 2043.8086593714693,
+    "opened": 1792611446,
+    "qty": 8.840194032619518,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "BE": {
+    "charged": 1792612643,
+    "entry": 239.31,
+    "last": 239.31,
+    "notional": 1844.995517215478,
+    "opened": 1792612643,
+    "qty": 7.709646555578447,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792612643,
+    "entry": 234.35,
+    "last": 246.14,
+    "notional": 1914.3094579177339,
+    "opened": 1792512449,
+    "qty": 8.168591670227155,
+    "side": 1
+   },
+   "SMCI": {
+    "charged": 1792612643,
+    "entry": 35.535,
+    "last": 35.535,
+    "notional": 1844.995517215478,
+    "opened": 1792612643,
+    "qty": 51.92051546969124,
+    "side": 1
+   },
+   "SPCX": {
+    "charged": 1792612643,
+    "entry": 159.715,
+    "last": 159.715,
+    "notional": 1844.995517215478,
+    "opened": 1792612643,
+    "qty": 11.551798623895552,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1792612643,
+    "entry": 230.81,
+    "last": 231.61,
+    "notional": 1860.757297101157,
+    "opened": 1792610843,
+    "qty": 8.06185735930487,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "BE": {
+    "charged": 1792612643,
+    "entry": 239.31,
+    "last": 239.31,
+    "notional": 1925.4811772236103,
+    "opened": 1792612643,
+    "qty": 8.045970403341316,
+    "side": 1
+   },
+   "MRNA": {
+    "charged": 1792612643,
+    "entry": 234.35,
+    "last": 246.14,
+    "notional": 1964.9544734112603,
+    "opened": 1792512449,
+    "qty": 8.384700121234308,
+    "side": -1
+   },
+   "SMCI": {
+    "charged": 1792612643,
+    "entry": 35.535,
+    "last": 35.535,
+    "notional": 1925.4811772236103,
+    "opened": 1792612643,
+    "qty": 54.18548409240497,
+    "side": -1
+   },
+   "SPCX": {
+    "charged": 1792612643,
+    "entry": 159.715,
+    "last": 159.715,
+    "notional": 1925.4811772236103,
+    "opened": 1792612643,
+    "qty": 12.055731629612811,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1792612643,
+    "entry": 230.81,
+    "last": 231.61,
+    "notional": 1916.303674669071,
+    "opened": 1792610843,
+    "qty": 8.30251581243911,
+    "side": 1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1792612643,
+    "entry": 767.13,
+    "last": 773.445,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "7cb0029dce929d8ecd9da94a88780bb777d00eee731ceeea36f4b62249153aeb",
+ "price_source": {
+  "APLD": "iex",
+  "AXTI": "iex",
+  "BE": "iex",
+  "BMNR": "iex",
+  "CEG": "iex",
+  "CIEN": "iex",
+  "CMG": "iex",
+  "COIN": "iex",
+  "CRCL": "iex",
+  "CRDO": "iex",
+  "CRWD": "iex",
+  "DDOG": "iex",
+  "DELL": "iex",
+  "DHR": "iex",
+  "EXPE": "iex",
+  "GEV": "iex",
+  "HOOD": "iex",
+  "HPE": "iex",
+  "IBM": "iex",
+  "ILMN": "iex",
+  "IREN": "iex",
+  "MDB": "iex",
+  "MRNA": "iex",
+  "MSTR": "iex",
+  "MTSI": "iex",
+  "NET": "iex",
+  "NFLX": "iex",
+  "OKTA": "iex",
+  "PLTR": "iex",
+  "RKLB": "iex",
+  "SMCI": "iex",
+  "SMTC": "iex",
+  "SPCX": "iex",
+  "T": "iex",
+  "TWST": "iex",
+  "UAL": "iex",
+  "VRT": "iex",
+  "VST": "iex",
+  "WDC": "iex",
+  "WULF": "iex",
+  "ZS": "iex"
+ },
+ "prices": {
+  "APLD": 21.055,
+  "AXTI": 59.52,
+  "BE": 239.31,
+  "BMNR": 23.955,
+  "CEG": 270.755,
+  "CIEN": 361.82,
+  "CMG": 28.125,
+  "COIN": 177.39,
+  "CRCL": 89.72,
+  "CRDO": 182.36,
+  "CRWD": 239.675,
+  "DDOG": 273.35,
+  "DELL": 486.49,
+  "DHR": 233.99,
+  "EXPE": 285.93,
+  "GEV": 926.06,
+  "HOOD": 101.99,
+  "HPE": 58.21,
+  "IBM": 251.045,
+  "ILMN": 283.4,
+  "IREN": 27.875,
+  "MDB": 389.72,
+  "MRNA": 246.14,
+  "MSTR": 153.61,
+  "MTSI": 273.08,
+  "NET": 307.29,
+  "NFLX": 65.065,
+  "OKTA": 208.86,
+  "PLTR": 201.75,
+  "RKLB": 53.7,
+  "SMCI": 35.535,
+  "SMTC": 141.645,
+  "SPCX": 159.715,
+  "T": 21.995,
+  "TWST": 149.43,
+  "UAL": 101.5,
+  "VRT": 212.62,
+  "VST": 156.54,
+  "WDC": 378.55,
+  "WULF": 12.75,
+  "ZS": 231.61
+ },
+ "shortlist": [
+  "SMCI",
+  "APLD",
+  "SPCX",
+  "ZS",
+  "OKTA",
+  "MSTR",
+  "BE",
+  "DDOG",
+  "MDB",
+  "CRDO",
+  "WULF",
+  "T",
+  "CIEN",
+  "ILMN",
+  "RKLB",
+  "CRWD",
+  "DELL",
+  "NET",
+  "NFLX",
+  "CMG",
+  "BMNR",
+  "EXPE",
+  "PLTR",
+  "TWST",
+  "IREN",
+  "CEG",
+  "CRCL",
+  "VRT",
+  "DHR",
+  "AXTI",
+  "VST",
+  "GEV",
+  "SMTC",
+  "WDC",
+  "MTSI",
+  "HOOD",
+  "COIN",
+  "UAL",
+  "HPE",
+  "IBM",
+  "MRNA"
+ ],
+ "t": 1792612643,
+ "universe_date": "2026-10-21",
+ "written_utc": "2026-10-21T19:57:41.815287Z"
+}
