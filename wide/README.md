@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 14:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 15:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9262.52 | -737.48% | 41 | 4 | long APLD, long BE, long DHR, long MSTR, long OKTA |
-| Coin flip on C's picks | $10228.50 | +228.50% | 41 | 24 | long APLD, short BE, long DHR, short MSTR, short OKTA |
-| C's prompt on Groq (K7) | $9329.67 | -670.33% | 85 | 13 | long DDOG, long ILMN, long MRNA, long TLN, long ZS |
-| Coin flip on C-groq's picks | $9601.02 | -398.98% | 85 | 47 | long DDOG, long ILMN, short MRNA, short TLN, long ZS |
-| Just hold SPY | $10059.03 | +59.03% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9244.94 | -755.06% | 41 | 4 | long APLD, long BE, long DHR, long MSTR, long OKTA |
+| Coin flip on C's picks | $10243.74 | +243.74% | 41 | 24 | long APLD, short BE, long DHR, short MSTR, short OKTA |
+| C's prompt on Groq (K7) | $9304.19 | -695.81% | 87 | 13 | long APLD, long DDOG, long ILMN, long MRNA, long SMCI |
+| Coin flip on C-groq's picks | $9581.86 | -418.14% | 87 | 48 | long APLD, long DDOG, long ILMN, short MRNA, long SMCI |
+| Just hold SPY | $10050.83 | +50.83% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 14:57 | long APLD, long BE, long DHR, long MSTR, long OKTA | sold DDOG @ $274.11; bought OKTA @ $208.45 | Maintaining strong long positions in APLD, BE, MSTR, and DHR due to continued positive momentum and news, while replacing DDOG with OKTA for its strong recent performance and positive catalyst. |
 | 2026-10-21 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 14:37 | long APLD, long BE, long DDOG, long DHR, long MSTR | sold SMCI @ $35.34; bought BE @ $240.68 | Maintaining profitable long positions in APLD, DDOG, DHR, and MSTR due to strong momentum and positive news. Selling SMCI due to slight underperformance relative to entry and replacing it with a new long position in BE, which shows strong upward momentum and positive analyst sentiment. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 14:5
 | 2026-10-20 12:07 | long AMZN, short GM, long LLY, long NOC, long RVMD | sold MMM @ $170.26; bought RVMD @ $194.22 | Maintaining profitable long positions in AMZN, LLY, and NOC, and a profitable short in GM due to strong trends and news. Selling MMM due to underperformance and initiating a new long position in RVMD based on positive news and strong price action. |
 | 2026-10-20 11:57 | long AMZN, short GM, long LLY, long MMM, long NOC | sold RVMD @ $194.59; bought NOC @ $536.65 | Maintaining existing profitable positions in AMZN, GM (short), LLY, and MMM, while adding a new long position in NOC due to strong daily performance, positive momentum, and favorable news. |
 | 2026-10-20 11:47 | long AMZN, short GM, long LLY, long MMM, long RVMD | sold NOC @ $535.99; bought MMM @ $170.29 | Closed the losing NOC long position to free up a slot. Maintained profitable AMZN, GM, LLY, and RVMD positions. Opened a new long position in MMM based on strong positive price action and favorable news. |
-| 2026-10-20 11:37 | long AMZN, short GM, long LLY, long NOC, long RVMD | none | Maintaining all existing positions as they show positive momentum or strong fundamental reasons to hold, with GM short performing well on negative news and others showing positive daily gains or strong trends. |
