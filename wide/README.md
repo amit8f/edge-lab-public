@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 12:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9280.55 | -719.45% | 38 | 4 | long APLD, long DHR, long MSTR, long SMCI, long SPCX |
-| Coin flip on C's picks | $10111.82 | +111.82% | 38 | 23 | long APLD, long DHR, short MSTR, long SMCI, short SPCX |
-| C's prompt on Groq (K7) | $9440.51 | -559.49% | 73 | 11 | long DDOG, short GM, long ILMN, long MRNA, long SPCX |
-| Coin flip on C-groq's picks | $9709.06 | -290.94% | 73 | 41 | long DDOG, short GM, long ILMN, short MRNA, long SPCX |
-| Just hold SPY | $10057.47 | +57.47% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9315.74 | -684.26% | 38 | 4 | long APLD, long DHR, long MSTR, long SMCI, long SPCX |
+| Coin flip on C's picks | $10133.71 | +133.71% | 38 | 23 | long APLD, long DHR, short MSTR, long SMCI, short SPCX |
+| C's prompt on Groq (K7) | $9438.15 | -561.85% | 73 | 11 | long DDOG, short GM, long ILMN, long MRNA, long SPCX |
+| Coin flip on C-groq's picks | $9699.11 | -300.89% | 73 | 41 | long DDOG, short GM, long ILMN, short MRNA, long SPCX |
+| Just hold SPY | $10068.28 | +68.28% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 12:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 12:37 | long APLD, long DHR, long MSTR, long SMCI, long SPCX | none | Maintaining all existing long positions due to strong positive news catalysts and significant upward price momentum today, with all positions showing potential for further gains. |
 | 2026-10-21 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 12:17 | long APLD, long DHR, long MSTR, long SMCI, long SPCX | sold DELL @ $483.67; bought SMCI @ $35.50 | Sold DELL to free up a slot and initiated a new long position in SMCI due to its strong daily momentum and positive AI-related news, while maintaining other strong performers and those showing potential reversals. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 12:3
 | 2026-10-20 09:48 | long AMZN, long FICO, long INTU, long LLY, long NOC | sold DDOG @ $254.14; sold MRNA @ $220.62; sold PLTR @ $191.38; sold SNDK @ $1,347.85; bought FICO @ $809.64; bought INTU @ $338.94; bought LLY @ $1,298.86; bought NOC @ $544.71 | Sold underperforming positions (DDOG, MRNA, PLTR, SNDK) and initiated new long positions in NOC, LLY, INTU, and FICO, which are showing strong positive momentum and/or positive news, while holding onto the profitable AMZN position. |
 | 2026-10-19 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-19 15:57 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | none | Maintaining all existing long positions as they are generally performing well today and align with positive sector sentiment, especially in tech and AI-related stocks. |
-| 2026-10-19 15:47 | long AMZN, long DDOG, long MRNA, long PLTR, long SNDK | sold WDC @ $352.14; bought SNDK @ $1,382.93 | Maintaining profitable long positions in AMZN, DDOG, MRNA, and PLTR due to continued positive momentum and news, while selling WDC to open a new long position in SNDK, which shows strong daily performance and positive sentiment in the chip sector. |
