@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9297.23 | -702.77% | 39 | 4 | long APLD, long DDOG, long DHR, long MSTR, long SMCI |
-| Coin flip on C's picks | $10233.28 | +233.28% | 39 | 24 | long APLD, long DDOG, long DHR, short MSTR, long SMCI |
-| C's prompt on Groq (K7) | $9406.79 | -593.21% | 76 | 12 | long APLD, long DDOG, long ILMN, long MRNA, short T |
-| Coin flip on C-groq's picks | $9644.56 | -355.44% | 76 | 42 | long APLD, long DDOG, long ILMN, short MRNA, long T |
-| Just hold SPY | $10078.17 | +78.17% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9296.57 | -703.43% | 39 | 4 | long APLD, long DDOG, long DHR, long MSTR, long SMCI |
+| Coin flip on C's picks | $10220.45 | +220.45% | 39 | 24 | long APLD, long DDOG, long DHR, short MSTR, long SMCI |
+| C's prompt on Groq (K7) | $9386.19 | -613.81% | 77 | 12 | long APLD, long DDOG, long ILMN, long MRNA, long SMCI |
+| Coin flip on C-groq's picks | $9642.51 | -357.49% | 77 | 43 | long APLD, long DDOG, long ILMN, short MRNA, long SMCI |
+| Just hold SPY | $10080.13 | +80.13% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-21 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 13:47 | long APLD, long DDOG, long DHR, long MSTR, long SMCI | sold SPCX @ $158.38; bought DDOG @ $276.71 | Maintaining strong AI-related positions (APLD, MSTR, SMCI, DHR) and adding DDOG due to strong daily performance and bullish analyst sentiment, while selling SPCX to cut losses and reallocate capital. |
 | 2026-10-21 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 13:27 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-21 13:4
 | 2026-10-20 10:57 | long AMZN, short GM, long LLY, long MMM, long NOC | none | Maintaining all existing positions as they show strong positive momentum or align with negative news for short positions, despite some minor unrealized losses. |
 | 2026-10-20 10:47 | long AMZN, short GM, long LLY, long MMM, long NOC | none | Maintaining all existing positions. AMZN, LLY, MMM, and NOC show strong positive momentum and news. GM continues to show significant weakness due to negative news, making the short position viable despite a slight intraday bounce. |
 | 2026-10-20 10:37 | long AMZN, short GM, long LLY, long MMM, long NOC | sold MRK @ $148.18; bought MMM @ $171.41 | Maintaining existing profitable positions in AMZN and LLY, and the short in GM due to strong negative news. Keeping NOC long on positive earnings. Initiating a new long position in MMM based on strong positive earnings and guidance. |
-| 2026-10-20 10:27 | long AMZN, short GM, long LLY, long MRK, long NOC | sold RVMD @ $192.68; sold GM @ $78.16 | Maintaining long positions in AMZN, LLY, MRK, and NOC due to positive momentum and news, while initiating a new short position in GM based on negative earnings and commodity cost outlook. |
