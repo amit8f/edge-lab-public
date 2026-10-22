@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 34** (main 19, penny 5, news 3, cross-track 6, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 49.
+**Phase 2 count: 35** (main 19, penny 5, news 4, cross-track 6, crypto 1). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 50.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
@@ -49,6 +49,7 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | W1c | main | 2026-10-17 | Unusual short-dated OTM call buying (5x its 20-day mean, 3x puts, no news) predicts the stock over 10 days; Alpaca options 2024-02..2025-09 | Amit's request; Augustin, Brenner & Subrahmanyam (2019) | [prereg/W1.md](prereg/W1.md) | |
 | P4 | penny | 2026-10-19 | Insider cluster buys (2+ insiders, $25k+, one opportunistic) in $1-5 stocks; next open, stop -20%, take-profit +40%, else 21 days; vs same-volatility random penny stock, 2% costs | Amit's request (strict small account, stop-loss and take-profit); Lakonishok & Lee 2001; Cohen, Malloy & Pomorski 2012 | [prereg/P4.md](prereg/P4.md) | |
 | SYS2 | cross-track | 2026-10-22 | All-day picker: code flags unusual moves (3 sd), volume (3x pace) and fresh news every 5 minutes; analyst and picker agents (Groq) decide long/short/close with a stop, code sizes, a reviewer agent (Gemini) can veto; MAIN $1,250 and PENNY $500 ledger books vs same-size random-side coin twins; pass at NW t >= 2 at 100 closed trades | Amit's planning phase (docs/PLAN_V3.md stages 2-3, Q27, Q33); Lopez-Lira & Tang (2023) | [prereg/SYS2.md](prereg/SYS2.md) | |
+| NX1 | news | 2026-10-22 | NEWS-XGB: XGBoost on single-stock Benzinga headlines (LM and FinBERT tone, 12 type flags, novelty) plus stock and market inputs, trained 2016-10..2025-09; nightly top 3 longs and 3 shorts held 3 days in a $5,000 ledger book vs a same-night random pick; placebo gate (no-news times) before any account; pass at NW t >= 2 at 100 closed trades | Plan v3 model round (M1-M4); Tetlock (2007); Ke, Kelly & Xiu (2019) | [prereg/NX1.md](prereg/NX1.md) | |
 
 ## Validation studies (not trading ideas; not counted)
 
