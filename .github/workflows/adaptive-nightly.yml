@@ -1,9 +1,13 @@
-# Plan v3 ranking strategies (adaptive/nightly.py, research/prereg/SYS1.md): M4 and M6 each trade their own
-# Alpaca paper account (EL-M4, EL-M6) on the nights M4 or M8 log new picks, after m4-daily has logged them.
+# Plan v3 ranking strategies (adaptive/nightly.py, research/prereg/SYS1.md): M3, M4 and M6 each trade their
+# own Alpaca paper account (EL-M3, EL-M4, EL-M6) on the nights they log new picks. Starts when m4-daily
+# finishes (GitHub's cron runs hours late); the cron is a fallback if that run never happens.
 # Dry run (orders logged, not sent) until the repository variable ADAPTIVE_SEND is set to 1.
 name: adaptive-nightly
 
 on:
+  workflow_run:
+    workflows: [m4-daily]
+    types: [completed]
   schedule:
     - cron: "15 4 * * 2-6"   # 00:15 ET in EDT (23:15 in EST), after m4-daily
   workflow_dispatch:
@@ -48,6 +52,8 @@ jobs:
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          ALPACA_M3_KEY_ID: ${{ secrets.ALPACA_M3_KEY_ID }}
+          ALPACA_M3_SECRET_KEY: ${{ secrets.ALPACA_M3_SECRET_KEY }}
           ALPACA_M4_KEY_ID: ${{ secrets.ALPACA_M4_KEY_ID }}
           ALPACA_M4_SECRET_KEY: ${{ secrets.ALPACA_M4_SECRET_KEY }}
           ALPACA_M6_KEY_ID: ${{ secrets.ALPACA_M6_KEY_ID }}

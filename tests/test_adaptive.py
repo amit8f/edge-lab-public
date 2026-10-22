@@ -185,3 +185,65 @@ def test_nightly_no_rebalance_day(tmp_path, monkeypatch):
     rep = nightly.run(st, now=pd.Timestamp("2026-10-30", tz="UTC"), send=True, api_for=lambda s: FakeApi({}))
     assert rep["strategies"]["M4"] == {"rebalance": False}
     assert not (st / "adaptive" / "nights").exists()
+
+
+def test_nightly_runs_once_per_night(tmp_path, monkeypatch):
+    import pandas as pd
+    from adaptive import nightly
+    monkeypatch.setattr("tracks.main.longterm.live.last_session", lambda now: (pd.Timestamp("2026-10-30"), True))
+    st = _m4_state(tmp_path)
+    api = FakeApi({})
+    nightly.run(st, now=pd.Timestamp("2026-10-31", tz="UTC"), send=True, api_for=lambda s: api)
+    n = len(api.sent)
+    assert n > 0
+    assert nightly.run(st, now=pd.Timestamp("2026-10-31", tz="UTC"), send=True, api_for=lambda s: api) is None
+    assert len(api.sent) == n
+
+
+def _fake_fetch(trend):
+    """Synthetic daily bars for 2023-06..2026-10: each symbol drifts at trend[symbol] a day, plus noise."""
+    import numpy as np
+    import pandas as pd
+    days = pd.bdate_range("2023-01-02", "2026-10-30")
+
+    def fetch(symbols, start, end):
+        out = {"all": {}, "raw": {}, "split": {}}
+        for s in symbols:
+            rng = np.random.default_rng(int.from_bytes(s.encode(), "big"))
+            c = 50 * np.exp(np.cumsum(trend.get(s, 0.0) + rng.normal(0, 0.01, len(days))))
+            df = pd.DataFrame({"o": c, "c": c, "v": 1e6}, index=days)
+            for k in out:
+                out[k][s] = df
+        return out
+    return fetch
+
+
+def test_m3_live_logs_month_end_picks(tmp_path, monkeypatch):
+    import json
+    import pandas as pd
+    from core.ledger import Ledger
+    from tracks.main import m3_live
+    monkeypatch.setattr("tracks.main.longterm.live.last_session", lambda now: (pd.Timestamp("2026-10-30"), True))
+    uni = [f"U{i:02d}" for i in range(40)]
+    Ledger(tmp_path / "longterm").write_json("M4_picks", "2026-10-30", "picks/2026-10-30.json",
+                                             {"picks": [], "control": [], "universe": uni})
+    trend = {"SPY": 0.0003, "BIL": 0.0001, "IWM": 0.0002, "IWD": 0.0002, "IWF": 0.0003}
+    now = pd.Timestamp("2026-10-31T04:00", tz="UTC")
+    rec = m3_live.run(tmp_path, now=now, fetch=_fake_fetch(trend))
+    assert rec and len(rec["picks"]) == 25 and len(rec["control"]) == 25 and len(rec["universe"]) == 40
+    assert [p["rank"] for p in rec["picks"]] == list(range(1, 26))
+    e = Ledger(tmp_path / "longterm").entry("M3_picks", "2026-10-30")
+    assert json.loads((tmp_path / "longterm" / e["file"]).read_text())["picks"][0]["symbol"] == rec["picks"][0]["symbol"]
+    assert m3_live.run(tmp_path, now=now, fetch=_fake_fetch(trend)) is None      # logged once
+
+
+def test_m3_live_needs_current_factors(tmp_path, monkeypatch):
+    import pandas as pd
+    import pytest
+    from core.ledger import Ledger
+    from tracks.main import m3_live
+    monkeypatch.setattr("tracks.main.longterm.live.last_session", lambda now: (pd.Timestamp("2026-11-30"), True))
+    Ledger(tmp_path / "longterm").write_json("M4_picks", "2026-11-30", "picks/2026-11-30.json",
+                                             {"picks": [], "control": [], "universe": ["A"]})
+    with pytest.raises(RuntimeError, match="stand-in factors"):
+        m3_live.run(tmp_path, now=pd.Timestamp("2026-12-01T04:00", tz="UTC"), fetch=_fake_fetch({}))

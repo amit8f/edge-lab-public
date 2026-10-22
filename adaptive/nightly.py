@@ -1,9 +1,10 @@
-"""Plan v3 nightly job for the ranking strategies (SYS1): M4 (the long-term composite) and M6 (analyst
-actions, the M8 weekly ranking). Each runs in its own Alpaca paper account (adaptive/accounts.py).
+"""Plan v3 nightly job for the ranking strategies (SYS1): M3 (residual momentum, tracks/main/m3_live.py),
+M4 (the long-term composite) and M6 (analyst actions, the M8 weekly ranking). Each runs in its own Alpaca
+paper account (adaptive/accounts.py).
 
 Each account holds its strategy's fixed starting cash (SYS1 clarification 2), so the account shows that
-strategy's own result; the learner's weighted book is ledger-only. On a rebalance night (a new M4_picks or
-M8_picks entry in state/longterm/ledger.jsonl for tonight's session) a strategy targets its top TOP_K
+strategy's own result; the learner's weighted book is ledger-only. On a rebalance night (a new M3_picks,
+M4_picks or M8_picks entry in state/longterm/ledger.jsonl for tonight's session) a strategy targets its top TOP_K
 picks, equal-sized from its account budget, and the job orders for the next open:
 - names that left the list: cancel their open orders (the broker-held stop), then sell at the open;
 - new names: a day limit buy at the close + 1%, with a broker-held stop 15% below the limit (OTO order).
@@ -26,7 +27,8 @@ from core.ledger import Ledger
 
 BOOK = {"main": 5000.0, "penny": 1000.0}
 START_WEIGHTS = {"main": {"M3": 1 / 3, "M4": 1 / 3, "M6": 1 / 3}}
-STRATEGIES = {"M4": {"account": "EL-M4", "kind": "M4_picks", "system": "main", "budget": 1250.0},
+STRATEGIES = {"M3": {"account": "EL-M3", "kind": "M3_picks", "system": "main", "budget": 1250.0},
+              "M4": {"account": "EL-M4", "kind": "M4_picks", "system": "main", "budget": 1250.0},
               "M6": {"account": "EL-M6", "kind": "M8_picks", "system": "main", "budget": 1250.0}}
 TOP_K = 5
 ENTRY_LIMIT = 0.01
@@ -109,6 +111,9 @@ def run(state, now=None, send=None, api_for=None):
     from tracks.main.longterm.live import last_session
     t, _ = last_session(now)
     day = f"{t:%Y-%m-%d}"
+    if led.has("adaptive_night", day):          # m4-daily can finish more than once a night
+        print(f"{day} already handled")
+        return None
     w_all = weights(root)
     report = {"day": day, "send": send, "strategies": {}}
     for s, cfg in STRATEGIES.items():
