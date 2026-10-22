@@ -57,3 +57,14 @@ copy and the strategies are judged on their own, and the learning rule is droppe
   The frozen copy and the random control are ledger-only books with no account. Shadow rules are
   ledger-only too.
 - The learning rule, promotion bar, caps and primary test are unchanged.
+
+## Clarification 2 (2026-10-20, before any result; Amit's choice in the planning thread)
+
+- Each strategy's paper account holds exactly its trade budget, so Alpaca shows its return in percent:
+  EL-P1P2 $5,000, EL-M3 / EL-M4 / EL-M6 $1,250 each, EL-P4 $500. The other $1,250 of main and $500 of
+  penny wait for the two picker strategies (Stage 3). EL-DATA reads prices and news and never trades.
+- Account cash stays fixed. The learner's weighted main and penny books (and the frozen copy and the
+  random control) are ledger-only, priced from each strategy's own fills, so nothing moves between
+  accounts. This replaces clarification 1's account-sizing and $25,000-equity lines: the strategies hold
+  for days to weeks, so the paper account's old under-$25,000 day-trade check doesn't bind.
+- Accounts under $2,000 can't short on Alpaca; M3, M4, M6 and P4 are long-only, so this doesn't bind.

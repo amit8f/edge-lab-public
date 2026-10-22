@@ -53,7 +53,7 @@ def test_each_book_goes_to_its_own_account_and_errors_never_raise(tmp_path):
 
 def test_no_keys_does_nothing(tmp_path, monkeypatch):
     assert m.ACCOUNTS["C"][0] == "ALPACA_MIRROR_B_KEY_ID"     # C took over B's paper account
-    assert m.ACCOUNTS["B"][0] == "ALPACA_API_KEY_ID"          # combo bot B mirrors to the main account
+    assert m.ACCOUNTS["B"][0] == "ALPACA_BOT_B_KEY_ID"        # never the EL-DATA key pair
     for k in ("ALPACA_MIRROR_KEY_ID", "ALPACA_MIRROR_B_KEY_ID"):
         monkeypatch.delenv(k, raising=False)
     assert m.run({"books": {}}, {}, tmp_path / "x") is None and not (tmp_path / "x").exists()
