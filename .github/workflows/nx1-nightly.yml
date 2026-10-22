@@ -1,0 +1,71 @@
+# NX1 / NEWS-XGB nightly scorer and shadow books (research/prereg/NX1.md, tracks/news/nx1_live.py).
+# Ledger-only: no orders. Runs after 10:00pm ET on trading nights (03:15 UTC = 23:15 EDT / 22:15 EST) and
+# does nothing until research/results/NX1/nx1_v1.json exists. Forward data lives on the state-nx1 branch.
+name: nx1-nightly
+
+on:
+  schedule:
+    - cron: "15 3 * * 2-6"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: nx1-state
+  cancel-in-progress: false
+
+jobs:
+  night:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Stop here until the model is trained
+        id: model
+        run: |
+          if [[ -f research/results/NX1/nx1_v1.json ]]; then echo "ready=1" >> "$GITHUB_OUTPUT"; else echo "model v1 not trained yet"; fi
+
+      - name: Set up uv
+        if: steps.model.outputs.ready == '1'
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages (CPU-only torch for FinBERT)
+        if: steps.model.outputs.ready == '1'
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
+
+      - name: Restore the state branch
+        if: steps.model.outputs.ready == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-nx1
+        run: bash deploy/state.sh restore
+
+      - name: Score the night (ledger only)
+        if: steps.model.outputs.ready == '1'
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: PYTHONPATH=. .venv/bin/python -m tracks.news.nx1_live --state state
+
+      - name: Commit the state back
+        if: always() && steps.model.outputs.ready == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-nx1
+          RUN_LABEL: nx1-nightly ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
