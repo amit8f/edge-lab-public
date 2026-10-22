@@ -122,3 +122,66 @@ def test_accounts_check(monkeypatch):
     out = accounts.check("EL-M3", get=lambda *a, **k: R())
     assert "OK" in out and "...5678" in out and "k" not in out.split("account")[0].replace("OK", "")
     assert accounts.check("EL-M4") == "EL-M4: secrets not set"
+
+
+def _m4_state(tmp_path, day="2026-10-30"):
+    from core.ledger import Ledger
+    lt = tmp_path / "longterm"
+    led = Ledger(lt)
+    led.write_json("M4_picks", day, f"picks/{day}.json", {
+        "picks": [{"rank": i + 1, "symbol": f"S{i}", "price": 20.0 + i, "score": 1.0} for i in range(20)],
+        "control": [f"C{i}" for i in range(20)], "universe": []})
+    return tmp_path
+
+
+class FakeApi:
+    def __init__(self, held):
+        self.held, self.sent, self.cancelled = held, [], []
+
+    def positions(self):
+        return {k: {"qty": str(v)} for k, v in self.held.items()}
+
+    def open_orders(self):
+        return [{"id": "o1", "symbol": "OLD"}, {"id": "o2", "symbol": "S0"}]
+
+    def cancel(self, oid):
+        self.cancelled.append(oid)
+        return 204
+
+    def order(self, body):
+        self.sent.append(body)
+        return 200, {"status": "accepted"}
+
+
+def test_nightly_plan_dry_run_and_send(tmp_path, monkeypatch):
+    import pandas as pd
+    from adaptive import nightly
+    monkeypatch.setattr("tracks.main.longterm.live.last_session", lambda now: (pd.Timestamp("2026-10-30"), True))
+    st = _m4_state(tmp_path)
+    api = FakeApi({"OLD": 3, "S0": 10})
+    rep = nightly.run(st, now=pd.Timestamp("2026-10-31", tz="UTC"), send=False, api_for=lambda s: api)
+    m4 = rep["strategies"]["M4"]
+    kinds = [(o["kind"], o["symbol"]) for o in m4["orders"]]
+    assert ("exit", "OLD") in kinds and ("entry", "S1") in kinds and not any(s == "S0" for _, s in kinds)
+    assert len([k for k, _ in kinds if k == "entry"]) == 4
+    assert api.sent == [] and rep["strategies"]["M6"] == {"rebalance": False}
+    assert m4["control"] == ["C0", "C1", "C2", "C3", "C4"]
+    e = next(o for o in m4["orders"] if o["kind"] == "entry")
+    assert e["body"]["order_class"] == "oto" and float(e["body"]["stop_loss"]["stop_price"]) < float(e["body"]["limit_price"])
+    # $1,250 account over 5 names = $250 each (the 10% name cap of $125 binds first)
+    assert int(e["body"]["qty"]) * float(e["body"]["limit_price"]) <= 125.01
+    assert (st / "adaptive" / "nights" / "2026-10-30.json").exists()
+    api2 = FakeApi({"OLD": 3})
+    st2 = _m4_state(tmp_path / "b")
+    nightly.run(st2, now=pd.Timestamp("2026-10-31", tz="UTC"), send=True, api_for=lambda s: api2)
+    assert api2.cancelled == ["o1"] and len(api2.sent) == 6
+
+
+def test_nightly_no_rebalance_day(tmp_path, monkeypatch):
+    import pandas as pd
+    from adaptive import nightly
+    monkeypatch.setattr("tracks.main.longterm.live.last_session", lambda now: (pd.Timestamp("2026-10-29"), False))
+    st = _m4_state(tmp_path)
+    rep = nightly.run(st, now=pd.Timestamp("2026-10-30", tz="UTC"), send=True, api_for=lambda s: FakeApi({}))
+    assert rep["strategies"]["M4"] == {"rebalance": False}
+    assert not (st / "adaptive" / "nights").exists()
