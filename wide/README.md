@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8979.74 | -1020.26% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
-| Coin flip on C's picks | $10097.00 | +97.00% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
-| C's prompt on Groq (K7) | $8996.57 | -1003.43% | 108 | 19 | long CSX, short GEV, long LMT, short LRCX, long SPOT |
-| Coin flip on C-groq's picks | $9922.75 | -77.25% | 108 | 61 | short CSX, short GEV, long LMT, short LRCX, short SPOT |
-| Just hold SPY | $9939.61 | -60.39% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8984.94 | -1015.06% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
+| Coin flip on C's picks | $10093.34 | +93.34% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
+| C's prompt on Groq (K7) | $8999.61 | -1000.39% | 108 | 19 | long CSX, short GEV, long LMT, short LRCX, long SPOT |
+| Coin flip on C-groq's picks | $9926.92 | -73.08% | 108 | 61 | short CSX, short GEV, long LMT, short LRCX, short SPOT |
+| Just hold SPY | $9933.56 | -66.44% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-22 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 13:47 | long CSX, long DHR, long LMT, long SPOT, long ZS | none | Maintaining all current long positions (CSX, DHR, LMT, SPOT, ZS) due to their strong positive momentum, favorable news, or resilience in a generally down market. |
 | 2026-10-22 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 13:27 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 13:4
 | 2026-10-21 10:57 | long APLD, long DELL, long DHR, long SMCI, long SPCX | sold VRT @ $213.19; bought APLD @ $20.68 | Maintaining profitable positions in DELL and DHR, holding SMCI and SPCX due to strong positive news and momentum despite being slightly underwater, and initiating a new long position in APLD based on strong news and price action in the AI data center space. |
 | 2026-10-21 10:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 10:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-21 10:27 | no answer, nothing changed | none | unreadable answer |
