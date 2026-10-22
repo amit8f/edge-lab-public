@@ -54,6 +54,12 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: .venv/bin/python -m tracks.main.longterm.live --state state --cache cache/m4live ${{ github.event_name == 'schedule' && '--log-days-only' || '' }}
 
+      - name: M3 picks on a month end (tracks/main/m3_live.py)
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: .venv/bin/python -m tracks.main.m3_live --state state
+
       - name: Timestamp the ledger head outside GitHub (OpenTimestamps; never blocks the run)
         if: always()
         continue-on-error: true

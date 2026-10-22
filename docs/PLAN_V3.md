@@ -16,7 +16,8 @@ random control, and Amit's signature in `research/PROTOCOL.md`.
 ## 2. The money (paper)
 
 Updated 2026-10-20 after approval: main is a $5,000 book and penny a $1,000 book, and each strategy
-holding paper money has its own Alpaca paper account (`research/prereg/SYS1.md`, clarification 1). The
+holding paper money has its own Alpaca paper account holding exactly its budget (`research/prereg/SYS1.md`,
+clarifications 1 and 2). The
 table below is the original split.
 
 | Book | Share | Alpaca paper account |
@@ -150,3 +151,25 @@ with orders logged but not sent).
 11. The Sunday report shows how many more weeks each book needs to reach the real-money bar at its current pace.
 12. Daily theme-exposure report, flagged above 40% of the book on one theme (a report, not a limit).
 Later, before real money: Israeli tax and the W-8BEN form with an accountant.
+
+## 13. Model strategies (decided 2026-10-20, answers M1-M14 in the decisions log)
+
+Lessons from the old news-signal model: it fired almost as often on fake no-news times (4.1% vs 7.1%)
+with similar returns, it leaned on chart signals (news tone ranked 23rd), it trained on 4 months, and
+Finnhub's free news arrived a median 2.6 hours late.
+
+| Model | What it does | Trains on | Account |
+|---|---|---|---|
+| NEWS-XGB | Each Benzinga headline gets long, short or nothing: the 3-day return after it, minus the market | 2016-2025-09 headlines with word-list and FinBERT tone; AI-read features only through forward retrains | own, after passing the placebo gate |
+| META | Take or skip, and the size, for each trade another strategy wants | historical replays of each strategy's signals before 2025-10 | none (runs inside strategies, with and without) |
+| RANK-ML | Monthly ranking of all stocks on 80-120 published signals rebuilt from free data | 2016-2025-09 months | own, after promotion |
+| FILING-XGB | New 8-Ks and insider forms, scored | 2016-2025-09 filings (item codes, word lists); AI reads forward only | own, after promotion |
+| BURST-XGB | Penny jump odds (after the B0 study) | B0's data | own, after promotion |
+| KRONOS | The AI-bot thread's price-forecast model, as a strategy | its own | own, after promotion |
+
+Rules: each model is pre-registered before it trains, and retrained weekly on data up to the previous
+Friday, with its first version kept running in the ledger. Walk-forward tests keep a gap between train
+and test. Settings are small and fixed, with at most 40 inputs (RANK-ML excepted). An input-importance
+report follows each retrain. Dates from 2025-10-01 up to each model's paper start stay untouched (the holdout). Forward retraining uses only paper-period data, from that start on.
+News models must pass the placebo gate before getting an account.
+Order: account wiring first, then NEWS-XGB, then RANK-ML and META, then FILING-XGB and BURST-XGB.

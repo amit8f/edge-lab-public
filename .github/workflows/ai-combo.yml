@@ -49,6 +49,8 @@ jobs:
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          ALPACA_BOT_B_KEY_ID: ${{ secrets.ALPACA_BOT_B_KEY_ID }}
+          ALPACA_BOT_B_SECRET_KEY: ${{ secrets.ALPACA_BOT_B_SECRET_KEY }}
         run: .venv/bin/python -m tracks.main.ai_combo --state state
 
       - name: Commit the state back
