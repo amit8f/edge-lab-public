@@ -82,3 +82,10 @@ The books start with no Alpaca account. A book moves to its paper account (EL-PI
 Amit creates them) under SYS1's promotion rule against its twin: at least 20 trading days, 30 closed trades and
 confidence of at least `adaptive/promotion.required(n)`. Pass at the primary read: it may join SYS1's learner
 as a funded strategy. Fail: it is dropped or re-registered as a new version.
+
+## Clarification 1 (2026-10-22, after a one-hour test run that afternoon and before any closed trade; Amit's choice)
+
+- PICK-MAIN is a $5,000 book, so a 10% position can hold one share of a stock up to $500. At $1,250 the test
+  run sized CRS and FCFS at zero shares. PICK-PENNY stays $500 ($1-5 stocks fit). EL-PICK-MAIN would hold $5,000.
+- Both books and twins start fresh at the first pass of 2026-10-23. The 2026-10-22 passes stay in the ledger
+  as a test and are left out of every result.

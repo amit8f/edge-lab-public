@@ -121,7 +121,7 @@ def test_a_pass_sizes_reviews_and_books_both_twins(tmp_path):
     assert rec["slot"] == "2026-10-23T10:35" and [c["symbol"] for c in rec["candidates"]] == ["S0"]
     (o, t) = rec["fills"]
     assert o["book"] == "PICK-MAIN" and o["side"] == 1 and t["book"] == "PICK-MAIN-coin"
-    assert o["qty"] == t["qty"] and o["qty"] * o["price"] <= 125.0           # 10% of the $1,250 book
+    assert o["qty"] == t["qty"] and o["qty"] * o["price"] <= 500.0           # 10% of the $5,000 book
     assert abs(o["stop"] / o["price"] - 0.95) < 1e-6
     assert rec["agents"]["picker"]["model"] == W.PICKER_MODEL and "answer_sha256" in rec["agents"]["picker"]
     written = (tmp_path / "watch" / "passes" / "2026-10-23" / "1035.json").read_text()
@@ -220,3 +220,16 @@ def test_picker_close_takes_the_twin_out_too(tmp_path):
     rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=70))
     assert sorted((f["book"], f["why"]) for f in rec["fills"]) == [("PICK-MAIN", "picker"),
                                                                    ("PICK-MAIN-coin", "picker exit")]
+
+
+def test_old_books_restart_on_a_new_version(tmp_path):
+    root = tmp_path / "watch"
+    root.mkdir()
+    old = W.init_state()
+    old["version"] = "2026-10-22"
+    old["books"]["PICK-MAIN"]["cash"] = 1250.0
+    (root / "books.json").write_text(json.dumps(old))
+    rec = run(Fake(), tmp_path, OPEN + pd.Timedelta(minutes=65))
+    assert rec["books_restarted"] and rec["equity"]["PICK-MAIN"] == 5000.0
+    st = json.loads((root / "books.json").read_text())
+    assert st["version"] == W.BOOKS_VERSION
