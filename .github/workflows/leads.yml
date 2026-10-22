@@ -2,7 +2,8 @@
 # and SEC filings that often precede headlines (core/leads_sec.py), saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
 # servers, so they are not collected here.) Runs once a night; the cursor fills any day a skipped run
 # missed. The same job runs the penny track's P1/P2 paper trading (tracks/penny/nightly.py), which does
-# nothing before the night of 2026-10-19 and needs the night's articles up to 23:30 ET.
+# nothing before the night of 2026-10-19 and needs the night's articles up to 23:30 ET, and P4's paper
+# trading (tracks/penny/p4_live.py), from the night of 2026-10-23.
 name: leads
 
 # This public copy is the one that runs nightly: the private repo has used its Actions minutes and
@@ -24,7 +25,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - name: Check out the code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -71,6 +72,33 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           NO_HEADLINE_TEXT: "1"
         run: .venv/bin/python -m tracks.penny.nightly --state state
+
+      - name: Restore DERA insider purchases (P4's routine-buyer test)
+        if: always()
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/p4live
+          key: p4-live-dera-v1-${{ github.run_id }}
+          restore-keys: p4-live-dera-v1-
+
+      - name: Paper trading, P4 insider cluster buys (EL-P4 paper account only)
+        if: always()
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          ALPACA_P4_KEY_ID: ${{ secrets.ALPACA_P4_KEY_ID }}
+          ALPACA_P4_SECRET_KEY: ${{ secrets.ALPACA_P4_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          ADAPTIVE_SEND: ${{ vars.ADAPTIVE_SEND }}
+        run: .venv/bin/python -m tracks.penny.p4_live --state state --cache cache/p4live
+
+      - name: Save DERA insider purchases
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: cache/p4live
+          key: p4-live-dera-v1-${{ github.run_id }}
 
       - name: Commit the state back
         if: always()
