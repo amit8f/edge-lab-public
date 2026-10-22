@@ -6,7 +6,7 @@ Each account holds its strategy's fixed starting cash (SYS1 clarification 2), so
 strategy's own result; the learner's weighted book is ledger-only. On a rebalance night (a new M3_picks,
 M4_picks or M8_picks entry in state/longterm/ledger.jsonl for tonight's session) a strategy targets its top TOP_K
 picks, equal-sized from its account budget, and the job orders for the next open:
-- names that left the list: cancel their open orders (the broker-held stop), then sell at the open;
+- names that left the list: cancel their open orders (the broker-held stop), then sell at the open (day market order; Alpaca paper expired our opg orders);
 - new names: a day limit buy at the close + 1%, with a broker-held stop 15% below the limit (OTO order).
 The ledger-only random control takes the first TOP_K of the same entry's logged control list.
 
@@ -79,7 +79,7 @@ def plan(strategy, rec, held, day):
         if sym not in want and qty > 0:
             out.append({"kind": "exit", "symbol": sym,
                         "body": {"symbol": sym, "qty": str(int(qty)), "side": "sell", "type": "market",
-                                 "time_in_force": "opg", "client_order_id": f"el-{strategy}-{day}-{sym}-out"}})
+                                 "time_in_force": "day", "client_order_id": f"el-{strategy}-{day}-{sym}-out"}})
     per_name = budget / max(len(picks), 1)
     for p in picks:
         if p["symbol"] in held:

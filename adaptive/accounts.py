@@ -5,6 +5,7 @@ equity, last 4 digits of its account number and whether Alpaca still flags patte
 It never prints a key.
 """
 import os
+from datetime import datetime, timedelta, timezone
 
 import requests
 
@@ -46,9 +47,32 @@ def check(name, get=requests.get):
             f"shorting_enabled={a.get('shorting_enabled')}")
 
 
+def activity(name, get=requests.get):
+    """Lines for each open position (unrealized P&L in %) and each order of the last 7 days."""
+    h = headers(name)
+    if h is None:
+        return []
+    out = []
+    try:
+        for p in get(f"{TRADE}/positions", headers=h, timeout=30).json():
+            out.append(f"  position {p['symbol']} qty {p['qty']} entry {float(p['avg_entry_price']):.4f} "
+                       f"now {float(p['current_price']):.4f} P&L ${float(p['unrealized_pl']):.2f} "
+                       f"({100 * float(p['unrealized_plpc']):.2f}%)")
+        after = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        for o in get(f"{TRADE}/orders", params={"status": "all", "after": after, "limit": 100}, headers=h,
+                     timeout=30).json():
+            out.append(f"  order {o['symbol']} {o['side']} {o['qty']} {o['type']}/{o['time_in_force']} "
+                       f"status {o['status']} filled {o.get('filled_qty')} @ {o.get('filled_avg_price')}")
+    except (requests.RequestException, ValueError, KeyError, TypeError) as e:
+        out.append(f"  activity unavailable ({type(e).__name__})")
+    return out
+
+
 def main():
     for name in ACCOUNTS:
         print(check(name))
+        for line in activity(name):
+            print(line)
 
 
 if __name__ == "__main__":

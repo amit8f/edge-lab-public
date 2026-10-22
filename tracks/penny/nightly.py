@@ -48,6 +48,8 @@ CONTROL_WINDOW = 20                      # trading days, the signal day included
 DILUTION_DAYS, A9_DAYS, PUMP = 90, 180, 0.50
 MIN_PRICE, MAX_PRICE, MIN_DV20, MIN_BARS = 1.0, 5.0, 5e5, 60
 GAP_DAYS = 15
+OPEN_TIF = "day"                         # Alpaca paper expired our first "opg" (market-on-open) orders unfilled
+                                         # (2026-10-22); a day market order sent overnight fills at the open
 LIMIT_OFFSET = 0.01                      # X1: limit 1% through the signal close (buy above, sell below)
 EVENT_COLS = ["event_id", "night_day", "cls", "sign", "symbol", "series_id", "cik", "T", "source", "src", "id",
               "accession", "headline"]
@@ -392,14 +394,14 @@ def mirror_orders(state, tomorrow):
         if e["track"] == "penny" and e["entry_date"] == tomorrow:
             qty = int(e["notional"] // e["close"])
             body = {"symbol": e["symbol"], "qty": str(qty), "side": "buy" if e["side"] == "long" else "sell",
-                    "type": "market", "time_in_force": "opg", "client_order_id": f"el-{e['event_id']}-in"}
+                    "type": "market", "time_in_force": OPEN_TIF, "client_order_id": f"el-{e['event_id']}-in"}
             out.append((body["client_order_id"], body if qty >= 1 else None, "entry"))
     for p in state["open"]:
         if p["track"] != "penny":
             continue
         side = "sell" if p["side"] == "long" else "buy"
         if p.get("pending_exit") and p["pending_exit"]["date"] == tomorrow:
-            cid, tif, kind = f"el-{p['event_id']}-stop", "opg", "stop exit"
+            cid, tif, kind = f"el-{p['event_id']}-stop", OPEN_TIF, "stop exit"
         elif p["days_held"] == p["hold_days"] - 1:
             cid, tif, kind = f"el-{p['event_id']}-time", "cls", "time exit"
         else:
