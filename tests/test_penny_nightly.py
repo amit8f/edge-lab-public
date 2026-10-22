@@ -126,7 +126,7 @@ def test_first_night_signals_controls_and_mirror(tmp_path):
     assert lim == {"XPEN": pytest.approx(2.97), "YPEN": pytest.approx(3.03)}
     assert all(s["borrow_day"] is None for s in rec["signals"])
     sides = {b["symbol"]: (b["side"], b["time_in_force"]) for b in api.sent}
-    assert sides == {"XPEN": ("sell", "opg"), "YPEN": ("buy", "opg")}
+    assert sides == {"XPEN": ("sell", "day"), "YPEN": ("buy", "day")}
     assert all(b["client_order_id"].startswith("el-20261102-") and int(b["qty"]) >= 1 for b in api.sent)
 
     # same night again: nothing new, no order sent twice
@@ -208,7 +208,7 @@ def test_mirror_orders_for_exits():
         {"track": "penny", "symbol": "C", "side": "long", "event_id": "e3", "days_held": 1, "hold_days": 5,
          "pending_exit": None}]}
     o = {cid: (b["side"], b["time_in_force"]) for cid, b, _ in N.mirror_orders(st, "2026-11-05")}
-    assert o == {"el-e1-time": ("buy", "cls"), "el-e2-stop": ("sell", "opg")}
+    assert o == {"el-e1-time": ("buy", "cls"), "el-e2-stop": ("sell", "day")}
 
 
 def test_control_pool_excludes_recent_events():
