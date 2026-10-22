@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8986.43 | -1013.57% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
-| Coin flip on C's picks | $10068.36 | +68.36% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
-| C's prompt on Groq (K7) | $8991.84 | -1008.16% | 103 | 17 | long CSX, long LMT, short LRCX, long PG, long SPOT |
-| Coin flip on C-groq's picks | $9921.00 | -79.00% | 103 | 58 | short CSX, short LMT, short LRCX, long PG, long SPOT |
-| Just hold SPY | $9938.96 | -61.04% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9014.07 | -985.93% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
+| Coin flip on C's picks | $10078.24 | +78.24% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
+| C's prompt on Groq (K7) | $9000.60 | -999.40% | 103 | 17 | long CSX, long LMT, short LRCX, long PG, long SPOT |
+| Coin flip on C-groq's picks | $9930.86 | -69.14% | 103 | 58 | short CSX, short LMT, short LRCX, long PG, long SPOT |
+| Just hold SPY | $9953.68 | -46.32% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-22 11:27 | long CSX, long DHR, long LMT, long SPOT, long ZS | none | All existing long positions are performing well or have strong positive news/momentum today, so I am maintaining all five positions. |
 | 2026-10-22 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 10:57 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 11:1
 | 2026-10-20 14:57 | short FIX, short GE, short GM, short IREN, short TSEM | bought HWM @ $210.38; bought PWR @ $598.77; sold GE @ $299.12; sold IREN @ $26.43 | Maintaining profitable short positions in FIX, GM, and TSEM due to continued downtrends. Closing HWM and PWR shorts due to price moving against positions. Initiating new short positions in IREN and GE based on strong bearish momentum and recent price action. |
 | 2026-10-20 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 14:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-20 14:27 | no answer, nothing changed | none | unreadable answer |
