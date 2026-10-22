@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8984.65 | -1015.35% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
-| Coin flip on C's picks | $10061.18 | +61.18% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
-| C's prompt on Groq (K7) | $9002.94 | -997.06% | 103 | 17 | long CSX, long LMT, short LRCX, long PG, long SPOT |
-| Coin flip on C-groq's picks | $9906.79 | -93.21% | 103 | 58 | short CSX, short LMT, short LRCX, long PG, long SPOT |
-| Just hold SPY | $9929.13 | -70.87% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8981.07 | -1018.93% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
+| Coin flip on C's picks | $10075.39 | +75.39% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
+| C's prompt on Groq (K7) | $8998.90 | -1001.10% | 103 | 17 | long CSX, long LMT, short LRCX, long PG, long SPOT |
+| Coin flip on C-groq's picks | $9925.40 | -74.60% | 103 | 58 | short CSX, short LMT, short LRCX, long PG, long SPOT |
+| Just hold SPY | $9935.32 | -64.68% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-22 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 10:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 10:37 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 10:5
 | 2026-10-20 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 14:17 | short FIX, short GM, short HWM, short PWR, short TSEM | none | Maintaining all existing short positions as they align with the strategy of shorting stocks with strong negative momentum and are mostly profitable. |
-| 2026-10-20 14:07 | short FIX, short GM, short HWM, short PWR, short TSEM | bought GE @ $298.85; sold PWR @ $595.42 | Maintaining current profitable short positions in GM, TSEM, HWM, and FIX due to continued weakness, and adding a new short in PWR which shows strong intraday and multi-session decline, while closing the slightly negative GE short. |
