@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 12:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 13:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8965.31 | -1034.69% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
-| Coin flip on C's picks | $10067.54 | +67.54% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
-| C's prompt on Groq (K7) | $9025.13 | -974.87% | 105 | 17 | long CSX, short GEV, short LRCX, long PG, long SPOT |
-| Coin flip on C-groq's picks | $9981.05 | -18.95% | 105 | 59 | short CSX, short GEV, short LRCX, long PG, long SPOT |
-| Just hold SPY | $9942.02 | -57.98% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8970.85 | -1029.15% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
+| Coin flip on C's picks | $10081.91 | +81.91% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
+| C's prompt on Groq (K7) | $9047.81 | -952.19% | 105 | 17 | long CSX, short GEV, short LRCX, long PG, long SPOT |
+| Coin flip on C-groq's picks | $10001.46 | +1.46% | 105 | 59 | short CSX, short GEV, short LRCX, long PG, long SPOT |
+| Just hold SPY | $9930.50 | -69.50% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-22 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 12:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 12:37 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 12:5
 | 2026-10-21 10:07 | long DELL, long DHR, long SMCI, long SPCX, long VRT | none | Maintaining all current long positions due to strong positive momentum today for most holdings and favorable news, particularly in the AI sector. |
 | 2026-10-21 09:57 | long DELL, long DHR, long SMCI, long SPCX, long VRT | bought NFLX @ $67.00; bought T @ $22.46; bought SPCX @ $163.93; bought VRT @ $215.59 | Closed losing short positions in NFLX and T to reduce risk. Maintained long positions in SMCI, DELL, and DHR due to positive news and strong daily performance. Initiated new long positions in SPCX and VRT, both showing strong upward momentum and positive AI-related news, to capitalize on current mar |
 | 2026-10-21 09:48 | long DELL, long DHR, short NFLX, long SMCI, short T | bought FIX @ $1,424.86; bought GM @ $76.87; bought LRCX @ $267.68; bought SMTC @ $140.00; bought TSEM @ $185.22; bought DELL @ $488.38; bought DHR @ $231.30; sold NFLX @ $66.41; bought SMCI @ $36.82; sold T @ $22.36 | Selling all current losing short positions and initiating new long positions in fundamentally strong companies with positive AI-related news or strong earnings, while shorting two stocks with negative news and price momentum. |
-| 2026-10-20 15:59 | short FIX, short GM, short LRCX, short SMTC, short TSEM | bought GE @ $299.92; bought IREN @ $26.73; sold LRCX @ $263.38; sold SMTC @ $136.20 | Closed GE and IREN due to hourly bounces and less clear bearish signals. Maintained profitable shorts in FIX, GM, and TSEM. Initiated new short positions in LRCX and SMTC due to strong negative momentum and clear downtrends across multiple timeframes. |
