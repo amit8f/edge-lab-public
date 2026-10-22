@@ -1,0 +1,492 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "7993fb7d9a470119d29ba310e48d2e2b7a069773eb00dfc11abd10c251f5bbe7",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"DHR\",\n      \"side\": \"long\",\n      \"reason\": \"Holding a profitable long position with positive momentum and favorable analyst sentiment.\"\n    },\n    {\n      \"symbol\": \"LMT\",\n      \"side\": \"long\",\n      \"reason\": \"Holding a long position showing strong positive momentum today and over the past 5/20 sessions, supported by positive earnings and outlook.\"\n    },\n    {\n      \"symbol\": \"LRCX\",\n      \"side\": \"short\",\n      \"reason\": \"Maintaining a short position due to significant negative price action today and over the past 5/20 sessions, driven by negative guidance news.\"\n    },\n    {\n      \"symbol\": \"ZS\",\n      \"side\": \"long\",\n      \"reason\": \"Holding a profitable long position with positive momentum today and over the past 5/20 sessions.\"\n    },\n    {\n      \"symbol\": \"CSX\",\n      \"side\": \"long\",\n      \"reason\": \"Initiating a new long position due to strong positive price action today, positive momentum over 5/20 sessions, and favorable analyst upgrades.\"\n    }\n  ],\n  \"summary\": \"Maintained profitable long positions in DHR and ZS, and a short in LRCX. Kept LMT long due to strong positive news and daily surge. Closed SPOT for a loss and opened a new long position in CSX based on strong daily performance and analyst upgrades.\"\n}",
+  "summary": "Maintained profitable long positions in DHR and ZS, and a short in LRCX. Kept LMT long due to strong positive news and daily surge. Closed SPOT for a loss and opened a new long position in CSX based on strong daily performance and analyst upgrades.",
+  "want": {
+   "CSX": 1,
+   "DHR": 1,
+   "LMT": 1,
+   "LRCX": -1,
+   "ZS": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "3df0cc8130975a08a58e1f16e6bcb759fa778ee213f3ac452c306588d5d88410",
+  "raw": "{\"positions\":[{\"symbol\":\"CSX\",\"side\":\"long\",\"reason\":\"Analyst upgrades and +6.6% intraday gain suggest continued upside\"},{\"symbol\":\"LMT\",\"side\":\"long\",\"reason\":\"Strong earnings and backlog boost; price up 6% today\"},{\"symbol\":\"LRCX\",\"side\":\"short\",\"reason\":\"Guidance miss and 22% 20\u2011day decline make short attractive\"},{\"symbol\":\"PG\",\"side\":\"long\",\"reason\":\"Consumer staple with +5% today and positive earnings outlook\"},{\"symbol\":\"SPOT\",\"side\":\"long\",\"reason\":\"8% intraday rise, solid earnings and growing user base support long\"}],\"summary\":\"Keep CSX, LMT, LRCX, PG and add SPOT, dropping ZS\"}",
+  "summary": "Keep CSX, LMT, LRCX, PG and add SPOT, dropping ZS",
+  "want": {
+   "CSX": 1,
+   "LMT": 1,
+   "LRCX": -1,
+   "PG": 1,
+   "SPOT": 1
+  }
+ },
+ "equity": {
+  "C": 8977.656668,
+  "C-coin": 10128.829621,
+  "C-groq": 8966.193634,
+  "C-groq-coin": 9883.135433,
+  "HOLD": 9982.847572
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1792678049,
+    "entry": 574.99,
+    "exit": 568.485,
+    "notional": 1811.4326398033832,
+    "open_t": 1792676936,
+    "pnl": -22.284112,
+    "side": 1,
+    "sym": "SPOT",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1795.890512,
+    "price": 51.61,
+    "side": 1,
+    "sym": "CSX",
+    "t": 1792678049
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1792678049,
+    "entry": 574.99,
+    "exit": 568.485,
+    "notional": 2018.9710382366009,
+    "open_t": 1792676936,
+    "pnl": 20.844974,
+    "side": -1,
+    "sym": "SPOT",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 2026.171158,
+    "price": 51.61,
+    "side": 1,
+    "sym": "CSX",
+    "t": 1792678049
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1792678049,
+    "entry": 230.81,
+    "exit": 234.22,
+    "notional": 1860.757297101157,
+    "open_t": 1792610843,
+    "pnl": 25.602685,
+    "side": 1,
+    "sym": "ZS",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1793.597446,
+    "price": 568.485,
+    "side": 1,
+    "sym": "SPOT",
+    "t": 1792678049
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1792678049,
+    "entry": 230.81,
+    "exit": 234.22,
+    "notional": 1916.303674669071,
+    "open_t": 1792610843,
+    "pnl": 26.366964,
+    "side": 1,
+    "sym": "ZS",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1977.022491,
+    "price": 568.485,
+    "side": 1,
+    "sym": "SPOT",
+    "t": 1792678049
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "AMAT": 2,
+  "AMD": 2,
+  "APH": 2,
+  "AXTI": 1,
+  "CIFR": 2,
+  "CRDO": 1,
+  "CSX": 3,
+  "DHR": 3,
+  "FIX": 3,
+  "GEV": 2,
+  "IREN": 2,
+  "KLAC": 1,
+  "LITE": 2,
+  "LMT": 3,
+  "LRCX": 3,
+  "META": 3,
+  "MTSI": 1,
+  "NBIS": 3,
+  "NOK": 3,
+  "PG": 3,
+  "PWR": 2,
+  "SPOT": 3,
+  "TER": 1,
+  "VRT": 3,
+  "VST": 3,
+  "ZS": 1
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "CSX": {
+    "charged": 1792678049,
+    "entry": 51.61,
+    "last": 51.61,
+    "notional": 1795.8905116903932,
+    "opened": 1792678049,
+    "qty": 34.797336014152165,
+    "side": 1
+   },
+   "DHR": {
+    "charged": 1792678049,
+    "entry": 231.3,
+    "last": 233.455,
+    "notional": 1893.019979289099,
+    "opened": 1792590516,
+    "qty": 8.18426277254258,
+    "side": 1
+   },
+   "LMT": {
+    "charged": 1792678049,
+    "entry": 593.25,
+    "last": 585.11,
+    "notional": 1811.4326398033832,
+    "opened": 1792676936,
+    "qty": 3.0534052082652896,
+    "side": 1
+   },
+   "LRCX": {
+    "charged": 1792678049,
+    "entry": 237.88,
+    "last": 238.495,
+    "notional": 1811.4326398033832,
+    "opened": 1792676936,
+    "qty": 7.614900957639916,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1792678049,
+    "entry": 231.195,
+    "last": 234.22,
+    "notional": 1850.4606266540595,
+    "opened": 1792611446,
+    "qty": 8.0038955282513,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "CSX": {
+    "charged": 1792678049,
+    "entry": 51.61,
+    "last": 51.61,
+    "notional": 2026.171158417119,
+    "opened": 1792678049,
+    "qty": 39.25927452852391,
+    "side": 1
+   },
+   "DHR": {
+    "charged": 1792678049,
+    "entry": 231.3,
+    "last": 233.455,
+    "notional": 2010.839691851269,
+    "opened": 1792590516,
+    "qty": 8.693643285133026,
+    "side": 1
+   },
+   "LMT": {
+    "charged": 1792678049,
+    "entry": 593.25,
+    "last": 585.11,
+    "notional": 2018.9710382366009,
+    "opened": 1792676936,
+    "qty": 3.403238159690857,
+    "side": -1
+   },
+   "LRCX": {
+    "charged": 1792678049,
+    "entry": 237.88,
+    "last": 238.495,
+    "notional": 2018.9710382366009,
+    "opened": 1792676936,
+    "qty": 8.487350925830675,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1792678049,
+    "entry": 231.195,
+    "last": 234.22,
+    "notional": 2043.8086593714693,
+    "opened": 1792611446,
+    "qty": 8.840194032619518,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "CSX": {
+    "charged": 1792678049,
+    "entry": 51.27,
+    "last": 51.61,
+    "notional": 1800.836613115508,
+    "opened": 1792676936,
+    "qty": 35.12456822928629,
+    "side": 1
+   },
+   "LMT": {
+    "charged": 1792678049,
+    "entry": 593.25,
+    "last": 585.11,
+    "notional": 1800.836613115508,
+    "opened": 1792676936,
+    "qty": 3.0355442277547544,
+    "side": 1
+   },
+   "LRCX": {
+    "charged": 1792678049,
+    "entry": 239.72,
+    "last": 238.495,
+    "notional": 1793.0629500724854,
+    "opened": 1792677442,
+    "qty": 7.47982208440049,
+    "side": -1
+   },
+   "PG": {
+    "charged": 1792678049,
+    "entry": 165.12,
+    "last": 165.22,
+    "notional": 1800.836613115508,
+    "opened": 1792676936,
+    "qty": 10.906229488344888,
+    "side": 1
+   },
+   "SPOT": {
+    "charged": 1792678049,
+    "entry": 568.485,
+    "last": 568.485,
+    "notional": 1793.5974462729735,
+    "opened": 1792678049,
+    "qty": 3.155047971842658,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "CSX": {
+    "charged": 1792678049,
+    "entry": 51.27,
+    "last": 51.61,
+    "notional": 1974.1581118005427,
+    "opened": 1792676936,
+    "qty": 38.50513188610381,
+    "side": -1
+   },
+   "LMT": {
+    "charged": 1792678049,
+    "entry": 593.25,
+    "last": 585.11,
+    "notional": 1974.1581118005427,
+    "opened": 1792676936,
+    "qty": 3.327700146313599,
+    "side": -1
+   },
+   "LRCX": {
+    "charged": 1792678049,
+    "entry": 239.72,
+    "last": 238.495,
+    "notional": 1979.529850581172,
+    "opened": 1792677442,
+    "qty": 8.257674998252845,
+    "side": -1
+   },
+   "PG": {
+    "charged": 1792678049,
+    "entry": 165.12,
+    "last": 165.22,
+    "notional": 1974.1581118005427,
+    "opened": 1792676936,
+    "qty": 11.955899417396697,
+    "side": 1
+   },
+   "SPOT": {
+    "charged": 1792678049,
+    "entry": 568.485,
+    "last": 568.485,
+    "notional": 1977.022491090989,
+    "opened": 1792678049,
+    "qty": 3.4777038815289565,
+    "side": 1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1792678049,
+    "entry": 767.13,
+    "last": 766.58,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "304a1715f531d2ea72ab62a42fe7d9b823bc66119ffc123a240dbd88a83483b0",
+ "price_source": {
+  "AAOI": "iex",
+  "AMAT": "iex",
+  "AMD": "iex",
+  "APH": "iex",
+  "AXTI": "iex",
+  "CBRS": "iex",
+  "CDE": "iex",
+  "CIEN": "iex",
+  "CIFR": "iex",
+  "CLS": "iex",
+  "COHR": "iex",
+  "CRDO": "iex",
+  "CSX": "iex",
+  "DHR": "iex",
+  "ETN": "iex",
+  "FIX": "iex",
+  "GEV": "iex",
+  "HUT": "iex",
+  "HWM": "iex",
+  "IREN": "iex",
+  "JBL": "iex",
+  "KEYS": "iex",
+  "KLAC": "iex",
+  "LITE": "iex",
+  "LMT": "iex",
+  "LRCX": "iex",
+  "META": "iex",
+  "MPWR": "iex",
+  "MTSI": "iex",
+  "NBIS": "iex",
+  "NOK": "iex",
+  "PG": "iex",
+  "PH": "iex",
+  "PWR": "iex",
+  "RKT": "iex",
+  "SMTC": "iex",
+  "SPOT": "iex",
+  "TER": "iex",
+  "TSEM": "iex",
+  "VRT": "iex",
+  "VST": "iex",
+  "ZS": "iex"
+ },
+ "prices": {
+  "AAOI": 71.91,
+  "AMAT": 385.17,
+  "AMD": 523.86,
+  "APH": 74.91,
+  "AXTI": 55.87,
+  "CBRS": 110.965,
+  "CDE": 14.35,
+  "CIEN": 342.215,
+  "CIFR": 8.485,
+  "CLS": 284.675,
+  "COHR": 217.26,
+  "CRDO": 171.82,
+  "CSX": 51.61,
+  "DHR": 233.455,
+  "ETN": 372.62,
+  "FIX": 1317.475,
+  "GEV": 855.79,
+  "HUT": 67.75,
+  "HWM": 196.96,
+  "IREN": 25.835,
+  "JBL": 266.55,
+  "KEYS": 323.8,
+  "KLAC": 152.8,
+  "LITE": 797.51,
+  "LMT": 585.11,
+  "LRCX": 238.495,
+  "META": 658.75,
+  "MPWR": 1205.97,
+  "MTSI": 252.45,
+  "NBIS": 161.92,
+  "NOK": 8.5,
+  "PG": 165.22,
+  "PH": 907.49,
+  "PWR": 570.73,
+  "RKT": 11.685,
+  "SMTC": 130.58,
+  "SPOT": 568.485,
+  "TER": 318.78,
+  "TSEM": 178.88,
+  "VRT": 201.34,
+  "VST": 148.29,
+  "ZS": 234.22
+ },
+ "shortlist": [
+  "LRCX",
+  "COHR",
+  "SPOT",
+  "NOK",
+  "SMTC",
+  "TER",
+  "GEV",
+  "MTSI",
+  "IREN",
+  "CIFR",
+  "AAOI",
+  "CSX",
+  "CLS",
+  "KLAC",
+  "LITE",
+  "LMT",
+  "MPWR",
+  "FIX",
+  "CBRS",
+  "AMAT",
+  "AXTI",
+  "CRDO",
+  "TSEM",
+  "NBIS",
+  "META",
+  "APH",
+  "ETN",
+  "HWM",
+  "HUT",
+  "PG",
+  "PH",
+  "CIEN",
+  "AMD",
+  "RKT",
+  "CDE",
+  "KEYS",
+  "JBL",
+  "VRT",
+  "PWR",
+  "VST",
+  "DHR",
+  "ZS"
+ ],
+ "t": 1792678049,
+ "universe_date": "2026-10-22",
+ "written_utc": "2026-10-22T14:07:55.791178Z"
+}
