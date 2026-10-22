@@ -1,0 +1,92 @@
+# NX1 / NEWS-XGB history and training (research/prereg/NX1.md, tracks/news/nx1_study.py). Manual runs only.
+# stage=all runs data -> tone -> events -> train and stops when its time budget is used; each stage resumes
+# from the cache, so dispatch again until the run prints the walk-forward table. Expect about four runs
+# (headline download, then FinBERT over every single-symbol headline). Only summary numbers and the model
+# are committed to research/results/NX1; headlines stay in the cache.
+name: nx1-study
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "all, data, tone, events or train"
+        required: true
+        default: all
+
+permissions: {}
+
+concurrency:
+  group: nx1-study
+  cancel-in-progress: false
+
+jobs:
+  study:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages (CPU-only torch for FinBERT)
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
+
+      - name: Check secrets are present
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          [[ -n "$ALPACA_API_KEY_ID" ]] || { echo "::error::secret ALPACA_API_KEY_ID is missing"; exit 1; }
+          [[ -n "$SEC_USER_AGENT" ]] || { echo "::error::secret SEC_USER_AGENT is missing (your name and email, required by SEC)"; exit 1; }
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-${{ github.run_id }}
+          restore-keys: nx1-v1-
+
+      - name: Run the stage
+        env:
+          STAGE: ${{ github.event.inputs.stage }}
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          PYTHONPATH=. .venv/bin/python -m tracks.news.nx1_study --stage "$STAGE" --cache cache/nx1 \
+            --out research/results/NX1 --budget-min 290
+
+      - name: Save the data cache (also after a failure, so a rerun skips the finished work)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/NX1 && git add research/results/NX1
+          git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
+          git commit -q -m "NX1 walk-forward and model v1 (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
