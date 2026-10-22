@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8988.41 | -1011.59% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
-| Coin flip on C's picks | $10055.65 | +55.65% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
-| C's prompt on Groq (K7) | $8975.15 | -1024.85% | 104 | 17 | long CSX, short LRCX, short MTSI, long PG, long SPOT |
-| Coin flip on C-groq's picks | $9942.48 | -57.52% | 104 | 59 | short CSX, short LRCX, long MTSI, long PG, long SPOT |
-| Just hold SPY | $9967.61 | -32.39% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8975.12 | -1024.88% | 49 | 4 | long CSX, long DHR, long LMT, long SPOT, long ZS |
+| Coin flip on C's picks | $10060.73 | +60.73% | 49 | 28 | long CSX, long DHR, short LMT, long SPOT, short ZS |
+| C's prompt on Groq (K7) | $8979.19 | -1020.81% | 105 | 17 | long CSX, short GEV, short LRCX, long PG, long SPOT |
+| Coin flip on C-groq's picks | $9943.43 | -56.57% | 105 | 59 | short CSX, short GEV, short LRCX, long PG, long SPOT |
+| Just hold SPY | $9966.57 | -33.43% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-22 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 11:57 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-22 12:1
 | 2026-10-20 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-20 15:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-20 15:27 | no answer, nothing changed | none | unreadable answer |
