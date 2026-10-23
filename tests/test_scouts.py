@@ -133,13 +133,16 @@ def test_number_alerts():
 
 def test_shared_checks():
     now = OPEN + pd.Timedelta(hours=2)
-    ok = {"t": now - pd.Timedelta(minutes=1), "iex_t": now - pd.Timedelta(minutes=5), "bid": 9.99, "ask": 10.01}
+    m = pd.Timedelta(minutes=1)
+    ok = {"t": now - m, "iex_t": now - m, "sip_t": now - 16 * m, "bid": 9.99, "ask": 10.01}
     assert L.check(ROW, ok, now, SESS, {}) is None
-    assert L.check(ROW, dict(ok, t=now - pd.Timedelta(minutes=20)), now, SESS, {}) == "no quote in 15 minutes"
-    assert "halted" in L.check(ROW, dict(ok, iex_t=None), now, SESS, {})
+    assert L.check(ROW, dict(ok, iex_t=now - 20 * m, sip_t=now - 36 * m), now, SESS, {}) == "no quote in 15 minutes"
+    assert "halted" in L.check(ROW, dict(ok, iex_t=None, sip_t=now - 50 * m), now, SESS, {})
     assert L.check(ROW, dict(ok, bid=9.7, ask=10.3), now, SESS, {}).startswith("spread")
     assert L.check(dict(ROW, prev=2.0), dict(ok, bid=1.97, ask=2.03), now, SESS, {}) is None   # penny: 5%
     assert L.check(ROW, ok, now, SESS, {"S0": "reverse split"}) == "reverse split"
+    thin = dict(ok, iex_t=now - 45 * m, sip_t=now - 17 * m)        # no IEX print lately; SIP (15 min late) is fresh
+    assert L.check(ROW, thin, now, SESS, {}) is None
 
 
 def test_merge_groups_events():
@@ -457,3 +460,11 @@ def test_nothing_before_the_start_date_except_a_dry_run(tmp_path):
     api.now = friday
     rec = S.run(tmp_path / "dry", api, now=friday, cache={}, dry=True)
     assert rec["events"] and rec["scouts"] == [] and not [c for c in api.calls if c[0] != "search"]
+
+
+def test_a_price_move_with_no_owner_lane_still_logs(tmp_path):
+    api = Fake(moves={"S0": 0.2, "P0": 0.2})
+    now = OPEN + pd.Timedelta(minutes=95)
+    api.now = now
+    rec = S.run(tmp_path / "dry", api, now=now, cache={}, dry=True)
+    assert rec["events"] and all("check" in e for e in rec["events"])

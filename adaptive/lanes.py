@@ -228,16 +228,25 @@ def fee_cutoff(fees):
 
 # ---------- shared checks ----------
 
+SIP_DELAY = pd.Timedelta(minutes=15)
+
+
 def check(row, q, now, sess, bad_actions):
     """Reason a candidate fails the shared checks at this pass, or None. q: {"t" (latest trade, any feed),
-    "iex_t" (latest IEX trade), "bid", "ask" (NBBO, delayed)}."""
+    "iex_t" (latest IEX trade), "sip_t" (latest delayed-SIP trade), "bid", "ask" (NBBO, delayed)}."""
     if row["symbol"] in bad_actions:
         return bad_actions[row["symbol"]]
-    if q.get("t") is None or now - q["t"] > pd.Timedelta(minutes=15):
-        return "no quote in 15 minutes"
-    if now - sess[0] >= pd.Timedelta(minutes=30) and (q.get("iex_t") is None or
-                                                       now - q["iex_t"] > pd.Timedelta(minutes=30)):
+    # Age of the last trade on any feed: IEX is live but thin; delayed SIP sees every trade 15 minutes late.
+    ages = [now - q["iex_t"]] if q.get("iex_t") is not None else []
+    if q.get("sip_t") is not None:
+        ages.append(now - q["sip_t"] - SIP_DELAY)
+    elif q.get("t") is not None and not ages:
+        ages.append(now - q["t"])
+    age = min(ages) if ages else None
+    if age is not None and now - sess[0] >= pd.Timedelta(minutes=30) and age > pd.Timedelta(minutes=30):
         return "no trade in 30 minutes (halted?)"
+    if age is None or age > pd.Timedelta(minutes=15):
+        return "no quote in 15 minutes"
     bid, ask = q.get("bid") or 0.0, q.get("ask") or 0.0
     if bid > 0 and ask > bid:
         spread = (ask - bid) / ((ask + bid) / 2)

@@ -208,3 +208,11 @@ pass. They fill in details the text above leaves open and change nothing it fixe
       retry. Their answers are cut to the JSON object (reasoning and code fences removed) and then read by
       the same strict parsers.
     - Every call logs which model answered; results are reported per model as well as overall.
+13. Fixes from the live dry run (2026-10-23, before the start and before any result). (a) Events from
+    confirm-only lanes (no owner, so no shared check) crashed the pass log; they now log with an empty check.
+    (b) The "no quote in 15 minutes" and "halted?" checks used one feed's trade time, often a stale IEX print
+    on thin stocks while the delayed SIP feed showed trading (64-70 of about 260 events per pass were
+    rejected this way). They now use the freshest trade on either feed, counting delayed SIP trades as 15
+    minutes later than their stamp; a stock with no trade on either feed for 30 minutes is "halted?", for 15
+    minutes "no quote". Steady passes took 22-34 seconds; the first pass of a day, which builds the universe
+    and reads the overnight backlog, took 18 minutes.

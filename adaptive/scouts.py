@@ -637,7 +637,8 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
         if src is None:
             continue
         prices[s] = float(src["p"])
-        quotes[s] = {"t": src["t"], "iex_t": a.get("t"), "bid": b.get("bid"), "ask": b.get("ask")}
+        quotes[s] = {"t": src["t"], "iex_t": a.get("t"), "sip_t": b.get("t"), "bid": b.get("bid"),
+                     "ask": b.get("ask")}
         live[s] = {"price": prices[s], "t": src["t"], "day_v": b.get("day_v") if b.get("t") else None,
                    "day_o": b.get("day_o") or a.get("day_o")}
     evidence = []
@@ -675,8 +676,8 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
             e["check"] = L.check(row, quotes.get(e["symbol"], {}), now, sess, bad) if row else "not in universe"
     rec = {"t": now.isoformat(), "slot": key, "universe": len(rows), "priced": len(prices), "counts": counts,
            "alerts": {k: sum(1 for a in alerts if a["lane"] == k) for k in L.READY},
-           "events": [{k: e[k] for k in ("id", "symbol", "lanes", "owner", "src_t", "detected", "first_price",
-                                         "check", "items")} for e in touched],
+           "events": [{k: e.get(k) for k in ("id", "symbol", "lanes", "owner", "src_t", "detected", "first_price",
+                                             "check", "items")} for e in touched],   # confirm-only events have no check
            "scouts": [], "agents": {}}
     errors = st["errors"].get(dkey, 0)
     can_enter = not dry and any(not st["books"][n]["paused"] and not st["books"][n]["killed"].get(dkey) for n in BOOKS)
