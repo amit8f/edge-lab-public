@@ -166,6 +166,26 @@ def placebo_news():
     return {k: 0.0 for k in NEWS_INPUTS}
 
 
+def quiet_news(keys, news_days, back, cal):
+    """W.quiet_mask for news only (no filings), by binary search per symbol: the merge it does joined every
+    stock-day to every news day of the symbol and ran the runner out of memory."""
+    cal = pd.DatetimeIndex(sorted(cal))
+    pos = cal.searchsorted(keys["date"].to_numpy())
+    lo = cal[np.maximum(pos - back, 0)]
+    prev = cal[np.maximum(pos - back - 1, 0)]
+    start = np.where(pos - back - 1 >= 0, prev + pd.Timedelta(days=1), lo).astype("datetime64[ns]")
+    end = keys["date"].to_numpy().astype("datetime64[ns]")
+    bad = np.zeros(len(keys), dtype=bool)
+    by = {s: np.sort(g["date"].to_numpy().astype("datetime64[ns]")) for s, g in news_days.groupby("symbol")}
+    for s, idx in keys.groupby("symbol").groups.items():
+        days = by.get(s)
+        if days is None:
+            continue
+        i = keys.index.get_indexer(idx)
+        bad[i] = np.searchsorted(days, end[i], side="right") > np.searchsorted(days, start[i], side="left")
+    return ~bad
+
+
 def novelty(keys, news_days):
     """Days with any Benzinga article naming the symbol in the 30 calendar days before d."""
     out = np.zeros(len(keys), dtype=float)
@@ -456,8 +476,7 @@ def batch_events(rows, news_ev, nd, spy, cal, b):
     cik = rows.drop_duplicates(["symbol", "date"]).rename(columns={"date": "d"})[["symbol", "d", "cik"]]
     cand = pan.merge(cik, on=["symbol", "d"], how="left")
     keys = cand[["symbol", "cik", "d"]].rename(columns={"d": "date"})
-    quiet = W.quiet_mask(keys, nd, pd.DataFrame({"cik": pd.Series(dtype=float), "date": pd.Series(dtype="datetime64[ns]")}),
-                         back=QUIET_BACK, cal=cal["date"])
+    quiet = quiet_news(keys.reset_index(drop=True), nd, QUIET_BACK, cal["date"])
     cand = cand[quiet].drop(columns="cik")
     rng = np.random.default_rng(SEED + b)
     need = real.groupby("d").size()

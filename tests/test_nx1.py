@@ -190,3 +190,14 @@ def test_news_events_month_by_month_equals_all_at_once(tmp_path, monkeypatch):
     want = N.news_events(N.dedup(rows), CAL).sort_values(["symbol", "d"]).reset_index(drop=True)
     pd.testing.assert_frame_equal(got, want[got.columns], check_dtype=False)
     assert got["d"].dt.month.nunique() == 2
+
+
+def test_quiet_news_matches_quiet_mask():
+    rng = np.random.default_rng(9)
+    keys = pd.DataFrame({"symbol": rng.choice(["AAA", "BBB", "CCC"], 300), "cik": 1.0,
+                         "date": rng.choice(DAYS[50:400], 300)})
+    nd = pd.DataFrame({"symbol": rng.choice(["AAA", "BBB"], 200), "date": rng.choice(DAYS[40:400], 200)})
+    empty = pd.DataFrame({"cik": pd.Series(dtype=float), "date": pd.Series(dtype="datetime64[ns]")})
+    want = W.quiet_mask(keys, nd, empty, back=3, cal=CAL["date"])
+    got = N.quiet_news(keys, nd, 3, CAL["date"])
+    assert (got == want).all() and 0 < got.sum() < len(got)
