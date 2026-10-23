@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8811.70 | -1188.30% | 56 | 5 | long OKTA, long PANW, long SLB, short T, long ZS |
-| Coin flip on C's picks | $9736.72 | -263.28% | 56 | 29 | short OKTA, short PANW, long SLB, long T, short ZS |
-| C's prompt on Groq (K7) | $8841.19 | -1158.81% | 118 | 20 | short BE, long LMT, short LRCX, long OKTA, long PANW |
-| Coin flip on C-groq's picks | $10065.89 | +65.89% | 118 | 68 | long BE, long LMT, short LRCX, long OKTA, short PANW |
-| Just hold SPY | $9930.37 | -69.63% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8815.61 | -1184.39% | 56 | 5 | long OKTA, long PANW, long SLB, short T, long ZS |
+| Coin flip on C's picks | $9750.30 | -249.70% | 56 | 29 | short OKTA, short PANW, long SLB, long T, short ZS |
+| C's prompt on Groq (K7) | $8827.50 | -1172.50% | 119 | 20 | long ACN, short BE, long LMT, short LRCX, long OKTA |
+| Coin flip on C-groq's picks | $10079.87 | +79.87% | 119 | 69 | long ACN, long BE, long LMT, short LRCX, long OKTA |
+| Just hold SPY | $9927.96 | -72.04% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-23 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 10:57 | long OKTA, long PANW, long SLB, short T, long ZS | sold AMT @ $189.64; bought FIX @ $1,151.03; sold LMT @ $594.22; sold SPOT @ $573.71; bought OKTA @ $214.01; bought PANW @ $378.45; bought SLB @ $52.23; sold T @ $21.48 | Closed underperforming long AMT and short FIX, and long SPOT and LMT for better opportunities. Initiated new long positions in PANW, SLB, and OKTA due to strong positive momentum and news, and a new short position in T due to significant negative news and price action. Maintained profitable long ZS. |
 | 2026-10-23 10:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 10:37 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 10:5
 | 2026-10-21 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 13:47 | long APLD, long DDOG, long DHR, long MSTR, long SMCI | sold SPCX @ $158.38; bought DDOG @ $276.71 | Maintaining strong AI-related positions (APLD, MSTR, SMCI, DHR) and adding DDOG due to strong daily performance and bullish analyst sentiment, while selling SPCX to cut losses and reallocate capital. |
-| 2026-10-21 13:37 | no answer, nothing changed | none | unreadable answer |
