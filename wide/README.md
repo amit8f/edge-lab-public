@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8888.05 | -1111.95% | 61 | 5 | long CRWD, long NET, long PANW, long SLB, long ZS |
-| Coin flip on C's picks | $9699.63 | -300.37% | 61 | 31 | short CRWD, long NET, long PANW, long SLB, short ZS |
-| C's prompt on Groq (K7) | $8882.12 | -1117.88% | 136 | 28 | short BE, long CRWD, long LMT, long SLB, long ZS |
-| Coin flip on C-groq's picks | $10012.57 | +12.57% | 136 | 77 | short BE, short CRWD, long LMT, long SLB, short ZS |
-| Just hold SPY | $9903.02 | -96.98% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8879.63 | -1120.37% | 61 | 5 | long CRWD, long NET, long PANW, long SLB, long ZS |
+| Coin flip on C's picks | $9706.43 | -293.57% | 61 | 31 | short CRWD, long NET, long PANW, long SLB, short ZS |
+| C's prompt on Groq (K7) | $8875.20 | -1124.80% | 136 | 28 | short BE, long CRWD, long LMT, long SLB, long ZS |
+| Coin flip on C-groq's picks | $10019.67 | +19.67% | 136 | 77 | short BE, short CRWD, long LMT, long SLB, short ZS |
+| Just hold SPY | $9900.28 | -99.72% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-23 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 15:17 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 15:3
 | 2026-10-22 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 11:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 11:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-22 11:37 | long CSX, long DHR, long LMT, long SPOT, long ZS | none | Maintaining all current long positions as they show strong positive momentum or stability today, outperforming the general market downturn, supported by positive news and analyst sentiment. |
