@@ -216,3 +216,15 @@ pass. They fill in details the text above leaves open and change nothing it fixe
     minutes later than their stamp; a stock with no trade on either feed for 30 minutes is "halted?", for 15
     minutes "no quote". Steady passes took 22-34 seconds; the first pass of a day, which builds the universe
     and reads the overnight backlog, took 18 minutes.
+14. Confidential material (2026-10-23, Amit's instruction, before the start). Scouts trade only on
+    information published to everyone. A scout that judges an event to rest on confidential material
+    (leaked internal documents or emails, unreleased results or deal terms, stolen or embargoed text) marks
+    it `"confidential": true`; the pick is forced to "none", never reaches the checker or picker, and the
+    pass record lists only the stock, lane and event id under `leak_flags`. The text stays on the private
+    `evidence` branch. Each flagged pass opens an issue in the private edge-lab repo (GitHub emails Amit); this
+    needs EVIDENCE_TOKEN to have Issues: read and write there, and without it the pass only warns. The checker
+    answers "disagree" on a case resting on such material. A leak published by a news outlet to everyone
+    (for example "people familiar with the matter" reports) is public and is traded normally, so a flagged
+    story becomes tradable through the usual lanes once an outlet reports it or the company confirms it. Each
+    flag also logs the scout's would-be side, horizon and the price at the flag, so a later, separately
+    registered study can measure how accurate such material was; no book ever holds a flagged trade.
