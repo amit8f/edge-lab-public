@@ -1,6 +1,8 @@
 """SYS2B scouts, lanes and the EDGAR live feed on synthetic data (no network)."""
 import json
 
+import pytest
+
 import numpy as np
 import pandas as pd
 
@@ -238,12 +240,13 @@ class Fake:
 
     def search(self, model, text):
         self.calls.append(("search", text))
-        if self.search_error:
-            raise self.search_error
+        err = self.search_error.get(model) if isinstance(self.search_error, dict) else self.search_error
+        if err:
+            raise err
         return "SECRET WEB TEXT: Acme confirmed the deal on Oct 26.", [{"uri": "https://example.com/a", "title": "A"}]
 
     def ask(self, model, system, text):
-        who = ("checker" if model == S.CHECK_MODEL else "picker" if model == S.PICK_MODEL else "scout")
+        who = ("checker" if model in S.CHECK_MODELS else "picker" if model in S.PICK_MODELS else "scout")
         self.calls.append((who, model, text))
         a = self.answers.get(who)
         if isinstance(a, dict) and model in a:
@@ -337,6 +340,49 @@ def test_scout_quota_falls_back_to_the_next_model(tmp_path):
     api = Fake(heads=[HEAD], answers=a)
     rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=35))
     assert rec["scouts"][0]["model"] == S.SCOUT_MODELS[1] and len(rec["fills"]) == 2
+
+
+def test_checker_picker_and_search_fall_back_to_other_providers(tmp_path):
+    from tracks.news.llm import QuotaExhausted
+    a = answers()
+    a["checker"] = {S.CHECK_MODELS[0]: QuotaExhausted("per day"), S.CHECK_MODELS[1]: a["checker"]}
+    a["picker"] = {S.PICK_MODELS[0]: QuotaExhausted("per day"), S.PICK_MODELS[1]: a["picker"]}
+    api = Fake(heads=[HEAD], answers=a, search_error={"gemini-2.5-flash": QuotaExhausted("per day")})
+    rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=35))
+    assert rec["agents"]["checker"]["model"] == S.CHECK_MODELS[1] and rec["agents"]["picker"]["model"] == S.PICK_MODELS[1]
+    assert [x["model"] for x in rec["search"]] == ["gemini-2.5-flash", "tavily"] and rec["search"][1]["sources"] == 1
+    assert "(S0) stock news since" in [c for c in api.calls if c[0] == "search"][1][1]
+    assert len(rec["fills"]) == 2
+
+
+def test_nvidia_and_cloudflare_calls(monkeypatch):
+    from tracks.news.llm import QuotaExhausted
+    import requests
+    sent = []
+
+    class R:
+        def __init__(self, code, j=None, text=""):
+            self.status_code, self._j, self.text = code, j, text
+
+        def json(self):
+            return self._j
+
+        def raise_for_status(self):
+            if self.status_code >= 400:
+                raise requests.HTTPError(str(self.status_code))
+
+    replies = [R(503), R(200, {"choices": [{"message": {"content": '<think>{"no": 1}</think>```json\n{"picks": []}\n```'}}]}),
+               R(429, text="rate limited")]
+    monkeypatch.setattr(requests, "post", lambda url, **k: (sent.append((url, k["json"]["model"])), replies.pop(0))[1])
+    monkeypatch.setenv("CLOUDFLARE_ACCOUNT_ID", "acct")
+    api = S.Api.__new__(S.Api)
+    assert api.ask(S.NV_LIGHT, "sys", "text") == '{"picks": []}'
+    assert sent == [("https://integrate.api.nvidia.com/v1/chat/completions", "nvidia/nemotron-3.5-lightning-30b-a3b")] * 2
+    with pytest.raises(QuotaExhausted):
+        api.ask(S.CF_KIMI, "sys", "text")
+    assert sent[-1] == ("https://api.cloudflare.com/client/v4/accounts/acct/ai/v1/chat/completions",
+                        "@cf/moonshotai/kimi-k2.6")
+    assert S.json_object("no json") == "no json"
 
 
 def test_unreadable_scout_answer_stops_entries(tmp_path):
