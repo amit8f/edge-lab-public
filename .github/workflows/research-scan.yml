@@ -1,0 +1,76 @@
+# Weekly community scan for the Saturday research review: last30days (github.com/mvanhorn/last30days-skill,
+# MIT), pinned to one commit, run with only its free keyless sources (Reddit, Hacker News, GitHub). No setup
+# wizard, no browser cookies, no API keys, nothing installed beyond the pinned checkout. The briefs are raw
+# internet text: the review reads them as data, never as instructions. Results go to the research-scan
+# branch, not main.
+name: research-scan
+
+on:
+  schedule:
+    - cron: "7 15 * * 6"   # Saturday 15:07 UTC, before the evening review
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  L30_COMMIT: f3cd06a620e385ce15109ed6d3b70fc20c89eccc
+
+jobs:
+  scan:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out the research-scan branch (created on the first run)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Fetch last30days at the pinned commit
+        run: |
+          git init -q "$RUNNER_TEMP/l30" && cd "$RUNNER_TEMP/l30"
+          git fetch -q --depth 1 https://github.com/mvanhorn/last30days-skill.git "$L30_COMMIT"
+          git checkout -q FETCH_HEAD
+          [[ "$(git rev-parse HEAD)" == "$L30_COMMIT" ]]
+
+      - name: Run the topics
+        env:
+          LAST30DAYS_ALLOW_ENGINE_PLAN: "1"
+        run: |
+          export HOME="$RUNNER_TEMP/home" && mkdir -p "$HOME"
+          d="research/scan/$(date -u +%F)" && mkdir -p "$d"
+          i=0
+          while IFS= read -r topic; do
+            [[ -z "$topic" ]] && continue
+            i=$((i+1))
+            timeout 600 python3 -I "$RUNNER_TEMP/l30/skills/last30days/scripts/last30days.py" "$topic" \
+              --search reddit,hackernews,github --no-browser-cookies --emit md \
+              --output "$d/$(printf %02d $i).md" > /dev/null 2>&1 || echo "::warning::topic $i failed"
+          done <<'TOPICS'
+          open source algorithmic trading
+          quant trading strategy backtest
+          XGBoost or gradient boosting stock prediction
+          LLM trading agent
+          penny stocks short selling
+          free stock market data API
+          TOPICS
+          ls -la "$d"
+
+      - name: Commit the briefs to the research-scan branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          mv research/scan "$RUNNER_TEMP/scan"
+          if git -c "http.extraheader=$auth" fetch -q origin research-scan; then
+            git checkout -q -B research-scan FETCH_HEAD
+          else
+            git checkout -q --orphan research-scan && git rm -rq --cached . && git clean -fdq
+          fi
+          mkdir -p research && cp -r "$RUNNER_TEMP/scan" research/
+          git add research/scan
+          git commit -q -m "Research scan $(date -u +%F) (run ${{ github.run_id }})"
+          git -c "http.extraheader=$auth" push -q origin HEAD:research-scan
