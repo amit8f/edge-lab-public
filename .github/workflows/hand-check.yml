@@ -1,5 +1,6 @@
 # Independent bar pull for hand checks (PROTOCOL rule 14): pushing research/checks/<name>.csv to a claude/
-# branch, or running it by hand with that name, writes research/checks/<name>_bars.json back to the branch.
+# branch, or running it by hand with that name, writes research/checks/<name>_bars.json (or _edgar.json for a
+# file of cik, accession) back to the branch.
 name: hand-check
 
 on:
@@ -34,6 +35,7 @@ jobs:
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           NAME: ${{ inputs.name }}
         run: |
           names="$NAME"

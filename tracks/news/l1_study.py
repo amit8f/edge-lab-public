@@ -436,10 +436,11 @@ def stage_report(cache, out):
     out.mkdir(parents=True, exist_ok=True)
     chk = m[m["status"] == "ok"].groupby("category", group_keys=False).apply(
         lambda g: g.sample(n=min(20, len(g)), random_state=SEED))
-    chk[["category", "group", "symbol", "cik", "accession", "accepted_et", "headline_t", "headline"]].assign(
+    # Public repo: Benzinga headline text stays in the cache; committed files carry only the article id.
+    chk[["category", "group", "symbol", "cik", "accession", "accepted_et", "headline_t", "headline_id"]].assign(
         checked_by="", ok="", note="").to_csv(out / "L1_events_check.csv", index=False)
     (out / "L1_result.json").write_text(json.dumps(res, indent=1, default=str))
-    m.to_csv(out / "L1_events.csv", index=False)
+    m.drop(columns=["headline"], errors="ignore").to_csv(out / "L1_events.csv", index=False)
     print(json.dumps(res, indent=1, default=str))
 
 
