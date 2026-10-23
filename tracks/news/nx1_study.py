@@ -390,12 +390,18 @@ def finbert_scorer(meta_file):
     return run
 
 
-def stage_tone(cache, deadline, finbert=None):
+def tone_months(shard=0, shards=1):
+    """The months the tone stage scores; shard i of n takes every n-th one (parallel jobs)."""
+    ms = [p for p in pd.period_range(W.NEWS_FIRST, W.NEWS_LAST, freq="M") if p >= pd.Period("2016-08")]
+    return ms[shard::shards]
+
+
+def stage_tone(cache, deadline, finbert=None, shard=0, shards=1):
     d = nx1dir(cache) / "tone"
     d.mkdir(parents=True, exist_ok=True)
-    for per in pd.period_range(W.NEWS_FIRST, W.NEWS_LAST, freq="M"):
+    for per in tone_months(shard, shards):
         f = d / f"tone_{per}.parquet"
-        if f.exists() or per < pd.Period("2016-08"):
+        if f.exists():
             continue
         if time.monotonic() > deadline:
             return False
@@ -507,6 +513,8 @@ def main():
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX1")
     ap.add_argument("--budget-min", type=float, default=290)
+    ap.add_argument("--shard", type=int, default=0)
+    ap.add_argument("--shards", type=int, default=1)
     a = ap.parse_args()
     deadline = time.monotonic() + a.budget_min * 60
     stages = ["data", "tone", "events", "train"] if a.stage == "all" else [a.stage]
@@ -514,7 +522,7 @@ def main():
         if s == "data" and not stage_data(a.cache, deadline):
             print("[nx1] time budget used during data; rerun to continue")
             return
-        if s == "tone" and not stage_tone(a.cache, deadline):
+        if s == "tone" and not stage_tone(a.cache, deadline, shard=a.shard, shards=a.shards):
             print("[nx1] time budget used during tone; rerun to continue")
             return
         if s == "events" and not stage_events(a.cache, deadline):

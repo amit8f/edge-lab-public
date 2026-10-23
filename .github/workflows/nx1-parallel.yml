@@ -1,0 +1,137 @@
+# NX1 / NEWS-XGB, faster path: FinBERT tone in 12 parallel jobs, then events and training in one job
+# (tracks/news/nx1_study.py, research/prereg/NX1.md). Manual runs only; needs the data stage done (run
+# nx1-study once first). Tone files hold scores and hashes only, never headline text. If the last job stops
+# on its time budget, run nx1-study (stage all) to finish from the cache.
+name: nx1-parallel
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: nx1-parallel
+  cancel-in-progress: false
+
+jobs:
+  tone:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages (CPU-only torch for FinBERT)
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-tone-${{ github.run_id }}
+          restore-keys: nx1-v1-
+
+      - name: Score this shard's months
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx1_study --stage tone --cache cache/nx1 \
+            --shard "$SHARD" --shards 12 --budget-min 320
+
+      - name: Hand the tone files to the last job
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nx1-tone-${{ matrix.shard }}
+          path: cache/nx1/nx1/tone/
+          retention-days: 3
+          if-no-files-found: ignore
+
+  train:
+    needs: tone
+    if: ${{ !cancelled() }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages (CPU-only torch for FinBERT)
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-${{ github.run_id }}
+          restore-keys: nx1-v1-
+
+      - name: Collect the tone files
+        uses: actions/download-artifact@v4
+        with:
+          pattern: nx1-tone-*
+          path: cache/nx1/nx1/tone
+          merge-multiple: true
+
+      - name: Events and training
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx1_study --stage all --cache cache/nx1 \
+            --out research/results/NX1 --budget-min 290
+
+      - name: Save the data cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/NX1 && git add research/results/NX1
+          git diff --cached --quiet && { echo "No results yet (stage unfinished); run nx1-study to continue"; exit 0; }
+          git commit -q -m "NX1 walk-forward and model v1 (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"

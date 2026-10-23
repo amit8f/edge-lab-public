@@ -163,3 +163,9 @@ def test_batch_events_real_and_placebo():
     assert plac["symbol"].iloc[0] in ("CCC", "DDD")             # BBB had news the day before
     assert (plac[N.NEWS_INPUTS] == 0).all().all() and real["novelty"].iloc[0] == 0
     assert ev[N.INPUTS].notna().all().all() and ev["mret"].notna().all()
+
+
+def test_tone_shards_cover_every_month_once():
+    allm = N.tone_months()
+    parts = [m for i in range(12) for m in N.tone_months(i, 12)]
+    assert sorted(parts) == allm and len(set(parts)) == len(allm) and allm[0] == pd.Period("2016-08")
