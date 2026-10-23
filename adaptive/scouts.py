@@ -637,7 +637,8 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
         if src is None:
             continue
         prices[s] = float(src["p"])
-        quotes[s] = {"t": src["t"], "iex_t": a.get("t"), "bid": b.get("bid"), "ask": b.get("ask")}
+        quotes[s] = {"t": src["t"], "iex_t": a.get("t"), "sip_t": b.get("t"), "bid": b.get("bid"),
+                     "ask": b.get("ask")}
         live[s] = {"price": prices[s], "t": src["t"], "day_v": b.get("day_v") if b.get("t") else None,
                    "day_o": b.get("day_o") or a.get("day_o")}
     evidence = []
