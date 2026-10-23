@@ -1,0 +1,93 @@
+# NX3 / fast NEWS-XGB (tracks/news/nx3_study.py, research/prereg/NX3.md): events, 1-minute bars of the event
+# days, walk-forward, gate and, when it passes, the version 1 models. Manual runs only; rerun until the
+# walk-forward prints (each stage resumes from its cache). Needs NX1's cache (nx1-v1-*). Only summary numbers
+# and models are committed, to the branch that ran it.
+name: nx3-study
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "all, events, minutes or train"
+        required: false
+        default: all
+
+permissions: {}
+
+concurrency:
+  group: nx3-study
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore NX1's cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+          fail-on-cache-miss: true
+
+      - name: Restore NX3's own cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1/nx3
+          key: nx3-v1-${{ github.run_id }}
+          restore-keys: nx3-v1-
+
+      - name: Add swap (a memory spike slows the job instead of killing the runner)
+        run: |
+          sudo fallocate -l 16G /mnt/nx3.swap && sudo chmod 600 /mnt/nx3.swap
+          sudo mkswap /mnt/nx3.swap >/dev/null && sudo swapon /mnt/nx3.swap && free -g
+
+      - name: Run the stage
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          STAGE: ${{ inputs.stage || 'all' }}
+        run: |
+          PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx3_study --stage "$STAGE" --cache cache/nx1 \
+            --out research/results/NX3 --budget-min 290
+
+      - name: Save NX3's cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/nx1/nx3
+          key: nx3-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/NX3 && git add research/results/NX3
+          git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
+          git commit -q -m "NX3 walk-forward and gate (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
