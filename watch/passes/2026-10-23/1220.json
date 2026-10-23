@@ -1,0 +1,621 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "e7d84bc1803056e04be357656ac5fd63a77a64e8baf5fce06107a00f8859cd9d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "2f7c06bf7196dde2034a9cc0d3d0e6c6b195b54ae76e7de7ec89c691f8c7e9bc",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "E",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "TNGX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "FIX",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NKSH",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IIIN",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SSNC",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NWCL",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "KDK",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "ITRG",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VEEA",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "783253e75e2abde17dc2a56ae7dd1c4a511de65c472f0b56eddfa3b38f6cb03b",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat, high analyst confidence and positive tone",
+     "stop_pct": 12.0,
+     "symbol": "E"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Heavy dip with positive product news and solid analyst confidence",
+     "stop_pct": 12.0,
+     "symbol": "TNGX"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings tone and sizable drop, shortable",
+     "stop_pct": 13.0,
+     "symbol": "FIX"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Extreme downside move suggests mean reversion, neutral analyst view",
+     "stop_pct": 12.0,
+     "symbol": "NKSH"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large negative z-score with neutral tone, potential rebound",
+     "stop_pct": 12.0,
+     "symbol": "IIIN"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop, neutral analyst, possible bounce",
+     "stop_pct": 12.0,
+     "symbol": "SSNC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Below confidence threshold and not shortable",
+     "stop_pct": 0.0,
+     "symbol": "NWCL"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Downward move, shortable, high confidence despite penny stock",
+     "stop_pct": 20.0,
+     "symbol": "KDK"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative analyst tone and shortable, modest decline",
+     "stop_pct": 20.0,
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Below confidence threshold and not shortable",
+     "stop_pct": 0.0,
+     "symbol": "VEEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position open less than 10 days, stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position open less than 10 days, stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position open less than 10 days, stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position open less than 10 days, stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position open less than 10 days, stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "RITM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position open less than 10 days, stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "SIGI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position open less than 10 days, stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "ALLO"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "c66742ff411cfc4be45bef7edc0ffa245e39e81f4b05ac20b6c90318311884f4"
+  },
+  "reviewer": {
+   "answer_sha256": "b888a86f8318331a8b85bb5cf809c1314ed4992f1f8bb05b7fda59e086867711",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "eaecfcaef8be235ae738eb87660621ea25d60438fcd497c84ccf314e914932d0",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum, high volume, and positive earnings tone.",
+     "symbol": "E"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant pullback after a strong multi-day run with solid volume and positive product outlook.",
+     "symbol": "TNGX"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp sell-off on high volume with negative earnings tone and multi-week weakness.",
+     "symbol": "FIX"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Excessive intraday drop without clear catalyst makes buying the dip risky.",
+     "symbol": "NKSH"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop despite neutral earnings tone warrants caution.",
+     "symbol": "IIIN"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Unexplained sharp drop on low relative volume makes it risky to enter long.",
+     "symbol": "SSNC"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock in a severe multi-week downtrend.",
+     "symbol": "KDK"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continuing downward trend with negative analyst tone and pending news.",
+     "symbol": "ITRG"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.04141,
+   "news": 0,
+   "pace": 3.38,
+   "price": 61.995,
+   "r20": 0.08158,
+   "r5": 0.03639,
+   "short": true,
+   "src": "iex",
+   "symbol": "E",
+   "z": 3.375
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.13158,
+   "news": 0,
+   "pace": 7.215,
+   "price": 24.255,
+   "r20": 0.13398,
+   "r5": 0.2304,
+   "short": true,
+   "src": "iex",
+   "symbol": "TNGX",
+   "z": -3.346
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.08197,
+   "news": 1,
+   "pace": 5.12,
+   "price": 1174.505,
+   "r20": -0.22151,
+   "r5": -0.1363,
+   "short": true,
+   "src": "iex",
+   "symbol": "FIX",
+   "z": -2.503
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07956,
+   "news": 0,
+   "pace": 1.944,
+   "price": 41.88,
+   "r20": 0.07769,
+   "r5": 0.05032,
+   "short": true,
+   "src": "iex",
+   "symbol": "NKSH",
+   "z": -8.093
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08152,
+   "news": 0,
+   "pace": 1.281,
+   "price": 27.83,
+   "r20": 0.04016,
+   "r5": 0.02123,
+   "short": true,
+   "src": "iex",
+   "symbol": "IIIN",
+   "z": -7.253
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.066,
+   "news": 0,
+   "pace": 1.723,
+   "price": 83.63,
+   "r20": 0.14064,
+   "r5": 0.06355,
+   "short": true,
+   "src": "iex",
+   "symbol": "SSNC",
+   "z": -5.614
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07892,
+   "news": 0,
+   "pace": 5.678,
+   "price": 4.58,
+   "r20": -0.4487,
+   "r5": -0.33359,
+   "short": false,
+   "src": "iex",
+   "symbol": "NWCL",
+   "z": 1.159
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.04817,
+   "news": 0,
+   "pace": 3.017,
+   "price": 0.9899,
+   "r20": -0.6259,
+   "r5": -0.34591,
+   "short": true,
+   "src": "iex",
+   "symbol": "KDK",
+   "z": -0.77
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01991,
+   "news": 1,
+   "pace": 1.414,
+   "price": 2.215,
+   "r20": -0.16605,
+   "r5": -0.06224,
+   "short": true,
+   "src": "iex",
+   "symbol": "ITRG",
+   "z": -0.59
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.1074,
+   "news": 0,
+   "pace": 8.479,
+   "price": 4.64,
+   "r20": 0.37829,
+   "r5": -0.1343,
+   "short": false,
+   "src": "iex",
+   "symbol": "VEEA",
+   "z": 0.482
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4993.478,
+  "PICK-MAIN-coin": 4992.4947,
+  "PICK-PENNY": 498.024,
+  "PICK-PENNY-coin": 498.2135
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.1125,
+   "price": 61.995,
+   "qty": 6,
+   "side": 1,
+   "stop": 54.5556,
+   "symbol": "E"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.1125,
+   "price": 61.995,
+   "qty": 6,
+   "side": 1,
+   "stop": 54.5556,
+   "symbol": "E"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.1953,
+   "price": 24.255,
+   "qty": 17,
+   "side": 1,
+   "stop": 21.3444,
+   "symbol": "TNGX"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.1953,
+   "price": 24.255,
+   "qty": 17,
+   "side": 1,
+   "stop": 21.3444,
+   "symbol": "TNGX"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3327,
+   "price": 0.9899,
+   "qty": 25,
+   "side": -1,
+   "stop": 1.18788,
+   "symbol": "KDK"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3327,
+   "price": 0.9899,
+   "qty": 25,
+   "side": -1,
+   "stop": 1.18788,
+   "symbol": "KDK"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3253,
+   "price": 2.215,
+   "qty": 11,
+   "side": -1,
+   "stop": 2.658,
+   "symbol": "ITRG"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3228,
+   "price": 2.215,
+   "qty": 11,
+   "side": 1,
+   "stop": 1.772,
+   "symbol": "ITRG"
+  }
+ ],
+ "flag_counts": {
+  "move": 66,
+  "news": 13,
+  "volume": 59
+ },
+ "flagged": 119,
+ "headline_counts": {
+  "E": 3,
+  "FIX": 3,
+  "IIIN": 1,
+  "ITRG": 2,
+  "KDK": 1,
+  "NWCL": 1,
+  "SSNC": 3,
+  "TNGX": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "d859b06a3d77aea407fec03fb98f08db5a3cb633fd5aadda638c98c5385306c0",
+ "price_sources": {
+  "delayed_sip": 145,
+  "iex": 3273
+ },
+ "priced": 3418,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 6,
+   "skip": null,
+   "symbol": "E"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 17,
+   "skip": null,
+   "symbol": "TNGX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (name cap)",
+   "symbol": "FIX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 9,
+   "skip": "reviewer said none",
+   "symbol": "NKSH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 14,
+   "skip": "reviewer said none",
+   "symbol": "IIIN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 4,
+   "skip": "reviewer said none",
+   "symbol": "SSNC"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 25,
+   "skip": null,
+   "symbol": "KDK"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 11,
+   "skip": null,
+   "symbol": "ITRG"
+  }
+ ],
+ "slot": "2026-10-23T12:20",
+ "t": "2026-10-23T16:20:21.085466+00:00",
+ "universe": 3420,
+ "written_utc": "2026-10-23T16:20:54.183174Z"
+}
