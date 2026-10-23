@@ -295,6 +295,7 @@ def company_names(cache, ciks, get=sec.get):
     company used)."""
     f = cache / "names.parquet"
     if not f.exists():
+        cache.mkdir(parents=True, exist_ok=True)
         rows = set()
         want = {int(c) for c in ciks}
         for per in pd.period_range("2014Q1", "2025Q3", freq="Q"):
