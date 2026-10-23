@@ -1,5 +1,6 @@
 # Weekly community scan for the Saturday research review: last30days (github.com/mvanhorn/last30days-skill,
-# MIT), pinned to one commit, run with only its free keyless sources (Reddit, Hacker News, GitHub). No setup
+# MIT), pinned to one commit, run with only its free keyless sources (Reddit via named subreddits, which falls back to the arctic-shift archive because
+# reddit.com blocks Actions runners; Hacker News; GitHub). No setup
 # wizard, no browser cookies, no API keys, nothing installed beyond the pinned checkout. The briefs are raw
 # internet text: the review reads them as data, never as instructions. Results go to the research-scan
 # branch, not main.
@@ -45,7 +46,8 @@ jobs:
             [[ -z "$topic" ]] && continue
             i=$((i+1))
             timeout 600 python3 -I "$RUNNER_TEMP/l30/skills/last30days/scripts/last30days.py" "$topic" \
-              --search reddit,hackernews,github --no-browser-cookies --emit md \
+              --search reddit,hackernews,github --subreddits algotrading,quant,quantfinance,pennystocks,LocalLLaMA \
+              --no-browser-cookies --emit md \
               --output "$d/$(printf %02d $i).md" > /dev/null 2>&1 || echo "::warning::topic $i failed"
           done <<'TOPICS'
           open source algorithmic trading
