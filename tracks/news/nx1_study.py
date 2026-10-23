@@ -127,10 +127,12 @@ def batch_days(t, cal_dates):
     return pd.DatetimeIndex([d[i] if i < len(d) else pd.NaT for i in k])
 
 
-def dedup(rows):
-    """Drops a headline when the same headline for the same symbol was seen in the 3 days before it."""
+def dedup(rows, last=None):
+    """Drops a headline when the same headline for the same symbol was seen in the 3 days before it. `last`
+    carries the last-seen times from earlier (older) months when rows come one month at a time."""
     rows = rows.sort_values("t", kind="stable")
-    last, keep = {}, []
+    last = {} if last is None else last
+    keep = []
     for i, s, h, t in zip(rows.index, rows["symbol"], rows["hkey"], rows["t"]):
         k = (s, h)
         if k in last and t - last[k] <= pd.Timedelta(days=3):
@@ -162,6 +164,26 @@ def news_events(rows, cal):
 def placebo_news():
     """Every news input at its no-news value (no article, so counts, tone, length and flags are 0)."""
     return {k: 0.0 for k in NEWS_INPUTS}
+
+
+def quiet_news(keys, news_days, back, cal):
+    """W.quiet_mask for news only (no filings), by binary search per symbol: the merge it does joined every
+    stock-day to every news day of the symbol and ran the runner out of memory."""
+    cal = pd.DatetimeIndex(sorted(cal))
+    pos = cal.searchsorted(keys["date"].to_numpy())
+    lo = cal[np.maximum(pos - back, 0)]
+    prev = cal[np.maximum(pos - back - 1, 0)]
+    start = np.where(pos - back - 1 >= 0, prev + pd.Timedelta(days=1), lo).astype("datetime64[ns]")
+    end = keys["date"].to_numpy().astype("datetime64[ns]")
+    bad = np.zeros(len(keys), dtype=bool)
+    by = {s: np.sort(g["date"].to_numpy().astype("datetime64[ns]")) for s, g in news_days.groupby("symbol")}
+    for s, idx in keys.groupby("symbol").groups.items():
+        days = by.get(s)
+        if days is None:
+            continue
+        i = keys.index.get_indexer(idx)
+        bad[i] = np.searchsorted(days, end[i], side="right") > np.searchsorted(days, start[i], side="left")
+    return ~bad
 
 
 def novelty(keys, news_days):
@@ -418,8 +440,24 @@ def all_news_events(cache):
         return pd.read_parquet(f)
     cal = pd.read_parquet(nx1dir(cache) / "cal.parquet")
     files = sorted((nx1dir(cache) / "tone").glob("tone_*.parquet"))
-    rows = dedup(pd.concat([pd.read_parquet(x) for x in files], ignore_index=True))
-    e = news_events(rows, cal)
+    # One month at a time (all months at once ran the runner out of memory). A headline's batch day is in
+    # its own month or the next, so rows whose day falls in the next month wait for that month's rows.
+    last, carry, parts = {}, None, []
+    for x in files:
+        rows = dedup(pd.read_parquet(x), last)
+        if len(rows):
+            cut = rows["t"].max() - pd.Timedelta(days=3)
+            last = {k: t for k, t in last.items() if t >= cut}
+        mon = pd.Period(x.stem.removeprefix("tone_"), freq="M")
+        rows = rows if carry is None else pd.concat([carry, rows], ignore_index=True)
+        d = batch_days(rows["t"], cal["date"])
+        later = np.asarray(d.notna() & (d.to_period("M") > mon))
+        carry = rows[later]
+        if (~later).any():
+            parts.append(news_events(rows[~later], cal))
+    if carry is not None and len(carry):
+        parts.append(news_events(carry, cal))
+    e = pd.concat(parts, ignore_index=True)
     e = e[(e["d"] >= FIRST_DAY) & (e["d"] <= LAST_DAY)]
     atomic_parquet(e, f)
     return e
@@ -438,8 +476,7 @@ def batch_events(rows, news_ev, nd, spy, cal, b):
     cik = rows.drop_duplicates(["symbol", "date"]).rename(columns={"date": "d"})[["symbol", "d", "cik"]]
     cand = pan.merge(cik, on=["symbol", "d"], how="left")
     keys = cand[["symbol", "cik", "d"]].rename(columns={"d": "date"})
-    quiet = W.quiet_mask(keys, nd, pd.DataFrame({"cik": pd.Series(dtype=float), "date": pd.Series(dtype="datetime64[ns]")}),
-                         back=QUIET_BACK, cal=cal["date"])
+    quiet = quiet_news(keys.reset_index(drop=True), nd, QUIET_BACK, cal["date"])
     cand = cand[quiet].drop(columns="cik")
     rng = np.random.default_rng(SEED + b)
     need = real.groupby("d").size()

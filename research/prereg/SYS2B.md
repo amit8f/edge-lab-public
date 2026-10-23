@@ -145,3 +145,49 @@ As in SYS2: a book moves to a paper account under SYS1's promotion rule against 
 trading days, 30 closed trades and confidence of at least `adaptive/promotion.required(n)`). The EL-PICK
 accounts are shared with SYS2; whichever book passes first takes them, and the other waits. Fail: dropped or
 re-registered as a new version.
+
+## Build clarifications (2026-10-23, before any result)
+
+Written while building `adaptive/scouts.py`, `adaptive/lanes.py` and `core/edgar_live.py`, before the first
+pass. They fill in details the text above leaves open and change nothing it fixes.
+
+1. Start. The code does nothing before 2026-10-27. Lanes running that day: 1-14, 17a, 17b, 21-23 and the
+   confirm-only lane 12. Not yet built, each to be logged with its own start date when it runs: 15, 16, 18,
+   19, 20, lane 8's openFDA and ClinicalTrials.gov part, and lane 6's estimate revisions. Lane 1's
+   Finnhub actual-vs-estimate part and the earnings calendar run only once a `FINNHUB_API_KEY` secret exists.
+2. Sources. Headlines: Alpaca (Benzinga) news naming 1-3 stocks, sorted into lanes by the word lists in
+   `adaptive/lanes.py`. Filings: EDGAR's current-filings feed every pass, for the company the filing is about
+   (filer, issuer or subject), accepted in the last 18 hours. An 8-K with item 1.01, 2.02, 7.01 or 8.01 has
+   its press release's first 600 characters run through the headline lists (guidance only with 2.02 or 7.01).
+   A 13D/A counts for lane 5 only when its text names Item 4 or the purpose of the transaction. Lane 21 also
+   runs EDGAR full-text searches for "going concern" and "material weakness" once an hour.
+3. Number lanes, all on the day's live price and volume against the universe row:
+   - 11: volume pace 3x or more, no headline from 3 sessions back (Alpaca news), and no fundamental,
+     insider, activist or supply lane on the stock in 3 sessions;
+   - 13: volume pace 2x or more and a price above the 52-week high close or below the low, else beyond the
+     20-day high or low close;
+   - 14: today's move at or below -3 daily standard deviations, with no lane 21 event in 3 sessions;
+   - 17a / 17b: a borrow fee in the universe's top 10% (IBKR's file, read once an hour); 17a needs +5% or
+     more on 2x pace, 17b a lane 21 event in 3 sessions or -5% or worse;
+   - 12 (confirm-only): an opening gap of 4% or more; after the first hour, "held" means at least half the gap
+     is still there.
+4. Shared checks: the halt test starts 30 minutes after the open; the spread is the delayed SIP quote's. An
+   8-K item 3.01 counts as a delisting notice and fails the stock.
+5. Scouts. One call shows at most 5 events, ranked by the number of lanes, then today's absolute move. An
+   event counts as new for 60 minutes after detection. An answer with extra keys is read without them; one
+   with a missing or invalid field is unreadable.
+6. Budget pacing. Each model gets a daily target (SYS2B's share after SYS2): gpt-oss-20b 40, qwen3.8-27b 60,
+   gpt-oss-120b 60, gemini-3-flash-preview 250, gemini-3.5-flash-lite 120, gemini-2.5-flash 60 (all under
+   the caps above). New-event calls may run up to 25% of the target ahead of an even pace from 9:00 to
+   15:30 ET; hourly turns only on pace. A model that answers "quota used up" is skipped for the day.
+7. Checker. It answers twice per finalist, without and with the web; the final verdict is the lower of the
+   two. "Disagree" ends the finalist, and so does no checker answer at all. "Unclear" goes to the picker,
+   which sees the verdict. The web search is one Gemini 2.5 Flash call with Google-search grounding per
+   finalist; Groq's own search models aren't available on our key (checked 2026-10-23).
+8. Picker. It runs on any pass with checked finalists, and at most once an hour for the held stocks alone.
+9. Exits. A position closes at the first pass after it has been held `horizon` trading days (10 at most);
+   its coin twin uses the same horizon and stop.
+10. FOMC statement days (2:00pm ET, from federalreserve.gov on 2026-10-23): 2026-10-28, 2026-12-09, then the
+    2027 meetings. No entries from 1:30 to 2:30pm ET on those days. CPI and jobs come out at 8:30am,
+    before the session.
+11. Evidence. One JSON-lines file per pass in `amit8f/edge-lab`, branch `evidence`, under `sys2b/<date>/`.

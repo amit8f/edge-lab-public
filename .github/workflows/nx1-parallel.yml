@@ -1,11 +1,17 @@
 # NX1 / NEWS-XGB, faster path: FinBERT tone in 12 parallel jobs, then events and training in one job
 # (tracks/news/nx1_study.py, research/prereg/NX1.md). Manual runs only; needs the data stage done (run
 # nx1-study once first). Tone files hold scores and hashes only, never headline text. If the last job stops
-# on its time budget, run nx1-study (stage all) to finish from the cache.
+# on its time budget, run nx1-study (stage all) to finish from the cache. tone_run reuses the tone files of an
+# earlier run (kept 3 days) and runs only the last job.
 name: nx1-parallel
 
 on:
   workflow_dispatch:
+    inputs:
+      tone_run:
+        description: "Run id whose tone files to reuse (empty: score them now)"
+        required: false
+        default: ""
 
 permissions: {}
 
@@ -15,6 +21,7 @@ concurrency:
 
 jobs:
   tone:
+    if: ${{ inputs.tone_run == '' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     strategy:
@@ -70,6 +77,7 @@ jobs:
     if: ${{ !cancelled() }}
     permissions:
       contents: write
+      actions: read
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     steps:
@@ -106,6 +114,13 @@ jobs:
           pattern: nx1-tone-*
           path: cache/nx1/nx1/tone
           merge-multiple: true
+          run-id: ${{ inputs.tone_run || github.run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Add swap (a memory spike slows the job instead of killing the runner)
+        run: |
+          sudo fallocate -l 16G /mnt/nx1.swap && sudo chmod 600 /mnt/nx1.swap
+          sudo mkswap /mnt/nx1.swap >/dev/null && sudo swapon /mnt/nx1.swap && free -g
 
       - name: Events and training
         env:
