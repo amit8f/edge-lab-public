@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 10:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 10:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8889.05 | -1110.95% | 52 | 4 | long AMT, short FIX, long LMT, long SPOT, long ZS |
-| Coin flip on C's picks | $9836.90 | -163.10% | 52 | 28 | long AMT, long FIX, short LMT, long SPOT, short ZS |
-| C's prompt on Groq (K7) | $8941.59 | -1058.41% | 115 | 20 | long AMT, short FIX, long LMT, short LRCX, long SPOT |
-| Coin flip on C-groq's picks | $10023.32 | +23.32% | 115 | 65 | short AMT, long FIX, long LMT, short LRCX, short SPOT |
-| Just hold SPY | $9881.73 | -118.27% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8843.42 | -1156.58% | 52 | 4 | long AMT, short FIX, long LMT, long SPOT, long ZS |
+| Coin flip on C's picks | $9831.48 | -168.52% | 52 | 28 | long AMT, long FIX, short LMT, long SPOT, short ZS |
+| C's prompt on Groq (K7) | $8855.16 | -1144.84% | 116 | 20 | long AMT, short BE, long LMT, short LRCX, long SPOT |
+| Coin flip on C-groq's picks | $10028.75 | +28.75% | 116 | 66 | short AMT, long BE, long LMT, short LRCX, short SPOT |
+| Just hold SPY | $9896.25 | -103.75% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-23 10:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 10:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 10:07 | long AMT, short FIX, long LMT, long SPOT, long ZS | sold CSX @ $50.55; sold FIX @ $1,129.51 | Sold CSX to cut losses and initiated a short position in FIX due to its strong bearish momentum across multiple timeframes and recent news. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 10:2
 | 2026-10-21 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-21 13:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-21 13:07 | no answer, nothing changed | none | unreadable answer |
