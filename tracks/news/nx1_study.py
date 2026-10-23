@@ -127,10 +127,12 @@ def batch_days(t, cal_dates):
     return pd.DatetimeIndex([d[i] if i < len(d) else pd.NaT for i in k])
 
 
-def dedup(rows):
-    """Drops a headline when the same headline for the same symbol was seen in the 3 days before it."""
+def dedup(rows, last=None):
+    """Drops a headline when the same headline for the same symbol was seen in the 3 days before it. `last`
+    carries the last-seen times from earlier (older) months when rows come one month at a time."""
     rows = rows.sort_values("t", kind="stable")
-    last, keep = {}, []
+    last = {} if last is None else last
+    keep = []
     for i, s, h, t in zip(rows.index, rows["symbol"], rows["hkey"], rows["t"]):
         k = (s, h)
         if k in last and t - last[k] <= pd.Timedelta(days=3):
@@ -418,8 +420,24 @@ def all_news_events(cache):
         return pd.read_parquet(f)
     cal = pd.read_parquet(nx1dir(cache) / "cal.parquet")
     files = sorted((nx1dir(cache) / "tone").glob("tone_*.parquet"))
-    rows = dedup(pd.concat([pd.read_parquet(x) for x in files], ignore_index=True))
-    e = news_events(rows, cal)
+    # One month at a time (all months at once ran the runner out of memory). A headline's batch day is in
+    # its own month or the next, so rows whose day falls in the next month wait for that month's rows.
+    last, carry, parts = {}, None, []
+    for x in files:
+        rows = dedup(pd.read_parquet(x), last)
+        if len(rows):
+            cut = rows["t"].max() - pd.Timedelta(days=3)
+            last = {k: t for k, t in last.items() if t >= cut}
+        mon = pd.Period(x.stem.removeprefix("tone_"), freq="M")
+        rows = rows if carry is None else pd.concat([carry, rows], ignore_index=True)
+        d = batch_days(rows["t"], cal["date"])
+        later = np.asarray(d.notna() & (d.to_period("M") > mon))
+        carry = rows[later]
+        if (~later).any():
+            parts.append(news_events(rows[~later], cal))
+    if carry is not None and len(carry):
+        parts.append(news_events(carry, cal))
+    e = pd.concat(parts, ignore_index=True)
     e = e[(e["d"] >= FIRST_DAY) & (e["d"] <= LAST_DAY)]
     atomic_parquet(e, f)
     return e

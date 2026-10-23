@@ -169,3 +169,24 @@ def test_tone_shards_cover_every_month_once():
     allm = N.tone_months()
     parts = [m for i in range(12) for m in N.tone_months(i, 12)]
     assert sorted(parts) == allm and len(set(parts)) == len(allm) and allm[0] == pd.Period("2016-08")
+
+
+def test_news_events_month_by_month_equals_all_at_once(tmp_path, monkeypatch):
+    rng = np.random.default_rng(5)
+    t = pd.to_datetime("2017-01-25") + pd.to_timedelta(rng.uniform(0, 14 * 86400, 400), unit="s")
+    rows = pd.DataFrame({"id": range(400), "symbol": rng.choice(["AAA", "BBB"], 400), "t": t,
+                         "hkey": rng.choice(list("abcdef"), 400), "head_len": 10, "lm_neg": rng.integers(0, 3, 400),
+                         "lm_pos": rng.integers(0, 3, 400), "fb_pos": rng.uniform(size=400),
+                         "fb_neg": rng.uniform(size=400), "fb_neu": rng.uniform(size=400),
+                         **{f"f_{k}": rng.integers(0, 2, 400) for k in N.FLAGS}})
+    root = tmp_path / "nx1"
+    (root / "tone").mkdir(parents=True)
+    CAL.to_parquet(root / "cal.parquet")
+    for per, g in rows.groupby(rows["t"].dt.to_period("M")):
+        g.to_parquet(root / "tone" / f"tone_{per}.parquet")
+    monkeypatch.setattr(N, "nx1dir", lambda cache: root)
+    monkeypatch.setattr(N, "FIRST_DAY", DAYS[0])
+    got = N.all_news_events("x").sort_values(["symbol", "d"]).reset_index(drop=True)
+    want = N.news_events(N.dedup(rows), CAL).sort_values(["symbol", "d"]).reset_index(drop=True)
+    pd.testing.assert_frame_equal(got, want[got.columns], check_dtype=False)
+    assert got["d"].dt.month.nunique() == 2
