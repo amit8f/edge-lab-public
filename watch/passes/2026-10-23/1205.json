@@ -1,0 +1,537 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "11c4cd5b2fc356817d3ad41f4f70beb56c3b9fe6796b9921134a72f3b8d4b81d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "d8dd71f53f7e583fc2fcf84f71799b338015ff52ee8828d13319bb25fe9623aa",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "LKQ",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "MGNX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "FCNCA",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "legal",
+     "symbol": "PHAT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "GL",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "USCB",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "FLG",
+     "tone": 0
+    },
+    {
+     "confidence": 60,
+     "event": "product",
+     "symbol": "STLA",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "CATX",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "WTI",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "7634595b2aa53ac233ba4e0ee6c54491bde474b99e547fc3f2daa107a274dda6",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop, high volume, negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "oversold, strong volume, positive product news",
+     "stop_pct": 20.0,
+     "symbol": "MGNX"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, price up, high volume",
+     "stop_pct": 12.0,
+     "symbol": "FCNCA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "legal win potential, oversold",
+     "stop_pct": 13.0,
+     "symbol": "PHAT"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative analyst tone, high volume",
+     "stop_pct": 12.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 85,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative tone but not shortable",
+     "stop_pct": 0.0,
+     "symbol": "USCB"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant drop, high volume, neutral/negative outlook",
+     "stop_pct": 12.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "neutral tone, insufficient edge",
+     "stop_pct": 0.0,
+     "symbol": "STLA"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive product news, heavy sell\u2011off",
+     "stop_pct": 22.0,
+     "symbol": "CATX"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up, no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "WTI"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "a7703ff1a4b75b5b2c205588d75040183d4db142590ff7b79f7901c67a01a7c8"
+  },
+  "reviewer": {
+   "answer_sha256": "45ac3e40e509b86f9fef1a96ef77ec0bf9fc01b5de4571ea410bbafd09902a4a",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "a359b8d5eb4fcd0bf83270e8000a1051535cc7064bc0d8ee3b80bbf2bc393768",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive negative price move on heavy volume with negative earnings tone.",
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe intraday drop despite positive tone suggests high risk.",
+     "symbol": "MGNX"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum following earnings.",
+     "symbol": "FCNCA"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp drop with legal news creates high volatility.",
+     "symbol": "PHAT"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Consistent downward deviation and negative analyst tone.",
+     "symbol": "GL"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Intraday weakness aligning with multi-week downtrend.",
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Steep drop on penny stock makes long proposal too risky.",
+     "symbol": "CATX"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": true,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.20027,
+   "news": 0,
+   "pace": 6.539,
+   "price": 17.97,
+   "r20": -0.02304,
+   "r5": 0.00492,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "LKQ",
+   "z": -13.04
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.35292,
+   "news": 0,
+   "pace": 8.924,
+   "price": 2.3489,
+   "r20": -0.04474,
+   "r5": 0.07715,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "MGNX",
+   "z": -9.657
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.08903,
+   "news": 0,
+   "pace": 4.683,
+   "price": 2392.33,
+   "r20": 0.06803,
+   "r5": 0.04747,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "FCNCA",
+   "z": 8.027
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.21398,
+   "news": 0,
+   "pace": 3.832,
+   "price": 5.51,
+   "r20": -0.00989,
+   "r5": -0.06533,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "PHAT",
+   "z": -7.437
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.05469,
+   "news": 0,
+   "pace": 3.104,
+   "price": 159.2,
+   "r20": 0.0085,
+   "r5": 0.00489,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "GL",
+   "z": -7.295
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.08396,
+   "news": 0,
+   "pace": 3.785,
+   "price": 20.84,
+   "r20": 0.00353,
+   "r5": 0.01881,
+   "short": false,
+   "src": "iex",
+   "symbol": "USCB",
+   "z": -7.239
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09309,
+   "news": 0,
+   "pace": 4.742,
+   "price": 10.375,
+   "r20": -0.07667,
+   "r5": 0.01689,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "FLG",
+   "z": -7.142
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.06593,
+   "news": 1,
+   "pace": 3.241,
+   "price": 3.9885,
+   "r20": -0.04474,
+   "r5": -0.01839,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "STLA",
+   "z": -2.229
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.2396,
+   "news": 0,
+   "pace": 2.77,
+   "price": 1.7185,
+   "r20": -0.096,
+   "r5": -0.03419,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "CATX",
+   "z": -5.201
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08422,
+   "news": 0,
+   "pace": 1.538,
+   "price": 4.2176,
+   "r20": 0.00777,
+   "r5": 0.06284,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "WTI",
+   "z": 3.003
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4997.6101,
+  "PICK-MAIN-coin": 4997.6256,
+  "PICK-PENNY": 500.0,
+  "PICK-PENNY-coin": 500.0
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.8376,
+   "price": 17.97,
+   "qty": 13,
+   "side": -1,
+   "stop": 20.1264,
+   "symbol": "LKQ"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.8376,
+   "price": 17.97,
+   "qty": 13,
+   "side": -1,
+   "stop": 20.1264,
+   "symbol": "LKQ"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.681,
+   "price": 159.2,
+   "qty": 1,
+   "side": -1,
+   "stop": 178.304,
+   "symbol": "GL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.6764,
+   "price": 159.2,
+   "qty": 1,
+   "side": 1,
+   "stop": 140.096,
+   "symbol": "GL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.8714,
+   "price": 10.375,
+   "qty": 24,
+   "side": -1,
+   "stop": 11.62,
+   "symbol": "FLG"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.8605,
+   "price": 10.375,
+   "qty": 24,
+   "side": 1,
+   "stop": 9.13,
+   "symbol": "FLG"
+  }
+ ],
+ "flag_counts": {
+  "move": 65,
+  "news": 20,
+  "volume": 57
+ },
+ "flagged": 121,
+ "headline_counts": {
+  "CATX": 1,
+  "FCNCA": 3,
+  "FLG": 3,
+  "GL": 3,
+  "LKQ": 3,
+  "MGNX": 1,
+  "PHAT": 2,
+  "STLA": 3,
+  "USCB": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "9b5f593934fb724573f92a8676de923ea2163f76452fd5d6c92f061a00611370",
+ "price_sources": {
+  "delayed_sip": 2298,
+  "iex": 1120
+ },
+ "priced": 3418,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 13,
+   "skip": null,
+   "symbol": "LKQ"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 10,
+   "skip": "reviewer said none",
+   "symbol": "MGNX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (risk)",
+   "symbol": "FCNCA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 69,
+   "skip": "reviewer said none",
+   "symbol": "PHAT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "GL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 24,
+   "skip": null,
+   "symbol": "FLG"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 13,
+   "skip": "reviewer said none",
+   "symbol": "CATX"
+  }
+ ],
+ "slot": "2026-10-23T12:05",
+ "t": "2026-10-23T16:07:38.875771+00:00",
+ "universe": 3420,
+ "written_utc": "2026-10-23T16:13:45.674134Z"
+}
