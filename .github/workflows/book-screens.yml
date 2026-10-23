@@ -1,0 +1,96 @@
+# R1, I1 and A1 historical screens (research/prereg/R1.md, I1.md, A1.md), from the 2026-10-23 books
+# review. One shared data cache (bars, SEC files), so run them one at a time. On demand only (Actions
+# tab, "Run workflow"); rerun until the result file is written. Commits the results back to the branch
+# that ran it.
+name: book-screens
+
+on:
+  workflow_dispatch:
+    inputs:
+      idea:
+        description: "r1, i1 or a1"
+        required: true
+        default: r1
+        type: choice
+        options: [r1, i1, a1]
+
+permissions: {}
+
+concurrency:
+  group: book-screens     # one shared cache: never two runs at once
+
+jobs:
+  screen:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Check secrets are present
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          [[ -n "$ALPACA_API_KEY_ID" ]] || { echo "::error::secret ALPACA_API_KEY_ID is missing"; exit 1; }
+          [[ -n "$SEC_USER_AGENT" ]] || { echo "::error::secret SEC_USER_AGENT is missing"; exit 1; }
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/books
+          key: book-screens-v1-${{ github.run_id }}
+          restore-keys: book-screens-v1-
+
+      - name: Run the screen
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          IDEA: ${{ inputs.idea }}
+        run: |
+          case "$IDEA" in
+            r1) .venv/bin/python -m tracks.main.r1_screen --cache cache/books --out research/results/R1 ;;
+            i1) .venv/bin/python -m tracks.penny.i1_screen --cache cache/books --out research/results/I1 ;;
+            a1) .venv/bin/python -m tracks.penny.a1_screen --cache cache/books --out research/results/A1 ;;
+          esac
+
+      - name: Save the data cache (also after a failure, so a rerun skips the downloads)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/books
+          key: book-screens-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IDEA: ${{ inputs.idea }}
+        run: |
+          dir="research/results/${IDEA^^}"
+          [[ -d "$dir" ]] || exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$dir"
+          git diff --cached --quiet && exit 0
+          git commit -q -m "${IDEA^^} screen results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
