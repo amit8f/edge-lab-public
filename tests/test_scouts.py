@@ -457,3 +457,11 @@ def test_nothing_before_the_start_date_except_a_dry_run(tmp_path):
     api.now = friday
     rec = S.run(tmp_path / "dry", api, now=friday, cache={}, dry=True)
     assert rec["events"] and rec["scouts"] == [] and not [c for c in api.calls if c[0] != "search"]
+
+
+def test_a_price_move_with_no_owner_lane_still_logs(tmp_path):
+    api = Fake(moves={"S0": 0.2, "P0": 0.2})
+    now = OPEN + pd.Timedelta(minutes=95)
+    api.now = now
+    rec = S.run(tmp_path / "dry", api, now=now, cache={}, dry=True)
+    assert rec["events"] and all("check" in e for e in rec["events"])
