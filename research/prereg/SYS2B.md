@@ -191,3 +191,20 @@ pass. They fill in details the text above leaves open and change nothing it fixe
     2027 meetings. No entries from 1:30 to 2:30pm ET on those days. CPI and jobs come out at 8:30am,
     before the session.
 11. Evidence. One JSON-lines file per pass in `amit8f/edge-lab`, branch `evidence`, under `sys2b/<date>/`.
+12. More free providers (2026-10-23, before the start and before any result). Keys checked from Actions on
+    2026-10-23. Each list is in fallback order; a later model is used only when every earlier one is out of
+    budget or quota.
+    - Scouts: Groq `openai/gpt-oss-20b`, Groq `qwen/qwen3.8-27b`, Google `gemini-3-flash-preview`, NVIDIA
+      `nvidia/nemotron-3.5-lightning-30b-a3b`, Cloudflare `@cf/zai-org/glm-5.3-flash`.
+    - Checker: Google `gemini-3.5-flash-lite`, Cloudflare `@cf/deepseek-ai/deepseek-v4.1-flash-1017`, NVIDIA
+      `deepseek-ai/deepseek-v4.1-flash`.
+    - Picker: Groq `openai/gpt-oss-120b`, NVIDIA `nvidia/nemotron-3-ultra-550b-a55b`, Cloudflare
+      `@cf/moonshotai/kimi-k2.6`.
+    - Web search: Gemini 2.5 Flash with Google grounding, then Tavily news search (5 results from the last 7
+      days; its snippets go to the checker as the web text).
+    - Daily caps / pacing targets: NVIDIA Lightning 600/400, Ultra 300/150, DeepSeek 300/150; Cloudflare
+      GLM 100/80, DeepSeek 100/80, Kimi 60/40 (Cloudflare's free tier is 10,000 "neurons" a day); Tavily
+      40/30 (1,000 free searches a month). NVIDIA and Cloudflare calls time out after 60 seconds with one
+      retry. Their answers are cut to the JSON object (reasoning and code fences removed) and then read by
+      the same strict parsers.
+    - Every call logs which model answered; results are reported per model as well as overall.

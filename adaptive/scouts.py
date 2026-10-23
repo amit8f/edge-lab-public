@@ -18,6 +18,7 @@ import json
 import math
 import os
 import random
+import re
 import sys
 from pathlib import Path
 
@@ -38,13 +39,22 @@ BOOKS = {"SCOUT-MAIN": ("main", 5000.0, sizing.MAIN), "SCOUT-PENNY": ("penny", 5
 TWIN = "-coin"
 MIN_CONF, MIN_STOP, MAX_HOLD = 60, 0.01, 10
 HORIZONS = (1, 5, 10)
-SCOUT_MODELS = ("openai/gpt-oss-20b", "qwen/qwen3.8-27b", "gemini-3-flash-preview")
-CHECK_MODEL, SEARCH_MODEL, PICK_MODEL = "gemini-3.5-flash-lite", "gemini-2.5-flash", "openai/gpt-oss-120b"
+# fallback order; "nvidia:" models run on NVIDIA's API, "cf:" ones on Cloudflare Workers AI (clarification 12)
+NV_LIGHT, NV_ULTRA, NV_DEEPSEEK = ("nvidia:nvidia/nemotron-3.5-lightning-30b-a3b",
+                                   "nvidia:nvidia/nemotron-3-ultra-550b-a55b", "nvidia:deepseek-ai/deepseek-v4.1-flash")
+CF_GLM, CF_DEEPSEEK, CF_KIMI = ("cf:@cf/zai-org/glm-5.3-flash", "cf:@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+                                "cf:@cf/moonshotai/kimi-k2.6")
+SCOUT_MODELS = ("openai/gpt-oss-20b", "qwen/qwen3.8-27b", "gemini-3-flash-preview", NV_LIGHT, CF_GLM)
+CHECK_MODELS = ("gemini-3.5-flash-lite", CF_DEEPSEEK, NV_DEEPSEEK)
+PICK_MODELS = ("openai/gpt-oss-120b", NV_ULTRA, CF_KIMI)
+SEARCH_MODELS = ("gemini-2.5-flash", "tavily")
 # daily caps (the prereg's budget) and pacing targets (what the free tiers really give SYS2B after SYS2)
 CAPS = {"openai/gpt-oss-20b": 600, "qwen/qwen3.8-27b": 600, "openai/gpt-oss-120b": 600,
-        "gemini-3-flash-preview": 300, "gemini-3.5-flash-lite": 300, "gemini-2.5-flash": 300}
+        "gemini-3-flash-preview": 300, "gemini-3.5-flash-lite": 300, "gemini-2.5-flash": 300,
+        NV_LIGHT: 600, NV_ULTRA: 300, NV_DEEPSEEK: 300, CF_GLM: 100, CF_DEEPSEEK: 100, CF_KIMI: 60, "tavily": 40}
 TARGET = {"openai/gpt-oss-20b": 40, "qwen/qwen3.8-27b": 60, "openai/gpt-oss-120b": 60,
-          "gemini-3-flash-preview": 250, "gemini-3.5-flash-lite": 120, "gemini-2.5-flash": 60}
+          "gemini-3-flash-preview": 250, "gemini-3.5-flash-lite": 120, "gemini-2.5-flash": 60,
+          NV_LIGHT: 400, NV_ULTRA: 150, NV_DEEPSEEK: 150, CF_GLM: 80, CF_DEEPSEEK: 80, CF_KIMI: 40, "tavily": 30}
 LANE_CAP = 40
 WAKE_EVENTS = 5          # events shown in one scout call
 FRESH_MIN = 60           # an event counts as new for this long after detection
@@ -118,6 +128,14 @@ VERDICTS = ("disagree", "unclear", "agree")
 
 def sha(text):
     return W.sha(text)
+
+
+def json_object(text):
+    """The answer's JSON object: reasoning (<think>...</think>) and code fences removed, then the text from the
+    first "{" to the last "}". Unchanged when there is no braces pair."""
+    t = re.sub(r"(?s)<think>.*?</think>", "", text or "")
+    i, j = t.find("{"), t.rfind("}")
+    return t[i:j + 1] if 0 <= i < j else t
 
 
 # ---------- universe ----------
@@ -721,26 +739,28 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
         if finalists and not errors:
             web = {}
             for s, f in finalists.items():
-                if not can_call(st, SEARCH_MODEL, dkey, now):
-                    break
-                st["calls"].setdefault(dkey, {})[SEARCH_MODEL] = st["calls"].get(dkey, {}).get(SEARCH_MODEL, 0) + 1
                 since = (pd.Timestamp(f["event"]["day"]) - pd.Timedelta(days=3)).strftime("%Y-%m-%d")
-                q = SEARCH_PROMPT.format(name=(cache.get("tickers") or ({}, {}))[1].get(s, s), symbol=s, since=since,
-                                         catalyst=f["pick"]["catalyst"])
-                try:
-                    txt, sources = api.search(SEARCH_MODEL, q)
+                name = (cache.get("tickers") or ({}, {}))[1].get(s, s)
+                for m in SEARCH_MODELS:
+                    if not can_call(st, m, dkey, now):
+                        continue
+                    st["calls"].setdefault(dkey, {})[m] = st["calls"].get(dkey, {}).get(m, 0) + 1
+                    q = (f"{name} ({s}) stock news since {since}: {f['pick']['catalyst']}"[:380] if m == "tavily" else
+                         SEARCH_PROMPT.format(name=name, symbol=s, since=since, catalyst=f["pick"]["catalyst"]))
+                    try:
+                        txt, sources = api.search(m, q)
+                    except Exception as e:
+                        quota = type(e).__name__ == "QuotaExhausted"
+                        if quota:
+                            st["quota_out"][m] = dkey
+                        rec.setdefault("search", []).append({"symbol": s, "model": m, "error":
+                                                             f"{type(e).__name__}: {str(e)[:200]}", "quota": quota})
+                        continue
                     web[s] = txt
-                    rec.setdefault("search", []).append({"symbol": s, "model": SEARCH_MODEL, "sources": len(sources),
+                    rec.setdefault("search", []).append({"symbol": s, "model": m, "sources": len(sources),
                                                          "answer_sha256": sha(txt)})
                     evidence.append({"kind": "search", "symbol": s, "query": q, "text": txt, "sources": sources})
-                except Exception as e:
-                    quota = type(e).__name__ == "QuotaExhausted"
-                    if quota:
-                        st["quota_out"][SEARCH_MODEL] = dkey
-                    rec.setdefault("search", []).append({"symbol": s, "model": SEARCH_MODEL, "error":
-                                                         f"{type(e).__name__}: {str(e)[:200]}", "quota": quota})
-                    if quota:
-                        break
+                    break
             blocks = []
             for s, f in finalists.items():
                 p = f["pick"]
@@ -751,7 +771,7 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
                               guards.wrap_untrusted(case) +
                               ("\n  web search:\n" + guards.wrap_untrusted(web[s]) if s in web else
                                "\n  web search: none"))
-            raw, call = ask(st, api, (CHECK_MODEL,), CHECK_PROMPT, "\n".join(blocks), dkey, now)
+            raw, call = ask(st, api, CHECK_MODELS, CHECK_PROMPT, "\n".join(blocks), dkey, now)
             checks = {}
             if call is not None:
                 rec["agents"]["checker"] = call
@@ -790,14 +810,14 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
                                 f"{prices.get(s, p['last']):g}, stop {p['stop']:g}, opened {p['opened_day']}, horizon "
                                 f"{p['horizon']}" for s, p in sorted(b["pos"].items())) or "none"
                 lines.append(f"## {name.removeprefix('SCOUT-')} book: equity ${W.equity(b):.2f}, held: {pos}")
-            raw, call = ask(st, api, (PICK_MODEL,), PICK_PROMPT, "\n".join(lines), dkey, now)
+            raw, call = ask(st, api, PICK_MODELS, PICK_PROMPT, "\n".join(lines), dkey, now)
             if call is not None:
                 st["picker_t"] = now.isoformat()
                 rec["agents"]["picker"] = call
                 if raw is not None:
                     evidence.append({"kind": "picker_answer", "answer": raw})
                     allowed = set(finalists) | set(picker_held)
-                    decisions = parse_decisions(raw, allowed, PICK_MODEL)
+                    decisions = parse_decisions(raw, allowed, call["model"])
                     if decisions is None:
                         errors += 1
                         call["unreadable"] = True
@@ -980,9 +1000,55 @@ class Api(W.Api):
                               "rev_estimate": x.get("revenueEstimate")}
                 for x in rows if x.get("symbol")}
 
+    def ask(self, model, system, text):
+        """SYS2's Gemini and Groq, plus NVIDIA ("nvidia:") and Cloudflare Workers AI ("cf:") models. Those two
+        get a short timeout and one retry, so a slow provider can't stall a pass; their answer is cut to its
+        JSON object (some models wrap it in reasoning or a code fence)."""
+        import requests
+        from tracks.news.llm import QuotaExhausted
+        if not model.startswith(("nvidia:", "cf:")):
+            return super().ask(model, system, text)
+        prov, name = model.split(":", 1)
+        if prov == "nvidia":
+            url, key = "https://integrate.api.nvidia.com/v1/chat/completions", os.environ.get("NVIDIA_API_KEY")
+        else:
+            acct = (os.environ.get("CLOUDFLARE_ACCOUNT_ID") or "").strip()
+            url = f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/v1/chat/completions"
+            key = os.environ.get("CLOUDFLARE_API_TOKEN")
+        body = {"model": name, "temperature": 0, "max_tokens": 4000,
+                "messages": [{"role": "system", "content": system}, {"role": "user", "content": text}]}
+        for attempt in range(2):
+            try:
+                r = requests.post(url, headers={"Authorization": f"Bearer {(key or '').strip()}"}, json=body,
+                                  timeout=60)
+            except requests.RequestException:
+                if attempt:
+                    raise
+                continue
+            if r.status_code == 429 or (r.status_code in (400, 403) and "allocation" in r.text.lower()):
+                raise QuotaExhausted(f"{prov}: {r.text[:200]}")
+            if r.status_code >= 500 and not attempt:
+                continue
+            r.raise_for_status()
+            return json_object(r.json()["choices"][0]["message"].get("content") or "")
+        raise RuntimeError(f"{prov}: no answer")
+
     def search(self, model, text):
-        """(answer text, [{"uri", "title"}]) from Gemini with Google-search grounding."""
-        from tracks.news.llm import _post
+        """(answer text, [{"uri", "title"}]) from Gemini with Google-search grounding, or for "tavily" from
+        Tavily's search (its result snippets, dated where Tavily gives a date)."""
+        import requests
+        from tracks.news.llm import QuotaExhausted, _post
+        if model == "tavily":
+            r = requests.post("https://api.tavily.com/search", timeout=60,
+                              headers={"Authorization": f"Bearer {(os.environ.get('TAVILY_API_KEY') or '').strip()}"},
+                              json={"query": text, "topic": "news", "days": 7, "max_results": 5})
+            if r.status_code in (429, 432, 433):
+                raise QuotaExhausted(f"tavily: {r.text[:200]}")
+            r.raise_for_status()
+            res = r.json().get("results", [])
+            txt = "\n".join(f"- {x.get('published_date') or 'undated'}, {x.get('title')}: {(x.get('content') or '')[:400]}"
+                             f" ({x.get('url')})" for x in res)
+            return txt, [{"uri": x.get("url"), "title": x.get("title")} for x in res]
         key = (os.environ.get("GEMINI_API_KEY") or "").strip()
         body = {"contents": [{"role": "user", "parts": [{"text": text}]}], "tools": [{"google_search": {}}],
                 "generationConfig": {"temperature": 0}}
