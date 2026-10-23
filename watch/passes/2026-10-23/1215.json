@@ -1,0 +1,637 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "ff140ae95a6300337b4f2eefce69ca5aaca730b0675b0fdf46693b0892b17268",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "99c76b9d3b615cb56bcceda4d2bd54fba8b0b77383429fe793b5ee6384f3ad02",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "RHI",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "IEP",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "SLM",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SIGI",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "KNSL",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "RITM",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "REI",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "OSUR",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ALLO",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PRQR",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "e3c135f04a0cb8741724808f61175fed8d11110e453968991b7e5f43744f6cf1",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Insufficient confidence for long; short not allowed",
+     "stop_pct": 0.0,
+     "symbol": "RHI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Insufficient confidence for long; short not allowed",
+     "stop_pct": 0.0,
+     "symbol": "IEP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Insufficient confidence for long; short not allowed",
+     "stop_pct": 0.0,
+     "symbol": "SLM"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong positive move with high volume",
+     "stop_pct": 12.0,
+     "symbol": "SIGI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings beat despite price dip",
+     "stop_pct": 12.0,
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat and upward momentum",
+     "stop_pct": 12.0,
+     "symbol": "RITM"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong penny upside with high confidence",
+     "stop_pct": 22.0,
+     "symbol": "REI"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Momentum in penny stock",
+     "stop_pct": 22.0,
+     "symbol": "OSUR"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant downside trend",
+     "stop_pct": 22.0,
+     "symbol": "ALLO"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Downtrend, shortable penny",
+     "stop_pct": 22.0,
+     "symbol": "PRQR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "LKQ"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "8680eb15d48fe45cdab249b5b44ab16ae0bfcde5854b586b71e6246dea8457ec"
+  },
+  "reviewer": {
+   "answer_sha256": "3f3244718712400801b927bf6e5141ee0d509a5f799c8057519ec4651c04b736",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "02e702d9edc9b894112d9431f64b930cfa3b4f32a4f31fd13cfdd61a93faea6f",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and volume follow the proposal.",
+     "symbol": "SIGI"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Despite a sharp drop today, strong multi-day trend supports the long proposal.",
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid volume and positive earnings tone align with going long.",
+     "symbol": "RITM"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock showing strong upside volume momentum.",
+     "symbol": "REI"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume pace and positive daily move support the long stance.",
+     "symbol": "OSUR"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Downtrend across multiple timeframes justifies shorting.",
+     "symbol": "ALLO"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume selling pressure aligns with short proposal.",
+     "symbol": "PRQR"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.222,
+   "news": 1,
+   "pace": 4.131,
+   "price": 46.045,
+   "r20": 0.05281,
+   "r5": 0.09567,
+   "short": true,
+   "src": "iex",
+   "symbol": "RHI",
+   "z": 6.691
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.06036,
+   "news": 0,
+   "pace": 4.078,
+   "price": 5.76,
+   "r20": -0.11799,
+   "r5": -0.07681,
+   "short": true,
+   "src": "iex",
+   "symbol": "IEP",
+   "z": -4.944
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09168,
+   "news": 0,
+   "pace": 6.428,
+   "price": 19.765,
+   "r20": -0.05597,
+   "r5": -0.0207,
+   "short": true,
+   "src": "iex",
+   "symbol": "SLM",
+   "z": -4.915
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0509,
+   "news": 0,
+   "pace": 3.313,
+   "price": 96.41,
+   "r20": 0.06967,
+   "r5": 0.05086,
+   "short": true,
+   "src": "iex",
+   "symbol": "SIGI",
+   "z": 4.584
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07948,
+   "news": 0,
+   "pace": 3.436,
+   "price": 359.59,
+   "r20": 0.14722,
+   "r5": 0.09273,
+   "short": true,
+   "src": "iex",
+   "symbol": "KNSL",
+   "z": -4.406
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.06855,
+   "news": 0,
+   "pace": 3.139,
+   "price": 9.275,
+   "r20": -0.02087,
+   "r5": -0.00344,
+   "short": true,
+   "src": "iex",
+   "symbol": "RITM",
+   "z": 4.137
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.07197,
+   "news": 0,
+   "pace": 2.935,
+   "price": 1.415,
+   "r20": -0.02222,
+   "r5": 0.00763,
+   "short": true,
+   "src": "iex",
+   "symbol": "REI",
+   "z": 3.296
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06711,
+   "news": 0,
+   "pace": 3.48,
+   "price": 4.055,
+   "r20": -0.03308,
+   "r5": -0.00262,
+   "short": true,
+   "src": "iex",
+   "symbol": "OSUR",
+   "z": 2.042
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.04,
+   "news": 0,
+   "pace": 3.144,
+   "price": 1.2,
+   "r20": -0.2515,
+   "r5": -0.06716,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALLO",
+   "z": -1.398
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.04511,
+   "news": 0,
+   "pace": 4.532,
+   "price": 1.27,
+   "r20": -0.22222,
+   "r5": -0.08276,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRQR",
+   "z": -1.287
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4995.0258,
+  "PICK-MAIN-coin": 4992.5725,
+  "PICK-PENNY": 498.8521,
+  "PICK-PENNY-coin": 498.8591
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.1406,
+   "price": 96.41,
+   "qty": 4,
+   "side": 1,
+   "stop": 84.8408,
+   "symbol": "SIGI"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.1406,
+   "price": 96.41,
+   "qty": 4,
+   "side": 1,
+   "stop": 84.8408,
+   "symbol": "SIGI"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.0872,
+   "price": 359.59,
+   "qty": 1,
+   "side": 1,
+   "stop": 316.4392,
+   "symbol": "KNSL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.0973,
+   "price": 359.59,
+   "qty": 1,
+   "side": -1,
+   "stop": 402.7408,
+   "symbol": "KNSL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.1866,
+   "price": 9.275,
+   "qty": 44,
+   "side": 1,
+   "stop": 8.162,
+   "symbol": "RITM"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.2053,
+   "price": 9.275,
+   "qty": 44,
+   "side": -1,
+   "stop": 10.388,
+   "symbol": "RITM"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3,
+   "price": 1.415,
+   "qty": 16,
+   "side": 1,
+   "stop": 1.1037,
+   "symbol": "REI"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3,
+   "price": 1.415,
+   "qty": 16,
+   "side": 1,
+   "stop": 1.1037,
+   "symbol": "REI"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2686,
+   "price": 4.055,
+   "qty": 5,
+   "side": 1,
+   "stop": 3.1629,
+   "symbol": "OSUR"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2686,
+   "price": 4.055,
+   "qty": 5,
+   "side": 1,
+   "stop": 3.1629,
+   "symbol": "OSUR"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2898,
+   "price": 1.2,
+   "qty": 18,
+   "side": -1,
+   "stop": 1.464,
+   "symbol": "ALLO"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2862,
+   "price": 1.2,
+   "qty": 18,
+   "side": 1,
+   "stop": 0.936,
+   "symbol": "ALLO"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2895,
+   "price": 1.27,
+   "qty": 17,
+   "side": -1,
+   "stop": 1.5494,
+   "symbol": "PRQR"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2861,
+   "price": 1.27,
+   "qty": 17,
+   "side": 1,
+   "stop": 0.9906,
+   "symbol": "PRQR"
+  }
+ ],
+ "flag_counts": {
+  "move": 58,
+  "news": 7,
+  "volume": 58
+ },
+ "flagged": 106,
+ "headline_counts": {
+  "KNSL": 3,
+  "REI": 1,
+  "RHI": 3,
+  "RITM": 3,
+  "SIGI": 3,
+  "SLM": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "1a08ec05c2ccc46c3bf679bbb35acaff14f78b92fefa26301b4103b7bdb50091",
+ "price_sources": {
+  "delayed_sip": 135,
+  "iex": 3283
+ },
+ "priced": 3418,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 4,
+   "skip": null,
+   "symbol": "SIGI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "KNSL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 44,
+   "skip": null,
+   "symbol": "RITM"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 16,
+   "skip": null,
+   "symbol": "REI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 5,
+   "skip": null,
+   "symbol": "OSUR"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 18,
+   "skip": null,
+   "symbol": "ALLO"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 17,
+   "skip": null,
+   "symbol": "PRQR"
+  }
+ ],
+ "slot": "2026-10-23T12:15",
+ "t": "2026-10-23T16:15:20.566219+00:00",
+ "universe": 3420,
+ "written_utc": "2026-10-23T16:15:39.271439Z"
+}
