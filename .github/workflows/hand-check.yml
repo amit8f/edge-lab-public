@@ -1,0 +1,53 @@
+# Independent bar pull for hand checks (PROTOCOL rule 14): pushing research/checks/<name>.csv to a claude/
+# branch, or running it by hand with that name, writes research/checks/<name>_bars.json back to the branch.
+name: hand-check
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Request file name in research/checks, without .csv"
+        required: true
+  push:
+    branches: ["claude/**"]
+    paths: ["research/checks/*.csv"]
+
+permissions: {}
+
+jobs:
+  pull:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+
+      - name: Python and requests
+        run: python3 -m pip install -q requests==2.34.2
+
+      - name: Pull the bars
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          NAME: ${{ inputs.name }}
+        run: |
+          names="$NAME"
+          [[ -n "$names" ]] || names=$(git diff --name-only HEAD~1 HEAD -- 'research/checks/*.csv' | xargs -r -n1 basename | sed 's/\.csv$//')
+          for n in $names; do python3 -m tracks.hand_check "$n"; done
+
+      - name: Commit the bars to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/checks
+          git commit -q -m "Hand-check bars (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
