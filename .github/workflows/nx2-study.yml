@@ -1,0 +1,67 @@
+# NX2 / NEWS-XGB version 2 (tracks/news/nx2_study.py, research/prereg/NX2.md): walk-forward, gate and, when
+# the gate passes, the version 1 models. Manual runs only. Reads NX1's cached event files (nx1-v1-* cache;
+# run nx1-study or nx1-parallel first) and fetches no data. Only summary numbers and models are committed.
+name: nx2-study
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: nx2-study
+  cancel-in-progress: false
+
+jobs:
+  train:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore NX1's event cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+          fail-on-cache-miss: true
+
+      - name: Add swap (a memory spike slows the job instead of killing the runner)
+        run: |
+          sudo fallocate -l 16G /mnt/nx2.swap && sudo chmod 600 /mnt/nx2.swap
+          sudo mkswap /mnt/nx2.swap >/dev/null && sudo swapon /mnt/nx2.swap && free -g
+
+      - name: Walk-forward, gate and models
+        run: PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx2_study --cache cache/nx1 --out research/results/NX2
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/NX2
+          git diff --cached --quiet && { echo "No results"; exit 0; }
+          git commit -q -m "NX2 walk-forward and gate (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
