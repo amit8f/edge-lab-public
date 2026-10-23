@@ -53,7 +53,7 @@ def edgar_index(cik, acc, headers):
 
 
 def main_edgar(name, rows):
-    headers = {"User-Agent": os.environ["SEC_USER_AGENT"]}
+    headers = {"User-Agent": os.environ["SEC_USER_AGENT"].strip()}
     res = [{**r, **edgar_index(r["cik"], r["accession"], headers)} for r in rows]
     tmp = f"research/checks/{name}_edgar.json.tmp"
     with open(tmp, "w") as f:
