@@ -10,33 +10,53 @@ permissions: {}
 jobs:
   check:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 40
     steps:
       - name: Check out the code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Set up Python
-        run: |
-          python3 -m pip install --quiet requests pandas
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
 
-      - name: Check the accounts
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: SYS2B dry run, 3 passes 5 minutes apart (TEMPORARY, revert after)
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
-          ALPACA_P1P2_KEY_ID: ${{ secrets.ALPACA_P1P2_KEY_ID }}
-          ALPACA_P1P2_SECRET_KEY: ${{ secrets.ALPACA_P1P2_SECRET_KEY }}
-          ALPACA_M3_KEY_ID: ${{ secrets.ALPACA_M3_KEY_ID }}
-          ALPACA_M3_SECRET_KEY: ${{ secrets.ALPACA_M3_SECRET_KEY }}
-          ALPACA_M4_KEY_ID: ${{ secrets.ALPACA_M4_KEY_ID }}
-          ALPACA_M4_SECRET_KEY: ${{ secrets.ALPACA_M4_SECRET_KEY }}
-          ALPACA_M6_KEY_ID: ${{ secrets.ALPACA_M6_KEY_ID }}
-          ALPACA_M6_SECRET_KEY: ${{ secrets.ALPACA_M6_SECRET_KEY }}
-          ALPACA_P4_KEY_ID: ${{ secrets.ALPACA_P4_KEY_ID }}
-          ALPACA_P4_SECRET_KEY: ${{ secrets.ALPACA_P4_SECRET_KEY }}
-          ALPACA_PICK_MAIN_KEY_ID: ${{ secrets.ALPACA_PICK_MAIN_KEY_ID }}
-          ALPACA_PICK_MAIN_SECRET_KEY: ${{ secrets.ALPACA_PICK_MAIN_SECRET_KEY }}
-          ALPACA_PICK_PENNY_KEY_ID: ${{ secrets.ALPACA_PICK_PENNY_KEY_ID }}
-          ALPACA_PICK_PENNY_SECRET_KEY: ${{ secrets.ALPACA_PICK_PENNY_SECRET_KEY }}
-        run: python3 -m adaptive.accounts
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+        run: |
+          for i in 1 2 3; do
+            [[ $i -gt 1 ]] && sleep 300
+            echo "=== pass $i $(date -u +%H:%M:%S)"
+            .venv/bin/python - <<'PY'
+          import collections, json, pickle, sys
+          from pathlib import Path
+          from adaptive import scouts as S
+          c = Path("/tmp/c.pkl")
+          cache = pickle.loads(c.read_bytes()) if c.exists() else {}
+          try:
+              r = S.run("/tmp/dry", S.Api(), evidence_dir="/tmp/ev", cache=cache, dry=True)
+          except Exception:
+              import traceback; traceback.print_exc(); sys.exit(1)
+          c.write_bytes(pickle.dumps(cache))
+          if not isinstance(r, dict):
+              print("run returned", r); sys.exit(0)
+          print(json.dumps({"slot": r.get("slot"), "universe": r.get("universe"), "priced": r.get("priced"),
+                            "counts": r.get("counts"), "alerts": r.get("alerts"), "events": len(r.get("events", [])),
+                            "checks": collections.Counter(str(e.get("check")) for e in r.get("events", [])),
+                            "lanes": collections.Counter(e.get("owner") for e in r.get("events", [])),
+                            "scouts": len(r.get("scouts", [])), "finalists": len(r.get("finalists", [])),
+                            "fills": len(r.get("fills", []))}, default=str))
+          PY
+            find /tmp/ev -type f -exec wc -l {} + 2>/dev/null | tail -5 || true
+          done
