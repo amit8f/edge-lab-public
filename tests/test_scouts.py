@@ -248,6 +248,9 @@ class Fake:
             raise err
         return "SECRET WEB TEXT: Acme confirmed the deal on Oct 26.", [{"uri": "https://example.com/a", "title": "A"}]
 
+    def alert_owner(self, title, body):
+        self.calls.append(("alert", title, body))
+
     def ask(self, model, system, text):
         who = ("checker" if model in S.CHECK_MODELS else "picker" if model in S.PICK_MODELS else "scout")
         self.calls.append((who, model, text))
@@ -394,6 +397,18 @@ def test_unreadable_scout_answer_stops_entries(tmp_path):
     assert rec["scouts"][0]["unreadable"] and rec["fills"] == [] and "unreadable" in rec["blocked"]["SCOUT-MAIN"]
 
 
+def test_a_confidential_flag_is_never_traded_and_alerts_the_owner(tmp_path):
+    a = answers()
+    a["scout"]["picks"][0]["confidential"] = True
+    api = Fake(heads=[HEAD], answers=a)
+    rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=35))
+    assert rec["finalists"] == {} and not rec["fills"] and "checker" not in rec["agents"]
+    assert [(f["symbol"], f["lane"], f["would_side"]) for f in rec["leak_flags"]] == [("S0", "1", "long")]
+    assert rec["leak_flags"][0]["price"] > 0
+    alerts = [c for c in api.calls if c[0] == "alert"]
+    assert len(alerts) == 1 and "S0" in alerts[0][1] and "secret headline" not in alerts[0][2]
+
+
 def test_scout_none_and_low_confidence(tmp_path):
     api = Fake(heads=[HEAD], answers=answers(side="none"))
     rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=35))
@@ -445,6 +460,9 @@ def test_parsers():
     assert S.parse_picks(json.dumps({"picks": [dict(ok, horizon=3)]}), {"A"}) is None
     assert S.parse_picks(json.dumps({"picks": [ok] * 4}), {"A"}) is None
     assert S.parse_picks(json.dumps({"picks": [dict(ok, symbol="B")]}), {"A"}) is None
+    leak = S.parse_picks(json.dumps({"picks": [dict(ok, confidential=True)]}), {"A"})[0]
+    assert leak["side"] == "none" and leak["would_side"] == "long" and leak["confidential"] is True
+    assert "confidential" not in S.parse_picks(json.dumps({"picks": [dict(ok, confidential="yes")]}), {"A"})[0]
     c = S.parse_checks(json.dumps({"checks": [{"symbol": "A", "verdict_no_web": "unclear", "verdict": "agree",
                                                "facts_checked": "f"}]}), {"A"})
     assert c["A"]["final"] == "unclear"
