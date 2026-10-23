@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 14:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8860.21 | -1139.79% | 60 | 5 | long COP, long NET, long PANW, long SLB, long ZS |
-| Coin flip on C's picks | $9735.35 | -264.65% | 60 | 31 | long COP, long NET, long PANW, long SLB, short ZS |
-| C's prompt on Groq (K7) | $8907.34 | -1092.66% | 127 | 26 | long COP, long DDOG, long LMT, long SLB, long ZS |
-| Coin flip on C-groq's picks | $10087.33 | +87.33% | 127 | 75 | short COP, short DDOG, long LMT, long SLB, short ZS |
-| Just hold SPY | $9907.45 | -92.55% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8886.47 | -1113.53% | 60 | 5 | long COP, long NET, long PANW, long SLB, long ZS |
+| Coin flip on C's picks | $9742.39 | -257.61% | 60 | 31 | long COP, long NET, long PANW, long SLB, short ZS |
+| C's prompt on Groq (K7) | $8926.08 | -1073.92% | 129 | 28 | long LMT, long NET, long PANW, long SLB, long ZS |
+| Coin flip on C-groq's picks | $10073.92 | +73.92% | 129 | 75 | long LMT, long NET, long PANW, long SLB, short ZS |
+| Just hold SPY | $9910.96 | -89.04% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-23 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 13:37 | long COP, long NET, long PANW, long SLB, long ZS | none | Maintaining all current long positions in COP, NET, PANW, SLB, and ZS due to continued strong momentum and positive sector news, especially in energy and cybersecurity. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 13:5
 | 2026-10-22 10:27 | long CSX, long DHR, long LMT, long SPOT, long ZS | none | All existing long positions are maintained due to strong positive momentum across multiple timeframes and supportive news, with no new positions opened. |
 | 2026-10-22 10:17 | long CSX, long DHR, long LMT, long SPOT, long ZS | bought LRCX @ $239.10; bought SPOT @ $573.41 | Maintaining existing strong long positions (CSX, DHR, LMT, ZS) and adding a new long position in SPOT due to strong positive momentum and news, while closing the underperforming LRCX short. |
 | 2026-10-22 10:07 | long CSX, long DHR, long LMT, short LRCX, long ZS | sold SPOT @ $568.49; bought CSX @ $51.61 | Maintained profitable long positions in DHR and ZS, and a short in LRCX. Kept LMT long due to strong positive news and daily surge. Closed SPOT for a loss and opened a new long position in CSX based on strong daily performance and analyst upgrades. |
-| 2026-10-22 09:57 | no answer, nothing changed | none | unreadable answer |
