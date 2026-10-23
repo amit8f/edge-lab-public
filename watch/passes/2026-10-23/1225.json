@@ -1,0 +1,281 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "33caaf516d8576af394a9b101a3c382d2d406c27c50eb21185890c50a531f6d3",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "b0113d12766e7589c0c9fa3386c48b2a871ea7c59800d7bb6e9ca14cb41e8bd7",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "SLB",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "DECK",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TG",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CORT",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "FVCB",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "CUBI",
+     "tone": 2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BCML",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "ISTR",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TR",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AXP",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "40dea2992fced6e94e2c43fdb6fbea9c48b33a75bcab6f6a04fb184b5d2b3279",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "47497803aab2958e4f65b8e4df83bb89580f97b1cc48839e73fcd14cf74e23d0",
+   "unreadable": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": "1 unreadable agent answers",
+  "PICK-PENNY": "1 unreadable agent answers"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.07235,
+   "news": 1,
+   "pace": 1.981,
+   "price": 53.135,
+   "r20": -0.03655,
+   "r5": 0.0244,
+   "short": true,
+   "src": "iex",
+   "symbol": "SLB",
+   "z": 3.614
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.04784,
+   "news": 0,
+   "pace": 4.089,
+   "price": 81.2,
+   "r20": 0.08388,
+   "r5": -0.01502,
+   "short": true,
+   "src": "iex",
+   "symbol": "DECK",
+   "z": -3.019
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09153,
+   "news": 0,
+   "pace": 1.438,
+   "price": 7.295,
+   "r20": 0.13901,
+   "r5": 0.01904,
+   "short": true,
+   "src": "iex",
+   "symbol": "TG",
+   "z": -5.784
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.14288,
+   "news": 0,
+   "pace": 2.199,
+   "price": 92.14,
+   "r20": -0.0929,
+   "r5": -0.05178,
+   "short": true,
+   "src": "iex",
+   "symbol": "CORT",
+   "z": -5.635
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.05788,
+   "news": 0,
+   "pace": 2.165,
+   "price": 17.09,
+   "r20": 0.01967,
+   "r5": 0.0348,
+   "short": false,
+   "src": "iex",
+   "symbol": "FVCB",
+   "z": -5.533
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06656,
+   "news": 0,
+   "pace": 2.18,
+   "price": 83.97,
+   "r20": 0.02473,
+   "r5": 0.05891,
+   "short": true,
+   "src": "iex",
+   "symbol": "CUBI",
+   "z": 4.953
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.05031,
+   "news": 0,
+   "pace": 1.372,
+   "price": 30.295,
+   "r20": 0.05594,
+   "r5": 0.03036,
+   "short": true,
+   "src": "iex",
+   "symbol": "BCML",
+   "z": -4.918
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.03614,
+   "news": 0,
+   "pace": 1.136,
+   "price": 28.135,
+   "r20": -0.00307,
+   "r5": 0.01743,
+   "short": false,
+   "src": "iex",
+   "symbol": "ISTR",
+   "z": -4.817
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.05351,
+   "news": 0,
+   "pace": 0.958,
+   "price": 35.2,
+   "r20": -0.01274,
+   "r5": -0.03025,
+   "short": true,
+   "src": "iex",
+   "symbol": "TR",
+   "z": -4.69
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.03697,
+   "news": 0,
+   "pace": 1.499,
+   "price": 313.15,
+   "r20": 0.06711,
+   "r5": 0.036,
+   "short": true,
+   "src": "iex",
+   "symbol": "AXP",
+   "z": -4.423
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4994.563,
+  "PICK-MAIN-coin": 4992.7497,
+  "PICK-PENNY": 497.6515,
+  "PICK-PENNY-coin": 498.371
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 70,
+  "news": 11,
+  "volume": 54
+ },
+ "flagged": 118,
+ "headline_counts": {
+  "AXP": 3,
+  "BCML": 3,
+  "CUBI": 3,
+  "DECK": 3,
+  "FVCB": 2,
+  "ISTR": 2,
+  "SLB": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "f475dc5706f659c7e4b81624ff607e777493baba4ae8de92838a08b285d78d21",
+ "price_sources": {
+  "delayed_sip": 125,
+  "iex": 3293
+ },
+ "priced": 3418,
+ "risk": [],
+ "slot": "2026-10-23T12:25",
+ "t": "2026-10-23T16:25:21.117530+00:00",
+ "universe": 3420,
+ "written_utc": "2026-10-23T16:25:58.395716Z"
+}
