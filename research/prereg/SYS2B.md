@@ -228,3 +228,6 @@ pass. They fill in details the text above leaves open and change nothing it fixe
     story becomes tradable through the usual lanes once an outlet reports it or the company confirms it. Each
     flag also logs the scout's would-be side, horizon and the price at the flag, so a later, separately
     registered study can measure how accurate such material was; no book ever holds a flagged trade.
+15. Start moved to Monday 2026-10-26 (2026-10-23, Amit's request, before any result). The code does nothing
+    before 2026-10-26; the lanes, books and rules are unchanged. Where this plan says 2026-10-27 as the
+    first day, read 2026-10-26.

@@ -282,6 +282,12 @@ def run(api, tmp_path, now, cache=None):
                  else {})
 
 
+def test_nothing_runs_before_the_start_day(tmp_path):
+    fri = pd.Timestamp("2026-10-23 14:00", tz="UTC")
+    assert S.START == "2026-10-26" and run(Fake(), tmp_path, fri) == 3
+    assert not (tmp_path / "state" / "scouts" / "passes").exists()
+
+
 def test_universe_before_the_open(tmp_path):
     api = Fake()
     assert run(api, tmp_path, OPEN - pd.Timedelta(minutes=30)) == 2
