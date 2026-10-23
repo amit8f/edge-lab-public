@@ -1,0 +1,112 @@
+{
+ "idea": "A1",
+ "prereg": "research/prereg/A1.md",
+ "phase2_count": 42,
+ "phase1_plus_phase2": 57,
+ "ff5_daily_sha256": "7881223b51929ee0d6d23b8a28524aaec478a2c3d4eeca47224955cc845c5186",
+ "umd_daily_sha256": "ecf82b116e6ec56d2b79a2f27bd1d1598c217b5c6c25caa55b945bdd8a2c0b78",
+ "costs": {
+  "round_trip": 0.02,
+  "borrow_per_year": 0.2
+ },
+ "funnel": {
+  "penny_month_rows": 26797,
+  "with_cik": 18152,
+  "10ks": 12885,
+  "scored": 6781,
+  "flagged": 1301,
+  "not_scored": {
+   "sales missing or below $1M": 4437,
+   "DSRI, SGI or TATA missing": 1667
+  }
+ },
+ "borrow_note": "past easy-to-borrow status unknown; PROTOCOL rule 6 applies forward only",
+ "PRIMARY": {
+  "months": 50,
+  "mean": 0.11993075998108592,
+  "se": 0.0589149498327955,
+  "t_hac": 2.0356592057102194,
+  "ci95": [
+   0.048277414914469824,
+   0.26514784704337774
+  ],
+  "mean_n_flags": 5.26,
+  "factor_alpha": {
+   "alpha": 0.12890941053742,
+   "se": 0.1077981767245307,
+   "t": 1.195840360703292,
+   "betas": [
+    0.449749721897876,
+    1.585552020144064,
+    -0.7486291914032809,
+    -1.1535792701521903,
+    2.4138840838663516,
+    -1.0788401378651684
+   ],
+   "r2": 0.09254332268539045,
+   "n": 50,
+   "factors": [
+    "Mkt-RF",
+    "SMB",
+    "HML",
+    "RMW",
+    "CMA",
+    "Mom",
+    "(summed over the 63-day window)"
+   ]
+  },
+  "deflated_sharpe": {
+   "sr": 0.22589725120588475,
+   "sr0": 0.3322973373399714,
+   "n_trials": 57,
+   "t_obs": 50,
+   "dsr": 0.18787414383848566
+  },
+  "passes": false
+ },
+ "alongside": {
+  "before_costs_and_borrow": {
+   "months": 50,
+   "mean": 0.12216493393133131,
+   "se": 0.060106576918806526,
+   "t_hac": 2.0324719888200384,
+   "ci95": [
+    0.04903582463920209,
+    0.2698070079124027
+   ],
+   "mean_n_flags": 5.26
+  },
+  "accruals_top_decile_by_filing_year": {
+   "months": 37,
+   "mean": 0.1104598785030047,
+   "se": 0.059106782461373276,
+   "t_hac": 1.8688190069420723,
+   "ci95": [
+    0.010082891291822988,
+    0.24617632699634762
+   ],
+   "mean_n_flags": 4.027027027027027
+  },
+  "flags_stopped_share": 0.33079847908745247,
+  "indexes_set_to_1": {
+   "lvgi": 856,
+   "gmi": 324,
+   "": 302,
+   "depi": 85,
+   "aqi": 81,
+   "sgai": 38
+  },
+  "per_year": {
+   "2017": 0.1805279047518693,
+   "2018": -0.07357394624410946,
+   "2019": 0.23933545399460296,
+   "2020": 0.5250697673467434,
+   "2021": -0.0633770950079925,
+   "2022": 0.16782672869611487,
+   "2023": -0.0478670996214083,
+   "2024": 0.2700724108935854,
+   "2025": -0.18645950372437087
+  },
+  "easy_to_borrow_share": "read from Alpaca's asset list when the report is written"
+ }
+}
