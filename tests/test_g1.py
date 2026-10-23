@@ -102,3 +102,11 @@ def test_contract_hubs_and_pairs():
     assert list(v["other_cik"]) == [7]                  # the bank named by 51 filers is a hub
     p = g1.contract_pairs(v, [pd.Timestamp("2020-06-30"), pd.Timestamp("2021-09-30")])
     assert set(zip(p["src"], p["dst"])) == {(5, 7), (7, 5)} and set(p["date"]) == {pd.Timestamp("2020-06-30")}
+
+
+def test_company_names_creates_its_cache_folder(tmp_path):
+    class R:
+        content = b"ACME WIDGETS CORP                    10-K   5   2015-03-02  edgar/x.txt\n"
+    d = g1.company_names(tmp_path / "m4" / "g1", [5], get=lambda url: R)
+    assert d.to_dict("records") == [{"cik": 5, "name": "ACME WIDGETS CORP"}]
+    assert (tmp_path / "m4" / "g1" / "names.parquet").exists()
