@@ -5,6 +5,9 @@ name: nx2-study
 
 on:
   workflow_dispatch:
+  push:                     # first run from the PR branch (dispatch needs the file on main); removed before merge
+    branches: [claude/project-thread-s2jzh2]
+    paths: [.github/workflows/nx2-study.yml]
 
 permissions: {}
 
