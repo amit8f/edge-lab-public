@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 14:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 14:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8871.35 | -1128.65% | 61 | 5 | long CRWD, long NET, long PANW, long SLB, long ZS |
-| Coin flip on C's picks | $9724.61 | -275.39% | 61 | 31 | short CRWD, long NET, long PANW, long SLB, short ZS |
-| C's prompt on Groq (K7) | $8885.40 | -1114.60% | 133 | 28 | short BE, long LMT, long PANW, long SLB, long ZS |
-| Coin flip on C-groq's picks | $10046.40 | +46.40% | 133 | 76 | short BE, long LMT, short PANW, long SLB, short ZS |
-| Just hold SPY | $9906.08 | -93.92% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8866.70 | -1133.30% | 61 | 5 | long CRWD, long NET, long PANW, long SLB, long ZS |
+| Coin flip on C's picks | $9724.04 | -275.96% | 61 | 31 | short CRWD, long NET, long PANW, long SLB, short ZS |
+| C's prompt on Groq (K7) | $8876.29 | -1123.71% | 133 | 28 | short BE, long LMT, long PANW, long SLB, long ZS |
+| Coin flip on C-groq's picks | $10043.63 | +43.63% | 133 | 76 | short BE, long LMT, short PANW, long SLB, short ZS |
+| Just hold SPY | $9901.20 | -98.80% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-23 14:47 | long CRWD, long NET, long PANW, long SLB, long ZS | none | Maintaining all current long positions in cybersecurity (CRWD, NET, PANW, ZS) and energy services (SLB) due to strong positive momentum and supportive news in their respective sectors. |
 | 2026-10-23 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 14:17 | long CRWD, long NET, long PANW, long SLB, long ZS | sold COP @ $151.32; bought CRWD @ $254.10 | Maintained long positions in NET, PANW, SLB, and ZS due to strong performance and positive sector news. Sold COP to consolidate into stronger cybersecurity names, adding CRWD to capitalize on the sector's momentum. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-23 14:3
 | 2026-10-22 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 10:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-22 10:37 | no answer, nothing changed | none | unreadable answer |
