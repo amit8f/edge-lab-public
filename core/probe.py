@@ -86,22 +86,38 @@ def sys2b_lanes():
         dated = sum(1 for it in items if it["published"])
         out.append(f"feed {outlet}: {len(items)} items, {dated} dated, tags {sorted(set(tagged))[:8]}")
         hits[outlet] = len(tagged)
-    ape, trend = api.apewisdom(), api.stocktwits_trending()
-    cands = L.buzz_candidates(ape, trend, syms)
+    def part(name, fn):
+        try:
+            out.append(fn())
+        except Exception as e:  # noqa: BLE001 - every part reports and the next one runs
+            out.append(f"{name}: FAILED {type(e).__name__}: {str(e)[:200]}")
+
     now = pd.Timestamp.now(tz="UTC")
-    got = [a for s in sorted(cands)[:10] if (a := L.buzz_alert(s, cands[s], api.stocktwits_stream(s), now))]
-    out.append(f"apewisdom {len(ape)}, trending {trend[:10]}, candidates {sorted(cands)[:15]}, "
-               f"buzz {[(a['symbol'], a['info']['users']) for a in got]}")
-    reps = api.house_reports(now.tz_convert('America/New_York').normalize().tz_localize(None)) or []
-    out.append(f"house reports {len(reps)}")
-    for r in reps[:6]:
-        tr = L.ptr_trades(api.ptr_text(r["pdf"]))
-        out.append(f"  {r['doc_id']} filed {r['filed']}: {[(x['symbol'], x['type']) for x in tr][:10]}")
-    cache = {"tickers": (by_cik, names)}
-    sample = sorted(syms)[:300]
-    sec = api.sectors(sample, cache, limit=300)
-    out.append(f"sectors: {len(sec)} of 300 mapped, {Counter(sec.values()).most_common()}, "
-               f"SIC known {sum(1 for v in cache['sic'].values() if v)}")
+
+    def buzz():
+        ape, trend = api.apewisdom(), api.stocktwits_trending()
+        cands = L.buzz_candidates(ape, trend, syms)
+        got = [a for s in sorted(cands)[:10] if (a := L.buzz_alert(s, cands[s], api.stocktwits_stream(s), now))]
+        return (f"apewisdom {len(ape)}, trending {trend[:10]}, candidates {sorted(cands)[:15]}, "
+                f"buzz {[(a['symbol'], a['info']['users']) for a in got]}")
+
+    def house():
+        reps = api.house_reports(now.tz_convert("America/New_York").normalize().tz_localize(None)) or []
+        lines = [f"house reports {len(reps)}"]
+        for r in reps[:6]:
+            tr = L.ptr_trades(api.ptr_text(r["pdf"]))
+            lines.append(f"  {r['doc_id']} filed {r['filed']}: {[(x['symbol'], x['type']) for x in tr][:10]}")
+        return "\n".join(lines)
+
+    def sectors():
+        cache = {"tickers": (by_cik, names)}
+        sec = api.sectors(sorted(syms)[:300], cache, limit=300)
+        return (f"sectors: {len(sec)} of 300 mapped, {Counter(sec.values()).most_common()}, "
+                f"SIC known {sum(1 for v in cache['sic'].values() if v)}")
+
+    part("buzz", buzz)
+    part("house", house)
+    part("sectors", sectors)
     return "\n".join(out)
 
 

@@ -527,6 +527,7 @@ OUTLETS = [
     ("Caixin", "foreign", "https://www.caixinglobal.com/rss/finance.xml"),
 ]
 BUZZ_STREAMS = 20        # StockTwits streams read a slot for lane 18
+UA = {"User-Agent": "edge-lab research (RSS reader)"}   # StockTwits answers 403 to requests' default agent
 RSS_MIN = 15             # lane 19 reads the outlets every 15 minutes
 RSS_HOURS = 24           # items published in the last day count
 
@@ -1138,21 +1139,21 @@ class Api(W.Api):
         import requests
         out = []
         for i in range(1, pages + 1):
-            r = requests.get(f"https://apewisdom.io/api/v1.0/filter/all-stocks/page/{i}", timeout=20)
+            r = requests.get(f"https://apewisdom.io/api/v1.0/filter/all-stocks/page/{i}", headers=UA, timeout=20)
             r.raise_for_status()
             out += r.json().get("results") or []
         return out
 
     def stocktwits_trending(self):
         import requests
-        r = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json", timeout=20)
+        r = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json", headers=UA, timeout=20)
         r.raise_for_status()
         return [x["symbol"] for x in r.json().get("symbols") or [] if x.get("instrument_class") == "Stock"]
 
     def stocktwits_stream(self, symbol):
         """The latest 30 messages on a symbol: [{"user", "t", "sentiment"}] (no message text is kept)."""
         import requests
-        r = requests.get(f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json", timeout=20)
+        r = requests.get(f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json", headers=UA, timeout=20)
         r.raise_for_status()
         return [{"user": (m.get("user") or {}).get("id"), "t": m.get("created_at"),
                  "sentiment": ((m.get("entities") or {}).get("sentiment") or {}).get("basic")}
@@ -1163,7 +1164,7 @@ class Api(W.Api):
         import email.utils
         import requests
         import xml.etree.ElementTree as ET
-        r = requests.get(url, headers={"User-Agent": "edge-lab research (RSS reader)"}, timeout=20)
+        r = requests.get(url, headers=UA, timeout=20)
         r.raise_for_status()
         root, atom, out = ET.fromstring(r.content), "{http://www.w3.org/2005/Atom}", []
         for it in root.iter("item"):
