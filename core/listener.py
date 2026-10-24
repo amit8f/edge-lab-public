@@ -9,11 +9,12 @@ move. Nothing here is a counted idea until a trade rule is registered on top of 
 
 Each line carries `window_s`, the seconds since that source's previous successful read, so the report
 knows how early the item could have been seen; `null` marks the day's first read (a backlog of older
-items, not discoveries). A `poll` line per cycle logs which sources answered.
+items, not discoveries). A `poll` line per cycle logs which sources answered and how many new items each gave (a feed that
+returns only new items may have dropped some between reads).
 
-The day's log (state/listen/live/<day>.jsonl) is append-only and hash-chained line by line (each line holds
-the sha256 of the line before). When the session ends it is sealed into the ledger as
-listen/days/<day>.jsonl (core/ledger.py).
+The day's log (state/listen/live/<day>/, one chunk file per 5-minute run) is append-only and hash-chained
+line by line (each line holds the sha256 of the line before). When the session ends, a manifest of the
+day's chunk files and their hashes is sealed into the ledger as listen/days/<day>.json (core/ledger.py).
 
 Usage: python -m core.listener --state state [--minutes 5]   (exit 3 = the day's session is over)
        python -m core.listener --probe                         (read every source once, print counts)
@@ -43,16 +44,16 @@ OUTLET_EVERY = 3              # outlets every 3rd cycle (one minute)
 EDGAR_PAGES = 3               # 100 filings a page; paged until a page holds one already seen
 UA = {"User-Agent": "edge-lab research (RSS reader)"}
 
-# Press-release wires. Which answer from GitHub is checked with `--probe` (probe-sources.yml); a dead one
-# is logged as failed every cycle and never stops the others.
+# Press-release wires that answer from GitHub (probe-sources.yml, 2026-10-24). GlobeNewswire (Akamai) and
+# ACCESS Newswire (Cloudflare) answer 403 to any client there, and Newsfile has no feed, so they're left out
+# rather than asked every 20 seconds. Business Wire's all-news feed was empty on a Saturday; the speed
+# report shows whether it fills on weekdays.
 WIRES = [
     ("PR Newswire", "https://www.prnewswire.com/rss/news-releases-list.rss"),
-    ("GlobeNewswire", "https://www.globenewswire.com/RssFeed/orgclass/1/feedTitle/"
-                      "GlobeNewswire%20-%20News%20about%20Public%20Companies"),
     ("Business Wire", "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWQ=="),
-    ("ACCESS Newswire", "https://www.accessnewswire.com/newsroom/api/rss"),
-    ("Newsfile", "https://feeds.newsfilecorp.com/feed/all"),
 ]
+# Outlet feeds of SYS2B lane 19 that failed or came back empty in the same probe.
+DEAD_OUTLETS = {"Betaville", "StreetInsider", "Calcalist", "Les Echos", "Caixin", "Nikkei Asia"}
 
 EXCH = r"(?:NYSE American|NYSE Arca|NYSE MKT|NYSE|NASDAQ|Nasdaq(?: ?[A-Z]{2})?|Cboe(?: BZX)?|OTC ?[A-Za-z]*|OTCQ[XB])"
 TICK = re.compile(rf"\b{EXCH}\s*:\s*([A-Z][A-Z0-9]{{0,4}}(?:\.[A-Z])?)\b")
@@ -131,24 +132,36 @@ def session(t):
     return "before" if et.hour < START_H else "open"
 
 
-class DayLog:
-    """state/listen/live/<day>.jsonl: append-only, each line holding the sha256 of the line before."""
+def chunks(root, day):
+    return sorted((Path(root) / "listen" / "live" / day).glob("*.jsonl"))
 
-    def __init__(self, root, day):
-        self.path = Path(root) / "listen" / "live" / f"{day}.jsonl"
-        self.path.parent.mkdir(parents=True, exist_ok=True)
+
+def lines_of(root, day):
+    for p in chunks(root, day):
+        yield from (ln for ln in p.read_text().splitlines() if ln.strip())
+
+
+class DayLog:
+    """state/listen/live/<day>/<HHMMSS ET>.jsonl: one chunk file per run of the listener (small files keep each
+    state save small), append-only, each line holding the sha256 of the line before across chunks."""
+
+    def __init__(self, root, day, start=None):
         self.prev, self.keys, self.last_read = GENESIS, set(), {}
-        if self.path.exists():
-            for ln in self.path.read_text().splitlines():
-                if not ln.strip():
-                    continue
-                rec = json.loads(ln)
-                self.prev = hashlib.sha256(ln.encode()).hexdigest()
-                if rec.get("kind") == "item":
-                    self.keys.add(rec["key"])
-                elif rec.get("kind") == "poll":
-                    for s in rec["ok"]:
-                        self.last_read[s] = rec["t"]
+        for ln in lines_of(root, day):
+            rec = json.loads(ln)
+            self.prev = hashlib.sha256(ln.encode()).hexdigest()
+            if rec.get("kind") == "item":
+                self.keys.add(rec["key"])
+            elif rec.get("kind") == "poll":
+                for s in rec["ok"]:
+                    self.last_read[s] = rec["t"]
+        d = Path(root) / "listen" / "live" / day
+        d.mkdir(parents=True, exist_ok=True)
+        stem = pd.Timestamp(start or now_utc()).tz_convert(ET_TZ).strftime("%H%M%S")   # ET: sorts within the day
+        self.path = d / f"{stem}.jsonl"
+        k = 1
+        while self.path.exists():
+            self.path, k = d / f"{stem}-{k}.jsonl", k + 1
 
     def add(self, rec):
         line = json.dumps(dict(rec, prev=self.prev), sort_keys=True)
@@ -159,29 +172,39 @@ class DayLog:
         self.prev = hashlib.sha256(line.encode()).hexdigest()
 
 
-def verify_day(path):
-    """Line numbers (1-based) whose prev hash doesn't match the line before; empty = the chain holds."""
+def verify_day(root, day):
+    """(chunk name, line number) of every line whose prev hash doesn't match the line before; empty = the
+    chain holds."""
     bad, prev = [], GENESIS
-    for i, ln in enumerate(Path(path).read_text().splitlines(), 1):
-        if json.loads(ln).get("prev") != prev:
-            bad.append(i)
-        prev = hashlib.sha256(ln.encode()).hexdigest()
+    for p in chunks(root, day):
+        for i, ln in enumerate((x for x in p.read_text().splitlines() if x.strip()), 1):
+            if json.loads(ln).get("prev") != prev:
+                bad.append((p.name, i))
+            prev = hashlib.sha256(ln.encode()).hexdigest()
     return bad
 
 
 def seal(root, day):
-    """Register the finished day's log in the ledger (once). Returns the ledger entry or None."""
-    p = Path(root) / "listen" / "live" / f"{day}.jsonl"
+    """Register the finished day in the ledger (once): a manifest of its chunk files and their sha256, and
+    the hash of the day's last line. Returns the ledger entry or None."""
+    files = chunks(root, day)
     led = Ledger(root)
-    if not p.exists() or led.has("listen", day):
+    if not files or led.has("listen", day):
         return None
-    return led.write_bytes("listen", day, f"listen/days/{day}.jsonl", p.read_bytes())
+    last = GENESIS
+    for ln in lines_of(root, day):
+        last = hashlib.sha256(ln.encode()).hexdigest()
+    man = {"day": day, "chain_ok": not verify_day(root, day), "last_line_sha256": last,
+           "chunks": [{"file": str(p.relative_to(root)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+                      for p in files]}
+    return led.write_json("listen", day, f"listen/days/{day}.json", man)
 
 
 def seal_old(root, today):
-    for p in sorted((Path(root) / "listen" / "live").glob("*.jsonl")):
-        if p.stem < today:
-            seal(root, p.stem)
+    live = Path(root) / "listen" / "live"
+    for d in sorted(live.glob("*")) if live.exists() else []:
+        if d.is_dir() and d.name < today:
+            seal(root, d.name)
 
 
 def ticker_map(root, day, get=sec_get):
@@ -242,9 +265,9 @@ def _window(log, source, t):
 def cycle(log, n, by_cik, get=http_get, get_sec=sec_get, clock=now_utc, outlets=None):
     """One read of every due source. Writes the new items, then one poll line. Returns the new-item count."""
     from adaptive.scouts import OUTLETS
-    outlets = OUTLETS if outlets is None else outlets
+    outlets = [o for o in OUTLETS if o[0] not in DEAD_OUTLETS] if outlets is None else outlets
     sources = [("EDGAR", None)] + WIRES + ([(o, u) for o, _, u in outlets] if n % OUTLET_EVERY == 0 else [])
-    ok, failed, total = [], {}, 0
+    ok, failed, sizes, total = [], {}, {}, 0
     for source, url in sources:
         t = clock().isoformat()
         try:
@@ -258,9 +281,10 @@ def cycle(log, n, by_cik, get=http_get, get_sec=sec_get, clock=now_utc, outlets=
         for rec in new:
             log.add(rec)
         log.last_read[source] = t
+        sizes[source] = len(new)
         ok.append(source)
         total += len(new)
-    log.add({"kind": "poll", "t": clock().isoformat(), "ok": ok, "failed": failed, "new": total})
+    log.add({"kind": "poll", "t": clock().isoformat(), "ok": ok, "failed": failed, "new": total, "by_source": sizes})
     return total
 
 
@@ -279,7 +303,7 @@ def run(state, minutes, clock=now_utc, sleep=time.sleep, **kw):
         except Exception as e:  # noqa: BLE001 - filings are still logged, with CIKs only
             print(f"ticker map failed: {type(e).__name__}", file=sys.stderr)
             by_cik = {}
-    log, n = DayLog(state, day), 0
+    log, n = DayLog(state, day, clock()), 0
     while time.monotonic() < stop:
         s = session(clock())
         if s == "over":

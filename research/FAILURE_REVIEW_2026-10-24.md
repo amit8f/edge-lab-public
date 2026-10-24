@@ -166,6 +166,11 @@ Amit said yes to every recommendation except one, which he changed (Q8 part 3, b
 
 Idea count after these: 50 (65 with phase 1).
 
+The listener (`core/listener.py`, `.github/workflows/listen.yml`) was checked from GitHub on 2026-10-24.
+Answering: SEC's live filing feed, PR Newswire, Business Wire (its all-news feed was empty on a Saturday)
+and 12 outlet feeds. Blocked for any GitHub client: GlobeNewswire (403), ACCESS Newswire (Cloudflare);
+Newsfile has no feed. It logs from the first weekday after merge; the speed report follows two weeks later.
+
 G2's matcher uses exact names and stricter sentences. The XBRL customer tags mentioned above are left
 out of G2 to keep it buildable; they can be a later cross-check.
 

@@ -73,21 +73,24 @@ def test_cycle_logs_new_items_once_without_titles(tmp_path):
     wire = next(x for x in items if x["url"] == "https://wire.example/a")
     assert wire["title_sha"] == L.title_sha("Acme Corp (NASDAQ: ACME) Raises Guidance")
     assert wire["tickers"] == ["ACME", "ACM.B"]
-    assert [x["new"] for x in lines if x["kind"] == "poll"] == [first, 0]
-    assert L.verify_day(log.path) == []
+    polls = [x for x in lines if x["kind"] == "poll"]
+    assert [x["new"] for x in polls] == [first, 0]
+    assert polls[0]["by_source"]["EDGAR"] == 1 and polls[1]["by_source"]["PR Newswire"] == 0
+    assert L.verify_day(tmp_path, "2026-10-23") == []
 
 
 def test_restart_keeps_keys_windows_and_chain(tmp_path):
     clock, st = clock_at(datetime(2026, 10, 23, 12, 0, tzinfo=timezone.utc))
     kw = dict(get=lambda url: RSS, get_sec=lambda url: Resp(ATOM), clock=clock, outlets=[])
-    L.cycle(L.DayLog(tmp_path, "2026-10-23"), 0, {}, **kw)
+    L.cycle(L.DayLog(tmp_path, "2026-10-23", st["t"]), 0, {}, **kw)
     st["t"] += timedelta(seconds=45)
     rss2 = RSS.replace(b"https://wire.example/b", b"https://wire.example/c")
-    log = L.DayLog(tmp_path, "2026-10-23")              # a new job picks up the day
+    log = L.DayLog(tmp_path, "2026-10-23", st["t"])     # a new job picks up the day in a new chunk
+    assert len(L.chunks(tmp_path, "2026-10-23")) == 1 + (log.path.exists())
     assert L.cycle(log, 1, {}, **dict(kw, get=lambda url: rss2)) == len(L.WIRES)
     new = [json.loads(x) for x in log.path.read_text().splitlines()][-2]
     assert new["url"] == "https://wire.example/c" and new["window_s"] == 45.0
-    assert L.verify_day(log.path) == []
+    assert L.verify_day(tmp_path, "2026-10-23") == []
 
 
 def test_tampering_breaks_the_chain(tmp_path):
@@ -97,7 +100,7 @@ def test_tampering_breaks_the_chain(tmp_path):
     lines = log.path.read_text().splitlines()
     lines[1] = lines[1].replace("wire.example", "wire.exampel")
     log.path.write_text("\n".join(lines) + "\n")
-    assert L.verify_day(log.path) == [3]
+    assert L.verify_day(tmp_path, "2026-10-23") == [(log.path.name, 3)]
 
 
 def test_failed_source_is_logged_and_others_go_on(tmp_path):
@@ -139,7 +142,8 @@ def test_run_seals_the_day_when_session_ends(tmp_path):
     assert rc == 3
     led = Ledger(tmp_path)
     e = led.entry("listen", "2026-10-23")
-    assert e and (tmp_path / e["file"]).read_bytes() == (tmp_path / "listen/live/2026-10-23.jsonl").read_bytes()
+    man = json.loads((tmp_path / e["file"]).read_text())
+    assert man["chain_ok"] and [c["file"] for c in man["chunks"]] == ["listen/live/2026-10-23/195930.jsonl"]
     assert led.verify() == []
     assert L.run(tmp_path, 10, clock=clock, sleep=sleep, by_cik={}) == 3    # sealing twice is a no-op
 
