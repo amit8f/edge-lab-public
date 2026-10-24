@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, data, fit or diag"
+        description: "all, data, fit, diag or meta3"
         required: false
         default: all
 
@@ -79,7 +79,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/META2 && git add research/results/META2
+          mkdir -p research/results/META2 research/results/META3 && git add research/results/META2 research/results/META3
           git diff --cached --quiet && { echo "No results yet; rerun to continue"; exit 0; }
           git commit -q -m "META2 walk-forward results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"

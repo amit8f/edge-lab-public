@@ -145,6 +145,21 @@ def track_record(ledger, closes, today, kind="M4_picks", cap_days=int(TRACK_DAYS
     return out
 
 
+def meta3_log(rec, closes, t):
+    """META3's keep-or-skip flags for this week's R1 picks (research/prereg/META3.md), or an error note: it
+    must never stop the R1 record."""
+    try:
+        from core import sec
+        cal = alpaca.trading_calendar((t - pd.Timedelta(days=20)).date(), t.date())
+        sessions = [d for d in pd.DatetimeIndex(cal["date"]) if d <= t]
+        tm = sec_data.current_ticker_map()
+        n8k = r1_live.eightk_counts([p["symbol"] for p in rec["picks"]], t, sessions, sec.daily_form_index,
+                                    dict(zip(tm["symbol"], tm["cik"])))
+        return {"prereg": "research/prereg/META3.md", "picks": r1_live.meta3(rec["picks"], closes, t, n8k)}
+    except Exception as e:
+        return {"prereg": "research/prereg/META3.md", "error": f"{type(e).__name__}: {e}"}
+
+
 def run(state, cache, now=None, log_days_only=False):
     now = now if now is not None else alpaca.utcnow()
     state, cache = Path(state), Path(cache)
@@ -261,6 +276,7 @@ def run(state, cache, now=None, log_days_only=False):
         try:  # the FWD1 shadow book must never take the M4 log down
             rec = r1_live.record(closes, uni["symbol"].tolist(), t)
             if rec is not None:
+                rec["meta3"] = meta3_log(rec, closes, t)
                 ledger.write_json("R1_picks", f"{t:%Y-%m-%d}", f"r1/{t:%Y-%m-%d}.json", rec)
                 print(f"logged R1 picks for {t:%Y-%m-%d}: {len(rec['picks'])} of {len(rec['universe'])}")
         except Exception as e:

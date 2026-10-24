@@ -80,3 +80,10 @@ def test_diagnose_runs_on_synthetic_picks():
     assert set(d["overfit"]) == {str(y) for y in range(2019, 2026)}
     assert d["overfit"]["2020"]["auc_train"] > d["overfit"]["2020"]["auc_test"]
     assert len(d["prob_deciles"]) == 10 and set(d["input_vs_excess"]) == set(M.INPUTS)
+
+
+def test_meta3_flags_rank_within_week_and_keep_the_top_half():
+    x = pd.DataFrame({"date": pd.to_datetime(["2020-01-03"] * 4), "ret5": [-0.2, -0.1, -0.15, -0.12],
+                      "vol20": [0.05, 0.01, 0.03, np.nan], "n_8k": [2, 0, 1, 0]})
+    score, keep = M.meta3_flags(x)
+    assert keep.tolist() == [False, True, False, True] and score.idxmax() == 1

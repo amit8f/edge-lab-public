@@ -286,6 +286,32 @@ def diagnose(x):
     return out
 
 
+def meta3_flags(x, cols=(("ret5", True), ("vol20", False), ("n_8k", False))):
+    """research/prereg/META3.md's score and keep flag per pick (ranks within each week; missing = 0.5)."""
+    g = x.groupby("date")
+    score = sum(g[c].rank(pct=True, ascending=a).fillna(0.5) for c, a in cols) / len(cols)
+    return score, score >= score.groupby(x["date"]).transform("median")
+
+
+def meta3_history(x):
+    """META3's history hint over every week of R1's picks (2017-01 .. 2025-09). Not a test: the three inputs
+    were chosen by looking at these years (META2's diagnosis)."""
+    x = x.copy()
+    x["score"], x["keep"] = meta3_flags(x)
+    x["take"] = x["keep"].astype(int)
+    out = {"note": "hint only; inputs chosen on these years", "kept_minus_all": M1.summary(M1.weekly_diff(x)),
+           "kept_mean_after_costs": float((x[x["take"] == 1].groupby("date")["fwd5"].mean() - M1.COST).mean()),
+           "all_mean_after_costs": float((x.groupby("date")["fwd5"].mean() - M1.COST).mean())}
+    out["per_year"] = {str(y): float(M1.weekly_diff(g).mean()) for y, g in x.groupby(x["date"].dt.year)}
+    out["single_inputs"] = {}
+    for c, a in (("ret5", True), ("vol20", False), ("n_8k", False)):
+        _, k = meta3_flags(x, ((c, a),))
+        out["single_inputs"][c] = M1.summary(M1.weekly_diff(x.assign(take=k.astype(int))))
+    x["take"] = (x.groupby("date")["score"].rank(ascending=False, method="first") <= 5).astype(int)
+    out["top5"] = M1.summary(M1.weekly_diff(x))
+    return out
+
+
 def run(stage, cache, out, b0_src=None, budget_min=300):
     cache, out = Path(cache), Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -309,6 +335,13 @@ def run(stage, cache, out, b0_src=None, budget_min=300):
     x = M1.assemble(p, inputs.drop(columns=["avgvol20", "split30"]), spy, tmap, eightk)
     x = x.merge(feat, on=["symbol", "date"], how="left")
     caldf = B0.calendar()
+    if stage == "meta3":
+        h = meta3_history(x.dropna(subset=["fwd5"]).reset_index(drop=True))
+        o3 = out.parent / "META3"
+        o3.mkdir(parents=True, exist_ok=True)
+        (o3 / "META3_history.json").write_text(json.dumps(h, indent=1, default=str) + "\n")
+        print("META3 HISTORY (hint, inputs chosen on these years)", json.dumps(h["kept_minus_all"]), flush=True)
+        return
     if stage == "diag":
         d = diagnose(x.dropna(subset=["fwd5"]).reset_index(drop=True))
         (out / "META2_diagnosis.json").write_text(json.dumps(d, indent=1, default=str) + "\n")
@@ -332,7 +365,7 @@ def run(stage, cache, out, b0_src=None, budget_min=300):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["data", "fit", "all", "diag"])
+    ap.add_argument("--stage", default="all", choices=["data", "fit", "all", "diag", "meta3"])
     ap.add_argument("--cache", required=True)
     ap.add_argument("--b0-src", default=None)
     ap.add_argument("--budget-min", type=float, default=300)

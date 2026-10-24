@@ -57,3 +57,50 @@ def record(closes, universe, t):
             "top5": picks["symbol"].head(TOP_VARIANT).tolist(),
             "control": rest.iloc[np.sort(k)]["symbol"].tolist(), "control_seed": seed,
             "universe": g["symbol"].tolist(), "hold_sessions": 5, "cost_round_trip": r1_screen.COST}
+
+
+def vol20(closes, sym, t):
+    """META3's vol20: sd (ddof 1) of the last 20 daily log returns of all-adjusted closes to t, within the
+    current series (21 bars needed), else None."""
+    d = closes.get(sym)
+    if d is None or t not in d.index:
+        return None
+    d = d.loc[:t]
+    seg = segment_ids(d.index)
+    c = d["c"].to_numpy()[seg == seg[-1]]
+    if len(c) < 21:
+        return None
+    return float(np.std(np.diff(np.log(c[-21:])), ddof=1))
+
+
+def eightk_counts(symbols, t, sessions, index_of, cik_of):
+    """META3's n_8k per symbol: 8-K and 8-K/A filings by its CIK with filing date from sessions[-5] through t
+    (sessions: trading days up to t). None for every symbol when a daily index isn't published yet; None for
+    a symbol with no CIK."""
+    days = pd.bdate_range(sessions[-5], t)
+    parts = []
+    for d in days:
+        idx = index_of(d)
+        if idx is None:
+            return {s: None for s in symbols}
+        parts.append(idx[idx["form"].isin({"8-K", "8-K/A"})])
+    f = pd.concat(parts) if parts else pd.DataFrame(columns=["cik"])
+    cnt = f.groupby("cik").size().to_dict()
+    return {s: (int(cnt.get(cik_of[s], 0)) if s in cik_of else None) for s in symbols}
+
+
+def meta3(picks, closes, t, n8k):
+    """research/prereg/META3.md: mean within-week percentile rank of ret5 (ascending), vol20 and n_8k
+    (descending); a missing input ranks 0.5; keep when the score is at or above the week's median."""
+    df = pd.DataFrame({"symbol": [p["symbol"] for p in picks], "ret5": [p["ret5"] for p in picks]})
+    df["vol20"] = [vol20(closes, s, t) for s in df["symbol"]]
+    df["n_8k"] = [n8k.get(s) for s in df["symbol"]]
+    ranks = []
+    for col, asc in (("ret5", True), ("vol20", False), ("n_8k", False)):
+        v = pd.to_numeric(df[col], errors="coerce")
+        ranks.append(v.rank(pct=True, ascending=asc).fillna(0.5))
+    df["score"] = sum(ranks) / 3
+    df["keep"] = df["score"] >= df["score"].median()
+    return [{"symbol": r.symbol, "vol20": None if pd.isna(r.vol20) else float(r.vol20),
+             "n_8k": None if pd.isna(r.n_8k) else int(r.n_8k), "score": float(r.score), "keep": bool(r.keep)}
+            for r in df.itertuples()]
