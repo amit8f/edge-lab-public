@@ -131,6 +131,146 @@ def test_number_alerts():
     assert "14" not in {a["lane"] for a in L.number_alerts(ROW, crash, SESS, now, None, {"21"})}
 
 
+def test_sector_leaders():
+    now = OPEN + pd.Timedelta(hours=1)
+    rows = [dict(ROW, symbol=f"A{i}", prev=10.0) for i in range(3)] + \
+           [dict(ROW, symbol=f"B{i}", prev=10.0) for i in range(3)] + [dict(ROW, symbol="C0", prev=10.0)]
+    px = {"A0": 10.5, "A1": 10.1, "A2": 9.9, "B0": 9.0, "B1": 9.5, "B2": 10.2, "C0": 13.0,
+          "XLK": 101.0, "XLE": 98.0, "XLV": 120.0}
+    live = {s: {"price": p, "t": now} for s, p in px.items()}
+    sectors = {"A0": "XLK", "A1": "XLK", "A2": "XLK", "B0": "XLE", "B1": "XLE", "B2": "XLE", "C0": "XLV"}
+    etf = {"XLK": {"prev": 100.0}, "XLE": {"prev": 100.0}, "XLV": {"prev": 100.0}}
+    got = {(a["symbol"], a["info"]["sector_rank"], a["info"]["stock_rank"], a["side_hint"])
+           for a in L.sector_leaders(rows, live, sectors, etf, SESS, now)}
+    # XLV has only one stock, so it isn't ranked even though it moved most
+    assert got == {("A0", "strongest", "top", "long"), ("A2", "strongest", "bottom", "short"),
+                   ("B2", "weakest", "top", "long"), ("B0", "weakest", "bottom", "short")}
+    assert L.sector_leaders(rows, live, sectors, etf, SESS, OPEN + pd.Timedelta(minutes=20)) == []
+    assert L.sector_leaders(rows, live, {"A0": "XLK", "A1": "XLK", "A2": "XLK"}, etf, SESS, now) == []
+
+
+def test_sector_map_keeps_sic_codes_in_the_state(tmp_path):
+    class Api:
+        def __init__(self):
+            self.n = 0
+
+        def sectors(self, symbols, cache, limit=None):
+            sic = cache.setdefault("sic", {})
+            for i, s in enumerate(symbols[:limit]):
+                if i not in sic:
+                    sic[i], self.n = 7370, self.n + 1
+            return {s: "XLK" for s in symbols}
+    api = Api()
+    assert S.sector_map(tmp_path, api, ["A", "B"], {}) == {"A": "XLK", "B": "XLK"}
+    assert json.loads((tmp_path / "sic.json").read_text()) == {"0": 7370, "1": 7370}
+    S.sector_map(tmp_path, api, ["A", "B"], {})   # a new job reads the saved codes
+    assert api.n == 2
+
+
+PTR_TEXT = """ID Owner Asset Transaction
+Type
+Date Notification
+Date
+Amount Cap.
+Gains >
+$200?
+SP AutoZone, Inc. Common Stock (AZO)
+[ST]
+S 09/22/2026 10/14/2026 $15,001 - $50,000
+F S: New
+SP Costco Wholesale Corporation - Common
+Stock (COST) [ST]
+P 09/18/2026 10/14/2026 $1,001 - $15,000
+JT Some Fund (XYZ) [MF] P 09/18/2026 10/14/2026 $1,001 - $15,000
+Berkshire Hathaway Inc. (BRK.B) [ST] S (partial) 09/01/2026 09/02/2026 Over $50,000,000"""
+
+
+def test_ptr_trades():
+    got = L.ptr_trades(PTR_TEXT)
+    assert [(g["symbol"], g["type"], g["amount"]) for g in got] == [
+        ("AZO", "S", "$15,001 - $50,000"), ("COST", "P", "$1,001 - $15,000"), ("BRK.B", "S", "Over $50,000,000")]
+    rep = {"doc_id": "20035648", "name": "Hon. A", "state_district": "GA12", "filed": "2026-10-14"}
+    al = L.politician_alerts(rep, got, {"COST"}, OPEN)
+    assert [(a["symbol"], a["side_hint"], a["item"]) for a in al] == [("COST", "long", "20:20035648:COST")]
+
+
+def test_politician_trades_read_each_report_once():
+    api = Fake()
+    api.reports = [{"doc_id": "1", "name": "Hon. A", "state_district": "GA12", "filed": "2026-10-26",
+                    "pdf": "u1"},
+                   {"doc_id": "2", "name": "Hon. B", "state_district": "VA08", "filed": "2026-10-01", "pdf": "u2"}]
+    api.ptr = PTR_TEXT
+    st = S.init_state()
+    day = pd.Timestamp("2026-10-27")
+    got = S.politician_trades(st, api, {"AZO", "COST"}, day, OPEN)
+    assert {a["symbol"] for a in got} == {"AZO", "COST"} and st["ptr_seen"] == ["1"]   # report 2 is too old
+    assert S.politician_trades(st, api, {"AZO", "COST"}, day, OPEN) == []
+
+
+def test_sympathy():
+    now = OPEN + pd.Timedelta(hours=1)
+    rows = [dict(ROW, symbol=s, prev=10.0, sigma=0.02, dv20=dv) for s, dv in
+            (("M", 9e6), ("P1", 5e6), ("P2", 4e6), ("P3", 3e6), ("P4", 2e6), ("Q", 8e6), ("R", 1e6))]
+    px = {"M": 11.5, "P1": 10.1, "P2": 10.9, "P3": 9.8, "P4": 10.0, "Q": 10.0, "R": 10.0}
+    live = {s: {"price": p, "t": now} for s, p in px.items()}
+    sic = {"M": "2834", "P1": "2834", "P2": "2834", "P3": "2834", "P4": "2834", "Q": "7370", "R": "2834"}
+    got = L.sympathy(rows, live, sic, {"M": {"news"}}, SESS, now)
+    # P2 already moved 9% (more than a third of 15%); P1, P3, P4 are the 3 most traded laggards
+    assert [(a["symbol"], a["side_hint"], a["info"]["mover"]) for a in got] == [
+        ("P1", "long", "M"), ("P3", "long", "M"), ("P4", "long", "M")]
+    assert L.sympathy(rows, live, sic, {"M": {"13"}}, SESS, now) == []          # no catalyst
+    assert L.sympathy(rows, live, sic, {"M": {"news"}}, SESS, OPEN + pd.Timedelta(minutes=10)) == []
+    assert S.sic_by_symbol({"sic": {1: "2834", 2: None}, "tickers": ({1: ["M"], 2: ["N"]}, {})}) == {"M": "2834"}
+
+
+def test_name_index_and_hits():
+    names = {"AAPL": "Apple Inc.", "META": "Meta Platforms, Inc.", "ON": "ON Semiconductor Corp", "GAP": "Gap Inc",
+             "UAL": "United Airlines Holdings, Inc.", "UA": "Under Armour, Inc. Class A", "UAA": "Under Armour, Inc."}
+    idx = L.name_index(names, set(names))
+    assert idx["Meta Platforms"] == "META" and idx["ON Semiconductor"] == "ON" and idx["United Airlines"] == "UAL"
+    assert "Gap" not in idx and "Apple" not in idx and "Under Armour" not in idx   # short or shared names
+    title = "Meta Platforms in talks to buy ON Semiconductor unit; $UAL and (NYSE: GAP) also named; Applebee's"
+    assert L.name_hits(title, idx, set(names)) == ["GAP", "META", "ON", "UAL"]
+    assert L.name_hits("Metadata firms rally", idx, set(names)) == []
+
+
+def test_scoops_tag_outlet_headlines_once_a_slot(tmp_path):
+    api = Fake()
+    now = OPEN + pd.Timedelta(minutes=40)
+    api.feeds = {S.OUTLETS[2][2]: [
+        {"title": "Meta Platforms weighs bid for rival", "link": "https://x/1", "published": (now - pd.Timedelta(hours=1)).isoformat()},
+        {"title": "Meta Platforms old story", "link": "https://x/2", "published": (now - pd.Timedelta(days=2)).isoformat()},
+        {"title": "Markets wrap", "link": "https://x/3", "published": now.isoformat()}]}
+    st = S.init_state()
+    st["marks"] = {}
+    cache = {"tickers": ({}, {"META": "Meta Platforms, Inc."})}
+    ev = []
+    alerts, texts, err = S.scoops(st, api, {"META": {}}, now, cache, ev)
+    assert [(a["lane"], a["symbol"], a["info"]["outlet"]) for a in alerts] == [("19", "META", "Betaville")]
+    assert "weighs bid" in texts[alerts[0]["item"]] and "weighs bid" not in json.dumps(alerts)
+    assert ev[0]["kind"] == "outlet_headline" and err == 0
+    assert S.scoops(st, api, {"META": {}}, now + pd.Timedelta(minutes=1), cache, ev)[0] == []   # same slot
+    assert S.scoops(st, api, {"META": {}}, now + pd.Timedelta(minutes=15), cache, ev)[0] == []  # already seen
+
+
+def test_social_buzz_needs_many_accounts():
+    api = Fake()
+    now = OPEN + pd.Timedelta(hours=1)
+    api.ape = [{"ticker": "A", "mentions": 60, "mentions_24h_ago": 10}, {"ticker": "B", "mentions": 25, "mentions_24h_ago": 20},
+               {"ticker": "C", "mentions": 30, "mentions_24h_ago": 0}, {"ticker": "ZZ", "mentions": 99, "mentions_24h_ago": 1}]
+    api.trend = ["D"]
+    t0 = (now - pd.Timedelta(hours=2)).isoformat()
+    many = [{"user": i, "t": t0, "sentiment": "Bullish" if i < 7 else None} for i in range(12)]
+    api.streams = {"A": many, "C": [{"user": 1, "t": t0, "sentiment": "Bullish"}] * 30, "D": many}
+    st = S.init_state()
+    st["marks"] = {}
+    got, err = S.social(st, api, {"A": {}, "B": {}, "C": {}, "D": {}}, now)
+    # B's jump is too small, C is one account posting 30 times, ZZ isn't in the universe
+    assert {a["symbol"]: (a["info"]["users"], a["info"]["bullish"], a["info"]["trending"]) for a in got} == {
+        "A": (12, 7, False), "D": (12, 7, True)} and err == 0
+    assert S.social(st, api, {"A": {}}, now + pd.Timedelta(minutes=2)) == ([], 0)   # same 15-minute slot
+
+
 def test_shared_checks():
     now = OPEN + pd.Timedelta(hours=2)
     m = pd.Timedelta(minutes=1)
@@ -238,8 +378,26 @@ class Fake:
     def earnings(self, day):
         return {}
 
-    def sectors(self, symbols, cache):
+    def sectors(self, symbols, cache, limit=None):
         return {}
+
+    def house_reports(self, day):
+        return getattr(self, "reports", [])
+
+    def apewisdom(self):
+        return getattr(self, "ape", [])
+
+    def stocktwits_trending(self):
+        return getattr(self, "trend", [])
+
+    def stocktwits_stream(self, symbol):
+        return getattr(self, "streams", {}).get(symbol, [])
+
+    def feed(self, url):
+        return getattr(self, "feeds", {}).get(url, [])
+
+    def ptr_text(self, url):
+        return getattr(self, "ptr", "")
 
     def search(self, model, text):
         self.calls.append(("search", text))
