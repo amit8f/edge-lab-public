@@ -68,3 +68,15 @@ def test_evaluate_handles_a_week_with_nothing_taken():
     t["label"] = (t["fwd5"] > t.groupby("date")["fwd5"].transform("mean")).astype(int)
     r = M1.evaluate(t, {})
     assert r["PRIMARY"]["weeks"] == 30
+
+
+def test_diagnose_runs_on_synthetic_picks():
+    rng = np.random.default_rng(3)
+    weeks = pd.date_range("2017-01-06", "2025-09-19", freq="W-FRI")
+    x = pd.DataFrame([dict(zip(M.INPUTS, rng.normal(size=len(M.INPUTS))), date=w, symbol=f"S{k}",
+                           fwd5=rng.normal(0, 0.03)) for w in weeks for k in range(12)])
+    x["label"] = (x["fwd5"] > x.groupby("date")["fwd5"].transform("mean")).astype(int)
+    d = M.diagnose(x)
+    assert set(d["overfit"]) == {str(y) for y in range(2019, 2026)}
+    assert d["overfit"]["2020"]["auc_train"] > d["overfit"]["2020"]["auc_test"]
+    assert len(d["prob_deciles"]) == 10 and set(d["input_vs_excess"]) == set(M.INPUTS)

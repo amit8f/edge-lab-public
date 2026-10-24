@@ -227,6 +227,65 @@ def splits(t):
     return out
 
 
+def diagnose(x):
+    """POST-HOC, after META2 failed (Amit, 2026-10-24: find out why the model picks wrong). Not a test:
+    (1) overfit: in-sample vs out-of-sample AUC per model year; (2) label noise: how much of a pick's 5-day
+    return is its week's average, and the spread left; (3) each input's rank correlation with the excess
+    return (fwd5 minus the week mean), per year, and how often its sign flips; (4) out-of-sample probability
+    deciles against excess return; (5) how taken and skipped picks differ, input by input; (6) the same
+    walk-forward with a plain logistic regression."""
+    import lightgbm as lgb
+    from scipy.stats import spearmanr
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import roc_auc_score
+    x = x.copy()
+    x["excess"] = x["fwd5"] - x.groupby("date")["fwd5"].transform("mean")
+    weeks = np.sort(x["date"].unique())
+    out = {"overfit": {}, "logistic": {}}
+    oos = []
+    for y in M1.TEST_YEARS:
+        test = x["date"].dt.year == y
+        if not test.any():
+            continue
+        cut = weeks[max(0, np.searchsorted(weeks, np.datetime64(x.loc[test, "date"].min())) - M1.EMBARGO_WEEKS)]
+        tr = x["date"] < cut
+        m = lgb.LGBMClassifier(**M1.PARAMS).fit(x.loc[tr, INPUTS], x.loc[tr, "label"])
+        p_tr = m.predict_proba(x.loc[tr, INPUTS])[:, 1]
+        p_te = m.predict_proba(x.loc[test, INPUTS])[:, 1]
+        out["overfit"][str(y)] = {"auc_train": float(roc_auc_score(x.loc[tr, "label"], p_tr)),
+                                  "auc_test": float(roc_auc_score(x.loc[test, "label"], p_te))}
+        oos.append(x.loc[test, ["date", "excess", "label"] + INPUTS].assign(prob=p_te, take=p_te >= np.median(p_tr)))
+        med = x.loc[tr, INPUTS].median()
+        mu, sd = x.loc[tr, INPUTS].fillna(med).mean(), x.loc[tr, INPUTS].fillna(med).std().replace(0, 1)
+        z = lambda f: ((f.fillna(med) - mu) / sd).clip(-5, 5)
+        lr = LogisticRegression(C=0.1, max_iter=2000).fit(z(x.loc[tr, INPUTS]), x.loc[tr, "label"])
+        out["logistic"][str(y)] = float(roc_auc_score(x.loc[test, "label"], lr.predict_proba(z(x.loc[test, INPUTS]))[:, 1]))
+    o = pd.concat(oos, ignore_index=True)
+    wk = x.groupby("date")["fwd5"].mean()
+    out["label_noise"] = {"sd_fwd5": float(x["fwd5"].std()), "sd_week_mean": float(wk.std()),
+                          "sd_excess": float(x["excess"].std()),
+                          "share_of_variance_from_week": float(wk.reindex(x["date"]).var() / x["fwd5"].var())}
+    o["dec"] = pd.qcut(o["prob"], 10, labels=False, duplicates="drop")
+    out["prob_deciles"] = {int(k): {"n": int(len(g)), "mean_excess": float(g["excess"].mean()), "hit": float(g["label"].mean())}
+                           for k, g in o.groupby("dec")}
+    corr = {}
+    for c in INPUTS:
+        per = {}
+        for y, g in x.groupby(x["date"].dt.year):
+            g = g[[c, "excess"]].dropna()
+            if len(g) > 100 and g[c].nunique() > 1:
+                per[str(y)] = float(spearmanr(g[c], g["excess"]).statistic)
+        v = np.array(list(per.values()))
+        corr[c] = {"by_year": per, "mean": float(v.mean()) if len(v) else None,
+                   "years_pos": int((v > 0).sum()), "years_neg": int((v < 0).sum())}
+    out["input_vs_excess"] = corr
+    tk, sk = o[o["take"]], o[~o["take"]]
+    sd = o[INPUTS].std().replace(0, 1)
+    out["taken_minus_skipped_in_sd"] = {c: float((tk[c].mean() - sk[c].mean()) / sd[c]) for c in INPUTS}
+    out["taken_minus_skipped_excess"] = float(tk["excess"].mean() - sk["excess"].mean())
+    return out
+
+
 def run(stage, cache, out, b0_src=None, budget_min=300):
     cache, out = Path(cache), Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -250,6 +309,11 @@ def run(stage, cache, out, b0_src=None, budget_min=300):
     x = M1.assemble(p, inputs.drop(columns=["avgvol20", "split30"]), spy, tmap, eightk)
     x = x.merge(feat, on=["symbol", "date"], how="left")
     caldf = B0.calendar()
+    if stage == "diag":
+        d = diagnose(x.dropna(subset=["fwd5"]).reset_index(drop=True))
+        (out / "META2_diagnosis.json").write_text(json.dumps(d, indent=1, default=str) + "\n")
+        print("DIAG", json.dumps({k: d[k] for k in ("overfit", "label_noise", "prob_deciles", "logistic")}, default=str), flush=True)
+        return
     q = M1.qa(x)
     q.update(qa_new(x, cache, caldf))
     print("QA", json.dumps({k: q[k] for k in ("picks", "with_fwd5", "si_lag_sessions", "news5_recount")}, default=str), flush=True)
@@ -268,7 +332,7 @@ def run(stage, cache, out, b0_src=None, budget_min=300):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["data", "fit", "all"])
+    ap.add_argument("--stage", default="all", choices=["data", "fit", "all", "diag"])
     ap.add_argument("--cache", required=True)
     ap.add_argument("--b0-src", default=None)
     ap.add_argument("--budget-min", type=float, default=300)
