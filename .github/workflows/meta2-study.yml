@@ -1,11 +1,9 @@
 # META2 (research/prereg/META2.md): META1's inputs plus news and short-selling inputs for R1's picks
-# (sources read from B0's cache when it is complete; rerun 2), then the walk-forward of the take-or-skip model. Manual runs only; rerun until META2_result.json is written (each
+# (sources read from B0's cache when it is complete), then the walk-forward of the take-or-skip model. Manual runs only; rerun until META2_result.json is written (each
 # stage resumes from its cache). Commits the results back to the branch that ran it.
 name: meta2-study
 
 on:
-  push:
-    paths: [.github/workflows/meta2-study.yml]
   workflow_dispatch:
     inputs:
       stage:
