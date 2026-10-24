@@ -1,0 +1,89 @@
+# META2 (research/prereg/META2.md): META1's inputs plus news and short-selling inputs for R1's picks
+# (sources read from B0's cache when it is complete), then the walk-forward of the take-or-skip model. Manual runs only; rerun until META2_result.json is written (each
+# stage resumes from its cache). Commits the results back to the branch that ran it.
+name: meta2-study
+
+on:
+  push:
+    paths: [.github/workflows/meta2-study.yml]
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "all, data or fit"
+        required: false
+        default: all
+
+permissions: {}
+
+concurrency:
+  group: meta2-study
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore B0's sources (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/b0
+          key: b0-v1-none
+          restore-keys: b0-v1-
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/meta2
+          key: meta2-v1-${{ github.run_id }}
+          restore-keys: meta2-v1-
+
+      - name: Run the stage
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          STAGE: ${{ inputs.stage || 'all' }}
+        run: |
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.meta2_study --stage "$STAGE" --cache cache/meta2 \
+            --b0-src cache/b0/src --budget-min 300 --out research/results/META2
+
+      - name: Save the data cache (also after a failure, so a rerun skips the downloads)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/meta2
+          key: meta2-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/META2 && git add research/results/META2
+          git diff --cached --quiet && { echo "No results yet; rerun to continue"; exit 0; }
+          git commit -q -m "META2 walk-forward results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
