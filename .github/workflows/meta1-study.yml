@@ -4,9 +4,6 @@
 name: meta1-study
 
 on:
-  push:                     # TEMPORARY: lets the first run start from the branch; removed before merge
-    branches: [claude/project-thread-s2jzh2]
-    paths: [.github/workflows/meta1-study.yml]
   workflow_dispatch:
     inputs:
       stage:
