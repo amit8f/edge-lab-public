@@ -273,7 +273,7 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     monkeypatch.setattr(live.news_history, "fetch_window", fake_window)
     now = pd.Timestamp("2026-10-12T03:30:00Z")
     data = live.run(tmp_path / "state", tmp_path / "cache", now=now)
-    assert len(data["picks"]) == 20 and data["ledger_ok"] and data["ledger_entries"] == 3
+    assert len(data["picks"]) == 20 and data["ledger_ok"] and data["ledger_entries"] == 4
     b = data["boom"]["M10"]
     assert len(b["picks"]) == 20 and b["news"] and b["verdict"]["passes"] is False and "P3" not in data["boom"]
     assert b["picks"][0]["prob"] >= b["picks"][-1]["prob"] and b["record"][0]["date"] == f"{t:%Y-%m-%d}"
@@ -286,11 +286,11 @@ def test_live_run_end_to_end_with_fakes(tmp_path, monkeypatch):
     led = ledger_mod.Ledger(tmp_path / "state" / "longterm")
     assert led.has("M4_picks", f"{t:%Y-%m-%d}") and led.has("M8_picks", f"{t:%Y-%m-%d}")
     assert "Live test: analyst upgrades" in html and "High risk: short-term boom models" in html
-    assert led.has("M10_watch", f"{t:%Y-%m-%d}")
+    assert led.has("M10_watch", f"{t:%Y-%m-%d}") and led.has("R1_picks", f"{t:%Y-%m-%d}")
     rec8 = json.loads((tmp_path / "state" / "longterm" / led.entry("M8_picks", f"{t:%Y-%m-%d}")["file"]).read_text())
     assert len(rec8["universe_scores"]) == len(rec8["universe"]) and rec8["universe_scores"][0][0] == "S7" and rec8["universe_scores"][0][2:] == [2, 0]
     again = live.run(tmp_path / "state", tmp_path / "cache", now=now)      # second run the same night: no new entry
-    assert again["ledger_entries"] == 3 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
+    assert again["ledger_entries"] == 4 and again["track_record"][0]["date"] == f"{t:%Y-%m-%d}"
     assert again["live_tests"]["M8"]["record"][0]["date"] == f"{t:%Y-%m-%d}" and len(windows) == 2
 
 
