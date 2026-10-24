@@ -1,0 +1,80 @@
+# META1 (research/prereg/META1.md): inputs for R1's picks from Alpaca SIP bars and EDGAR, then the
+# walk-forward of the take-or-skip model. Manual runs only; rerun until META1_result.json is written (each
+# stage resumes from its cache). Commits the results back to the branch that ran it.
+name: meta1-study
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "all, data or fit"
+        required: false
+        default: all
+
+permissions: {}
+
+concurrency:
+  group: meta1-study
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the data cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/meta1
+          key: meta1-v1-${{ github.run_id }}
+          restore-keys: meta1-v1-
+
+      - name: Run the stage
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          STAGE: ${{ inputs.stage || 'all' }}
+        run: |
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.meta1_study --stage "$STAGE" --cache cache/meta1 \
+            --out research/results/META1
+
+      - name: Save the data cache (also after a failure, so a rerun skips the downloads)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/meta1
+          key: meta1-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/META1 && git add research/results/META1
+          git diff --cached --quiet && { echo "No results yet; rerun to continue"; exit 0; }
+          git commit -q -m "META1 walk-forward results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
