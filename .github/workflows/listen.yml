@@ -1,0 +1,85 @@
+# News listener (core/listener.py; failure review 2026-10-24, decisions 8.3 and 9). Logging only, no orders.
+# One job reads SEC's live filing feed and the press-release wires every ~20 seconds (outlets every minute)
+# for up to 5h30m, saving to the orphan branch `state-listen` every 5 minutes, then queues the next job until
+# 8pm ET. The crons only start the day (DST-proof: the code waits for 4am ET). Free on a public repo.
+name: listen
+
+on:
+  schedule:
+    - cron: "50 7 * * 1-5"
+    - cron: "50 8 * * 1-5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: listen-state
+  cancel-in-progress: false
+
+jobs:
+  listen:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-listen
+        run: bash deploy/state.sh restore
+
+      - name: Listen, saving every 5 minutes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-listen
+          RUN_LABEL: listen ${{ github.run_id }}-${{ github.run_attempt }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          stop=$(( $(date +%s) + 330 * 60 ))
+          while (( $(date +%s) + 300 < stop )); do
+            rc=0; .venv/bin/python -m core.listener --state state --minutes 5 || rc=$?
+            if (( rc == 3 )); then echo "session over"; touch /tmp/session_over; break; fi
+            (( rc != 0 )) && { echo "::warning::listener exited $rc; restarting"; sleep 5; }
+            bash deploy/state.sh save || echo "::warning::state save failed"
+          done
+
+      - name: Save the state
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-listen
+          RUN_LABEL: listen ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
+
+      - name: Queue the next job unless the session is over
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if [[ -f /tmp/session_over ]]; then echo "done for today"; exit 0; fi
+          others=$(gh run list -R "$REPO" --workflow listen.yml --limit 20 --json databaseId,status \
+            --jq "[.[] | select(.databaseId != $RUN_ID and (.status == \"queued\" or .status == \"in_progress\" or .status == \"pending\" or .status == \"waiting\"))] | length")
+          if [[ "$others" == "0" ]]; then gh workflow run listen.yml -R "$REPO" --ref main; echo queued; else echo "another run is queued"; fi

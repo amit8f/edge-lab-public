@@ -121,7 +121,29 @@ def sys2b_lanes():
     return "\n".join(out)
 
 
+ALT_WIRES = ["https://www.accesswire.com/rss/latest", "https://www.accessnewswire.com/rss/latest",
+             "https://www.accesswire.com/users/api/rss", "https://feeds.newsfilecorp.com/feed/latest",
+             "https://www.newsfilecorp.com/rss/all", "https://www.prnewswire.com/rss/all-news-releases-list.rss"]
+
+
+def listener_sources():
+    """Every source of the news listener (core/listener.py) once, plus wire URLs to try if one is dead."""
+    import contextlib
+    from core import listener
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        listener.probe()
+    for url in ALT_WIRES:
+        try:
+            items = listener.parse_feed(listener.http_get(url))
+            buf.write(f"alt {url}: OK {len(items)} items\n")
+        except Exception as e:  # noqa: BLE001
+            buf.write(f"alt {url}: FAILED {type(e).__name__}: {str(e)[:120]}\n")
+    return buf.getvalue()
+
+
 def main():
+    show("News listener sources", listener_sources)
     show("SYS2B lanes 15-20 on live sources", sys2b_lanes)
     show("House PTR PDF text (SYS2B lane 20)", ptr_pdf)
     show("StockTwits trending (SYS2B lane 18)", lambda: http("https://api.stocktwits.com/api/2/trending/symbols.json", 400))
