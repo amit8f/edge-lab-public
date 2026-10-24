@@ -132,3 +132,16 @@ def test_gate_passes_a_news_effect_and_fails_without_one():
     assert gate == {"pick_minus_control": True, "pick_minus_shuffled": True}
     _, pooled, gate = X.walk_forward(events(0.0, seed=2), CAL, years=[2019])
     assert not any(gate.values())
+
+
+def test_extremes_lists_the_walk_forward_picks_by_size():
+    ev = events(1.5, seed=1)
+    for k in ("symbol", "entry_t", "entry", "next", "exit_ac", "prev_c", "spy_ret"):
+        ev[k] = 0.0
+    ev["symbol"] = "S" + pd.Series(range(len(ev))).astype(str)
+    top, pk = X.extremes(ev, CAL, years=[2019], n=5)
+    assert list(top.columns) == X.EXTREME_COLS and len(top) == 5
+    assert top["net"].abs().is_monotonic_decreasing and top["net"].abs().min() >= pk["net"].abs().drop(top.index).max()
+    _, pk2, _, _ = X.evaluate(ev[ev["d"] >= "2019-01-01"], X.Model(ev[ev["d"] <= CAL["date"][
+        CAL["date"].searchsorted(pd.Timestamp("2019-01-01")) - N.PURGE - 1]]), X.SEED + 2019)
+    assert len(pk) == len(pk2)

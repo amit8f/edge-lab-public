@@ -437,14 +437,53 @@ def stage_train(cache, out):
     print(json.dumps({"pooled": pooled, "gate": gate}, indent=1, default=float))
 
 
+EXTREME_COLS = ["symbol", "d", "t", "entry_t", "entry", "next", "exit_ac", "prev_c", "side", "ret", "spy_ret", "net"]
+
+
+def extremes(ev, cal, years=(2023, 2024), n=20):
+    """Descriptive, after the gate (Amit asked 2026-10-24): the same walk-forward picks as walk_forward()
+    (same models and seeds), and the n pick trades with the largest |net| return. Changes no result."""
+    caldates = pd.DatetimeIndex(cal["date"])
+    out = []
+    for yr in years:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        _, pk, _, _ = evaluate(te, Model(ev[ev["d"] <= cut]), SEED + yr)
+        out.append(pk.assign(net=N.net(pk)))
+    pk = pd.concat(out, ignore_index=True)
+    return pk.reindex(pk["net"].abs().sort_values(ascending=False).index)[EXTREME_COLS].head(n), pk
+
+
+def stage_extremes(cache, out):
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / "trades").glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    cf = N.nx1dir(cache) / "cal.parquet"
+    # NX1's cache may have been evicted; the trading days that have events are the same calendar here
+    cal = pd.read_parquet(cf) if cf.exists() else pd.DataFrame({"date": sorted(ev["d"].unique())})
+    top, pk = extremes(ev, cal)
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    top.assign(checked_by="", ok="", note="").to_csv(out / "NX3_extremes_check.csv", index=False)
+    a = pk["net"].abs()
+    summ = {"picks": int(len(pk)), "abs_net_over_50pct": int((a > 0.5).sum()), "abs_net_over_100pct": int((a > 1).sum()),
+            "mean_net": float(pk["net"].mean()), "mean_net_without_top20": float(pk["net"].drop(top.index).mean())}
+    (out / "NX3_extremes.json").write_text(json.dumps(summ, indent=1))
+    print(json.dumps(summ, indent=1))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
     a = ap.parse_args()
     deadline = time.monotonic() + a.budget_min * 60
+    if a.stage == "extremes":
+        stage_extremes(a.cache, a.out)
+        return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
             print("[nx3] time budget used during events; rerun to continue")
