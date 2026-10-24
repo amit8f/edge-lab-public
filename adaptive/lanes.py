@@ -302,13 +302,14 @@ def short_name(name):
 
 
 def name_index(names, symbols):
-    """{short name: symbol} for the universe. A name counts only when it is at least 2 words or 6 letters and
-    no other universe company shares it, so common words can't tag a stock."""
+    """{short name: symbol} for the universe. A name counts only when it is at least 2 words, or one word with a
+    capital or digit inside it ("CrowdStrike"), and no other universe company shares it, so a plain word
+    ("Jackson", "Freedom") can't tag a stock."""
     seen = {}
     for s in sorted(symbols):
         if s in names:
             n = short_name(names[s])
-            if len(n.split()) >= 2 or len(n) >= 6:
+            if len(n.split()) >= 2 or (len(n) >= 4 and re.search(r".[A-Z0-9]", n) and not n.isupper()):
                 seen.setdefault(n, set()).add(s)
     return {n: next(iter(v)) for n, v in seen.items() if len(v) == 1}
 

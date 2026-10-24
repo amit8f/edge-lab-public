@@ -225,10 +225,14 @@ def test_sympathy():
 
 def test_name_index_and_hits():
     names = {"AAPL": "Apple Inc.", "META": "Meta Platforms, Inc.", "ON": "ON Semiconductor Corp", "GAP": "Gap Inc",
-             "UAL": "United Airlines Holdings, Inc.", "UA": "Under Armour, Inc. Class A", "UAA": "Under Armour, Inc."}
+             "UAL": "United Airlines Holdings, Inc.", "UA": "Under Armour, Inc. Class A", "UAA": "Under Armour, Inc.",
+             "CRWD": "CrowdStrike Holdings, Inc.", "JXN": "Jackson Financial Inc.", "JACK": "Jackson Inc",
+             "WWD": "WOODWARD, INC."}
     idx = L.name_index(names, set(names))
     assert idx["Meta Platforms"] == "META" and idx["ON Semiconductor"] == "ON" and idx["United Airlines"] == "UAL"
-    assert "Gap" not in idx and "Apple" not in idx and "Under Armour" not in idx   # short or shared names
+    assert idx["CrowdStrike"] == "CRWD" and idx["Jackson Financial"] == "JXN"
+    for plain in ("Gap", "Apple", "Under Armour", "Jackson", "WOODWARD"):   # one plain word, or shared
+        assert plain not in idx
     title = "Meta Platforms in talks to buy ON Semiconductor unit; $UAL and (NYSE: GAP) also named; Applebee's"
     assert L.name_hits(title, idx, set(names)) == ["GAP", "META", "ON", "UAL"]
     assert L.name_hits("Metadata firms rally", idx, set(names)) == []
