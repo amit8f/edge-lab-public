@@ -63,7 +63,50 @@ def ptr_pdf():
     return f"HTTP {r.status_code}\n{text[:900]}"
 
 
+def sys2b_lanes():
+    """SYS2B lanes 15/16 (SIC lookups), 18, 19 and 20 through the scouts' own Api on live sources. Prints
+    counts and symbols only, never headline text."""
+    from collections import Counter
+    import pandas as pd
+    from adaptive import lanes as L
+    from adaptive import scouts as S
+    api, out = S.Api(), []
+    by_cik, names = api.tickers()
+    syms = set(names)
+    idx = L.name_index(names, syms)
+    out.append(f"tickers {len(names)}, name index {len(idx)}")
+    hits = Counter()
+    for outlet, _, url in S.OUTLETS:
+        try:
+            items = api.feed(url)
+        except Exception as e:  # noqa: BLE001
+            out.append(f"feed {outlet}: FAILED {type(e).__name__}")
+            continue
+        tagged = [s for it in items for s in L.name_hits(it["title"], idx, syms)]
+        dated = sum(1 for it in items if it["published"])
+        out.append(f"feed {outlet}: {len(items)} items, {dated} dated, tags {sorted(set(tagged))[:8]}")
+        hits[outlet] = len(tagged)
+    ape, trend = api.apewisdom(), api.stocktwits_trending()
+    cands = L.buzz_candidates(ape, trend, syms)
+    now = pd.Timestamp.now(tz="UTC")
+    got = [a for s in sorted(cands)[:10] if (a := L.buzz_alert(s, cands[s], api.stocktwits_stream(s), now))]
+    out.append(f"apewisdom {len(ape)}, trending {trend[:10]}, candidates {sorted(cands)[:15]}, "
+               f"buzz {[(a['symbol'], a['info']['users']) for a in got]}")
+    reps = api.house_reports(now.tz_convert('America/New_York').normalize().tz_localize(None)) or []
+    out.append(f"house reports {len(reps)}")
+    for r in reps[:6]:
+        tr = L.ptr_trades(api.ptr_text(r["pdf"]))
+        out.append(f"  {r['doc_id']} filed {r['filed']}: {[(x['symbol'], x['type']) for x in tr][:10]}")
+    cache = {"tickers": (by_cik, names)}
+    sample = sorted(syms)[:300]
+    sec = api.sectors(sample, cache, limit=300)
+    out.append(f"sectors: {len(sec)} of 300 mapped, {Counter(sec.values()).most_common()}, "
+               f"SIC known {sum(1 for v in cache['sic'].values() if v)}")
+    return "\n".join(out)
+
+
 def main():
+    show("SYS2B lanes 15-20 on live sources", sys2b_lanes)
     show("House PTR PDF text (SYS2B lane 20)", ptr_pdf)
     show("StockTwits trending (SYS2B lane 18)", lambda: http("https://api.stocktwits.com/api/2/trending/symbols.json", 400))
     show("StockTwits symbol stream (SYS2B lane 18)", lambda: http("https://api.stocktwits.com/api/2/streams/symbol/AAPL.json", 400))
