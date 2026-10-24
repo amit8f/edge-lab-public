@@ -368,7 +368,7 @@ def stage_details(cache, out, budget_min):
     ddir.mkdir(parents=True, exist_ok=True)
     want = set(arts["id"])
     for (sym, mon), g in arts.groupby(["symbol", "month"]):
-        f = ddir / f"{sym}_{mon}.parquet"
+        f = ddir / f"{sym.replace('/', '.')}_{mon}.parquet"     # BRK/B -> BRK.B, no subfolder
         if f.exists():
             continue
         if time.monotonic() > deadline:
