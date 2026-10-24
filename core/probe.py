@@ -55,7 +55,23 @@ def ftd():
     return f"{z.namelist()}\n" + z.read(z.namelist()[0]).decode("latin-1")[:400]
 
 
+def ptr_pdf():
+    """A House PTR PDF read with pypdf, as SYS2B lane 20 reads it."""
+    from pypdf import PdfReader
+    r = requests.get("https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2026/20035648.pdf", headers=UA, timeout=60)
+    text = "\n".join(pg.extract_text() or "" for pg in PdfReader(io.BytesIO(r.content)).pages)
+    return f"HTTP {r.status_code}\n{text[:900]}"
+
+
 def main():
+    show("House PTR PDF text (SYS2B lane 20)", ptr_pdf)
+    show("StockTwits trending (SYS2B lane 18)", lambda: http("https://api.stocktwits.com/api/2/trending/symbols.json", 400))
+    show("StockTwits symbol stream (SYS2B lane 18)", lambda: http("https://api.stocktwits.com/api/2/streams/symbol/AAPL.json", 400))
+    show("Reddit wallstreetbets new (SYS2B lane 18)", lambda: http("https://www.reddit.com/r/wallstreetbets/new.json?limit=5", 300))
+    show("Reddit old domain (SYS2B lane 18)", lambda: http("https://old.reddit.com/r/stocks/new.json?limit=5", 300))
+    show("Reddit RSS (SYS2B lane 18)", lambda: http("https://www.reddit.com/r/wallstreetbets/new/.rss", 300))
+    show("ApeWisdom mentions (SYS2B lane 18)", lambda: http("https://apewisdom.io/api/v1.0/filter/all-stocks/page/1", 400))
+    show("Betaville feed (SYS2B lane 19)", lambda: http("https://www.betaville.co.uk/feed/", 300))
     show("IBKR stock-loan file", ibkr)
     show("FINRA Reg SHO daily short volume", lambda: http("https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240102.txt", 400))
     show("FINRA consolidated short interest API (no key)", lambda: http(

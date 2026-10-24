@@ -27,17 +27,17 @@ LANES = {
     "11": ("Volume with no news", "trading", True, True),
     "13": ("Chart breakout", "trading", True, True),
     "14": ("Oversold bounce (experimental)", "trading", True, True),
-    "15": ("Sympathy move", "trading", True, False),
+    "15": ("Sympathy move", "trading", True, True),
     "17a": ("Squeeze long", "ownership", True, True),
     "17b": ("Hard-to-borrow short", "ownership", True, True),
     "21": ("Adverse event", "fundamental", True, True),
     "22": ("Buyback and dividend", "fundamental", True, True),
     "23": ("Index change", "trading", True, True),
     "12": ("Gap and hold", "trading", False, True),
-    "16": ("Sector leader", "trading", False, False),
+    "16": ("Sector leader", "trading", False, True),
     "18": ("Social buzz", "social", False, False),
-    "19": ("Small-outlet scoop", "news", False, False),
-    "20": ("Politician trades", "ownership", False, False),
+    "19": ("Small-outlet scoop", "news", False, True),
+    "20": ("Politician trades", "ownership", False, True),
 }
 READY = [k for k, v in LANES.items() if v[3]]
 TRIGGER = [k for k, v in LANES.items() if v[2]]
@@ -217,6 +217,136 @@ def number_alerts(row, live, sess, now, fee_cut, recent):
         hour_done = now >= sess[0] + pd.Timedelta(hours=1)
         held = (p - row["prev"]) / (o - row["prev"]) >= 0.5 if hour_done else None
         add("12", "long" if o > row["prev"] else "short", gap=round(o / row["prev"] - 1, 4), held=held)
+    return out
+
+
+LEADER_MIN = 3          # priced stocks a sector needs before lane 16 ranks it
+
+
+def sector_leaders(rows, live, sectors, etf, sess, now):
+    """Lane 16 (confirm-only), from 30 minutes after the open: today's strongest and weakest sector ETF, and in
+    each of the two the stock with the largest and the smallest move today. sectors: {symbol: sector ETF};
+    etf: the universe's {ETF: {"prev"}}."""
+    if now < sess[0] + pd.Timedelta(minutes=30):
+        return []
+    day = f"{now.tz_convert(ET):%Y-%m-%d}"
+    members = {}
+    for r in rows:
+        s, x = r["symbol"], sectors.get(r["symbol"])
+        if x and s in live:
+            members.setdefault(x, []).append((live[s]["price"] / r["prev"] - 1, s))
+    smove = {x: live[x]["price"] / etf[x]["prev"] - 1 for x in members
+             if len(members[x]) >= LEADER_MIN and x in live and etf.get(x, {}).get("prev")}
+    if len(smove) < 2:
+        return []
+    out = []
+    for x, kind in ((max(smove, key=lambda k: (smove[k], k)), "strongest"),
+                    (min(smove, key=lambda k: (smove[k], k)), "weakest")):
+        ranked = sorted(members[x])
+        for (m, s), role, side in ((ranked[-1], "top", "long"), (ranked[0], "bottom", "short")):
+            out.append({"lane": "16", "symbol": s, "item": f"16:{s}:{day}", "src_t": live[s]["t"].isoformat(),
+                        "side_hint": side, "info": {"sector": x, "sector_rank": kind, "stock_rank": role,
+                                                    "sector_move": round(smove[x], 4), "move": round(m, 4)}})
+    return out
+
+
+MOVER_MOVE, MOVER_Z = 0.08, 3.0   # lane 15: a big mover is up or down 8%+ and 3+ daily standard deviations
+MOVERS, PEERS = 5, 3               # at most 5 movers a pass, each with its 3 most traded lagging peers
+CATALYST = {"news", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "21", "22", "23"}
+
+
+def sympathy(rows, live, sic, recent, sess, now):
+    """Lane 15, from 30 minutes after the open: for today's biggest movers with a catalyst in the last 3
+    sessions (a headline or a news or filing lane), the most traded stocks with the same 4-digit SIC code
+    that have moved less than a third as far in the same direction. The hint follows the mover."""
+    if now < sess[0] + pd.Timedelta(minutes=30):
+        return []
+    day = f"{now.tz_convert(ET):%Y-%m-%d}"
+    move = {r["symbol"]: live[r["symbol"]]["price"] / r["prev"] - 1 for r in rows if r["symbol"] in live}
+    big = []
+    for r in rows:
+        s = r["symbol"]
+        if s not in move or not sic.get(s) or not recent.get(s, set()) & CATALYST or r["sigma"] <= 0:
+            continue
+        z = math.log(1 + move[s]) / r["sigma"]
+        if abs(move[s]) >= MOVER_MOVE and abs(z) >= MOVER_Z:
+            big.append((-abs(move[s]), s))
+    out, used = [], set()
+    for _, m in sorted(big)[:MOVERS]:
+        d = 1 if move[m] > 0 else -1
+        peers = sorted((-r["dv20"], r["symbol"]) for r in rows if r["symbol"] in move and r["symbol"] != m
+                       and sic.get(r["symbol"]) == sic[m] and d * move[r["symbol"]] < abs(move[m]) / 3)
+        for _, p in peers[:PEERS]:
+            if p in used:
+                continue
+            used.add(p)
+            out.append({"lane": "15", "symbol": p, "item": f"15:{p}:{day}", "src_t": live[p]["t"].isoformat(),
+                        "side_hint": "long" if d > 0 else "short",
+                        "info": {"mover": m, "mover_move": round(move[m], 4), "sic": sic[m],
+                                 "move": round(move[p], 4)}})
+    return out
+
+
+SUFFIX = re.compile(r"[,.]?\s+(inc|incorporated|corp|corporation|co|company|ltd|limited|plc|holdings?|group|"
+                    r"n\.?v|s\.?a|ag|se|lp|llc|trust|bancorp|class [a-c]|common stock|/[a-z]{2})\.?$", I)
+
+
+def short_name(name):
+    """A company's SEC name without its legal suffixes ("Apple Inc." -> "Apple")."""
+    n = " ".join(str(name).replace("&amp;", "&").split())
+    while True:
+        m = SUFFIX.search(n)
+        if not m or m.start() == 0:
+            return n.strip(" ,.")
+        n = n[:m.start()]
+
+
+def name_index(names, symbols):
+    """{short name: symbol} for the universe. A name counts only when it is at least 2 words or 6 letters and
+    no other universe company shares it, so common words can't tag a stock."""
+    seen = {}
+    for s in sorted(symbols):
+        if s in names:
+            n = short_name(names[s])
+            if len(n.split()) >= 2 or len(n) >= 6:
+                seen.setdefault(n, set()).add(s)
+    return {n: next(iter(v)) for n, v in seen.items() if len(v) == 1}
+
+
+def name_hits(title, index, tickers):
+    """Universe symbols an outlet's headline names: a whole-word, case-sensitive company name, or a ticker
+    written as $XYZ or (NASDAQ: XYZ) / (NYSE: XYZ)."""
+    out = {index[n] for n in index if re.search(r"(?<![\w&])" + re.escape(n) + r"(?![\w&])", title)}
+    out |= {m for m in re.findall(r"\$([A-Z]{1,5})\b", title) if m in tickers}
+    out |= {m for m in re.findall(r"\((?:NASDAQ|NYSE|NYSE American|AMEX|Nasdaq):\s*([A-Z.]{1,6})\)", title) if m in tickers}
+    return sorted(out)
+
+
+# One stock row of a House periodic transaction report, as the PDF's text reads once whitespace is joined:
+# "... (AZO) [ST] S 09/22/2026 10/14/2026 $15,001 - $50,000"
+PTR_ROW = re.compile(r"\(([A-Z][A-Z0-9.]{0,6})\)\s*\[ST\]\s*(P|S \(partial\)|S)\s+(\d\d/\d\d/\d{4})\s+"
+                     r"(\d\d/\d\d/\d{4})\s+(\$[\d,]+(?:\s*-\s*\$[\d,]+)?|Over \$[\d,]+)")
+
+
+def ptr_trades(text):
+    """Stock purchases and sales in one House PTR's text: [{"symbol", "type", "traded", "notified", "amount"}]."""
+    out = []
+    for m in PTR_ROW.finditer(" ".join((text or "").split())):
+        out.append({"symbol": m.group(1), "type": "P" if m.group(2) == "P" else "S",
+                    "traded": m.group(3), "notified": m.group(4), "amount": " ".join(m.group(5).split())})
+    return out
+
+
+def politician_alerts(report, trades, symbols, now):
+    """Lane 20 (confirm-only): one alert per traded stock in the universe; a buy hints long, a sale short."""
+    out = []
+    for tr in trades:
+        if tr["symbol"] not in symbols:
+            continue
+        out.append({"lane": "20", "symbol": tr["symbol"], "item": f"20:{report['doc_id']}:{tr['symbol']}",
+                    "src_t": now.isoformat(), "side_hint": "long" if tr["type"] == "P" else "short",
+                    "info": {"member": report["name"], "district": report["state_district"], "type": tr["type"],
+                             "traded": tr["traded"], "filed": report["filed"], "amount": tr["amount"]}})
     return out
 
 

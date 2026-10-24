@@ -56,6 +56,8 @@ TARGET = {"openai/gpt-oss-20b": 40, "qwen/qwen3.8-27b": 60, "openai/gpt-oss-120b
           "gemini-3-flash-preview": 250, "gemini-3.5-flash-lite": 120, "gemini-2.5-flash": 60,
           NV_LIGHT: 400, NV_ULTRA: 150, NV_DEEPSEEK: 150, CF_GLM: 80, CF_DEEPSEEK: 80, CF_KIMI: 40, "tavily": 30}
 LANE_CAP = 40
+PTR_DAYS = 3             # House reports filed this many days back count as new for lane 20
+SIC_PER_PASS = 400       # new EDGAR SIC lookups a pass for lane 16 (8 a second: under a minute)
 WAKE_EVENTS = 5          # events shown in one scout call
 FRESH_MIN = 60           # an event counts as new for this long after detection
 HOURLY_MIN = 60
@@ -82,6 +84,8 @@ LANE_HINT = {
     "11": "Heavy trading with no news found in 3 sessions: find the reason in the text you have or answer none.",
     "13": "A breakout to a new 52-week or 20-day high or low on heavy volume.",
     "14": "Experimental: a fall of 3+ daily standard deviations with no adverse filing found; a bounce is not assumed.",
+    "15": ("A stock in the same industry as one of today's big movers that hasn't moved yet: ask whether the "
+           "mover's news really applies to this company or is specific to the mover."),
     "17a": "A heavily borrowed stock (top 10% borrow fee) rising on volume: a possible short squeeze.",
     "17b": "A heavily borrowed stock with an adverse event or a fall: shorts may be right, but borrowing is costly.",
     "21": "Adverse events: accounting problems, auditor exits, going concern, legal or regulatory action, recalls.",
@@ -215,7 +219,7 @@ def load_universe(root, led, api, day, now):
 def init_state():
     st = {"books": {}, "events": {}, "seen_feed": [], "seen_news": [], "calls": {}, "lane_calls": {},
           "last_hourly": {}, "quota_out": {}, "errors": {}, "news_seen_day": {}, "last_news_t": None,
-          "picker_t": None, "lanes_started": {}}
+          "picker_t": None, "lanes_started": {}, "ptr_seen": []}
     for name, (_, cash, _) in BOOKS.items():
         st["books"][name] = W.new_book(cash)
         st["books"][name + TWIN] = W.new_book(cash)
@@ -461,7 +465,7 @@ def event_block(e, row, price, texts, extra=""):
 
 # ---------- one pass ----------
 
-def context(events, e, by, uni, live, sectors, cache, day, tdays):
+def context(events, e, by, uni, live, sectors, cache, day, tdays, texts=None):
     """Sector, next earnings date and confirm-only sightings for one event's stock."""
     s, out = e["symbol"], ""
     sec = sectors.get(s)
@@ -478,6 +482,112 @@ def context(events, e, by, uni, live, sectors, cache, day, tdays):
         for a in c["alerts"]:
             out += f"; confirm lane {a['lane']} ({L.LANES[a['lane']][0]}): " + ", ".join(
                 f"{k} {v}" for k, v in a["info"].items() if v is not None)
+        scoop = [texts[i] for i in c["items"] if i.startswith("rss:") and i in (texts or {})]
+        if scoop:
+            out += "\n  outlet headline (one source; needs a second public source or a filing):\n" + \
+                guards.wrap_untrusted("\n".join(scoop))
+    return out
+
+
+def sector_map(root, api, symbols, cache):
+    """{symbol: sector ETF} for lane 16. SIC codes are kept in the state folder (scouts/sic.json), so each
+    company is looked up once, at most SIC_PER_PASS new ones a pass."""
+    path = root / "sic.json"
+    if "sic" not in cache and path.exists():
+        cache["sic"] = {int(k): v for k, v in json.loads(path.read_text()).items()}
+    n = len(cache.get("sic", {}))
+    out = api.sectors(symbols, cache, limit=SIC_PER_PASS)
+    if len(cache.get("sic", {})) != n:
+        tmp = path.with_suffix(".tmp")
+        tmp.write_text(json.dumps({str(k): v for k, v in sorted(cache["sic"].items())}, sort_keys=True))
+        tmp.replace(path)
+    return out
+
+
+# Lane 19: the small and foreign outlets of the W1a source list, the same feeds the private repo's
+# tracks/news/rss.py logs (outlet, group, URL).
+OUTLETS = [
+    ("Sky News", "small", "https://feeds.skynews.com/feeds/rss/business.xml"),
+    ("New York Post", "small", "https://nypost.com/business/feed/"),
+    ("Betaville", "small", "https://www.betaville.co.uk/feed/"),
+    ("Semafor", "small", "https://www.semafor.com/rss.xml"),
+    ("Axios", "small", "https://api.axios.com/feed/"),
+    ("Business Insider", "small", "https://feeds.businessinsider.com/custom/all"),
+    ("Fox Business", "small", "https://moxie.foxbusiness.com/google-publisher/latest.xml"),
+    ("StreetInsider", "small", "https://www.streetinsider.com/freefeed.php"),
+    ("MarketWatch", "small", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
+    ("Hunterbrook", "small", "https://hntrbrk.com/feed/"),
+    ("Calcalist", "foreign", "https://www.calcalistech.com/ctechnews/rss"),
+    ("Globes", "foreign", "https://www.globes.co.il/WebService/Rss/RssFeeder.asmx/FeederNode?iID=1725"),
+    ("Nikkei Asia", "foreign", "https://asia.nikkei.com/rss/feed/nar"),
+    ("Economic Times", "foreign", "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms"),
+    ("Yonhap", "foreign", "https://en.yna.co.kr/RSS/news.xml"),
+    ("Les Echos", "foreign", "https://syndication.lesechos.fr/rss/rss_finance-marches.xml"),
+    ("Handelsblatt", "foreign", "https://www.handelsblatt.com/contentexport/feed/finanzen"),
+    ("Caixin", "foreign", "https://www.caixinglobal.com/rss/finance.xml"),
+]
+RSS_MIN = 15             # lane 19 reads the outlets every 15 minutes
+RSS_HOURS = 24           # items published in the last day count
+
+
+def scoops(st, api, by, now, cache, evidence):
+    """Lane 19: headlines from the outlets' own feeds that name a universe company. Returns (alerts, texts,
+    feed errors). The headline goes to the evidence folder and the scout prompt, never to the public log."""
+    slot = f"{now.floor(f'{RSS_MIN}min'):%Y-%m-%dT%H:%M}"
+    if st["marks"].get("rss") == slot:
+        return [], {}, 0
+    st["marks"]["rss"] = slot
+    names = (cache.get("tickers") or ({}, {}))[1]
+    if cache.get("name_index_day") != f"{now:%Y-%m-%d}":
+        cache["name_index"], cache["name_index_day"] = L.name_index(names, set(by)), f"{now:%Y-%m-%d}"
+    seen = st.setdefault("rss_seen", [])
+    have = set(seen)
+    alerts, texts, errors = [], {}, 0
+    for outlet, group, url in OUTLETS:
+        try:
+            items = api.feed(url)
+        except Exception:  # one dead feed never stops the others
+            errors += 1
+            continue
+        for it in items:
+            key = sha(it["link"])[:16]
+            t = it.get("published")
+            if key in have or not t or pd.Timestamp(t) < now - pd.Timedelta(hours=RSS_HOURS):
+                continue
+            have.add(key)
+            seen.append(key)
+            syms = L.name_hits(it["title"], cache["name_index"], set(by))
+            if not syms or len(syms) > 3:
+                continue
+            item = f"rss:{key}"
+            texts[item] = f"[{t}] {outlet}: {it['title']}"
+            evidence.append({"kind": "outlet_headline", "item": item, "symbols": syms, "t": t, "outlet": outlet,
+                             "link": it["link"], "text": it["title"]})
+            for s in syms:
+                alerts.append({"lane": "19", "symbol": s, "item": item, "src_t": t, "side_hint": None,
+                               "info": {"outlet": outlet, "group": group}})
+    del seen[:-5000]
+    return alerts, texts, errors
+
+
+def sic_by_symbol(cache):
+    """{symbol: SIC code} from the SIC codes looked up so far."""
+    sic = cache.get("sic") or {}
+    by_cik = (cache.get("tickers") or ({}, {}))[0]
+    return {t: sic[c] for c, ts in by_cik.items() if sic.get(c) for t in ts}
+
+
+def politician_trades(st, api, symbols, day, now):
+    """Lane 20, once a day: stock trades in House periodic transaction reports filed in the last PTR_DAYS
+    days that this book hasn't read yet. A scanned (paper) report has no text and gives no trades."""
+    out = []
+    seen = st.setdefault("ptr_seen", [])
+    for r in api.house_reports(day) or []:
+        if r["doc_id"] in seen or pd.Timestamp(r["filed"]) < day - pd.Timedelta(days=PTR_DAYS):
+            continue
+        out += L.politician_alerts(r, L.ptr_trades(api.ptr_text(r["pdf"])), symbols, now)
+        seen.append(r["doc_id"])
+    del seen[:-500]
     return out
 
 
@@ -667,6 +777,24 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
         s = r["symbol"]
         if s in live:
             alerts += L.number_alerts(dict(r, fee=fees.get(s)), live[s], sess, now, cut, recent.get(s, set()))
+    try:
+        sectors_all = sector_map(root, api, sorted(s for s in by if s in live), cache)
+        alerts += L.sector_leaders(rows, live, sectors_all, uni.get("etf", {}), sess, now)
+        alerts += L.sympathy(rows, live, sic_by_symbol(cache), recent, sess, now)
+    except Exception as e:  # a failed SIC lookup never stops the pass; lanes 15 and 16 wait for the next one
+        counts["sector_error"] = f"{type(e).__name__}: {str(e)[:200]}"
+    try:
+        a19, t19, counts["feed_errors"] = scoops(st, api, by, now, cache, evidence)
+        alerts += a19
+        texts.update(t19)
+    except Exception as e:  # lane 19 is context only
+        counts["rss_error"] = f"{type(e).__name__}: {str(e)[:200]}"
+    if st["marks"].get("house") != dkey:
+        try:
+            alerts += politician_trades(st, api, set(by), day, now)
+            st["marks"]["house"] = dkey
+        except Exception as e:  # lane 20 is context only; tried again next pass
+            counts["house_error"] = f"{type(e).__name__}: {str(e)[:200]}"
     quiet = sorted({a["symbol"] for a in alerts if a["lane"] == "11"})
     if quiet:
         start = pd.Timestamp(tdays[-4] if len(tdays) >= 4 else day).tz_localize(ET).tz_convert("UTC")
@@ -715,7 +843,8 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
                                                e["symbol"]))[:WAKE_EVENTS]
             text = "\n".join([f"Time: {now.tz_convert(ET):%Y-%m-%d %H:%M} US/Eastern.", mood, "## Events"] +
                              [event_block(e, by[e["symbol"]], prices[e["symbol"]], all_texts,
-                                          context(st["events"], e, by, uni, live, sectors, cache, day, tdays))
+                                          context(st["events"], e, by, uni, live, sectors, cache, day, tdays,
+                                                  all_texts))
                               for e in show])
             system = SCOUT_PROMPT.format(lane=lane, name=L.LANES[lane][0], hint=LANE_HINT.get(lane, ""))
             raw, call = ask(st, api, SCOUT_MODELS, system, text, dkey, now, hourly=bool(hourly))
@@ -947,15 +1076,20 @@ class Api(W.Api):
                     break
         return out & set(symbols)
 
-    def sectors(self, symbols, cache):
-        """{symbol: sector ETF} from each company's SIC code (EDGAR, cached for the job)."""
+    def sectors(self, symbols, cache, limit=None):
+        """{symbol: sector ETF} from each company's SIC code (EDGAR, cached in `cache`); at most `limit` new
+        lookups, the rest wait for a later call."""
         from core import industry, sec
         by_cik = (cache.get("tickers") or ({}, {}))[0]
         cik_of = {t: c for c, ts in by_cik.items() for t in ts}
         sic = cache.setdefault("sic", {})
+        new = 0
         for s in sorted(set(symbols)):
             c = cik_of.get(s)
             if c is not None and c not in sic:
+                if limit is not None and new >= limit:
+                    break
+                new += 1
                 try:
                     r = sec.get(industry.SUBMISSIONS.format(cik=c))
                     sic[c] = (r.json().get("sic") or None) if r is not None else None
@@ -963,6 +1097,49 @@ class Api(W.Api):
                     sic[c] = None
         return {s: SECTOR_ETF.get(industry.ff12(sic.get(cik_of.get(s)))) for s in symbols
                 if SECTOR_ETF.get(industry.ff12(sic.get(cik_of.get(s))))}
+
+    def feed(self, url):
+        """(title, link, published UTC) of an RSS or Atom feed's items."""
+        import email.utils
+        import requests
+        import xml.etree.ElementTree as ET
+        r = requests.get(url, headers={"User-Agent": "edge-lab research (RSS reader)"}, timeout=20)
+        r.raise_for_status()
+        root, atom, out = ET.fromstring(r.content), "{http://www.w3.org/2005/Atom}", []
+        for it in root.iter("item"):
+            out.append((it.findtext("title"), it.findtext("link"),
+                        it.findtext("pubDate") or it.findtext("{http://purl.org/dc/elements/1.1/}date")))
+        for it in root.iter(f"{atom}entry"):
+            ln = it.find(f"{atom}link")
+            out.append((it.findtext(f"{atom}title"), ln.get("href") if ln is not None else None,
+                        it.findtext(f"{atom}published") or it.findtext(f"{atom}updated")))
+        res = []
+        for title, link, pub in out:
+            t = None
+            for parse in (lambda x: pd.Timestamp(email.utils.parsedate_to_datetime(x)), pd.Timestamp):
+                try:
+                    t = parse(pub)
+                    t = (t.tz_localize("UTC") if t.tzinfo is None else t.tz_convert("UTC")).isoformat()
+                    break
+                except (TypeError, ValueError):
+                    t = None
+            if link and title:
+                res.append({"title": " ".join(title.split()), "link": link.strip(), "published": t})
+        return res
+
+    def house_reports(self, day):
+        from core import registers
+        return registers.fetch_house(day)
+
+    def ptr_text(self, url):
+        """A House PTR PDF's text ("" when it has none, as for scanned paper filings)."""
+        import io
+        from pypdf import PdfReader
+        from core import sec
+        r = sec.get(url)
+        if r is None:
+            return ""
+        return "\n".join(pg.extract_text() or "" for pg in PdfReader(io.BytesIO(r.content)).pages)
 
     def bad_actions(self, day):
         """{symbol: reason} for reverse splits and name changes from 7 trading days back to 30 days ahead."""
