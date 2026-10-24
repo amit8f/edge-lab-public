@@ -121,9 +121,14 @@ def sys2b_lanes():
     return "\n".join(out)
 
 
-ALT_WIRES = ["https://www.accesswire.com/rss/latest", "https://www.accessnewswire.com/rss/latest",
-             "https://www.accesswire.com/users/api/rss", "https://feeds.newsfilecorp.com/feed/latest",
-             "https://www.newsfilecorp.com/rss/all", "https://www.prnewswire.com/rss/all-news-releases-list.rss"]
+ALT_WIRES = ["https://www.globenewswire.com/RssFeed/orgclass/1/feedTitle/GlobeNewswire%20-%20News%20about%20Public%20Companies",
+             "https://www.globenewswire.com/RssFeed/country/United%20States/feedTitle/GlobeNewswire%20-%20News%20from%20United%20States",
+             "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWQ==",
+             "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeGVtRWA==",
+             "https://www.accessnewswire.com/newsroom/api/rss", "https://feeds.newsfilecorp.com/feed/all",
+             "https://www.newsfilecorp.com/feed/all"]
+BROWSER = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+           "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8"}
 
 
 def listener_sources():
@@ -134,11 +139,14 @@ def listener_sources():
     with contextlib.redirect_stdout(buf):
         listener.probe()
     for url in ALT_WIRES:
-        try:
-            items = listener.parse_feed(listener.http_get(url))
-            buf.write(f"alt {url}: OK {len(items)} items\n")
-        except Exception as e:  # noqa: BLE001
-            buf.write(f"alt {url}: FAILED {type(e).__name__}: {str(e)[:120]}\n")
+        for name, hdr in (("ua", listener.UA), ("browser", BROWSER)):
+            try:
+                r = requests.get(url, headers=hdr, timeout=20)
+                n = len(listener.parse_feed(r.content)) if r.ok and r.content.lstrip()[:1] == b"<" else None
+                head = r.content[:160].decode("latin-1").replace(chr(10), " ")
+                buf.write(f"alt {name} {url}: HTTP {r.status_code} {r.headers.get('content-type')} items {n} | {head}\n")
+            except Exception as e:  # noqa: BLE001
+                buf.write(f"alt {name} {url}: FAILED {type(e).__name__}: {str(e)[:120]}\n")
     return buf.getvalue()
 
 
