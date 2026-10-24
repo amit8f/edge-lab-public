@@ -61,3 +61,27 @@ forward data will show.
 Holdout and history: no historical screen is run for these three. Forward data starts with the first
 signal day after this registration is merged. A missed day is logged as missed, never back-filled from
 later data.
+
+## Live book details (2026-10-24, before any forward data)
+
+How the I1F and A1F logs are built, fixed before their first signal day (Fri 2026-10-30). Both run inside
+the nightly M4 job (`tracks/main/longterm/live.py`, `tracks/penny/fwd2_live.py`) and write to its ledger,
+kinds `I1F_picks` and `A1F_picks`.
+
+- **Rows:** the weekly panel's row for t (`weekly_panel.symbol_rows`) for every common stock, from the
+  job's ~420-day bar window. The penny flag is I1's formula. The main flag is that night's M4 universe
+  (one listing per company, $300M+ cap) with I1's bar floors ($5+, 20-day dollar volume $2M+, 253+ bars).
+  CIKs come from SEC's current ticker map; industries from EDGAR's current SIC per company (as in I1),
+  cached in `state/longterm/sic/`.
+- **I1F control:** as many penny names as picks, drawn from the penny universe minus the picks with
+  `default_rng(I1 SEED + t's ordinal)`.
+- **A1F:** each 10-K is scored from that night's companyfacts zip, a filing enters once (the record lists
+  every flagged accession, including skipped ones). Prior-year sales are this year's sales divided by
+  SGI. Easy to borrow means Alpaca's `shortable` and `easy_to_borrow` that night; a flag that isn't is
+  logged as skipped. The control is drawn from the easy-to-borrow penny names that aren't flagged, so
+  flags and control face the same borrow rule, with `default_rng(A1 SEED + t's ordinal)`.
+- **Returns** are read later from SIP all-adjusted bars: entry at the next session's open; I1F exits at
+  the close of the 20th session from entry; A1F at the first close 35%+ above entry or the 63rd session's
+  close. Costs: I1F 2% round trip; A1F 2% plus 20% a year borrow.
+- A day the job misses stays missed. Days before 2026-10-26 are built and printed only (a dry run), never
+  logged.

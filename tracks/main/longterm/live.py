@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-from core import alpaca
+from core import alpaca, industry
 from core.ledger import Ledger
 from tracks.main import r1_live
 from tracks.main.longterm import analyst, bars_batch, explain, news_history, scorecard, sec_data
@@ -22,6 +22,7 @@ from tracks.main.longterm.prices import align
 from tracks.main.longterm.render import render
 from tracks.main.longterm.score import FAMILIES, FAMILY_NAMES, TOP_N, attach_fundamentals, composite, eligible
 from tracks.main.shortterm import live_boom
+from tracks.penny import a1_screen, fwd2_live, i1_screen
 
 ROOT = Path(__file__).resolve().parents[3]
 CALIBRATION = ROOT / "research" / "results" / "M4" / "M4_calibration.json"
@@ -36,7 +37,8 @@ def _plan():
 SEED = 20261012
 LOOKBACK_DAYS = 420
 TRACK_DAYS = 252
-LOGGED_KINDS = ("M4_picks", "M8_picks", "M10_watch", "P3_watch", "R1_picks")
+LOGGED_KINDS = ("M4_picks", "M8_picks", "M10_watch", "P3_watch", "R1_picks", "I1F_picks", "A1F_picks")
+FWD2_FIRST = pd.Timestamp("2026-10-26")   # the first session after FWD2 was merged; earlier days only print
 BOOM_TRACK_DAYS = 30                 # calendar days, about the 21 trading days the boom models predict
 M8_WINDOW_DAYS = 91
 
@@ -160,6 +162,63 @@ def meta3_log(rec, closes, t):
         return {"prereg": "research/prereg/META3.md", "error": f"{type(e).__name__}: {e}"}
 
 
+def fwd2_log(ledger, root, cache, panel_rows, uni, tmap, common, closes, t, is_week_end, is_month_end, zp,
+             get_sic=None):
+    """FWD2's I1F (week end) and A1F (month end) records (research/prereg/FWD2.md). Each is guarded on its
+    own: they must never stop the M4 log. Before FWD2_FIRST the records are built and summarised, never
+    logged (a dry run on real data)."""
+    day = f"{t:%Y-%m-%d}"
+    dry = t < FWD2_FIRST
+    if dry:
+        is_week_end = is_month_end = True
+    need_i1 = is_week_end and not ledger.has("I1F_picks", day)
+    need_a1 = is_month_end and not ledger.has("A1F_picks", day)
+    if not (need_i1 or need_a1):
+        return
+    panel = pd.DataFrame(panel_rows)
+    if panel.empty:
+        print(f"[FWD2] no panel rows for {day}")
+        return
+    panel = panel.merge(tmap[["symbol", "cik"]].drop_duplicates("symbol"), on="symbol", how="left")
+    rows = fwd2_live.flags(panel, uni["symbol"])
+    if need_i1:
+        try:
+            spy5 = i1_screen.spy_ret5(closes["SPY"], [t])[t]
+            ciks = rows.loc[(rows["main"] | rows["penny"]) & rows["cik"].notna(), "cik"].astype("int64").unique()
+            ind = industry.industries(ciks, root / "sic", **({"get": get_sic} if get_sic else {}))
+            rec = fwd2_live.i1f_record(rows, ind, spy5, t)
+            if rec is None:
+                print(f"[I1F] no picks for {day}")
+            elif dry:
+                print(f"[I1F] dry run {day}: {len(rec['picks'])} picks of {len(rec['universe'])}, "
+                      f"industries {rec['industries']}, not logged")
+            else:
+                ledger.write_json("I1F_picks", day, f"i1f/{day}.json", rec)
+                print(f"logged I1F picks for {day}: {len(rec['picks'])} of {len(rec['universe'])}")
+        except Exception as e:
+            print(f"[I1F] not logged for {day}: {type(e).__name__}: {e}")
+    if need_a1:
+        try:
+            pen = rows[rows["penny"] & rows["cik"].notna()]
+            scored = a1_screen.scores(zp, pen["cik"].astype("int64").unique(), cache / "a1f" / f"{t:%Y-%m}")
+            ok = common["shortable"].fillna(False).astype(bool) & common["easy_to_borrow"].fillna(False).astype(bool)
+            used = set()
+            for e in ledger.entries():
+                if e["kind"] == "A1F_picks":
+                    used |= set(json.loads((root / e["file"]).read_text())["accns"])
+            rec = fwd2_live.a1f_record(rows, scored, t, set(common.loc[ok, "base_symbol"]), used)
+            if rec is None:
+                print(f"[A1F] no flags for {day}")
+            elif dry:
+                print(f"[A1F] dry run {day}: {len(rec['picks'])} shorts, skipped "
+                      f"{[x['why'] for x in rec['skipped']]}, not logged")
+            else:
+                ledger.write_json("A1F_picks", day, f"a1f/{day}.json", rec)
+                print(f"logged A1F shorts for {day}: {len(rec['picks'])} ({len(rec['skipped'])} skipped)")
+        except Exception as e:
+            print(f"[A1F] not logged for {day}: {type(e).__name__}: {e}")
+
+
 def run(state, cache, now=None, log_days_only=False):
     now = now if now is not None else alpaca.utcnow()
     state, cache = Path(state), Path(cache)
@@ -185,8 +244,9 @@ def run(state, cache, now=None, log_days_only=False):
         if e["kind"] in LOGGED_KINDS:
             rec = json.loads((root / e["file"]).read_text())
             logged |= {p["symbol"] for p in rec["picks"]} | set(rec["control"]) | set(rec["universe"])
-    boom_rows = []
-    feat, rtab, closes = bars_batch.run_live(sorted(set(syms) | logged | {"SPY"}), start, end, t, boom=boom_rows)
+    boom_rows, panel_rows = [], []
+    feat, rtab, closes = bars_batch.run_live(sorted(set(syms) | logged | {"SPY"}), start, end, t, boom=boom_rows,
+                                             panel=panel_rows)
     feat = feat.merge(tmap[["symbol", "cik"]], on="symbol", how="inner")
     zp = cache / "companyfacts.zip"
     sec_data.download_companyfacts(zp)
@@ -281,6 +341,7 @@ def run(state, cache, now=None, log_days_only=False):
                 print(f"logged R1 picks for {t:%Y-%m-%d}: {len(rec['picks'])} of {len(rec['universe'])}")
         except Exception as e:
             print(f"[R1] not logged for {t:%Y-%m-%d}: {type(e).__name__}: {e}")
+    fwd2_log(ledger, root, cache, panel_rows, uni, tmap, common, closes, t, is_week_end, is_month_end, zp)
     problems = ledger.verify()
     m8_latest = None
     for e in ledger.entries():
