@@ -121,7 +121,18 @@ def sys2b_lanes():
     return "\n".join(out)
 
 
+def listener_sources():
+    """Every source of the news listener (core/listener.py) once."""
+    import contextlib
+    from core import listener
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        listener.probe()
+    return buf.getvalue()
+
+
 def main():
+    show("News listener sources", listener_sources)
     show("SYS2B lanes 15-20 on live sources", sys2b_lanes)
     show("House PTR PDF text (SYS2B lane 20)", ptr_pdf)
     show("StockTwits trending (SYS2B lane 18)", lambda: http("https://api.stocktwits.com/api/2/trending/symbols.json", 400))
