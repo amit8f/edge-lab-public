@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 50** (main 24, penny 9, news 8, cross-track 8, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 65.
+**Phase 2 count: 55** (main 27, penny 9, news 9, cross-track 9, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 70.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
@@ -65,6 +65,11 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | COMBO1 | cross-track | 2026-10-24 | One book of all near-miss forward books (R1, two L1 cells, NX2, I1F, A1F), each scaled to 1% daily volatility, equal weight; forward only, daily mean NW t >= 2 after 60 trading days | Failure review (round 1, Q8): weak independent signals add up | [prereg/FWD2.md](prereg/FWD2.md) | Registered; builds on the member books |
 | G2 | main | 2026-10-24 | G1's customer-supplier links with a stricter matcher (exact names only, customer sentences only, share >= 10%); new 50-link hand check needs 40 right before any return; G1's test | Failure review (cause 4); Cohen & Frazzini (2008) | [prereg/G2.md](prereg/G2.md) | Registered; hand check first |
 | W2 | news | 2026-10-24 | W1a's short-seller group only, one tagged symbol named in the headline; hand check needs 80% right; W1a's group test, or a forward log if under 100 events | Failure review (cause 4) | [prereg/W2.md](prereg/W2.md) | Registered; hand check first |
+| RL1 | main | 2026-10-24 | Bell-curve rank label vs raw-return label, same XGBoost and M4 inputs; monthly long-short decile, Rank minus Raw NW t >= 2 for the label claim, rule 12 for trading | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; Coqueret & Guida (2026); M10's uniform-rank exploratory seen before (disclosed) | [prereg/RL1.md](prereg/RL1.md) | |
+| TB1 | main | 2026-10-24 | TabICLv2 (no tuning, synthetic pretraining) replaces LightGBM as META1's take-or-skip model on R1's picks; META1's test and near-miss pass | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; Qu et al. (ICML 2026); META1 already failed (disclosed) | [prereg/TB1.md](prereg/TB1.md) | |
+| SD1 | main | 2026-10-24 | Accounting composite (M4's quality, value, issuance, growth) with fresh vs 12-month-old 10-Ks; replication holds if fresh FF5+mom alpha t >= 2 and stale keeps half | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; Fan & Li (2026) | [prereg/SD1.md](prereg/SD1.md) | |
+| CR1 | cross-track | 2026-10-24 | Forward measurement: daily pick overlap between SYS2B lanes and the SYS2 picker vs a random-redraw null; crowding confirmed at mean z >= 3 after 40 days | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; Chincarini, Falvey & Moneta (2026) | [prereg/CR1.md](prereg/CR1.md) | |
+| SM1 | news | 2026-10-24 | Forward source track record from the news listener: per-source hit rate of item moves vs a same-group random stock; sources differ at LR p < 0.01 after 60 days; no trading | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; EMNLP 2026 point-in-time RAG paper | [prereg/SM1.md](prereg/SM1.md) | |
 
 ## Validation studies (not trading ideas; not counted)
 
