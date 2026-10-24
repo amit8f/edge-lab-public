@@ -68,3 +68,22 @@ def test_evaluate_handles_a_week_with_nothing_taken():
     t["label"] = (t["fwd5"] > t.groupby("date")["fwd5"].transform("mean")).astype(int)
     r = M1.evaluate(t, {})
     assert r["PRIMARY"]["weeks"] == 30
+
+
+def test_diagnose_runs_on_synthetic_picks():
+    rng = np.random.default_rng(3)
+    weeks = pd.date_range("2017-01-06", "2025-09-19", freq="W-FRI")
+    x = pd.DataFrame([dict(zip(M.INPUTS, rng.normal(size=len(M.INPUTS))), date=w, symbol=f"S{k}",
+                           fwd5=rng.normal(0, 0.03)) for w in weeks for k in range(12)])
+    x["label"] = (x["fwd5"] > x.groupby("date")["fwd5"].transform("mean")).astype(int)
+    d = M.diagnose(x)
+    assert set(d["overfit"]) == {str(y) for y in range(2019, 2026)}
+    assert d["overfit"]["2020"]["auc_train"] > d["overfit"]["2020"]["auc_test"]
+    assert len(d["prob_deciles"]) == 10 and set(d["input_vs_excess"]) == set(M.INPUTS)
+
+
+def test_meta3_flags_rank_within_week_and_keep_the_top_half():
+    x = pd.DataFrame({"date": pd.to_datetime(["2020-01-03"] * 4), "ret5": [-0.2, -0.1, -0.15, -0.12],
+                      "vol20": [0.05, 0.01, 0.03, np.nan], "n_8k": [2, 0, 1, 0]})
+    score, keep = M.meta3_flags(x)
+    assert keep.tolist() == [False, True, False, True] and score.idxmax() == 1
