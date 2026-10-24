@@ -16,6 +16,7 @@ import requests
 
 from core import alpaca
 from core.ledger import Ledger
+from tracks.main import r1_live
 from tracks.main.longterm import analyst, bars_batch, explain, news_history, scorecard, sec_data
 from tracks.main.longterm.prices import align
 from tracks.main.longterm.render import render
@@ -35,7 +36,7 @@ def _plan():
 SEED = 20261012
 LOOKBACK_DAYS = 420
 TRACK_DAYS = 252
-LOGGED_KINDS = ("M4_picks", "M8_picks", "M10_watch", "P3_watch")
+LOGGED_KINDS = ("M4_picks", "M8_picks", "M10_watch", "P3_watch", "R1_picks")
 BOOM_TRACK_DAYS = 30                 # calendar days, about the 21 trading days the boom models predict
 M8_WINDOW_DAYS = 91
 
@@ -256,6 +257,14 @@ def run(state, cache, now=None, log_days_only=False):
                 "universe_scores": [[r["symbol"], float(r["score"]), int(r["an_up"]), int(r["an_down"])]
                                     for _, r in m8.iterrows()]})
             print(f"logged M8 picks for {t:%Y-%m-%d} ({n_ev} analyst actions)")
+    if is_week_end and not ledger.has("R1_picks", f"{t:%Y-%m-%d}"):
+        try:  # the FWD1 shadow book must never take the M4 log down
+            rec = r1_live.record(closes, uni["symbol"].tolist(), t)
+            if rec is not None:
+                ledger.write_json("R1_picks", f"{t:%Y-%m-%d}", f"r1/{t:%Y-%m-%d}.json", rec)
+                print(f"logged R1 picks for {t:%Y-%m-%d}: {len(rec['picks'])} of {len(rec['universe'])}")
+        except Exception as e:
+            print(f"[R1] not logged for {t:%Y-%m-%d}: {type(e).__name__}: {e}")
     problems = ledger.verify()
     m8_latest = None
     for e in ledger.entries():

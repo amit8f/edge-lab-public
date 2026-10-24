@@ -49,7 +49,7 @@ jobs:
           path: cache/nx1
           key: nx1-v1-none
           restore-keys: nx1-v1-
-          fail-on-cache-miss: ${{ inputs.stage != 'extremes' }}
+          fail-on-cache-miss: ${{ inputs.stage == 'all' || inputs.stage == 'events' || inputs.stage == '' }}
 
       - name: Restore NX3's own cache
         uses: actions/cache/restore@v4

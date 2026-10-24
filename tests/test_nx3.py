@@ -145,3 +145,31 @@ def test_extremes_lists_the_walk_forward_picks_by_size():
     _, pk2, _, _ = X.evaluate(ev[ev["d"] >= "2019-01-01"], X.Model(ev[ev["d"] <= CAL["date"][
         CAL["date"].searchsorted(pd.Timestamp("2019-01-01")) - N.PURGE - 1]]), X.SEED + 2019)
     assert len(pk) == len(pk2)
+
+
+def test_on_day_basis_restates_closes_in_the_day_raw_prices():
+    d0, d1, d2 = pd.Timestamp("2024-03-01"), pd.Timestamp("2024-03-04"), pd.Timestamp("2024-03-05")
+    # a 1:10 reverse split on d1: raw jumps 10x, all-adjusted is smooth
+    dc = {("ABC", d0): (1.0, 10.0), ("ABC", d1): (10.5, 10.5), ("ABC", d2): (11.0, 11.0)}
+    prev, exit_ = X.on_day_basis(dc, "ABC", d0, d1, d2)
+    assert np.isclose(prev, 10.0) and np.isclose(exit_, 11.0)
+    # a later liquidation shrinks all-adjusted prices; the ratio to d's raw close cancels it
+    dc = {("ELM", d0): (15.0, 1.5), ("ELM", d1): (14.8, 1.48), ("ELM", d2): (15.1, 1.51)}
+    prev, exit_ = X.on_day_basis(dc, "ELM", d0, d1, d2)
+    assert np.isclose(prev, 15.0) and np.isclose(exit_, 15.1)
+    assert X.on_day_basis(dc, "ELM", d0, d1, pd.Timestamp("2024-03-06")) is None
+
+
+def test_month_trades_returns_use_one_price_basis(monkeypatch):
+    cal = pd.DataFrame({"date": pd.bdate_range("2017-03-01", "2017-03-03"), "open": "09:30", "close": "16:00"})
+    ses = X.sessions(cal)
+    d, prev, nxt = pd.Timestamp("2017-03-02"), pd.Timestamp("2017-03-01"), pd.Timestamp("2017-03-03")
+    dc = {("ABC", prev): (9.5, 0.95), ("ABC", d): (10.0, 1.0), ("ABC", nxt): (11.0, 1.1),
+          ("SPY", prev): (100.0, 100.0), ("SPY", d): (100.0, 100.0), ("SPY", nxt): (101.0, 101.0)}
+    monkeypatch.setattr(X, "daily_closes", lambda syms, a, b, h: dc)
+    monkeypatch.setattr(X, "day_bars", lambda syms, day, o, c, h: {"ABC": bars(), "SPY": bars(p0=100.0, step=0.0)})
+    ev = pd.DataFrame({"symbol": ["ABC"], "d": [d], "t": [pd.Timestamp("2017-03-02 10:15:20")], "kind": ["real"],
+                       "prev_ac": [999.0], "exit_ac": [0.001], "prev_c": [9.5], "dv20": [1e7], "next": [nxt]})
+    t = X.month_trades(ev, ses, {})
+    assert len(t) == 1 and np.isclose(t["exit_ac"].iloc[0], 11.0) and np.isclose(t["prev_ac"].iloc[0], 9.5)
+    assert np.isclose(t["ret"].iloc[0], 11.0 / t["entry"].iloc[0] - 1) and np.isclose(t["spy_ret"].iloc[0], 0.01)
