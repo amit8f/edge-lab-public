@@ -246,8 +246,9 @@ pass. They fill in details the text above leaves open and change nothing it fixe
       used (they failed G1's hand check).
     - 19 (confirm-only): every 15 minutes, the 18 small and foreign outlets' own RSS feeds (the W1a list,
       the same feeds the private repo logs). An item published in the last 24 hours tags a universe stock
-      when its headline names the company (its SEC name without legal suffixes, at least 2 words or 6
-      letters, shared by no other universe company, matched whole-word and case-sensitive) or writes the
+      when its headline names the company (its SEC name without legal suffixes, at least 2 words or one word
+      with a capital or digit inside it such as "CrowdStrike", shared by no other universe company, matched
+      whole-word and case-sensitive) or writes the
       ticker as $XYZ or (NYSE: XYZ); items naming more than 3 stocks are skipped. The scout sees the
       headline beside the stock's event, marked as one source needing a second public source or a filing.
       Headlines go only to the private evidence branch.
@@ -261,5 +262,9 @@ pass. They fill in details the text above leaves open and change nothing it fixe
       Up to 20 candidates a slot, most mentioned first, have their latest 30 StockTwits messages read; a
       stock is logged when 10 or more distinct accounts posted in the last 24 hours (the repeat-account
       filter), with the counts and the bullish and bearish tags. No message text is kept.
-    - Feeds checked from Actions on 2026-10-24: House PTR PDFs read as text with pypdf, StockTwits and
-      ApeWisdom answer; Betaville's feed is behind a bot check (403) and counts as a feed error each slot.
+    - Feeds checked from Actions on 2026-10-24 through the scouts' own code: House PTR PDFs read as text with
+      pypdf (36 reports in 30 days), StockTwits (with a User-Agent; 403 without one) and ApeWisdom answer.
+      12 of the 18 outlet feeds work; Betaville, Calcalist, Les Echos and Caixin refuse (403), StreetInsider's
+      isn't valid XML and Nikkei Asia's is empty. They count as feed errors each slot and are not replaced.
+      SIC codes mapped 236 of a sample of 300 stocks to a sector ETF. Single plain-word names ("Jackson",
+      "Freedom") tagged the wrong stocks in that check, hence the one-word rule above.
