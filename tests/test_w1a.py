@@ -135,3 +135,19 @@ def test_replication():
     assert r["rate_reproduces"] and r["unconfirmed_lose"] and r["unconfirmed_n"] == 6
     r2 = W.replication(rv.assign(hit=[True] * 28 + [False] * 2), okr)
     assert not r2["rate_reproduces"]
+
+
+def test_details_files_for_class_share_symbols(tmp_path, monkeypatch):
+    t = pd.Timestamp("2024-03-05 10:00", tz="America/New_York")
+    arts = pd.DataFrame({"id": [1, 2], "symbol": ["BRK/B", "ABC"], "t": [t, t]})
+    (tmp_path / "w1").mkdir()
+    arts.to_parquet(tmp_path / "w1" / "w1a_articles.parquet")
+    monkeypatch.setattr(W, "alpaca_headers", lambda: {})
+    monkeypatch.setattr(W.time, "sleep", lambda s: None)
+    monkeypatch.setattr(W, "write_check", lambda c, o: None)
+    monkeypatch.setattr(W.alpaca, "get", lambda url, p, headers: {"news": [
+        {"id": 1 if p["symbols"] == "BRK/B" else 2, "author": "a", "summary": "s", "url": "u"}]})
+    assert W.stage_details(tmp_path, tmp_path / "out", 5)
+    assert sorted(p.name for p in (tmp_path / "w1" / "details").iterdir()) == ["ABC_2024-03.parquet",
+                                                                                 "BRK.B_2024-03.parquet"]
+    assert sorted(W.load_details(tmp_path)["id"]) == [1, 2]

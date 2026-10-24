@@ -95,6 +95,10 @@ def run(cache, out):
     chk[["date", "symbol", "ind", "move", "ret5", "price", "fwd5"]].assign(checked_by="", ok="", note="").to_csv(
         out / "I1_rows_check.csv", index=False)
     sel[["date", "week", "symbol", "role", "ind", "ret5", "fwd5"]].to_csv(out / "I1_picks.csv", index=False)
+    mv.to_csv(out / "I1_moves.csv", index=False)
+    big = rows[rows["main"] & rows["ind"].notna() & (rows["ind"] != 12)]
+    big.reindex(big["ret5"].abs().sort_values(ascending=False).index).head(50)[
+        ["date", "symbol", "ind", "price", "ret5", "fwd5"]].to_csv(out / "I1_big_ret5_extremes.csv", index=False)
     (out / "I1_result.json").write_text(json.dumps(res, indent=1, default=str))
     print("PRIMARY", json.dumps(prim, indent=1, default=str))
 
