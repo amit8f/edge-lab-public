@@ -35,6 +35,7 @@ HOLD_SCALE = np.sqrt(1.5)
 SEED = 20261024
 Z_CLIP, FIRE_Q, GATE_T, PICKS = 6.0, 0.90, 2.0, 3
 SYM_CHUNK = 200
+TRADES = "trades_v2"   # v1 mixed minute all-adjusted entries with daily exits (fixed 2026-10-24)
 INTRADAY = ["mins_open", "r_open", "r_react", "rv30", "spy_open"]
 INPUTS = N.INPUTS + INTRADAY
 BASE_INPUTS = N.STOCK_INPUTS + N.MARKET_INPUTS + INTRADAY
@@ -333,7 +334,8 @@ def stage_events(cache, deadline):
 
 
 def day_bars(symbols, day, open_t, close_t, headers):
-    """{symbol: 1-minute SIP bars (t naive ET bar start, o, c, v), adjustment=all} for one session."""
+    """{symbol: 1-minute SIP bars (t naive ET bar start, o, c, v), adjustment=raw} for one session. Raw, so
+    entry and exit come from one daily series (see `on_day_basis`), not two adjustment bases."""
     s = pd.Timestamp(open_t, tz=ET).tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
     e = pd.Timestamp(close_t, tz=ET).tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
     out = {}
@@ -341,7 +343,7 @@ def day_bars(symbols, day, open_t, close_t, headers):
         tok = None
         while True:
             p = {"symbols": ",".join(symbols[i:i + SYM_CHUNK]), "timeframe": "1Min", "start": s, "end": e,
-                 "feed": "sip", "adjustment": "all", "limit": 10000}
+                 "feed": "sip", "adjustment": "raw", "limit": 10000}
             if tok:
                 p["page_token"] = tok
             j = alpaca.get(BARS_URL, p, headers=headers)
@@ -358,25 +360,63 @@ def day_bars(symbols, day, open_t, close_t, headers):
     return res
 
 
-def month_trades(ev, ses, spy_ac, headers):
+def daily_closes(symbols, first, last, headers):
+    """Daily SIP closes, raw and all-adjusted, fetched back to back: {(symbol, date): (raw, all)}."""
+    out = {}
+    for adj in ("raw", "all"):
+        for i in range(0, len(symbols), SYM_CHUNK):
+            tok = None
+            while True:
+                p = {"symbols": ",".join(symbols[i:i + SYM_CHUNK]), "timeframe": "1Day", "start": str(first.date()),
+                     "end": str(last.date()), "feed": "sip", "adjustment": adj, "limit": 10000}
+                if tok:
+                    p["page_token"] = tok
+                j = alpaca.get(BARS_URL, p, headers=headers)
+                for sym, bs in (j.get("bars") or {}).items():
+                    for b in bs:
+                        k = (sym, pd.Timestamp(b["t"]).tz_convert(ET).tz_localize(None).normalize())
+                        out.setdefault(k, [np.nan, np.nan])[adj == "all"] = b["c"]
+                tok = j.get("next_page_token")
+                if not tok:
+                    break
+    return out
+
+
+def on_day_basis(dc, sym, prev, d, nxt):
+    """The previous and next sessions' all-adjusted closes restated in day d's raw prices (raw minute bars of
+    d trade on that basis): close_all / (d's close_all / d's close_raw). None when a close is missing."""
+    try:
+        raw_d, all_d = dc[(sym, d)]
+        all_p, all_n = dc[(sym, prev)][1], dc[(sym, nxt)][1]
+    except KeyError:
+        return None
+    f = all_d / raw_d if raw_d > 0 else np.nan
+    if not (np.isfinite(f) and f > 0 and np.isfinite(all_p) and np.isfinite(all_n)):
+        return None
+    return all_p / f, all_n / f
+
+
+def month_trades(ev, ses, headers):
     s = ses.set_index("date")
     out = []
+    syms = sorted(set(ev["symbol"]) | {"SPY"})
+    dc = daily_closes(syms, s.loc[ev["d"].min(), "prev"], s.loc[ev["d"].max(), "next"], headers) if len(ev) else {}
     for d, g in ev.groupby("d"):
-        o, c = s.loc[d, "open_t"], s.loc[d, "close_t"]
+        o, c, prev, nxt = s.loc[d, "open_t"], s.loc[d, "close_t"], s.loc[d, "prev"], s.loc[d, "next"]
         bars = day_bars(sorted(set(g["symbol"]) | {"SPY"}), d, o, c, headers)
-        spyb = bars.get("SPY")
-        if spyb is None or spyb.empty:
+        spyb, spb = bars.get("SPY"), on_day_basis(dc, "SPY", prev, d, nxt)
+        if spyb is None or spyb.empty or spb is None:
             continue
-        sp_prev, sp_exit = spy_ac.get(s.loc[d, "prev"]), spy_ac.get(s.loc[d, "next"])
+        sp_prev, sp_exit = spb
         for r in g.itertuples(index=False):
-            b = bars.get(r.symbol)
-            if b is None or b.empty:
+            b, basis = bars.get(r.symbol), on_day_basis(dc, r.symbol, prev, d, nxt)
+            if b is None or b.empty or basis is None:
                 continue
-            tr = trade(b, r.t, o, r.prev_ac, r.exit_ac, r.dv20, r.prev_c)
+            tr = trade(b, r.t, o, basis[0], basis[1], r.dv20, r.prev_c)
             if tr is None:
                 continue
             spx_t, spx_e = spy_at(spyb, r.t, o)
-            row = r._asdict() | tr
+            row = r._asdict() | tr | {"prev_ac": basis[0], "exit_ac": basis[1]}
             row["spy_open"] = spx_t / sp_prev - 1 if sp_prev else np.nan
             row["spy_ret"] = sp_exit / spx_e - 1 if sp_exit and spx_e else np.nan
             out.append(row)
@@ -389,16 +429,14 @@ def month_trades(ev, ses, spy_ac, headers):
 
 
 def stage_minutes(cache, deadline):
-    root, d3 = N.nx1dir(cache), nx3dir(cache)
-    ses = sessions(pd.read_parquet(root / "cal.parquet"))
-    spy = pd.read_parquet(root / "spy.parquet")
-    spy_ac = dict(zip(spy["date"], spy["ac"]))
+    d3 = nx3dir(cache)
+    ses = sessions(calendar(cache))
     cols = ["symbol", "d", "t", "kind", *N.INPUTS, "prev_ac", "prev_c", "dv20", "exit_ac", "next"]
     files = sorted((d3 / "events").glob("e_*.parquet"))
     months = pd.period_range(FIRST_DAY, LAST_DAY, freq="M")
     h = alpaca_headers()
     for m in months:
-        f = d3 / "trades" / f"t_{m}.parquet"
+        f = d3 / TRADES / f"t_{m}.parquet"
         if f.exists():
             continue
         if time.monotonic() > deadline:
@@ -406,17 +444,27 @@ def stage_minutes(cache, deadline):
         lo, hi = m.start_time, m.end_time
         ev = pd.concat([pd.read_parquet(x, columns=cols, filters=[("d", ">=", lo), ("d", "<=", hi)]) for x in files],
                        ignore_index=True)
-        t = month_trades(ev, ses, spy_ac, h) if len(ev) else pd.DataFrame()
+        t = month_trades(ev, ses, h) if len(ev) else pd.DataFrame()
         N.atomic_parquet(t, f)
         print(f"[nx3 minutes] {m}: {len(ev)} events, {len(t)} with an entry")
     return True
 
 
+def calendar(cache):
+    """NX1's calendar, or Alpaca's when NX1's cache has been evicted (saved beside NX3's files)."""
+    for f in (N.nx1dir(cache) / "cal.parquet", nx3dir(cache) / "cal.parquet"):
+        if f.exists():
+            return pd.read_parquet(f)
+    cal = alpaca.trading_calendar(FIRST_DAY - pd.Timedelta(days=10), LAST_DAY + pd.Timedelta(days=10))
+    N.atomic_parquet(cal, nx3dir(cache) / "cal.parquet")
+    return cal
+
+
 def stage_train(cache, out):
     d3 = nx3dir(cache)
-    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / "trades").glob("t_*.parquet"))], ignore_index=True)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
     ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
-    cal = pd.read_parquet(N.nx1dir(cache) / "cal.parquet")
+    cal = calendar(cache)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     wf, pooled, gate = walk_forward(ev, cal)
@@ -457,12 +505,9 @@ def extremes(ev, cal, years=(2023, 2024), n=20):
 
 def stage_extremes(cache, out):
     d3 = nx3dir(cache)
-    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / "trades").glob("t_*.parquet"))], ignore_index=True)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
     ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
-    cf = N.nx1dir(cache) / "cal.parquet"
-    # NX1's cache may have been evicted; the trading days that have events are the same calendar here
-    cal = pd.read_parquet(cf) if cf.exists() else pd.DataFrame({"date": sorted(ev["d"].unique())})
-    top, pk = extremes(ev, cal)
+    top, pk = extremes(ev, calendar(cache))
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     top.assign(checked_by="", ok="", note="").to_csv(out / "NX3_extremes_check.csv", index=False)
