@@ -62,3 +62,16 @@ which had no result then. Screens with results keep their verdicts; M11 keeps it
     trades after costs, at the confidence that SYS1 sets for the number of rules tried). The learning rule
     itself is frozen in SYS1, and any change to it is a new registration.
 18. **Going live is unchanged.** Rule 9 still applies to every Plan v3 book.
+
+## Added 2026-10-24 (Amit: "keep both but we can lower our guard and let stuff that was profitable be tested on real time data"; his merge of this change is his signature)
+
+19. **Near-miss lane.** A historical screen that failed rule 12 can still get a forward shadow book (a
+    paper ledger: no orders, no money) when all three hold: its data hand check passed; its picks beat
+    the same-day random control with a HAC t >= 1.5; and its picks' own mean return after costs is > 0
+    (a long-short or short idea whose picks lose money after costs, but less than the control, does not
+    qualify). The rule is traded forward exactly as registered; any change is a new idea. The screen
+    keeps its FAILED verdict in `research/IDEAS.md`; the forward book is listed under the same ID.
+20. **Near-miss promotion.** After at least 60 trading days and 30 closed trades, a near-miss book gets
+    an Alpaca paper account only if its forward trades beat their same-day random control after costs
+    with a Newey-West t >= 2.0 and their own mean after costs is > 0. Otherwise it stops. Rules 9 and 18
+    (real money) are unchanged. The first books are in `research/prereg/FWD1.md`.
