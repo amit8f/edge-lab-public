@@ -69,3 +69,23 @@ Entering early should keep more of the reaction than NX2, but a 1-minute wait is
 trade on headlines in milliseconds, and costs at small stocks are high. I expect the gate to fail with
 probability about 0.55; if it passes, the edge sits in pre-open news at stocks under $2B and the first
 reaction input matters most.
+
+## Live book details (2026-10-24, after the gate passed and before any forward data)
+
+How the registered shadow book reads the rules above with live data (`tracks/news/nx3_live.py`):
+- Headlines arrive from Alpaca's Benzinga feed, read every 30 seconds. An event is decided on the first
+  read at or after t + 1 minute; one not decided within 10 minutes of t is logged as missed.
+- Intraday inputs come from Alpaca's free IEX real-time feed, the only free real-time source. The price
+  at t is the first IEX minute bar's open (news before the open) or the last IEX close before t. The entry
+  input (`r_react`) uses the latest IEX trade at decision time, the price a 1-minute entry would pay.
+  `rv30` counts IEX volume divided by the stock's IEX share of SIP volume over the previous 5 sessions,
+  since IEX carries only a few percent of trading.
+- Stock and market inputs, universe, novelty, the 3-day dedup and FinBERT's commit are training's code
+  and settings. The model is version 1 (`research/results/NX3/nx3_v1_news.json`) with its frozen cut.
+- A short is taken only where Alpaca marks the stock shortable and easy to borrow (as NX1's book);
+  otherwise the slot passes to the next fired short. The control is drawn as in training from all of the
+  day's decided events, after the close.
+- Every return is settled with training's code on SIP bars once they are free (entry = open of the first
+  SIP minute bar at or after t + 1 minute, exit = next close, minus SPY), with training's costs on a
+  $500 trade. Each decided event logs both its live inputs and, at settlement, the SIP entry, so the gap
+  between live and training inputs is measured.
