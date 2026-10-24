@@ -155,7 +155,7 @@ def qa(x):
     return q
 
 
-def walk_forward(x):
+def walk_forward(x, inputs=INPUTS):
     """Out-of-sample probabilities and take flags per test year (expanding window, 2-week embargo)."""
     import lightgbm as lgb
     x = x.dropna(subset=["fwd5"]).copy()
@@ -169,12 +169,12 @@ def walk_forward(x):
         start = x.loc[test, "date"].min()
         cut = weeks[max(0, np.searchsorted(weeks, np.datetime64(start)) - EMBARGO_WEEKS)]
         tr = x["date"] < cut
-        m = lgb.LGBMClassifier(**PARAMS).fit(x.loc[tr, INPUTS], x.loc[tr, "label"])
-        thr = float(np.median(m.predict_proba(x.loc[tr, INPUTS])[:, 1]))
-        pr = m.predict_proba(x.loc[test, INPUTS])[:, 1]
+        m = lgb.LGBMClassifier(**PARAMS).fit(x.loc[tr, inputs], x.loc[tr, "label"])
+        thr = float(np.median(m.predict_proba(x.loc[tr, inputs])[:, 1]))
+        pr = m.predict_proba(x.loc[test, inputs])[:, 1]
         x.loc[test, "prob"], x.loc[test, "take"], x.loc[test, "model_year"] = pr, (pr >= thr).astype(float), y
         imp[str(y)] = {"train_rows": int(tr.sum()), "threshold": thr,
-                       "gain": dict(zip(INPUTS, map(float, m.booster_.feature_importance("gain"))))}
+                       "gain": dict(zip(inputs, map(float, m.booster_.feature_importance("gain"))))}
     return x[x["prob"].notna()], imp
 
 
@@ -204,7 +204,7 @@ def evaluate(t, imp):
     ctrl = []
     for d, g in t.groupby("date"):
         k = int(g["take"].sum())
-        idx = np.random.default_rng(SEED + int(g["week_idx"].iloc[0])).choice(len(g), size=k, replace=False) if k else []
+        idx = np.random.default_rng(SEED + int(g["week_idx"].iloc[0])).choice(len(g), size=k, replace=False) if k else np.array([], int)
         ctrl += list(g.index[np.sort(idx)])
     t["ctrl"] = 0
     t.loc[ctrl, "ctrl"] = 1
