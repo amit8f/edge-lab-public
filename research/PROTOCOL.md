@@ -75,3 +75,19 @@ which had no result then. Screens with results keep their verdicts; M11 keeps it
     an Alpaca paper account only if its forward trades beat their same-day random control after costs
     with a Newey-West t >= 2.0 and their own mean after costs is > 0. Otherwise it stops. Rules 9 and 18
     (real money) are unchanged. The first books are in `research/prereg/FWD1.md`.
+
+## Added 2026-10-24 (Amit's decisions in the failure review grill, `research/FAILURE_REVIEW_2026-10-24.md`; his merge of this change is his signature)
+
+21. **Training score next to test score.** Every fitted model reports its in-sample score beside its
+    out-of-sample one (AUC, or the primary statistic). A gap of more than 0.10 AUC (or the in-sample
+    statistic more than twice the out-of-sample one) marks the model as overfit: its result is reported
+    as failed for that reason before the test number is read, and the fix is fewer inputs, stronger
+    regularisation or a cleaner target, under a new registration.
+22. **Money, not ranks.** A diagnosis or exploratory check that proposes a filter or score reports what
+    it does to mean returns (and to the top and bottom 5% of outcomes), not only rank correlations,
+    before the filter is registered.
+23. **A fix chosen from results is tested on unseen data.** A change picked by looking at an idea's
+    returns is a new counted idea whose decisive test is forward data (or data the parent never touched).
+    A change picked from a data check that saw no returns (a matcher fixed after a hand check) may be
+    tested on history.
+
