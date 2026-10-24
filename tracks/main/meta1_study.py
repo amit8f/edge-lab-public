@@ -204,7 +204,7 @@ def evaluate(t, imp):
     ctrl = []
     for d, g in t.groupby("date"):
         k = int(g["take"].sum())
-        idx = np.random.default_rng(SEED + int(g["week_idx"].iloc[0])).choice(len(g), size=k, replace=False) if k else []
+        idx = np.random.default_rng(SEED + int(g["week_idx"].iloc[0])).choice(len(g), size=k, replace=False) if k else np.array([], int)
         ctrl += list(g.index[np.sort(idx)])
     t["ctrl"] = 0
     t.loc[ctrl, "ctrl"] = 1

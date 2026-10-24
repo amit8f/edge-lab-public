@@ -57,3 +57,14 @@ def test_news_counts_use_the_five_sessions_to_t_close():
     # in window: ids 0, 1, 2 (16:30 on day 45 belongs to session 46); id 5 is after t's close
     assert n5[0] == 3 and neg[0] == 1 and pos[0] == 1 and base[0] == 1
     assert set(arts["symbol"]) == {"A"}
+
+
+def test_evaluate_handles_a_week_with_nothing_taken():
+    from tracks.main import meta1_study as M1
+    weeks = pd.date_range("2019-01-04", periods=30, freq="W-FRI")
+    rng = np.random.default_rng(2)
+    t = pd.DataFrame([{"date": w, "symbol": f"S{k}", "fwd5": rng.normal(0, 0.02), "mcap": 1e9, "prob": rng.random(),
+                       "take": float(i > 0 and k < 5)} for i, w in enumerate(weeks) for k in range(10)])
+    t["label"] = (t["fwd5"] > t.groupby("date")["fwd5"].transform("mean")).astype(int)
+    r = M1.evaluate(t, {})
+    assert r["PRIMARY"]["weeks"] == 30
