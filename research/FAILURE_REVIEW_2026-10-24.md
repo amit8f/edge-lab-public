@@ -144,3 +144,28 @@ logged forward as M8).
 5. W1a, short-seller group only.
 
 Steps 3-5 are new counted ideas, so they'd go to the Nov 1 review unless you want them sooner.
+
+## Decisions (Amit, grill session 2026-10-24, 13:00-13:08 UTC)
+
+Amit said yes to every recommendation except one, which he changed (Q8 part 3, below).
+
+| Q | Decision |
+|---|---|
+| 1 | Standing rule: training score next to test score; a gap over 0.10 AUC is a fail (PROTOCOL 21). |
+| 2 | Standing rule: diagnoses check mean returns and the extreme 5%, not only ranks (PROTOCOL 22). |
+| 3 | Run M12 now (registered 2026-10-15). Started 2026-10-24, run 40096838515. |
+| 4 | Fix the matchers, with a hand check as the first gate: G2 and W2 registered. |
+| 5 | I1 with a 20-day hold as a forward-only book: I1F (FWD2). |
+| 6 | Leave M1, M7 and M13 closed; no re-tests on the same years. |
+| 7 | A1 with the first-revenue exclusion as a forward-only book: A1F (FWD2). The M6 factor-neutral twin waits for M8's 26-week read. |
+| 8.1 | One combined book of all near-miss books: COMBO1 (FWD2). |
+| 8.2 | Re-score finished penny screens with measured costs once X1 has 30+ fills (a re-judgement, not a new idea). |
+| 8.3 | Changed by Amit: instead of giving up on fast news, build a listener that reads the sources directly (SEC's live filing feed, press-release wires, the working outlet feeds) every ~20 seconds in chained GitHub jobs, 4am-8pm ET. Logging only for 2 weeks, then a speed report (our time vs Benzinga's vs the price move). Azure's $100 credit only if GitHub's gaps are too big. Not counted until a trade is tested. |
+| 10 | No fast-trade idea is registered before NX3's corrected result and the 2-week speed report. |
+| 11 | Order: (1) M12; (2) PROTOCOL 21-23; (3) the news listener; (4) forward books I1F, A1F, COMBO1; (5) G2 and W2 hand checks; (6) the cost re-check. All five new ideas registered now, not at the Nov 1 review. |
+
+Idea count after these: 50 (65 with phase 1).
+
+G2's matcher uses exact names and stricter sentences. The XBRL customer tags mentioned above are left
+out of G2 to keep it buildable; they can be a later cross-check.
+
