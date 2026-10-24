@@ -459,7 +459,10 @@ def stage_extremes(cache, out):
     d3 = nx3dir(cache)
     ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / "trades").glob("t_*.parquet"))], ignore_index=True)
     ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
-    top, pk = extremes(ev, pd.read_parquet(N.nx1dir(cache) / "cal.parquet"))
+    cf = N.nx1dir(cache) / "cal.parquet"
+    # NX1's cache may have been evicted; the trading days that have events are the same calendar here
+    cal = pd.read_parquet(cf) if cf.exists() else pd.DataFrame({"date": sorted(ev["d"].unique())})
+    top, pk = extremes(ev, cal)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     top.assign(checked_by="", ok="", note="").to_csv(out / "NX3_extremes_check.csv", index=False)
