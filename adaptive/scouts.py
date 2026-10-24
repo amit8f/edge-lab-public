@@ -526,6 +526,7 @@ OUTLETS = [
     ("Handelsblatt", "foreign", "https://www.handelsblatt.com/contentexport/feed/finanzen"),
     ("Caixin", "foreign", "https://www.caixinglobal.com/rss/finance.xml"),
 ]
+BUZZ_STREAMS = 20        # StockTwits streams read a slot for lane 18
 RSS_MIN = 15             # lane 19 reads the outlets every 15 minutes
 RSS_HOURS = 24           # items published in the last day count
 
@@ -568,6 +569,35 @@ def scoops(st, api, by, now, cache, evidence):
                                "info": {"outlet": outlet, "group": group}})
     del seen[:-5000]
     return alerts, texts, errors
+
+
+def social(st, api, by, now):
+    """Lane 18, every 15 minutes: Reddit mention jumps and StockTwits trending stocks, kept when at least
+    BUZZ_USERS distinct StockTwits accounts posted about the stock in 24 hours. Returns (alerts, errors)."""
+    slot = f"{now.floor(f'{RSS_MIN}min'):%Y-%m-%dT%H:%M}"
+    if st["marks"].get("buzz") == slot:
+        return [], 0
+    st["marks"]["buzz"] = slot
+    errors, ape, trending = 0, [], []
+    try:
+        ape = api.apewisdom()
+    except Exception:
+        errors += 1
+    try:
+        trending = api.stocktwits_trending()
+    except Exception:
+        errors += 1
+    out = []
+    cands = L.buzz_candidates(ape, trending, set(by))
+    for s in sorted(cands, key=lambda k: (-(cands[k]["mentions"] or 0), k))[:BUZZ_STREAMS]:
+        try:
+            a = L.buzz_alert(s, cands[s], api.stocktwits_stream(s), now)
+        except Exception:
+            errors += 1
+            continue
+        if a:
+            out.append(a)
+    return out, errors
 
 
 def sic_by_symbol(cache):
@@ -789,6 +819,11 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
         texts.update(t19)
     except Exception as e:  # lane 19 is context only
         counts["rss_error"] = f"{type(e).__name__}: {str(e)[:200]}"
+    try:
+        a18, counts["social_errors"] = social(st, api, by, now)
+        alerts += a18
+    except Exception as e:  # lane 18 is context only
+        counts["social_error"] = f"{type(e).__name__}: {str(e)[:200]}"
     if st["marks"].get("house") != dkey:
         try:
             alerts += politician_trades(st, api, set(by), day, now)
@@ -1098,6 +1133,31 @@ class Api(W.Api):
         return {s: SECTOR_ETF.get(industry.ff12(sic.get(cik_of.get(s)))) for s in symbols
                 if SECTOR_ETF.get(industry.ff12(sic.get(cik_of.get(s))))}
 
+    def apewisdom(self, pages=2):
+        """Reddit mention counts per ticker (ApeWisdom's public API): its first `pages` pages of 100."""
+        import requests
+        out = []
+        for i in range(1, pages + 1):
+            r = requests.get(f"https://apewisdom.io/api/v1.0/filter/all-stocks/page/{i}", timeout=20)
+            r.raise_for_status()
+            out += r.json().get("results") or []
+        return out
+
+    def stocktwits_trending(self):
+        import requests
+        r = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json", timeout=20)
+        r.raise_for_status()
+        return [x["symbol"] for x in r.json().get("symbols") or [] if x.get("instrument_class") == "Stock"]
+
+    def stocktwits_stream(self, symbol):
+        """The latest 30 messages on a symbol: [{"user", "t", "sentiment"}] (no message text is kept)."""
+        import requests
+        r = requests.get(f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json", timeout=20)
+        r.raise_for_status()
+        return [{"user": (m.get("user") or {}).get("id"), "t": m.get("created_at"),
+                 "sentiment": ((m.get("entities") or {}).get("sentiment") or {}).get("basic")}
+                for m in r.json().get("messages") or []]
+
     def feed(self, url):
         """(title, link, published UTC) of an RSS or Atom feed's items."""
         import email.utils
@@ -1116,7 +1176,7 @@ class Api(W.Api):
         res = []
         for title, link, pub in out:
             t = None
-            for parse in (lambda x: pd.Timestamp(email.utils.parsedate_to_datetime(x)), pd.Timestamp):
+            for parse in (lambda x: pd.Timestamp(email.utils.parsedate_to_datetime(x)), pd.Timestamp) if pub else ():
                 try:
                     t = parse(pub)
                     t = (t.tz_localize("UTC") if t.tzinfo is None else t.tz_convert("UTC")).isoformat()

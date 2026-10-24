@@ -231,3 +231,35 @@ pass. They fill in details the text above leaves open and change nothing it fixe
 15. Start moved to Monday 2026-10-26 (2026-10-23, Amit's request, before any result). The code does nothing
     before 2026-10-26; the lanes, books and rules are unchanged. Where this plan says 2026-10-27 as the
     first day, read 2026-10-26.
+16. Lanes 15, 16, 18, 19 and 20 built (2026-10-24, Amit's go-ahead, before the start and before any result).
+    Each is judged from its own logged start date (the first pass that runs it).
+    - 16 (confirm-only), from 30 minutes after the open: each stock's sector is its SIC code's
+      Fama-French 12 industry mapped to a sector ETF (as for the scouts' sector context); SIC codes come from
+      EDGAR, at most 400 new lookups a pass, kept in the state folder. Sector ETFs with at least 3 priced
+      universe stocks are ranked by today's move; in the strongest and in the weakest, the stocks with the
+      largest and the smallest move today are logged (hint long for the largest, short for the smallest).
+    - 15 (trigger), from 30 minutes after the open: a big mover is a universe stock up or down 8% or more
+      today and 3 or more daily standard deviations, with a headline or a news or filing lane (1-10, 21-23)
+      in the last 3 sessions; at most the 5 biggest movers a pass. Its peers are universe stocks with the same
+      4-digit SIC code that have moved less than a third as far in the mover's direction; the 3 with the
+      highest dollar volume are logged, with the mover's direction as the hint. The G1 customer links are not
+      used (they failed G1's hand check).
+    - 19 (confirm-only): every 15 minutes, the 18 small and foreign outlets' own RSS feeds (the W1a list,
+      the same feeds the private repo logs). An item published in the last 24 hours tags a universe stock
+      when its headline names the company (its SEC name without legal suffixes, at least 2 words or 6
+      letters, shared by no other universe company, matched whole-word and case-sensitive) or writes the
+      ticker as $XYZ or (NYSE: XYZ); items naming more than 3 stocks are skipped. The scout sees the
+      headline beside the stock's event, marked as one source needing a second public source or a filing.
+      Headlines go only to the private evidence branch.
+    - 20 (confirm-only), once a day: House periodic transaction reports filed in the last 3 days (the House
+      Clerk's index, as core/registers.py logs it), read from the report's PDF text; each stock ([ST]) row
+      for a universe stock is logged with the member, transaction type, trade and filing dates and amount
+      range (hint long for a purchase, short for a sale). Scanned paper reports have no text and give none.
+    - 18 (confirm-only), every 15 minutes: candidates are universe stocks with 20 or more Reddit mentions in
+      24 hours and at least 3 times the 24 hours before (ApeWisdom's public counts, its top 200), plus
+      StockTwits' trending stocks; Reddit's own JSON is blocked from GitHub's servers (checked 2026-10-24).
+      Up to 20 candidates a slot, most mentioned first, have their latest 30 StockTwits messages read; a
+      stock is logged when 10 or more distinct accounts posted in the last 24 hours (the repeat-account
+      filter), with the counts and the bullish and bearish tags. No message text is kept.
+    - Feeds checked from Actions on 2026-10-24: House PTR PDFs read as text with pypdf, StockTwits and
+      ApeWisdom answer; Betaville's feed is behind a bot check (403) and counts as a feed error each slot.

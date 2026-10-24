@@ -35,7 +35,7 @@ LANES = {
     "23": ("Index change", "trading", True, True),
     "12": ("Gap and hold", "trading", False, True),
     "16": ("Sector leader", "trading", False, True),
-    "18": ("Social buzz", "social", False, False),
+    "18": ("Social buzz", "social", False, True),
     "19": ("Small-outlet scoop", "news", False, True),
     "20": ("Politician trades", "ownership", False, True),
 }
@@ -320,6 +320,38 @@ def name_hits(title, index, tickers):
     out |= {m for m in re.findall(r"\$([A-Z]{1,5})\b", title) if m in tickers}
     out |= {m for m in re.findall(r"\((?:NASDAQ|NYSE|NYSE American|AMEX|Nasdaq):\s*([A-Z.]{1,6})\)", title) if m in tickers}
     return sorted(out)
+
+
+BUZZ_MIN, BUZZ_JUMP = 20, 3.0      # lane 18: 20+ Reddit mentions in 24 hours and 3x the day before
+BUZZ_USERS = 10                    # distinct StockTwits accounts in 24 hours (one account can't make buzz)
+
+
+def buzz_candidates(ape, trending, symbols):
+    """Lane 18's stocks to check: Reddit mention jumps (ApeWisdom's 24-hour counts) and StockTwits trending,
+    universe stocks only. {symbol: {"mentions", "mentions_before", "trending"}}."""
+    out = {}
+    for r in ape:
+        s, m, b = r.get("ticker"), int(r.get("mentions") or 0), int(r.get("mentions_24h_ago") or 0)
+        if s in symbols and m >= BUZZ_MIN and m >= BUZZ_JUMP * max(b, 1):
+            out[s] = {"mentions": m, "mentions_before": b, "trending": False}
+    for s in trending:
+        if s in symbols:
+            out.setdefault(s, {"mentions": None, "mentions_before": None, "trending": False})["trending"] = True
+    return out
+
+
+def buzz_alert(s, cand, msgs, now):
+    """Lane 18 (confirm-only) alert for one candidate when its StockTwits stream has BUZZ_USERS or more
+    distinct accounts in the last 24 hours, else None. msgs: [{"user", "t", "sentiment"}]."""
+    day = now - pd.Timedelta(hours=24)
+    recent = [m for m in msgs if m.get("t") and pd.Timestamp(m["t"]) >= day]
+    users = {m["user"] for m in recent}
+    if len(users) < BUZZ_USERS:
+        return None
+    bull = sum(m.get("sentiment") == "Bullish" for m in recent)
+    bear = sum(m.get("sentiment") == "Bearish" for m in recent)
+    return {"lane": "18", "symbol": s, "item": f"18:{s}:{now.tz_convert(ET):%Y-%m-%d}", "src_t": now.isoformat(),
+            "side_hint": None, "info": dict(cand, users=len(users), messages=len(recent), bullish=bull, bearish=bear)}
 
 
 # One stock row of a House periodic transaction report, as the PDF's text reads once whitespace is joined:

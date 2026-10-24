@@ -253,6 +253,24 @@ def test_scoops_tag_outlet_headlines_once_a_slot(tmp_path):
     assert S.scoops(st, api, {"META": {}}, now + pd.Timedelta(minutes=15), cache, ev)[0] == []  # already seen
 
 
+def test_social_buzz_needs_many_accounts():
+    api = Fake()
+    now = OPEN + pd.Timedelta(hours=1)
+    api.ape = [{"ticker": "A", "mentions": 60, "mentions_24h_ago": 10}, {"ticker": "B", "mentions": 25, "mentions_24h_ago": 20},
+               {"ticker": "C", "mentions": 30, "mentions_24h_ago": 0}, {"ticker": "ZZ", "mentions": 99, "mentions_24h_ago": 1}]
+    api.trend = ["D"]
+    t0 = (now - pd.Timedelta(hours=2)).isoformat()
+    many = [{"user": i, "t": t0, "sentiment": "Bullish" if i < 7 else None} for i in range(12)]
+    api.streams = {"A": many, "C": [{"user": 1, "t": t0, "sentiment": "Bullish"}] * 30, "D": many}
+    st = S.init_state()
+    st["marks"] = {}
+    got, err = S.social(st, api, {"A": {}, "B": {}, "C": {}, "D": {}}, now)
+    # B's jump is too small, C is one account posting 30 times, ZZ isn't in the universe
+    assert {a["symbol"]: (a["info"]["users"], a["info"]["bullish"], a["info"]["trending"]) for a in got} == {
+        "A": (12, 7, False), "D": (12, 7, True)} and err == 0
+    assert S.social(st, api, {"A": {}}, now + pd.Timedelta(minutes=2)) == ([], 0)   # same 15-minute slot
+
+
 def test_shared_checks():
     now = OPEN + pd.Timedelta(hours=2)
     m = pd.Timedelta(minutes=1)
@@ -365,6 +383,15 @@ class Fake:
 
     def house_reports(self, day):
         return getattr(self, "reports", [])
+
+    def apewisdom(self):
+        return getattr(self, "ape", [])
+
+    def stocktwits_trending(self):
+        return getattr(self, "trend", [])
+
+    def stocktwits_stream(self, symbol):
+        return getattr(self, "streams", {}).get(symbol, [])
 
     def feed(self, url):
         return getattr(self, "feeds", {}).get(url, [])
