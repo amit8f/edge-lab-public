@@ -72,11 +72,13 @@ def assets_all():
     return classify(pd.DataFrame(rows))
 
 
-def run_live(symbols, start, end, t, keep=None, size=500, fetch=fetch_three, boom=None):
+def run_live(symbols, start, end, t, keep=None, size=500, fetch=fetch_three, boom=None, panel=None):
     """Today's feature rows (signal date t, no forward returns), split points, and all-adjusted open/close
     frames for every symbol (small: ~1.5 years of daily bars), in batches of `size`. When `boom` is a
-    list, the short-term model's feature rows for t (core.shortterm) are appended to it."""
+    list, the short-term model's feature rows for t (core.shortterm) are appended to it; when `panel` is a
+    list, the weekly panel's row for t (tracks.main.weekly_panel.symbol_rows, no forward returns) is."""
     from core import shortterm
+    from tracks.main import weekly_panel
     feats, rts, closes = [], [], {}
     symbols = sorted(set(symbols))
     for b in range(0, len(symbols), size):
@@ -98,6 +100,8 @@ def run_live(symbols, start, end, t, keep=None, size=500, fetch=fetch_three, boo
                 bf = shortterm.features(sym, d, [t], {})
                 if len(bf):
                     boom.append(bf)
+            if panel is not None:
+                panel += weekly_panel.symbol_rows(sym, d, [t], {h: {} for h in weekly_panel.HOLDS})
         print(f"[bars] live batch {b // size + 1}/{-(-len(symbols) // size)}")
     feat = pd.concat(feats, ignore_index=True) if feats else pd.DataFrame()
     rtab = pd.concat(rts, ignore_index=True) if rts else pd.DataFrame(columns=["symbol", "date", "R"])
