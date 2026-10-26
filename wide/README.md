@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 10:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8888.25 | -1111.75% | 64 | 6 | long APO, long LULU, long PANW, long TSLA, long ZS |
-| Coin flip on C's picks | $9648.49 | -351.51% | 64 | 31 | long APO, short LULU, long PANW, short TSLA, short ZS |
-| C's prompt on Groq (K7) | $8937.50 | -1062.50% | 141 | 28 | long CRWD, long LMT, short NU, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $9900.91 | -99.09% | 141 | 79 | short CRWD, long LMT, short NU, short TSLA, short ZS |
-| Just hold SPY | $9978.55 | -21.45% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8897.39 | -1102.61% | 64 | 6 | long APO, long LULU, long PANW, long TSLA, long ZS |
+| Coin flip on C's picks | $9646.38 | -353.62% | 64 | 31 | long APO, short LULU, long PANW, short TSLA, short ZS |
+| C's prompt on Groq (K7) | $8953.61 | -1046.39% | 141 | 28 | long CRWD, long LMT, short NU, long TSLA, long ZS |
+| Coin flip on C-groq's picks | $9880.96 | -119.04% | 141 | 79 | short CRWD, long LMT, short NU, short TSLA, short ZS |
+| Just hold SPY | $9990.14 | -9.86% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-26 10:57 | long APO, long LULU, long PANW, long TSLA, long ZS | none | Maintaining all existing long positions as they are showing positive momentum or recovery today, and the portfolio is performing well. |
 | 2026-10-26 10:47 | long APO, long LULU, long PANW, long TSLA, long ZS | none | Maintaining all existing long positions (APO, LULU, PANW, TSLA, ZS) due to positive momentum today and favorable news or strong recent performance. |
 | 2026-10-26 10:37 | long APO, long LULU, long PANW, long TSLA, long ZS | none | Maintaining all existing long positions as they are showing strong positive momentum today and have favorable trends. |
 | 2026-10-26 10:17 | long APO, long LULU, long PANW, long TSLA, long ZS | none | All existing long positions are maintained due to continued positive momentum and strong performance, with no new positions added at this time. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 10:4
 | 2026-10-22 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 13:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-22 13:07 | no answer, nothing changed | none | unreadable answer |
