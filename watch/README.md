@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-10-26T10:40 ET: 156 flagged of 3426, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-10-26T10:45 ET: 145 flagged of 3426, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,989.39 | -0.21% | 0 | 0 | long E, short FLG, short GL, short INTR, long KNSL, short LKQ, short NU, short PAX, long RITM, short SGRY, long SIGI, long TNGX, short UGP, short XP | ok |
-| PICK-MAIN-coin | $4,971.74 | -0.57% | 0 | 0 | long E, long FLG, long GL, short INTR, short KNSL, short LKQ, short NU, short PAX, short RITM, short SGRY, long SIGI, long TNGX, short UGP, long XP | ok |
-| PICK-PENNY | $496.04 | -0.79% | 0 | 0 | short ABEV, short ALLO, short CIG, short ITRG, short KDK, long OSUR, short PRQR, long REI, short SID | ok |
-| PICK-PENNY-coin | $496.32 | -0.74% | 0 | 0 | short ABEV, long ALLO, long CIG, long ITRG, short KDK, long OSUR, long PRQR, long REI, short SID | ok |
+| PICK-MAIN | $4,970.90 | -0.58% | 0 | 0 | short AFYA, short AGBK, long E, short FLG, short GL, short INTR, long KNSL, short LKQ, short NU, short PAX, long RITM, long RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, short XP | ok |
+| PICK-MAIN-coin | $4,959.43 | -0.81% | 0 | 0 | long AFYA, long AGBK, long E, long FLG, long GL, short INTR, short KNSL, short LKQ, short NU, short PAX, short RITM, short RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long XP | ok |
+| PICK-PENNY | $495.84 | -0.83% | 0 | 0 | short ABEV, short ALLO, short CATX, short CIG, short ITRG, short JBLU, short KDK, long NAUT, long OSUR, short PRQR, long REI, short SID | ok |
+| PICK-PENNY-coin | $495.75 | -0.85% | 0 | 0 | short ABEV, long ALLO, short CATX, long CIG, long ITRG, long JBLU, short KDK, long NAUT, long OSUR, long PRQR, long REI, short SID | ok |
