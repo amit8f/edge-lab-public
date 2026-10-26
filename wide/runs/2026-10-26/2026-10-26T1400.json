@@ -1,0 +1,498 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "c125bb7c040509bb5478874ceef47f5a8bb7d070d613c73cdeb698fdd044aa45",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"LULU\",\n      \"side\": \"long\",\n      \"reason\": \"Strong positive momentum today and over the last 5 sessions, indicating continued strength.\"\n    },\n    {\n      \"symbol\": \"PANW\",\n      \"side\": \"long\",\n      \"reason\": \"Maintaining strong performance over 5 sessions and positive movement today, suggesting continued upward trend.\"\n    },\n    {\n      \"symbol\": \"TSLA\",\n      \"side\": \"long\",\n      \"reason\": \"Significant positive movement today and over 5 sessions, with positive news flow, indicating strong bullish sentiment.\"\n    },\n    {\n      \"symbol\": \"ZS\",\n      \"side\": \"long\",\n      \"reason\": \"Exceptional performance over 5 and 20 sessions, maintaining an upward trend despite a slight dip today, indicating strong underlying momentum.\"\n    },\n    {\n      \"symbol\": \"APO\",\n      \"side\": \"long\",\n      \"reason\": \"Strong positive movement today and over 5 sessions, supported by positive news regarding a large AI chip deal and strategic investments.\"\n    }\n  ],\n  \"summary\": \"Sold CRWD to free up a slot and capitalize on its recent dip, while adding APO due to strong positive news and price action. Maintaining other strong long positions (LULU, PANW, TSLA, ZS) that show continued upward momentum.\"\n}",
+  "summary": "Sold CRWD to free up a slot and capitalize on its recent dip, while adding APO due to strong positive news and price action. Maintaining other strong long positions (LULU, PANW, TSLA, ZS) that show continued upward momentum.",
+  "want": {
+   "APO": 1,
+   "LULU": 1,
+   "PANW": 1,
+   "TSLA": 1,
+   "ZS": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "2178f651571ea523551ac2c56608e43c7e607856f275cdd589fb91a47555be2b",
+  "raw": "{\"positions\":[{\"symbol\":\"CRWD\",\"side\":\"long\",\"reason\":\"Strong recent momentum (+12% 5\u2011day) and positive news\"},{\"symbol\":\"LMT\",\"side\":\"long\",\"reason\":\"Consistent gains (+11.9% 5\u2011day, +18.9% 20\u2011day)\"},{\"symbol\":\"TSLA\",\"side\":\"long\",\"reason\":\"Robust daily (+5.9%) and multi\u2011day upside\"},{\"symbol\":\"ZS\",\"side\":\"long\",\"reason\":\"High 5\u2011day (+22.5%) and 20\u2011day (+31.6%) gains\"},{\"symbol\":\"NU\",\"side\":\"short\",\"reason\":\"Sharp drop today (-20.3%) and shortable\"}],\"summary\":\"Replace losing short COIN with short NU; keep four strong longs\"}",
+  "summary": "Replace losing short COIN with short NU; keep four strong longs",
+  "want": {
+   "CRWD": 1,
+   "LMT": 1,
+   "NU": -1,
+   "TSLA": 1,
+   "ZS": 1
+  }
+ },
+ "equity": {
+  "C": 8840.787101,
+  "C-coin": 9639.019791,
+  "C-groq": 8826.34171,
+  "C-groq-coin": 9992.414276,
+  "HOLD": 9935.510503
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1793023643,
+    "entry": 254.1,
+    "exit": 255.23,
+    "notional": 1775.0342349860214,
+    "open_t": 1792779455,
+    "pnl": 6.11077,
+    "side": 1,
+    "sym": "CRWD",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1768.511122,
+    "price": 116.91,
+    "side": 1,
+    "sym": "APO",
+    "t": 1793023643
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1793023643,
+    "entry": 254.1,
+    "exit": 255.23,
+    "notional": 1944.6091795473626,
+    "open_t": 1792779455,
+    "pnl": -10.601066,
+    "side": -1,
+    "sym": "CRWD",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1928.189596,
+    "price": 116.91,
+    "side": 1,
+    "sym": "APO",
+    "t": 1793023643
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1793023643,
+    "entry": 155.485,
+    "exit": 156.67,
+    "notional": 1767.1791450522069,
+    "open_t": 1793023048,
+    "pnl": -15.248874,
+    "side": -1,
+    "sym": "COIN",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1765.621466,
+    "price": 12.075,
+    "side": -1,
+    "sym": "NU",
+    "t": 1793023643
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1793023643,
+    "entry": 155.485,
+    "exit": 156.67,
+    "notional": 1998.84011843206,
+    "open_t": 1793023048,
+    "pnl": -17.247862,
+    "side": -1,
+    "sym": "COIN",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1998.882632,
+    "price": 12.075,
+    "side": -1,
+    "sym": "NU",
+    "t": 1793023643
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "AMGN": 3,
+  "APLD": 1,
+  "APO": 3,
+  "BMNR": 3,
+  "CBRS": 1,
+  "CMG": 1,
+  "COIN": 3,
+  "CRWD": 3,
+  "CRWV": 3,
+  "FICO": 3,
+  "FIX": 3,
+  "HOOD": 1,
+  "IREN": 2,
+  "JNJ": 3,
+  "LITE": 2,
+  "LMT": 3,
+  "MELI": 3,
+  "MSTR": 3,
+  "NBIS": 3,
+  "NOK": 2,
+  "NU": 3,
+  "NXPI": 3,
+  "RDDT": 1,
+  "ROST": 1,
+  "SBUX": 1,
+  "TEM": 3,
+  "TSLA": 3,
+  "UAL": 1,
+  "VALE": 3
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "APO": {
+    "charged": 1793023643,
+    "entry": 116.91,
+    "last": 116.91,
+    "notional": 1768.5111224114078,
+    "opened": 1793023643,
+    "qty": 15.127115921746709,
+    "side": 1
+   },
+   "LULU": {
+    "charged": 1793023643,
+    "entry": 103.335,
+    "last": 103.53,
+    "notional": 1775.396441762833,
+    "opened": 1793022507,
+    "qty": 17.180978775466524,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1793023643,
+    "entry": 378.07,
+    "last": 383.2,
+    "notional": 1765.8484348406728,
+    "opened": 1792770960,
+    "qty": 4.67069176300863,
+    "side": 1
+   },
+   "TSLA": {
+    "charged": 1793023643,
+    "entry": 391.775,
+    "last": 394.32,
+    "notional": 1775.396441762833,
+    "opened": 1793022507,
+    "qty": 4.531673643705783,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1793023643,
+    "entry": 231.195,
+    "last": 254.0,
+    "notional": 1850.4606266540595,
+    "opened": 1792611446,
+    "qty": 8.0038955282513,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "APO": {
+    "charged": 1793023643,
+    "entry": 116.91,
+    "last": 116.91,
+    "notional": 1928.1895960431639,
+    "opened": 1793023643,
+    "qty": 16.492939834429595,
+    "side": 1
+   },
+   "LULU": {
+    "charged": 1793023643,
+    "entry": 103.335,
+    "last": 103.53,
+    "notional": 1929.459145875416,
+    "opened": 1793022507,
+    "qty": 18.671884123243974,
+    "side": -1
+   },
+   "PANW": {
+    "charged": 1793023643,
+    "entry": 378.07,
+    "last": 383.2,
+    "notional": 1953.6477036903905,
+    "opened": 1792770960,
+    "qty": 5.167423238263789,
+    "side": 1
+   },
+   "TSLA": {
+    "charged": 1793023643,
+    "entry": 391.775,
+    "last": 394.32,
+    "notional": 1929.459145875416,
+    "opened": 1793022507,
+    "qty": 4.924916459384637,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1793023643,
+    "entry": 231.195,
+    "last": 254.0,
+    "notional": 2043.8086593714693,
+    "opened": 1792611446,
+    "qty": 8.840194032619518,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "CRWD": {
+    "charged": 1793023643,
+    "entry": 254.88,
+    "last": 255.23,
+    "notional": 1776.584957475812,
+    "opened": 1792781865,
+    "qty": 6.970279964986707,
+    "side": 1
+   },
+   "LMT": {
+    "charged": 1793023643,
+    "entry": 582.87,
+    "last": 618.0,
+    "notional": 1804.4814375154922,
+    "opened": 1792689452,
+    "qty": 3.0958557440175203,
+    "side": 1
+   },
+   "NU": {
+    "charged": 1793023643,
+    "entry": 12.075,
+    "last": 12.075,
+    "notional": 1765.6214662996438,
+    "opened": 1793023643,
+    "qty": 146.22123944510508,
+    "side": -1
+   },
+   "TSLA": {
+    "charged": 1793023643,
+    "entry": 391.775,
+    "last": 394.32,
+    "notional": 1774.3943091186754,
+    "opened": 1793022507,
+    "qty": 4.529115714679792,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1793023643,
+    "entry": 251.485,
+    "last": 254.0,
+    "notional": 1778.728577964435,
+    "opened": 1792777656,
+    "qty": 7.072901278264847,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "CRWD": {
+    "charged": 1793023643,
+    "entry": 254.88,
+    "last": 255.23,
+    "notional": 2010.05299785933,
+    "opened": 1792781865,
+    "qty": 7.886271962724929,
+    "side": -1
+   },
+   "LMT": {
+    "charged": 1793023643,
+    "entry": 582.87,
+    "last": 618.0,
+    "notional": 1995.2342149700396,
+    "opened": 1792689452,
+    "qty": 3.4231204470465793,
+    "side": 1
+   },
+   "NU": {
+    "charged": 1793023643,
+    "entry": 12.075,
+    "last": 12.075,
+    "notional": 1998.8826317416447,
+    "opened": 1793023643,
+    "qty": 165.5389343057263,
+    "side": -1
+   },
+   "TSLA": {
+    "charged": 1793023643,
+    "entry": 391.775,
+    "last": 394.32,
+    "notional": 1998.5690659272514,
+    "opened": 1793022507,
+    "qty": 5.101318527030187,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1793023643,
+    "entry": 251.485,
+    "last": 254.0,
+    "notional": 2019.361721283476,
+    "opened": 1792777656,
+    "qty": 8.029750169129276,
+    "side": -1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1793023643,
+    "entry": 767.13,
+    "last": 762.945,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "320d5cd03bede08702639e524fd7d574bb4b17d0d1aa66d264020a17efccabc0",
+ "price_source": {
+  "AMGN": "iex",
+  "APLD": "iex",
+  "APO": "iex",
+  "BMNR": "iex",
+  "CBRS": "iex",
+  "CIFR": "iex",
+  "CMG": "iex",
+  "COIN": "iex",
+  "CRCL": "iex",
+  "CRWD": "iex",
+  "CRWV": "iex",
+  "DE": "iex",
+  "FICO": "iex",
+  "FIX": "iex",
+  "HOOD": "iex",
+  "IONQ": "iex",
+  "IREN": "iex",
+  "JNJ": "iex",
+  "LITE": "iex",
+  "LMT": "iex",
+  "LULU": "iex",
+  "MELI": "iex",
+  "MPC": "iex",
+  "MSTR": "iex",
+  "NBIS": "iex",
+  "NET": "iex",
+  "NKE": "iex",
+  "NOK": "iex",
+  "NU": "iex",
+  "NXPI": "iex",
+  "PANW": "iex",
+  "PSX": "iex",
+  "RDDT": "iex",
+  "ROST": "iex",
+  "SBUX": "iex",
+  "TEAM": "iex",
+  "TEM": "iex",
+  "TSLA": "iex",
+  "U": "iex",
+  "UAL": "iex",
+  "VALE": "iex",
+  "VLO": "iex",
+  "ZS": "iex"
+ },
+ "prices": {
+  "AMGN": 449.17,
+  "APLD": 17.525,
+  "APO": 116.91,
+  "BMNR": 21.275,
+  "CBRS": 107.46,
+  "CIFR": 7.605,
+  "CMG": 28.505,
+  "COIN": 156.67,
+  "CRCL": 79.38,
+  "CRWD": 255.23,
+  "CRWV": 52.915,
+  "DE": 631.1,
+  "FICO": 757.89,
+  "FIX": 1224.88,
+  "HOOD": 91.855,
+  "IONQ": 30.06,
+  "IREN": 24.22,
+  "JNJ": 270.96,
+  "LITE": 780.49,
+  "LMT": 618.0,
+  "LULU": 103.53,
+  "MELI": 1595.0,
+  "MPC": 473.23,
+  "MSTR": 138.56,
+  "NBIS": 150.63,
+  "NET": 317.01,
+  "NKE": 38.425,
+  "NOK": 8.33,
+  "NU": 12.075,
+  "NXPI": 241.29,
+  "PANW": 383.2,
+  "PSX": 291.07,
+  "RDDT": 136.63,
+  "ROST": 236.54,
+  "SBUX": 103.08,
+  "TEAM": 221.445,
+  "TEM": 64.11,
+  "TSLA": 394.32,
+  "U": 39.665,
+  "UAL": 101.09,
+  "VALE": 12.02,
+  "VLO": 429.66,
+  "ZS": 254.0
+ },
+ "shortlist": [
+  "NU",
+  "MELI",
+  "CRCL",
+  "FICO",
+  "TSLA",
+  "FIX",
+  "RDDT",
+  "TEM",
+  "NBIS",
+  "MSTR",
+  "BMNR",
+  "COIN",
+  "LULU",
+  "CIFR",
+  "APLD",
+  "IONQ",
+  "APO",
+  "CMG",
+  "MPC",
+  "HOOD",
+  "UAL",
+  "LITE",
+  "ROST",
+  "VALE",
+  "CBRS",
+  "NKE",
+  "PSX",
+  "U",
+  "IREN",
+  "NXPI",
+  "JNJ",
+  "TEAM",
+  "NET",
+  "VLO",
+  "CRWV",
+  "NOK",
+  "DE",
+  "LMT",
+  "SBUX",
+  "AMGN",
+  "CRWD",
+  "PANW",
+  "ZS"
+ ],
+ "t": 1793023643,
+ "universe_date": "2026-10-26",
+ "written_utc": "2026-10-26T14:07:36.862668Z"
+}
