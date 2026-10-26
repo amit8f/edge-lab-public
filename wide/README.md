@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 15:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 15:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8905.72 | -1094.28% | 69 | 8 | long INTC, long LITE, long LMT, long PANW, long ZS |
-| Coin flip on C's picks | $9638.76 | -361.24% | 69 | 32 | short INTC, long LITE, long LMT, long PANW, short ZS |
-| C's prompt on Groq (K7) | $8834.02 | -1165.98% | 161 | 35 | short FICO, long LMT, long P, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $9900.64 | -99.36% | 161 | 88 | long FICO, long LMT, short P, short TSLA, long ZS |
-| Just hold SPY | $9960.97 | -39.03% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8916.12 | -1083.88% | 69 | 8 | long INTC, long LITE, long LMT, long PANW, long ZS |
+| Coin flip on C's picks | $9639.48 | -360.52% | 69 | 32 | short INTC, long LITE, long LMT, long PANW, short ZS |
+| C's prompt on Groq (K7) | $8807.13 | -1192.87% | 164 | 36 | long AXTI, long LMT, short NU, long TSLA, long WULF |
+| Coin flip on C-groq's picks | $9899.48 | -100.52% | 164 | 89 | long AXTI, long LMT, long NU, short TSLA, long WULF |
+| Just hold SPY | $9969.56 | -30.44% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-26 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 14:47 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 15:0
 | 2026-10-23 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 11:56 | long COP, long PANW, long SLB, short T, long ZS | sold AMT @ $190.20; bought PANW @ $378.07 | Maintaining existing profitable positions in COP, SLB, T (short), and ZS due to strong momentum and favorable news. Selling AMT due to recent dip and mixed signals. Initiating a new long position in PANW based on strong daily performance and positive hourly trend. |
 | 2026-10-23 11:38 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-23 11:27 | no answer, nothing changed | none | unreadable answer |
