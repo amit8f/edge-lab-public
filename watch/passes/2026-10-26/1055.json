@@ -1,0 +1,560 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "dc188faab3e9a8c660df9711439c9b9476f1066ad6e9990bc5bf8afe3fb50777",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "20377bf77f19332044713f9e94dcbae69ace758160ed722bca057768e2bee1df",
+   "views": [
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "GGB",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "WCCB",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "DLO",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "SUPV",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "PAM",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "product",
+     "symbol": "ORKA",
+     "tone": 2
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "ZURA",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "SERV",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "product",
+     "symbol": "MGNX",
+     "tone": 2
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "DFNS",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "af49be225e4a959cff9edb731ec368fbddf78755c042b2344f6c88ce17f24bbb",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "GGB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "WCCB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "DLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "SUPV"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "PAM"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong positive move and positive trial results",
+     "stop_pct": 12.0,
+     "symbol": "ORKA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "ZURA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "SERV"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive Phase 2 results despite recent drop",
+     "stop_pct": 20.0,
+     "symbol": "MGNX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "DFNS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "AGBK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "RITM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "SIGI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "STNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "TNGX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "UGP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "XP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "ABEV"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "ALLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "CATX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "CIG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop and holding period",
+     "stop_pct": 0.0,
+     "symbol": "ITRG"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "fb4a28da655cb32c75edd17c961cec3962a026004acff51fca3624409ea6a9de"
+  },
+  "reviewer": {
+   "answer_sha256": "3fbf9f74357d29663ff45299eed8ebcbac54ba730faf91dfa3372de2b594fbb0",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "2683b50859cfd96361956cdc55c1c342013276528cb950666b73a6195b3c00b1",
+   "unreadable": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": "1 unreadable agent answers",
+  "PICK-PENNY": "1 unreadable agent answers"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09706,
+   "news": 0,
+   "pace": 5.007,
+   "price": 4.605,
+   "r20": 0.05155,
+   "r5": 0.01594,
+   "short": true,
+   "src": "iex",
+   "symbol": "GGB",
+   "z": -4.578
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.01852,
+   "news": 0,
+   "pace": 3.153,
+   "price": 62.68,
+   "r20": 0.01367,
+   "r5": 0.02056,
+   "short": false,
+   "src": "iex",
+   "symbol": "WCCB",
+   "z": 3.951
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.0757,
+   "news": 0,
+   "pace": 4.975,
+   "price": 13.92,
+   "r20": 0.0696,
+   "r5": 0.02658,
+   "short": true,
+   "src": "iex",
+   "symbol": "DLO",
+   "z": -3.893
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.11563,
+   "news": 0,
+   "pace": 4.247,
+   "price": 6.845,
+   "r20": 0.06906,
+   "r5": 0.07202,
+   "short": false,
+   "src": "iex",
+   "symbol": "SUPV",
+   "z": -3.827
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.05975,
+   "news": 0,
+   "pace": 3.006,
+   "price": 74.75,
+   "r20": 0.02159,
+   "r5": -0.01973,
+   "short": true,
+   "src": "iex",
+   "symbol": "PAM",
+   "z": -3.723
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.10586,
+   "news": 0,
+   "pace": 3.027,
+   "price": 88.635,
+   "r20": -0.05103,
+   "r5": 0.11428,
+   "short": true,
+   "src": "iex",
+   "symbol": "ORKA",
+   "z": 3.363
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.0878,
+   "news": 0,
+   "pace": 3.18,
+   "price": 3.655,
+   "r20": -0.16832,
+   "r5": -0.13402,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "ZURA",
+   "z": 1.597
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.04317,
+   "news": 0,
+   "pace": 3.229,
+   "price": 2.66,
+   "r20": -0.37528,
+   "r5": -0.13932,
+   "short": false,
+   "src": "iex",
+   "symbol": "SERV",
+   "z": -1.045
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.09111,
+   "news": 0,
+   "pace": 9.1,
+   "price": 2.045,
+   "r20": -0.3984,
+   "r5": -0.30769,
+   "short": true,
+   "src": "iex",
+   "symbol": "MGNX",
+   "z": -0.826
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06569,
+   "news": 0,
+   "pace": 3.613,
+   "price": 3.84,
+   "r20": -0.4724,
+   "r5": -0.1473,
+   "short": false,
+   "src": "iex",
+   "symbol": "DFNS",
+   "z": -0.798
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4981.9077,
+  "PICK-MAIN-coin": 4968.156,
+  "PICK-PENNY": 496.5474,
+  "PICK-PENNY-coin": 496.4422
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 41,
+  "news": 5,
+  "volume": 120
+ },
+ "flagged": 133,
+ "headline_counts": {
+  "GGB": 2,
+  "MGNX": 1,
+  "ORKA": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "8b72f56206f335cb5f409d3d9aa20139eb339aa34ee94d5eb99b11c200471550",
+ "price_sources": {
+  "delayed_sip": 240,
+  "iex": 3181
+ },
+ "priced": 3421,
+ "risk": [],
+ "slot": "2026-10-26T10:55",
+ "t": "2026-10-26T14:55:20.850363+00:00",
+ "universe": 3426,
+ "written_utc": "2026-10-26T14:55:50.665364Z"
+}
