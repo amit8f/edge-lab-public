@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8871.15 | -1128.85% | 70 | 8 | long LITE, long LMT, long PANW, long WULF, long ZS |
-| Coin flip on C's picks | $9659.64 | -340.36% | 70 | 32 | long LITE, long LMT, long PANW, short WULF, short ZS |
-| C's prompt on Groq (K7) | $8742.91 | -1257.09% | 167 | 36 | long AXTI, long LMT, long P, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $9871.35 | -128.65% | 167 | 90 | long AXTI, long LMT, short P, short TSLA, long ZS |
-| Just hold SPY | $9968.46 | -31.54% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8852.51 | -1147.49% | 70 | 8 | long LITE, long LMT, long PANW, long WULF, long ZS |
+| Coin flip on C's picks | $9674.99 | -325.01% | 70 | 32 | long LITE, long LMT, long PANW, short WULF, short ZS |
+| C's prompt on Groq (K7) | $8718.96 | -1281.04% | 168 | 36 | long LMT, long NXPI, long P, long TSLA, long ZS |
+| Coin flip on C-groq's picks | $9899.41 | -100.59% | 168 | 90 | long LMT, short NXPI, short P, short TSLA, long ZS |
+| Just hold SPY | $9963.31 | -36.69% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-26 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 15:27 | long LITE, long LMT, long PANW, long WULF, long ZS | sold INTC @ $91.50; bought WULF @ $12.26 | Maintaining strong performers LITE, LMT, PANW, and ZS, while replacing the flat INTC with WULF due to its strong positive momentum and favorable news. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 15:4
 | 2026-10-23 12:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 12:27 | long COP, long NET, long PANW, long SLB, long ZS | none | Maintaining current long positions in COP, NET, PANW, SLB, and ZS due to continued strong momentum in the energy and cybersecurity sectors, and positive recent price action and news. |
-| 2026-10-23 12:17 | long COP, long NET, long PANW, long SLB, long ZS | bought T @ $21.48; bought NET @ $322.96 | Maintained existing long positions in COP, PANW, SLB, and ZS due to strong momentum and positive news. Closed short position in T due to negative news impact already priced in and added a new long position in NET, another cybersecurity stock showing strong upward momentum. |
