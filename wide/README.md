@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 12:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8850.81 | -1149.19% | 67 | 6 | long LITE, long LMT, long PANW, long TSLA, long ZS |
-| Coin flip on C's picks | $9615.15 | -384.85% | 67 | 32 | long LITE, long LMT, long PANW, short TSLA, short ZS |
-| C's prompt on Groq (K7) | $8905.26 | -1094.74% | 145 | 30 | long CRWD, long LMT, short MELI, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $9916.84 | -83.16% | 145 | 80 | short CRWD, long LMT, short MELI, short TSLA, long ZS |
-| Just hold SPY | $9968.52 | -31.48% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8858.01 | -1141.99% | 67 | 6 | long LITE, long LMT, long PANW, long TSLA, long ZS |
+| Coin flip on C's picks | $9617.42 | -382.58% | 67 | 32 | long LITE, long LMT, long PANW, short TSLA, short ZS |
+| C's prompt on Groq (K7) | $8896.13 | -1103.87% | 145 | 30 | long CRWD, long LMT, short MELI, long TSLA, long ZS |
+| Coin flip on C-groq's picks | $9914.13 | -85.87% | 145 | 80 | short CRWD, long LMT, short MELI, short TSLA, long ZS |
+| Just hold SPY | $9966.57 | -33.43% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-26 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 12:07 | long LITE, long LMT, long PANW, long TSLA, long ZS | none | Maintaining all current long positions due to strong recent hourly momentum and positive price action, indicating continued upward potential for these stocks. |
 | 2026-10-26 11:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 11:47 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 12:0
 | 2026-10-22 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 14:37 | long CSX, long LMT, short MRNA, long SPOT, long ZS | none | Maintaining existing long positions in CSX, LMT, SPOT, and ZS due to continued positive momentum and news. Re-entering a short position in MRNA after its significant drop on negative news, expecting further downside. |
-| 2026-10-22 14:27 | long CSX, long LMT, short MRNA, long SPOT, long ZS | sold DHR @ $230.00; sold MRNA @ $185.84 | Maintained existing strong long positions (CSX, LMT, SPOT, ZS) and initiated a new short position in MRNA due to a severe negative news catalyst and significant price drop. |
