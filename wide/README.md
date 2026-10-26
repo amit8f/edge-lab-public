@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 10:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8840.79 | -1159.21% | 64 | 6 | long APO, long LULU, long PANW, long TSLA, long ZS |
-| Coin flip on C's picks | $9639.02 | -360.98% | 64 | 31 | long APO, short LULU, long PANW, short TSLA, short ZS |
-| C's prompt on Groq (K7) | $8826.34 | -1173.66% | 141 | 28 | long CRWD, long LMT, short NU, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $9992.41 | -7.59% | 141 | 79 | short CRWD, long LMT, short NU, short TSLA, short ZS |
-| Just hold SPY | $9935.51 | -64.49% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8869.15 | -1130.85% | 64 | 6 | long APO, long LULU, long PANW, long TSLA, long ZS |
+| Coin flip on C's picks | $9630.31 | -369.69% | 64 | 31 | long APO, short LULU, long PANW, short TSLA, short ZS |
+| C's prompt on Groq (K7) | $8865.11 | -1134.89% | 141 | 28 | long CRWD, long LMT, short NU, long TSLA, long ZS |
+| Coin flip on C-groq's picks | $9950.84 | -49.16% | 141 | 79 | short CRWD, long LMT, short NU, short TSLA, short ZS |
+| Just hold SPY | $9963.44 | -36.56% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-26 10:17 | long APO, long LULU, long PANW, long TSLA, long ZS | none | All existing long positions are maintained due to continued positive momentum and strong performance, with no new positions added at this time. |
 | 2026-10-26 10:07 | long APO, long LULU, long PANW, long TSLA, long ZS | sold CRWD @ $255.23; bought APO @ $116.91 | Sold CRWD to free up a slot and capitalize on its recent dip, while adding APO due to strong positive news and price action. Maintaining other strong long positions (LULU, PANW, TSLA, ZS) that show continued upward momentum. |
 | 2026-10-26 09:57 | long CRWD, long LULU, long PANW, long TSLA, long ZS | none | Maintaining all existing long positions in CRWD, LULU, PANW, TSLA, and ZS due to continued positive momentum and favorable market conditions for these stocks. |
 | 2026-10-26 09:48 | long CRWD, long LULU, long PANW, long TSLA, long ZS | sold NET @ $321.56; sold SLB @ $52.08; bought LULU @ $103.33; bought TSLA @ $391.77 | Maintaining strong cybersecurity positions (CRWD, PANW, ZS) due to continued momentum, adding TSLA on positive news and strong daily move, and LULU for its positive short-term trend. Exiting NET and SLB due to underperformance and lack of clear catalysts. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 10:0
 | 2026-10-22 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-22 12:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-22 12:37 | no answer, nothing changed | none | unreadable answer |
