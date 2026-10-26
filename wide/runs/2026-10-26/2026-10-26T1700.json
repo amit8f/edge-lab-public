@@ -1,0 +1,491 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "b3ee868207fa60fbbe64618ce2e5debe8af885aa6b1071a0b2fcae7a9c7bf27b",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"LITE\",\n      \"side\": \"long\",\n      \"reason\": \"Strong upward momentum today (+10%) and positive analyst coverage with a high price target.\"\n    },\n    {\n      \"symbol\": \"LMT\",\n      \"side\": \"long\",\n      \"reason\": \"Strong upward trend over 5 and 20 sessions, positive analyst price target raise, and good hourly momentum.\"\n    },\n    {\n      \"symbol\": \"PANW\",\n      \"side\": \"long\",\n      \"reason\": \"Strong upward trend over 5 and 20 sessions, showing consistent positive momentum.\"\n    },\n    {\n      \"symbol\": \"ZS\",\n      \"side\": \"long\",\n      \"reason\": \"Very strong upward trend over 5 and 20 sessions, indicating robust positive momentum.\"\n    },\n    {\n      \"symbol\": \"INTC\",\n      \"side\": \"long\",\n      \"reason\": \"Positive analyst upgrades to Buy with a $125 price target, showing strong recovery today (+5.2%).\"\n    }\n  ],\n  \"summary\": \"Maintaining existing strong long positions in LITE, LMT, PANW, and ZS due to continued positive momentum and analyst sentiment. Selling TSEM to free up capital and initiating a new long position in INTC based on recent analyst upgrades and today's strong performance.\"\n}",
+  "summary": "Maintaining existing strong long positions in LITE, LMT, PANW, and ZS due to continued positive momentum and analyst sentiment. Selling TSEM to free up capital and initiating a new long position in INTC based on recent analyst upgrades and today's strong performance.",
+  "want": {
+   "INTC": 1,
+   "LITE": 1,
+   "LMT": 1,
+   "PANW": 1,
+   "ZS": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "a0595e37c94168dd5f0362c21b2c4defb6a8a5b28f81fe95e1ad4dfaa2462198",
+  "raw": "{\"positions\":[{\"symbol\":\"LMT\",\"side\":\"long\",\"reason\":\"Strong multi\u2011session uptrend and positive defense sector outlook\"},{\"symbol\":\"NXPI\",\"side\":\"long\",\"reason\":\"Recent price surge and partnership with Volkswagen boosting semiconductor demand\"},{\"symbol\":\"TSLA\",\"side\":\"long\",\"reason\":\"Consistent upward momentum and positive news on Tesla\u2011SpaceX merger prospects\"},{\"symbol\":\"ZS\",\"side\":\"long\",\"reason\":\"High 5\u2011day and 20\u2011day gains indicating strong cloud\u2011security demand\"},{\"symbol\":\"FICO\",\"side\":\"short\",\"reason\":\"Sharp recent declines and negative sentiment after earnings downgrade\"}],\"summary\":\"Maintain four strong longs and replace losing NU short with FICO short\"}",
+  "summary": "Maintain four strong longs and replace losing NU short with FICO short",
+  "want": {
+   "FICO": -1,
+   "LMT": 1,
+   "NXPI": 1,
+   "TSLA": 1,
+   "ZS": 1
+  }
+ },
+ "equity": {
+  "C": 8898.26539,
+  "C-coin": 9637.311903,
+  "C-groq": 8885.792506,
+  "C-groq-coin": 9897.581886,
+  "HOLD": 9970.997027
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1793034461,
+    "entry": 181.39,
+    "exit": 182.61,
+    "notional": 1770.2991084078658,
+    "open_t": 1793033251,
+    "pnl": 10.124542,
+    "side": 1,
+    "sym": "TSEM",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1780.00908,
+    "price": 91.52,
+    "side": 1,
+    "sym": "INTC",
+    "t": 1793034461
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1793034461,
+    "entry": 181.39,
+    "exit": 182.61,
+    "notional": 1923.7174271646368,
+    "open_t": 1793033251,
+    "pnl": -14.87527,
+    "side": -1,
+    "sym": "TSEM",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1927.84795,
+    "price": 91.52,
+    "side": -1,
+    "sym": "INTC",
+    "t": 1793034461
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1793034461,
+    "entry": 12.35,
+    "exit": 12.37,
+    "notional": 1777.0389474535784,
+    "open_t": 1793033846,
+    "pnl": -4.657713,
+    "side": -1,
+    "sym": "NU",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1777.514004,
+    "price": 680.97,
+    "side": -1,
+    "sym": "FICO",
+    "t": 1793034461
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1793034461,
+    "entry": 12.35,
+    "exit": 12.37,
+    "notional": 1979.9049733518398,
+    "open_t": 1793033846,
+    "pnl": 1.223213,
+    "side": 1,
+    "sym": "NU",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1979.91236,
+    "price": 680.97,
+    "side": 1,
+    "sym": "FICO",
+    "t": 1793034461
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "BE": 3,
+  "CIEN": 1,
+  "CLS": 3,
+  "COHR": 1,
+  "CRDO": 1,
+  "CRWV": 3,
+  "DDOG": 1,
+  "FICO": 3,
+  "FIX": 3,
+  "INTC": 3,
+  "IREN": 2,
+  "LITE": 2,
+  "LMT": 3,
+  "MELI": 3,
+  "NFLX": 3,
+  "NOK": 3,
+  "NU": 3,
+  "NXPI": 3,
+  "RDDT": 2,
+  "STX": 3,
+  "TSEM": 1,
+  "TSLA": 3,
+  "TWST": 1,
+  "WDC": 3,
+  "WULF": 1
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "INTC": {
+    "charged": 1793034461,
+    "entry": 91.52,
+    "last": 91.52,
+    "notional": 1780.0090797765022,
+    "opened": 1793034461,
+    "qty": 19.44939991014535,
+    "side": 1
+   },
+   "LITE": {
+    "charged": 1793034461,
+    "entry": 826.41,
+    "last": 832.02,
+    "notional": 1776.7151782406204,
+    "opened": 1793029051,
+    "qty": 2.1499197471480507,
+    "side": 1
+   },
+   "LMT": {
+    "charged": 1793034461,
+    "entry": 624.37,
+    "last": 627.48,
+    "notional": 1774.7397965622094,
+    "opened": 1793027249,
+    "qty": 2.842448862953392,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1793034461,
+    "entry": 378.07,
+    "last": 390.3,
+    "notional": 1765.8484348406728,
+    "opened": 1792770960,
+    "qty": 4.67069176300863,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1793034461,
+    "entry": 231.195,
+    "last": 260.02,
+    "notional": 1850.4606266540595,
+    "opened": 1792611446,
+    "qty": 8.0038955282513,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "INTC": {
+    "charged": 1793034461,
+    "entry": 91.52,
+    "last": 91.52,
+    "notional": 1927.847950235616,
+    "opened": 1793034461,
+    "qty": 21.06477218351853,
+    "side": -1
+   },
+   "LITE": {
+    "charged": 1793034461,
+    "entry": 826.41,
+    "last": 832.02,
+    "notional": 1927.1024224228713,
+    "opened": 1793029051,
+    "qty": 2.331896301379305,
+    "side": 1
+   },
+   "LMT": {
+    "charged": 1793034461,
+    "entry": 624.37,
+    "last": 627.48,
+    "notional": 1931.252403917878,
+    "opened": 1793027249,
+    "qty": 3.0931217129552637,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1793034461,
+    "entry": 378.07,
+    "last": 390.3,
+    "notional": 1953.6477036903905,
+    "opened": 1792770960,
+    "qty": 5.167423238263789,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1793034461,
+    "entry": 231.195,
+    "last": 260.02,
+    "notional": 2043.8086593714693,
+    "opened": 1792611446,
+    "qty": 8.840194032619518,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "FICO": {
+    "charged": 1793034461,
+    "entry": 680.97,
+    "last": 680.97,
+    "notional": 1777.5140039239843,
+    "opened": 1793034461,
+    "qty": 2.6102677121223903,
+    "side": -1
+   },
+   "LMT": {
+    "charged": 1793034461,
+    "entry": 582.87,
+    "last": 627.48,
+    "notional": 1804.4814375154922,
+    "opened": 1792689452,
+    "qty": 3.0958557440175203,
+    "side": 1
+   },
+   "NXPI": {
+    "charged": 1793034461,
+    "entry": 246.27,
+    "last": 247.4,
+    "notional": 1777.0389474535784,
+    "opened": 1793033846,
+    "qty": 7.215815760967955,
+    "side": 1
+   },
+   "TSLA": {
+    "charged": 1793034461,
+    "entry": 391.775,
+    "last": 395.975,
+    "notional": 1774.3943091186754,
+    "opened": 1793022507,
+    "qty": 4.529115714679792,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1793034461,
+    "entry": 259.42,
+    "last": 260.02,
+    "notional": 1783.1373048222677,
+    "opened": 1793028455,
+    "qty": 6.873553715296691,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "FICO": {
+    "charged": 1793034461,
+    "entry": 680.97,
+    "last": 680.97,
+    "notional": 1979.9123597255789,
+    "opened": 1793034461,
+    "qty": 2.907488376471179,
+    "side": 1
+   },
+   "LMT": {
+    "charged": 1793034461,
+    "entry": 582.87,
+    "last": 627.48,
+    "notional": 1995.2342149700396,
+    "opened": 1792689452,
+    "qty": 3.4231204470465793,
+    "side": 1
+   },
+   "NXPI": {
+    "charged": 1793034461,
+    "entry": 246.27,
+    "last": 247.4,
+    "notional": 1979.9049733518398,
+    "opened": 1793033846,
+    "qty": 8.039570282015022,
+    "side": 1
+   },
+   "TSLA": {
+    "charged": 1793034461,
+    "entry": 391.775,
+    "last": 395.975,
+    "notional": 1998.5690659272514,
+    "opened": 1793022507,
+    "qty": 5.101318527030187,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1793034461,
+    "entry": 259.42,
+    "last": 260.02,
+    "notional": 1977.782685866072,
+    "opened": 1793028455,
+    "qty": 7.623863564359231,
+    "side": 1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1793034461,
+    "entry": 767.13,
+    "last": 765.67,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "9a3b5db51bdca2bf5edbff39a53f552592093a0c674d17302699a5921761a0fe",
+ "price_source": {
+  "AAOI": "iex",
+  "ADI": "iex",
+  "AKAM": "iex",
+  "AXTI": "iex",
+  "BE": "iex",
+  "CIEN": "iex",
+  "CLS": "iex",
+  "COHR": "iex",
+  "CRCL": "iex",
+  "CRDO": "iex",
+  "CRWV": "iex",
+  "DDOG": "iex",
+  "FICO": "iex",
+  "FIX": "iex",
+  "GEV": "iex",
+  "HUT": "iex",
+  "HWM": "iex",
+  "INTC": "iex",
+  "IREN": "iex",
+  "LITE": "iex",
+  "LMT": "iex",
+  "LRCX": "iex",
+  "MDB": "iex",
+  "MELI": "iex",
+  "MTSI": "iex",
+  "NFLX": "iex",
+  "NOK": "iex",
+  "NU": "iex",
+  "NXPI": "iex",
+  "P": "iex",
+  "PANW": "iex",
+  "RDDT": "iex",
+  "RKLB": "iex",
+  "SMTC": "iex",
+  "SNPS": "iex",
+  "STX": "iex",
+  "TSEM": "iex",
+  "TSLA": "iex",
+  "TWST": "iex",
+  "WDC": "iex",
+  "WULF": "iex",
+  "ZS": "iex"
+ },
+ "prices": {
+  "AAOI": 72.64,
+  "ADI": 408.195,
+  "AKAM": 98.305,
+  "AXTI": 56.9,
+  "BE": 208.99,
+  "CIEN": 340.745,
+  "CLS": 270.49,
+  "COHR": 223.37,
+  "CRCL": 80.13,
+  "CRDO": 154.825,
+  "CRWV": 56.88,
+  "DDOG": 280.77,
+  "FICO": 680.97,
+  "FIX": 1258.31,
+  "GEV": 858.735,
+  "HUT": 64.895,
+  "HWM": 194.44,
+  "INTC": 91.52,
+  "IREN": 26.39,
+  "LITE": 832.02,
+  "LMT": 627.48,
+  "LRCX": 238.975,
+  "MDB": 387.545,
+  "MELI": 1652.28,
+  "MTSI": 245.49,
+  "NFLX": 63.115,
+  "NOK": 8.725,
+  "NU": 12.37,
+  "NXPI": 247.4,
+  "P": 133.56,
+  "PANW": 390.3,
+  "RDDT": 136.69,
+  "RKLB": 54.71,
+  "SMTC": 138.51,
+  "SNPS": 454.42,
+  "STX": 663.22,
+  "TSEM": 182.61,
+  "TSLA": 395.975,
+  "TWST": 145.97,
+  "WDC": 361.26,
+  "WULF": 12.31,
+  "ZS": 260.02
+ },
+ "shortlist": [
+  "NU",
+  "FICO",
+  "LITE",
+  "AXTI",
+  "TSEM",
+  "WULF",
+  "MELI",
+  "FIX",
+  "P",
+  "BE",
+  "AAOI",
+  "NOK",
+  "CRCL",
+  "COHR",
+  "CIEN",
+  "TSLA",
+  "HUT",
+  "IREN",
+  "SNPS",
+  "GEV",
+  "NXPI",
+  "INTC",
+  "RDDT",
+  "STX",
+  "WDC",
+  "CRDO",
+  "AKAM",
+  "SMTC",
+  "CRWV",
+  "HWM",
+  "MDB",
+  "ADI",
+  "TWST",
+  "NFLX",
+  "DDOG",
+  "CLS",
+  "RKLB",
+  "MTSI",
+  "LRCX",
+  "LMT",
+  "PANW",
+  "ZS"
+ ],
+ "t": 1793034461,
+ "universe_date": "2026-10-26",
+ "written_utc": "2026-10-26T17:08:04.706675Z"
+}
