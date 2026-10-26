@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8904.59 | -1095.41% | 69 | 8 | long INTC, long LITE, long LMT, long PANW, long ZS |
-| Coin flip on C's picks | $9649.67 | -350.33% | 69 | 32 | short INTC, long LITE, long LMT, long PANW, short ZS |
-| C's prompt on Groq (K7) | $8882.13 | -1117.87% | 154 | 32 | long LMT, short NU, long NXPI, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $9924.69 | -75.31% | 154 | 84 | long LMT, short NU, long NXPI, short TSLA, long ZS |
-| Just hold SPY | $9956.67 | -43.33% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8933.84 | -1066.16% | 69 | 8 | long INTC, long LITE, long LMT, long PANW, long ZS |
+| Coin flip on C's picks | $9652.88 | -347.12% | 69 | 32 | short INTC, long LITE, long LMT, long PANW, short ZS |
+| C's prompt on Groq (K7) | $8888.25 | -1111.75% | 154 | 32 | long LMT, short NU, long NXPI, long TSLA, long ZS |
+| Coin flip on C-groq's picks | $9923.05 | -76.95% | 154 | 84 | long LMT, short NU, long NXPI, short TSLA, long ZS |
+| Just hold SPY | $9975.16 | -24.84% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-26 13:57 | long INTC, long LITE, long LMT, long PANW, long ZS | none | Maintaining all existing long positions due to continued strong positive momentum and favorable news for INTC and LITE, while avoiding highly volatile or negatively impacted stocks. |
 | 2026-10-26 13:47 | long INTC, long LITE, long LMT, long PANW, long ZS | none | Maintaining all existing long positions due to strong positive momentum, analyst upgrades, and favorable price action across various timeframes. |
 | 2026-10-26 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 13:27 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-26 13:4
 | 2026-10-23 10:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 10:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-23 10:07 | long AMT, short FIX, long LMT, long SPOT, long ZS | sold CSX @ $50.55; sold FIX @ $1,129.51 | Sold CSX to cut losses and initiated a short position in FIX due to its strong bearish momentum across multiple timeframes and recent news. |
