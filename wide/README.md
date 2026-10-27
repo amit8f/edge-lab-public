@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8952.19 | -1047.81% | 78 | 14 | long CBRS, long DELL, long NBIS, long PANW, long SOFI |
-| Coin flip on C's picks | $9785.00 | -215.00% | 78 | 38 | short CBRS, short DELL, long NBIS, long PANW, short SOFI |
-| C's prompt on Groq (K7) | $8614.14 | -1385.86% | 200 | 44 | short BA, long CDNS, long DELL, long UPS, short VLO |
-| Coin flip on C-groq's picks | $9532.87 | -467.13% | 200 | 99 | short BA, short CDNS, short DELL, long UPS, short VLO |
-| Just hold SPY | $10027.52 | +27.52% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8949.30 | -1050.70% | 80 | 15 | long DELL, long JCI, long PANW, long SOFI, long UPS |
+| Coin flip on C's picks | $9769.45 | -230.55% | 80 | 40 | short DELL, long JCI, long PANW, short SOFI, long UPS |
+| C's prompt on Groq (K7) | $8603.88 | -1396.12% | 200 | 44 | short BA, long CDNS, long DELL, long UPS, short VLO |
+| Coin flip on C-groq's picks | $9523.51 | -476.49% | 200 | 99 | short BA, short CDNS, short DELL, long UPS, short VLO |
+| Just hold SPY | $10031.68 | +31.68% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-27 15:59 | long DELL, long JCI, long PANW, long SOFI, long UPS | sold CBRS @ $119.25; sold NBIS @ $170.56; bought JCI @ $155.91; bought UPS @ $106.15 | Maintaining PANW, SOFI, and DELL due to strong momentum and positive news, while adding JCI and UPS for their positive outlooks and significant daily gains, replacing underperforming positions. |
 | 2026-10-27 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 15:47 | long CBRS, long DELL, long NBIS, long PANW, long SOFI | none | Maintaining all five existing long positions due to strong daily performance, positive news catalysts, and favorable hourly trends across the board. |
 | 2026-10-27 15:37 | long CBRS, long DELL, long NBIS, long PANW, long SOFI | none | Maintaining all current long positions due to strong daily performance and positive hourly trends, with no clear signals to exit or reallocate. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 15:5
 | 2026-10-26 13:07 | long INTC, long LITE, long LMT, long PANW, long ZS | sold TSEM @ $182.61; bought INTC @ $91.52 | Maintaining existing strong long positions in LITE, LMT, PANW, and ZS due to continued positive momentum and analyst sentiment. Selling TSEM to free up capital and initiating a new long position in INTC based on recent analyst upgrades and today's strong performance. |
 | 2026-10-26 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 12:47 | long LITE, long LMT, long PANW, long TSEM, long ZS | sold TSLA @ $394.27; bought TSEM @ $181.39 | Maintaining long positions in LMT, PANW, and ZS due to strong positive momentum. Selling TSLA due to weaker recent performance. Selling LITE to re-enter at a better price after its recent surge. Initiating new long positions in LITE and TSEM, both showing strong daily momentum and positive hourly tr |
-| 2026-10-26 12:37 | long LITE, long LMT, long PANW, long TSLA, long ZS | none | Maintaining current long positions in ZS, PANW, TSLA, LMT, and LITE due to their strong positive momentum and favorable news, aiming to capitalize on continued upward trends. |
