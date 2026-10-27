@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 13:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8996.54 | -1003.46% | 76 | 13 | long BE, long DELL, long PANW, long RCL, long SOFI |
-| Coin flip on C's picks | $9734.84 | -265.16% | 76 | 37 | long BE, short DELL, long PANW, long RCL, short SOFI |
-| C's prompt on Groq (K7) | $8685.46 | -1314.54% | 187 | 42 | short BA, long DELL, long ON, long RCL, long SOFI |
-| Coin flip on C-groq's picks | $9565.07 | -434.93% | 187 | 95 | short BA, short DELL, long ON, long RCL, short SOFI |
-| Just hold SPY | $10022.96 | +22.96% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8983.42 | -1016.58% | 76 | 13 | long BE, long DELL, long PANW, long RCL, long SOFI |
+| Coin flip on C's picks | $9755.14 | -244.86% | 76 | 37 | long BE, short DELL, long PANW, long RCL, short SOFI |
+| C's prompt on Groq (K7) | $8671.94 | -1328.06% | 188 | 42 | short BA, long CLS, long DELL, long ON, long SOFI |
+| Coin flip on C-groq's picks | $9584.08 | -415.92% | 188 | 95 | short BA, short CLS, short DELL, long ON, short SOFI |
+| Just hold SPY | $10025.37 | +25.37% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-27 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 13:17 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 13:3
 | 2026-10-26 10:47 | long APO, long LULU, long PANW, long TSLA, long ZS | none | Maintaining all existing long positions (APO, LULU, PANW, TSLA, ZS) due to positive momentum today and favorable news or strong recent performance. |
 | 2026-10-26 10:37 | long APO, long LULU, long PANW, long TSLA, long ZS | none | Maintaining all existing long positions as they are showing strong positive momentum today and have favorable trends. |
 | 2026-10-26 10:17 | long APO, long LULU, long PANW, long TSLA, long ZS | none | All existing long positions are maintained due to continued positive momentum and strong performance, with no new positions added at this time. |
-| 2026-10-26 10:07 | long APO, long LULU, long PANW, long TSLA, long ZS | sold CRWD @ $255.23; bought APO @ $116.91 | Sold CRWD to free up a slot and capitalize on its recent dip, while adding APO due to strong positive news and price action. Maintaining other strong long positions (LULU, PANW, TSLA, ZS) that show continued upward momentum. |
