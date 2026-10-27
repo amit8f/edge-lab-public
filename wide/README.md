@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 15:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8971.60 | -1028.40% | 78 | 14 | long CBRS, long DELL, long NBIS, long PANW, long SOFI |
-| Coin flip on C's picks | $9756.67 | -243.33% | 78 | 38 | short CBRS, short DELL, long NBIS, long PANW, short SOFI |
-| C's prompt on Groq (K7) | $8631.90 | -1368.10% | 198 | 44 | short BA, long DELL, long SOFI, long TWST, short VLO |
-| Coin flip on C-groq's picks | $9545.58 | -454.42% | 198 | 99 | short BA, short DELL, long SOFI, long TWST, short VLO |
-| Just hold SPY | $10029.86 | +29.86% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8967.57 | -1032.43% | 78 | 14 | long CBRS, long DELL, long NBIS, long PANW, long SOFI |
+| Coin flip on C's picks | $9760.58 | -239.42% | 78 | 38 | short CBRS, short DELL, long NBIS, long PANW, short SOFI |
+| C's prompt on Groq (K7) | $8626.71 | -1373.29% | 198 | 44 | short BA, long DELL, long SOFI, long TWST, short VLO |
+| Coin flip on C-groq's picks | $9548.53 | -451.47% | 198 | 99 | short BA, short DELL, long SOFI, long TWST, short VLO |
+| Just hold SPY | $10029.73 | +29.73% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-27 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 15:17 | long CBRS, long DELL, long NBIS, long PANW, long SOFI | none | Maintaining all existing long positions in CBRS, DELL, NBIS, PANW, and SOFI due to strong daily performance, positive news, and bullish hourly trends across the board. |
 | 2026-10-27 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 14:57 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 15:1
 | 2026-10-26 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 12:07 | long LITE, long LMT, long PANW, long TSLA, long ZS | none | Maintaining all current long positions due to strong recent hourly momentum and positive price action, indicating continued upward potential for these stocks. |
-| 2026-10-26 11:57 | no answer, nothing changed | none | unreadable answer |
