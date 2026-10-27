@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 11:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 12:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9018.75 | -981.25% | 75 | 12 | long BE, long DELL, long INTC, long PANW, long SOFI |
-| Coin flip on C's picks | $9754.30 | -245.70% | 75 | 36 | long BE, short DELL, long INTC, long PANW, short SOFI |
-| C's prompt on Groq (K7) | $8726.10 | -1273.90% | 183 | 41 | short BA, long CDNS, long DELL, long RCL, long SOFI |
-| Coin flip on C-groq's picks | $9614.27 | -385.73% | 183 | 94 | short BA, short CDNS, short DELL, long RCL, short SOFI |
-| Just hold SPY | $10033.83 | +33.83% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9044.08 | -955.92% | 75 | 12 | long BE, long DELL, long INTC, long PANW, long SOFI |
+| Coin flip on C's picks | $9756.98 | -243.02% | 75 | 36 | long BE, short DELL, long INTC, long PANW, short SOFI |
+| C's prompt on Groq (K7) | $8743.01 | -1256.99% | 184 | 41 | short BA, long CLS, long DELL, long RCL, long SOFI |
+| Coin flip on C-groq's picks | $9619.30 | -380.70% | 184 | 95 | short BA, short CLS, short DELL, long RCL, short SOFI |
+| Just hold SPY | $10033.77 | +33.77% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-27 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 11:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 11:37 | long BE, long DELL, long INTC, long PANW, long SOFI | sold RCL @ $301.48; bought DELL @ $502.83 | Sold RCL due to a slightly weaker Q4 outlook and replaced it with DELL, which shows strong positive momentum and news. Maintained other profitable positions (BE, INTC, PANW, SOFI) given their strong recent performance and positive catalysts. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 11:5
 | 2026-10-23 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 15:07 | long CRWD, long NET, long PANW, long SLB, long ZS | none | Maintaining all existing long positions in cybersecurity (CRWD, NET, PANW, ZS) and energy (SLB) due to strong daily momentum, positive news flow, and clear uptrends in hourly closes, aligning with the current market themes. |
-| 2026-10-23 14:57 | no answer, nothing changed | none | unreadable answer |
