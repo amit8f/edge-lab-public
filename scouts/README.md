@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-10-26T15:55 ET: 230 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-10-27T09:40 ET: 659 events touched, 12 scout calls, 13 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $5,061.07 | +1.22% | 0 | 0 | long AGBK, long AMGN, long AVBP, long DEA, short DKNG, long EQT, long INTR, long ORKA, long SGRY, long XNCR, long XP | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $5,031.17 | +0.62% | 1 | 0 | long AGBK, short AMGN, long AVBP, long DEA, short DKNG, short EQT, long INTR, long ORKA, short SGRY, long XP | ok |
-| SCOUT-PENNY | $494.46 | -1.11% | 1 | 0 | short NNBR | 1 unreadable agent answers |
-| SCOUT-PENNY-coin | $494.46 | -1.11% | 1 | 0 | short NNBR | ok |
+| SCOUT-MAIN | $5,086.72 | +1.73% | 5 | 2 | long AGBK, long AMGN, short ARTV, long DEA, long INTR, long LXP, long MFIC, long ORKA, long THRM, long UPS, long XP | ok |
+| SCOUT-MAIN-coin | $5,072.88 | +1.46% | 5 | 0 | long AGBK, short AMGN, long ARTV, long DEA, long INTR, long LXP, short MFIC, long ORKA, long THRM, short UPS, long XP | ok |
+| SCOUT-PENNY | $493.21 | -1.36% | 2 | 0 | short ACRS | ok |
+| SCOUT-PENNY-coin | $493.21 | -1.36% | 2 | 0 | long ACRS | ok |
