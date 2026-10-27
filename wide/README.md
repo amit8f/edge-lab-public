@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 14:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 15:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8977.03 | -1022.97% | 78 | 14 | long CBRS, long DELL, long NBIS, long PANW, long SOFI |
-| Coin flip on C's picks | $9756.54 | -243.46% | 78 | 38 | short CBRS, short DELL, long NBIS, long PANW, short SOFI |
-| C's prompt on Groq (K7) | $8633.69 | -1366.31% | 197 | 44 | short BA, long DELL, long NBIS, long SOFI, short VLO |
-| Coin flip on C-groq's picks | $9543.15 | -456.85% | 197 | 99 | short BA, short DELL, short NBIS, long SOFI, short VLO |
-| Just hold SPY | $10019.44 | +19.44% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8992.30 | -1007.70% | 78 | 14 | long CBRS, long DELL, long NBIS, long PANW, long SOFI |
+| Coin flip on C's picks | $9751.13 | -248.87% | 78 | 38 | short CBRS, short DELL, long NBIS, long PANW, short SOFI |
+| C's prompt on Groq (K7) | $8643.68 | -1356.32% | 197 | 44 | short BA, long DELL, long NBIS, long SOFI, short VLO |
+| Coin flip on C-groq's picks | $9535.09 | -464.91% | 197 | 99 | short BA, short DELL, short NBIS, long SOFI, short VLO |
+| Just hold SPY | $10026.02 | +26.02% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-27 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 14:47 | long CBRS, long DELL, long NBIS, long PANW, long SOFI | none | Maintaining all existing long positions as they show continued positive momentum or strong fundamental news, despite some minor hourly fluctuations. |
 | 2026-10-27 14:37 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 14:5
 | 2026-10-26 12:07 | long LITE, long LMT, long PANW, long TSLA, long ZS | none | Maintaining all current long positions due to strong recent hourly momentum and positive price action, indicating continued upward potential for these stocks. |
 | 2026-10-26 11:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 11:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-26 11:37 | long LITE, long LMT, long PANW, long TSLA, long ZS | sold DDOG @ $279.80; bought LITE @ $826.41 | Maintaining strong performers ZS, PANW, LMT, and TSLA, while adding LITE due to a new 'Buy' rating and significant price target, replacing DDOG which showed slight negative momentum. |
