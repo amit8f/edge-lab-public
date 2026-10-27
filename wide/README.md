@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8996.22 | -1003.78% | 74 | 11 | long BE, long INTC, long PANW, long RCL, long SOFI |
-| Coin flip on C's picks | $9787.17 | -212.83% | 74 | 35 | long BE, long INTC, long PANW, long RCL, short SOFI |
-| C's prompt on Groq (K7) | $8728.33 | -1271.67% | 179 | 39 | short BA, long DELL, long RCL, long SOFI, long TSLA |
-| Coin flip on C-groq's picks | $9693.72 | -306.28% | 179 | 93 | short BA, short DELL, long RCL, short SOFI, short TSLA |
-| Just hold SPY | $10022.83 | +22.83% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8997.77 | -1002.23% | 74 | 11 | long BE, long INTC, long PANW, long RCL, long SOFI |
+| Coin flip on C's picks | $9750.42 | -249.58% | 74 | 35 | long BE, long INTC, long PANW, long RCL, short SOFI |
+| C's prompt on Groq (K7) | $8745.20 | -1254.80% | 180 | 40 | short BA, long CLS, long DELL, long RCL, long SOFI |
+| Coin flip on C-groq's picks | $9652.35 | -347.65% | 180 | 93 | short BA, long CLS, short DELL, long RCL, short SOFI |
+| Just hold SPY | $10022.24 | +22.24% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-27 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 11:17 | long BE, long INTC, long PANW, long RCL, long SOFI | none | All existing profitable long positions (BE, INTC, PANW, RCL, SOFI) are maintained due to continued positive momentum and favorable news, keeping the portfolio fully invested with 5 positions. |
 | 2026-10-27 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 10:57 | long BE, long INTC, long PANW, long RCL, long SOFI | none | Maintaining all current long positions as they are either showing strong positive momentum today or have positive news catalysts, with RCL showing a strong rebound from its recent dip. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 11:1
 | 2026-10-23 14:47 | long CRWD, long NET, long PANW, long SLB, long ZS | none | Maintaining all current long positions in cybersecurity (CRWD, NET, PANW, ZS) and energy services (SLB) due to strong positive momentum and supportive news in their respective sectors. |
 | 2026-10-23 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 14:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-23 14:17 | long CRWD, long NET, long PANW, long SLB, long ZS | sold COP @ $151.32; bought CRWD @ $254.10 | Maintained long positions in NET, PANW, SLB, and ZS due to strong performance and positive sector news. Sold COP to consolidate into stronger cybersecurity names, adding CRWD to capitalize on the sector's momentum. |
