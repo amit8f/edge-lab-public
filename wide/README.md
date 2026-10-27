@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9056.54 | -943.46% | 75 | 12 | long BE, long DELL, long INTC, long PANW, long SOFI |
-| Coin flip on C's picks | $9766.95 | -233.05% | 75 | 36 | long BE, short DELL, long INTC, long PANW, short SOFI |
-| C's prompt on Groq (K7) | $8755.93 | -1244.07% | 185 | 42 | short BA, long DELL, long RCL, long SOFI, short VLO |
-| Coin flip on C-groq's picks | $9608.87 | -391.13% | 185 | 95 | short BA, short DELL, long RCL, short SOFI, long VLO |
-| Just hold SPY | $10031.55 | +31.55% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9032.87 | -967.13% | 75 | 12 | long BE, long DELL, long INTC, long PANW, long SOFI |
+| Coin flip on C's picks | $9774.20 | -225.80% | 75 | 36 | long BE, short DELL, long INTC, long PANW, short SOFI |
+| C's prompt on Groq (K7) | $8746.00 | -1254.00% | 185 | 42 | short BA, long DELL, long RCL, long SOFI, short VLO |
+| Coin flip on C-groq's picks | $9621.56 | -378.44% | 185 | 95 | short BA, short DELL, long RCL, short SOFI, long VLO |
+| Just hold SPY | $10025.76 | +25.76% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-27 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 12:27 | long BE, long DELL, long INTC, long PANW, long SOFI | none | Maintaining all existing long positions due to strong positive momentum, favorable news catalysts, and healthy hourly price action across the board. |
 | 2026-10-27 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 12:07 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-27 12:2
 | 2026-10-23 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-23 15:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-23 15:27 | no answer, nothing changed | none | unreadable answer |
