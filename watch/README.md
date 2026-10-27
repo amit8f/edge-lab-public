@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-10-27T13:15 ET: 110 flagged of 3412, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-10-27T13:20 ET: 102 flagged of 3412, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,915.67 | -1.69% | 2 | 0 | short AFYA, long E, short FLG, short GL, short INTR, long KNSL, short LKQ, short NU, short PAGS, short PAX, long RITM, long RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP | 1 unreadable agent answers |
-| PICK-MAIN-coin | $4,960.32 | -0.79% | 0 | 0 | long AFYA, long AGBK, long E, long FLG, long GL, short INTR, short KNSL, short LKQ, short NU, long PAGS, short PAX, short RITM, short RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long XP | ok |
-| PICK-PENNY | $487.09 | -2.58% | 1 | 0 | short ABEV, short ALLO, short CATX, short CIG, long IMSR, short ITRG, short KDK, long NAUT, long OSUR, short PRQR, long REI, short SID, long UNIT | 1 unreadable agent answers |
-| PICK-PENNY-coin | $502.05 | +0.41% | 0 | 0 | short ABEV, long ALLO, short CATX, long CIG, long IMSR, long ITRG, long JBLU, short KDK, long NAUT, long OSUR, long PRQR, long REI, short SID, short UNIT | ok |
+| PICK-MAIN | $4,915.75 | -1.68% | 2 | 0 | short AFYA, long E, short FLG, short GL, short INTR, long KNSL, short LKQ, short NU, short PAGS, short PAX, long RITM, long RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP | 1 unreadable agent answers |
+| PICK-MAIN-coin | $4,956.56 | -0.87% | 0 | 0 | long AFYA, long AGBK, long E, long FLG, long GL, short INTR, short KNSL, short LKQ, short NU, long PAGS, short PAX, short RITM, short RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long XP | ok |
+| PICK-PENNY | $486.83 | -2.63% | 1 | 0 | short ABEV, short ALLO, short CATX, short CIG, long IMSR, short ITRG, short KDK, long NAUT, long OSUR, short PRQR, long REI, short SID, long UNIT | 1 unreadable agent answers |
+| PICK-PENNY-coin | $502.10 | +0.42% | 0 | 0 | short ABEV, long ALLO, short CATX, long CIG, long IMSR, long ITRG, long JBLU, short KDK, long NAUT, long OSUR, long PRQR, long REI, short SID, short UNIT | ok |
