@@ -1,0 +1,577 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "dbf7fe150e554c8e3d958c118e588fb1fe1df4603d858b6374ec03853eb38e05",
+  "raw": "{\n  \"positions\": [\n    {\n      \"symbol\": \"PANW\",\n      \"side\": \"long\",\n      \"reason\": \"Strong upward momentum today and over 5 sessions, with a positive hourly trend and good news. Already profitable.\"\n    },\n    {\n      \"symbol\": \"SOFI\",\n      \"side\": \"long\",\n      \"reason\": \"Significant daily gain and positive hourly trend, indicating strong momentum. Already profitable.\"\n    },\n    {\n      \"symbol\": \"DELL\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily performance and positive hourly trend, despite a slight dip in the last hour. Already profitable.\"\n    },\n    {\n      \"symbol\": \"CBRS\",\n      \"side\": \"long\",\n      \"reason\": \"Strongest daily gain with positive news about Oracle partnership, showing clear upward momentum.\"\n    },\n    {\n      \"symbol\": \"NBIS\",\n      \"side\": \"long\",\n      \"reason\": \"Strong daily gain and consistent positive hourly trend, indicating good momentum.\"\n    }\n  ],\n  \"summary\": \"Maintaining profitable long positions in PANW, SOFI, and DELL, while closing RCL and BE due to weaker hourly trends or consolidation. Initiating new long positions in CBRS and NBIS based on strong daily and hourly momentum driven by positive news.\"\n}",
+  "summary": "Maintaining profitable long positions in PANW, SOFI, and DELL, while closing RCL and BE due to weaker hourly trends or consolidation. Initiating new long positions in CBRS and NBIS based on strong daily and hourly momentum driven by positive news.",
+  "want": {
+   "CBRS": 1,
+   "DELL": 1,
+   "NBIS": 1,
+   "PANW": 1,
+   "SOFI": 1
+  }
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "95b9afa961ee54c9feda35cc64e49c16b31f1c7f35876c02ec8b120883ac9185",
+  "raw": "{\"positions\":[{\"symbol\":\"BA\",\"side\":\"short\",\"reason\":\"large profit on recent decline, still shortable\"},{\"symbol\":\"CLS\",\"side\":\"long\",\"reason\":\"strong intraday +11.8% momentum and positive news\"},{\"symbol\":\"DELL\",\"side\":\"long\",\"reason\":\"steady gain +7.8% today with bullish earnings sentiment\"},{\"symbol\":\"CDNS\",\"side\":\"long\",\"reason\":\"+7.2% today, positive earnings outlook and tech demand\"},{\"symbol\":\"VLO\",\"side\":\"short\",\"reason\":\"down -8.3% today, shortable and momentum suggests further weakness\"}],\"summary\":\"Keep profitable BA short, CLS and DELL longs; add CDNS long and VLO short, drop ON and SOFI\"}",
+  "summary": "Keep profitable BA short, CLS and DELL longs; add CDNS long and VLO short, drop ON and SOFI",
+  "want": {
+   "BA": -1,
+   "CDNS": 1,
+   "CLS": 1,
+   "DELL": 1,
+   "VLO": -1
+  }
+ },
+ "equity": {
+  "C": 8967.186876,
+  "C-coin": 9759.366532,
+  "C-groq": 8661.472166,
+  "C-groq-coin": 9573.835826,
+  "HOLD": 10021.068838
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 219.22,
+    "exit": 220.605,
+    "notional": 1781.852674694585,
+    "open_t": 1793108906,
+    "pnl": 9.464375,
+    "side": 1,
+    "sym": "BE",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 303.64,
+    "exit": 299.905,
+    "notional": 1805.426672269801,
+    "open_t": 1793119649,
+    "pnl": -23.991322,
+    "side": 1,
+    "sym": "RCL",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1794.155037,
+    "price": 119.665,
+    "side": 1,
+    "sym": "CBRS",
+    "t": 1793123844
+   },
+   {
+    "action": "open",
+    "notional": 1794.155037,
+    "price": 169.95,
+    "side": 1,
+    "sym": "NBIS",
+    "t": 1793123844
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 219.22,
+    "exit": 220.605,
+    "notional": 1949.1323054885165,
+    "open_t": 1793108906,
+    "pnl": 10.352887,
+    "side": 1,
+    "sym": "BE",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 303.64,
+    "exit": 299.905,
+    "notional": 1956.9194471067171,
+    "open_t": 1793119649,
+    "pnl": -26.004426,
+    "side": 1,
+    "sym": "RCL",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1952.654368,
+    "price": 119.665,
+    "side": -1,
+    "sym": "CBRS",
+    "t": 1793123844
+   },
+   {
+    "action": "open",
+    "notional": 1952.654368,
+    "price": 169.95,
+    "side": 1,
+    "sym": "NBIS",
+    "t": 1793123844
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 78.41,
+    "exit": 78.26,
+    "notional": 1737.4384895600645,
+    "open_t": 1793122646,
+    "pnl": -5.057872,
+    "side": 1,
+    "sym": "ON",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 16.455,
+    "exit": 16.42,
+    "notional": 1746.014813305429,
+    "open_t": 1793114252,
+    "pnl": -5.456097,
+    "side": 1,
+    "sym": "SOFI",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1732.987628,
+    "price": 345.48,
+    "side": 1,
+    "sym": "CDNS",
+    "t": 1793123844
+   },
+   {
+    "action": "open",
+    "notional": 1732.987628,
+    "price": 391.24,
+    "side": -1,
+    "sym": "VLO",
+    "t": 1793123844
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 78.41,
+    "exit": 78.26,
+    "notional": 1913.3963966229765,
+    "open_t": 1793122646,
+    "pnl": -5.570104,
+    "side": 1,
+    "sym": "ON",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1793123844,
+    "entry": 16.455,
+    "exit": 16.42,
+    "notional": 1939.1327759599608,
+    "open_t": 1793114252,
+    "pnl": 2.189553,
+    "side": -1,
+    "sym": "SOFI",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1915.533378,
+    "price": 345.48,
+    "side": -1,
+    "sym": "CDNS",
+    "t": 1793123844
+   },
+   {
+    "action": "open",
+    "notional": 1915.533378,
+    "price": 391.24,
+    "side": -1,
+    "sym": "VLO",
+    "t": 1793123844
+   }
+  ],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "AAOI": 1,
+  "AMD": 3,
+  "ANET": 1,
+  "APLD": 3,
+  "ASTS": 1,
+  "BA": 3,
+  "BE": 3,
+  "CBRS": 3,
+  "CDNS": 3,
+  "CIFR": 1,
+  "CLS": 3,
+  "COHR": 2,
+  "CRDO": 1,
+  "CRWV": 3,
+  "DELL": 2,
+  "FLEX": 2,
+  "GM": 3,
+  "IONQ": 3,
+  "IREN": 3,
+  "MPC": 2,
+  "MTSI": 3,
+  "NBIS": 3,
+  "ON": 1,
+  "PANW": 1,
+  "PSX": 3,
+  "RCL": 3,
+  "SMCI": 1,
+  "SOFI": 3,
+  "STM": 1,
+  "TEM": 1,
+  "TER": 1,
+  "VLO": 3,
+  "WDC": 2,
+  "WELL": 3
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "CBRS": {
+    "charged": 1793123844,
+    "entry": 119.665,
+    "last": 119.665,
+    "notional": 1794.1550371816247,
+    "opened": 1793123844,
+    "qty": 14.993147847588055,
+    "side": 1
+   },
+   "DELL": {
+    "charged": 1793123844,
+    "entry": 502.835,
+    "last": 503.465,
+    "notional": 1795.7056966990838,
+    "opened": 1793115443,
+    "qty": 3.571162899756548,
+    "side": 1
+   },
+   "NBIS": {
+    "charged": 1793123844,
+    "entry": 169.95,
+    "last": 169.95,
+    "notional": 1794.1550371816247,
+    "opened": 1793123844,
+    "qty": 10.556958147582376,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1793123844,
+    "entry": 378.07,
+    "last": 402.295,
+    "notional": 1765.8484348406728,
+    "opened": 1792770960,
+    "qty": 4.67069176300863,
+    "side": 1
+   },
+   "SOFI": {
+    "charged": 1793123844,
+    "entry": 16.23,
+    "last": 16.42,
+    "notional": 1781.852674694585,
+    "opened": 1793108906,
+    "qty": 109.78759548333856,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "CBRS": {
+    "charged": 1793123844,
+    "entry": 119.665,
+    "last": 119.665,
+    "notional": 1952.6543681327494,
+    "opened": 1793123844,
+    "qty": 16.317673238898166,
+    "side": -1
+   },
+   "DELL": {
+    "charged": 1793123844,
+    "entry": 502.835,
+    "last": 503.465,
+    "notional": 1949.2332266124904,
+    "opened": 1793115443,
+    "qty": 3.876486773220819,
+    "side": -1
+   },
+   "NBIS": {
+    "charged": 1793123844,
+    "entry": 169.95,
+    "last": 169.95,
+    "notional": 1952.6543681327494,
+    "opened": 1793123844,
+    "qty": 11.489581454149747,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1793123844,
+    "entry": 378.07,
+    "last": 402.295,
+    "notional": 1953.6477036903905,
+    "opened": 1792770960,
+    "qty": 5.167423238263789,
+    "side": 1
+   },
+   "SOFI": {
+    "charged": 1793123844,
+    "entry": 16.23,
+    "last": 16.42,
+    "notional": 1949.1323054885165,
+    "opened": 1793108906,
+    "qty": 120.09441192165843,
+    "side": -1
+   }
+  },
+  "C-groq": {
+   "BA": {
+    "charged": 1793123844,
+    "entry": 176.19,
+    "last": 170.61,
+    "notional": 1733.0087503133307,
+    "opened": 1793111848,
+    "qty": 9.836022193730239,
+    "side": -1
+   },
+   "CDNS": {
+    "charged": 1793123844,
+    "entry": 345.48,
+    "last": 345.48,
+    "notional": 1732.9876282592168,
+    "opened": 1793123844,
+    "qty": 5.016173521648769,
+    "side": 1
+   },
+   "CLS": {
+    "charged": 1793123844,
+    "entry": 274.31,
+    "last": 275.76,
+    "notional": 1734.7346891231366,
+    "opened": 1793123249,
+    "qty": 6.323993617159916,
+    "side": 1
+   },
+   "DELL": {
+    "charged": 1793123844,
+    "entry": 501.12,
+    "last": 503.465,
+    "notional": 1741.6639670044297,
+    "opened": 1793113053,
+    "qty": 3.475542718319823,
+    "side": 1
+   },
+   "VLO": {
+    "charged": 1793123844,
+    "entry": 391.24,
+    "last": 391.24,
+    "notional": 1732.9876282592168,
+    "opened": 1793123844,
+    "qty": 4.429474563590678,
+    "side": -1
+   }
+  },
+  "C-groq-coin": {
+   "BA": {
+    "charged": 1793123844,
+    "entry": 176.19,
+    "last": 170.61,
+    "notional": 1925.5437636200877,
+    "opened": 1793111848,
+    "qty": 10.928791438901683,
+    "side": -1
+   },
+   "CDNS": {
+    "charged": 1793123844,
+    "entry": 345.48,
+    "last": 345.48,
+    "notional": 1915.5333784529962,
+    "opened": 1793123844,
+    "qty": 5.5445564966220795,
+    "side": -1
+   },
+   "CLS": {
+    "charged": 1793123844,
+    "entry": 274.31,
+    "last": 275.76,
+    "notional": 1917.199987030252,
+    "opened": 1793123249,
+    "qty": 6.9891727863740005,
+    "side": -1
+   },
+   "DELL": {
+    "charged": 1793123844,
+    "entry": 501.12,
+    "last": 503.465,
+    "notional": 1935.0254605306204,
+    "opened": 1793113053,
+    "qty": 3.8614013819656376,
+    "side": -1
+   },
+   "VLO": {
+    "charged": 1793123844,
+    "entry": 391.24,
+    "last": 391.24,
+    "notional": 1915.5333784529962,
+    "opened": 1793123844,
+    "qty": 4.896057096546866,
+    "side": -1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1793123844,
+    "entry": 767.13,
+    "last": 769.515,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "29afa8868d9fe623cef19576581f069bf7947fa2cced1277e93b0f5e0e954f92",
+ "price_source": {
+  "AAOI": "iex",
+  "ALAB": "iex",
+  "AMD": "iex",
+  "ANET": "iex",
+  "APLD": "iex",
+  "ASTS": "iex",
+  "BA": "iex",
+  "BE": "iex",
+  "CBRS": "iex",
+  "CDNS": "iex",
+  "CIFR": "iex",
+  "CLS": "iex",
+  "COHR": "iex",
+  "CRDO": "iex",
+  "CRWV": "iex",
+  "DELL": "iex",
+  "FLEX": "iex",
+  "GM": "iex",
+  "HUT": "iex",
+  "IONQ": "iex",
+  "IREN": "iex",
+  "LITE": "iex",
+  "MPC": "iex",
+  "MTSI": "iex",
+  "NBIS": "iex",
+  "ON": "iex",
+  "P": "iex",
+  "PANW": "iex",
+  "PSX": "iex",
+  "RCL": "iex",
+  "RKLB": "iex",
+  "SMCI": "iex",
+  "SOFI": "iex",
+  "STM": "iex",
+  "TEM": "iex",
+  "TER": "iex",
+  "TSEM": "iex",
+  "TWST": "iex",
+  "VLO": "iex",
+  "WDC": "iex",
+  "WELL": "iex"
+ },
+ "prices": {
+  "AAOI": 76.43,
+  "ALAB": 284.71,
+  "AMD": 559.0,
+  "ANET": 187.74,
+  "APLD": 19.49,
+  "ASTS": 41.87,
+  "BA": 170.61,
+  "BE": 220.605,
+  "CBRS": 119.665,
+  "CDNS": 345.48,
+  "CIFR": 8.295,
+  "CLS": 275.76,
+  "COHR": 234.93,
+  "CRDO": 166.0,
+  "CRWV": 59.51,
+  "DELL": 503.465,
+  "FLEX": 81.22,
+  "GM": 80.51,
+  "HUT": 66.81,
+  "IONQ": 32.875,
+  "IREN": 27.085,
+  "LITE": 864.36,
+  "MPC": 438.84,
+  "MTSI": 256.08,
+  "NBIS": 169.95,
+  "ON": 78.26,
+  "P": 138.745,
+  "PANW": 402.295,
+  "PSX": 270.555,
+  "RCL": 299.905,
+  "RKLB": 58.15,
+  "SMCI": 35.075,
+  "SOFI": 16.42,
+  "STM": 48.445,
+  "TEM": 72.43,
+  "TER": 325.445,
+  "TSEM": 189.26,
+  "TWST": 159.645,
+  "VLO": 391.24,
+  "WDC": 381.78,
+  "WELL": 225.49
+ },
+ "shortlist": [
+  "SOFI",
+  "CLS",
+  "NBIS",
+  "CBRS",
+  "TWST",
+  "CRDO",
+  "ALAB",
+  "BA",
+  "APLD",
+  "VLO",
+  "BE",
+  "RKLB",
+  "TEM",
+  "CRWV",
+  "DELL",
+  "CIFR",
+  "SMCI",
+  "CDNS",
+  "STM",
+  "WDC",
+  "RCL",
+  "IONQ",
+  "MPC",
+  "IREN",
+  "PSX",
+  "WELL",
+  "AAOI",
+  "ASTS",
+  "HUT",
+  "COHR",
+  "ANET",
+  "TSEM",
+  "ON",
+  "LITE",
+  "P",
+  "GM",
+  "FLEX",
+  "TER",
+  "AMD",
+  "MTSI",
+  "PANW"
+ ],
+ "t": 1793123844,
+ "universe_date": "2026-10-27",
+ "written_utc": "2026-10-27T17:57:36.620592Z"
+}
