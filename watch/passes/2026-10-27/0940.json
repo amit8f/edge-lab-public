@@ -1,0 +1,800 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "d2f84f34a1ba9992bc8b43ae92ed6394af4d9faf934caf63d79e2434cbfba3c4",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "6bf3eddab8ce9d484fcc5a6c0308a0cc2487639f555e182c257f161bdfb57a6f",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "EEFT",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "HWKN",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "CLW",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "VLRS",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SXC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AVBH",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PSMT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "HSBC",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "IMSR",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "UNIT",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4b99c5488920904104f1846ac114363e15e694d77d8149f05ff3bbc8deb4dda8",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large negative move, high negative z, shortable",
+     "stop_pct": 12.0,
+     "symbol": "EEFT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong positive price surge, high positive z",
+     "stop_pct": 12.0,
+     "symbol": "HWKN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "big drop with negative analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "CLW"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up with positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "VLRS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant rise and positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "SXC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price increase and upbeat earnings news",
+     "stop_pct": 12.0,
+     "symbol": "AVBH"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "mixed signals, hold current position",
+     "stop_pct": 0.0,
+     "symbol": "PSMT"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price decline and negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "HSBC"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large upside move, positive deal news, not shortable",
+     "stop_pct": 20.0,
+     "symbol": "IMSR"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive product news and price gain",
+     "stop_pct": 20.0,
+     "symbol": "UNIT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "AGBK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "RITM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "SIGI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "STNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "TNGX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "UGP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "XP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "ABEV"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "ALLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "CATX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "CIG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "JBLU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "KDK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "NAUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "OSUR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "PRQR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "REI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "SID"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "728768174757b577c7abd95ff416c623553088e6273105e444d317a0b63775d4"
+  },
+  "reviewer": {
+   "answer_sha256": "294bd0c598b3344d4bfb6d0fa5e91306ece3103afee55e2c05249194f62f08cb",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "bece036ff9a65481ff8b9ce5e1abfbdd9fc9559acd29f5193971171c5f094ca8",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong downward momentum today with impending news and negative z-score.",
+     "symbol": "EEFT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive positive momentum and high z-score support continuing upward trend.",
+     "symbol": "HWKN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe drop today of over 17 percent with negative analyst tone.",
+     "symbol": "CLW"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive price move today backed by positive earnings tone.",
+     "symbol": "VLRS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High positive z-score and strong daily gain supported by earnings tone.",
+     "symbol": "SXC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid upward movement with positive earnings sentiment.",
+     "symbol": "AVBH"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant drop today and negative trend alignment with earnings tone.",
+     "symbol": "HSBC"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong daily gain in penny stock with deal catalyst, though not shortable.",
+     "symbol": "IMSR"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Modest positive day despite longer-term weakness, with product catalyst.",
+     "symbol": "UNIT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.04832,
+   "news": 1,
+   "pace": null,
+   "price": 60.86,
+   "r20": -0.01509,
+   "r5": -0.01373,
+   "short": true,
+   "src": "iex",
+   "symbol": "EEFT",
+   "z": -3.187
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.13829,
+   "news": 0,
+   "pace": null,
+   "price": 154.17,
+   "r20": 0.05953,
+   "r5": 0.03059,
+   "short": true,
+   "src": "iex",
+   "symbol": "HWKN",
+   "z": 8.885
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.17222,
+   "news": 0,
+   "pace": null,
+   "price": 15.91,
+   "r20": -0.03369,
+   "r5": 0.03167,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLW",
+   "z": -7.101
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08185,
+   "news": 0,
+   "pace": null,
+   "price": 6.08,
+   "r20": -0.16864,
+   "r5": -0.04422,
+   "short": true,
+   "src": "iex",
+   "symbol": "VLRS",
+   "z": 5.517
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12181,
+   "news": 0,
+   "pace": null,
+   "price": 11.005,
+   "r20": 0.01763,
+   "r5": -0.04942,
+   "short": true,
+   "src": "iex",
+   "symbol": "SXC",
+   "z": 5.475
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.03769,
+   "news": 0,
+   "pace": null,
+   "price": 32.76,
+   "r20": 0.00509,
+   "r5": 0.02567,
+   "short": true,
+   "src": "iex",
+   "symbol": "AVBH",
+   "z": 5.014
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.04633,
+   "news": 0,
+   "pace": null,
+   "price": 165.09,
+   "r20": 0.00081,
+   "r5": 0.01453,
+   "short": true,
+   "src": "iex",
+   "symbol": "PSMT",
+   "z": -4.409
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.0637,
+   "news": 0,
+   "pace": null,
+   "price": 85.4,
+   "r20": -0.09854,
+   "r5": -0.01883,
+   "short": true,
+   "src": "iex",
+   "symbol": "HSBC",
+   "z": -4.327
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.18027,
+   "news": 0,
+   "pace": null,
+   "price": 3.47,
+   "r20": -0.28641,
+   "r5": 0.03158,
+   "short": false,
+   "src": "iex",
+   "symbol": "IMSR",
+   "z": 3.27
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02577,
+   "news": 1,
+   "pace": null,
+   "price": 4.975,
+   "r20": -0.43931,
+   "r5": -0.10846,
+   "short": true,
+   "src": "iex",
+   "symbol": "UNIT",
+   "z": 0.558
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4887.6527,
+  "PICK-MAIN-coin": 4908.831,
+  "PICK-PENNY": 486.8523,
+  "PICK-PENNY-coin": 500.1079
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-10-27T13:40:20.744333+00:00",
+   "entry": 2.22,
+   "exit": 2.67,
+   "net": -5.678,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 11,
+   "side": -1,
+   "symbol": "JBLU",
+   "why": "stop"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3218,
+   "price": 3.47,
+   "qty": 7,
+   "side": 1,
+   "stop": 2.776,
+   "symbol": "IMSR"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3218,
+   "price": 3.47,
+   "qty": 7,
+   "side": 1,
+   "stop": 2.776,
+   "symbol": "IMSR"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2637,
+   "price": 4.975,
+   "qty": 4,
+   "side": 1,
+   "stop": 3.98,
+   "symbol": "UNIT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2649,
+   "price": 4.975,
+   "qty": 4,
+   "side": -1,
+   "stop": 5.97,
+   "symbol": "UNIT"
+  }
+ ],
+ "flag_counts": {
+  "move": 27,
+  "news": 144,
+  "volume": 0
+ },
+ "flagged": 165,
+ "headline_counts": {
+  "AVBH": 2,
+  "CLW": 3,
+  "EEFT": 3,
+  "HSBC": 3,
+  "HWKN": 3,
+  "IMSR": 3,
+  "PSMT": 2,
+  "SXC": 1,
+  "UNIT": 1,
+  "VLRS": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "31a9035928524307e4571d7521df6376c6d451d23ae61ac27d58ba46b02241f4",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2519
+ },
+ "priced": 2519,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EEFT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HWKN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CLW"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "VLRS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SXC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AVBH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HSBC"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 7,
+   "skip": null,
+   "symbol": "IMSR"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 4,
+   "skip": null,
+   "symbol": "UNIT"
+  }
+ ],
+ "slot": "2026-10-27T09:40",
+ "t": "2026-10-27T13:40:20.744333+00:00",
+ "universe": 3412,
+ "written_utc": "2026-10-27T13:40:48.607162Z"
+}
