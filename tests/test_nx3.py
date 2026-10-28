@@ -173,3 +173,11 @@ def test_month_trades_returns_use_one_price_basis(monkeypatch):
     t = X.month_trades(ev, ses, {})
     assert len(t) == 1 and np.isclose(t["exit_ac"].iloc[0], 11.0) and np.isclose(t["prev_ac"].iloc[0], 9.5)
     assert np.isclose(t["ret"].iloc[0], 11.0 / t["entry"].iloc[0] - 1) and np.isclose(t["spy_ret"].iloc[0], 0.01)
+
+
+def test_daily_closes_end_waits_for_the_sip_delay(monkeypatch):
+    seen = []
+    monkeypatch.setattr(X.alpaca, "utcnow", lambda: pd.Timestamp("2026-10-27T23:53:00Z"))
+    monkeypatch.setattr(X.alpaca, "get", lambda url, p, headers=None: seen.append(p["end"]) or {"bars": {}})
+    X.daily_closes(["ASIC", "SPY"], pd.Timestamp("2026-10-23"), pd.Timestamp("2026-10-27"), {})
+    assert seen == ["2026-10-27T23:37:00Z"] * 2                 # the settle night of 2026-10-27, not the whole day
