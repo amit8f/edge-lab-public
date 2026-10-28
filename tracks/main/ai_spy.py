@@ -143,12 +143,17 @@ def run(state_dir, now=None, fetch_bars=None, latest=None):
     return rec
 
 
-def live_bars(day, end):
+def live_bars(day, end, get=None):
+    """SPY's 1-minute SIP bars from the day's 09:30 ET open to `end`. Empty in the first 16 minutes, when no
+    SIP bar is free yet (Alpaca refuses an end before the start: the 09:37 run failed every day until 2026-10-28)."""
     from core import alpaca
-    j = alpaca.get("https://data.alpaca.markets/v2/stocks/bars",
-                   {"symbols": SYM, "timeframe": "1Min", "start": f"{day}T13:30:00Z",
-                    "end": end.strftime("%Y-%m-%dT%H:%M:%SZ"), "feed": "sip", "adjustment": "raw",
-                    "limit": 10000})
+    start = pd.Timestamp(f"{day} 09:30", tz=ET).tz_convert("UTC")
+    if end <= start:
+        return []
+    j = (get or alpaca.get)("https://data.alpaca.markets/v2/stocks/bars",
+                            {"symbols": SYM, "timeframe": "1Min", "start": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                             "end": end.strftime("%Y-%m-%dT%H:%M:%SZ"), "feed": "sip", "adjustment": "raw",
+                             "limit": 10000})
     return (j.get("bars") or {}).get(SYM, [])
 
 

@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from adaptive import costs, guards, sizing
+from adaptive import costs, flip, guards, sizing
 from core.ledger import Ledger
 
 ET = "America/New_York"
@@ -331,6 +331,48 @@ def call(fn, model, system, text):
         return None, rec
 
 
+RETRY_NOTE = ("\n\nYour previous answer could not be read. Answer again with only the JSON object, in exactly the "
+              "format asked for.")
+
+
+def call_parsed(fn, model, system, text, parse):
+    """call(), then parse(raw); an unreadable answer is asked once more with RETRY_NOTE (SYS2 clarification 2).
+    (raw or None, parsed or None, log record). Only an answer still unreadable after the retry is an agent error."""
+    raw, rec = call(fn, model, system, text)
+    if raw is None:
+        return None, None, rec
+    out = parse(raw)
+    if out is None:
+        raw, again = call(fn, model, system, text + RETRY_NOTE)
+        rec["retry"] = again
+        rec["quota"] = rec.get("quota") or again.get("quota", False)
+        out = parse(raw) if raw is not None else None
+    return raw, out, rec
+
+
+def flip_test(st, api, rec, cands, heads, views, dkey):
+    """FLIP1: once a day, the first flagged stock with a toned view and flippable headline words is asked again
+    with those words flipped. Logged as rec["flip_test"]; never traded, never an agent error."""
+    if st.get("flip_day") == dkey:
+        return
+    for f in cands:
+        s = f["symbol"]
+        flipped = [flip.flip_text(h) for h in heads.get(s) or []]
+        swaps = sum(k for _, k in flipped)
+        tone = views.get(s, {}).get("tone")
+        if not swaps or not tone:
+            continue
+        st["flip_day"] = dkey
+        _, v, call_rec = call_parsed(api.ask, ANALYST_MODEL, ANALYST_PROMPT,
+                                     analyst_text([f], {s: [t for t, _ in flipped]}), lambda r: parse_views(r, {s}))
+        after = v[s]["tone"] if v and s in v else None
+        rec["flip_test"] = dict(call_rec, symbol=s, swaps=swaps, before=tone, after=after,
+                                moved=None if after is None else flip.moved(tone, after))
+        if call_rec.get("quota"):
+            st.setdefault("quota_out", {})[ANALYST_MODEL] = dkey
+        return
+
+
 # ---------- one pass ----------
 
 def blocked(b, day, errors):
@@ -505,20 +547,22 @@ def run(state_dir, api, now=None):
         rec["headline_counts"] = {s: len(v) for s, v in heads.items() if v}
         allowed = {f["symbol"] for f in cands}
         if cands:
-            raw, rec["agents"]["analyst"] = call(api.ask, ANALYST_MODEL, ANALYST_PROMPT, analyst_text(cands, heads))
-            if raw is not None:
-                v = parse_views(raw, allowed)
+            raw, v, rec["agents"]["analyst"] = call_parsed(api.ask, ANALYST_MODEL, ANALYST_PROMPT,
+                                                           analyst_text(cands, heads), lambda r: parse_views(r, allowed))
+            if "error" not in rec["agents"]["analyst"]:
                 if v is None:
                     errors += 1
                     rec["agents"]["analyst"]["unreadable"] = True
                 else:
                     views = v
                     rec["agents"]["analyst"]["views"] = list(v.values())
+                    flip_test(st, api, rec, cands, heads, v, dkey)
         if not errors and "error" not in rec["agents"].get("analyst", {}):
             text = picker_text(cands, views, heads, st, prices, now)
-            raw, rec["agents"]["picker"] = call(api.ask, PICKER_MODEL, PICKER_PROMPT, text)
-            if raw is not None:
-                decisions = parse_list(raw, "decisions", allowed | set(picker_held), PICKER_MODEL, ("stop_pct",))
+            raw, decisions, rec["agents"]["picker"] = call_parsed(
+                api.ask, PICKER_MODEL, PICKER_PROMPT, text,
+                lambda r: parse_list(r, "decisions", allowed | set(picker_held), PICKER_MODEL, ("stop_pct",)))
+            if "error" not in rec["agents"]["picker"]:
                 if decisions is None:
                     errors += 1
                     rec["agents"]["picker"]["unreadable"] = True
@@ -530,10 +574,10 @@ def run(state_dir, api, now=None):
                  and d["symbol"] in allowed]
         if props and not errors:
             by_sym = {f["symbol"]: f for f in cands}
-            raw, rec["agents"]["reviewer"] = call(api.ask, REVIEW_MODEL, REVIEW_PROMPT,
-                                                  review_text(props, by_sym, views))
-            if raw is not None:
-                r = parse_list(raw, "reviews", {p["symbol"] for p in props}, REVIEW_MODEL)
+            raw, r, rec["agents"]["reviewer"] = call_parsed(
+                api.ask, REVIEW_MODEL, REVIEW_PROMPT, review_text(props, by_sym, views),
+                lambda x: parse_list(x, "reviews", {p["symbol"] for p in props}, REVIEW_MODEL))
+            if "error" not in rec["agents"]["reviewer"]:
                 if r is None:
                     errors += 1
                     rec["agents"]["reviewer"]["unreadable"] = True

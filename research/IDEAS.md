@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 55** (main 27, penny 9, news 9, cross-track 9, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 70.
+**Phase 2 count: 58** (main 28, penny 10, news 9, cross-track 10, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 73.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
@@ -70,6 +70,9 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | SD1 | main | 2026-10-24 | Accounting composite (M4's quality, value, issuance, growth) with fresh vs 12-month-old 10-Ks; replication holds if fresh FF5+mom alpha t >= 2 and stale keeps half | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; Fan & Li (2026) | [prereg/SD1.md](prereg/SD1.md) | |
 | CR1 | cross-track | 2026-10-24 | Forward measurement: daily pick overlap between SYS2B lanes and the SYS2 picker vs a random-redraw null; crowding confirmed at mean z >= 3 after 40 days | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; Chincarini, Falvey & Moneta (2026) | [prereg/CR1.md](prereg/CR1.md) | |
 | SM1 | news | 2026-10-24 | Forward source track record from the news listener: per-source hit rate of item moves vs a same-group random stock; sources differ at LR p < 0.01 after 60 days; no trading | Weekly research scan 2026-10-24 (/mnt/project-files/research-scan/2026-10-24.md); Amit: "add all"; EMNLP 2026 point-in-time RAG paper | [prereg/SM1.md](prereg/SM1.md) | |
+| PD1 | penny | 2026-10-28 | Post-earnings drift: long liquid $1-5 stocks whose 2-day reaction to an 8-K item 2.02 is in the top 20% of the prior year's reactions, enter day +2, hold 60 sessions, vs same-day random penny; rule 12 and 11 bars, else near-miss | Amit: "add all of those" (sweep 2026-10-28); Subrahmanyam (2025) via UCLA Anderson Review: drift survives only with microcaps (t 2.18 vs 1.43) | [prereg/PD1.md](prereg/PD1.md) | Registered; hand check first |
+| FLIP1 | cross-track | 2026-10-28 | Forward measurement: once a day per system, re-ask one SYS2 analyst / SYS2B scout call with headline words flipped; the agent reads the news if >= 70% of 40+ flips move the other way (binomial p < 0.01); logging only | Amit: "add all of those" (sweep 2026-10-28); Ye et al. (2026) "The Alpha Illusion", test P3 | [prereg/FLIP1.md](prereg/FLIP1.md) | |
+| K8 | main | 2026-10-28 | Bots C and C-groq's own answers acted on once a day (first readable answer from 15:30 ET, held overnight), $10,000 books with coin twins, no extra AI calls; primary test slow book minus its parent, NW t >= 3 after 120 trading days | Amit: "add all of those" (sweep 2026-10-28); Bloomberg on AI trading contests (Oct 2026); Barber & Odean (2000) | [prereg/K8.md](prereg/K8.md) | |
 
 ## Validation studies (not trading ideas; not counted)
 

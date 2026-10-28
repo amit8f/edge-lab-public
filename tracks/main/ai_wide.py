@@ -290,13 +290,34 @@ def ask_groq(system, text):
 
 
 AI_BOOKS = (("C", "C-coin"), ("C-groq", "C-groq-coin"))   # (AI book, its coin twin)
+# K8 (research/prereg/K8.md, from 2026-10-29): the same answers, acted on once a day only, at the first readable
+# answer from 15:30 ET on, so the book holds overnight. No extra AI calls.
+SLOW = {"C": ("C-slow", "C-slow-coin"), "C-groq": ("C-groq-slow", "C-groq-slow-coin")}
+SLOW_FROM, SLOW_FIRST = "15:30", "2026-10-29"
+SLOW_BOOKS = {n for pair in SLOW.values() for n in pair}
+
+
+def follow_coin(tw, fills, prices, t):
+    """The coin twin takes what its AI book just opened, with a coin-flip side, and drops what it closed."""
+    opened = {f["sym"] for f in fills if f["action"] == "open"}
+    closed = {f["sym"] for f in fills if f["action"] == "close"}
+    target = {s: p["side"] for s, p in tw["pos"].items() if s not in closed and s not in opened}
+    target.update({s: coin_side(s, t) for s in opened})
+    return rebalance(tw, target, prices, t)
+
+
+def slow_due(state, name, t):
+    """True at the first call for AI book `name` on or after 15:30 ET of a day it hasn't acted on (K8)."""
+    et = pd.Timestamp(t, unit="s", tz="UTC").tz_convert(ET)
+    day = f"{et:%Y-%m-%d}"
+    return day >= SLOW_FIRST and f"{et:%H:%M}" >= SLOW_FROM and state.get("slow_day", {}).get(name) != day
 
 
 def step(state, uni, data, syms, t, ask=k2.ask_gemini, news=None, ask_b=ask_groq):
     prices = {s: d["last"] for s, d in data.items()}
     books = state["books"]
     for n in NAMES:
-        books.setdefault(n, new_book())   # C-groq joined on 2026-10-19 (K7)
+        books.setdefault(n, new_book())   # C-groq joined on 2026-10-19 (K7), the slow books on 2026-10-29 (K8)
     for b in books.values():
         mark(b, prices)
         charge(b, t)
@@ -319,12 +340,12 @@ def step(state, uni, data, syms, t, ask=k2.ask_gemini, news=None, ask_b=ask_groq
         rec["decision" if name == "C" else f"decision_{name}"] = dec
         if want is not None:
             rec["fills"][name] = rebalance(c, want, prices, t)
-            tw = books[twin]
-            opened = {f["sym"] for f in rec["fills"][name] if f["action"] == "open"}
-            closed = {f["sym"] for f in rec["fills"][name] if f["action"] == "close"}
-            tw_target = {s: p["side"] for s, p in tw["pos"].items() if s not in closed and s not in opened}
-            tw_target.update({s: coin_side(s, t) for s in opened})
-            rec["fills"][twin] = rebalance(tw, tw_target, prices, t)
+            rec["fills"][twin] = follow_coin(books[twin], rec["fills"][name], prices, t)
+            if slow_due(state, name, t):
+                slow, slow_twin = SLOW[name]
+                rec["fills"][slow] = rebalance(books[slow], want, prices, t)
+                rec["fills"][slow_twin] = follow_coin(books[slow_twin], rec["fills"][slow], prices, t)
+                state.setdefault("slow_day", {})[name] = f"{pd.Timestamp(t, unit='s', tz='UTC').tz_convert(ET):%Y-%m-%d}"
     h = books["HOLD"]
     if not h["pos"] and not h["trips"] and "SPY" in prices:
         rec["fills"]["HOLD"].append(open_pos(h, "SPY", 1, prices["SPY"], t, START_USD / SLOT / (1 + FEE)))
@@ -334,7 +355,10 @@ def step(state, uni, data, syms, t, ask=k2.ask_gemini, news=None, ask_b=ask_groq
 
 
 NAMES = {"C": "AI bot C (whole market, up to 5 stocks)", "C-coin": "Coin flip on C's picks", "HOLD": "Just hold SPY",
-         "C-groq": "C's prompt on Groq (K7)", "C-groq-coin": "Coin flip on C-groq's picks"}
+         "C-groq": "C's prompt on Groq (K7)", "C-groq-coin": "Coin flip on C-groq's picks",
+         "C-slow": "C's answers, acted on once a day (K8)", "C-slow-coin": "Coin flip on C-slow's picks",
+         "C-groq-slow": "C-groq's answers, acted on once a day (K8)",
+         "C-groq-slow-coin": "Coin flip on C-groq-slow's picks"}
 
 
 def summary(state, rec, runs):
@@ -348,7 +372,7 @@ def summary(state, rec, runs):
     for n, b in state["books"].items():
         pos = ", ".join(f"{'long' if p['side'] > 0 else 'short'} {s}" for s, p in sorted(b["pos"].items())) or "cash"
         eq = rec["equity"][n]
-        lines.append(f"| {NAMES[n]} | ${eq:.2f} | {eq - START_USD:+.2f}% | {len(b['trips'])} | "
+        lines.append(f"| {NAMES[n]} | ${eq:.2f} | {(eq / START_USD - 1) * 100:+.2f}% | {len(b['trips'])} | "
                      f"{sum(x['pnl'] > 0 for x in b['trips'])} | {pos} |")
     lines += ["\n## C's decisions, newest first\n", "| Time (ET) | Wants | Trades | Why |", "|---|---|---|---|"]
     for r in runs[::-1][:60]:
@@ -372,6 +396,9 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
     bpath = root / "books.json"
     state = json.loads(bpath.read_text()) if bpath.exists() else None
     held = sorted({s for n, b in state["books"].items() if n != "HOLD" for s in b["pos"]}) if state else []
+    # the slow books' holdings get prices but stay off the shortlist, so C and C-groq see what they saw before K8
+    shown = sorted({s for n, b in state["books"].items() if n != "HOLD" and n not in SLOW_BOOKS
+                    for s in b["pos"]}) if state else []
     day = f"{now.tz_convert(ET):%Y-%m-%d}"
     upath = root / "universe" / f"{day}.json"
     if fetch is fetch_hour and k2.market_window(now)[0] is None:   # don't build a universe on closed hours
@@ -390,7 +417,7 @@ def run(state_dir, now=None, universe=build_universe, fetch=fetch_hour, hours=ad
     if led.has("run", key):
         print(f"{key} already logged")
         return None
-    syms = [s for s in shortlist(uni, data, held) if s in data]
+    syms = [s for s in shortlist(uni, data, shown) if s in data]
     hours(data, set(syms) | {"SPY"}, now, px_time, sessions)
     iex = [pd.Timestamp(d["last_t"]) for d in data.values() if d.get("src") == "iex"]
     t = int(max(iex).timestamp()) if iex else int(px_time.timestamp())   # the latest price used

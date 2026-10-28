@@ -268,3 +268,16 @@ pass. They fill in details the text above leaves open and change nothing it fixe
       isn't valid XML and Nikkei Asia's is empty. They count as feed errors each slot and are not replaced.
       SIC codes mapped 236 of a sample of 300 stocks to a sector ETF. Single plain-word names ("Jackson",
       "Freedom") tagged the wrong stocks in that check, hence the one-word rule above.
+
+## Clarification (2026-10-28, Amit's choice; no rule on entries, sizing, exits or the test changes)
+
+- A scout's "none" for a stock is no pick and is dropped before the checks, whatever its other fields say, so
+  a "none" with horizon 0, or more "none" lines than the 3-pick limit, no longer makes the answer unreadable.
+  A "none" marked confidential is still kept and logged. The 3-pick limit counts only real picks.
+- Any agent answer that still can't be read is asked once more, with the same prompt plus one line saying the
+  last answer could not be read (`adaptive/scouts.py` `ask_parsed`), on the same model and inside its budget.
+  Only an answer still unreadable after that retry counts as an agent error under the unchanged kill switch.
+  Both answers go to the evidence branch.
+- Why: the stops of 2026-10-26, 10-27 and 10-28 all came from scout answers that only said "none" (horizon 0,
+  five "none" lines, or the book names in place of symbols), read from the evidence branch. All three parse
+  under the rule above.
