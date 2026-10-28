@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 14:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 14:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8973.77 | -1026.23% | 90 | 18 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT |
-| Coin flip on C's picks | $9753.11 | -246.89% | 90 | 45 | short FLEX, long ORCL, long SNDK, short SOFI, long VRT |
-| C's prompt on Groq (K7) | $8483.45 | -1516.55% | 233 | 54 | long ACN, long AON, long FLEX, long ORCL, long VRT |
-| Coin flip on C-groq's picks | $9607.06 | -392.94% | 233 | 115 | long ACN, long AON, long FLEX, long ORCL, short VRT |
-| Just hold SPY | $10067.36 | +67.36% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8952.80 | -1047.20% | 90 | 18 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT |
+| Coin flip on C's picks | $9776.53 | -223.47% | 90 | 45 | short FLEX, long ORCL, long SNDK, short SOFI, long VRT |
+| C's prompt on Groq (K7) | $8462.95 | -1537.05% | 234 | 54 | long ACN, long AON, long CLS, long ORCL, long VRT |
+| Coin flip on C-groq's picks | $9593.86 | -406.14% | 234 | 115 | long ACN, long AON, long CLS, long ORCL, short VRT |
+| Just hold SPY | $10051.22 | +51.22% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-28 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 14:37 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT | bought CBRS @ $111.09; bought ORCL @ $144.47 | Selling CBRS due to adverse price movement against the short position despite bearish news. Maintaining long positions in FLEX, SNDK, SOFI, and VRT due to strong positive momentum and favorable news. Initiating a new long position in ORCL based on its strong daily performance and positive long-term  |
 | 2026-10-28 14:27 | short CBRS, long FLEX, long SNDK, long SOFI, long VRT | sold MU @ $967.91; bought SNDK @ $1,379.79 | Maintaining existing profitable long positions in FLEX, VRT, and SOFI due to strong momentum and positive news. Keeping the CBRS short due to continued bearish sentiment and overall downtrend. Adding a new long position in SNDK based on strong daily performance and positive AI-related news. |
 | 2026-10-28 14:17 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 14:3
 | 2026-10-27 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 11:37 | long BE, long DELL, long INTC, long PANW, long SOFI | sold RCL @ $301.48; bought DELL @ $502.83 | Sold RCL due to a slightly weaker Q4 outlook and replaced it with DELL, which shows strong positive momentum and news. Maintained other profitable positions (BE, INTC, PANW, SOFI) given their strong recent performance and positive catalysts. |
 | 2026-10-27 11:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-27 11:17 | long BE, long INTC, long PANW, long RCL, long SOFI | none | All existing profitable long positions (BE, INTC, PANW, RCL, SOFI) are maintained due to continued positive momentum and favorable news, keeping the portfolio fully invested with 5 positions. |
