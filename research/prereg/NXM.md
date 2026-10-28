@@ -75,3 +75,14 @@ shuffled test (about 0.6), because NX3's edge needs the news read with the first
 weaker than XGBoost. MLP about even odds. ENS has the highest mean but doesn't beat XGBoost at Holm p < 0.05.
 About 0.15 that any arm beats XGBoost head-to-head, and about 0.5 that rule 21 flags the tree arms (boosted
 trees on noisy returns usually score several times better in-sample).
+
+## Live book details (2026-10-28, after the result and before any forward data; `tracks/news/nxm_live.py`)
+
+- The four passing arms (LGBM, LIN, MLP, ENS) score the events NX3's live scorer decides, from the inputs it
+  logs at each decision time, so each arm sees exactly what it would have seen live; NX3's own decisions don't
+  change. The scoring runs after the close, which changes nothing for a ledger book with no orders.
+- A short needs the stock easy to borrow at decision time; NX3's scorer now logs that for every decided event.
+- Control per arm: default_rng(NX3's day seed + the arm's number, 1-4).
+- Books start on 2026-10-29 (the first session that logs easy-to-borrow); NX3's excluded bug days don't apply.
+- Every model file is checked against its sha256 in `results/NXM/nxm_v1_meta.json` before use. An NXM error
+  is printed and never stops NX3's book.

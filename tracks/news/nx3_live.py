@@ -38,6 +38,7 @@ from core.ledger import Ledger
 from tracks.main.longterm import news_history
 from tracks.news import nx1_study as N
 from tracks.news import nx3_study as S
+from tracks.news import nxm_live as M
 from tracks.news import w1_data as W
 
 ET = S.ET
@@ -368,7 +369,7 @@ def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
         side, why = take(e, fired, r["symbol"], short_ok, day.taken())
         day.log(base | {"status": "decided", "inputs": inp, "e": e, "fired": fired, "side": side, "skip": why,
                         "entry_iex": entry, "entry_iex_t": trades[r["symbol"]][1], "prev_c": c["prev_c"],
-                        "dv20": c["dv20"]})
+                        "dv20": c["dv20"], "etb": r["symbol"] in short_ok})
 
 
 def close_day(root, day, d):
@@ -386,7 +387,12 @@ def close_day(root, day, d):
            "control": [{k: p.get(k) for k in slim} for p in ctrl],
            "counts": {"events": len(day.decisions), "decided": len(dec), "fired": sum(x["fired"] for x in dec),
                       "picks": len(picks), "missed": sum(x["status"] == "missed" for x in day.decisions)}}
-    return led.write_json("nx3_day", day_s, f"nx3/days/{day_s}.json", json.loads(json.dumps(rec, default=_js)))
+    out = led.write_json("nx3_day", day_s, f"nx3/days/{day_s}.json", json.loads(json.dumps(rec, default=_js)))
+    try:    # the NXM books (research/prereg/NXM.md) read this day's logged inputs; they never stop NX3
+        M.close_day(root, day.decisions, d, day_seed(d))
+    except Exception as ex:
+        print(f"[nxm] day not logged: {type(ex).__name__}: {ex}")
+    return out
 
 
 def settle(root, api, cal, today):
@@ -420,6 +426,10 @@ def settle(root, api, cal, today):
                 res["book_pnl"] = float((p["net"] * N.NOTIONAL).sum())
         out.append(led.write_json("nx3_settle", e["date"], f"nx3/settled/{e['date']}.json",
                                   json.loads(json.dumps(res, default=_js))))
+    try:
+        M.settle(root, api, cal, today)
+    except Exception as ex:
+        print(f"[nxm] settle failed: {type(ex).__name__}: {ex}")
     return out
 
 
