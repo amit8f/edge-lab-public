@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8956.25 | -1043.75% | 87 | 18 | long FLEX, long MU, long SOFI, long TWST, long VRT |
-| Coin flip on C's picks | $9654.08 | -345.92% | 87 | 43 | short FLEX, long MU, short SOFI, short TWST, long VRT |
-| C's prompt on Groq (K7) | $8484.43 | -1515.57% | 229 | 54 | long ACN, long AON, short CBRS, short TER, long VRT |
-| Coin flip on C-groq's picks | $9587.16 | -412.84% | 229 | 114 | long ACN, long AON, long CBRS, short TER, short VRT |
-| Just hold SPY | $10041.64 | +41.64% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8957.90 | -1042.10% | 87 | 18 | long FLEX, long MU, long SOFI, long TWST, long VRT |
+| Coin flip on C's picks | $9666.70 | -333.30% | 87 | 43 | short FLEX, long MU, short SOFI, short TWST, long VRT |
+| C's prompt on Groq (K7) | $8489.80 | -1510.20% | 229 | 54 | long ACN, long AON, short CBRS, short TER, long VRT |
+| Coin flip on C-groq's picks | $9577.46 | -422.54% | 229 | 114 | long ACN, long AON, long CBRS, short TER, short VRT |
+| Just hold SPY | $10046.01 | +46.01% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-28 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 13:27 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all current long positions due to continued strong positive momentum and supportive news for each stock, with all positions showing profit or near breakeven. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 13:4
 | 2026-10-27 10:57 | long BE, long INTC, long PANW, long RCL, long SOFI | none | Maintaining all current long positions as they are either showing strong positive momentum today or have positive news catalysts, with RCL showing a strong rebound from its recent dip. |
 | 2026-10-27 10:48 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 10:37 | long BE, long INTC, long PANW, long RCL, long SOFI | none | Maintaining all existing long positions in BE, INTC, PANW, SOFI, and RCL due to positive news, strong daily momentum, or solid underlying performance, with no new positions added at this time. |
-| 2026-10-27 10:27 | no answer, nothing changed | none | unreadable answer |
