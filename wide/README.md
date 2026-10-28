@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 15:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8963.78 | -1036.22% | 90 | 18 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT |
-| Coin flip on C's picks | $9807.29 | -192.71% | 90 | 45 | short FLEX, long ORCL, long SNDK, short SOFI, long VRT |
-| C's prompt on Groq (K7) | $8463.71 | -1536.29% | 235 | 54 | long ACN, long AON, long FLEX, long ORCL, long VRT |
-| Coin flip on C-groq's picks | $9560.79 | -439.21% | 235 | 115 | long ACN, long AON, short FLEX, long ORCL, short VRT |
-| Just hold SPY | $10026.99 | +26.99% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8964.81 | -1035.19% | 90 | 18 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT |
+| Coin flip on C's picks | $9773.03 | -226.97% | 90 | 45 | short FLEX, long ORCL, long SNDK, short SOFI, long VRT |
+| C's prompt on Groq (K7) | $8457.57 | -1542.43% | 235 | 54 | long ACN, long AON, long FLEX, long ORCL, long VRT |
+| Coin flip on C-groq's picks | $9563.53 | -436.47% | 235 | 115 | long ACN, long AON, short FLEX, long ORCL, short VRT |
+| Just hold SPY | $10034.42 | +34.42% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-28 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 14:57 | no answer, nothing changed | none | unreadable answer |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 15:1
 | 2026-10-27 12:27 | long BE, long DELL, long INTC, long PANW, long SOFI | none | Maintaining all existing long positions due to strong positive momentum, favorable news catalysts, and healthy hourly price action across the board. |
 | 2026-10-27 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 12:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-27 11:57 | no answer, nothing changed | none | unreadable answer |
