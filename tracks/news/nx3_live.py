@@ -49,6 +49,8 @@ LOOKBACK_DAYS = 420
 NEWS_DAYS_KEEP = 40
 IEX_SHARE_DAYS = 5
 SETTLE_AFTER = pd.Timedelta(minutes=20)     # SIP bars are free 15 minutes after the fact
+# settled and kept, but left out of the forward test: no pre-open event was decided (NX3.md, bug fixes 2026-10-28)
+BUG_DAYS = {"2026-10-26", "2026-10-27", "2026-10-28"}
 BOOK_CASH = 5000.0
 SEED = S.SEED
 
@@ -402,8 +404,10 @@ def settle(root, api, cal, today):
         rec = json.loads((Path(root) / e["file"]).read_text())
         rows = [dict(p, role=role) for role in ("picks", "control") for p in rec[role]]
         res = {"day": e["date"], "trades": [], "pick_minus_control": None}
+        if e["date"] in BUG_DAYS:
+            res["excluded"] = "bug days, left out of the forward test (research/prereg/NX3.md, 2026-10-28)"
         if rows:
-            ev = pd.DataFrame(rows).assign(d=d)
+            ev = pd.DataFrame(rows).assign(d=d, next=caldates[k + 1])
             ev["t"] = pd.to_datetime(ev["t"])
             t = api.settle_trades(ev, cal)
             if len(t):
@@ -452,6 +456,7 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep):
     meta = json.loads(META.read_text())
     day.ctx.setdefault("cut", float(meta["fire_cut"]))
     a = api.assets()
+    listed = set(a["symbol"])
     short_ok = set(a.loc[a["shortable"].fillna(False).astype(bool) & a["easy_to_borrow"].fillna(False).astype(bool),
                          "symbol"])
     nd = news_days(root, api, d, cal)
@@ -472,10 +477,12 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep):
                      "decided_at": now})
         if len(ready):
             new = sorted(set(ready["symbol"]) - set(ctx) - set(day.ctx.get("no_ctx", [])))
-            if new or market is None:
-                c, market = stock_context(api, new, ses["prev"], cal)
+            # only symbols Alpaca lists: one foreign symbol (TSX:CAE, 002594) made it refuse the whole request
+            ask = [s for s in new if s in listed]
+            if ask or market is None:
+                c, market = stock_context(api, ask, ses["prev"], cal)
                 ctx |= c
-                day.ctx["no_ctx"] = sorted(set(day.ctx.get("no_ctx", [])) | (set(new) - set(c)))
+            day.ctx["no_ctx"] = sorted(set(day.ctx.get("no_ctx", [])) | (set(new) - set(ctx)))
             decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now)
         day.save()
         sleep(max(0.0, POLL_S - (time.monotonic() - start)))
@@ -506,7 +513,8 @@ def check(api=None):
     ev = S.session_events(N.dedup(rows), pd.DataFrame([ses]))
     print(f"[check] {ses['date']:%Y-%m-%d}: {len(news)} pre-open articles, {len(rows)} single-symbol rows, "
           f"{len(ev)} events (first 200 articles)")
-    syms = sorted(ev["symbol"].unique())[:5]
+    listed = set(api.assets()["symbol"])
+    syms = sorted(s for s in ev["symbol"].unique() if s in listed)[:5]
     ctx, market = stock_context(api, syms, ses["prev"], cal)
     print(f"[check] context for {len(ctx)} of {len(syms)}; in universe {sum(c['uni'] for c in ctx.values())}; "
           f"IEX shares {[round(c['iex_share'], 4) for c in ctx.values()]}; market {market}")

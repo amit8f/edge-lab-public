@@ -3,6 +3,7 @@ import json
 
 import numpy as np
 import pandas as pd
+import requests
 
 from core.ledger import Ledger
 from tracks.news import nx3_live as L
@@ -71,7 +72,15 @@ class FakeApi:
         return pd.DataFrame({"symbol": ["AAA", "BBB", "CCC"], "shortable": [True, True, True],
                              "easy_to_borrow": [True, True, False]})
 
+    @staticmethod
+    def refuse(symbols):
+        """Alpaca refuses a whole request that names a symbol it doesn't list (a 400)."""
+        bad = sorted(set(symbols) - {"AAA", "BBB", "CCC", "SPY"})
+        if bad:
+            raise requests.HTTPError(f"400 Client Error: Bad Request for symbols {bad}")
+
     def daily(self, symbols, start, end, adjustment):
+        self.refuse(symbols)
         idx = DAYS[(DAYS >= pd.Timestamp(start)) & (DAYS <= pd.Timestamp(end))]
         rng = np.random.default_rng(1)
         out = {}
@@ -81,18 +90,21 @@ class FakeApi:
         return out
 
     def iex_bars(self, symbols, start, end, timeframe):
+        self.refuse(symbols)
         if timeframe == "1Day":
             return {s: pd.DataFrame({"t": [start], "o": [1.0], "c": [1.0], "v": [2.5e5]}) for s in symbols}
         n = int((min(pd.Timestamp(end), self.clock) - OPEN).total_seconds() // 60)
         return {s: bars([20.0] * max(n, 0)) for s in symbols}
 
     def last_trades(self, symbols):
+        self.refuse(symbols)
         return {s: (20.2, str(self.clock)) for s in symbols}
 
     def news(self, start, end):
         rows = [(1, "2026-10-26T12:00:00Z", "AAA raises guidance", "AAA"),
                 (2, "2026-10-26T12:30:00Z", "BBB misses estimates, cuts outlook", "BBB"),
                 (3, "2026-10-26T15:00:00Z", "CCC wins contract", "CCC"),
+                (5, "2026-10-26T12:05:00Z", "XYZ beats estimates", "TSX:XYZ"),   # listed abroad only
                 (4, "2026-10-23T15:00:00Z", "AAA older", "AAA")]
         n = pd.DataFrame(rows, columns=["id", "created_at", "headline", "symbols"])
         tt = pd.to_datetime(n["created_at"], utc=True)
@@ -110,12 +122,13 @@ class FakeApi:
 
     def settle_trades(self, ev, cal):
         self.settled.append(ev)
-        t = ev.assign(entry_t=ev["t"] + pd.Timedelta(minutes=1), entry=20.0, exit_ac=21.0, ret=0.05, spy_ret=0.01,
-                      mret=0.04, price=ev["prev_c"], days=4)
-        return t
+        return S.month_trades(ev, S.sessions(cal), None)     # training's code, on the fake SIP bars below
 
 
-def test_a_day_end_to_end(tmp_path):
+def test_a_day_end_to_end(tmp_path, monkeypatch):
+    monkeypatch.setattr(S, "daily_closes", lambda syms, first, last, h: {
+        (s, d): [20.0, 20.0] for s in syms for d in DAYS[(DAYS >= first) & (DAYS <= last)]})
+    monkeypatch.setattr(S, "day_bars", lambda syms, d, o, c, h: {s: bars([20.0] * 390, start=o) for s in syms})
     api = FakeApi()
     clock_steps = []
 
@@ -130,7 +143,8 @@ def test_a_day_end_to_end(tmp_path):
     led = Ledger(tmp_path / "nx3")
     rec = json.loads((tmp_path / "nx3" / led.entry("nx3_day", "2026-10-26")["file"]).read_text())
     dec = {x["symbol"]: x for x in rec["events"]}
-    assert set(dec) == {"AAA", "BBB", "CCC"}
+    assert set(dec) == {"AAA", "BBB", "CCC", "TSX:XYZ"}
+    assert dec["TSX:XYZ"]["status"] == "not in universe" and dec["AAA"]["status"] == "decided"
     assert dec["AAA"]["side"] == 1 and dec["AAA"]["t"].startswith("2026-10-26T09:30")
     assert dec["BBB"]["e"] < 0 and dec["BBB"]["side"] == -1             # bad news, easy to borrow: short
     assert dec["CCC"]["t"].startswith("2026-10-26T11:00") and dec["CCC"]["inputs"]["mins_open"] == 90
@@ -145,4 +159,5 @@ def test_a_day_end_to_end(tmp_path):
     assert L.run(tmp_path, 1, api=api, clock=clock, sleep=sleep) == 3
     s = json.loads((tmp_path / "nx3" / led.entry("nx3_settle", "2026-10-26")["file"]).read_text())
     assert len(s["trades"]) == 2 * len(rec["picks"]) and s["pick_minus_control"] is not None
+    assert {x["days"] for x in s["trades"]} == {2} and "bug days" in s["excluded"]   # D is one of them
     assert led.verify() == []

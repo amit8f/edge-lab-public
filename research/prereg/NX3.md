@@ -89,3 +89,18 @@ How the registered shadow book reads the rules above with live data (`tracks/new
   SIP minute bar at or after t + 1 minute, exit = next close, minus SPY), with training's costs on a
   $500 trade. Each decided event logs both its live inputs and, at settlement, the SIP entry, so the gap
   between live and training inputs is measured.
+
+## Bug fixes (2026-10-28, before any live day settled; no rule above changes)
+
+- News names symbols that Alpaca doesn't list as US stocks (foreign listings such as `TSX:CAE`, codes such
+  as `005380`). The scorer sent them to Alpaca's bar API with the batch's other new symbols; Alpaca refused
+  the whole request (a 400, logged on 2026-10-28 for `TSX:CPX` and `TSX:CAE`), and the scorer stopped,
+  restarted on the same events and stopped again until those events passed their 10-minute limit. Every
+  pre-open batch held such symbols (60 to 83 events a day), so every pre-open event on 2026-10-26 (when the job
+  also started late), 10-27 and 10-28 was logged as missed (1,432, 1,244 and 1,522 events); the first
+  decisions came at 09:40 and 09:41, just past the limit, and those books held only intraday picks. Fix: only
+  symbols in Alpaca's active US stock list get stock inputs; the rest are logged "not in universe", as in
+  training, where they have no bars.
+- The settlement passed training's code no exit date, so no day settled. Fix: the next session is passed.
+- 2026-10-26, 10-27 and 10-28 did not run the registered event set. They are settled and kept in the ledger
+  (append-only), marked `excluded`, and left out of the forward test and its count of closed trades.
