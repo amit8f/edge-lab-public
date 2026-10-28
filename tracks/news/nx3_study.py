@@ -361,14 +361,16 @@ def day_bars(symbols, day, open_t, close_t, headers):
 
 
 def daily_closes(symbols, first, last, headers):
-    """Daily SIP closes, raw and all-adjusted, fetched back to back: {(symbol, date): (raw, all)}."""
+    """Daily SIP closes, raw and all-adjusted, fetched back to back: {(symbol, date): (raw, all)}. The end is
+    capped at now - 16 minutes: a date-only end means the whole day, which the free plan refuses until the
+    day is over (NX3's live settle asks right after the close)."""
     out = {}
     for adj in ("raw", "all"):
         for i in range(0, len(symbols), SYM_CHUNK):
             tok = None
             while True:
                 p = {"symbols": ",".join(symbols[i:i + SYM_CHUNK]), "timeframe": "1Day", "start": str(first.date()),
-                     "end": str(last.date()), "feed": "sip", "adjustment": adj, "limit": 10000}
+                     "end": alpaca.sip_end(last), "feed": "sip", "adjustment": adj, "limit": 10000}
                 if tok:
                     p["page_token"] = tok
                 j = alpaca.get(BARS_URL, p, headers=headers)
