@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 13:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 13:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8973.35 | -1026.65% | 87 | 18 | long FLEX, long MU, long SOFI, long TWST, long VRT |
-| Coin flip on C's picks | $9629.73 | -370.27% | 87 | 43 | short FLEX, long MU, short SOFI, short TWST, long VRT |
-| C's prompt on Groq (K7) | $8495.55 | -1504.45% | 225 | 53 | long ACN, long AON, long NTRA, short TER, long TWST |
-| Coin flip on C-groq's picks | $9590.48 | -409.52% | 225 | 111 | long ACN, long AON, long NTRA, short TER, short TWST |
-| Just hold SPY | $10048.61 | +48.61% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8960.18 | -1039.82% | 87 | 18 | long FLEX, long MU, long SOFI, long TWST, long VRT |
+| Coin flip on C's picks | $9624.76 | -375.24% | 87 | 43 | short FLEX, long MU, short SOFI, short TWST, long VRT |
+| C's prompt on Groq (K7) | $8473.82 | -1526.18% | 226 | 53 | long ACN, long AON, long NTRA, short TER, long VRT |
+| Coin flip on C-groq's picks | $9595.36 | -404.64% | 226 | 112 | long ACN, long AON, long NTRA, short TER, long VRT |
+| Just hold SPY | $10044.25 | +44.25% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-28 13:17 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all five existing long positions due to strong positive momentum, favorable news catalysts, and continued profitability across the portfolio. |
 | 2026-10-28 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 12:57 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all five existing long positions (VRT, TWST, FLEX, MU, SOFI) due to continued positive momentum and supportive news, indicating strong performance and potential for further gains. |
 | 2026-10-28 12:47 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all existing long positions (FLEX, MU, SOFI, TWST, VRT) due to strong positive news, earnings, and continued upward momentum across the board. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 13:0
 | 2026-10-27 10:17 | long BE, long INTC, long PANW, long RCL, long SOFI | none | Maintaining current long positions in BE, INTC, PANW, RCL, and SOFI due to strong daily performance, positive news, and overall upward momentum, aiming to capitalize on recent gains and positive catalysts. |
 | 2026-10-27 10:07 | long BE, long INTC, long PANW, long RCL, long SOFI | none | Maintaining all existing long positions due to strong positive news, earnings beats, and robust price action across the board, especially for SOFI and RCL. |
 | 2026-10-27 09:57 | long BE, long INTC, long PANW, long RCL, long SOFI | none | Maintaining all current long positions in BE, INTC, PANW, SOFI, and RCL due to strong positive news, earnings beats, and/or significant upward momentum today, aligning with a bullish outlook for these stocks. |
-| 2026-10-27 09:48 | long BE, long INTC, long PANW, long RCL, long SOFI | sold LITE @ $836.70; sold LMT @ $630.76; sold ZS @ $259.69; bought BE @ $219.22; bought RCL @ $300.99; bought SOFI @ $16.23 | Sold LITE, LMT, and ZS to reallocate to SOFI, RCL, and BE based on strong earnings and positive analyst sentiment, while maintaining INTC and PANW for continued momentum. |
