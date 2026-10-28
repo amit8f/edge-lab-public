@@ -89,3 +89,13 @@ as a funded strategy. Fail: it is dropped or re-registered as a new version.
   run sized CRS and FCFS at zero shares. PICK-PENNY stays $500 ($1-5 stocks fit). EL-PICK-MAIN would hold $5,000.
 - Both books and twins start fresh at the first pass of 2026-10-23. The 2026-10-22 passes stay in the ledger
   as a test and are left out of every result.
+
+## Clarification 2 (2026-10-28, Amit's choice; no rule on entries, sizing, exits or the test changes)
+
+- An agent answer that can't be read is asked once more, with the same prompt plus one line saying the last
+  answer could not be read (`adaptive/watch.py` `RETRY_NOTE`). Only an answer still unreadable after that one
+  retry counts as an agent error under the kill switch (`adaptive/guards.py`), which is unchanged. The retry's
+  model, prompt hash and answer hash are logged with the first call.
+- Why: one unreadable answer stopped new entries in both books for the rest of the day on 2026-10-23, 10-26
+  and 10-27 (once each from the picker, the reviewer and the analyst). Raw answers aren't logged here, so the
+  retry is the fix rather than a parser change.

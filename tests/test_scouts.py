@@ -419,6 +419,8 @@ class Fake:
         a = self.answers.get(who)
         if isinstance(a, dict) and model in a:
             a = a[model]
+        if isinstance(a, list):            # answers in turn, the last one repeating
+            a = a.pop(0) if len(a) > 1 else a[0]
         if isinstance(a, Exception):
             raise a
         return a if isinstance(a, str) else json.dumps(a or {})
@@ -559,6 +561,32 @@ def test_nvidia_and_cloudflare_calls(monkeypatch):
     assert S.json_object("no json") == "no json"
 
 
+def test_an_unreadable_scout_answer_is_asked_once_more(tmp_path):
+    a = answers()
+    api = Fake(heads=[HEAD], answers=dict(a, scout=["buy S0!", a["scout"]]))
+    rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=35))
+    s0 = rec["scouts"][0]
+    assert "unreadable" not in s0 and s0["retry"]["answer_sha256"] and s0["picks"][0]["symbol"] == "S0"
+    assert "unreadable" not in (rec["blocked"]["SCOUT-MAIN"] or "")
+    scout_texts = [c[2] for c in api.calls if c[0] == "scout"]
+    assert len(scout_texts) == 3 and scout_texts[1].endswith(S.W.RETRY_NOTE)   # the third is the FLIP1 call
+
+
+def test_flip_test_asks_once_a_day_with_flipped_headlines_and_never_trades_on_it(tmp_path):
+    a = answers()
+    flipped = json.loads(json.dumps(a["scout"]))
+    flipped["picks"][0]["side"] = "short"
+    api = Fake(heads=[HEAD], answers=dict(a, scout=[a["scout"], flipped, a["scout"]]))
+    rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=35))
+    ft = rec["flip_test"]
+    assert ft["swaps"] == 1 and ft["results"] == [{"symbol": "S0", "before": "long", "after": "short", "moved": True}]
+    texts = [c[2] for c in api.calls if c[0] == "scout"]
+    assert "EPS Beats" in texts[0] and "EPS Misses" in texts[1] and "[MAIN]" in texts[1]
+    assert rec["finalists"]["S0"]["side"] == "long"                        # the book uses the real answer
+    rec2 = run(api, tmp_path, OPEN + pd.Timedelta(minutes=40))
+    assert "flip_test" not in rec2                                         # once a day
+
+
 def test_unreadable_scout_answer_stops_entries(tmp_path):
     api = Fake(heads=[HEAD], answers=dict(answers(), scout="buy S0!"))
     rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=35))
@@ -627,6 +655,9 @@ def test_parsers():
     assert S.parse_picks(json.dumps({"picks": [dict(ok, extra=1)]}), {"A"})[0]["horizon"] == 5
     assert S.parse_picks(json.dumps({"picks": [dict(ok, horizon=3)]}), {"A"}) is None
     assert S.parse_picks(json.dumps({"picks": [ok] * 4}), {"A"}) is None
+    none = dict(ok, side="none", horizon=0, confidence=0)                # a "no" needs no valid horizon
+    assert S.parse_picks(json.dumps({"picks": [none] * 5 + [ok]}), {"A"}) == [ok]
+    assert S.parse_picks(json.dumps({"picks": [dict(none, symbol="MAIN")]}), {"A"}) == []
     assert S.parse_picks(json.dumps({"picks": [dict(ok, symbol="B")]}), {"A"}) is None
     leak = S.parse_picks(json.dumps({"picks": [dict(ok, confidential=True)]}), {"A"})[0]
     assert leak["side"] == "none" and leak["would_side"] == "long" and leak["confidential"] is True

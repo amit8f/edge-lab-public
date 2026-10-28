@@ -134,3 +134,44 @@ def test_groq_book_trades_on_its_own_answer_and_old_state_gains_it():
     assert rec["decision_C-groq"]["want"] == {"S48": -1, "S47": 1}
     w.step(st, u, d, syms, T0 + 600, ask=lambda s, t: gem, ask_b=lambda s, t: (_ for _ in ()).throw(RuntimeError("429")))
     assert set(st["books"]["C-groq"]["pos"]) == {"S48", "S47"}   # a failed call changes nothing
+
+
+def test_slow_books_act_once_a_day_from_1530_et_on_the_same_answers():
+    st = w.init_state(T0)
+    d, u = data(), uni()
+    syms = w.shortlist(u, d, [])
+    at = lambda s: int(pd.Timestamp(s, tz="UTC").timestamp())
+    a1 = json.dumps({"positions": [{"symbol": "S49", "side": "long"}, {"symbol": "S48", "side": "short"}]})
+    a2 = json.dumps({"positions": [{"symbol": "S47", "side": "long"}]})
+    for t in ("2026-10-28 19:37", "2026-10-29 19:00"):        # before K8's first day, then before 15:30 ET
+        w.step(st, u, d, syms, at(t), ask=lambda s, x: a1, ask_b=lambda s, x: a1)
+        assert not st["books"]["C-slow"]["pos"] and not st["books"]["C-groq-slow"]["pos"]
+    w.step(st, u, d, syms, at("2026-10-29 19:31"), ask=lambda s, x: "garbage", ask_b=lambda s, x: "garbage")
+    assert not st["books"]["C-slow"]["pos"]                   # an unreadable answer doesn't use up the day
+    t = at("2026-10-29 19:37")                                # 15:37 ET: the first readable answer from 15:30
+    rec = w.step(st, u, d, syms, t, ask=lambda s, x: a1, ask_b=lambda s, x: a2)
+    assert {s: p["side"] for s, p in st["books"]["C-slow"]["pos"].items()} == {"S49": 1, "S48": -1}
+    assert {s: p["side"] for s, p in st["books"]["C-slow-coin"]["pos"].items()} == {s: w.coin_side(s, t) for s in ("S48", "S49")}
+    assert set(st["books"]["C-groq-slow"]["pos"]) == set(st["books"]["C-groq-slow-coin"]["pos"]) == {"S47"}
+    assert [f["sym"] for f in rec["fills"]["C-slow"]] == ["S48", "S49"] and not rec["fills"]["C"]
+    w.step(st, u, d, syms, at("2026-10-29 19:47"), ask=lambda s, x: a2, ask_b=lambda s, x: a1)   # later that day
+    assert set(st["books"]["C"]["pos"]) == {"S47"} and set(st["books"]["C-slow"]["pos"]) == {"S49", "S48"}
+    assert set(st["books"]["C-groq-slow"]["pos"]) == {"S47"}
+    w.step(st, u, d, syms, at("2026-10-30 19:37"), ask=lambda s, x: a2, ask_b=lambda s, x: a1)   # the next day
+    assert set(st["books"]["C-slow"]["pos"]) == {"S47"} and set(st["books"]["C-groq-slow"]["pos"]) == {"S49", "S48"}
+
+
+def test_slow_book_holdings_are_priced_but_kept_off_the_shortlist(tmp_path, monkeypatch):
+    px_time = pd.Timestamp(T0, unit="s", tz="UTC")
+    st = w.init_state(T0)
+    w.open_pos(st["books"]["C-slow"], "S05", 1, 100.0, T0, w.START_USD)     # S05's move is too small for the top 40
+    w.open_pos(st["books"]["C-groq"], "S06", 1, 100.0, T0, w.START_USD)
+    (tmp_path / "wide").mkdir()
+    (tmp_path / "wide" / "books.json").write_text(json.dumps(st))
+    fetched, seen = [], []
+    monkeypatch.setattr(ai_mirror, "mirror_headers", lambda b: None)
+    w.run(tmp_path, now=px_time + pd.Timedelta(minutes=16), universe=lambda now: uni(),
+          fetch=lambda now, u, held: (fetched.append(held), (px_time, data(), {}))[1],
+          hours=lambda d, s, now, p, ses: seen.append(s), ask=lambda s, t: '{"positions": []}',
+          headlines=lambda syms, p: {})
+    assert {"S05", "S06"} <= set(fetched[0]) and "S06" in seen[0] and "S05" not in seen[0]

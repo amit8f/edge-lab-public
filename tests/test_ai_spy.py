@@ -85,3 +85,13 @@ def test_run_logs_once_per_slot_and_skips_closed_hours(tmp_path, monkeypatch):
     assert s.run(tmp_path, now=pd.Timestamp(f"{DAY} 21:00", tz="America/New_York").tz_convert("UTC"), **kw) is None
     from core.ledger import Ledger
     assert Ledger(tmp_path / "spy").has("run", f"{now.tz_convert('America/New_York'):%Y-%m-%dT%H}:40")
+
+
+def test_live_bars_waits_for_the_first_free_sip_bar_and_starts_at_the_et_open():
+    calls = []
+    get = lambda url, p: (calls.append(p), {"bars": {"SPY": [{"t": "x"}]}})[1]
+    assert s.live_bars(DAY, et(9, 37).tz_convert("UTC") - pd.Timedelta(minutes=16), get=get) == [] and not calls
+    assert s.live_bars(DAY, et(9, 47).tz_convert("UTC") - pd.Timedelta(minutes=16), get=get) == [{"t": "x"}]
+    assert calls[0]["start"] == "2026-10-19T13:30:00Z" and calls[0]["end"] == "2026-10-19T13:31:00Z"
+    s.live_bars("2026-11-02", pd.Timestamp("2026-11-02 15:00", tz="UTC"), get=get)    # EST: the open is 14:30 UTC
+    assert calls[1]["start"] == "2026-11-02T14:30:00Z"

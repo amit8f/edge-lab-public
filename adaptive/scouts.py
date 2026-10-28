@@ -25,7 +25,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from adaptive import costs, guards, lanes as L, sizing
+from adaptive import costs, flip, guards, lanes as L, sizing
 from adaptive import watch as W
 from core.ledger import Ledger
 
@@ -344,11 +344,18 @@ def parse_picks(text, allowed):
     marked "confidential": true is kept with that flag, its side forced to "none" and the scout's side kept as
     would_side."""
     d = W._json(text)
-    if d is None or not isinstance(d.get("picks"), list) or len(d["picks"]) > PICKS_PER_WAKE:
+    if d is None or not isinstance(d.get("picks"), list):
         return None
     out = []
+    if not all(isinstance(x, dict) for x in d["picks"]):
+        return None
+    # "none" for a stock is no pick: it is dropped before the checks, whatever its other fields say
+    # (clarification in SYS2B.md, 2026-10-28). A confidential flag is kept, since it is logged.
+    d["picks"] = [x for x in d["picks"] if x.get("side") != "none" or x.get("confidential") is True]
+    if len(d["picks"]) > PICKS_PER_WAKE:
+        return None
     for x in d["picks"]:
-        if not isinstance(x, dict) or not SCOUT_FIELDS <= set(x):
+        if not SCOUT_FIELDS <= set(x):
             return None
         leak = x.get("confidential") is True
         x = {k: x[k] for k in SCOUT_FIELDS}
@@ -426,6 +433,41 @@ def ask(st, api, models, system, text, dkey, now, hourly=False):
             continue
         return raw, rec
     return None, None
+
+
+def ask_parsed(st, api, models, system, text, dkey, now, parse, hourly=False):
+    """ask(), then parse(raw, model); an unreadable answer is asked once more with W.RETRY_NOTE, on budget
+    (clarification in SYS2B.md, 2026-10-28). (raw or None, parsed or None, log record or None, answers seen)."""
+    raw, rec = ask(st, api, models, system, text, dkey, now, hourly)
+    if rec is None or raw is None:
+        return raw, None, rec, []
+    seen, out = [raw], parse(raw, rec["model"])
+    if out is None:
+        raw2, again = ask(st, api, [rec["model"]], system, text + W.RETRY_NOTE, dkey, now, hourly)
+        rec["retry"] = again or {"skipped": "no budget"}
+        if raw2 is not None:
+            seen.append(raw2)
+            raw, out = raw2, parse(raw2, rec["model"])
+    return raw, out, rec, seen
+
+
+def flip_test(st, api, rec, evidence, call, lane, system, text, picks, allowed, dkey, now, hourly):
+    """FLIP1: once a day, the first scout answer with a real pick is asked again, same model and budget, with the
+    words in its headline and filing blocks flipped. Logged as rec["flip_test"]; never traded or an error."""
+    flipped, swaps = flip.flip_blocks(text)
+    if not swaps:
+        return
+    st["flip_day"] = dkey
+    raw, p2, c2, seen = ask_parsed(st, api, [call["model"]], system, flipped, dkey, now,
+                                   lambda r, m: parse_picks(r, allowed), hourly=hourly)
+    evidence.extend({"kind": "flip_answer", "lane": lane, "answer": a} for a in seen)
+    side2 = {p["symbol"]: p["side"] for p in p2 or []}
+    rec["flip_test"] = dict(c2 or {"skipped": "no budget"}, lane=lane, swaps=swaps, readable=p2 is not None,
+                            results=[{"symbol": p["symbol"], "before": p["side"],
+                                      "after": side2.get(p["symbol"], "none") if p2 is not None else None,
+                                      "moved": None if p2 is None else
+                                      flip.moved(flip.SIDE[p["side"]], flip.SIDE[side2.get(p["symbol"], "none")])}
+                                     for p in picks if p["side"] != "none"])
 
 
 # ---------- agents: text ----------
@@ -883,7 +925,9 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
                                                   all_texts))
                               for e in show])
             system = SCOUT_PROMPT.format(lane=lane, name=L.LANES[lane][0], hint=LANE_HINT.get(lane, ""))
-            raw, call = ask(st, api, SCOUT_MODELS, system, text, dkey, now, hourly=bool(hourly))
+            allowed_s = {e["symbol"] for e in show}
+            raw, picks, call, seen = ask_parsed(st, api, SCOUT_MODELS, system, text, dkey, now,
+                                                lambda r, m: parse_picks(r, allowed_s), hourly=bool(hourly))
             if call is None:
                 continue
             st["lane_calls"].setdefault(dkey, {})[lane] = st["lane_calls"].get(dkey, {}).get(lane, 0) + 1
@@ -893,13 +937,15 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
                 e["shown"] = e["shown"] or now.isoformat()
             srec = dict(call, lane=lane, turn="hourly" if hourly else "new", events=[e["id"] for e in show])
             if raw is not None:
-                picks = parse_picks(raw, {e["symbol"] for e in show})
-                evidence.append({"kind": "scout_answer", "lane": lane, "answer": raw})
+                evidence.extend({"kind": "scout_answer", "lane": lane, "answer": a} for a in seen)
                 if picks is None:
                     errors += 1
                     srec["unreadable"] = True
                 else:
                     srec["picks"] = [{k: p[k] for k in ("symbol", "side", "horizon", "confidence")} for p in picks]
+                    if st.get("flip_day") != dkey and any(p["side"] != "none" for p in picks):
+                        flip_test(st, api, rec, evidence, call, lane, system, text, picks, allowed_s, dkey, now,
+                                  bool(hourly))
                     ev = {e["symbol"]: e for e in show}
                     for p in picks:
                         if p.get("confidential"):
@@ -951,13 +997,13 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
                               guards.wrap_untrusted(case) +
                               ("\n  web search:\n" + guards.wrap_untrusted(web[s]) if s in web else
                                "\n  web search: none"))
-            raw, call = ask(st, api, CHECK_MODELS, CHECK_PROMPT, "\n".join(blocks), dkey, now)
+            raw, c, call, seen = ask_parsed(st, api, CHECK_MODELS, CHECK_PROMPT, "\n".join(blocks), dkey, now,
+                                            lambda r, m: parse_checks(r, set(finalists)))
             checks = {}
             if call is not None:
                 rec["agents"]["checker"] = call
                 if raw is not None:
-                    evidence.append({"kind": "checker_answer", "answer": raw})
-                    c = parse_checks(raw, set(finalists))
+                    evidence.extend({"kind": "checker_answer", "answer": a} for a in seen)
                     if c is None:
                         errors += 1
                         call["unreadable"] = True
@@ -990,14 +1036,14 @@ def run(state_dir, api, now=None, evidence_dir=None, cache=None, dry=False):
                                 f"{prices.get(s, p['last']):g}, stop {p['stop']:g}, opened {p['opened_day']}, horizon "
                                 f"{p['horizon']}" for s, p in sorted(b["pos"].items())) or "none"
                 lines.append(f"## {name.removeprefix('SCOUT-')} book: equity ${W.equity(b):.2f}, held: {pos}")
-            raw, call = ask(st, api, PICK_MODELS, PICK_PROMPT, "\n".join(lines), dkey, now)
+            allowed = set(finalists) | set(picker_held)
+            raw, decisions, call, seen = ask_parsed(st, api, PICK_MODELS, PICK_PROMPT, "\n".join(lines), dkey, now,
+                                                    lambda r, m: parse_decisions(r, allowed, m))
             if call is not None:
                 st["picker_t"] = now.isoformat()
                 rec["agents"]["picker"] = call
                 if raw is not None:
-                    evidence.append({"kind": "picker_answer", "answer": raw})
-                    allowed = set(finalists) | set(picker_held)
-                    decisions = parse_decisions(raw, allowed, call["model"])
+                    evidence.extend({"kind": "picker_answer", "answer": a} for a in seen)
                     if decisions is None:
                         errors += 1
                         call["unreadable"] = True

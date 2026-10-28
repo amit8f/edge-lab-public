@@ -63,6 +63,8 @@ class Fake:
     def _answer(self, who, system, text):
         self.calls.append((who, text))
         a = self.answers.get(who)
+        if isinstance(a, list):            # answers in turn, the last one repeating
+            a = a.pop(0) if len(a) > 1 else a[0]
         if isinstance(a, Exception):
             raise a
         return a if isinstance(a, str) else json.dumps(a or {})
@@ -148,6 +150,40 @@ def test_risk_rules_in_code(tmp_path):
         "reviewer": {"reviews": [{"symbol": "S1", "direction": "short", "confidence": 90, "reason": "ok"}]}})
     rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=65))
     assert rec["risk"][0]["skip"] == "not shortable" and rec["fills"] == []
+
+
+def test_an_unreadable_answer_is_asked_once_more(tmp_path):
+    good = agents()
+    api = Fake(moves={"S0": 0.15}, answers=dict(good, picker=["I think you should buy S0", good["picker"]]))
+    rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=65))
+    assert "unreadable" not in rec["agents"]["picker"] and rec["agents"]["picker"]["retry"]["answer_sha256"]
+    assert {f["symbol"] for f in rec["fills"]} == {"S0"} and not rec["blocked"]["PICK-MAIN"]   # book and coin twin
+    texts = [t for who, t in api.calls if who == "picker"]
+    assert len(texts) == 2 and texts[1].endswith(W.RETRY_NOTE) and not texts[0].endswith(W.RETRY_NOTE)
+
+
+def test_flip_test_reasks_the_analyst_with_flipped_headlines(tmp_path):
+    good = agents()
+    turned = {"views": [dict(good["analyst"]["views"][0], tone=-1)]}
+    api = Fake(moves={"S0": 0.15}, answers=dict(good, analyst=[good["analyst"], turned, good["analyst"]]))
+    api.headlines = lambda symbols, now: {s: ["S0 beats and raises"] for s in symbols}
+    rec = run(api, tmp_path, OPEN + pd.Timedelta(minutes=65))
+    ft = rec["flip_test"]
+    assert ft["symbol"] == "S0" and ft["swaps"] == 2 and ft["before"] == 2 and ft["after"] == -1 and ft["moved"]
+    assert rec["agents"]["analyst"]["views"][0]["tone"] == 2 and {f["symbol"] for f in rec["fills"]} == {"S0"}
+    flipped = [t for who, t in api.calls if who == "analyst"][1]
+    assert "S0 misses and lowers" in flipped and "beats" not in flipped
+    api.moves = {"S2": 0.2}
+    assert "flip_test" not in run(api, tmp_path, OPEN + pd.Timedelta(minutes=70))   # once a day
+
+
+def test_flip_words():
+    from adaptive import flip
+    assert flip.flip_text("Acme BEATS estimates, Raises guidance; record high") == (
+        "Acme MISSES estimates, Lowers guidance; record low", 3)
+    t, n = flip.flip_blocks("lane: guidance raises\n" + W.guards.wrap_untrusted("Acme raises guidance"))
+    assert n == 1 and t.startswith("lane: guidance raises") and "Acme lowers guidance" in t
+    assert flip.moved(2, -1) and not flip.moved(2, 2) and flip.moved(-1, 0) and flip.moved(0, 1) is None
 
 
 def test_unreadable_answer_stops_entries_for_the_day(tmp_path):
