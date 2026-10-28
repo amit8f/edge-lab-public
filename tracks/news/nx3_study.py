@@ -153,13 +153,13 @@ def fit(X, y):
 class Model:
     """NX2's design on NX3's inputs: baseline on placebo events, news model on real z - B, e = N(x) - N(x0)."""
 
-    def __init__(self, tr):
+    def __init__(self, tr, learner=fit):
         tr = tr.assign(z=zlabel(tr))
         tr = tr[np.isfinite(tr["z"])]
         pl, re = tr[tr["kind"] == "placebo"], tr[tr["kind"] == "real"]
-        self.base = fit(pl[BASE_INPUTS].to_numpy(float), pl["z"].to_numpy(float))
+        self.base = learner(pl[BASE_INPUTS].to_numpy(float), pl["z"].to_numpy(float))
         X = re[INPUTS].to_numpy(float)
-        self.news = fit(X, re["z"].to_numpy(float) - self.base.predict(re[BASE_INPUTS].to_numpy(float)))
+        self.news = learner(X, re["z"].to_numpy(float) - self.base.predict(re[BASE_INPUTS].to_numpy(float)))
         self.cut = float(np.quantile(np.abs(self.effect(X)), FIRE_Q))
         self.n_base, self.n_news = int(len(pl)), int(len(re))
 
