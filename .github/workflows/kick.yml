@@ -1,0 +1,46 @@
+# Morning starter (core/kick.py): GitHub delays scheduled runs by hours on busy mornings, so one small job
+# stays up around the clock, starts listen, nx3-live, watch and scouts at their start times with
+# `gh workflow run` (which isn't delayed), and queues its own next job before its time limit. Starting jobs
+# only. The crons below restart the chain if it ever breaks. Free on a public repo; disable it to stop.
+name: kick
+
+on:
+  schedule:
+    - cron: "37 1 * * *"
+    - cron: "37 11 * * 1-5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: kick
+  cancel-in-progress: false
+
+jobs:
+  kick:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Start the day's jobs on time
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -m core.kick --repo "${{ github.repository }}" --minutes 330
+
+      - name: Queue the next job
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          others=$(gh run list -R "$REPO" --workflow kick.yml --limit 20 --json databaseId,status \
+            --jq "[.[] | select(.databaseId != $RUN_ID and (.status == \"queued\" or .status == \"in_progress\" or .status == \"pending\" or .status == \"waiting\"))] | length")
+          if [[ "$others" == "0" ]]; then gh workflow run kick.yml -R "$REPO" --ref main; echo queued; else echo "another run is queued"; fi
