@@ -1,0 +1,98 @@
+{
+ "LGBM": {
+  "file": "nxm_v1_LGBM.pkl",
+  "sha256": "0c4d1e79bc049eef7b60bd9887c847a25371cc5de31ba8721754f721652712b1"
+ },
+ "LIN": {
+  "file": "nxm_v1_LIN.pkl",
+  "sha256": "b6631225e3a27ebaee32b93418feecb550ea85a7152c74cc8c234bcc6b411776"
+ },
+ "MLP": {
+  "file": "nxm_v1_MLP.pkl",
+  "sha256": "b800186d4d7bb44b238e33a54a7632fdc6023b507deb245563ce56b1bb30ec76"
+ },
+ "ENS": {
+  "file": "nxm_v1_ENS.pkl",
+  "sha256": "386b95781a2136145a5afd4bcf8e901636ad64b053d2bad4c22d511bb3e20c3f"
+ },
+ "member_XGB": {
+  "file": "nxm_v1_member_XGB.pkl",
+  "sha256": "83e73cdcf9583e3b1260d983aab8efe7141fd24fc92460905fa96137df22ffcd"
+ },
+ "member_LGBM": {
+  "file": "nxm_v1_member_LGBM.pkl",
+  "sha256": "0c4d1e79bc049eef7b60bd9887c847a25371cc5de31ba8721754f721652712b1"
+ },
+ "member_LIN": {
+  "file": "nxm_v1_member_LIN.pkl",
+  "sha256": "b6631225e3a27ebaee32b93418feecb550ea85a7152c74cc8c234bcc6b411776"
+ },
+ "member_RF": {
+  "file": "nxm_v1_member_RF.pkl",
+  "sha256": "fd23144af1b7ec807ddfcd5676a55905879e03812d58452a15904c8bff4692d2"
+ },
+ "member_MLP": {
+  "file": "nxm_v1_member_MLP.pkl",
+  "sha256": "b800186d4d7bb44b238e33a54a7632fdc6023b507deb245563ce56b1bb30ec76"
+ },
+ "version": 1,
+ "inputs": [
+  "n_articles",
+  "lm_neg",
+  "lm_pos",
+  "lm_net",
+  "fb_pos",
+  "fb_neg",
+  "fb_max_neg",
+  "fb_max_pos",
+  "fb_neu",
+  "head_len",
+  "f_earnings",
+  "f_guidance",
+  "f_analyst_up",
+  "f_analyst_down",
+  "f_offering",
+  "f_merger",
+  "f_fda",
+  "f_contract",
+  "f_legal",
+  "f_bankruptcy",
+  "f_dividend",
+  "f_executive",
+  "time_bucket",
+  "novelty",
+  "r1",
+  "r5",
+  "r20",
+  "vol20",
+  "log_dv",
+  "log_px",
+  "spy_r1",
+  "spy_r5",
+  "mins_open",
+  "r_open",
+  "r_react",
+  "rv30",
+  "spy_open"
+ ],
+ "base_inputs": [
+  "r1",
+  "r5",
+  "r20",
+  "vol20",
+  "log_dv",
+  "log_px",
+  "spy_r1",
+  "spy_r5",
+  "mins_open",
+  "r_open",
+  "r_react",
+  "rv30",
+  "spy_open"
+ ],
+ "train_first": "2016-10-03",
+ "train_last": "2025-09-23",
+ "lightgbm": "4.7.0",
+ "sklearn": "1.9.1",
+ "xgboost": "3.4.1"
+}

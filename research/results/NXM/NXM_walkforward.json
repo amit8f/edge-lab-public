@@ -1,0 +1,1132 @@
+{
+ "arms": {
+  "XGB": {
+   "insample_mean": 0.011813029162744347,
+   "outsample_mean": 0.005091820141975864,
+   "overfit_rule21": true,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.005091820141975864,
+     "se_nw": 0.0012609876650462562,
+     "t_nw": 4.037961895360081,
+     "days": 1683
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.004407335259174071,
+     "se_nw": 0.0013098590170876987,
+     "t_nw": 3.3647401756054696,
+     "days": 1663
+    }
+   },
+   "gate": true,
+   "verdict": "overfit (rule 21)"
+  },
+  "LGBM": {
+   "insample_mean": 0.011185813657293209,
+   "outsample_mean": 0.006927616514693914,
+   "overfit_rule21": false,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.006927616514693914,
+     "se_nw": 0.0011630541637709072,
+     "t_nw": 5.956400596368514,
+     "days": 1690
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.006477390307797975,
+     "se_nw": 0.0013566635312598377,
+     "t_nw": 4.774500204765495,
+     "days": 1688
+    }
+   },
+   "gate": true,
+   "verdict": "passed",
+   "vs_xgb": {
+    "mean": 0.0021144031126135894,
+    "se_nw": 0.0011905603796403693,
+    "t_nw": 1.7759730197407408,
+    "days": 1682,
+    "holm_p": 0.30294945694539965,
+    "beats_xgb": false
+   }
+  },
+  "LIN": {
+   "insample_mean": 0.004821882203096179,
+   "outsample_mean": 0.0033659220868320515,
+   "overfit_rule21": false,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.0033659220868320515,
+     "se_nw": 0.0010595046947155882,
+     "t_nw": 3.1768826543383977,
+     "days": 1690
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.0032678635786017925,
+     "se_nw": 0.0010224486677544188,
+     "t_nw": 3.1961150536573424,
+     "days": 1690
+    }
+   },
+   "gate": true,
+   "verdict": "passed",
+   "vs_xgb": {
+    "mean": -0.0017008876053264236,
+    "se_nw": 0.0014658227103163447,
+    "t_nw": -1.1603637966281397,
+    "days": 1682,
+    "holm_p": 0.7377021605558722,
+    "beats_xgb": false
+   }
+  },
+  "RF": {
+   "insample_mean": 0.01253576665698152,
+   "outsample_mean": 0.004296228117681774,
+   "overfit_rule21": true,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.004296228117681774,
+     "se_nw": 0.0011756355084710922,
+     "t_nw": 3.654387849571672,
+     "days": 1650
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.0036996704688122568,
+     "se_nw": 0.0011257743505200097,
+     "t_nw": 3.286333950585507,
+     "days": 1616
+    }
+   },
+   "gate": true,
+   "verdict": "overfit (rule 21)",
+   "vs_xgb": {
+    "mean": 0.00043698493963341656,
+    "se_nw": 0.0012218619927198053,
+    "t_nw": 0.3576385403892541,
+    "days": 1647,
+    "holm_p": 1.0,
+    "beats_xgb": false
+   }
+  },
+  "MLP": {
+   "insample_mean": 0.008976939764151417,
+   "outsample_mean": 0.004532535656261639,
+   "overfit_rule21": false,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.004532535656261639,
+     "se_nw": 0.0010249445417584808,
+     "t_nw": 4.422225273267215,
+     "days": 1689
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.003709804550792085,
+     "se_nw": 0.0011583066625242586,
+     "t_nw": 3.2027827092934382,
+     "days": 1689
+    }
+   },
+   "gate": true,
+   "verdict": "passed",
+   "vs_xgb": {
+    "mean": -0.00038462918023809885,
+    "se_nw": 0.0014924681704753828,
+    "t_nw": -0.2577134895383305,
+    "days": 1682,
+    "holm_p": 1.0,
+    "beats_xgb": false
+   }
+  },
+  "ENS": {
+   "insample_mean": 0.01223004663213463,
+   "outsample_mean": 0.006301261584845016,
+   "overfit_rule21": false,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.006301261584845016,
+     "se_nw": 0.0009971778993114015,
+     "t_nw": 6.319094706367173,
+     "days": 1681
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.006636793703878433,
+     "se_nw": 0.0011689432299341101,
+     "t_nw": 5.677601387239763,
+     "days": 1671
+    }
+   },
+   "gate": true,
+   "verdict": "passed",
+   "vs_xgb": {
+    "mean": 0.0023879254169361652,
+    "se_nw": 0.0010957564058313024,
+    "t_nw": 2.1792484207514633,
+    "days": 1677,
+    "holm_p": 0.14656609320061076,
+    "beats_xgb": false
+   }
+  }
+ },
+ "per_year": {
+  "2019": {
+   "XGB": {
+    "fire_cut": 0.32892826199531555,
+    "real_fire_rate": 0.10589752046292687,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.016227899652508867,
+    "insample_days": 545,
+    "picks_median_vol20_pct": 0.43243243243243246,
+    "picks_share_before_open": 0.9806763285024155
+   },
+   "LGBM": {
+    "fire_cut": 0.25623290188953807,
+    "real_fire_rate": 0.11084460168500584,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.013960318504824884,
+    "insample_days": 554,
+    "picks_median_vol20_pct": 0.5,
+    "picks_share_before_open": 0.9691300280636108
+   },
+   "LIN": {
+    "fire_cut": 0.1056693174692723,
+    "real_fire_rate": 0.10169999700176896,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.004654071623464454,
+    "insample_days": 558,
+    "picks_median_vol20_pct": 0.4740740740740741,
+    "picks_share_before_open": 0.9487825356842989
+   },
+   "RF": {
+    "fire_cut": 0.11834187849044471,
+    "real_fire_rate": 0.0860492309537373,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.013911497933690961,
+    "insample_days": 555,
+    "picks_median_vol20_pct": 0.32919254658385094,
+    "picks_share_before_open": 0.9695290858725761
+   },
+   "MLP": {
+    "fire_cut": 0.3937335962387892,
+    "real_fire_rate": 0.09147602914280574,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011542437841677166,
+    "insample_days": 555,
+    "picks_median_vol20_pct": 0.5545634920634921,
+    "picks_share_before_open": 0.9213483146067416
+   },
+   "ENS": {
+    "fire_cut": 0.6738038126429741,
+    "real_fire_rate": 0.09612328726051629,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.014022384306248085,
+    "insample_days": 557,
+    "picks_median_vol20_pct": 0.4706018518518519,
+    "picks_share_before_open": 0.9701612903225807
+   }
+  },
+  "2020": {
+   "XGB": {
+    "fire_cut": 0.35752376914024353,
+    "real_fire_rate": 0.09849443319838057,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.010775540397082076,
+    "insample_days": 795,
+    "picks_median_vol20_pct": 0.5991561181434599,
+    "picks_share_before_open": 0.9704918032786886
+   },
+   "LGBM": {
+    "fire_cut": 0.19460967534625587,
+    "real_fire_rate": 0.11578525641025642,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.009798155623484486,
+    "insample_days": 800,
+    "picks_median_vol20_pct": 0.5649781113195746,
+    "picks_share_before_open": 0.9466101694915254
+   },
+   "LIN": {
+    "fire_cut": 0.11387880960623842,
+    "real_fire_rate": 0.08613782051282051,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.005228393253434365,
+    "insample_days": 812,
+    "picks_median_vol20_pct": 0.46788990825688076,
+    "picks_share_before_open": 0.9215859030837005
+   },
+   "RF": {
+    "fire_cut": 0.13401676919059607,
+    "real_fire_rate": 0.05191464237516869,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011303755258541444,
+    "insample_days": 794,
+    "picks_median_vol20_pct": 0.3928420011305822,
+    "picks_share_before_open": 0.9337349397590361
+   },
+   "MLP": {
+    "fire_cut": 0.36200677512839796,
+    "real_fire_rate": 0.11266447368421052,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.012912516253493248,
+    "insample_days": 803,
+    "picks_median_vol20_pct": 0.6086956521739131,
+    "picks_share_before_open": 0.8864126527677929
+   },
+   "ENS": {
+    "fire_cut": 0.6966111596973057,
+    "real_fire_rate": 0.07614288124156546,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011443831308557575,
+    "insample_days": 802,
+    "picks_median_vol20_pct": 0.5087719298245614,
+    "picks_share_before_open": 0.9387402933563417
+   }
+  },
+  "2021": {
+   "XGB": {
+    "fire_cut": 0.2443101853132248,
+    "real_fire_rate": 0.0672974715527907,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.013374135883958213,
+    "insample_days": 1050,
+    "picks_median_vol20_pct": 0.5402843601895735,
+    "picks_share_before_open": 0.9611734253666955
+   },
+   "LGBM": {
+    "fire_cut": 0.17090143416204803,
+    "real_fire_rate": 0.06876121769738791,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.012590246490072137,
+    "insample_days": 1057,
+    "picks_median_vol20_pct": 0.47611440742431155,
+    "picks_share_before_open": 0.9689849624060151
+   },
+   "LIN": {
+    "fire_cut": 0.12484420775731701,
+    "real_fire_rate": 0.0815341453639326,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.0048348654137086635,
+    "insample_days": 1065,
+    "picks_median_vol20_pct": 0.540223135642983,
+    "picks_share_before_open": 1.0
+   },
+   "RF": {
+    "fire_cut": 0.11207819453135016,
+    "real_fire_rate": 0.056232247721609424,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011811956215628121,
+    "insample_days": 1045,
+    "picks_median_vol20_pct": 0.34744245524296674,
+    "picks_share_before_open": 0.9196891191709845
+   },
+   "MLP": {
+    "fire_cut": 0.3029396059039807,
+    "real_fire_rate": 0.0771951835781623,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.007191284143088888,
+    "insample_days": 1061,
+    "picks_median_vol20_pct": 0.5758192533042649,
+    "picks_share_before_open": 0.9321428571428572
+   },
+   "ENS": {
+    "fire_cut": 0.6740479457163963,
+    "real_fire_rate": 0.0642131493195323,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.013735898969711627,
+    "insample_days": 1051,
+    "picks_median_vol20_pct": 0.4273321599195373,
+    "picks_share_before_open": 0.95
+   }
+  },
+  "2022": {
+   "XGB": {
+    "fire_cut": 0.1897740662097931,
+    "real_fire_rate": 0.09621392382524806,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.01108019722505383,
+    "insample_days": 1307,
+    "picks_median_vol20_pct": 0.5153574234092695,
+    "picks_share_before_open": 0.9361861861861862
+   },
+   "LGBM": {
+    "fire_cut": 0.13210429343301722,
+    "real_fire_rate": 0.11172081127891355,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.010924518149247444,
+    "insample_days": 1309,
+    "picks_median_vol20_pct": 0.5060728744939271,
+    "picks_share_before_open": 0.9427279577995479
+   },
+   "LIN": {
+    "fire_cut": 0.1169010230611941,
+    "real_fire_rate": 0.10174978552582593,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.005734119326928203,
+    "insample_days": 1315,
+    "picks_median_vol20_pct": 0.5272727272727272,
+    "picks_share_before_open": 1.0
+   },
+   "RF": {
+    "fire_cut": 0.11672261416312639,
+    "real_fire_rate": 0.07585101733598795,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.01380240776585294,
+    "insample_days": 1301,
+    "picks_median_vol20_pct": 0.39568345323741005,
+    "picks_share_before_open": 0.9613572101790764
+   },
+   "MLP": {
+    "fire_cut": 0.28031870229022837,
+    "real_fire_rate": 0.09681283283963807,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.009557186138118108,
+    "insample_days": 1307,
+    "picks_median_vol20_pct": 0.5861834434512243,
+    "picks_share_before_open": 0.948936170212766
+   },
+   "ENS": {
+    "fire_cut": 0.8005132259692811,
+    "real_fire_rate": 0.10084332863918159,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.013233563069530043,
+    "insample_days": 1308,
+    "picks_median_vol20_pct": 0.46086643594376897,
+    "picks_share_before_open": 0.9646869983948636
+   }
+  },
+  "2023": {
+   "XGB": {
+    "fire_cut": 0.1999960094690323,
+    "real_fire_rate": 0.06569429271605302,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.01224072401923358,
+    "insample_days": 1549,
+    "picks_median_vol20_pct": 0.5189285714285714,
+    "picks_share_before_open": 0.9749163879598662
+   },
+   "LGBM": {
+    "fire_cut": 0.1133200131255741,
+    "real_fire_rate": 0.07125985414390741,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011144669882976122,
+    "insample_days": 1563,
+    "picks_median_vol20_pct": 0.5329640478102707,
+    "picks_share_before_open": 0.9569583931133429
+   },
+   "LIN": {
+    "fire_cut": 0.10033931244393805,
+    "real_fire_rate": 0.08329150550651038,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.006045998822112426,
+    "insample_days": 1568,
+    "picks_median_vol20_pct": 0.45384615384615384,
+    "picks_share_before_open": 0.8986141502552881
+   },
+   "RF": {
+    "fire_cut": 0.11600579153391138,
+    "real_fire_rate": 0.07100888718296967,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.0112543436963533,
+    "insample_days": 1555,
+    "picks_median_vol20_pct": 0.36872881640323496,
+    "picks_share_before_open": 0.9569093610698366
+   },
+   "MLP": {
+    "fire_cut": 0.2982727492456063,
+    "real_fire_rate": 0.07785880894032891,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.007000341938644151,
+    "insample_days": 1560,
+    "picks_median_vol20_pct": 0.6411290322580645,
+    "picks_share_before_open": 0.9601160261058739
+   },
+   "ENS": {
+    "fire_cut": 0.8025314696595508,
+    "real_fire_rate": 0.07252945171100417,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.012113725620545284,
+    "insample_days": 1562,
+    "picks_median_vol20_pct": 0.48195592286501376,
+    "picks_share_before_open": 0.9597014925373134
+   }
+  },
+  "2024": {
+   "XGB": {
+    "fire_cut": 0.1965276002883911,
+    "real_fire_rate": 0.07310516653553632,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011103088176133315,
+    "insample_days": 1802,
+    "picks_median_vol20_pct": 0.5513698630136986,
+    "picks_share_before_open": 0.9803117309269893
+   },
+   "LGBM": {
+    "fire_cut": 0.1214323589988356,
+    "real_fire_rate": 0.08842119066351954,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011183594232960302,
+    "insample_days": 1814,
+    "picks_median_vol20_pct": 0.5384615384615384,
+    "picks_share_before_open": 0.9861111111111112
+   },
+   "LIN": {
+    "fire_cut": 0.09926143845932259,
+    "real_fire_rate": 0.07832415420928403,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.004377539814549388,
+    "insample_days": 1818,
+    "picks_median_vol20_pct": 0.4812680115273775,
+    "picks_share_before_open": 0.9958634953464323
+   },
+   "RF": {
+    "fire_cut": 0.11847216317302146,
+    "real_fire_rate": 0.07056123787044322,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.01253697972459036,
+    "insample_days": 1810,
+    "picks_median_vol20_pct": 0.3980263157894737,
+    "picks_share_before_open": 0.9747961452928094
+   },
+   "MLP": {
+    "fire_cut": 0.29749805448558353,
+    "real_fire_rate": 0.08486755835300289,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.00894357635804937,
+    "insample_days": 1813,
+    "picks_median_vol20_pct": 0.6352530541012217,
+    "picks_share_before_open": 0.967121090617482
+   },
+   "ENS": {
+    "fire_cut": 0.7682627002483144,
+    "real_fire_rate": 0.07592446892210858,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011897139023415904,
+    "insample_days": 1816,
+    "picks_median_vol20_pct": 0.5077975756312736,
+    "picks_share_before_open": 0.9893129770992366
+   }
+  },
+  "2025": {
+   "XGB": {
+    "fire_cut": 0.18197734653949738,
+    "real_fire_rate": 0.09093076726560505,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011010964232061141,
+    "insample_days": 2052,
+    "picks_median_vol20_pct": 0.5339264834843613,
+    "picks_share_before_open": 0.9870689655172413
+   },
+   "LGBM": {
+    "fire_cut": 0.09589916552494061,
+    "real_fire_rate": 0.0895341905816231,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.010458905576080863,
+    "insample_days": 2065,
+    "picks_median_vol20_pct": 0.5578947368421052,
+    "picks_share_before_open": 0.9886039886039886
+   },
+   "LIN": {
+    "fire_cut": 0.09454689229144898,
+    "real_fire_rate": 0.07270714468193817,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.003584458047144044,
+    "insample_days": 2070,
+    "picks_median_vol20_pct": 0.5210659694581784,
+    "picks_share_before_open": 1.0
+   },
+   "RF": {
+    "fire_cut": 0.1193484258834666,
+    "real_fire_rate": 0.07413778421187091,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.01317435930246774,
+    "insample_days": 2057,
+    "picks_median_vol20_pct": 0.44554455445544555,
+    "picks_share_before_open": 0.9886246122026887
+   },
+   "MLP": {
+    "fire_cut": 0.26804553932475855,
+    "real_fire_rate": 0.1037724601890488,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.008829966704315314,
+    "insample_days": 2068,
+    "picks_median_vol20_pct": 0.5764250433853959,
+    "picks_share_before_open": 0.9818702290076335
+   },
+   "ENS": {
+    "fire_cut": 0.7937872061046661,
+    "real_fire_rate": 0.08634931448522525,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011028890441861472,
+    "insample_days": 2062,
+    "picks_median_vol20_pct": 0.4961832061068702,
+    "picks_share_before_open": 0.9959141981613892
+   }
+  }
+ },
+ "react": {
+  "spearman_with_xgb": {
+   "XGB": 1.0,
+   "LGBM": 0.5902553434916463,
+   "LIN": 0.4009088141642759,
+   "RF": 0.5991143054717075,
+   "MLP": 0.30355061299204533,
+   "ENS": 0.7856885798423593
+  },
+  "pick_overlap_with_xgb": {
+   "XGB": 1.0,
+   "LGBM": 0.4157303370786517,
+   "LIN": 0.15015411712901805,
+   "RF": 0.3231973312804722,
+   "MLP": 0.20107444359171142,
+   "ENS": 0.4683808200138985
+  },
+  "by_tone_decile": {
+   "XGB": {
+    "mean_e": [
+     -0.3183000087738037,
+     -0.23229999840259552,
+     -0.13420000672340393,
+     -0.10080000013113022,
+     -0.04830000177025795,
+     -0.05420000106096268,
+     0.03840000182390213,
+     0.11800000071525574,
+     0.13449999690055847,
+     0.1800999939441681
+    ],
+    "long_share": [
+     0.0205,
+     0.0302,
+     0.0147,
+     0.0151,
+     0.0275,
+     0.0493,
+     0.076,
+     0.0653,
+     0.0381,
+     0.0447
+    ],
+    "short_share": [
+     0.1119,
+     0.0891,
+     0.0265,
+     0.0184,
+     0.0338,
+     0.0648,
+     0.0562,
+     0.028,
+     0.0099,
+     0.0086
+    ]
+   },
+   "LGBM": {
+    "mean_e": [
+     -0.3402999937534332,
+     -0.1476999968290329,
+     0.06040000170469284,
+     0.16459999978542328,
+     0.14020000398159027,
+     0.06449999660253525,
+     0.17520000040531158,
+     0.29750001430511475,
+     0.34540000557899475,
+     0.39579999446868896
+    ],
+    "long_share": [
+     0.0161,
+     0.0265,
+     0.0154,
+     0.0213,
+     0.0354,
+     0.0553,
+     0.0867,
+     0.0849,
+     0.0585,
+     0.0766
+    ],
+    "short_share": [
+     0.1254,
+     0.0885,
+     0.0232,
+     0.0145,
+     0.0328,
+     0.0627,
+     0.0501,
+     0.0243,
+     0.0086,
+     0.0086
+    ]
+   },
+   "LIN": {
+    "mean_e": [
+     -0.9089999794960022,
+     -0.6359000205993652,
+     -0.39160001277923584,
+     -0.4374000132083893,
+     -0.48170000314712524,
+     -0.5152999758720398,
+     -0.398499995470047,
+     -0.2689000070095062,
+     -0.21080000698566437,
+     -0.2198999971151352
+    ],
+    "long_share": [
+     0.0001,
+     0.0016,
+     0.0074,
+     0.0081,
+     0.0066,
+     0.0061,
+     0.0101,
+     0.0126,
+     0.0069,
+     0.0074
+    ],
+    "short_share": [
+     0.308,
+     0.1487,
+     0.0441,
+     0.0269,
+     0.0591,
+     0.0773,
+     0.0505,
+     0.0272,
+     0.0187,
+     0.0252
+    ]
+   },
+   "RF": {
+    "mean_e": [
+     -0.5914999842643738,
+     -0.3285999894142151,
+     -0.16210000216960907,
+     -0.053199999034404755,
+     -0.06480000168085098,
+     -0.07840000092983246,
+     0.03959999978542328,
+     0.12770000100135803,
+     0.1281999945640564,
+     0.1964000016450882
+    ],
+    "long_share": [
+     0.0046,
+     0.016,
+     0.0066,
+     0.0064,
+     0.0102,
+     0.0347,
+     0.0626,
+     0.0611,
+     0.0257,
+     0.037
+    ],
+    "short_share": [
+     0.1655,
+     0.0906,
+     0.0169,
+     0.0118,
+     0.0283,
+     0.0586,
+     0.04,
+     0.0122,
+     0.0011,
+     0.0001
+    ]
+   },
+   "MLP": {
+    "mean_e": [
+     -0.20559999346733093,
+     -0.13510000705718994,
+     -0.09960000216960907,
+     -0.07199999690055847,
+     -0.05350000038743019,
+     -0.04010000079870224,
+     0.024000000208616257,
+     0.03370000049471855,
+     0.018300000578165054,
+     0.01979999989271164
+    ],
+    "long_share": [
+     0.0304,
+     0.0308,
+     0.0198,
+     0.0205,
+     0.0341,
+     0.0508,
+     0.0751,
+     0.0642,
+     0.0475,
+     0.051
+    ],
+    "short_share": [
+     0.1007,
+     0.0664,
+     0.0363,
+     0.0248,
+     0.0369,
+     0.0552,
+     0.0548,
+     0.0429,
+     0.0324,
+     0.0352
+    ]
+   },
+   "ENS": {
+    "mean_e": [
+     -0.6234999895095825,
+     -0.3799000084400177,
+     -0.18310000002384186,
+     -0.12319999933242798,
+     -0.12200000137090683,
+     -0.1517000049352646,
+     -0.019700000062584877,
+     0.09300000220537186,
+     0.12039999663829803,
+     0.1624000072479248
+    ],
+    "long_share": [
+     0.0059,
+     0.013,
+     0.0089,
+     0.0113,
+     0.0228,
+     0.039,
+     0.0661,
+     0.0634,
+     0.0298,
+     0.0362
+    ],
+    "short_share": [
+     0.1721,
+     0.1068,
+     0.0257,
+     0.0152,
+     0.0354,
+     0.0681,
+     0.0518,
+     0.0214,
+     0.0072,
+     0.0072
+    ]
+   }
+  },
+  "by_flag": {
+   "XGB": {
+    "earnings": {
+     "n": 82533,
+     "mean_e": -0.02059747837483883
+    },
+    "guidance": {
+     "n": 20844,
+     "mean_e": -0.08328922092914581
+    },
+    "analyst_up": {
+     "n": 78102,
+     "mean_e": 0.14921197295188904
+    },
+    "analyst_down": {
+     "n": 60787,
+     "mean_e": -0.33416447043418884
+    },
+    "offering": {
+     "n": 5402,
+     "mean_e": -0.036325737833976746
+    },
+    "merger": {
+     "n": 8099,
+     "mean_e": 0.15654250979423523
+    },
+    "fda": {
+     "n": 12077,
+     "mean_e": -0.23222608864307404
+    },
+    "contract": {
+     "n": 13553,
+     "mean_e": 0.05118181183934212
+    },
+    "legal": {
+     "n": 2866,
+     "mean_e": -0.29880577325820923
+    },
+    "bankruptcy": {
+     "n": 384,
+     "mean_e": -0.42173460125923157
+    },
+    "dividend": {
+     "n": 10449,
+     "mean_e": 0.5168524980545044
+    },
+    "executive": {
+     "n": 9928,
+     "mean_e": -0.38276636600494385
+    }
+   },
+   "LGBM": {
+    "earnings": {
+     "n": 82533,
+     "mean_e": 0.07838138192892075
+    },
+    "guidance": {
+     "n": 20844,
+     "mean_e": 0.05158461630344391
+    },
+    "analyst_up": {
+     "n": 78102,
+     "mean_e": 0.37197038531303406
+    },
+    "analyst_down": {
+     "n": 60787,
+     "mean_e": -0.30271995067596436
+    },
+    "offering": {
+     "n": 5402,
+     "mean_e": 0.06983427703380585
+    },
+    "merger": {
+     "n": 8099,
+     "mean_e": 0.26769986748695374
+    },
+    "fda": {
+     "n": 12077,
+     "mean_e": -0.23542003333568573
+    },
+    "contract": {
+     "n": 13553,
+     "mean_e": 0.18097126483917236
+    },
+    "legal": {
+     "n": 2866,
+     "mean_e": -0.2678382396697998
+    },
+    "bankruptcy": {
+     "n": 384,
+     "mean_e": -0.5046803951263428
+    },
+    "dividend": {
+     "n": 10449,
+     "mean_e": 0.9000095129013062
+    },
+    "executive": {
+     "n": 9928,
+     "mean_e": -0.3962661921977997
+    }
+   },
+   "LIN": {
+    "earnings": {
+     "n": 82533,
+     "mean_e": -0.3799487352371216
+    },
+    "guidance": {
+     "n": 20844,
+     "mean_e": -0.3532339334487915
+    },
+    "analyst_up": {
+     "n": 78102,
+     "mean_e": -0.16811321675777435
+    },
+    "analyst_down": {
+     "n": 60787,
+     "mean_e": -0.8260431289672852
+    },
+    "offering": {
+     "n": 5402,
+     "mean_e": -0.36637309193611145
+    },
+    "merger": {
+     "n": 8099,
+     "mean_e": -0.1668112576007843
+    },
+    "fda": {
+     "n": 12077,
+     "mean_e": -1.0931787490844727
+    },
+    "contract": {
+     "n": 13553,
+     "mean_e": -0.4511236846446991
+    },
+    "legal": {
+     "n": 2866,
+     "mean_e": -1.212303876876831
+    },
+    "bankruptcy": {
+     "n": 384,
+     "mean_e": -1.7930341958999634
+    },
+    "dividend": {
+     "n": 10449,
+     "mean_e": 0.7763664126396179
+    },
+    "executive": {
+     "n": 9928,
+     "mean_e": -1.196547031402588
+    }
+   },
+   "RF": {
+    "earnings": {
+     "n": 82533,
+     "mean_e": -0.05208057537674904
+    },
+    "guidance": {
+     "n": 20844,
+     "mean_e": -0.038504987955093384
+    },
+    "analyst_up": {
+     "n": 78102,
+     "mean_e": 0.11941439658403397
+    },
+    "analyst_down": {
+     "n": 60787,
+     "mean_e": -0.39861273765563965
+    },
+    "offering": {
+     "n": 5402,
+     "mean_e": -0.0951416864991188
+    },
+    "merger": {
+     "n": 8099,
+     "mean_e": 0.00933352392166853
+    },
+    "fda": {
+     "n": 12077,
+     "mean_e": -0.13894633948802948
+    },
+    "contract": {
+     "n": 13553,
+     "mean_e": 0.010206921957433224
+    },
+    "legal": {
+     "n": 2866,
+     "mean_e": -0.4057484269142151
+    },
+    "bankruptcy": {
+     "n": 384,
+     "mean_e": -0.38955625891685486
+    },
+    "dividend": {
+     "n": 10449,
+     "mean_e": 0.36578652262687683
+    },
+    "executive": {
+     "n": 9928,
+     "mean_e": -0.35536569356918335
+    }
+   },
+   "MLP": {
+    "earnings": {
+     "n": 82533,
+     "mean_e": 0.00930117443203926
+    },
+    "guidance": {
+     "n": 20844,
+     "mean_e": 0.05439455062150955
+    },
+    "analyst_up": {
+     "n": 78102,
+     "mean_e": 0.04868544638156891
+    },
+    "analyst_down": {
+     "n": 60787,
+     "mean_e": -0.1704447716474533
+    },
+    "offering": {
+     "n": 5402,
+     "mean_e": -0.08551199734210968
+    },
+    "merger": {
+     "n": 8099,
+     "mean_e": 0.23425820469856262
+    },
+    "fda": {
+     "n": 12077,
+     "mean_e": -0.2612532377243042
+    },
+    "contract": {
+     "n": 13553,
+     "mean_e": -0.12162616848945618
+    },
+    "legal": {
+     "n": 2866,
+     "mean_e": -0.2274141013622284
+    },
+    "bankruptcy": {
+     "n": 384,
+     "mean_e": -0.15289972722530365
+    },
+    "dividend": {
+     "n": 10449,
+     "mean_e": 0.4916178584098816
+    },
+    "executive": {
+     "n": 9928,
+     "mean_e": -0.33152100443840027
+    }
+   },
+   "ENS": {
+    "earnings": {
+     "n": 82533,
+     "mean_e": -0.0831167995929718
+    },
+    "guidance": {
+     "n": 20844,
+     "mean_e": -0.08649630844593048
+    },
+    "analyst_up": {
+     "n": 78102,
+     "mean_e": 0.14989261329174042
+    },
+    "analyst_down": {
+     "n": 60787,
+     "mean_e": -0.5276433825492859
+    },
+    "offering": {
+     "n": 5402,
+     "mean_e": -0.12662725150585175
+    },
+    "merger": {
+     "n": 8099,
+     "mean_e": 0.1531176120042801
+    },
+    "fda": {
+     "n": 12077,
+     "mean_e": -0.520470917224884
+    },
+    "contract": {
+     "n": 13553,
+     "mean_e": -0.07687494903802872
+    },
+    "legal": {
+     "n": 2866,
+     "mean_e": -0.6447817087173462
+    },
+    "bankruptcy": {
+     "n": 384,
+     "mean_e": -0.852663516998291
+    },
+    "dividend": {
+     "n": 10449,
+     "mean_e": 0.8217766284942627
+    },
+    "executive": {
+     "n": 9928,
+     "mean_e": -0.6923184990882874
+    }
+   }
+  },
+  "tone_decile_edges": [
+   -0.6111,
+   -0.0886,
+   0.0001,
+   0.0277,
+   0.0761,
+   0.2106,
+   0.4334,
+   0.6683,
+   0.824,
+   0.904
+  ]
+ },
+ "passing_arms": [
+  "LGBM",
+  "LIN",
+  "MLP",
+  "ENS"
+ ]
+}
