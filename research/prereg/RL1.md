@@ -46,3 +46,19 @@ models report in-sample beside out-of-sample (the long-short mean, and the rank 
 Reported alongside: a same-month random long-short control; Spearman IC of each model; per-year results.
 
 Prediction: label claim ~55% fail; trading bar ~85% fail (M4's inputs had no edge as a top-20 book).
+
+## Clarification (2026-10-28, before any RL1 result exists; `tracks/main/longterm/screen_rl1.py`)
+
+- M4's cached panel holds only 6- and 12-month returns, so RL1 builds its own month-end panel with M4's code
+  (`prices.features`, `attach_fundamentals`, `eligible`, `composite`: price, market cap and liquidity
+  filters, at least 4 of the 6 families, one row per company) on M3's month-end dates (2016-01 .. 2025-08);
+  the label is M3's next-month return (next open to the next month-end close, inside one series). The 8 raw
+  inputs behind the six families (momentum, volatility, gross profit and ROA, E/P and B/M, issuance, asset
+  growth) are each ranked within date.
+- Costs: the 0.2% round trip on each leg, plus a month of the 3% yearly borrow on the short leg
+  (`config/risk.yaml`); the same for both models, so the head-to-head is unchanged by it.
+- Rule 21 decides first: a model whose in-sample long-short mean (each year's fit scored on its own
+  training months) is more than twice its out-of-sample mean is overfit, and then neither the label claim
+  (for either model) nor Rank's trading bar can pass. The deflated Sharpe uses the 66 registered trials and
+  is also shown with today's count.
+- The random control draws both deciles at random each month (seed 20261015 + date).
