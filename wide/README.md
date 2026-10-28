@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8895.55 | -1104.45% | 86 | 17 | short BSX, long MU, long SOFI, long TWST, long VRT |
-| Coin flip on C's picks | $9658.11 | -341.89% | 86 | 43 | long BSX, long MU, short SOFI, short TWST, long VRT |
-| C's prompt on Groq (K7) | $8531.34 | -1468.66% | 212 | 48 | long ACN, long AON, long AXTI, long MU, long TEM |
-| Coin flip on C-groq's picks | $9615.12 | -384.88% | 212 | 106 | long ACN, long AON, long AXTI, short MU, long TEM |
-| Just hold SPY | $10031.81 | +31.81% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8924.29 | -1075.71% | 86 | 17 | short BSX, long MU, long SOFI, long TWST, long VRT |
+| Coin flip on C's picks | $9690.13 | -309.87% | 86 | 43 | long BSX, long MU, short SOFI, short TWST, long VRT |
+| C's prompt on Groq (K7) | $8533.94 | -1466.06% | 215 | 50 | long ACN, long AON, long NTRA, long TWST, long VRT |
+| Coin flip on C-groq's picks | $9604.64 | -395.36% | 215 | 107 | long ACN, long AON, short NTRA, short TWST, short VRT |
+| Just hold SPY | $10037.28 | +37.28% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-28 11:07 | short BSX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all current profitable positions (BSX short, MU long, SOFI long, TWST long, VRT long) due to continued strong momentum and supportive news for each, with VRT and TWST showing particularly strong breakouts. |
 | 2026-10-28 10:57 | short BSX, long MU, long SOFI, long TWST, long VRT | none | Holding existing long positions in MU, SOFI, TWST, and VRT due to positive news and strong price momentum, and maintaining the short position in BSX given negative guidance and price action. |
 | 2026-10-28 10:47 | short BSX, long MU, long SOFI, long TWST, long VRT | sold AON @ $314.42; sold BSX @ $41.80 | Maintaining long positions in VRT, TWST, MU, and SOFI due to strong positive news and momentum. Closing AON to open a new short position in BSX, which has very negative news and a significant price drop. |
 | 2026-10-28 10:37 | long AON, long MU, long SOFI, long TWST, long VRT | sold FLEX @ $86.55; bought AON @ $315.60 | Maintaining long positions in VRT, TWST, SOFI, and MU due to strong positive news and price momentum. Selling FLEX due to underperformance and adding AON long after beating earnings estimates. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 10:5
 | 2026-10-26 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-26 14:17 | long INTC, long LITE, long LMT, long PANW, long ZS | none | All existing long positions are profitable and show continued strong momentum or positive news, so no changes are made to the portfolio. |
-| 2026-10-26 14:07 | no answer, nothing changed | none | unreadable answer |
