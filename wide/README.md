@@ -1,19 +1,20 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 14:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8927.67 | -1072.33% | 89 | 18 | short CBRS, long FLEX, long SNDK, long SOFI, long VRT |
-| Coin flip on C's picks | $9711.90 | -288.10% | 89 | 44 | long CBRS, short FLEX, long SNDK, short SOFI, long VRT |
-| C's prompt on Groq (K7) | $8475.84 | -1524.16% | 232 | 54 | long ACN, long AON, short CBRS, long ORCL, long VRT |
-| Coin flip on C-groq's picks | $9529.16 | -470.84% | 232 | 114 | long ACN, long AON, long CBRS, long ORCL, short VRT |
-| Just hold SPY | $10035.20 | +35.20% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8973.77 | -1026.23% | 90 | 18 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT |
+| Coin flip on C's picks | $9753.11 | -246.89% | 90 | 45 | short FLEX, long ORCL, long SNDK, short SOFI, long VRT |
+| C's prompt on Groq (K7) | $8483.45 | -1516.55% | 233 | 54 | long ACN, long AON, long FLEX, long ORCL, long VRT |
+| Coin flip on C-groq's picks | $9607.06 | -392.94% | 233 | 115 | long ACN, long AON, long FLEX, long ORCL, short VRT |
+| Just hold SPY | $10067.36 | +67.36% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-28 14:37 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT | bought CBRS @ $111.09; bought ORCL @ $144.47 | Selling CBRS due to adverse price movement against the short position despite bearish news. Maintaining long positions in FLEX, SNDK, SOFI, and VRT due to strong positive momentum and favorable news. Initiating a new long position in ORCL based on its strong daily performance and positive long-term  |
 | 2026-10-28 14:27 | short CBRS, long FLEX, long SNDK, long SOFI, long VRT | sold MU @ $967.91; bought SNDK @ $1,379.79 | Maintaining existing profitable long positions in FLEX, VRT, and SOFI due to strong momentum and positive news. Keeping the CBRS short due to continued bearish sentiment and overall downtrend. Adding a new long position in SNDK based on strong daily performance and positive AI-related news. |
 | 2026-10-28 14:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 14:07 | short CBRS, long FLEX, long MU, long SOFI, long VRT | sold TWST @ $172.23; sold CBRS @ $106.28 | Maintaining existing long positions in FLEX, MU, SOFI, and VRT due to strong positive momentum and favorable news. Initiating a new short position in CBRS due to a significant price drop and a negative short report. |
@@ -73,4 +74,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-28 14:2
 | 2026-10-27 11:37 | long BE, long DELL, long INTC, long PANW, long SOFI | sold RCL @ $301.48; bought DELL @ $502.83 | Sold RCL due to a slightly weaker Q4 outlook and replaced it with DELL, which shows strong positive momentum and news. Maintained other profitable positions (BE, INTC, PANW, SOFI) given their strong recent performance and positive catalysts. |
 | 2026-10-27 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 11:17 | long BE, long INTC, long PANW, long RCL, long SOFI | none | All existing profitable long positions (BE, INTC, PANW, RCL, SOFI) are maintained due to continued positive momentum and favorable news, keeping the portfolio fully invested with 5 positions. |
-| 2026-10-27 11:07 | no answer, nothing changed | none | unreadable answer |
