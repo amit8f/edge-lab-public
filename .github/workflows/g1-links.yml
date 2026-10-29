@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "links, contracts, screen, card or g2check"
+        description: "links, contracts, screen, card, g2check or g2screen"
         required: true
         default: links
       symbol:
@@ -68,8 +68,8 @@ jobs:
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: |
-          if [ "$STAGE" = g2check ]; then
-            .venv/bin/python -m tracks.main.g2_links --stage check --cache cache/m4 --out research/results/G2
+          if [ "$STAGE" = g2check ] || [ "$STAGE" = g2screen ]; then
+            .venv/bin/python -m tracks.main.g2_links --stage "${STAGE#g2}" --cache cache/m4 --out research/results/G2
             exit 0
           fi
           .venv/bin/python -m tracks.main.g1_links --stage "$STAGE" --symbol "$SYMBOL" --cache cache/m4 --out research/results/G1 --budget-min 290

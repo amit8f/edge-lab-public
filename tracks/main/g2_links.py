@@ -15,8 +15,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from core import stats
 from tracks.main import g1_links as G1
 from tracks.main import m1_screen as m1
+from tracks.main import m3_screen as m3
 
 SEED = 20261024
 CHECK_N, CHECK_PASS, MIN_PCT, MIN_ONE_WORD = 50, 40, 0.10, 5
@@ -115,13 +117,66 @@ def stage_check(cache, out):
     print("LINKS", json.dumps(cov))
 
 
+def check_right(out):
+    c = pd.read_csv(out / "G2_links_check.csv")
+    if not c["ok"].astype(str).str.lower().isin(["y", "n"]).all():
+        return None
+    return int((c["ok"].astype(str).str.lower() == "y").sum())
+
+
+def stage_screen(cache, out):
+    """G1's primary test on G2's links: monthly long-short quintile of suppliers by their customers' past-month
+    return, with G1's replication check, factor alpha, deflated Sharpe and random control."""
+    n_ok = check_right(out)
+    if n_ok is None:
+        raise SystemExit("[g2] fill in research/results/G2/G2_links_check.csv (ok = y/n) first")
+    res = {"idea": "G2", "prereg": "research/prereg/G2.md", "links_check_right": n_ok, "links_check_of": CHECK_N}
+    if n_ok < CHECK_PASS:
+        res["stopped"] = f"hand check {n_ok}/{CHECK_N} < {CHECK_PASS}: the screen doesn't run"
+        (out / "G2_screen.json").write_text(json.dumps(res, indent=1))
+        print(json.dumps(res))
+        return
+    p = m3.prepare(cache)
+    uni, ends1 = p["uni"], p["ends1"]
+    dates = sorted(ends1)
+    lk = pd.read_parquet(cache / "g1" / "g2_links.parquet")
+    base = uni[uni["date"].isin(dates)][["date", "cik", "symbol", "ret1"]]
+    prev = G1.prev_returns(uni, sorted(uni["date"].unique()))
+    cp = G1.customer_pairs(lk, dates)
+    pan = G1.linked_signal(base, prev, cp, "customer_cik", "supplier_cik")
+    ls, skipped = G1.ls_quintiles(pan)
+    ff5, sha5 = stats.fetch_french(stats.FF5)
+    umd, shau = stats.fetch_french(stats.UMD)
+    p2, both = stats.idea_counts()
+    rep = m3.replication(uni[uni["date"].isin(dates)], ff5, umd)
+    ranked = pan.groupby("date")["score"].count()
+    if len(ls) < 12:
+        res.update(stopped=f"only {len(ls)} dates with >= {G1.MIN_RANKED} ranked suppliers: too few to test",
+                   ranked_per_date_median=float(ranked.median()), dates_skipped_under_50=skipped)
+        (out / "G2_screen.json").write_text(json.dumps(res, indent=1, default=str))
+        print(json.dumps(res, default=str))
+        return
+    prim = m1.summary(ls, 3)
+    alpha = stats.factor_alpha(ls["excess"], stats.month_after(ls["date"]), ff5, umd, 3)
+    prim.update(factor_alpha=alpha, deflated_sharpe=stats.deflated_sharpe(ls["excess"], both),
+                dates_skipped_under_50=skipped, ranked_per_date_median=float(ranked.median()))
+    prim["passes"] = stats.screen_pass(prim, alpha) and rep["passes"]
+    cov = cp.assign(y=cp["date"].dt.year).groupby("y").agg(
+        suppliers=("supplier_cik", "nunique"), links=("customer_cik", "size")).to_dict("index")
+    res.update(phase2_count=p2, phase1_plus_phase2=both, ff5_sha256=sha5, umd_sha256=shau, replication=rep,
+               primary=prim, control=m1.summary(G1.ls_quintiles(pan, rng_seed=G1.SEED)[0], 3),
+               per_year=ls.assign(y=ls["date"].dt.year).groupby("y")["excess"].mean().to_dict(), coverage_by_year=cov)
+    (out / "G2_screen.json").write_text(json.dumps(res, indent=1, default=str))
+    print("PRIMARY", json.dumps(prim, indent=1, default=str))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["check"])
+    ap.add_argument("--stage", required=True, choices=["check", "screen"])
     ap.add_argument("--cache", required=True)
     ap.add_argument("--out", default="research/results/G2")
     a = ap.parse_args()
-    stage_check(Path(a.cache), Path(a.out))
+    (stage_check if a.stage == "check" else stage_screen)(Path(a.cache), Path(a.out))
 
 
 if __name__ == "__main__":
