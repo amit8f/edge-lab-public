@@ -1,0 +1,617 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "3408338cd380ec12403fa50adbb211658520d100401da7745467724982f817d8",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "9824ad51e86a23d5a94ff04ea998606e01020216093fa4e3191747d519a1b6a2",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CROX",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "GKOS",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BHC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IOVA",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "HONA",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GEN",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "VNDA",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PACK",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TOYO",
+     "tone": 0
+    },
+    {
+     "confidence": 75,
+     "event": "product",
+     "symbol": "LUMN",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "95acf045ce5d901bb6c6954970d7b5d1d58d393e6c7397574c80dcec4301db6d",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "High confidence earnings beat, large intraday jump suggests reversal; short with 12% stop",
+     "stop_pct": 12.0,
+     "symbol": "CROX"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat, 20% jump likely overbought; short with 12% stop",
+     "stop_pct": 12.0,
+     "symbol": "GKOS"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings but 20% surge may reverse; short with 12% stop",
+     "stop_pct": 12.0,
+     "symbol": "BHC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings confidence after 24% drop, potential rebound; long with 12% stop",
+     "stop_pct": 12.0,
+     "symbol": "IOVA"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral tone, 11% decline suggests further weakness; short with 12% stop",
+     "stop_pct": 12.0,
+     "symbol": "HONA"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat, 11% rise may be short\u2011term; short with 12% stop",
+     "stop_pct": 12.0,
+     "symbol": "GEN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Penny stock up 13% on earnings, shortable, confidence 70; short with 20% stop",
+     "stop_pct": 20.0,
+     "symbol": "VNDA"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings tone and 10% drop, shortable; short with 20% stop",
+     "stop_pct": 20.0,
+     "symbol": "PACK"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Very high confidence, cannot short; long with 20% stop",
+     "stop_pct": 20.0,
+     "symbol": "TOYO"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive product news, shortable, confidence 75; long with 20% stop",
+     "stop_pct": 20.0,
+     "symbol": "LUMN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding unchanged",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding unchanged",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding unchanged",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "eae66c8208b4edb81d1820a56fba2f49053f771236b15303735af543191a5c0d"
+  },
+  "reviewer": {
+   "answer_sha256": "b9801dcb2bba5dff0a53a6d5911e6cefbbd0e9ec21513751895fcb3a039a1309",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "e0cb74fcd9f6b7d58904031256ccfade26d9d462ba1cc03c982e3ee8dc410c09",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive extension up of 20.5% warrants mean reversion short.",
+     "symbol": "CROX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme +19.6% move today creates fading opportunity.",
+     "symbol": "GKOS"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Overextended on a +19.9% gap up, good short candidate.",
+     "symbol": "BHC"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Oversold drop of -24.4% offers a potential bounce play.",
+     "symbol": "IOVA"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp selloff of -11.6% suggests momentum continuation to the downside.",
+     "symbol": "HONA"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive z-score extension makes it ripe for fading.",
+     "symbol": "GEN"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock up significantly with neutral analyst tone.",
+     "symbol": "VNDA"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative earnings tone supports fading the drop.",
+     "symbol": "PACK"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and has mixed signals.",
+     "symbol": "TOYO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive product catalyst and upward 5-day momentum.",
+     "symbol": "LUMN"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.20478,
+   "news": 1,
+   "pace": null,
+   "price": 144.2,
+   "r20": 0.02029,
+   "r5": 0.01013,
+   "short": true,
+   "src": "iex",
+   "symbol": "CROX",
+   "z": 8.605
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.19605,
+   "news": 1,
+   "pace": null,
+   "price": 217.0,
+   "r20": 0.105,
+   "r5": 0.0259,
+   "short": true,
+   "src": "iex",
+   "symbol": "GKOS",
+   "z": 7.108
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.19942,
+   "news": 1,
+   "pace": null,
+   "price": 8.3,
+   "r20": 0.18696,
+   "r5": 0.07287,
+   "short": true,
+   "src": "iex",
+   "symbol": "BHC",
+   "z": 6.53
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.24375,
+   "news": 1,
+   "pace": null,
+   "price": 11.2,
+   "r20": -0.00067,
+   "r5": 0.013,
+   "short": true,
+   "src": "iex",
+   "symbol": "IOVA",
+   "z": -6.423
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.11555,
+   "news": 1,
+   "pace": null,
+   "price": 156.575,
+   "r20": 0.14235,
+   "r5": 0.08968,
+   "short": true,
+   "src": "iex",
+   "symbol": "HONA",
+   "z": -5.663
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.11129,
+   "news": 1,
+   "pace": null,
+   "price": 27.06,
+   "r20": 0.10581,
+   "r5": 0.00954,
+   "short": true,
+   "src": "iex",
+   "symbol": "GEN",
+   "z": 5.655
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12875,
+   "news": 0,
+   "pace": null,
+   "price": 4.515,
+   "r20": -0.18534,
+   "r5": -0.00249,
+   "short": true,
+   "src": "iex",
+   "symbol": "VNDA",
+   "z": 5.561
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10053,
+   "news": 0,
+   "pace": null,
+   "price": 3.4,
+   "r20": -0.08916,
+   "r5": 0.0678,
+   "short": true,
+   "src": "iex",
+   "symbol": "PACK",
+   "z": -3.925
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06283,
+   "news": 0,
+   "pace": null,
+   "price": 4.06,
+   "r20": -0.12184,
+   "r5": -0.05211,
+   "short": false,
+   "src": "iex",
+   "symbol": "TOYO",
+   "z": 3.025
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00625,
+   "news": 1,
+   "pace": null,
+   "price": 4.77,
+   "r20": -0.14286,
+   "r5": 0.07623,
+   "short": true,
+   "src": "iex",
+   "symbol": "LUMN",
+   "z": -0.149
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4962.4975,
+  "PICK-MAIN-coin": 4968.1604,
+  "PICK-PENNY": 483.2654,
+  "PICK-PENNY-coin": 511.8557
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3006,
+   "price": 4.515,
+   "qty": 5,
+   "side": -1,
+   "stop": 5.418,
+   "symbol": "VNDA"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2991,
+   "price": 4.515,
+   "qty": 5,
+   "side": 1,
+   "stop": 3.612,
+   "symbol": "VNDA"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3172,
+   "price": 3.4,
+   "qty": 7,
+   "side": -1,
+   "stop": 4.08,
+   "symbol": "PACK"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3172,
+   "price": 3.4,
+   "qty": 7,
+   "side": -1,
+   "stop": 4.08,
+   "symbol": "PACK"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.316,
+   "price": 4.77,
+   "qty": 5,
+   "side": 1,
+   "stop": 3.816,
+   "symbol": "LUMN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3175,
+   "price": 4.77,
+   "qty": 5,
+   "side": -1,
+   "stop": 5.724,
+   "symbol": "LUMN"
+  }
+ ],
+ "flag_counts": {
+  "move": 67,
+  "news": 167,
+  "volume": 0
+ },
+ "flagged": 214,
+ "flip_test": {
+  "after": -1,
+  "answer_sha256": "49e8bb0952b58fd5f6a0c74a6b279204a3d1b88e2643479cd23de0bc3ceb3966",
+  "before": 1,
+  "model": "openai/gpt-oss-20b",
+  "moved": true,
+  "prompt_sha256": "72672d391fe8da3fdc38603cbc02aaf178202b85fdc92b071ad548f24bdd6a53",
+  "quota": false,
+  "retry": {
+   "answer_sha256": "27c275d68b876c6417f7244bf172db958de1e7da69d656f87936dc1ffd374142",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ad37f9fb451036e35dbe03b33a23d11a9245ce6d65e1b0ffd1ebc7e774d3e112"
+  },
+  "swaps": 1,
+  "symbol": "CROX"
+ },
+ "headline_counts": {
+  "BHC": 3,
+  "CROX": 3,
+  "GEN": 3,
+  "GKOS": 3,
+  "HONA": 3,
+  "IOVA": 3,
+  "LUMN": 2,
+  "PACK": 3,
+  "VNDA": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "7e16a2ddb0da66875ba77e61567f7e7715e5077e12a96552f99a08f5253ae054",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2325
+ },
+ "priced": 2325,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CROX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GKOS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BHC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IOVA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HONA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GEN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 5,
+   "skip": null,
+   "symbol": "VNDA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 7,
+   "skip": null,
+   "symbol": "PACK"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 5,
+   "skip": "reviewer said none",
+   "symbol": "TOYO"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 5,
+   "skip": null,
+   "symbol": "LUMN"
+  }
+ ],
+ "slot": "2026-10-29T09:35",
+ "t": "2026-10-29T13:35:20.354107+00:00",
+ "universe": 3414,
+ "written_utc": "2026-10-29T13:35:53.710753Z"
+}
