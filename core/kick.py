@@ -10,7 +10,7 @@ import json
 import subprocess
 import sys
 import time
-from datetime import date, datetime, time as dtime
+from datetime import date, datetime, time as dtime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -21,6 +21,10 @@ JOBS = {"listen.yml": (dtime(3, 55), dtime(19, 30)),
         "nx3-live.yml": (dtime(9, 15), dtime(15, 30)),
         "watch.yml": (dtime(9, 20), dtime(15, 30)),
         "scouts.yml": (dtime(9, 20), dtime(15, 30))}
+# workflow -> [(first ET time, last ET time, minutes between starts)]: short jobs started again and again.
+# The dashboard's own */10 cron never fired on its first day (2026-10-29), so the kick starts it instead: in
+# market hours until the NX3 settle has landed, and early each morning (weekends too) for the nightly logs.
+EVERY = {"dashboard.yml": [(dtime(9, 25), dtime(16, 45), 10), (dtime(5, 0), dtime(5, 30), 60)]}
 
 
 def holidays(path=HOLIDAYS):
@@ -35,17 +39,23 @@ def holidays(path=HOLIDAYS):
 def due(now, runs, closed):
     """Workflows to start now. now: an aware datetime; runs: {workflow: [created_at as aware datetimes]};
     closed: NYSE full-day closures. A workflow is due inside its window on a trading day when none of its runs
-    was created on that ET day at or after its start time (an earlier one belongs to the night before)."""
+    was created on that ET day at or after its start time (an earlier one belongs to the night before). An EVERY
+    workflow is due inside one of its windows when none of its runs was created in the last `gap` minutes."""
     et = now.astimezone(ET)
-    if et.weekday() >= 5 or et.date() in closed:
-        return []
     out = []
     for wf, (lo, hi) in JOBS.items():
-        if not lo <= et.time() < hi:
+        if et.weekday() >= 5 or et.date() in closed or not lo <= et.time() < hi:
             continue
         start = datetime.combine(et.date(), lo, ET)
         if not any(c.astimezone(ET) >= start for c in runs.get(wf, [])):
             out.append(wf)
+    for wf, windows in EVERY.items():
+        for lo, hi, gap in windows:
+            market = lo.hour >= 9          # market-hours windows skip weekends and closures; the early one doesn't
+            if market and (et.weekday() >= 5 or et.date() in closed) or not lo <= et.time() < hi:
+                continue
+            if not any(now - c < timedelta(minutes=gap) for c in runs.get(wf, [])):
+                out.append(wf)
     return out
 
 
@@ -67,7 +77,7 @@ def main(argv=None):
     stop = time.monotonic() + a.minutes * 60
     while time.monotonic() < stop:
         try:
-            for wf in due(datetime.now(ET), {wf: created(a.repo, wf) for wf in JOBS}, closed):
+            for wf in due(datetime.now(ET), {wf: created(a.repo, wf) for wf in (*JOBS, *EVERY)}, closed):
                 gh("workflow", "run", wf, "-R", a.repo, "--ref", "main")
                 print(f"{datetime.now(ET):%Y-%m-%d %H:%M} ET started {wf}")
         except subprocess.CalledProcessError as e:  # a failed call is retried next minute

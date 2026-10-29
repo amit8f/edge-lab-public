@@ -372,9 +372,26 @@ function renderDays() {
   renderFeed(selDay);
 }
 let feedFilter = "all";   // all, buy, short or skip
+let selModel = "NX3";     // whose decisions the day list shows: NX3 or one of the NXM / NXR books
+const MODELS = [["NX3", "NX3"], ["LGBM", "NXM LightGBM"], ["LIN", "NXM linear"], ["MLP", "NXM neural net"],
+  ["ENS", "NXM blend"], ["XGBR", "NXR XGBoost"], ["RFR", "NXR forest"]];
+// an event as the chosen model saw it: NX3's own decision, or that book's pick (side and result) or a skip
+function asModel(ev) {
+  if (selModel === "NX3") return ev;
+  const a = (ev.arms || {})[selModel];
+  return Object.assign({}, ev, { side: a ? a.side : null, skip: a ? null : "not picked", nx3_side: ev.side, orig: ev,
+    result: a && a.net != null ? { net: a.net } : null });
+}
 function renderFeed(day) {
   const d = SUMMARY && SUMMARY.nx3.find(x => x.day === day);
-  const evs = [...dayEvents(day)].sort((a, b) => (b.t > a.t ? 1 : -1));
+  const evs = [...dayEvents(day)].sort((a, b) => (b.t > a.t ? 1 : -1)).map(asModel);
+  $("modelfilter").replaceChildren(...MODELS.map(([k, label]) => {
+    const n = k === "NX3" ? evs.filter(ev => ev.side).length : evs.filter(ev => (ev.arms || {})[k]).length;
+    const b = el("button", { "aria-pressed": String(selModel === k), text: `${label} ${n}`,
+      title: k === "NX3" ? "NX3, the model the tree shows" : "this book's picks; the tree still shows NX3" });
+    b.addEventListener("click", () => { selModel = k; feedFilter = "all"; renderFeed(day); });
+    return b;
+  }));
   const c = d ? d.counts : null;
   $("daysum").textContent = !d ? "No decisions logged yet for this day." :
     `${c.seen} headlines seen · ${c.decided} decided · ${c.fired} fired · ${c.picks} picks` +
@@ -392,6 +409,11 @@ function renderFeed(day) {
   $("feed").replaceChildren(...shownEvs.map(ev => evCard(ev, day === etDate())));
   if (!shownEvs.length) $("feed").append(el("p", { class: "muted small", text: "No headlines with this decision on this day." }));
 }
+function pickedBy(ev) {
+  const names = Object.keys(ev.arms || {}).filter(k => k !== selModel);
+  if (selModel !== "NX3" && ev.nx3_side) names.unshift("NX3");
+  return names.length ? el("div", { class: "l2", text: `also picked by ${names.join(", ")}` }) : "";
+}
 function evCard(ev, today) {
   const dcs = decisionOf(ev);
   const res = el("div", { class: "res" });
@@ -408,9 +430,10 @@ function evCard(ev, today) {
       el("div", { class: "l1" }, el("span", { text: ev.symbol }), el("span", { class: `dec ${dcs.cls}`, text: dcs.word }),
         el("span", { class: "muted small", text: ilTime(fromET(ev.t)) })),
       el("div", { class: "l2", text: `effect ${num(ev.e, 3)} · price at decision ${money(ev.entry_iex)}` +
-        (ev.skip && ev.skip !== "not fired" ? ` · ${SKIP_WHY[ev.skip] || ev.skip}` : "") })),
+        (ev.skip && ev.skip !== "not fired" && ev.skip !== "not picked" ? ` · ${SKIP_WHY[ev.skip] || ev.skip}` : "") }),
+      pickedBy(ev)),
     res);
-  const go = () => { queue.unshift(ev); showTab("live"); window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); };
+  const go = () => { queue.unshift(ev.orig || ev); showTab("live"); window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); };
   card.addEventListener("click", go); card.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
   return card;
 }
