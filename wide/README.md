@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 13:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 13:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8643.55 | -13.56% | 96 | 21 | long CVNA, long LLY, long MA, long PWR, long VRT |
-| Coin flip on C's picks | $9631.82 | -3.68% | 96 | 46 | short CVNA, short LLY, short MA, short PWR, long VRT |
-| C's prompt on Groq (K7) | $8227.90 | -17.72% | 249 | 57 | short CAT, long CVNA, short FTNT, short NOW, long VRT |
-| Coin flip on C-groq's picks | $9288.81 | -7.11% | 249 | 123 | short CAT, long CVNA, short FTNT, long NOW, short VRT |
+| AI bot C (whole market, up to 5 stocks) | $8630.63 | -13.69% | 98 | 22 | long CMG, long CVNA, long LLY, long LNG, long VRT |
+| Coin flip on C's picks | $9616.43 | -3.84% | 98 | 47 | short CMG, short CVNA, short LLY, long LNG, long VRT |
+| C's prompt on Groq (K7) | $8231.99 | -17.68% | 249 | 57 | short CAT, long CVNA, short FTNT, short NOW, long VRT |
+| Coin flip on C-groq's picks | $9310.70 | -6.89% | 249 | 123 | short CAT, long CVNA, short FTNT, long NOW, short VRT |
 | C-groq's answers, acted on once a day (K8) | $10000.00 | +0.00% | 0 | 0 | cash |
 | Coin flip on C-groq-slow's picks | $10000.00 | +0.00% | 0 | 0 | cash |
 | C's answers, acted on once a day (K8) | $10000.00 | +0.00% | 0 | 0 | cash |
 | Coin flip on C-slow's picks | $10000.00 | +0.00% | 0 | 0 | cash |
-| Just hold SPY | $10006.94 | +0.07% | 0 | 0 | long SPY |
+| Just hold SPY | $10004.20 | +0.04% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-29 13:37 | long CMG, long CVNA, long LLY, long LNG, long VRT | sold MA @ $635.93; sold PWR @ $640.50; bought CMG @ $31.21; bought LNG @ $315.36 | Maintaining profitable long positions in CVNA and VRT, and adding new long positions in LNG and CMG due to strong performance and positive news. Keeping LLY despite a small loss, as it shows strong daily and weekly gains. Selling MA and PWR to consolidate into stronger momentum plays. |
 | 2026-10-29 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 13:17 | long CVNA, long LLY, long MA, long PWR, long VRT | none | Maintaining all five existing long positions due to continued positive momentum and favorable news, especially for CVNA, LLY, MA, PWR, and VRT. |
 | 2026-10-29 13:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 13:2
 | 2026-10-28 10:37 | long AON, long MU, long SOFI, long TWST, long VRT | sold FLEX @ $86.55; bought AON @ $315.60 | Maintaining long positions in VRT, TWST, SOFI, and MU due to strong positive news and price momentum. Selling FLEX due to underperformance and adding AON long after beating earnings estimates. |
 | 2026-10-28 10:27 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all five current long positions (VRT, TWST, MU, SOFI, FLEX) due to strong positive momentum or recovery signs, supported by recent news. |
 | 2026-10-28 10:17 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all current long positions (VRT, TWST, SOFI, MU, FLEX) due to positive news, strong earnings, and upward price momentum. |
-| 2026-10-28 10:07 | long FLEX, long MU, long SOFI, long TWST, long VRT | sold PANW @ $395.74; bought TWST @ $173.85 | Maintaining long positions in VRT, FLEX, SOFI, and MU due to positive news and strong price action. Initiating a new long position in TWST based on its significant positive news and breakout, replacing PANW which showed weakening momentum. |
