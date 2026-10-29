@@ -41,6 +41,22 @@ const sleep = ms => new Promise(r => setTimeout(r, reduced ? Math.min(ms, 30) : 
 function etDate(d = new Date()) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(d);
 }
+// times: the logs write New York wall-clock time; the page shows Israel time
+function tzOffset(ms, tz) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit",
+    day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }).formatToParts(new Date(ms)).map(x => [x.type, x.value]));
+  return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second) - Math.floor(ms / 1000) * 1000;
+}
+function fromET(s) {
+  if (!s) return null;
+  const [d, t = "0:0:0"] = s.split("T"); const [Y, M, D] = d.split("-").map(Number); const [h, m, sec] = t.split(":").map(Number);
+  const wall = Date.UTC(Y, M - 1, D, h, m, Math.floor(sec || 0));
+  let u = wall; for (let k = 0; k < 2; k++) u = wall - tzOffset(u, "America/New_York");
+  return new Date(u);
+}
+const IL = { timeZone: "Asia/Jerusalem", hour: "2-digit", minute: "2-digit", hourCycle: "h23" };
+const ilTime = d => d ? new Intl.DateTimeFormat("en-GB", IL).format(d) : "";
+const ilStamp = d => d ? new Intl.DateTimeFormat("en-GB", { ...IL, day: "2-digit", month: "short" }).format(d) : "";
 function parseLines(txt) {
   return txt.split("\n").filter(Boolean).map(l => { try { return JSON.parse(l.replace(/\bNaN\b/g, "null")); } catch { return null; } })
     .filter(Boolean);
@@ -131,11 +147,11 @@ function drawTree(t, path, upto) {
   }
   return pos;
 }
-async function rollBall(pos, path) {
+async function rollBall(pos, path, speed = 420) {
   const svg = $("tree"); const ball = s("circle", { r: 7, class: "ball", cx: pos[0].X, cy: pos[0].Y });
   svg.append(ball);
   for (let i = 1; i < path.length; i++) {
-    const a = pos[path[i - 1]], b = pos[path[i]]; const T = reduced ? 1 : 420; const t0 = performance.now();
+    const a = pos[path[i - 1]], b = pos[path[i]]; const T = reduced ? 1 : speed; const t0 = performance.now();
     await new Promise(res => {
       (function step(now) {
         const k = Math.min(1, (now - t0) / T), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
@@ -176,8 +192,7 @@ function decisionOf(ev) {
 function showWho(ev) {
   $("logo").replaceWith(Object.assign(logo(ev.symbol), { id: "logo" }));
   $("sym").textContent = ev.symbol;
-  const t = ev.t ? ev.t.slice(11, 16) : "";
-  $("when").textContent = `news ${t} ET · price at decision ${money(ev.entry_iex)}` +
+  $("when").textContent = `news ${ilTime(fromET(ev.t))} Israel · price at decision ${money(ev.entry_iex)}` +
     (ev.last_price ? ` · now ${money(ev.last_price)}` : "");
   const chips = $("chips"); chips.replaceChildren();
   const inp = ev.inputs || {};
@@ -188,6 +203,7 @@ function showWho(ev) {
   }
   if (!chips.children.length) chips.append(el("span", { class: "chip", text: "general news" }));
 }
+const SLOW = 3, LAST = 5;   // first trees step by step, the middle ones flash past, the last few step by step again
 async function play(ev) {
   playing = true;
   $("verdict").hidden = true;
@@ -198,31 +214,75 @@ async function play(ev) {
   for (let i = 0; i < N; i++) {
     const t = MODEL.trees[i]; currentTree = t;
     const w = walk(t, x), wg = walk(t, g);
-    $("treeno").textContent = `tree ${i + 1} / ${N}`;
-    if (i < 3) {
-      $("phase").textContent = "step by step";
+    const slow = i < SLOW || i >= N - LAST;
+    if (slow) {
+      $("treeno").textContent = `tree ${i + 1} / ${N}`;
+      $("phase").textContent = i < SLOW ? "step by step" : `the last ${LAST} trees`;
       const pos = drawTree(t, w.path, 0);
-      await sleep(250);
-      await rollBall(pos, w.path);
+      await sleep(i < SLOW ? 250 : 120);
+      await rollBall(pos, w.path, i < SLOW ? 420 : 260);
       real += w.leaf; ghost += wg.leaf; setMeters(real, ghost);
-      await sleep(500);
+      await sleep(i < SLOW ? 500 : 300);
     } else {
-      $("phase").textContent = "the other trees, fast";
       real += w.leaf; ghost += wg.leaf;
-      if (i % 2 === 0 || i === N - 1) { drawTree(t, w.path, w.path.length); setMeters(real, ghost); await sleep(28); }
+      if (i % 40 === 0 || i === N - LAST - 1) {    // a few frames only: the meters move, the counter jumps
+        $("treeno").textContent = `tree ${i + 1} / ${N}`;
+        $("phase").textContent = `trees ${SLOW + 1} to ${N - LAST}, adding up`;
+        drawTree(t, w.path, w.path.length); setMeters(real, ghost); await sleep(90);
+      }
     }
   }
   setMeters(real, ghost);
-  await sleep(500);
-  const d = decisionOf(ev);
-  const v = $("verdict"); v.className = `verdict ${d.cls}`; v.replaceChildren(
-    el("div", {}, el("div", { class: "big", text: d.word }),
-      el("div", { class: "why", text: d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") :
-        `news effect ${num(ev.e, 3)} past the cut ${num(MODEL.cut, 3)} · in at ${money(ev.entry_iex)}` }),
-      ev.result ? el("div", { class: "why", text: `result ${pct(ev.result.net)} after costs` }) : null));
-  v.hidden = false;
-  await sleep(d.cls === "skip" ? 1800 : 3500);
+  await sleep(400);
+  await finale(ev, real - ghost);
+  addPlayed(ev);
   playing = false;
+}
+
+// the finish: logo and number, three cards, a highlight that teases each one, then the pick and its result
+function outcomeLine(ev, d) {
+  if (ev.result && ev.result.net != null) return `result ${pct(ev.result.net)} after costs`;
+  if (d.cls === "skip") return ev.next_move != null ? `not traded · next day ${pct(ev.next_move)}` : "not traded";
+  const sgn = d.cls === "buy" ? 1 : -1;
+  if (ev.last_price && ev.entry_iex) return `in at ${money(ev.entry_iex)} · now ${money(ev.last_price)} (${pct(sgn * (ev.last_price / ev.entry_iex - 1))} so far)`;
+  return `in at ${money(ev.entry_iex)} · result after the exit`;
+}
+async function finale(ev, eff) {
+  const d = decisionOf(ev), cut = MODEL.cut;
+  const e = ev.e != null ? ev.e : eff;
+  const cards = [
+    { cls: "short", word: "SHORT", rule: `effect below −${num(cut, 3)}` },
+    { cls: "skip", word: "SKIP", rule: "inside the cut" },
+    { cls: "buy", word: "BUY", rule: `effect above +${num(cut, 3)}` },
+  ].map(c => Object.assign(c, { node: el("div", { class: `fcard ${c.cls}` }, el("div", { class: "fword", text: c.word }),
+    el("div", { class: "frule", text: c.rule })) }));
+  const numEl = el("div", { class: "fnum", text: "0.000" });
+  const out = el("div", { class: "fout" });
+  const v = $("verdict"); v.className = "verdict"; v.replaceChildren(el("div", { class: "finale" },
+    el("div", { class: "fwho" }, logo(ev.symbol, "logo lg"), el("div", {}, el("div", { class: "sym", text: ev.symbol }),
+      el("div", { class: "muted small", text: "news effect" }), numEl)),
+    el("div", { class: "fcards" }, ...cards.map(c => c.node)), out));
+  v.hidden = false;
+  // the number counts up to the logged effect
+  const t0 = performance.now(), T = reduced ? 1 : 900;
+  await new Promise(res => (function step(now) {
+    const k = Math.min(1, (now - t0) / T);
+    numEl.textContent = `${e * k >= 0 ? "+" : ""}${num(e * k, 3)}`;
+    k < 1 ? requestAnimationFrame(step) : res();
+  })(t0));
+  // the highlight hops between the cards, slowing down, and stops on the decision
+  const target = cards.findIndex(c => c.cls === d.cls);
+  const hops = reduced ? [target] : [0, 1, 2, 1, 0, 1, 2, 0, 2, 1, 0, 2].concat([0, 1, 2].filter(i => i !== target), [target]);
+  for (let h = 0; h < hops.length; h++) {
+    cards.forEach((c, i) => c.node.classList.toggle("tease", i === hops[h]));
+    await sleep(90 + h * h * 4);
+  }
+  cards.forEach((c, i) => { c.node.classList.remove("tease"); c.node.classList.add(i === target ? "chosen" : "out"); });
+  await sleep(500);
+  const why = d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") : `${num(e, 3)} is past the cut`;
+  out.replaceChildren(el("div", { class: "why", text: why }), el("div", { class: `fres ${d.cls}`, text: outcomeLine(ev, d) }));
+  out.classList.add("show");
+  await sleep(d.cls === "skip" ? 2200 : 4200);
 }
 async function loop() {
   for (;;) {
@@ -257,10 +317,12 @@ async function loadSummary() {
   }
   const age = Math.round((Date.now() - Date.parse(SUMMARY.generated_utc)) / 60000);
   $("updated").textContent = `data ${age < 1 ? "just now" : `${age} min ago`}`;
-  const withEvents = SUMMARY.nx3.find(d => d.events.length && d.day !== etDate()) || SUMMARY.nx3.find(d => d.events.length);
+  // replays show only the trades taken (Buy or Short), from the last earlier day that had any
+  const traded = d => d.events.filter(e => e.side);
+  const withEvents = SUMMARY.nx3.find(d => traded(d).length && d.day !== etDate()) || SUMMARY.nx3.find(d => traded(d).length);
   if (withEvents && replayDay !== withEvents.day) {
     replayDay = withEvents.day;
-    replayList = [...withEvents.events].sort((a, b) => (a.t < b.t ? -1 : 1)); replayIx = 0;
+    replayList = traded(withEvents).sort((a, b) => (a.t < b.t ? -1 : 1)); replayIx = 0;
   }
   renderDays(); renderBooks(); renderIdeas();
 }
@@ -308,31 +370,37 @@ function renderFeed(day) {
     (d.excluded ? " · left out of the forward test (bug days)" : "") +
     (d.pick_minus_control != null ? ` · picks minus random control ${pct(d.pick_minus_control)}` : "") +
     (d.control && d.control.length ? ` · control: ${d.control.map(x => `${x.symbol} ${x.result ? pct(x.result.net) : "open"}`).join(", ")}` : "");
-  const today = day === etDate();
   if (day === etDate()) $("daycounts").textContent = c ? `today: ${c.decided} decided, ${c.picks} picks` : "";
-  $("feed").replaceChildren(...evs.map(ev => {
-    const dcs = decisionOf(ev);
-    const res = el("div", { class: "res" });
-    if (ev.result) res.append(el("div", { class: ev.result.net >= 0 ? "up" : "down", text: `${pct(ev.result.net)} net` }),
-      el("div", { class: "muted small", text: `in ${money(ev.result.entry)} out ${money(ev.result.exit)}` }));
-    else if (ev.side) res.append(el("div", { class: "muted", text: today ? "open" : "settling" }),
-      ev.last_price ? el("div", { class: "small", text: `now ${money(ev.last_price)} (${pct(ev.last_price / ev.entry_iex - 1)})` }) : null);
-    else if (ev.next_move != null) res.append(el("div", { class: ev.next_move >= 0 ? "up" : "down", text: pct(ev.next_move) }),
-      el("div", { class: "muted small", text: "if bought, to next close" }));
-    else if (ev.last_price) res.append(el("div", { class: "small", text: `now ${money(ev.last_price)}` }),
-      el("div", { class: "muted small", text: pct(ev.last_price / ev.entry_iex - 1) }));
-    const card = el("div", { class: `ev ${ev.side ? "" : "skipped"}`, role: "button", tabindex: "0" },
-      logo(ev.symbol),
-      el("div", {},
-        el("div", { class: "l1" }, el("span", { text: ev.symbol }), el("span", { class: `dec ${dcs.cls}`, text: dcs.word }),
-          el("span", { class: "muted small", text: (ev.t || "").slice(11, 16) + " ET" })),
-        el("div", { class: "l2", text: `effect ${num(ev.e, 3)} · price at decision ${money(ev.entry_iex)}` +
-          (ev.skip && ev.skip !== "not fired" ? ` · ${SKIP_WHY[ev.skip] || ev.skip}` : "") })),
-      res);
-    const go = () => { queue.unshift(ev); window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); };
-    card.addEventListener("click", go); card.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
-    return card;
-  }));
+  $("feed").replaceChildren(...evs.map(ev => evCard(ev, day === etDate())));
+}
+function evCard(ev, today) {
+  const dcs = decisionOf(ev);
+  const res = el("div", { class: "res" });
+  if (ev.result) res.append(el("div", { class: ev.result.net >= 0 ? "up" : "down", text: `${pct(ev.result.net)} net` }),
+    el("div", { class: "muted small", text: `in ${money(ev.result.entry)} out ${money(ev.result.exit)}` }));
+  else if (ev.side) res.append(el("div", { class: "muted", text: today ? "open" : "settling" }),
+    ev.last_price ? el("div", { class: "small", text: `now ${money(ev.last_price)} (${pct(ev.side * (ev.last_price / ev.entry_iex - 1))})` }) : null);
+  else if (ev.next_move != null) res.append(el("div", { class: ev.next_move >= 0 ? "up" : "down", text: pct(ev.next_move) }),
+    el("div", { class: "muted small", text: "if bought, to next close" }));
+  else if (ev.last_price) res.append(el("div", { class: "small", text: `now ${money(ev.last_price)}` }),
+    el("div", { class: "muted small", text: pct(ev.last_price / ev.entry_iex - 1) }));
+  const card = el("div", { class: `ev ${ev.side ? "" : "skipped"}`, role: "button", tabindex: "0" },
+    logo(ev.symbol),
+    el("div", {},
+      el("div", { class: "l1" }, el("span", { text: ev.symbol }), el("span", { class: `dec ${dcs.cls}`, text: dcs.word }),
+        el("span", { class: "muted small", text: ilTime(fromET(ev.t)) })),
+      el("div", { class: "l2", text: `effect ${num(ev.e, 3)} · price at decision ${money(ev.entry_iex)}` +
+        (ev.skip && ev.skip !== "not fired" ? ` · ${SKIP_WHY[ev.skip] || ev.skip}` : "") })),
+    res);
+  const go = () => { queue.unshift(ev); showTab("live"); window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); };
+  card.addEventListener("click", go); card.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+  return card;
+}
+// under the tree: every headline the stage has run, latest on top
+function addPlayed(ev) {
+  const box = $("played"); box.prepend(evCard(ev, etDate() === (ev.t || "").slice(0, 10)));
+  while (box.children.length > 30) box.lastChild.remove();
+  $("played-empty").hidden = true;
 }
 
 function renderBooks() {
@@ -371,7 +439,7 @@ function renderBooks() {
   $("jobs").replaceChildren(...S.jobs.map(j => {
     const bad = j.conclusion && !["success", "skipped", "cancelled"].includes(j.conclusion);
     return el("div", { class: `job ${bad ? "bad" : ""}` }, el("span", { text: j.name }),
-      el("span", { class: bad ? "down" : "muted", text: `${j.status === "completed" ? j.conclusion : j.status} · ${j.at.slice(5, 16).replace("T", " ")} UTC` }));
+      el("span", { class: bad ? "down" : "muted", text: `${j.status === "completed" ? j.conclusion : j.status} · ${ilStamp(new Date(j.at))} Israel` }));
   }));
 }
 
@@ -399,12 +467,12 @@ function renderIdeas() {
 }
 
 // ---------- tabs and start ----------
-for (const b of document.querySelectorAll(".tabs button")) {
-  b.addEventListener("click", () => {
-    for (const x of document.querySelectorAll(".tabs button")) x.setAttribute("aria-selected", String(x === b));
-    for (const t of ["live", "books", "ideas"]) $(`tab-${t}`).hidden = t !== b.dataset.tab;
-  });
+const TABS = ["live", "headlines", "books", "ideas"];
+function showTab(name) {
+  for (const x of document.querySelectorAll(".tabs button")) x.setAttribute("aria-selected", String(x.dataset.tab === name));
+  for (const t of TABS) $(`tab-${t}`).hidden = t !== name;
 }
+for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("click", () => showTab(b.dataset.tab));
 $("daysel").addEventListener("change", e => renderFeed(e.target.value));
 
 (async function start() {
