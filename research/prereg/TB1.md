@@ -33,3 +33,14 @@ first. META1's LightGBM numbers are shown beside TB1's on the same folds. Rule 2
 the mean and on the top and bottom 5% of pick returns is reported.
 
 Prediction: ~75% fail (META1 found little to learn in these inputs).
+
+## Clarification (2026-10-29, before any TB1 result; `tracks/main/tb1_study.py`, `meta1-study.yml` stage tb1)
+
+- The package is pinned to the PyPI release `tabicl==2.2.0` (wheel sha256 c80b8ec2...789ce4, checked before
+  install) instead of a git commit; torch 2.14.1 CPU build. The checkpoint's sha256 is written to the result.
+- In-sample AUC for rule 21: each fold's model scores its own training rows (the rows it holds as context);
+  the fold AUCs are averaged by test rows, in-sample and out-of-sample alike.
+- META1's LightGBM is rerun with the same code on the same folds and must reproduce `META1_result.json`; its
+  rule 21 and rule 22 numbers sit beside TB1's.
+- Rule 22 tails: the share of the pooled top and bottom 5% of pick returns the filter takes, beside its
+  overall take share, and the taken and all means with and without the top 5%.

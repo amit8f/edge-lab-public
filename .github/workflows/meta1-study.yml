@@ -1,13 +1,14 @@
 # META1 (research/prereg/META1.md): inputs for R1's picks from Alpaca SIP bars and EDGAR, then the
 # walk-forward of the take-or-skip model. Manual runs only; rerun until META1_result.json is written (each
-# stage resumes from its cache). Commits the results back to the branch that ran it.
+# stage resumes from its cache). Commits the results back to the branch that ran it. Stage "tb1" runs TB1
+# (research/prereg/TB1.md) on the same cache: TabICLv2 on CPU, tabicl 2.2.0 checked against its sha256.
 name: meta1-study
 
 on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, data or fit"
+        description: "all, data, fit or tb1"
         required: false
         default: all
 
@@ -49,6 +50,24 @@ jobs:
           key: meta1-v1-${{ github.run_id }}
           restore-keys: meta1-v1-
 
+      - name: TabICL (stage tb1 only; the wheel must match its PyPI sha256)
+        if: inputs.stage == 'tb1'
+        run: |
+          uv pip install --python .venv/bin/python --index-url https://download.pytorch.org/whl/cpu torch==2.14.1
+          uv pip install --python .venv/bin/python einops==0.8.2 huggingface-hub==1.9.2 psutil==7.2.2 tqdm==4.70.1
+          mkdir -p /tmp/whl
+          curl -sSfL -o /tmp/whl/tabicl-2.2.0-py3-none-any.whl \
+            https://files.pythonhosted.org/packages/py3/t/tabicl/tabicl-2.2.0-py3-none-any.whl
+          echo "c80b8ec2719be26bc0bf1dd758a2361f58019d8f7877038b785529a425789ce4  /tmp/whl/tabicl-2.2.0-py3-none-any.whl" | sha256sum -c -
+          uv pip install --python .venv/bin/python --no-deps /tmp/whl/tabicl-2.2.0-py3-none-any.whl
+
+      - name: Restore the TabICL checkpoint (stage tb1 only)
+        if: inputs.stage == 'tb1'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/tabicl
+          key: tabicl-ckpt-v2-20260212
+
       - name: Run the stage
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
@@ -56,6 +75,11 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           STAGE: ${{ inputs.stage || 'all' }}
         run: |
+          if [ "$STAGE" = tb1 ]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.main.tb1_study --cache cache/meta1 --out research/results/TB1 \
+              --ckpt-dir cache/tabicl
+            exit 0
+          fi
           PYTHONPATH=. .venv/bin/python -u -m tracks.main.meta1_study --stage "$STAGE" --cache cache/meta1 \
             --out research/results/META1
 
@@ -66,15 +90,23 @@ jobs:
           path: cache/meta1
           key: meta1-v1-${{ github.run_id }}
 
+      - name: Save the TabICL checkpoint
+        if: always() && inputs.stage == 'tb1' && hashFiles('cache/tabicl/*.ckpt') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: cache/tabicl
+          key: tabicl-ckpt-v2-20260212
+
       - name: Commit the results to this branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/META1 && git add research/results/META1
+          mkdir -p research/results/META1 research/results/TB1
+          git add research/results/META1 research/results/TB1
           git diff --cached --quiet && { echo "No results yet; rerun to continue"; exit 0; }
-          git commit -q -m "META1 walk-forward results (run ${{ github.run_id }})"
+          git commit -q -m "META1/TB1 walk-forward results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
           git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"

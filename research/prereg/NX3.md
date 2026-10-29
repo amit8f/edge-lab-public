@@ -104,3 +104,11 @@ How the registered shadow book reads the rules above with live data (`tracks/new
 - The settlement passed training's code no exit date, so no day settled. Fix: the next session is passed.
 - 2026-10-26, 10-27 and 10-28 did not run the registered event set. They are settled and kept in the ledger
   (append-only), marked `excluded`, and left out of the forward test and its count of closed trades.
+
+## Paper account (2026-10-29, before any forward trade has settled; Amit chose "Start now")
+
+The live book's picks are also sent to the Alpaca paper account EL-NX3 (fake money, `tracks/news/nx3_orders.py`):
+a market day order at each pick's decision, $500 in whole shares at the IEX price the scorer read (a pick
+above $500 a share is skipped), and a market-on-close exit on the next session. Fills are logged after the
+close as ledger kind `nx3_orders`. This changes nothing in the forward test: it stays the ledger book minus
+its same-day control, settled on SIP bars. An order error never stops the book.

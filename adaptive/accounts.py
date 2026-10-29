@@ -20,6 +20,7 @@ ACCOUNTS = {          # Alpaca account name -> secret prefix (<prefix>_KEY_ID, <
     "EL-P4": "ALPACA_P4",
     "EL-PICK-MAIN": "ALPACA_PICK_MAIN",
     "EL-PICK-PENNY": "ALPACA_PICK_PENNY",
+    "EL-NX3": "ALPACA_NX3",
 }
 
 
