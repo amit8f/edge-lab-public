@@ -62,3 +62,15 @@ and 40 sessions, the reaction measured over day 0 only, and the result by year a
 ($1-2, $2-5).
 
 Prediction: about 25% pass (the published t is barely 2 and our cost of 2% a round trip is heavy).
+
+## Clarification (2026-10-29, before any PD1 event or return is built; code `tracks/penny/pd1_study.py`)
+
+- Data: W1's cache (`tracks/news/w1_data.py`): its daily bars, CIK map and universe flag (raw close >= $1,
+  median 20-day dollar volume >= $500k), with raw close under $5 added. W1's stock list is SEC's insider
+  data sets' tickers on Alpaca's exchange list, so the exchange rule is Alpaca's.
+- Events: Form 8-K only (an 8-K/A is a correction, not the release) listing item 2.02, from each penny
+  company's SEC submissions record. Its acceptanceDateTime carries a "Z" but is EDGAR's ET clock; the hand
+  check compares it with each filing's EDGAR index page.
+- The penny universe is read on the last session before day 0 (known before the reaction starts).
+- One event per company per 30 calendar days, counted from the acceptance time of the last kept event.
+- Events from 2015-10 are built so the 365-day reaction percentile has history; signals start 2017-01-01.

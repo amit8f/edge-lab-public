@@ -6,6 +6,7 @@
 #   part=w1b stage=signals, proxy, footprints, finra, seclist, runup; report after W1b_sec_cases.csv is filled.
 #   part=w1c stage=probe, options, report.
 #   part=w2 stage=check (research/prereg/W2.md): W2's events and hand-check file, from the same cache.
+#   part=pd1 stage=events (research/prereg/PD1.md): earnings 8-K events and research/checks/PD1.csv.
 # Own data cache (cache/w1). Results are committed back to the branch that ran it.
 name: w1-study
 
@@ -13,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       part:
-        description: "w1a, w1b, w1c or w2"
+        description: "w1a, w1b, w1c, w2 or pd1"
         required: true
         default: w1a
       stage:
@@ -77,7 +78,9 @@ jobs:
             w1c) mod=tracks.main.w1c_calls ;;
             w2) .venv/bin/python -m tracks.news.w2_shorts --stage "$STAGE" --cache cache/w1 --out research/results/W2
                 exit 0 ;;
-            *) echo "::error::part must be w1a, w1b, w1c or w2"; exit 1 ;;
+            pd1) .venv/bin/python -m tracks.penny.pd1_study --stage "$STAGE" --cache cache/w1 --out research/results/PD1
+                exit 0 ;;
+            *) echo "::error::part must be w1a, w1b, w1c, w2 or pd1"; exit 1 ;;
           esac
           .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/W1 --budget-min 290
 
@@ -94,7 +97,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/W1 research/results/W2 && git add research/results/W1 research/results/W2
+          mkdir -p research/results/W1 research/results/W2 research/results/PD1 research/checks
+          git add research/results/W1 research/results/W2 research/results/PD1 research/checks
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "W1 ${{ github.event.inputs.part }} output (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
