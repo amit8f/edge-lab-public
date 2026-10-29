@@ -5,6 +5,7 @@
 #   the hand check of research/results/W1/W1a_check.csv; then w1a measure, report.
 #   part=w1b stage=signals, proxy, footprints, finra, seclist, runup; report after W1b_sec_cases.csv is filled.
 #   part=w1c stage=probe, options, report.
+#   part=w2 stage=check (research/prereg/W2.md): W2's events and hand-check file, from the same cache.
 # Own data cache (cache/w1). Results are committed back to the branch that ran it.
 name: w1-study
 
@@ -12,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       part:
-        description: "w1a, w1b or w1c"
+        description: "w1a, w1b, w1c or w2"
         required: true
         default: w1a
       stage:
@@ -74,7 +75,9 @@ jobs:
             w1a) mod=tracks.news.w1a_leaks ;;
             w1b) mod=tracks.main.w1b_volume ;;
             w1c) mod=tracks.main.w1c_calls ;;
-            *) echo "::error::part must be w1a, w1b or w1c"; exit 1 ;;
+            w2) .venv/bin/python -m tracks.news.w2_shorts --stage "$STAGE" --cache cache/w1 --out research/results/W2
+                exit 0 ;;
+            *) echo "::error::part must be w1a, w1b, w1c or w2"; exit 1 ;;
           esac
           .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/W1 --budget-min 290
 
@@ -91,7 +94,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/W1 && git add research/results/W1
+          mkdir -p research/results/W1 research/results/W2 && git add research/results/W1 research/results/W2
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "W1 ${{ github.event.inputs.part }} output (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
