@@ -1,0 +1,254 @@
+{
+ "arms": {
+  "XGB": {
+   "insample_mean": 0.011813029162744347,
+   "outsample_mean": 0.005091820141975864,
+   "ratio": 2.3200012634696754,
+   "overfit_rule21": true,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.005091820141975864,
+     "se_nw": 0.0012609876650462562,
+     "t_nw": 4.037961895360081,
+     "days": 1683
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.004407335259174071,
+     "se_nw": 0.001309859017087699,
+     "t_nw": 3.364740175605469,
+     "days": 1663
+    }
+   },
+   "gate": true,
+   "verdict": "overfit (rule 21)",
+   "pick_overlap_with_xgb": 1.0
+  },
+  "XGBR": {
+   "insample_mean": 0.005721192420291753,
+   "outsample_mean": 0.00417796470149635,
+   "ratio": 1.3693730869106413,
+   "overfit_rule21": false,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.00417796470149635,
+     "se_nw": 0.0009087204219040769,
+     "t_nw": 4.597634872937157,
+     "days": 1688
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.005043571730369469,
+     "se_nw": 0.0010459418699822313,
+     "t_nw": 4.822038274894904,
+     "days": 1682
+    }
+   },
+   "gate": true,
+   "verdict": "passed",
+   "pick_overlap_with_xgb": 0.26311587591240876,
+   "vs_xgb": {
+    "mean": -0.0003291528423307689,
+    "se_nw": 0.0012086915031860378,
+    "t_nw": -0.27232163166791684,
+    "days": 1681,
+    "holm_p": 0.7853747248556691
+   }
+  },
+  "RFR": {
+   "insample_mean": 0.005800310249054846,
+   "outsample_mean": 0.005314612683955636,
+   "ratio": 1.0913890802551782,
+   "overfit_rule21": false,
+   "pooled": {
+    "pick_minus_control": {
+     "mean": 0.005314612683955636,
+     "se_nw": 0.0011328310683968773,
+     "t_nw": 4.691443263007074,
+     "days": 1670
+    },
+    "pick_minus_shuffled": {
+     "mean": 0.0027883920957644994,
+     "se_nw": 0.0010183212062672908,
+     "t_nw": 2.7382245195359283,
+     "days": 1655
+    }
+   },
+   "gate": true,
+   "verdict": "passed",
+   "pick_overlap_with_xgb": 0.2531024137460794,
+   "vs_xgb": {
+    "mean": -0.0017831190617181767,
+    "se_nw": 0.0012299616459508392,
+    "t_nw": -1.449735499955132,
+    "days": 1664,
+    "holm_p": 0.2942645842931544
+   }
+  }
+ },
+ "per_year": {
+  "2019": {
+   "XGB": {
+    "fire_cut": 0.32892826199531555,
+    "real_fire_rate": 0.10589752046292687,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.016227899652508867,
+    "insample_days": 545
+   },
+   "XGBR": {
+    "fire_cut": 0.1125534176826477,
+    "real_fire_rate": 0.09294516235421102,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.004145536104556402,
+    "insample_days": 558
+   },
+   "RFR": {
+    "fire_cut": 0.07128836364388175,
+    "real_fire_rate": 0.08577939015980572,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.002886734505740263,
+    "insample_days": 559
+   }
+  },
+  "2020": {
+   "XGB": {
+    "fire_cut": 0.35752376914024353,
+    "real_fire_rate": 0.09849443319838057,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.010775540397082076,
+    "insample_days": 795
+   },
+   "XGBR": {
+    "fire_cut": 0.09300977736711502,
+    "real_fire_rate": 0.08145664642375168,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.0017963886865634171,
+    "insample_days": 803
+   },
+   "RFR": {
+    "fire_cut": 0.07096362421746664,
+    "real_fire_rate": 0.07270580296896087,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.005038300106649929,
+    "insample_days": 799
+   }
+  },
+  "2021": {
+   "XGB": {
+    "fire_cut": 0.2443101853132248,
+    "real_fire_rate": 0.0672974715527907,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.013374135883958213,
+    "insample_days": 1050
+   },
+   "XGBR": {
+    "fire_cut": 0.07478255778551102,
+    "real_fire_rate": 0.0851063829787234,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.005551264763943564,
+    "insample_days": 1057
+   },
+   "RFR": {
+    "fire_cut": 0.0648101937348295,
+    "real_fire_rate": 0.05145764720232805,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.004358947895630488,
+    "insample_days": 1057
+   }
+  },
+  "2022": {
+   "XGB": {
+    "fire_cut": 0.1897740662097931,
+    "real_fire_rate": 0.09621392382524806,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.01108019722505383,
+    "insample_days": 1307
+   },
+   "XGBR": {
+    "fire_cut": 0.061915814876556396,
+    "real_fire_rate": 0.09333268586412859,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.006423622122996391,
+    "insample_days": 1313
+   },
+   "RFR": {
+    "fire_cut": 0.05932080681047445,
+    "real_fire_rate": 0.061493387720746535,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.006523156157930577,
+    "insample_days": 1302
+   }
+  },
+  "2023": {
+   "XGB": {
+    "fire_cut": 0.1999960094690323,
+    "real_fire_rate": 0.06569429271605302,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.01224072401923358,
+    "insample_days": 1549
+   },
+   "XGBR": {
+    "fire_cut": 0.058736130595207214,
+    "real_fire_rate": 0.0728099441967581,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.006161329511857515,
+    "insample_days": 1566
+   },
+   "RFR": {
+    "fire_cut": 0.0652965063613472,
+    "real_fire_rate": 0.07092031060852107,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.006290674386232849,
+    "insample_days": 1561
+   }
+  },
+  "2024": {
+   "XGB": {
+    "fire_cut": 0.1965276002883911,
+    "real_fire_rate": 0.07310516653553632,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011103088176133315,
+    "insample_days": 1802
+   },
+   "XGBR": {
+    "fire_cut": 0.054624106734991074,
+    "real_fire_rate": 0.08253343823760818,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.00650322247499463,
+    "insample_days": 1814
+   },
+   "RFR": {
+    "fire_cut": 0.06363188866208773,
+    "real_fire_rate": 0.06614214529242067,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.006302687738940485,
+    "insample_days": 1809
+   }
+  },
+  "2025": {
+   "XGB": {
+    "fire_cut": 0.18197734653949738,
+    "real_fire_rate": 0.09093076726560505,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.011010964232061141,
+    "insample_days": 2052
+   },
+   "XGBR": {
+    "fire_cut": 0.04708944633603096,
+    "real_fire_rate": 0.07730562888529337,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.0062922131028510285,
+    "insample_days": 2067
+   },
+   "RFR": {
+    "fire_cut": 0.059126854107463316,
+    "real_fire_rate": 0.06839819466916461,
+    "placebo_fire_rate": 0.0,
+    "insample_mean": 0.006355373369776618,
+    "insample_days": 2064
+   }
+  }
+ },
+ "passing_arms": [
+  "XGBR",
+  "RFR"
+ ]
+}
