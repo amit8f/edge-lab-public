@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8673.53 | -13.26% | 96 | 21 | long CVNA, long LLY, long MA, long PWR, long VRT |
-| Coin flip on C's picks | $9631.05 | -3.69% | 96 | 46 | short CVNA, short LLY, short MA, short PWR, long VRT |
-| C's prompt on Groq (K7) | $8213.47 | -17.87% | 248 | 57 | short CAT, short FTNT, long LLY, short NOW, long VRT |
-| Coin flip on C-groq's picks | $9279.02 | -7.21% | 248 | 122 | short CAT, short FTNT, short LLY, long NOW, short VRT |
+| AI bot C (whole market, up to 5 stocks) | $8672.07 | -13.28% | 96 | 21 | long CVNA, long LLY, long MA, long PWR, long VRT |
+| Coin flip on C's picks | $9621.19 | -3.79% | 96 | 46 | short CVNA, short LLY, short MA, short PWR, long VRT |
+| C's prompt on Groq (K7) | $8213.45 | -17.87% | 248 | 57 | short CAT, short FTNT, long LLY, short NOW, long VRT |
+| Coin flip on C-groq's picks | $9288.15 | -7.12% | 248 | 122 | short CAT, short FTNT, short LLY, long NOW, short VRT |
 | C-groq's answers, acted on once a day (K8) | $10000.00 | +0.00% | 0 | 0 | cash |
 | Coin flip on C-groq-slow's picks | $10000.00 | +0.00% | 0 | 0 | cash |
 | C's answers, acted on once a day (K8) | $10000.00 | +0.00% | 0 | 0 | cash |
 | Coin flip on C-slow's picks | $10000.00 | +0.00% | 0 | 0 | cash |
-| Just hold SPY | $10018.07 | +0.18% | 0 | 0 | long SPY |
+| Just hold SPY | $10014.75 | +0.15% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-29 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 12:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 12:2
 | 2026-10-27 15:59 | long DELL, long JCI, long PANW, long SOFI, long UPS | sold CBRS @ $119.25; sold NBIS @ $170.56; bought JCI @ $155.91; bought UPS @ $106.15 | Maintaining PANW, SOFI, and DELL due to strong momentum and positive news, while adding JCI and UPS for their positive outlooks and significant daily gains, replacing underperforming positions. |
 | 2026-10-27 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-27 15:47 | long CBRS, long DELL, long NBIS, long PANW, long SOFI | none | Maintaining all five existing long positions due to strong daily performance, positive news catalysts, and favorable hourly trends across the board. |
-| 2026-10-27 15:37 | long CBRS, long DELL, long NBIS, long PANW, long SOFI | none | Maintaining all current long positions due to strong daily performance and positive hourly trends, with no clear signals to exit or reallocate. |
