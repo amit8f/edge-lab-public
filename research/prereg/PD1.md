@@ -62,3 +62,25 @@ and 40 sessions, the reaction measured over day 0 only, and the result by year a
 ($1-2, $2-5).
 
 Prediction: about 25% pass (the published t is barely 2 and our cost of 2% a round trip is heavy).
+
+## Clarification (2026-10-29, before any PD1 event or return is built; code `tracks/penny/pd1_study.py`)
+
+- Data: W1's cache (`tracks/news/w1_data.py`): its daily bars, CIK map and universe flag (raw close >= $1,
+  median 20-day dollar volume >= $500k), with raw close under $5 added. W1's stock list is SEC's insider
+  data sets' tickers on Alpaca's exchange list, so the exchange rule is Alpaca's.
+- Events: Form 8-K only (an 8-K/A is a correction, not the release) listing item 2.02, from each penny
+  company's SEC submissions record. Its acceptanceDateTime carries a "Z" but is EDGAR's ET clock; the hand
+  check compares it with each filing's EDGAR index page.
+- The penny universe is read on the last session before day 0 (known before the reaction starts).
+- One event per company per 30 calendar days, counted from the acceptance time of the last kept event.
+- Events from 2015-10 are built so the 365-day reaction percentile has history; signals start 2017-01-01.
+- Hold: the entry day (day +2) counts as session 1, so the 60-session exit is the close of day +61. A series
+  that ends earlier (a >15-day gap or delisting) exits at its last close. Events whose day +61 falls on or
+  after 2025-10-01 are dropped.
+- Control: the day's permutation is shared by that day's picks without overlap (the k-th pick takes
+  candidates 5k .. 5k+4) and the first candidate with a bar on the entry day is used. "No item 2.02 8-K in
+  the 30 days around day 0" means no 8-K item 2.02 with its own day 0 within 15 calendar days either side.
+- Rule 11 alpha: the monthly cohort series regressed on FF5 + momentum summed over the entry month and the
+  next two (a 60-session hold spans about three months), Newey-West 3 lags.
+- Exploratory short side: the bottom 20% short at the same entry and exit, 2% round trip plus 20%/year
+  borrow over the hold; no historical borrow list exists, so all are counted.

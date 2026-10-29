@@ -1,7 +1,8 @@
 # G1 linked companies (research/prereg/G1.md, tracks/main/g1_links.py). Manual runs only, in order:
 #   stage=links until it prints LINKS (resumes per batch), then the hand check of
 #   research/results/G1/G1_links_check.csv, then stage=contracts (8-K material agreements, exploratory) and
-#   stage=screen. stage=card with a symbol writes one link card.
+#   stage=screen. stage=card with a symbol writes one link card. stage=g2check builds G2's stricter links
+#   (research/prereg/G2.md) from G1's stored sentences and its hand-check file.
 # Shares the M3/M4 data cache (same month-end panel). Results are committed back to the branch that ran it.
 name: g1-links
 
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "links, contracts, screen or card"
+        description: "links, contracts, screen, card, g2check or g2screen"
         required: true
         default: links
       symbol:
@@ -66,7 +67,12 @@ jobs:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-        run: .venv/bin/python -m tracks.main.g1_links --stage "$STAGE" --symbol "$SYMBOL" --cache cache/m4 --out research/results/G1 --budget-min 290
+        run: |
+          if [ "$STAGE" = g2check ] || [ "$STAGE" = g2screen ]; then
+            .venv/bin/python -m tracks.main.g2_links --stage "${STAGE#g2}" --cache cache/m4 --out research/results/G2
+            exit 0
+          fi
+          .venv/bin/python -m tracks.main.g1_links --stage "$STAGE" --symbol "$SYMBOL" --cache cache/m4 --out research/results/G1 --budget-min 290
 
       - name: Save the data cache (also after a failure, so a rerun skips the downloads)
         if: always()
@@ -81,7 +87,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/G1 && git add research/results/G1
+          mkdir -p research/results/G1 research/results/G2 && git add research/results/G1 research/results/G2
           git diff --cached --quiet && { echo "No results yet (links unfinished); rerun to continue"; exit 0; }
           git commit -q -m "G1 output (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
