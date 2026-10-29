@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 14:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8628.55 | -13.71% | 99 | 22 | long CMG, long CVNA, long LNG, short NOW, long VRT |
-| Coin flip on C's picks | $9602.26 | -3.98% | 99 | 48 | short CMG, short CVNA, long LNG, short NOW, long VRT |
-| C's prompt on Groq (K7) | $8219.24 | -17.81% | 250 | 58 | long CVNA, short FTNT, long LLY, short NOW, long VRT |
-| Coin flip on C-groq's picks | $9301.55 | -6.98% | 250 | 124 | long CVNA, short FTNT, short LLY, long NOW, short VRT |
+| AI bot C (whole market, up to 5 stocks) | $8629.91 | -13.70% | 99 | 22 | long CMG, long CVNA, long LNG, short NOW, long VRT |
+| Coin flip on C's picks | $9610.25 | -3.90% | 99 | 48 | short CMG, short CVNA, long LNG, short NOW, long VRT |
+| C's prompt on Groq (K7) | $8220.10 | -17.80% | 250 | 58 | long CVNA, short FTNT, long LLY, short NOW, long VRT |
+| Coin flip on C-groq's picks | $9295.55 | -7.04% | 250 | 124 | long CVNA, short FTNT, short LLY, long NOW, short VRT |
 | C-groq's answers, acted on once a day (K8) | $10000.00 | +0.00% | 0 | 0 | cash |
 | Coin flip on C-groq-slow's picks | $10000.00 | +0.00% | 0 | 0 | cash |
 | C's answers, acted on once a day (K8) | $10000.00 | +0.00% | 0 | 0 | cash |
 | Coin flip on C-slow's picks | $10000.00 | +0.00% | 0 | 0 | cash |
-| Just hold SPY | $9993.66 | -0.06% | 0 | 0 | long SPY |
+| Just hold SPY | $9991.05 | -0.09% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-29 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 14:27 | long CMG, long CVNA, long LNG, short NOW, long VRT | none | Maintaining all existing positions due to strong performance in long holdings (CMG, CVNA, LNG, VRT) and continued weakness in the short position (NOW). |
 | 2026-10-29 14:17 | long CMG, long CVNA, long LNG, short NOW, long VRT | none | Maintaining all current profitable positions (CMG, CVNA, LNG, VRT long, NOW short) due to continued strong momentum or clear downtrends, aligning with initial trade theses. |
 | 2026-10-29 14:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-29 14:2
 | 2026-10-28 11:37 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all existing long positions (VRT, TWST, FLEX, MU, SOFI) due to strong positive momentum and supportive news for each, with no compelling reason to sell or initiate new positions at this time. |
 | 2026-10-28 11:27 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all current long positions due to strong positive momentum, favorable news, and analyst sentiment across the board. |
 | 2026-10-28 11:17 | long FLEX, long MU, long SOFI, long TWST, long VRT | bought BSX @ $41.70; bought FLEX @ $89.21 | Closed short position in BSX to lock in profit after a significant drop and potential for short-term rebound. Maintained long positions in MU, SOFI, TWST, and VRT due to strong positive momentum and favorable news. Initiated a new long position in FLEX following strong earnings and raised guidance. |
-| 2026-10-28 11:07 | short BSX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all current profitable positions (BSX short, MU long, SOFI long, TWST long, VRT long) due to continued strong momentum and supportive news for each, with VRT and TWST showing particularly strong breakouts. |
