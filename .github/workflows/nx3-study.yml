@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, events, minutes, train, extremes or models (NXM, research/prereg/NXM.md)"
+        description: "all, events, minutes, train, extremes models (NXM, research/prereg/NXM.md) or tame (NXR, research/prereg/NXR.md)"
         required: false
         default: all
 
@@ -71,6 +71,14 @@ jobs:
           key: nxm-v1-${{ github.run_id }}
           restore-keys: nxm-v1-
 
+      - name: Restore NXR's progress
+        if: inputs.stage == 'tame'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nxr
+          key: nxr-v1-${{ github.run_id }}
+          restore-keys: nxr-v1-
+
       - name: Run the stage
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
@@ -82,11 +90,16 @@ jobs:
               --out research/results/NXM --budget-min 300
             exit 0
           fi
+          if [ "$STAGE" = tame ]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.news.nxr_study --cache cache/nx1 --state cache/nxr \
+              --out research/results/NXR --budget-min 300
+            exit 0
+          fi
           PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx3_study --stage "$STAGE" --cache cache/nx1 \
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3
@@ -99,15 +112,23 @@ jobs:
           path: cache/nxm
           key: nxm-v1-${{ github.run_id }}
 
+      - name: Save NXR's progress
+        if: always() && inputs.stage == 'tame'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/nxr
+          key: nxr-v1-${{ github.run_id }}
+
       - name: Commit the results to this branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NX3 research/results/NXM && git add research/results/NX3 research/results/NXM
+          mkdir -p research/results/NX3 research/results/NXM research/results/NXR
+          git add research/results/NX3 research/results/NXM research/results/NXR
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
-          git commit -q -m "NX3/NXM ${{ inputs.stage }} results (run ${{ github.run_id }})"
+          git commit -q -m "NX3/NXM/NXR ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
           git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
