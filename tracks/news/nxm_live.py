@@ -1,5 +1,6 @@
 """NXM shadow books (research/prereg/NXM.md "What happens next"): one $5,000 ledger book per arm that passed
-(LGBM, LIN, MLP, ENS), on NX3's live events. Ledger only: no orders, no extra API calls.
+(LGBM, LIN, MLP, ENS), on NX3's live events, plus NXR's passing arms (XGBR, RFR; research/prereg/NXR.md) from
+2026-10-30. Ledger only: no orders, no extra API calls.
 
 Each arm reads the inputs NX3's scorer logged for every decided event at its decision time (nx3_live.decide),
 so its effect is the one it would have had live. After the close, per arm: e = N(x) - N(x0) with the arm's
@@ -21,8 +22,11 @@ from tracks.news import nx1_study as N
 from tracks.news import nx3_study as S
 
 RES = Path("research/results/NXM")
-ARMS = ("LGBM", "LIN", "MLP", "ENS")
-FIRST_DAY = "2026-10-29"        # the first session whose decisions log easy-to-borrow (nxm books start here)
+RES_R = Path("research/results/NXR")
+NXM_ARMS, NXR_ARMS = ("LGBM", "LIN", "MLP", "ENS"), ("XGBR", "RFR")
+ARMS = NXM_ARMS + NXR_ARMS              # an arm's control seed adds its number here (1-6)
+FIRST = {a: "2026-10-29" for a in NXM_ARMS} | {a: "2026-10-30" for a in NXR_ARMS}
+FIRST_DAY = min(FIRST.values())         # 2026-10-29: the first session whose decisions log easy-to-borrow
 SLIM = ["symbol", "t", "side", "e", "prev_c", "dv20"]
 
 
@@ -42,9 +46,8 @@ class Ens:
         return np.mean([m.effect(X) / m.cut for m in self.members], axis=0)
 
 
-def load(res=RES):
-    """{arm: model with .effect and .cut} from the version 1 files, each checked against its sha256."""
-    meta = json.loads((res / "nxm_v1_meta.json").read_text())
+def _reader(res, meta_name):
+    meta = json.loads((res / meta_name).read_text())
 
     def read(key):
         f = res / meta[key]["file"]
@@ -52,14 +55,28 @@ def load(res=RES):
         if hashlib.sha256(b).hexdigest() != meta[key]["sha256"]:
             raise RuntimeError(f"{f} does not match its sha256")
         return pickle.loads(b)
+    return read, meta
+
+
+def load(res=RES, res_r=RES_R):
+    """{arm: model with .effect and .cut} from the version 1 files, each checked against its sha256."""
+    read, _ = _reader(res, "nxm_v1_meta.json")
     out = {}
-    for a in ARMS:
+    for a in NXM_ARMS:
         m = read(a)
         if a == "ENS":
             out[a] = Ens([Arm(**read(f"member_{k}")) for k in m["members"]], m["cut"])
         else:
             out[a] = Arm(**m)
+    read_r, _ = _reader(res_r, "nxr_v1_meta.json")
+    for a in NXR_ARMS:
+        out[a] = Arm(**read_r(a))
     return out
+
+
+def shas():
+    m = json.loads((RES / "nxm_v1_meta.json").read_text()) | json.loads((RES_R / "nxr_v1_meta.json").read_text())
+    return {a: m[a]["sha256"] for a in ARMS if a in m}
 
 
 def book(decided, model, seed):
@@ -94,15 +111,17 @@ def close_day(root, decisions, d, seed, models=None):
     models = models or load()
     dec = [x for x in decisions if x["status"] == "decided"]
     arms = {}
-    for i, (a, m) in enumerate(models.items()):
-        p, c = book(dec, m, seed + i + 1)
+    for a, m in models.items():
+        if day_s < FIRST.get(a, FIRST_DAY):
+            continue
+        p, c = book(dec, m, seed + ARMS.index(a) + 1)
         arms[a] = {"fire_cut": m.cut, "picks": [{k: x.get(k) for k in SLIM} for x in p],
                    "control": [{k: x.get(k) for k in SLIM} for x in c],
                    "fired": None if not dec else int(np.sum(np.abs(m.effect(np.array(
                        [[x["inputs"][k] if x["inputs"][k] is not None else np.nan for k in S.INPUTS] for x in dec],
                        float))) >= m.cut))}
-    meta = json.loads((RES / "nxm_v1_meta.json").read_text())
-    rec = {"day": day_s, "models_sha256": {a: meta[a]["sha256"] for a in models if a in meta},
+    sh = shas()
+    rec = {"day": day_s, "models_sha256": {a: sh[a] for a in arms if a in sh},
            "decided": len(dec), "arms": arms}
     return led.write_json("nxm_day", day_s, f"nxm/days/{day_s}.json", json.loads(json.dumps(rec, default=str)))
 

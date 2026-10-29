@@ -77,3 +77,17 @@ def test_a_model_file_that_changed_is_refused(tmp_path):
     p.write_bytes(p.read_bytes() + b"x")
     with pytest.raises(RuntimeError, match="sha256"):
         M.load(tmp_path)
+
+
+def test_nxr_arms_start_on_their_own_first_day(tmp_path):
+    root = tmp_path / "nx3"
+    root.mkdir()
+    models = {a: Lin(1) for a in M.ARMS}
+    d = [dec("AAA", 31, 2), dec("BBB", 40, -2)]
+    M.close_day(root, d, pd.Timestamp("2026-10-29"), 1, models)
+    M.close_day(root, d, pd.Timestamp("2026-10-30"), 1, models)
+    led = Ledger(root)
+    r29 = json.loads((root / led.entry("nxm_day", "2026-10-29")["file"]).read_text())
+    r30 = json.loads((root / led.entry("nxm_day", "2026-10-30")["file"]).read_text())
+    assert set(r29["arms"]) == set(M.NXM_ARMS) and set(r30["arms"]) == set(M.ARMS)
+    assert set(r30["models_sha256"]) == set(M.ARMS)

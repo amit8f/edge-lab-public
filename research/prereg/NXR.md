@@ -47,3 +47,9 @@ test (book minus control, NW t >= 2 at 100 closed trades or 2027-12-31). No arm 
 
 XGBR passes rule 21 (ratio about 1.5) with a lower mean than XGB (about +0.4%/day) and passes the gate. RFR
 passes rule 21 and the control test but is weaker (t about 2.5). About 0.3 that either fails the gate.
+
+## Live book details (2026-10-29, after the result and before any forward data; `tracks/news/nxm_live.py`)
+
+XGBR and RFR join NXM's books with NXM's live details unchanged (logged inputs at decision time, easy to
+borrow for shorts, sha256 checks, after-close scoring), from 2026-10-30, the first session after their
+version 1 files exist. Control per arm: default_rng(NX3's day seed + the arm's number), XGBR 5 and RFR 6.
