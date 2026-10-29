@@ -259,7 +259,7 @@ async function play(ev) {
     }
   }
   setMeters(real, ghost);
-  await finale(ev, real - ghost, lastBall);
+  await finale(ev, real - ghost);
   playing = false;
 }
 
@@ -271,113 +271,10 @@ function outcomeLine(ev, d) {
   if (ev.last_price && ev.entry_iex) return `in at ${money(ev.entry_iex)} · now ${money(ev.last_price)} (${pct(sgn * (ev.last_price / ev.entry_iex - 1))} so far)`;
   return `in at ${money(ev.entry_iex)} · result after the exit`;
 }
-// the finish: the logo drops out of the last tree onto three hoops, teases them, goes through the right one,
-// then the screen turns that decision's color with the logo, the score and the result
-const HOOPS = [{ cls: "short", word: "SHORT" }, { cls: "skip", word: "SKIP" }, { cls: "buy", word: "BUY" }];
-const COURT = TH;    // the court is one screen under the tree; the view pans down to it as the logo falls
-// the hoops are Amit's drawing (hoop_short/skip/buy.png, cut from his picture); rim center at (127, 168) in each
-// 254x374 image with a rim half-width of 97
-const HOOP_IMG = { w: 254, h: 374, cx: 127, rimY: 168, hw: 97 };
-function drawCourt() {
-  const svg = $("tree");
-  const top = TH, rimY = top + Math.round(TH * 0.45), hw = innerWidth < 600 ? 72 : 60, floor = rimY + 140;
-  const behind = s("g", {}), back = s("g", { class: "court" });
-  const k = hw / HOOP_IMG.hw;
-  const hoops = HOOPS.map((h, i) => {
-    const x = 107 + i * 213;
-    const img = s("image", { href: `hoop_${h.cls}.png`, x: x - HOOP_IMG.cx * k, y: rimY - HOOP_IMG.rimY * k,
-      width: HOOP_IMG.w * k, height: HOOP_IMG.h * k, class: "hoopimg" });
-    back.append(img);
-    return { ...h, x, net: img };
-  });
-  const ballLayer = s("g", {});
-  svg.append(behind, back, ballLayer);
-  return { hoops, rimY, hw, ballLayer, behind, floor };
-}
-function panTo(y, T) {
-  const svg = $("tree"), y0 = +svg.getAttribute("viewBox").split(" ")[1], t0 = performance.now();
-  return new Promise(res => (function step(now) {
-    const k = Math.min(1, (now - t0) / T), e = 1 - (1 - k) ** 3;
-    svg.setAttribute("viewBox", `0 ${y0 + (y - y0) * e} 640 ${TH}`);
-    k < 1 ? requestAnimationFrame(step) : res();
-  })(t0));
-}
-function fall(ball, x1, y1, T, spin) {     // gravity: slow at the leaf, fast at the rim
-  const x0 = ball.x, y0 = ball.y, r0 = ball.rot, t0 = performance.now();
-  return new Promise(res => (function step(now) {
-    const k = Math.min(1, (now - t0) / T);
-    ball.move(x0 + (x1 - x0) * k, y0 + (y1 - y0) * k * k, r0 + spin * k);
-    k < 1 ? requestAnimationFrame(step) : res();
-  })(t0));
-}
-function hop(ball, x1, y1, H, T, spin) {
-  const x0 = ball.x, y0 = ball.y, r0 = ball.rot, t0 = performance.now();
-  return new Promise(res => (function step(now) {
-    const k = Math.min(1, (now - t0) / T);
-    ball.move(x0 + (x1 - x0) * k, y0 + (y1 - y0) * k - 4 * H * k * (1 - k), r0 + spin * k);
-    k < 1 ? requestAnimationFrame(step) : res();
-  })(t0));
-}
-// several ways to tease the baskets; one is picked at random each time so the finish isn't predictable
-const jit = (v, f = 0.15) => v * (1 + (Math.random() * 2 - 1) * f);
-const rimHit = (c, i, side) => [c.hoops[i].x + side * (c.hw - c.ball.r * 0.4), c.rimY - c.ball.r];
-const TEASES = [
-  async function rimTour(c) {            // off the rims of the others, once off the right one
-    const seq = [c.others[0], c.target, c.others[1], c.others[0]]; let H = 150, T = 700;
-    for (let n = 0; n < seq.length; n++) {
-      const [x, y] = rimHit(c, seq[n], n % 2 ? 1 : -1);
-      await hop(c.ball, x, y, jit(H), jit(T), (x > c.ball.x ? 1 : -1) * 300); H *= 0.8; T *= 0.88;
-    }
-  },
-  async function rattle(c) {             // lands on a wrong rim, rattles, rolls out, then over to the right one
-    const w = c.others[0];
-    let [x, y] = rimHit(c, w, -1); await hop(c.ball, x, y, jit(140), 680, 260);
-    for (let k = 0; k < 4; k++) { [x, y] = rimHit(c, w, k % 2 ? -1 : 1); await hop(c.ball, x, y, 26 - k * 5, 230, 80); }
-    await hop(c.ball, c.hoops[w].x + (c.hoops[c.target].x > c.hoops[w].x ? 1 : -1) * c.hw * 2, c.floor, 30, 480, 240);
-    [x, y] = rimHit(c, c.target, -1); await hop(c.ball, x, y, jit(150), 700, 300);
-  },
-  async function bankShot(c) {           // hits a wrong backboard, rebounds off the floor, banks in
-    const w = c.others[0];
-    await hop(c.ball, c.hoops[w].x, c.rimY - 50, jit(170), 760, 360);
-    await hop(c.ball, (c.hoops[w].x + c.hoops[c.target].x) / 2, c.floor, 20, 520, 280);
-    await hop(c.ball, c.hoops[c.target].x + c.hw * 0.2, c.rimY - 52, jit(200), 760, 320);
-  },
-  async function dribble(c) {            // bounces along the floor under all three, then a jump shot
-    const order = [c.others[0], c.others[1], c.target, c.others[0]];
-    await hop(c.ball, c.hoops[order[0]].x, c.floor, 10, 520, 200);
-    for (let k = 1; k < order.length; k++) await hop(c.ball, c.hoops[order[k]].x, c.floor, jit(110 - k * 15), jit(480), 260);
-    const [x, y] = rimHit(c, c.target, 1); await hop(c.ball, x, y, jit(190), 760, 320);
-  },
-  async function airball(c) {            // a high shot that floats over a wrong hoop, bounces on its rim twice
-    const w = c.others[Math.random() < 0.5 ? 0 : 1];
-    let [x, y] = rimHit(c, w, 1); await hop(c.ball, x, y, jit(230), 860, 340);
-    [x, y] = rimHit(c, w, -1); await hop(c.ball, x, y, 45, 330, 120);
-    [x, y] = rimHit(c, c.target, -1); await hop(c.ball, x, y, jit(160), 720, 300);
-    [x, y] = rimHit(c, c.target, 1); await hop(c.ball, x, y, 30, 280, 90);
-  },
-];
-async function finale(ev, eff, lastBall) {
+// the finish: the screen turns the decision's color with the logo, the score and the result
+async function finale(ev, eff) {
   const d = decisionOf(ev), e = ev.e != null ? ev.e : eff;
-  const target = HOOPS.findIndex(h => h.cls === d.cls);
-  const court = drawCourt(); const { hoops, rimY, hw } = court;
-  $("phase").textContent = "which basket?";
-  const ball = lastBall || makeBall(ev.symbol, BALL_R);
-  if (!lastBall) ball.move(320, TH - 40);
-  court.ballLayer.append(ball);
-  if (!reduced) {
-    const others = [0, 1, 2].filter(i => i !== target).sort(() => Math.random() - 0.5);
-    // the logo drops off the last leaf while the view follows it down to the rims
-    const first = hoops[others[0]], side = ball.x < first.x ? -1 : 1;
-    await Promise.all([panTo(COURT, 1000), fall(ball, first.x + side * (hw - ball.r * 0.4), rimY - ball.r, 1000, 0)]);
-    const pick = TEASES[Math.floor(Math.random() * TEASES.length)];
-    await pick({ ball, hoops, rimY, hw, target, others, floor: court.floor - ball.r });
-    await hop(ball, hoops[target].x, rimY - ball.r, 40, 320, 120);   // the last little drop onto the target's rim center
-    court.behind.append(ball);                                         // through the net, behind the drawing
-    const net = hoops[target].net; net.classList.add("swish");
-    await hop(ball, hoops[target].x, rimY + 110, 0, 450, 0);          // swish through the net
-    ball.style.transition = "opacity .25s"; ball.style.opacity = "0";
-    await sleep(450);
-  } else $("tree").setAttribute("viewBox", `0 ${COURT} 640 ${TH}`);
+  await sleep(400);
   const v = $("verdict"); v.className = `verdict full ${d.cls}`;
   const why = d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") : `news effect past the cut (${num(MODEL.cut, 3)})`;
   v.replaceChildren(el("div", { class: "screen" },

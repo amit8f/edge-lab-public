@@ -71,10 +71,6 @@ main { max-width: 980px; margin: 0 auto; padding: 12px 16px 60px; }
 .verdict { position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
   background: color-mix(in srgb, var(--panel) 93%, transparent); animation: fadein .25s ease-out; }
 #tree .lball-ring { fill: none; stroke: var(--path); stroke-width: 2.5; filter: drop-shadow(0 0 5px var(--path)); }
-#tree .hoopimg { transform-box: fill-box; transform-origin: 50% 45%; }
-#tree .hoopimg.swish { animation: swish .5s ease-out; }
-@keyframes swish { 0% { transform: none; } 30% { transform: translateY(4px) scaleY(1.03); } 60% { transform: translateY(-2px); } 100% { transform: none; } }
-@media (prefers-color-scheme: dark) { #tree .hoopimg { filter: drop-shadow(0 0 6px rgba(255,255,255,.15)) brightness(1.15); } }
 .logo.lg { width: 72px; height: 72px; border-radius: 16px; font-size: 16px; }
 .verdict.full { color: #fff; animation: fadein .3s ease-out; }
 .verdict.full.buy { background: #15803d; } .verdict.full.short { background: #b91c1c; } .verdict.full.skip { background: #475569; }
@@ -91,7 +87,7 @@ main { max-width: 980px; margin: 0 auto; padding: 12px 16px 60px; }
 @keyframes slam { 0% { transform: scale(2.4); opacity: 0; } 60% { transform: scale(.92); opacity: 1; } 100% { transform: scale(1); } }
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .verdict, .verdict .big, #tree .hoopimg.swish { animation: none; } .bar .fill, .bar.eff .dot { transition: none; }
+  .verdict, .verdict .big { animation: none; } .bar .fill, .bar.eff .dot { transition: none; }
 }
 
 .feedhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 18px; }
