@@ -275,43 +275,24 @@ function outcomeLine(ev, d) {
 // then the screen turns that decision's color with the logo, the score and the result
 const HOOPS = [{ cls: "short", word: "SHORT" }, { cls: "skip", word: "SKIP" }, { cls: "buy", word: "BUY" }];
 const COURT = TH;    // the court is one screen under the tree; the view pans down to it as the logo falls
-// the court is Amit's neon sketch without its brick wall: glowing boards and dripping nets on the page itself
-const dark = matchMedia("(prefers-color-scheme: dark)").matches;
-const NEON = { short: "#ff4d5e", skip: dark ? "#e6edf5" : "#64748b", buy: dark ? "#3dff8f" : "#16c060" };
-function seeded(k) { const x = Math.sin(k * 99.13 + 7.7) * 43758.5; return x - Math.floor(x); }
+// the hoops are Amit's drawing (hoop_short/skip/buy.png, cut from his picture); rim center at (127, 168) in each
+// 254x374 image with a rim half-width of 97
+const HOOP_IMG = { w: 254, h: 374, cx: 127, rimY: 168, hw: 97 };
 function drawCourt() {
   const svg = $("tree");
-  const top = TH, rimY = top + Math.round(TH * 0.5), hw = innerWidth < 600 ? 62 : 56, floor = rimY + 112;
-  const back = s("g", { class: "court" }), front = s("g", { class: "court" });
-  const defs = s("defs", {});
-  defs.innerHTML = `<filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
-  back.append(defs);
+  const top = TH, rimY = top + Math.round(TH * 0.45), hw = innerWidth < 600 ? 72 : 60, floor = rimY + 140;
+  const behind = s("g", {}), back = s("g", { class: "court" });
+  const k = hw / HOOP_IMG.hw;
   const hoops = HOOPS.map((h, i) => {
-    const x = 107 + i * 213, bw = hw * 2 + 34, by = rimY - 96, col = NEON[h.cls];
-    const lab = s("text", { x, y: by + 27, "text-anchor": "middle", "font-size": Math.max(16, FS * 1.15), class: `hlabel ${h.cls}` });
-    lab.textContent = h.word;
-    const net = s("g", { class: "net" });
-    const g = s("g", { filter: "url(#glow)", stroke: col, fill: "none", "stroke-width": 3 });
-    g.append(s("line", { x1: x, y1: by + 86, x2: x, y2: floor + 60, opacity: .35 }),
-      s("rect", { x: x - bw / 2, y: by, width: bw, height: 86, rx: 10 }),
-      s("rect", { x: x - hw * 0.5, y: by + 40, width: hw, height: 38, rx: 3 }),
-      s("ellipse", { cx: x, cy: rimY, rx: hw, ry: 9, opacity: .6 }));
-    lab.style.fill = col; lab.setAttribute("filter", "url(#glow)");
-    back.append(g, lab);
-    // dripping net: glowing drips hang from the front of the rim, with drops below
-    for (let k = 0; k <= 9; k++) {
-      const u = -0.92 + 1.84 * k / 9, y0 = rimY + 9 * Math.sqrt(1 - u * u), len = 18 + 44 * seeded(i * 10 + k);
-      net.append(s("path", { d: `M ${x + u * hw} ${y0} L ${x + u * hw * 0.9} ${y0 + len}`, stroke: col, "stroke-width": 5.5, "stroke-linecap": "round" }));
-      if (seeded(i * 10 + k + 3) > 0.45) net.append(s("circle", { cx: x + u * hw * 0.9, cy: y0 + len + 9 + 10 * seeded(k + i), r: 2.6, fill: col }));
-    }
-    net.setAttribute("filter", "url(#glow)");
-    front.append(net, s("path", { d: `M ${x - hw} ${rimY} A ${hw} 9 0 0 0 ${x + hw} ${rimY}`, stroke: col, "stroke-width": 5, fill: "none", filter: "url(#glow)" }));
-    return { ...h, x, net };
+    const x = 107 + i * 213;
+    const img = s("image", { href: `hoop_${h.cls}.png`, x: x - HOOP_IMG.cx * k, y: rimY - HOOP_IMG.rimY * k,
+      width: HOOP_IMG.w * k, height: HOOP_IMG.h * k, class: "hoopimg" });
+    back.append(img);
+    return { ...h, x, net: img };
   });
-  svg.append(back);
-  const ballLayer = s("g", {}); svg.append(ballLayer, front);
-  return { hoops, rimY, hw, ballLayer, floor };
+  const ballLayer = s("g", {});
+  svg.append(behind, back, ballLayer);
+  return { hoops, rimY, hw, ballLayer, behind, floor };
 }
 function panTo(y, T) {
   const svg = $("tree"), y0 = +svg.getAttribute("viewBox").split(" ")[1], t0 = performance.now();
@@ -391,8 +372,9 @@ async function finale(ev, eff, lastBall) {
     const pick = TEASES[Math.floor(Math.random() * TEASES.length)];
     await pick({ ball, hoops, rimY, hw, target, others, floor: court.floor - ball.r });
     await hop(ball, hoops[target].x, rimY - ball.r, 40, 320, 120);   // the last little drop onto the target's rim center
+    court.behind.append(ball);                                         // through the net, behind the drawing
     const net = hoops[target].net; net.classList.add("swish");
-    await hop(ball, hoops[target].x, rimY + 70, 0, 380, 90);          // swish through the net
+    await hop(ball, hoops[target].x, rimY + 110, 0, 450, 0);          // swish through the net
     ball.style.transition = "opacity .25s"; ball.style.opacity = "0";
     await sleep(450);
   } else $("tree").setAttribute("viewBox", `0 ${COURT} 640 ${TH}`);
@@ -516,14 +498,13 @@ function renderFeed(day) {
 function evCard(ev, today) {
   const dcs = decisionOf(ev);
   const res = el("div", { class: "res" });
-  if (ev.result) res.append(el("div", { class: ev.result.net >= 0 ? "up" : "down", text: `${pct(ev.result.net)} net` }),
-    el("div", { class: "muted small", text: `in ${money(ev.result.entry)} out ${money(ev.result.exit)}` }));
-  else if (ev.side) res.append(el("div", { class: "muted", text: today ? "open" : "settling" }),
-    ev.last_price ? el("div", { class: "small", text: `now ${money(ev.last_price)} (${pct(ev.side * (ev.last_price / ev.entry_iex - 1))})` }) : null);
-  else if (ev.next_move != null) res.append(el("div", { class: ev.next_move >= 0 ? "up" : "down", text: pct(ev.next_move) }),
-    el("div", { class: "muted small", text: "if bought, to next close" }));
-  else if (ev.last_price) res.append(el("div", { class: "small", text: `now ${money(ev.last_price)}` }),
-    el("div", { class: "muted small", text: pct(ev.last_price / ev.entry_iex - 1) }));
+  // every stock: its price now and how far it moved since the decision (the stock itself, up or down)
+  const mv = ev.last_price && ev.entry_iex ? ev.last_price / ev.entry_iex - 1 : null;
+  if (ev.last_price) res.append(el("div", { class: "small" }, el("span", { text: `now ${money(ev.last_price)} ` }),
+    el("span", { class: mv >= 0 ? "up" : "down", text: pct(mv) })));
+  if (ev.result) res.append(el("div", { class: `small ${ev.result.net >= 0 ? "up" : "down"}`, text: `trade ${pct(ev.result.net)} net` }));
+  else if (ev.side) res.append(el("div", { class: "muted small", text: today ? "trade open" : "settling" }));
+  else if (ev.next_move != null) res.append(el("div", { class: "muted small", text: `next close ${pct(ev.next_move)}` }));
   const card = el("div", { class: `ev ${ev.side ? "" : "skipped"}`, role: "button", tabindex: "0" },
     logo(ev.symbol),
     el("div", {},
