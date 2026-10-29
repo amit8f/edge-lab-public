@@ -1,0 +1,318 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "bb5ea283f5ba90a204f8231f83923361bb1c42ef09bf9896d8c632a7a3c72f37",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "f15c4f7e810ca60d82e8da8167b589ac301eac9b02f6fab25cf8ff741e9d4048",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "NOW",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GOOGL",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "NCLH",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BOOT",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "DFIN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TWI",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "deal",
+     "symbol": "ADT",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "HDSN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "CYH",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "CHRS",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "45fdeff8a01fc63940a3c29c1fe82f1c61d5ec54096e287656cabf2167fad53e",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "massive drop, high z\u2011score, strong confidence, shortable",
+     "stop_pct": 12.0,
+     "symbol": "NOW"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "ab07b7258f6bff3755083f3b3fe502b6c5943ffeeb3784151cf2e6cf988c9d28"
+  },
+  "reviewer": {
+   "answer_sha256": "70be58d42112597c8f1d99420a34e4a55a607aeab25486a28db365ecc788520c",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "6b25c7537793e0b730d8e65cd4d9ca1dc22a46cc435ae3f8b7421d49d562067c",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive single-day drop of over 23 percent with high analyst confidence aligns with the short proposal.",
+     "symbol": "NOW"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.2331,
+   "news": 1,
+   "pace": null,
+   "price": 115.135,
+   "r20": 0.12029,
+   "r5": -0.01953,
+   "short": true,
+   "src": "iex",
+   "symbol": "NOW",
+   "z": -10.868
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.12161,
+   "news": 1,
+   "pace": null,
+   "price": 285.38,
+   "r20": -0.05577,
+   "r5": -0.02948,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "GOOGL",
+   "z": -9.24
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.08655,
+   "news": 1,
+   "pace": null,
+   "price": 17.45,
+   "r20": 0.0955,
+   "r5": 0.03015,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NCLH",
+   "z": 3.517
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.08888,
+   "news": 1,
+   "pace": null,
+   "price": 123.37,
+   "r20": -0.05952,
+   "r5": -0.02403,
+   "short": true,
+   "src": "iex",
+   "symbol": "BOOT",
+   "z": 3.388
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.07624,
+   "news": 1,
+   "pace": null,
+   "price": 57.17,
+   "r20": 0.12566,
+   "r5": 0.00625,
+   "short": true,
+   "src": "iex",
+   "symbol": "DFIN",
+   "z": 3.126
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.23565,
+   "news": 0,
+   "pace": null,
+   "price": 5.06,
+   "r20": -0.0236,
+   "r5": -0.03216,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "TWI",
+   "z": -15.224
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.33063,
+   "news": 0,
+   "pace": null,
+   "price": 9.86,
+   "r20": 0.21875,
+   "r5": 0.08971,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADT",
+   "z": 12.438
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.17591,
+   "news": 0,
+   "pace": null,
+   "price": 4.31,
+   "r20": 0.01553,
+   "r5": -0.03327,
+   "short": true,
+   "src": "iex",
+   "symbol": "HDSN",
+   "z": -11.953
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.11278,
+   "news": 0,
+   "pace": null,
+   "price": 2.36,
+   "r20": -0.06993,
+   "r5": -0.05674,
+   "short": true,
+   "src": "iex",
+   "symbol": "CYH",
+   "z": -4.061
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.12931,
+   "news": 0,
+   "pace": null,
+   "price": 1.01,
+   "r20": -0.04132,
+   "r5": 0.13725,
+   "short": true,
+   "src": "iex",
+   "symbol": "CHRS",
+   "z": -3.068
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4965.8375,
+  "PICK-MAIN-coin": 4992.4804,
+  "PICK-PENNY": 483.3222,
+  "PICK-PENNY-coin": 510.2225
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 83,
+  "news": 24,
+  "volume": 0
+ },
+ "flagged": 97,
+ "headline_counts": {
+  "ADT": 3,
+  "BOOT": 3,
+  "CHRS": 3,
+  "CYH": 3,
+  "DFIN": 3,
+  "GOOGL": 3,
+  "HDSN": 3,
+  "NCLH": 3,
+  "NOW": 3,
+  "TWI": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "7d9439c43cc009b9518d862ea6511472466bed4feacfee4d209f204be4fa238e",
+ "price_sources": {
+  "delayed_sip": 672,
+  "iex": 2717
+ },
+ "priced": 3389,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NOW"
+  }
+ ],
+ "slot": "2026-10-29T09:45",
+ "t": "2026-10-29T13:45:20.485983+00:00",
+ "universe": 3414,
+ "written_utc": "2026-10-29T13:45:55.576341Z"
+}
