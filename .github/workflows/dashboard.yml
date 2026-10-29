@@ -1,0 +1,119 @@
+# The dashboard (dashboard/, read-only). `data` rebuilds dash/summary.json from every state branch every 10
+# minutes in market hours and once a night, and force-pushes it as a single commit to the orphan branch
+# `state-dash` (only this job writes it, so the branch never grows). The page reads that file from GitHub.
+# `site` deploys dashboard/site to Cloudflare Pages when the page changes, only once the CLOUDFLARE_API_TOKEN
+# and CLOUDFLARE_ACCOUNT_ID secrets exist; Cloudflare Access keeps the page private. No orders, no headline text.
+name: dashboard
+
+on:
+  schedule:
+    - cron: "*/10 13-21 * * 1-5"
+    - cron: "30 3 * * *"
+  push:
+    branches: [main]
+    paths: ["dashboard/**", ".github/workflows/dashboard.yml"]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
+
+jobs:
+  data:
+    if: github.repository == 'amit8f/edge-lab-public'
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0          # the Ideas tab dates each idea's last change from git history
+
+      - name: Set up Python
+        run: python3 -m pip install --quiet requests pandas
+
+      - name: Clone the state branches
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          auth=(-c "http.extraheader=AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)")
+          url="https://github.com/${GITHUB_REPOSITORY}.git"
+          mkdir -p st
+          for b in state state-nx3 state-nx1 state-scouts state-watch state-ai state-wide state-kronos; do
+            git "${auth[@]}" clone -q --depth 1 --branch "$b" "$url" "st/$b" || echo "no branch $b"
+          done
+          git "${auth[@]}" clone -q --depth 1 --branch state-dash "$url" sd || mkdir -p sd
+
+      - name: Build the summary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          ALPACA_P1P2_KEY_ID: ${{ secrets.ALPACA_P1P2_KEY_ID }}
+          ALPACA_P1P2_SECRET_KEY: ${{ secrets.ALPACA_P1P2_SECRET_KEY }}
+          ALPACA_M3_KEY_ID: ${{ secrets.ALPACA_M3_KEY_ID }}
+          ALPACA_M3_SECRET_KEY: ${{ secrets.ALPACA_M3_SECRET_KEY }}
+          ALPACA_M4_KEY_ID: ${{ secrets.ALPACA_M4_KEY_ID }}
+          ALPACA_M4_SECRET_KEY: ${{ secrets.ALPACA_M4_SECRET_KEY }}
+          ALPACA_M6_KEY_ID: ${{ secrets.ALPACA_M6_KEY_ID }}
+          ALPACA_M6_SECRET_KEY: ${{ secrets.ALPACA_M6_SECRET_KEY }}
+          ALPACA_P4_KEY_ID: ${{ secrets.ALPACA_P4_KEY_ID }}
+          ALPACA_P4_SECRET_KEY: ${{ secrets.ALPACA_P4_SECRET_KEY }}
+          ALPACA_PICK_MAIN_KEY_ID: ${{ secrets.ALPACA_PICK_MAIN_KEY_ID }}
+          ALPACA_PICK_MAIN_SECRET_KEY: ${{ secrets.ALPACA_PICK_MAIN_SECRET_KEY }}
+          ALPACA_PICK_PENNY_KEY_ID: ${{ secrets.ALPACA_PICK_PENNY_KEY_ID }}
+          ALPACA_PICK_PENNY_SECRET_KEY: ${{ secrets.ALPACA_PICK_PENNY_SECRET_KEY }}
+          ALPACA_NX3_KEY_ID: ${{ secrets.ALPACA_NX3_KEY_ID }}
+          ALPACA_NX3_SECRET_KEY: ${{ secrets.ALPACA_NX3_SECRET_KEY }}
+        run: python3 -m dashboard.build --states st --out sd/dash
+
+      - name: Save to state-dash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          auth=(-c "http.extraheader=AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)")
+          cd sd && rm -rf .git && git init -q -b state-dash
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "dashboard data written by .github/workflows/dashboard.yml; replaced on every run" > README.md
+          git add -A && git commit -q -m "dashboard ${{ github.run_id }}"
+          git "${auth[@]}" push -q -f "https://github.com/${GITHUB_REPOSITORY}.git" HEAD:state-dash
+
+  site:
+    if: github.repository == 'amit8f/edge-lab-public' && github.event_name != 'schedule'
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - name: Check out the code
+        if: env.HAS_CF == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Write the tree file
+        if: env.HAS_CF == 'true'
+        run: python3 -m dashboard.export_trees
+
+      - name: Deploy to Cloudflare Pages
+        if: env.HAS_CF == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4.20.0 pages project list | grep -qw edge-lab \
+            || npx --yes wrangler@4.20.0 pages project create edge-lab --production-branch main
+          npx --yes wrangler@4.20.0 pages deploy dashboard/site --project-name edge-lab --branch main --commit-dirty=true
+
+      - name: No Cloudflare secrets yet
+        if: env.HAS_CF != 'true'
+        run: echo "CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID not set; skipping the site deploy"
