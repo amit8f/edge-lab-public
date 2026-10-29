@@ -28,7 +28,7 @@ def lgbm():
     return lgb.LGBMClassifier(**M.PARAMS)
 
 
-def tabicl(ckpt_dir):
+def tabicl_model(ckpt_dir):
     def make():
         from tabicl import TabICLClassifier
         return TabICLClassifier(model_path=Path(ckpt_dir) / CKPT, checkpoint_version=CKPT, device="cpu",
@@ -111,10 +111,10 @@ def run(cache, out, ckpt_dir):
     meta1 = json.loads(Path("research/results/META1/META1_result.json").read_text())["PRIMARY"]
     same = abs(ref["PRIMARY"]["mean"] - meta1["mean"]) < 1e-9 and abs(ref["PRIMARY"]["t_nw"] - meta1["t_nw"]) < 1e-6
     print("[tb1] LightGBM reproduces META1:", same, flush=True)
-    import tabicl
-    res, t = arm(x, tabicl(ckpt_dir))
+    import tabicl as tabicl_pkg
+    res, t = arm(x, tabicl_model(ckpt_dir))
     ck = ckpt_dir / CKPT
-    out_res = {"idea": "TB1", "prereg": "research/prereg/TB1.md", "tabicl_version": tabicl.__version__,
+    out_res = {"idea": "TB1", "prereg": "research/prereg/TB1.md", "tabicl_version": tabicl_pkg.__version__,
                "checkpoint": CKPT, "checkpoint_sha256": sha256(ck) if ck.exists() else None,
                "lightgbm_reproduces_meta1": bool(same)}
     out_res.update(res)
