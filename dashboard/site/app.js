@@ -147,7 +147,7 @@ function drawTree(t, path, upto) {
   }
   return pos;
 }
-// the ball is the stock's logo (a colored circle with the ticker when no logo loads), spinning as it moves
+// the ball is the stock's logo (a colored circle with the ticker when no logo loads)
 let ballN = 0;
 function makeBall(sym, r) {
   const g = s("g", { class: "lball" }); const id = `bclip${++ballN}`;
@@ -165,12 +165,12 @@ function makeBall(sym, r) {
   g.append(defs, spin, s("circle", { cx: 0, cy: 0, r, class: "lball-ring" }));
   g.r = r; g.rot = 0;
   g.move = (x, y, rot = g.rot) => { g.x = x; g.y = y; g.rot = rot;
-    g.setAttribute("transform", `translate(${x} ${y})`); spin.setAttribute("transform", `rotate(${rot})`); };
+    g.setAttribute("transform", `translate(${x} ${y})`); };   // the logo stays upright (no spin)
   return g;
 }
 const BALL_R = innerWidth < 600 ? 27 : 16;
-async function rollBall(pos, path, speed, sym) {
-  const svg = $("tree"); const ball = makeBall(sym, BALL_R); ball.move(pos[0].X, pos[0].Y);
+async function rollBall(pos, path, speed, sym, ball = makeBall(sym, BALL_R)) {
+  const svg = $("tree"); ball.move(pos[0].X, pos[0].Y);
   svg.append(ball);
   for (let i = 1; i < path.length; i++) {
     const a = pos[path[i - 1]], b = pos[path[i]]; const T = reduced ? 1 : speed; const t0 = performance.now(); const r0 = ball.rot;
@@ -178,7 +178,7 @@ async function rollBall(pos, path, speed, sym) {
     await new Promise(res => {
       (function step(now) {
         const k = Math.min(1, (now - t0) / T), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
-        ball.move(a.X + (b.X - a.X) * e, a.Y + (b.Y - a.Y) * e, r0 + dir * 140 * e);
+        ball.move(a.X + (b.X - a.X) * e, a.Y + (b.Y - a.Y) * e, r0 + dir * 360 * e);
         k < 1 ? requestAnimationFrame(step) : res();
       })(t0);
     });
@@ -244,16 +244,18 @@ async function play(ev) {
       $("phase").textContent = i < SLOW ? "step by step" : "the last tree";
       const pos = drawTree(t, w.path, 0);
       await sleep(i < SLOW ? 250 : 120);
-      lastBall = await rollBall(pos, w.path, 420, ev.symbol);
+      lastBall = await rollBall(pos, w.path, 420, ev.symbol, lastBall || undefined);
       real += w.leaf; ghost += wg.leaf; setMeters(real, ghost);
       await sleep(i < SLOW ? 500 : 250);
     } else {
+      // every middle tree flashes past with the logo on the leaf it lands in
       real += w.leaf; ghost += wg.leaf;
-      if (i % 40 === 0 || i === N - LAST - 1) {    // a few frames only: the meters move, the counter jumps
-        $("treeno").textContent = `tree ${i + 1} / ${N}`;
-        $("phase").textContent = `trees ${SLOW + 1} to ${N - LAST}, adding up`;
-        drawTree(t, w.path, w.path.length); setMeters(real, ghost); await sleep(90);
-      }
+      $("treeno").textContent = `tree ${i + 1} / ${N}`;
+      $("phase").textContent = "the other trees, fast";
+      const pos = drawTree(t, w.path, w.path.length), leaf = pos[w.path[w.path.length - 1]];
+      if (!lastBall) lastBall = makeBall(ev.symbol, BALL_R);
+      lastBall.move(leaf.X, leaf.Y, lastBall.rot + 24); $("tree").append(lastBall);
+      setMeters(real, ghost); await sleep(16);
     }
   }
   setMeters(real, ghost);
@@ -273,24 +275,50 @@ function outcomeLine(ev, d) {
 // the finish: the logo drops out of the last tree onto three hoops, teases them, goes through the right one,
 // then the screen turns that decision's color with the logo, the score and the result
 const HOOPS = [{ cls: "short", word: "SHORT" }, { cls: "skip", word: "SKIP" }, { cls: "buy", word: "BUY" }];
+const COURT = TH;    // the court is one screen under the tree; the view pans down to it as the logo falls
 function drawCourt() {
-  const svg = $("tree"); svg.replaceChildren(); svg.setAttribute("viewBox", `0 0 640 ${TH}`);
-  const rimY = TH - 130, hw = BALL_R * 2.3, back = s("g", {}), front = s("g", {});
+  const svg = $("tree");
+  const top = TH, rimY = top + Math.round(TH * 0.5), hw = innerWidth < 600 ? 74 : 56, floor = rimY + 112;
+  const back = s("g", { class: "court" }), front = s("g", { class: "court" });
+  back.append(s("line", { x1: 0, y1: floor, x2: 640, y2: floor, class: "floor" }));
   const hoops = HOOPS.map((h, i) => {
-    const x = 110 + i * 210;
-    back.append(s("rect", { x: x - hw - 14, y: rimY - 78, width: 2 * hw + 28, height: 62, rx: 6, class: `board ${h.cls}` }));
-    back.append(s("path", { d: `M ${x - hw} ${rimY} A ${hw} 8 0 0 1 ${x + hw} ${rimY}`, class: `rim ${h.cls}` }));
-    const net = s("path", { class: "net", d: `M ${x - hw} ${rimY} L ${x - hw * .6} ${rimY + 52} M ${x + hw} ${rimY} L ${x + hw * .6} ${rimY + 52}` +
-      ` M ${x - hw * .33} ${rimY + 4} L ${x - hw * .2} ${rimY + 52} M ${x + hw * .33} ${rimY + 4} L ${x + hw * .2} ${rimY + 52}` +
-      ` M ${x - hw * .8} ${rimY + 18} L ${x + hw * .8} ${rimY + 18} M ${x - hw * .65} ${rimY + 38} L ${x + hw * .65} ${rimY + 38}` });
-    front.append(net, s("path", { d: `M ${x - hw} ${rimY} A ${hw} 8 0 0 0 ${x + hw} ${rimY}`, class: `rim ${h.cls}` }));
-    const lab = s("text", { x, y: rimY + 80, "text-anchor": "middle", "font-size": FS * 1.25, class: `hlabel ${h.cls}` });
-    lab.textContent = h.word; front.append(lab);
+    const x = 107 + i * 213, bw = hw * 2 + 34, by = rimY - 96;
+    back.append(s("rect", { x: x - 4, y: by + 70, width: 8, height: floor - by - 70, class: "pole" }));
+    back.append(s("rect", { x: x - bw / 2, y: by, width: bw, height: 86, rx: 8, class: `board ${h.cls}` }));
+    back.append(s("rect", { x: x - hw * 0.62, y: by + 40, width: hw * 1.24, height: 40, rx: 3, class: `box ${h.cls}` }));
+    const lab = s("text", { x, y: by + 27, "text-anchor": "middle", "font-size": Math.max(16, FS * 1.15), class: `hlabel ${h.cls}` });
+    lab.textContent = h.word; back.append(lab);
+    back.append(s("ellipse", { cx: x, cy: rimY, rx: hw, ry: 9, class: `rim back ${h.cls}` }));
+    // net: a diamond mesh narrowing down
+    const net = s("g", { class: "net" }); const nh = 58, n = 6;
+    for (let k = 0; k <= n; k++) {
+      const u = -1 + 2 * k / n;
+      net.append(s("line", { x1: x + u * hw, y1: rimY, x2: x + (u + 0.33) * hw * 0.62, y2: rimY + nh }));
+      net.append(s("line", { x1: x + u * hw, y1: rimY, x2: x + (u - 0.33) * hw * 0.62, y2: rimY + nh }));
+    }
+    for (const f of [0.35, 0.7]) net.append(s("line", { x1: x - hw * (1 - 0.38 * f), y1: rimY + nh * f, x2: x + hw * (1 - 0.38 * f), y2: rimY + nh * f }));
+    front.append(net, s("path", { d: `M ${x - hw} ${rimY} A ${hw} 9 0 0 0 ${x + hw} ${rimY}`, class: `rim ${h.cls}` }));
     return { ...h, x, net };
   });
   svg.append(back);
   const ballLayer = s("g", {}); svg.append(ballLayer, front);
-  return { hoops, rimY, hw, ballLayer };
+  return { hoops, rimY, hw, ballLayer, floor };
+}
+function panTo(y, T) {
+  const svg = $("tree"), y0 = +svg.getAttribute("viewBox").split(" ")[1], t0 = performance.now();
+  return new Promise(res => (function step(now) {
+    const k = Math.min(1, (now - t0) / T), e = 1 - (1 - k) ** 3;
+    svg.setAttribute("viewBox", `0 ${y0 + (y - y0) * e} 640 ${TH}`);
+    k < 1 ? requestAnimationFrame(step) : res();
+  })(t0));
+}
+function fall(ball, x1, y1, T, spin) {     // gravity: slow at the leaf, fast at the rim
+  const x0 = ball.x, y0 = ball.y, r0 = ball.rot, t0 = performance.now();
+  return new Promise(res => (function step(now) {
+    const k = Math.min(1, (now - t0) / T);
+    ball.move(x0 + (x1 - x0) * k, y0 + (y1 - y0) * k * k, r0 + spin * k);
+    k < 1 ? requestAnimationFrame(step) : res();
+  })(t0));
 }
 function hop(ball, x1, y1, H, T, spin) {
   const x0 = ball.x, y0 = ball.y, r0 = ball.rot, t0 = performance.now();
@@ -341,21 +369,24 @@ const TEASES = [
 async function finale(ev, eff, lastBall) {
   const d = decisionOf(ev), e = ev.e != null ? ev.e : eff;
   const target = HOOPS.findIndex(h => h.cls === d.cls);
-  const start = lastBall ? { x: lastBall.x, y: lastBall.y } : { x: 320, y: 40 };
   const court = drawCourt(); const { hoops, rimY, hw } = court;
   $("phase").textContent = "which basket?";
-  const ball = makeBall(ev.symbol, BALL_R); court.ballLayer.append(ball); ball.move(start.x, Math.min(start.y, rimY - 160));
+  const ball = lastBall || makeBall(ev.symbol, BALL_R);
+  if (!lastBall) ball.move(320, TH - 40);
+  court.ballLayer.append(ball);
   if (!reduced) {
     const others = [0, 1, 2].filter(i => i !== target).sort(() => Math.random() - 0.5);
+    // the logo drops off the last leaf while the view follows it down to the rims
+    const first = hoops[others[0]], side = ball.x < first.x ? -1 : 1;
+    await Promise.all([panTo(COURT, 1000), fall(ball, first.x + side * (hw - ball.r * 0.4), rimY - ball.r, 1000, 0)]);
     const pick = TEASES[Math.floor(Math.random() * TEASES.length)];
-    await pick({ ball, hoops, rimY, hw, target, others, floor: TH - 18 - ball.r });
+    await pick({ ball, hoops, rimY, hw, target, others, floor: court.floor - ball.r });
     await hop(ball, hoops[target].x, rimY - ball.r, 40, 320, 120);   // the last little drop onto the target's rim center
-    // swish: down through the net, the net jiggles
     const net = hoops[target].net; net.classList.add("swish");
-    await hop(ball, hoops[target].x, rimY + 70, 0, 380, 90);
-    ball.style.opacity = "0"; ball.style.transition = "opacity .25s";
-    await sleep(350);
-  }
+    await hop(ball, hoops[target].x, rimY + 70, 0, 380, 90);          // swish through the net
+    ball.style.transition = "opacity .25s"; ball.style.opacity = "0";
+    await sleep(450);
+  } else $("tree").setAttribute("viewBox", `0 ${COURT} 640 ${TH}`);
   const v = $("verdict"); v.className = `verdict full ${d.cls}`;
   const why = d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") : `news effect past the cut (${num(MODEL.cut, 3)})`;
   v.replaceChildren(el("div", { class: "screen" },
@@ -445,6 +476,7 @@ function renderDays() {
   sel.value = days.includes(cur) ? cur : days[0];
   renderFeed(sel.value);
 }
+let feedFilter = "all";   // Headlines tab: all, buy, short or skip
 function renderFeed(day) {
   const d = SUMMARY && SUMMARY.nx3.find(x => x.day === day);
   const evs = [...dayEvents(day)].sort((a, b) => (b.t > a.t ? 1 : -1));
@@ -455,7 +487,15 @@ function renderFeed(day) {
     (d.pick_minus_control != null ? ` · picks minus random control ${pct(d.pick_minus_control)}` : "") +
     (d.control && d.control.length ? ` · control: ${d.control.map(x => `${x.symbol} ${x.result ? pct(x.result.net) : "open"}`).join(", ")}` : "");
   if (day === etDate()) $("daycounts").textContent = c ? `today: ${c.decided} decided, ${c.picks} picks` : "";
-  $("feed").replaceChildren(...evs.map(ev => evCard(ev, day === etDate())));
+  const shownEvs = feedFilter === "all" ? evs : evs.filter(ev => decisionOf(ev).cls === feedFilter);
+  $("feedfilter").replaceChildren(...[["all", "All"], ["buy", "Buy"], ["short", "Short"], ["skip", "Skip"]].map(([k, label]) => {
+    const n = k === "all" ? evs.length : evs.filter(ev => decisionOf(ev).cls === k).length;
+    const b = el("button", { "aria-pressed": String(feedFilter === k), text: `${label} ${n}` });
+    b.addEventListener("click", () => { feedFilter = k; renderFeed(day); });
+    return b;
+  }));
+  $("feed").replaceChildren(...shownEvs.map(ev => evCard(ev, day === etDate())));
+  if (!shownEvs.length) $("feed").append(el("p", { class: "muted small", text: "No headlines with this decision on this day." }));
 }
 function evCard(ev, today) {
   const dcs = decisionOf(ev);
