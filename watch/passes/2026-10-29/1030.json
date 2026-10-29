@@ -1,0 +1,294 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f92821f1edcefb5a4d566ba8c6ed586cfb910d9392b71710e4f6b0519af075bf",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "fb8d749169af7f07f425d73b7c3d6a5be405895c62ad289dfe2879cdbe31c2e4",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "3e71b3475e45143f56f088c833d68c01415cc5591e860de4f278de6006cebed0",
+    "model": "openai/gpt-oss-20b",
+    "prompt_sha256": "d990623179b82c488c2259735dcb5268674a1b8090faa34d83be0e5b5645e4c2"
+   },
+   "views": [
+    {
+     "confidence": 90,
+     "event": "deal",
+     "symbol": "TXT",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "ILPT",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "ALKT",
+     "tone": -2
+    },
+    {
+     "confidence": 75,
+     "event": "analyst",
+     "symbol": "TDOC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "FPI",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "CVNA",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "PALI",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "OXSQ",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NANO",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "ARTV",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "e0c663f1da6b29cdf909fa560d15ee4218f19261bf5977424cc7c6c1bc77226b",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.12289,
+   "news": 1,
+   "pace": 3.18,
+   "price": 87.945,
+   "r20": 0.02782,
+   "r5": 0.01346,
+   "short": true,
+   "src": "iex",
+   "symbol": "TXT",
+   "z": 8.085
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.06403,
+   "news": 1,
+   "pace": 3.022,
+   "price": 6.87,
+   "r20": 0.04917,
+   "r5": 0.06069,
+   "short": true,
+   "src": "iex",
+   "symbol": "ILPT",
+   "z": -3.037
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.15196,
+   "news": 0,
+   "pace": 5.619,
+   "price": 13.17,
+   "r20": 0.1344,
+   "r5": 0.02848,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALKT",
+   "z": -6.892
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.24201,
+   "news": 0,
+   "pace": 14.222,
+   "price": 8.545,
+   "r20": 0.18621,
+   "r5": 0.09206,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "TDOC",
+   "z": 6.27
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.11352,
+   "news": 0,
+   "pace": 9.204,
+   "price": 8.98,
+   "r20": -0.10036,
+   "r5": 0.02947,
+   "short": true,
+   "src": "iex",
+   "symbol": "FPI",
+   "z": -6.184
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.16613,
+   "news": 0,
+   "pace": 6.428,
+   "price": 68.86,
+   "r20": -0.0558,
+   "r5": -0.00237,
+   "short": true,
+   "src": "iex",
+   "symbol": "CVNA",
+   "z": 5.706
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.02101,
+   "news": 0,
+   "pace": 6.681,
+   "price": 1.215,
+   "r20": -0.11852,
+   "r5": -0.15,
+   "short": true,
+   "src": "iex",
+   "symbol": "PALI",
+   "z": 0.453
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.01339,
+   "news": 0,
+   "pace": 3.934,
+   "price": 1.135,
+   "r20": -0.10256,
+   "r5": -0.13178,
+   "short": false,
+   "src": "iex",
+   "symbol": "OXSQ",
+   "z": 0.384
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.05213,
+   "news": 0,
+   "pace": 3.955,
+   "price": 4.0,
+   "r20": -0.60487,
+   "r5": -0.56983,
+   "short": false,
+   "src": "iex",
+   "symbol": "NANO",
+   "z": -0.359
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0152,
+   "news": 0,
+   "pace": 11.542,
+   "price": 4.21,
+   "r20": -0.39958,
+   "r5": -0.34129,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARTV",
+   "z": -0.17
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4970.6425,
+  "PICK-MAIN-coin": 4984.3654,
+  "PICK-PENNY": 485.8569,
+  "PICK-PENNY-coin": 509.1038
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 95,
+  "news": 16,
+  "volume": 256
+ },
+ "flagged": 298,
+ "headline_counts": {
+  "ALKT": 3,
+  "ARTV": 1,
+  "CVNA": 3,
+  "FPI": 3,
+  "ILPT": 3,
+  "PALI": 1,
+  "TDOC": 3,
+  "TXT": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "738fd6f479e6078e95ecaa2cc4fa356f39ad75ef548ffe485bbd0b152ae1f64e",
+ "price_sources": {
+  "delayed_sip": 259,
+  "iex": 3155
+ },
+ "priced": 3414,
+ "risk": [],
+ "slot": "2026-10-29T10:30",
+ "t": "2026-10-29T14:30:21.054446+00:00",
+ "universe": 3414,
+ "written_utc": "2026-10-29T14:30:37.223164Z"
+}
