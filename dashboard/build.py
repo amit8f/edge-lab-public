@@ -284,8 +284,11 @@ def skipped_moves(day, nxt, rows):
 def latest_prices(symbols):
     if not symbols:
         return {}
-    j = alpaca_get("/stocks/trades/latest", {"symbols": ",".join(sorted(symbols)), "feed": "iex"}) or {}
-    return {s: t.get("p") for s, t in (j.get("trades") or {}).items()}
+    out, syms = {}, sorted(symbols)
+    for i in range(0, len(syms), 200):
+        j = alpaca_get("/stocks/trades/latest", {"symbols": ",".join(syms[i:i + 200]), "feed": "iex"}) or {}
+        out.update({s: t.get("p") for s, t in (j.get("trades") or {}).items()})
+    return out
 
 
 def nx3_days(st, cache):
@@ -330,9 +333,10 @@ def nx3_days(st, cache):
                     "pick_minus_control": (settled or {}).get("pick_minus_control"),
                     "control": [{"symbol": s, "side": sd, "result": res.get((s, "control"))} for s, sd in ctrl.items()],
                     "events": ev})
-    if out and not out[-1]["settled"]:
-        px = latest_prices({e["symbol"] for e in out[-1]["events"]})
-        for e in out[-1]["events"]:
+    # every stock on every day shown gets its latest price, next to its price at decision
+    px = latest_prices({e["symbol"] for d in out for e in d["events"]})
+    for d in out:
+        for e in d["events"]:
             e["last_price"] = px.get(e["symbol"])
     return out[::-1]
 
