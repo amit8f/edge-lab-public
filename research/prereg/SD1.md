@@ -34,3 +34,15 @@ at least half of Fresh's. If Fresh's alpha has t < 2.0, the result is "nothing t
 Reported alongside: CAPM alpha (the paper's measure), a same-month random control, per-year results.
 
 Prediction: ~65% "nothing to replicate" (M4's composite had no edge as a top-20 book).
+
+## Clarification (2026-10-29, before any SD1 result; code `tracks/main/longterm/screen_sd1.py`)
+
+- Panel: RL1's month-end rows (M4's price features and filters, next-month return) with M4's companyfacts
+  path, so Fresh is M4's composite on the same rows. M4's filters are applied once, at t, on Fresh's market
+  cap; Stale is scored on the same stocks.
+- Stale takes every accounting input as of t minus 365 days (10-K values, share counts for issuance). E/P
+  and B/M put the year-old earnings and book equity over t's market cap, so only the accounting is stale,
+  not the price.
+- A stock-month needs at least 3 of the 4 families; the composite is the mean of those it has.
+- CAPM alpha is the same regression on Mkt-RF only, Newey-West 3 lags. The random control draws two random
+  quintiles per month (seed 20261024 plus the date).
