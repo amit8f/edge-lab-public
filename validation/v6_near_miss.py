@@ -11,7 +11,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from core import alpaca
 from core.bars import fetch_daily_bars, to_frames
 from core.env import alpaca_headers
 from tracks.main.longterm.stats import nw_tstat
@@ -62,14 +61,15 @@ def raw_check(trades, headers):
     split or symbol-reuse artifact."""
     out = []
     for t in trades:
-        start = pd.Timestamp(t["date"])
-        end = alpaca.sip_end(start + pd.Timedelta(days=int(t["held"]) * 2 + 10))
+        start = pd.Timestamp(t["date"]) - pd.Timedelta(days=5)
+        end = (pd.Timestamp(t["date"]) + pd.Timedelta(days=int(t["held"]) * 2 + 10)).strftime("%Y-%m-%d")
+        start = start.strftime("%Y-%m-%d")
         rows = {}
         for adj in ("raw", "all"):
             f = to_frames(fetch_daily_bars([t["symbol"]], start, end, adjustment=adj, headers=headers))
             b = f.get(t["symbol"])
             rows[adj] = [] if b is None else [[f"{i:%Y-%m-%d}", float(r["o"]), float(r["c"]), float(r["v"])]
-                                              for i, r in b.iloc[:int(t["held"]) + 3].iterrows()]
+                                              for i, r in b.iloc[:int(t["held"]) + 7].iterrows()]
         out.append({**{k: t[k] for k in ("date", "symbol", "role", "gross", "held")}, "bars": rows})
     return out
 

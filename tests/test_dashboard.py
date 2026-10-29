@@ -52,11 +52,11 @@ def _state(tmp_path):
             {"status": "decided", "symbol": "BBB", "e": 0.01, "fired": False, "side": None, "entry_iex": 20.0},
             {"status": "missed", "symbol": "CCC"}]
     _w(nx / "days" / "2026-10-29" / "decisions.jsonl", "\n".join(json.dumps(r) for r in rows).replace("0.01", "NaN"))
-    _w(nx / "days" / "2026-10-29.json", {"picks": [{"symbol": "AAA"}], "control": [{"symbol": "BBB", "side": "long"}]})
-    _w(nx / "settled" / "2026-10-29.json", {"day": "2026-10-29", "trades": [
+    _w(nx / "nx3" / "days" / "2026-10-29.json", {"picks": [{"symbol": "AAA"}], "control": [{"symbol": "BBB", "side": "long"}]})
+    _w(nx / "nx3" / "settled" / "2026-10-29.json", {"day": "2026-10-29", "trades": [
         {"symbol": "AAA", "role": "picks", "net": 0.02, "entry": 10.0, "exit_ac": 10.2, "t": "2026-10-29T14:00", "days": 2},
         {"symbol": "BBB", "role": "control", "net": -0.01}]})
-    _w(nx / "settled" / "2026-10-27.json", {"day": "2026-10-27", "excluded": True,
+    _w(nx / "nx3" / "settled" / "2026-10-27.json", {"day": "2026-10-27", "excluded": True,
                                             "trades": [{"symbol": "Z", "role": "picks", "net": 0.5}]})
     _w(st / "state-watch" / "watch" / "books.json", {"books": {
         "PICK-MAIN": {"start": 5000, "trips": [{"net": 50}], "pos": {"X": {"qty": 2, "entry": 10, "last": 11, "side": -1}}},

@@ -33,7 +33,7 @@ NX3_COST = 0.002          # NX3's round trip (config/risk.yaml news track), for 
 SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs"]
 
 # Forward books: where each one's record lives and what it is judged at (PROTOCOL / the idea's prereg).
-NX3_ARMS = ["LGBM", "LIN", "RF", "MLP", "ENS", "XGBR", "RFR"]
+NX3_ARMS = ["LGBM", "LIN", "MLP", "ENS", "XGBR", "RFR"]   # the arms with live books (NXM-RF failed)
 WATCH = [("PICK-MAIN", "SYS2", "state-watch", "watch/books.json", 30), ("PICK-PENNY", "SYS2", "state-watch",
          "watch/books.json", 30), ("SCOUT-MAIN", "SYS2B", "state-scouts", "scouts/books.json", 30),
          ("SCOUT-PENNY", "SYS2B", "state-scouts", "scouts/books.json", 30)]
@@ -80,22 +80,26 @@ def _book(name, idea, target, closed, open_, realized=None, unreal=None, size=No
 
 def nx3_books(st):
     root = st / "state-nx3" / "nx3"
+    log = root / "nx3"              # the ledger's files: nx3/days/<day>.json, nx3/settled/<day>.json
     out = []
-    settled = [_json(f) for f in sorted((root / "settled").glob("*.json"))]
+    settled = [_json(f) for f in sorted((log / "settled").glob("*.json"))]
     counted = [s for s in settled if s and not s.get("excluded")]
     picks = [t for s in counted for t in s.get("trades", []) if t.get("role") == "picks"]
-    days = sorted(f.stem for f in (root / "days").glob("*.json"))
+    days = sorted(f.stem for f in (log / "days").glob("*.json"))
     open_n = 0
     if days and (not settled or days[-1] > max(s["day"] for s in settled if s)):
-        open_n = len((_json(root / "days" / f"{days[-1]}.json") or {}).get("picks", []))
+        open_n = len((_json(log / "days" / f"{days[-1]}.json") or {}).get("picks", []))
     out.append(_book("NX3", "NX3", 100, len(picks), open_n, realized=sum(500 * (t["net"] or 0) for t in picks),
                      size=5000.0, account="EL-NX3", first_day="2026-10-29",
                      excluded_days=[s["day"] for s in settled if s and s.get("excluded")]))
     msettled = [_json(f) for f in sorted((root / "nxm" / "settled").glob("*.json"))]
+    mdays = sorted((root / "nxm" / "days").glob("*.json"))
+    last = _json(mdays[-1]) if mdays and mdays[-1].stem > max((s["day"] for s in msettled if s), default="") else None
     for a in NX3_ARMS:
         tr = [t for s in msettled if s for t in s.get("arms", {}).get(a, {}).get("trades", []) if t.get("role") == "picks"]
         idea = "NXR" if a in ("XGBR", "RFR") else "NXM"
-        out.append(_book(f"{idea}-{a}", idea, 100, len(tr), None, realized=sum(500 * (t["net"] or 0) for t in tr),
+        open_a = len((last or {}).get("arms", {}).get(a, {}).get("picks", [])) if last else 0
+        out.append(_book(f"{idea}-{a}", idea, 100, len(tr), open_a, realized=sum(500 * (t["net"] or 0) for t in tr),
                          size=5000.0, first_day="2026-10-30" if idea == "NXR" else "2026-10-29"))
     return out
 
@@ -301,8 +305,8 @@ def nx3_days(st, cache):
         day = d.name
         rows = [r for r in _jsonl(d / "decisions.jsonl") if r.get("status") == "decided"]
         allrows = _jsonl(d / "decisions.jsonl")
-        settled = _json(root / "settled" / f"{day}.json")
-        rec = _json(root / "days" / f"{day}.json") or {}
+        settled = _json(root / "nx3" / "settled" / f"{day}.json")
+        rec = _json(root / "nx3" / "days" / f"{day}.json") or {}
         res = {}
         if settled:
             for t in settled.get("trades", []):
@@ -319,9 +323,11 @@ def nx3_days(st, cache):
                     Path(cache).mkdir(parents=True, exist_ok=True)
                     f.write_text(json.dumps(_clean(moves)))
         ctrl = {c["symbol"]: c.get("side") for c in rec.get("control", [])}
+        arms = arm_picks(root, day)
         ev = []
         for r in rows:
             x = {k: r.get(k) for k in SLIM}
+            x["arms"] = {a: p[r["symbol"]] for a, p in arms.items() if r["symbol"] in p}
             x["result"] = res.get((r["symbol"], "picks"))
             x["next_move"] = None if moves is None else moves.get(r["symbol"])
             ev.append(x)
@@ -339,6 +345,19 @@ def nx3_days(st, cache):
         for e in d["events"]:
             e["last_price"] = px.get(e["symbol"])
     return out[::-1]
+
+
+def arm_picks(root, day):
+    """{arm: {symbol: {side, net}}} for the NXM and NXR books on one day: their picks from nxm/days and, once
+    settled, each pick's net result from nxm/settled."""
+    rec = _json(root / "nxm" / "days" / f"{day}.json") or {}
+    st = _json(root / "nxm" / "settled" / f"{day}.json") or {}
+    out = {}
+    for a in NX3_ARMS:
+        net = {t["symbol"]: t.get("net") for t in st.get("arms", {}).get(a, {}).get("trades", []) if t.get("role") == "picks"}
+        out[a] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"])}
+                  for p in rec.get("arms", {}).get(a, {}).get("picks", [])}
+    return out
 
 
 def settled_next(dirs, i, settled):
