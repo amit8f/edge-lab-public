@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>edge-lab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='6' r='4' fill='%2334d399'/%3E%3Ccircle cx='8' cy='18' r='4' fill='%2360a5fa'/%3E%3Ccircle cx='24' cy='18' r='4' fill='%2360a5fa'/%3E%3Ccircle cx='24' cy='28' r='3' fill='%23f87171'/%3E%3Cpath d='M16 6L8 18M16 6l8 12m0 0v10' stroke='%2394a3b8' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">edge-lab <span class="muted">paper research</span></div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="live" aria-selected="true">Live</button>
+    <button role="tab" data-tab="books" aria-selected="false">Books</button>
+    <button role="tab" data-tab="ideas" aria-selected="false">Ideas</button>
+  </nav>
+  <div class="updated muted" id="updated">loading…</div>
+</header>
+
+<main>
+  <section id="tab-live" class="tab">
+    <div class="strip">
+      <span class="pill" id="mode">…</span>
+      <span id="daycounts" class="muted"></span>
+    </div>
+
+    <div class="stage card">
+      <div class="who">
+        <div class="logo" id="logo"></div>
+        <div>
+          <div class="sym" id="sym">—</div>
+          <div class="muted small" id="when"></div>
+        </div>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <div class="treebox">
+        <div class="treehead">
+          <span id="treeno">tree 0 / 400</span>
+          <span class="muted small" id="phase"></span>
+        </div>
+        <svg id="tree" viewBox="0 0 640 300" preserveAspectRatio="xMidYMid meet" aria-label="decision tree"></svg>
+      </div>
+
+      <div class="meters">
+        <div class="meter">
+          <div class="mlabel"><span>score with the news</span><span id="v-real">0</span></div>
+          <div class="bar"><div class="zero"></div><div class="fill real" id="m-real"></div><div class="fill ghost" id="m-ghost"></div></div>
+          <div class="mlabel muted small"><span>ghost: same stock, news blanked</span><span id="v-ghost">0</span></div>
+        </div>
+        <div class="meter">
+          <div class="mlabel"><span>news effect (score minus ghost)</span><span id="v-eff">0</span></div>
+          <div class="bar eff"><div class="cut lo"></div><div class="cut hi"></div><div class="zero"></div><div class="dot" id="m-eff"></div></div>
+          <div class="mlabel muted small"><span>Short</span><span>Skip zone</span><span>Buy</span></div>
+        </div>
+      </div>
+
+      <div class="verdict" id="verdict" hidden></div>
+    </div>
+
+    <div class="feedhead">
+      <h2>Decided headlines</h2>
+      <select id="daysel" aria-label="day"></select>
+    </div>
+    <div id="daysum" class="muted small"></div>
+    <div id="feed" class="feed"></div>
+  </section>
+
+  <section id="tab-books" class="tab" hidden>
+    <h2>Books</h2>
+    <p class="muted small">Closed trades against each book's target. P&amp;L is after costs, as a % of the book's size where it has one.</p>
+    <div id="books" class="grid"></div>
+    <h2>Paper accounts</h2>
+    <div id="accounts" class="grid"></div>
+    <h2>Jobs</h2>
+    <div id="jobs" class="jobs"></div>
+  </section>
+
+  <section id="tab-ideas" class="tab" hidden>
+    <h2>Ideas</h2>
+    <div class="filters" id="filters"></div>
+    <div id="ideas" class="ideas"></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
