@@ -1,0 +1,453 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "cda790ad7fc7244d6f17b1cb06f3308c03c65bfa1661d85c2a685c4522f2ff17",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "97dee902357b237f92d3113b1dbf74a8bbabeefe32625f0c4f744092db7a2c9f",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "SFM",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ALNY",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "MNRO",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "HONA",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ADAM",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "offering",
+     "symbol": "HTO",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AGI",
+     "tone": -1
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "NCPL",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "AIRS",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "NNBR",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "0e8ac7eeb1c28b10ffbe567830e1d4a3f8b1ad6e22c60e0c07655c828f4d871c",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative move, negative tone, high volume",
+     "stop_pct": 12.0,
+     "symbol": "SFM"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative move but positive earnings tone",
+     "stop_pct": 13.0,
+     "symbol": "ALNY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "neutral tone, no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "MNRO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative move, positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "HONA"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative move, negative tone",
+     "stop_pct": 12.0,
+     "symbol": "ADAM"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative move, negative offering tone",
+     "stop_pct": 12.0,
+     "symbol": "HTO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative move, negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "AGI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "NCPL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "AIRS"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "3510634a1cfd3884c92d390154931fdd9bc3d10496ac13dcb7a2b0058331d878"
+  },
+  "reviewer": {
+   "answer_sha256": "d5c2e02664989be8915b28496664321b6d989e0a9c295f99d65aec622356990c",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "542a7e7e6c97200a6decaa3b94aa4dd93f400f35a46b47d85b7a67a65ca08704",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive downward price movement with extreme volume pace supports the short proposal.",
+     "symbol": "SFM"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant gap down on high volume with positive analyst tone suggests a potential dip-buying opportunity.",
+     "symbol": "ALNY"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong medium-term trend despite a sharp intraday drop, aligning with the positive earnings tone.",
+     "symbol": "HONA"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative tone on earnings and downward price pressure favor the short proposal.",
+     "symbol": "ADAM"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Offering news with a negative tone and strong downside momentum supports shorting.",
+     "symbol": "HTO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative earnings tone and heavy intraday selling justify the short trade.",
+     "symbol": "AGI"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.20581,
+   "news": 0,
+   "pace": 28.345,
+   "price": 49.24,
+   "r20": -0.06556,
+   "r5": -0.05358,
+   "short": true,
+   "src": "iex",
+   "symbol": "SFM",
+   "z": -10.424
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16835,
+   "news": 0,
+   "pace": 11.379,
+   "price": 193.275,
+   "r20": -0.05812,
+   "r5": 0.03243,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALNY",
+   "z": -7.091
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16923,
+   "news": 0,
+   "pace": 4.097,
+   "price": 11.88,
+   "r20": 0.02216,
+   "r5": 0.00492,
+   "short": true,
+   "src": "iex",
+   "symbol": "MNRO",
+   "z": -5.685
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.10721,
+   "news": 0,
+   "pace": 4.887,
+   "price": 158.05,
+   "r20": 0.14235,
+   "r5": 0.08968,
+   "short": true,
+   "src": "iex",
+   "symbol": "HONA",
+   "z": -5.231
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.08098,
+   "news": 0,
+   "pace": 4.503,
+   "price": 7.15,
+   "r20": 0.0,
+   "r5": 0.0457,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADAM",
+   "z": -4.322
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07977,
+   "news": 0,
+   "pace": 5.647,
+   "price": 56.87,
+   "r20": 0.00276,
+   "r5": 0.10004,
+   "short": true,
+   "src": "iex",
+   "symbol": "HTO",
+   "z": -4.233
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.08904,
+   "news": 0,
+   "pace": 4.795,
+   "price": 28.85,
+   "r20": -0.02223,
+   "r5": -0.00158,
+   "short": true,
+   "src": "iex",
+   "symbol": "AGI",
+   "z": -3.919
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.44545,
+   "news": 0,
+   "pace": 17.18,
+   "price": 1.59,
+   "r20": -0.1129,
+   "r5": -0.29936,
+   "short": false,
+   "src": "iex",
+   "symbol": "NCPL",
+   "z": 1.54
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06944,
+   "news": 0,
+   "pace": 3.394,
+   "price": 1.54,
+   "r20": -0.18182,
+   "r5": 0.125,
+   "short": true,
+   "src": "iex",
+   "symbol": "AIRS",
+   "z": 1.078
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.04605,
+   "news": 0,
+   "pace": 3.304,
+   "price": 3.975,
+   "r20": 0.03542,
+   "r5": 0.0951,
+   "short": true,
+   "src": "iex",
+   "symbol": "NNBR",
+   "z": 0.659
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4971.5175,
+  "PICK-MAIN-coin": 4991.5304,
+  "PICK-PENNY": 487.1662,
+  "PICK-PENNY-coin": 509.7381
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 96,
+  "news": 15,
+  "volume": 216
+ },
+ "flagged": 263,
+ "headline_counts": {
+  "ADAM": 3,
+  "AGI": 3,
+  "ALNY": 3,
+  "HONA": 3,
+  "HTO": 1,
+  "MNRO": 3,
+  "NCPL": 2,
+  "NNBR": 3,
+  "SFM": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "bc91db5826118ad21fc0f92bb7e96ba3b9cdc38954c708bef342743be6eddc51",
+ "price_sources": {
+  "delayed_sip": 229,
+  "iex": 3185
+ },
+ "priced": 3414,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SFM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ALNY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HONA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ADAM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HTO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AGI"
+  }
+ ],
+ "slot": "2026-10-29T10:45",
+ "t": "2026-10-29T14:45:20.700314+00:00",
+ "universe": 3414,
+ "written_utc": "2026-10-29T14:46:53.230631Z"
+}
