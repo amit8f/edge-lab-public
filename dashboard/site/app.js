@@ -260,7 +260,6 @@ async function play(ev) {
   }
   setMeters(real, ghost);
   await finale(ev, real - ghost, lastBall);
-  addPlayed(ev);
   playing = false;
 }
 
@@ -276,33 +275,81 @@ function outcomeLine(ev, d) {
 // then the screen turns that decision's color with the logo, the score and the result
 const HOOPS = [{ cls: "short", word: "SHORT" }, { cls: "skip", word: "SKIP" }, { cls: "buy", word: "BUY" }];
 const COURT = TH;    // the court is one screen under the tree; the view pans down to it as the logo falls
+// court styles Amit can pick from (the "court" buttons under the tree); neon is his sketch
+const NEON = { short: "#ff4d5e", skip: "#e6edf5", buy: "#3dff8f" };
+const COURT_STYLES = ["neon", "street", "arena"];
+let courtStyle = Q.get("court") || (() => { try { return localStorage.getItem("court"); } catch { return null; } })() || "neon";
+if (!COURT_STYLES.includes(courtStyle)) courtStyle = "neon";
+function seeded(k) { const x = Math.sin(k * 99.13 + 7.7) * 43758.5; return x - Math.floor(x); }
 function drawCourt() {
-  const svg = $("tree");
-  const top = TH, rimY = top + Math.round(TH * 0.5), hw = innerWidth < 600 ? 74 : 56, floor = rimY + 112;
-  const back = s("g", { class: "court" }), front = s("g", { class: "court" });
-  back.append(s("line", { x1: 0, y1: floor, x2: 640, y2: floor, class: "floor" }));
+  const svg = $("tree"), st = courtStyle;
+  const top = TH, rimY = top + Math.round(TH * 0.5), hw = innerWidth < 600 ? 62 : 56, floor = rimY + 112;
+  const back = s("g", { class: `court ${st}` }), front = s("g", { class: `court ${st}` });
+  const defs = s("defs", {});
+  defs.innerHTML = `<filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="brick" width="64" height="28" patternUnits="userSpaceOnUse"><rect width="64" height="28" fill="#17110f"/>
+      <path d="M0 13.5H64M0 27.5H64M20 0V13.5M52 14V28" stroke="#0b0807" stroke-width="2.5"/></pattern>
+    <linearGradient id="wood" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c98d4f"/><stop offset="1" stop-color="#8a5a2b"/></linearGradient>
+    <radialGradient id="spot" cx=".5" cy=".35" r=".6"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>`;
+  back.append(defs);
+  // the backdrop covers the court screen only, so the tree above keeps the page colors
+  if (st === "neon") back.append(s("rect", { x: 0, y: top, width: 640, height: COURT + 40, fill: "url(#brick)" }));
+  if (st === "street") back.append(s("rect", { x: 0, y: top, width: 640, height: COURT + 40, fill: "#3a3d42" }),
+    s("rect", { x: 0, y: floor, width: 640, height: COURT, fill: "#2b2e33" }),
+    s("line", { x1: 0, y1: floor + 3, x2: 640, y2: floor + 3, stroke: "#f5f5f5", "stroke-width": 3, opacity: .7 }));
+  if (st === "arena") back.append(s("rect", { x: 0, y: top, width: 640, height: COURT + 40, fill: "#0f1722" }),
+    s("rect", { x: 0, y: top, width: 640, height: COURT, fill: "url(#spot)" }),
+    s("rect", { x: 0, y: floor, width: 640, height: COURT, fill: "url(#wood)" }));
   const hoops = HOOPS.map((h, i) => {
-    const x = 107 + i * 213, bw = hw * 2 + 34, by = rimY - 96;
-    back.append(s("rect", { x: x - 4, y: by + 70, width: 8, height: floor - by - 70, class: "pole" }));
-    back.append(s("rect", { x: x - bw / 2, y: by, width: bw, height: 86, rx: 8, class: `board ${h.cls}` }));
-    back.append(s("rect", { x: x - hw * 0.62, y: by + 40, width: hw * 1.24, height: 40, rx: 3, class: `box ${h.cls}` }));
+    const x = 107 + i * 213, bw = hw * 2 + 34, by = rimY - 96, col = NEON[h.cls];
     const lab = s("text", { x, y: by + 27, "text-anchor": "middle", "font-size": Math.max(16, FS * 1.15), class: `hlabel ${h.cls}` });
-    lab.textContent = h.word; back.append(lab);
-    back.append(s("ellipse", { cx: x, cy: rimY, rx: hw, ry: 9, class: `rim back ${h.cls}` }));
-    // net: a diamond mesh narrowing down
-    const net = s("g", { class: "net" }); const nh = 58, n = 6;
-    for (let k = 0; k <= n; k++) {
-      const u = -1 + 2 * k / n;
-      net.append(s("line", { x1: x + u * hw, y1: rimY, x2: x + (u + 0.33) * hw * 0.62, y2: rimY + nh }));
-      net.append(s("line", { x1: x + u * hw, y1: rimY, x2: x + (u - 0.33) * hw * 0.62, y2: rimY + nh }));
+    lab.textContent = h.word;
+    const net = s("g", { class: "net" });
+    if (st === "neon") {
+      const g = s("g", { filter: "url(#glow)", stroke: col, fill: "none", "stroke-width": 3 });
+      g.append(s("line", { x1: x, y1: by + 86, x2: x, y2: floor + 60, opacity: .35 }),
+        s("rect", { x: x - bw / 2, y: by, width: bw, height: 86, rx: 10 }),
+        s("rect", { x: x - hw * 0.5, y: by + 40, width: hw, height: 38, rx: 3 }),
+        s("ellipse", { cx: x, cy: rimY, rx: hw, ry: 9, opacity: .6 }));
+      lab.style.fill = col; lab.setAttribute("filter", "url(#glow)");
+      back.append(g, lab);
+      // dripping net: glowing drips hang from the front of the rim, with drops below
+      for (let k = 0; k <= 9; k++) {
+        const u = -0.92 + 1.84 * k / 9, y0 = rimY + 9 * Math.sqrt(1 - u * u), len = 18 + 44 * seeded(i * 10 + k);
+        net.append(s("path", { d: `M ${x + u * hw} ${y0} L ${x + u * hw * 0.9} ${y0 + len}`, stroke: col, "stroke-width": 5.5, "stroke-linecap": "round" }));
+        if (seeded(i * 10 + k + 3) > 0.45) net.append(s("circle", { cx: x + u * hw * 0.9, cy: y0 + len + 9 + 10 * seeded(k + i), r: 2.6, fill: col }));
+      }
+      net.setAttribute("filter", "url(#glow)");
+      front.append(net, s("path", { d: `M ${x - hw} ${rimY} A ${hw} 9 0 0 0 ${x + hw} ${rimY}`, stroke: col, "stroke-width": 5, fill: "none", filter: "url(#glow)" }));
+    } else {
+      const rimCol = "#f97316";
+      back.append(s("rect", { x: x - 4, y: by + 70, width: 8, height: floor - by - 70, fill: st === "street" ? "#9aa0a6" : "#2a3442" }),
+        s("rect", { x: x - bw / 2, y: by, width: bw, height: 86, rx: st === "street" ? 2 : 8,
+          fill: st === "street" ? "#f4f4f2" : "rgba(255,255,255,.14)", stroke: st === "street" ? "#cfd2d6" : "rgba(255,255,255,.7)", "stroke-width": 3 }),
+        s("rect", { x: x - hw * 0.5, y: by + 40, width: hw, height: 38, rx: 2, fill: "none", stroke: NEON[h.cls] === "#e6edf5" ? "#94a3b8" : NEON[h.cls], "stroke-width": 3 }),
+        s("ellipse", { cx: x, cy: rimY, rx: hw, ry: 9, fill: "none", stroke: rimCol, "stroke-width": 3, opacity: .6 }));
+      back.append(lab);
+      const nh = 58, n = 6, ncol = st === "street" ? "#c7ccd1" : "#ffffff";
+      for (let k = 0; k <= n; k++) {     // street: chain links (zigzag); arena: white mesh
+        const u = -1 + 2 * k / n;
+        net.append(s("line", { x1: x + u * hw, y1: rimY, x2: x + (u + 0.33) * hw * 0.62, y2: rimY + nh, stroke: ncol, "stroke-width": st === "street" ? 2 : 1.3, "stroke-dasharray": st === "street" ? "4 3" : "" }));
+        net.append(s("line", { x1: x + u * hw, y1: rimY, x2: x + (u - 0.33) * hw * 0.62, y2: rimY + nh, stroke: ncol, "stroke-width": st === "street" ? 2 : 1.3, "stroke-dasharray": st === "street" ? "4 3" : "" }));
+      }
+      front.append(net, s("path", { d: `M ${x - hw} ${rimY} A ${hw} 9 0 0 0 ${x + hw} ${rimY}`, stroke: rimCol, "stroke-width": 5, fill: "none" }));
     }
-    for (const f of [0.35, 0.7]) net.append(s("line", { x1: x - hw * (1 - 0.38 * f), y1: rimY + nh * f, x2: x + hw * (1 - 0.38 * f), y2: rimY + nh * f }));
-    front.append(net, s("path", { d: `M ${x - hw} ${rimY} A ${hw} 9 0 0 0 ${x + hw} ${rimY}`, class: `rim ${h.cls}` }));
     return { ...h, x, net };
   });
   svg.append(back);
   const ballLayer = s("g", {}); svg.append(ballLayer, front);
   return { hoops, rimY, hw, ballLayer, floor };
+}
+function renderCourtPicker() {
+  $("courtpick").replaceChildren(el("span", { class: "muted small", text: "Court:" }), ...COURT_STYLES.map(c => {
+    const b = el("button", { "aria-pressed": String(c === courtStyle), text: c[0].toUpperCase() + c.slice(1) });
+    b.addEventListener("click", () => { courtStyle = c; try { localStorage.setItem("court", c); } catch { /* private mode */ } renderCourtPicker(); });
+    return b;
+  }));
 }
 function panTo(y, T) {
   const svg = $("tree"), y0 = +svg.getAttribute("viewBox").split(" ")[1], t0 = performance.now();
@@ -456,7 +503,7 @@ async function pollLive() {
       // on first load only the 3 newest play as live; the rest are already in the feed
       if (!first || i >= sorted.length - 3) queue.push(x);
     });
-    if ($("daysel").value === day) renderFeed(day);
+    if (selDay === day) renderFeed(day);
   } catch { /* offline or no file yet today */ }
 }
 
@@ -468,15 +515,22 @@ function dayEvents(day) {
   }
   return d ? d.events : [];
 }
+let selDay = null;        // the day shown under the tree; today unless another chip is tapped
 function renderDays() {
-  const sel = $("daysel"); const cur = sel.value;
   const days = SUMMARY.nx3.map(d => d.day);
   if (!days.includes(etDate())) days.unshift(etDate());
-  sel.replaceChildren(...days.map(d => el("option", { value: d, text: d })));
-  sel.value = days.includes(cur) ? cur : days[0];
-  renderFeed(sel.value);
+  days.sort().reverse();
+  if (!days.includes(selDay)) selDay = days[0];
+  const fmt = d => d === etDate() ? "Today" :
+    new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(d + "T12:00Z"));
+  $("daychips").replaceChildren(...days.map(d => {
+    const b = el("button", { "aria-pressed": String(d === selDay), text: fmt(d) });
+    b.addEventListener("click", () => { selDay = d; feedFilter = "all"; renderDays(); });
+    return b;
+  }));
+  renderFeed(selDay);
 }
-let feedFilter = "all";   // Headlines tab: all, buy, short or skip
+let feedFilter = "all";   // all, buy, short or skip
 function renderFeed(day) {
   const d = SUMMARY && SUMMARY.nx3.find(x => x.day === day);
   const evs = [...dayEvents(day)].sort((a, b) => (b.t > a.t ? 1 : -1));
@@ -519,12 +573,6 @@ function evCard(ev, today) {
   const go = () => { queue.unshift(ev); showTab("live"); window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); };
   card.addEventListener("click", go); card.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
   return card;
-}
-// under the tree: every headline the stage has run, latest on top
-function addPlayed(ev) {
-  const box = $("played"); box.prepend(evCard(ev, etDate() === (ev.t || "").slice(0, 10)));
-  while (box.children.length > 30) box.lastChild.remove();
-  $("played-empty").hidden = true;
 }
 
 function renderBooks() {
@@ -591,17 +639,16 @@ function renderIdeas() {
 }
 
 // ---------- tabs and start ----------
-const TABS = ["live", "headlines", "books", "ideas"];
+const TABS = ["live", "books", "ideas"];
 function showTab(name) {
   for (const x of document.querySelectorAll(".tabs button")) x.setAttribute("aria-selected", String(x.dataset.tab === name));
   for (const t of TABS) $(`tab-${t}`).hidden = t !== name;
 }
 for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("click", () => showTab(b.dataset.tab));
-$("daysel").addEventListener("change", e => renderFeed(e.target.value));
 
 (async function start() {
   try { MODEL = await getJSON(CFG.trees); } catch { $("updated").textContent = "tree file missing"; return; }
-  placeCuts(); setMeters(MODEL.base_score, MODEL.base_score);
+  placeCuts(); setMeters(MODEL.base_score, MODEL.base_score); renderCourtPicker();
   await loadSummary();
   await pollLive();
   setInterval(loadSummary, 5 * 60000);
