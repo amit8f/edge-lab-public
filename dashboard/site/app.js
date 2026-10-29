@@ -476,6 +476,7 @@ function renderDays() {
   sel.value = days.includes(cur) ? cur : days[0];
   renderFeed(sel.value);
 }
+let feedFilter = "all";   // Headlines tab: all, buy, short or skip
 function renderFeed(day) {
   const d = SUMMARY && SUMMARY.nx3.find(x => x.day === day);
   const evs = [...dayEvents(day)].sort((a, b) => (b.t > a.t ? 1 : -1));
@@ -486,7 +487,15 @@ function renderFeed(day) {
     (d.pick_minus_control != null ? ` · picks minus random control ${pct(d.pick_minus_control)}` : "") +
     (d.control && d.control.length ? ` · control: ${d.control.map(x => `${x.symbol} ${x.result ? pct(x.result.net) : "open"}`).join(", ")}` : "");
   if (day === etDate()) $("daycounts").textContent = c ? `today: ${c.decided} decided, ${c.picks} picks` : "";
-  $("feed").replaceChildren(...evs.map(ev => evCard(ev, day === etDate())));
+  const shownEvs = feedFilter === "all" ? evs : evs.filter(ev => decisionOf(ev).cls === feedFilter);
+  $("feedfilter").replaceChildren(...[["all", "All"], ["buy", "Buy"], ["short", "Short"], ["skip", "Skip"]].map(([k, label]) => {
+    const n = k === "all" ? evs.length : evs.filter(ev => decisionOf(ev).cls === k).length;
+    const b = el("button", { "aria-pressed": String(feedFilter === k), text: `${label} ${n}` });
+    b.addEventListener("click", () => { feedFilter = k; renderFeed(day); });
+    return b;
+  }));
+  $("feed").replaceChildren(...shownEvs.map(ev => evCard(ev, day === etDate())));
+  if (!shownEvs.length) $("feed").append(el("p", { class: "muted small", text: "No headlines with this decision on this day." }));
 }
 function evCard(ev, today) {
   const dcs = decisionOf(ev);
