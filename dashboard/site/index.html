@@ -12,7 +12,6 @@
   <div class="brand">edge-lab <span class="muted">paper research</span></div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="live" aria-selected="true">Live</button>
-    <button role="tab" data-tab="headlines" aria-selected="false">Headlines</button>
     <button role="tab" data-tab="books" aria-selected="false">Books</button>
     <button role="tab" data-tab="ideas" aria-selected="false">Ideas</button>
   </nav>
@@ -60,20 +59,11 @@
       <div class="verdict" id="verdict" hidden></div>
     </div>
 
-    <h2>Just played</h2>
-    <p id="played-empty" class="muted small">Each headline appears here once it has run through the trees, latest on top.</p>
-    <div id="played" class="feed"></div>
-  </section>
-
-  <section id="tab-headlines" class="tab" hidden>
-    <div class="feedhead">
-      <h2>Decided headlines</h2>
-      <select id="daysel" aria-label="day"></select>
-    </div>
+    <div class="feedhead"><h2>Each day</h2><span class="muted small">Israel time · tap one to replay it</span></div>
+    <div class="filters" id="daychips"></div>
     <div id="daysum" class="muted small"></div>
     <div class="filters" id="feedfilter" style="margin-top:10px"></div>
     <div id="feed" class="feed"></div>
-    <p class="muted small">Times are Israel time. Tap a headline to run it through the trees.</p>
   </section>
 
   <section id="tab-books" class="tab" hidden>

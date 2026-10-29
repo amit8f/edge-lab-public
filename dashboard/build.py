@@ -28,7 +28,7 @@ from adaptive import accounts as A
 from core.alpaca import TRADE
 
 DATA = "https://data.alpaca.markets/v2"
-NX3_DAYS, STALE_DAYS = 5, 7
+NX3_DAYS, STALE_DAYS = 7, 7
 NX3_COST = 0.002          # NX3's round trip (config/risk.yaml news track), for the skipped stocks' moves
 SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs"]
 
