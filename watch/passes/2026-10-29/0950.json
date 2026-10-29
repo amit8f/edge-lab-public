@@ -1,0 +1,578 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "2830aa7d4559bde124bdd29270f35a951985f397baab13f91f6a1e1c5dd88f3d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "6d1c5febb5e12fe03948a425bf907ae68101cfc1e0268f85330536580da1926a",
+   "views": [
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "ICE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GOOG",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GBFH",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "FTNT",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SCI",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "CLMB",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "QUAD",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "MYE",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "PRCH",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "EPAC",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "5e4f5deb9fbfae3def7f351d7b6eb81270892aff0bacec85701fcc1b75abba78",
+   "decisions": [
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside (+5.9%) and positive analyst tone",
+     "stop_pct": 10.0,
+     "symbol": "ICE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp drop (-13.4%) with negative tone",
+     "stop_pct": 10.0,
+     "symbol": "GOOG"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large decline (-21.3%) and negative tone",
+     "stop_pct": 10.0,
+     "symbol": "GBFH"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Heavy fall (-24.2%) and negative tone",
+     "stop_pct": 10.0,
+     "symbol": "FTNT"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop (-11.0%) and negative tone",
+     "stop_pct": 10.0,
+     "symbol": "SCI"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Big rally (+19.3%) and positive tone",
+     "stop_pct": 10.0,
+     "symbol": "CLMB"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable despite negative move",
+     "stop_pct": 0.0,
+     "symbol": "QUAD"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Substantial decline (-12.4%) and negative tone",
+     "stop_pct": 10.0,
+     "symbol": "MYE"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Very strong rise (+29.7%) and positive tone",
+     "stop_pct": 10.0,
+     "symbol": "PRCH"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Solid gain (+6.8%) and positive tone",
+     "stop_pct": 10.0,
+     "symbol": "EPAC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position unchanged",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "bb3bd16df172519ef69b6b54230cae5b957f76ac39a62f54034f4ab203ba929c"
+  },
+  "reviewer": {
+   "answer_sha256": "ee748536ca77270eeaa904f0cb50c187009d2dfde3c68c9312b34ae4267967f6",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "fdf32f653017bce62611657e97bb41f82a6a8e72571042c8766525694de77d0c",
+   "reviews": [
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and positive analyst tone support the long proposal.",
+     "symbol": "ICE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive negative price drop with high z-score and negative earnings tone validate the short.",
+     "symbol": "GOOG"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe intraday drop of 21.3% combined with negative earnings tone makes the short proposal solid.",
+     "symbol": "GBFH"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme downward move today aligns well with the proposed short direction.",
+     "symbol": "FTNT"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative price action and negative earnings tone justify the short.",
+     "symbol": "SCI"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward price surge and positive analyst tone support the long proposal.",
+     "symbol": "CLMB"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp double-digit drop today with negative earnings tone justifies the short.",
+     "symbol": "MYE"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Powerful 29.7% rally today supports the proposed long position.",
+     "symbol": "PRCH"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive momentum and supportive earnings tone validate the long proposal.",
+     "symbol": "EPAC"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.0586,
+   "news": 1,
+   "pace": null,
+   "price": 165.1,
+   "r20": 0.02585,
+   "r5": -0.01097,
+   "short": true,
+   "src": "iex",
+   "symbol": "ICE",
+   "z": 3.593
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13352,
+   "news": 0,
+   "pace": null,
+   "price": 278.91,
+   "r20": -0.05532,
+   "r5": -0.02738,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "GOOG",
+   "z": -10.482
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.21336,
+   "news": 0,
+   "pace": null,
+   "price": 13.42,
+   "r20": -0.06161,
+   "r5": 0.00471,
+   "short": true,
+   "src": "iex",
+   "symbol": "GBFH",
+   "z": -10.334
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.24245,
+   "news": 0,
+   "pace": null,
+   "price": 131.875,
+   "r20": -0.02618,
+   "r5": 0.00017,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "FTNT",
+   "z": -9.551
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10992,
+   "news": 0,
+   "pace": null,
+   "price": 73.28,
+   "r20": 0.08116,
+   "r5": 0.01442,
+   "short": true,
+   "src": "iex",
+   "symbol": "SCI",
+   "z": -9.448
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.19318,
+   "news": 0,
+   "pace": null,
+   "price": 39.53,
+   "r20": 0.03128,
+   "r5": 0.05745,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLMB",
+   "z": 8.833
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15106,
+   "news": 0,
+   "pace": null,
+   "price": 7.98,
+   "r20": 0.01842,
+   "r5": 0.0,
+   "short": false,
+   "src": "iex",
+   "symbol": "QUAD",
+   "z": -8.561
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.12391,
+   "news": 0,
+   "pace": null,
+   "price": 28.21,
+   "r20": 0.04647,
+   "r5": -0.02098,
+   "short": true,
+   "src": "iex",
+   "symbol": "MYE",
+   "z": -8.356
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.29693,
+   "news": 0,
+   "pace": null,
+   "price": 21.14,
+   "r20": -0.02161,
+   "r5": -0.12318,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRCH",
+   "z": 8.274
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06807,
+   "news": 0,
+   "pace": null,
+   "price": 38.13,
+   "r20": 0.02439,
+   "r5": 0.00677,
+   "short": true,
+   "src": "iex",
+   "symbol": "EPAC",
+   "z": 7.223
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4977.0088,
+  "PICK-MAIN-coin": 4983.8117,
+  "PICK-PENNY": 483.001,
+  "PICK-PENNY-coin": 511.4213
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 89,
+  "news": 25,
+  "volume": 0
+ },
+ "flagged": 106,
+ "headline_counts": {
+  "CLMB": 3,
+  "EPAC": 3,
+  "FTNT": 3,
+  "GBFH": 3,
+  "GOOG": 3,
+  "ICE": 3,
+  "MYE": 2,
+  "PRCH": 3,
+  "QUAD": 3,
+  "SCI": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "d42421a585f5788f093ffb3007a8f9a6d639a2f8c4f815d66b4963c380f0dd31",
+ "price_sources": {
+  "delayed_sip": 608,
+  "iex": 2794
+ },
+ "priced": 3402,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ICE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GOOG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GBFH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FTNT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SCI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CLMB"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MYE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PRCH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EPAC"
+  }
+ ],
+ "slot": "2026-10-29T09:50",
+ "t": "2026-10-29T13:50:20.423456+00:00",
+ "universe": 3414,
+ "written_utc": "2026-10-29T13:50:54.841312Z"
+}
