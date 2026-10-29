@@ -1,0 +1,610 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f43e47712ff550936c04a511fed6253666cbe5253f3cd170f85fb7c5db5c4633",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "e711a0c795c12da61fbaa4ea43db5178024b086f152eeab343772ca542276e92",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "RM",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "ADAM",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "HAPN",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "MO",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "earnings",
+     "symbol": "INSM",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "JBSS",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "FTRE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "FVRR",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GATX",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "EFSI",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "8509df93d373355ba4942fa22d0679b6750fa37b27ab82a2dc70cb86251b3338",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside, positive earnings tone and high confidence",
+     "stop_pct": 10.0,
+     "symbol": "RM"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp drop, negative earnings tone and solid confidence",
+     "stop_pct": 12.0,
+     "symbol": "ADAM"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price up but negative earnings tone suggests reversal short",
+     "stop_pct": 12.0,
+     "symbol": "HAPN"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive move with upbeat earnings tone and high confidence",
+     "stop_pct": 10.0,
+     "symbol": "MO"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large gain, neutral tone, meets confidence threshold",
+     "stop_pct": 10.0,
+     "symbol": "INSM"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant decline and negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "JBSS"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Oversold on big drop, positive earnings tone suggests rebound",
+     "stop_pct": 12.0,
+     "symbol": "FTRE"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong rise with positive guidance tone",
+     "stop_pct": 10.0,
+     "symbol": "FVRR"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Robust gain and positive earnings tone",
+     "stop_pct": 10.0,
+     "symbol": "GATX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong move, high analyst confidence despite no tone",
+     "stop_pct": 10.0,
+     "symbol": "EFSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "RITM"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "62fea5f69bba4755fe0e5f30d92b06eefcf6a0b75124fb4e94a6bcde4fcfdde1"
+  },
+  "reviewer": {
+   "answer_sha256": "0b85e8f769999b117598c2b28989f7a9ce42fbccc3fd493a3fecf274cdb1a64a",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "74459fde040c741f206214ccafb717abaac8aa60c4f44e4fd0f470c1cbd661b7",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and positive earnings tone align well with proposal.",
+     "symbol": "RM"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp drop today paired with negative earnings tone supports short position.",
+     "symbol": "ADAM"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Despite positive price action today, negative multi-day trend and negative earnings tone favor short.",
+     "symbol": "HAPN"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid upward trend and positive earnings sentiment back the long proposal.",
+     "symbol": "MO"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong daily surge provides momentum despite weaker medium-term performance.",
+     "symbol": "INSM"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative move today and bearish analyst tone justify short trade.",
+     "symbol": "JBSS"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Despite today's pullback, strong 20-day trend and positive tone support buying the dip.",
+     "symbol": "FTRE"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong daily bounce and positive guidance tone validate long proposal.",
+     "symbol": "FVRR"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and favorable earnings sentiment support going long.",
+     "symbol": "GATX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid daily gain and strong positive z-score justify the proposed long trade.",
+     "symbol": "EFSI"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.13744,
+   "news": 1,
+   "pace": null,
+   "price": 38.275,
+   "r20": 0.11313,
+   "r5": 0.00238,
+   "short": true,
+   "src": "iex",
+   "symbol": "RM",
+   "z": 6.384
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.08162,
+   "news": 1,
+   "pace": null,
+   "price": 7.145,
+   "r20": 0.0,
+   "r5": 0.0457,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADAM",
+   "z": -4.358
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.07775,
+   "news": 1,
+   "pace": null,
+   "price": 15.455,
+   "r20": -0.02977,
+   "r5": -0.02582,
+   "short": true,
+   "src": "iex",
+   "symbol": "HAPN",
+   "z": 3.351
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.0448,
+   "news": 1,
+   "pace": null,
+   "price": 76.26,
+   "r20": 0.0839,
+   "r5": -0.01138,
+   "short": true,
+   "src": "iex",
+   "symbol": "MO",
+   "z": 3.142
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12662,
+   "news": 0,
+   "pace": null,
+   "price": 109.26,
+   "r20": -0.15034,
+   "r5": 0.03126,
+   "short": true,
+   "src": "iex",
+   "symbol": "INSM",
+   "z": 4.884
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.06542,
+   "news": 0,
+   "pace": null,
+   "price": 62.0,
+   "r20": -0.00256,
+   "r5": 0.00959,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "JBSS",
+   "z": -4.716
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.11959,
+   "news": 0,
+   "pace": null,
+   "price": 22.785,
+   "r20": 0.29724,
+   "r5": 0.07564,
+   "short": true,
+   "src": "iex",
+   "symbol": "FTRE",
+   "z": -4.64
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06683,
+   "news": 0,
+   "pace": null,
+   "price": 8.62,
+   "r20": -0.06265,
+   "r5": -0.03695,
+   "short": true,
+   "src": "iex",
+   "symbol": "FVRR",
+   "z": 4.421
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06472,
+   "news": 0,
+   "pace": null,
+   "price": 179.8,
+   "r20": -0.00676,
+   "r5": 0.02781,
+   "short": true,
+   "src": "iex",
+   "symbol": "GATX",
+   "z": 4.403
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.03297,
+   "news": 0,
+   "pace": null,
+   "price": 47.0,
+   "r20": 0.00442,
+   "r5": -0.00871,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "EFSI",
+   "z": 4.26
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4973.7177,
+  "PICK-MAIN-coin": 4975.8406,
+  "PICK-PENNY": 484.0948,
+  "PICK-PENNY-coin": 511.8351
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 94,
+  "news": 24,
+  "volume": 0
+ },
+ "flagged": 112,
+ "headline_counts": {
+  "ADAM": 3,
+  "FTRE": 3,
+  "FVRR": 3,
+  "GATX": 3,
+  "HAPN": 3,
+  "INSM": 3,
+  "JBSS": 1,
+  "MO": 3,
+  "RM": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "199f4b37590ab7646495e1a3643d72031cb6e4f407a3fb9e7dae77f4644d54d0",
+ "price_sources": {
+  "delayed_sip": 422,
+  "iex": 2986
+ },
+ "priced": 3408,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ADAM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HAPN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "INSM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "JBSS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FTRE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FVRR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GATX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EFSI"
+  }
+ ],
+ "slot": "2026-10-29T10:00",
+ "t": "2026-10-29T14:00:21.150455+00:00",
+ "universe": 3414,
+ "written_utc": "2026-10-29T14:00:55.538016Z"
+}

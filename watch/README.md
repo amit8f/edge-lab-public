@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-10-29T09:55 ET: 110 flagged of 3414, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-10-29T10:00 ET: 112 flagged of 3414, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,965.97 | -0.68% | 2 | 0 | short AFYA, short BCAX, long E, short FLG, short GL, short INTR, long KNSL, short LKQ, short NU, short PAGS, short PAX, long RITM, long RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long WEN | ok |
-| PICK-MAIN-coin | $4,981.66 | -0.37% | 0 | 0 | long AFYA, long AGBK, short BCAX, long E, long FLG, long GL, short INTR, short KNSL, short LKQ, short NU, long PAGS, short PAX, short RITM, short RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long WEN, long XP | ok |
-| PICK-PENNY | $483.21 | -3.36% | 2 | 0 | short ABEV, short ALLO, short CATX, short CIG, short GERN, long IMSR, short ITRG, long LUMN, long NAUT, long OSUR, short PACK, short PRME, short PRQR, long REI, short SID, long STLA, long UNIT, short VNDA | ok |
-| PICK-PENNY-coin | $512.79 | +2.56% | 1 | 0 | short ABEV, long ALLO, short CATX, long CIG, short GERN, long IMSR, long ITRG, long JBLU, short LUMN, long NAUT, long OSUR, short PACK, long PRME, long PRQR, long REI, short SID, short STLA, short UNIT, long VNDA | ok |
+| PICK-MAIN | $4,973.72 | -0.53% | 2 | 0 | short AFYA, short BCAX, long E, short FLG, short GL, short INTR, long KNSL, short LKQ, short NU, short PAGS, short PAX, long RITM, long RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long WEN | ok |
+| PICK-MAIN-coin | $4,975.84 | -0.48% | 0 | 0 | long AFYA, long AGBK, short BCAX, long E, long FLG, long GL, short INTR, short KNSL, short LKQ, short NU, long PAGS, short PAX, short RITM, short RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long WEN, long XP | ok |
+| PICK-PENNY | $484.09 | -3.18% | 2 | 0 | short ABEV, short ALLO, short CATX, short CIG, short GERN, long IMSR, short ITRG, long LUMN, long NAUT, long OSUR, short PACK, short PRME, short PRQR, long REI, short SID, long STLA, long UNIT, short VNDA | ok |
+| PICK-PENNY-coin | $511.84 | +2.37% | 1 | 0 | short ABEV, long ALLO, short CATX, long CIG, short GERN, long IMSR, long ITRG, long JBLU, short LUMN, long NAUT, long OSUR, short PACK, long PRME, long PRQR, long REI, short SID, short STLA, short UNIT, long VNDA | ok |
