@@ -41,6 +41,22 @@ const sleep = ms => new Promise(r => setTimeout(r, reduced ? Math.min(ms, 30) : 
 function etDate(d = new Date()) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(d);
 }
+// times: the logs write New York wall-clock time; the page shows Israel time
+function tzOffset(ms, tz) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit",
+    day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }).formatToParts(new Date(ms)).map(x => [x.type, x.value]));
+  return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second) - Math.floor(ms / 1000) * 1000;
+}
+function fromET(s) {
+  if (!s) return null;
+  const [d, t = "0:0:0"] = s.split("T"); const [Y, M, D] = d.split("-").map(Number); const [h, m, sec] = t.split(":").map(Number);
+  const wall = Date.UTC(Y, M - 1, D, h, m, Math.floor(sec || 0));
+  let u = wall; for (let k = 0; k < 2; k++) u = wall - tzOffset(u, "America/New_York");
+  return new Date(u);
+}
+const IL = { timeZone: "Asia/Jerusalem", hour: "2-digit", minute: "2-digit", hourCycle: "h23" };
+const ilTime = d => d ? new Intl.DateTimeFormat("en-GB", IL).format(d) : "";
+const ilStamp = d => d ? new Intl.DateTimeFormat("en-GB", { ...IL, day: "2-digit", month: "short" }).format(d) : "";
 function parseLines(txt) {
   return txt.split("\n").filter(Boolean).map(l => { try { return JSON.parse(l.replace(/\bNaN\b/g, "null")); } catch { return null; } })
     .filter(Boolean);
@@ -131,20 +147,44 @@ function drawTree(t, path, upto) {
   }
   return pos;
 }
-async function rollBall(pos, path) {
-  const svg = $("tree"); const ball = s("circle", { r: 7, class: "ball", cx: pos[0].X, cy: pos[0].Y });
+// the ball is the stock's logo (a colored circle with the ticker when no logo loads), spinning as it moves
+let ballN = 0;
+function makeBall(sym, r) {
+  const g = s("g", { class: "lball" }); const id = `bclip${++ballN}`;
+  const cp = s("clipPath", { id }); cp.append(s("circle", { cx: 0, cy: 0, r }));
+  const defs = s("defs", {}); defs.append(cp);
+  const spin = s("g", {});
+  const bg = s("circle", { cx: 0, cy: 0, r, fill: color(sym) });
+  const tx = s("text", { x: 0, y: r * 0.28, "text-anchor": "middle", "font-size": r * 0.72, fill: "#fff", "font-weight": 700 });
+  tx.textContent = sym.slice(0, 4);
+  const im = s("image", { href: CFG.logo(sym), x: -r * 0.8, y: -r * 0.8, width: r * 1.6, height: r * 1.6,
+    "clip-path": `url(#${id})`, preserveAspectRatio: "xMidYMid meet" });
+  im.addEventListener("load", () => { bg.setAttribute("fill", "#fff"); tx.remove(); });
+  im.addEventListener("error", () => im.remove());
+  spin.append(bg, tx, im);
+  g.append(defs, spin, s("circle", { cx: 0, cy: 0, r, class: "lball-ring" }));
+  g.r = r; g.rot = 0;
+  g.move = (x, y, rot = g.rot) => { g.x = x; g.y = y; g.rot = rot;
+    g.setAttribute("transform", `translate(${x} ${y})`); spin.setAttribute("transform", `rotate(${rot})`); };
+  return g;
+}
+const BALL_R = innerWidth < 600 ? 27 : 16;
+async function rollBall(pos, path, speed, sym) {
+  const svg = $("tree"); const ball = makeBall(sym, BALL_R); ball.move(pos[0].X, pos[0].Y);
   svg.append(ball);
   for (let i = 1; i < path.length; i++) {
-    const a = pos[path[i - 1]], b = pos[path[i]]; const T = reduced ? 1 : 420; const t0 = performance.now();
+    const a = pos[path[i - 1]], b = pos[path[i]]; const T = reduced ? 1 : speed; const t0 = performance.now(); const r0 = ball.rot;
+    const dir = b.X < a.X ? -1 : 1;
     await new Promise(res => {
       (function step(now) {
         const k = Math.min(1, (now - t0) / T), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
-        ball.setAttribute("cx", a.X + (b.X - a.X) * e); ball.setAttribute("cy", a.Y + (b.Y - a.Y) * e);
+        ball.move(a.X + (b.X - a.X) * e, a.Y + (b.Y - a.Y) * e, r0 + dir * 140 * e);
         k < 1 ? requestAnimationFrame(step) : res();
       })(t0);
     });
     drawTree(currentTree, path, i); svg.append(ball);
   }
+  return ball;
 }
 let currentTree = null;
 
@@ -176,8 +216,7 @@ function decisionOf(ev) {
 function showWho(ev) {
   $("logo").replaceWith(Object.assign(logo(ev.symbol), { id: "logo" }));
   $("sym").textContent = ev.symbol;
-  const t = ev.t ? ev.t.slice(11, 16) : "";
-  $("when").textContent = `news ${t} ET · price at decision ${money(ev.entry_iex)}` +
+  $("when").textContent = `news ${ilTime(fromET(ev.t))} Israel · price at decision ${money(ev.entry_iex)}` +
     (ev.last_price ? ` · now ${money(ev.last_price)}` : "");
   const chips = $("chips"); chips.replaceChildren();
   const inp = ev.inputs || {};
@@ -188,8 +227,9 @@ function showWho(ev) {
   }
   if (!chips.children.length) chips.append(el("span", { class: "chip", text: "general news" }));
 }
+const SLOW = 3, LAST = 1;   // first trees step by step, the middle ones flash past, the last one step by step again
 async function play(ev) {
-  playing = true;
+  playing = true; let lastBall = null;
   $("verdict").hidden = true;
   showWho(ev);
   const x = rowOf(ev.inputs), g = ghostOf(x);
@@ -198,31 +238,135 @@ async function play(ev) {
   for (let i = 0; i < N; i++) {
     const t = MODEL.trees[i]; currentTree = t;
     const w = walk(t, x), wg = walk(t, g);
-    $("treeno").textContent = `tree ${i + 1} / ${N}`;
-    if (i < 3) {
-      $("phase").textContent = "step by step";
+    const slow = i < SLOW || i >= N - LAST;
+    if (slow) {
+      $("treeno").textContent = `tree ${i + 1} / ${N}`;
+      $("phase").textContent = i < SLOW ? "step by step" : "the last tree";
       const pos = drawTree(t, w.path, 0);
-      await sleep(250);
-      await rollBall(pos, w.path);
+      await sleep(i < SLOW ? 250 : 120);
+      lastBall = await rollBall(pos, w.path, 420, ev.symbol);
       real += w.leaf; ghost += wg.leaf; setMeters(real, ghost);
-      await sleep(500);
+      await sleep(i < SLOW ? 500 : 250);
     } else {
-      $("phase").textContent = "the other trees, fast";
       real += w.leaf; ghost += wg.leaf;
-      if (i % 2 === 0 || i === N - 1) { drawTree(t, w.path, w.path.length); setMeters(real, ghost); await sleep(28); }
+      if (i % 40 === 0 || i === N - LAST - 1) {    // a few frames only: the meters move, the counter jumps
+        $("treeno").textContent = `tree ${i + 1} / ${N}`;
+        $("phase").textContent = `trees ${SLOW + 1} to ${N - LAST}, adding up`;
+        drawTree(t, w.path, w.path.length); setMeters(real, ghost); await sleep(90);
+      }
     }
   }
   setMeters(real, ghost);
-  await sleep(500);
-  const d = decisionOf(ev);
-  const v = $("verdict"); v.className = `verdict ${d.cls}`; v.replaceChildren(
-    el("div", {}, el("div", { class: "big", text: d.word }),
-      el("div", { class: "why", text: d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") :
-        `news effect ${num(ev.e, 3)} past the cut ${num(MODEL.cut, 3)} · in at ${money(ev.entry_iex)}` }),
-      ev.result ? el("div", { class: "why", text: `result ${pct(ev.result.net)} after costs` }) : null));
-  v.hidden = false;
-  await sleep(d.cls === "skip" ? 1800 : 3500);
+  await finale(ev, real - ghost, lastBall);
+  addPlayed(ev);
   playing = false;
+}
+
+// the finish: logo and number, three cards, a highlight that teases each one, then the pick and its result
+function outcomeLine(ev, d) {
+  if (ev.result && ev.result.net != null) return `result ${pct(ev.result.net)} after costs`;
+  if (d.cls === "skip") return ev.next_move != null ? `not traded · next day ${pct(ev.next_move)}` : "not traded";
+  const sgn = d.cls === "buy" ? 1 : -1;
+  if (ev.last_price && ev.entry_iex) return `in at ${money(ev.entry_iex)} · now ${money(ev.last_price)} (${pct(sgn * (ev.last_price / ev.entry_iex - 1))} so far)`;
+  return `in at ${money(ev.entry_iex)} · result after the exit`;
+}
+// the finish: the logo drops out of the last tree onto three hoops, teases them, goes through the right one,
+// then the screen turns that decision's color with the logo, the score and the result
+const HOOPS = [{ cls: "short", word: "SHORT" }, { cls: "skip", word: "SKIP" }, { cls: "buy", word: "BUY" }];
+function drawCourt() {
+  const svg = $("tree"); svg.replaceChildren(); svg.setAttribute("viewBox", `0 0 640 ${TH}`);
+  const rimY = TH - 130, hw = BALL_R * 2.3, back = s("g", {}), front = s("g", {});
+  const hoops = HOOPS.map((h, i) => {
+    const x = 110 + i * 210;
+    back.append(s("rect", { x: x - hw - 14, y: rimY - 78, width: 2 * hw + 28, height: 62, rx: 6, class: `board ${h.cls}` }));
+    back.append(s("path", { d: `M ${x - hw} ${rimY} A ${hw} 8 0 0 1 ${x + hw} ${rimY}`, class: `rim ${h.cls}` }));
+    const net = s("path", { class: "net", d: `M ${x - hw} ${rimY} L ${x - hw * .6} ${rimY + 52} M ${x + hw} ${rimY} L ${x + hw * .6} ${rimY + 52}` +
+      ` M ${x - hw * .33} ${rimY + 4} L ${x - hw * .2} ${rimY + 52} M ${x + hw * .33} ${rimY + 4} L ${x + hw * .2} ${rimY + 52}` +
+      ` M ${x - hw * .8} ${rimY + 18} L ${x + hw * .8} ${rimY + 18} M ${x - hw * .65} ${rimY + 38} L ${x + hw * .65} ${rimY + 38}` });
+    front.append(net, s("path", { d: `M ${x - hw} ${rimY} A ${hw} 8 0 0 0 ${x + hw} ${rimY}`, class: `rim ${h.cls}` }));
+    const lab = s("text", { x, y: rimY + 80, "text-anchor": "middle", "font-size": FS * 1.25, class: `hlabel ${h.cls}` });
+    lab.textContent = h.word; front.append(lab);
+    return { ...h, x, net };
+  });
+  svg.append(back);
+  const ballLayer = s("g", {}); svg.append(ballLayer, front);
+  return { hoops, rimY, hw, ballLayer };
+}
+function hop(ball, x1, y1, H, T, spin) {
+  const x0 = ball.x, y0 = ball.y, r0 = ball.rot, t0 = performance.now();
+  return new Promise(res => (function step(now) {
+    const k = Math.min(1, (now - t0) / T);
+    ball.move(x0 + (x1 - x0) * k, y0 + (y1 - y0) * k - 4 * H * k * (1 - k), r0 + spin * k);
+    k < 1 ? requestAnimationFrame(step) : res();
+  })(t0));
+}
+// several ways to tease the baskets; one is picked at random each time so the finish isn't predictable
+const jit = (v, f = 0.15) => v * (1 + (Math.random() * 2 - 1) * f);
+const rimHit = (c, i, side) => [c.hoops[i].x + side * (c.hw - c.ball.r * 0.4), c.rimY - c.ball.r];
+const TEASES = [
+  async function rimTour(c) {            // off the rims of the others, once off the right one
+    const seq = [c.others[0], c.target, c.others[1], c.others[0]]; let H = 150, T = 700;
+    for (let n = 0; n < seq.length; n++) {
+      const [x, y] = rimHit(c, seq[n], n % 2 ? 1 : -1);
+      await hop(c.ball, x, y, jit(H), jit(T), (x > c.ball.x ? 1 : -1) * 300); H *= 0.8; T *= 0.88;
+    }
+  },
+  async function rattle(c) {             // lands on a wrong rim, rattles, rolls out, then over to the right one
+    const w = c.others[0];
+    let [x, y] = rimHit(c, w, -1); await hop(c.ball, x, y, jit(140), 680, 260);
+    for (let k = 0; k < 4; k++) { [x, y] = rimHit(c, w, k % 2 ? -1 : 1); await hop(c.ball, x, y, 26 - k * 5, 230, 80); }
+    await hop(c.ball, c.hoops[w].x + (c.hoops[c.target].x > c.hoops[w].x ? 1 : -1) * c.hw * 2, c.floor, 30, 480, 240);
+    [x, y] = rimHit(c, c.target, -1); await hop(c.ball, x, y, jit(150), 700, 300);
+  },
+  async function bankShot(c) {           // hits a wrong backboard, rebounds off the floor, banks in
+    const w = c.others[0];
+    await hop(c.ball, c.hoops[w].x, c.rimY - 50, jit(170), 760, 360);
+    await hop(c.ball, (c.hoops[w].x + c.hoops[c.target].x) / 2, c.floor, 20, 520, 280);
+    await hop(c.ball, c.hoops[c.target].x + c.hw * 0.2, c.rimY - 52, jit(200), 760, 320);
+  },
+  async function dribble(c) {            // bounces along the floor under all three, then a jump shot
+    const order = [c.others[0], c.others[1], c.target, c.others[0]];
+    await hop(c.ball, c.hoops[order[0]].x, c.floor, 10, 520, 200);
+    for (let k = 1; k < order.length; k++) await hop(c.ball, c.hoops[order[k]].x, c.floor, jit(110 - k * 15), jit(480), 260);
+    const [x, y] = rimHit(c, c.target, 1); await hop(c.ball, x, y, jit(190), 760, 320);
+  },
+  async function airball(c) {            // a high shot that floats over a wrong hoop, bounces on its rim twice
+    const w = c.others[Math.random() < 0.5 ? 0 : 1];
+    let [x, y] = rimHit(c, w, 1); await hop(c.ball, x, y, jit(230), 860, 340);
+    [x, y] = rimHit(c, w, -1); await hop(c.ball, x, y, 45, 330, 120);
+    [x, y] = rimHit(c, c.target, -1); await hop(c.ball, x, y, jit(160), 720, 300);
+    [x, y] = rimHit(c, c.target, 1); await hop(c.ball, x, y, 30, 280, 90);
+  },
+];
+async function finale(ev, eff, lastBall) {
+  const d = decisionOf(ev), e = ev.e != null ? ev.e : eff;
+  const target = HOOPS.findIndex(h => h.cls === d.cls);
+  const start = lastBall ? { x: lastBall.x, y: lastBall.y } : { x: 320, y: 40 };
+  const court = drawCourt(); const { hoops, rimY, hw } = court;
+  $("phase").textContent = "which basket?";
+  const ball = makeBall(ev.symbol, BALL_R); court.ballLayer.append(ball); ball.move(start.x, Math.min(start.y, rimY - 160));
+  if (!reduced) {
+    const others = [0, 1, 2].filter(i => i !== target).sort(() => Math.random() - 0.5);
+    const pick = TEASES[Math.floor(Math.random() * TEASES.length)];
+    await pick({ ball, hoops, rimY, hw, target, others, floor: TH - 18 - ball.r });
+    await hop(ball, hoops[target].x, rimY - ball.r, 40, 320, 120);   // the last little drop onto the target's rim center
+    // swish: down through the net, the net jiggles
+    const net = hoops[target].net; net.classList.add("swish");
+    await hop(ball, hoops[target].x, rimY + 70, 0, 380, 90);
+    ball.style.opacity = "0"; ball.style.transition = "opacity .25s";
+    await sleep(350);
+  }
+  const v = $("verdict"); v.className = `verdict full ${d.cls}`;
+  const why = d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") : `news effect past the cut (${num(MODEL.cut, 3)})`;
+  v.replaceChildren(el("div", { class: "screen" },
+    logo(ev.symbol, "logo lg"),
+    el("div", { class: "ssym", text: ev.symbol }),
+    el("div", { class: "big", text: d.word }),
+    el("div", { class: "sscore", text: `score ${e >= 0 ? "+" : ""}${num(e, 3)}` }),
+    el("div", { class: "why", text: why }),
+    el("div", { class: "sres", text: outcomeLine(ev, d) })));
+  v.hidden = false;
+  await sleep(d.cls === "skip" ? 2600 : 4500);
 }
 async function loop() {
   for (;;) {
@@ -257,10 +401,12 @@ async function loadSummary() {
   }
   const age = Math.round((Date.now() - Date.parse(SUMMARY.generated_utc)) / 60000);
   $("updated").textContent = `data ${age < 1 ? "just now" : `${age} min ago`}`;
-  const withEvents = SUMMARY.nx3.find(d => d.events.length && d.day !== etDate()) || SUMMARY.nx3.find(d => d.events.length);
+  // replays show only the trades taken (Buy or Short), from the last earlier day that had any
+  const traded = d => d.events.filter(e => e.side);
+  const withEvents = SUMMARY.nx3.find(d => traded(d).length && d.day !== etDate()) || SUMMARY.nx3.find(d => traded(d).length);
   if (withEvents && replayDay !== withEvents.day) {
     replayDay = withEvents.day;
-    replayList = [...withEvents.events].sort((a, b) => (a.t < b.t ? -1 : 1)); replayIx = 0;
+    replayList = traded(withEvents).sort((a, b) => (a.t < b.t ? -1 : 1)); replayIx = 0;
   }
   renderDays(); renderBooks(); renderIdeas();
 }
@@ -308,31 +454,37 @@ function renderFeed(day) {
     (d.excluded ? " · left out of the forward test (bug days)" : "") +
     (d.pick_minus_control != null ? ` · picks minus random control ${pct(d.pick_minus_control)}` : "") +
     (d.control && d.control.length ? ` · control: ${d.control.map(x => `${x.symbol} ${x.result ? pct(x.result.net) : "open"}`).join(", ")}` : "");
-  const today = day === etDate();
   if (day === etDate()) $("daycounts").textContent = c ? `today: ${c.decided} decided, ${c.picks} picks` : "";
-  $("feed").replaceChildren(...evs.map(ev => {
-    const dcs = decisionOf(ev);
-    const res = el("div", { class: "res" });
-    if (ev.result) res.append(el("div", { class: ev.result.net >= 0 ? "up" : "down", text: `${pct(ev.result.net)} net` }),
-      el("div", { class: "muted small", text: `in ${money(ev.result.entry)} out ${money(ev.result.exit)}` }));
-    else if (ev.side) res.append(el("div", { class: "muted", text: today ? "open" : "settling" }),
-      ev.last_price ? el("div", { class: "small", text: `now ${money(ev.last_price)} (${pct(ev.last_price / ev.entry_iex - 1)})` }) : null);
-    else if (ev.next_move != null) res.append(el("div", { class: ev.next_move >= 0 ? "up" : "down", text: pct(ev.next_move) }),
-      el("div", { class: "muted small", text: "if bought, to next close" }));
-    else if (ev.last_price) res.append(el("div", { class: "small", text: `now ${money(ev.last_price)}` }),
-      el("div", { class: "muted small", text: pct(ev.last_price / ev.entry_iex - 1) }));
-    const card = el("div", { class: `ev ${ev.side ? "" : "skipped"}`, role: "button", tabindex: "0" },
-      logo(ev.symbol),
-      el("div", {},
-        el("div", { class: "l1" }, el("span", { text: ev.symbol }), el("span", { class: `dec ${dcs.cls}`, text: dcs.word }),
-          el("span", { class: "muted small", text: (ev.t || "").slice(11, 16) + " ET" })),
-        el("div", { class: "l2", text: `effect ${num(ev.e, 3)} · price at decision ${money(ev.entry_iex)}` +
-          (ev.skip && ev.skip !== "not fired" ? ` · ${SKIP_WHY[ev.skip] || ev.skip}` : "") })),
-      res);
-    const go = () => { queue.unshift(ev); window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); };
-    card.addEventListener("click", go); card.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
-    return card;
-  }));
+  $("feed").replaceChildren(...evs.map(ev => evCard(ev, day === etDate())));
+}
+function evCard(ev, today) {
+  const dcs = decisionOf(ev);
+  const res = el("div", { class: "res" });
+  if (ev.result) res.append(el("div", { class: ev.result.net >= 0 ? "up" : "down", text: `${pct(ev.result.net)} net` }),
+    el("div", { class: "muted small", text: `in ${money(ev.result.entry)} out ${money(ev.result.exit)}` }));
+  else if (ev.side) res.append(el("div", { class: "muted", text: today ? "open" : "settling" }),
+    ev.last_price ? el("div", { class: "small", text: `now ${money(ev.last_price)} (${pct(ev.side * (ev.last_price / ev.entry_iex - 1))})` }) : null);
+  else if (ev.next_move != null) res.append(el("div", { class: ev.next_move >= 0 ? "up" : "down", text: pct(ev.next_move) }),
+    el("div", { class: "muted small", text: "if bought, to next close" }));
+  else if (ev.last_price) res.append(el("div", { class: "small", text: `now ${money(ev.last_price)}` }),
+    el("div", { class: "muted small", text: pct(ev.last_price / ev.entry_iex - 1) }));
+  const card = el("div", { class: `ev ${ev.side ? "" : "skipped"}`, role: "button", tabindex: "0" },
+    logo(ev.symbol),
+    el("div", {},
+      el("div", { class: "l1" }, el("span", { text: ev.symbol }), el("span", { class: `dec ${dcs.cls}`, text: dcs.word }),
+        el("span", { class: "muted small", text: ilTime(fromET(ev.t)) })),
+      el("div", { class: "l2", text: `effect ${num(ev.e, 3)} · price at decision ${money(ev.entry_iex)}` +
+        (ev.skip && ev.skip !== "not fired" ? ` · ${SKIP_WHY[ev.skip] || ev.skip}` : "") })),
+    res);
+  const go = () => { queue.unshift(ev); showTab("live"); window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); };
+  card.addEventListener("click", go); card.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+  return card;
+}
+// under the tree: every headline the stage has run, latest on top
+function addPlayed(ev) {
+  const box = $("played"); box.prepend(evCard(ev, etDate() === (ev.t || "").slice(0, 10)));
+  while (box.children.length > 30) box.lastChild.remove();
+  $("played-empty").hidden = true;
 }
 
 function renderBooks() {
@@ -371,7 +523,7 @@ function renderBooks() {
   $("jobs").replaceChildren(...S.jobs.map(j => {
     const bad = j.conclusion && !["success", "skipped", "cancelled"].includes(j.conclusion);
     return el("div", { class: `job ${bad ? "bad" : ""}` }, el("span", { text: j.name }),
-      el("span", { class: bad ? "down" : "muted", text: `${j.status === "completed" ? j.conclusion : j.status} · ${j.at.slice(5, 16).replace("T", " ")} UTC` }));
+      el("span", { class: bad ? "down" : "muted", text: `${j.status === "completed" ? j.conclusion : j.status} · ${ilStamp(new Date(j.at))} Israel` }));
   }));
 }
 
@@ -399,12 +551,12 @@ function renderIdeas() {
 }
 
 // ---------- tabs and start ----------
-for (const b of document.querySelectorAll(".tabs button")) {
-  b.addEventListener("click", () => {
-    for (const x of document.querySelectorAll(".tabs button")) x.setAttribute("aria-selected", String(x === b));
-    for (const t of ["live", "books", "ideas"]) $(`tab-${t}`).hidden = t !== b.dataset.tab;
-  });
+const TABS = ["live", "headlines", "books", "ideas"];
+function showTab(name) {
+  for (const x of document.querySelectorAll(".tabs button")) x.setAttribute("aria-selected", String(x.dataset.tab === name));
+  for (const t of TABS) $(`tab-${t}`).hidden = t !== name;
 }
+for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("click", () => showTab(b.dataset.tab));
 $("daysel").addEventListener("change", e => renderFeed(e.target.value));
 
 (async function start() {
