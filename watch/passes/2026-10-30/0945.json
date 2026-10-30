@@ -1,0 +1,280 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "3caeccba5104f260b43d611ed80e3f85c9aa618fc2e561308b3acd676f38757b",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "8865749af1c7c39056c9c8e7febcc97d19dab400af3334d27804dc3dd22c8930",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ATEC",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "INTC",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CACC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CVEO",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "guidance",
+     "symbol": "FDXF",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "TFII",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CRMD",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "AES",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "guidance",
+     "symbol": "ATR",
+     "tone": 2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "GDYN",
+     "tone": 2
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "ddae3b60630fc523e927881fc42576a6d5955876ad5520b16f5c78fb87c007e6",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.3219,
+   "news": 0,
+   "pace": null,
+   "price": 7.71,
+   "r20": 0.14848,
+   "r5": 0.00088,
+   "short": true,
+   "src": "iex",
+   "symbol": "ATEC",
+   "z": -11.21
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.26119,
+   "news": 0,
+   "pace": null,
+   "price": 68.0225,
+   "r20": -0.23275,
+   "r5": 0.07697,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "INTC",
+   "z": -8.844
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15921,
+   "news": 0,
+   "pace": null,
+   "price": 484.11,
+   "r20": 0.12468,
+   "r5": 0.0302,
+   "short": true,
+   "src": "iex",
+   "symbol": "CACC",
+   "z": -8.407
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.23666,
+   "news": 0,
+   "pace": null,
+   "price": 37.78,
+   "r20": -0.09481,
+   "r5": 0.1211,
+   "short": true,
+   "src": "iex",
+   "symbol": "CVEO",
+   "z": 7.949
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.14185,
+   "news": 0,
+   "pace": null,
+   "price": 125.25,
+   "r20": -0.00886,
+   "r5": -0.01198,
+   "short": true,
+   "src": "iex",
+   "symbol": "FDXF",
+   "z": 7.908
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.11294,
+   "news": 0,
+   "pace": null,
+   "price": 99.83,
+   "r20": -0.06645,
+   "r5": -0.02139,
+   "short": true,
+   "src": "iex",
+   "symbol": "TFII",
+   "z": -7.255
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.16623,
+   "news": 0,
+   "pace": null,
+   "price": 6.37,
+   "r20": 0.02965,
+   "r5": -0.05679,
+   "short": true,
+   "src": "iex",
+   "symbol": "CRMD",
+   "z": -7.168
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.01163,
+   "news": 0,
+   "pace": null,
+   "price": 14.875,
+   "r20": 0.00814,
+   "r5": 0.00541,
+   "short": true,
+   "src": "iex",
+   "symbol": "AES",
+   "z": -7.112
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08791,
+   "news": 0,
+   "pace": null,
+   "price": 142.125,
+   "r20": 0.08083,
+   "r5": 0.01983,
+   "short": true,
+   "src": "iex",
+   "symbol": "ATR",
+   "z": 6.977
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.21918,
+   "news": 0,
+   "pace": null,
+   "price": 11.57,
+   "r20": 0.13246,
+   "r5": 0.10864,
+   "short": true,
+   "src": "iex",
+   "symbol": "GDYN",
+   "z": 6.723
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5021.2429,
+  "PICK-MAIN-coin": 5008.587,
+  "PICK-PENNY": 488.6954,
+  "PICK-PENNY-coin": 503.4982
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 58,
+  "news": 7,
+  "volume": 0
+ },
+ "flagged": 64,
+ "headline_counts": {
+  "ATEC": 3,
+  "ATR": 3,
+  "CACC": 3,
+  "CVEO": 3,
+  "FDXF": 3,
+  "GDYN": 3,
+  "INTC": 3,
+  "TFII": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "190ab3fd60f064216e7d582e2bf9a65d6302bc16a289c2c299b62743a2046f42",
+ "price_sources": {
+  "delayed_sip": 634,
+  "iex": 2756
+ },
+ "priced": 3390,
+ "risk": [],
+ "slot": "2026-10-30T09:45",
+ "t": "2026-10-30T13:45:21.125518+00:00",
+ "universe": 3417,
+ "written_utc": "2026-10-30T13:45:35.376710Z"
+}
