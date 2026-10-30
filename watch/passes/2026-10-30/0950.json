@@ -1,0 +1,290 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "d1e33c78edf0de003b249c37b9f2672be0b8782139e01c1fd7e60fe0b4561915",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "706cd30ee634f0d4cdffbb2bfed0285d6c74bc567b97953b162b93d918fa819a",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "INVX",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SMP",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "TWLO",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CDNA",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "EXEL",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BTSG",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "RBLX",
+     "tone": -2
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "CPRI",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "IRMD",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "regulatory",
+     "symbol": "AGIO",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "f2351c36cee2f911ad62bbf458da0491a028ffa4dbae872e47a1617c8f1a7b5a",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "6cdb6fb47a585a8671379bdfca8fa6b2024b0c48ad99e8379049c1284718cd54",
+   "quota": false,
+   "retry": {
+    "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+    "model": "openai/gpt-oss-120b",
+    "prompt_sha256": "4aa8b5fab766d0695cac3c2af2247cb876d12f9dafa04d90f21641c43954eba5",
+    "quota": false
+   },
+   "unreadable": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": "1 unreadable agent answers",
+  "PICK-PENNY": "1 unreadable agent answers"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.08767,
+   "news": 1,
+   "pace": null,
+   "price": 27.37,
+   "r20": 0.09012,
+   "r5": 0.07411,
+   "short": true,
+   "src": "iex",
+   "symbol": "INVX",
+   "z": -3.16
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11111,
+   "news": 0,
+   "pace": null,
+   "price": 42.5,
+   "r20": 0.02574,
+   "r5": 0.01513,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "SMP",
+   "z": 8.901
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.25221,
+   "news": 0,
+   "pace": null,
+   "price": 180.89,
+   "r20": -0.19707,
+   "r5": -0.04625,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "TWLO",
+   "z": -7.071
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.2177,
+   "news": 0,
+   "pace": null,
+   "price": 87.09,
+   "r20": 0.07987,
+   "r5": 0.03412,
+   "short": true,
+   "src": "iex",
+   "symbol": "CDNA",
+   "z": 6.101
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.07311,
+   "news": 0,
+   "pace": null,
+   "price": 71.04,
+   "r20": 0.14256,
+   "r5": 0.01363,
+   "short": true,
+   "src": "iex",
+   "symbol": "EXEL",
+   "z": 6.067
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12504,
+   "news": 0,
+   "pace": null,
+   "price": 67.75,
+   "r20": 0.05169,
+   "r5": -0.01052,
+   "short": true,
+   "src": "iex",
+   "symbol": "BTSG",
+   "z": 5.998
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15926,
+   "news": 0,
+   "pace": null,
+   "price": 44.105,
+   "r20": 0.22,
+   "r5": -0.0278,
+   "short": true,
+   "src": "iex",
+   "symbol": "RBLX",
+   "z": -5.976
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.16189,
+   "news": 0,
+   "pace": null,
+   "price": 18.66,
+   "r20": 0.10912,
+   "r5": -0.01834,
+   "short": true,
+   "src": "iex",
+   "symbol": "CPRI",
+   "z": 5.885
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.06753,
+   "news": 0,
+   "pace": null,
+   "price": 79.95,
+   "r20": 0.00516,
+   "r5": -0.02168,
+   "short": true,
+   "src": "iex",
+   "symbol": "IRMD",
+   "z": -5.637
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.16022,
+   "news": 0,
+   "pace": null,
+   "price": 31.265,
+   "r20": 0.14624,
+   "r5": 0.00108,
+   "short": true,
+   "src": "iex",
+   "symbol": "AGIO",
+   "z": -5.278
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5026.0129,
+  "PICK-MAIN-coin": 5003.697,
+  "PICK-PENNY": 487.8456,
+  "PICK-PENNY-coin": 500.4416
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 61,
+  "news": 12,
+  "volume": 0
+ },
+ "flagged": 69,
+ "headline_counts": {
+  "AGIO": 2,
+  "BTSG": 3,
+  "CDNA": 3,
+  "CPRI": 3,
+  "EXEL": 3,
+  "INVX": 3,
+  "IRMD": 3,
+  "RBLX": 3,
+  "SMP": 2,
+  "TWLO": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "8e8716498f5854b6c97afd9c7a79fe0a82aa87ebb9c0ea6efa377a64188bb7c5",
+ "price_sources": {
+  "delayed_sip": 576,
+  "iex": 2828
+ },
+ "priced": 3404,
+ "risk": [],
+ "slot": "2026-10-30T09:50",
+ "t": "2026-10-30T13:50:20.987802+00:00",
+ "universe": 3417,
+ "written_utc": "2026-10-30T13:50:58.935656Z"
+}
