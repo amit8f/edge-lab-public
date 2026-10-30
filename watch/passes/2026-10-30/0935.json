@@ -1,0 +1,544 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "91adc3b99b524012fb118ef83a67fb647f6e55aa4b5fd5d6af679c58f46dee73",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "e8df8c8354c46116876dbb3c0d0b1f1828c88e02804aeee7d814a50e999870e0",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "OSPN",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "BFAM",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SKYW",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "ILMN",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "PIPR",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "SYK",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "product",
+     "symbol": "ABOS",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "RMNI",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "ACCO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "COUR",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "6fc3220b9817e5fb8751ca0c9a8eff58648c01c2b8ab214ca9d5224d13164148",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong positive move and analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "OSPN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large negative move and negative analyst tone",
+     "stop_pct": 13.0,
+     "symbol": "BFAM"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral tone despite decline",
+     "stop_pct": 0.0,
+     "symbol": "SKYW"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop and negative tone",
+     "stop_pct": 13.0,
+     "symbol": "ILMN"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Downward move with negative tone",
+     "stop_pct": 12.0,
+     "symbol": "PIPR"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price decline and negative analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "SYK"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp drop and very negative tone",
+     "stop_pct": 20.0,
+     "symbol": "ABOS"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive move but negative analyst tone",
+     "stop_pct": 0.0,
+     "symbol": "RMNI"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside and positive analyst tone",
+     "stop_pct": 20.0,
+     "symbol": "ACCO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Downward move and negative tone",
+     "stop_pct": 20.0,
+     "symbol": "COUR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "ef0fb3c2125f6dc552ab17a91dca6ae093cf852075fa88c943c4c3f8f3ac0441"
+  },
+  "reviewer": {
+   "answer_sha256": "b6fba4ba37af3a46b832a5ee532f032880f00db2de57c700e11d778318915d0c",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "2dcbc86f700e737decc8ff85792bfa0d3596b0489921c38ab54aba2d28c6a6ea",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum with high z-score and positive analyst tone supports the long proposal.",
+     "symbol": "OSPN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop and negative tone align well with the short proposal.",
+     "symbol": "BFAM"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative price shock today supports the short direction.",
+     "symbol": "ILMN"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Earnings-related negative reaction and downward momentum validate the short proposal.",
+     "symbol": "PIPR"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Notable drop today with negative tone justifies following the short proposal.",
+     "symbol": "SYK"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme collapse of 85.1% today with strong negative product tone makes this a clear short.",
+     "symbol": "ABOS"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive positive breakout today supports the long proposal.",
+     "symbol": "ACCO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Substantial intraday decline and weak multi-day trend support the short trade.",
+     "symbol": "COUR"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.26253,
+   "news": 1,
+   "pace": null,
+   "price": 25.44,
+   "r20": 0.11696,
+   "r5": 0.04893,
+   "short": true,
+   "src": "iex",
+   "symbol": "OSPN",
+   "z": 10.115
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.19797,
+   "news": 1,
+   "pace": null,
+   "price": 53.72,
+   "r20": 0.03316,
+   "r5": -0.05582,
+   "short": true,
+   "src": "iex",
+   "symbol": "BFAM",
+   "z": -8.409
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.08582,
+   "news": 1,
+   "pace": null,
+   "price": 88.255,
+   "r20": -0.01177,
+   "r5": 0.00846,
+   "short": true,
+   "src": "iex",
+   "symbol": "SKYW",
+   "z": -5.862
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.14781,
+   "news": 1,
+   "pace": null,
+   "price": 247.185,
+   "r20": 0.0916,
+   "r5": 0.07669,
+   "short": true,
+   "src": "iex",
+   "symbol": "ILMN",
+   "z": -4.631
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.05413,
+   "news": 1,
+   "pace": null,
+   "price": 65.0,
+   "r20": 0.04469,
+   "r5": 0.04852,
+   "short": true,
+   "src": "iex",
+   "symbol": "PIPR",
+   "z": -3.942
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.06188,
+   "news": 1,
+   "pace": null,
+   "price": 292.46,
+   "r20": 0.14211,
+   "r5": 0.01521,
+   "short": true,
+   "src": "iex",
+   "symbol": "SYK",
+   "z": -3.527
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.85066,
+   "news": 0,
+   "pace": null,
+   "price": 0.342,
+   "r20": 0.10628,
+   "r5": 0.11165,
+   "short": true,
+   "src": "iex",
+   "symbol": "ABOS",
+   "z": -31.918
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.20175,
+   "news": 0,
+   "pace": null,
+   "price": 4.795,
+   "r20": -0.06993,
+   "r5": -0.02445,
+   "short": true,
+   "src": "iex",
+   "symbol": "RMNI",
+   "z": 14.095
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.24771,
+   "news": 0,
+   "pace": null,
+   "price": 5.44,
+   "r20": 0.0283,
+   "r5": -0.06838,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACCO",
+   "z": 13.902
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.17811,
+   "news": 0,
+   "pace": null,
+   "price": 3.83,
+   "r20": -0.08268,
+   "r5": -0.08087,
+   "short": true,
+   "src": "iex",
+   "symbol": "COUR",
+   "z": -8.16
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4996.2625,
+  "PICK-MAIN-coin": 5001.0654,
+  "PICK-PENNY": 488.0007,
+  "PICK-PENNY-coin": 506.735
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.1977,
+   "price": 0.342,
+   "qty": 42,
+   "side": -1,
+   "stop": 0.4104,
+   "symbol": "ABOS"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.1903,
+   "price": 0.342,
+   "qty": 42,
+   "side": 1,
+   "stop": 0.2736,
+   "symbol": "ABOS"
+  }
+ ],
+ "flag_counts": {
+  "move": 45,
+  "news": 104,
+  "volume": 0
+ },
+ "flagged": 142,
+ "flip_test": {
+  "after": -1,
+  "answer_sha256": "3352b745704bfe9b3ee5900b07999810a8c530bd8f8666f7fa4f9f8b47eae7b3",
+  "before": 1,
+  "model": "openai/gpt-oss-20b",
+  "moved": true,
+  "prompt_sha256": "9cf99eca4719ecbec1009519db6731d48ab2090c2d53d25dced26bfd235c48a1",
+  "swaps": 2,
+  "symbol": "OSPN"
+ },
+ "headline_counts": {
+  "ABOS": 3,
+  "ACCO": 3,
+  "BFAM": 3,
+  "COUR": 3,
+  "ILMN": 3,
+  "OSPN": 3,
+  "PIPR": 3,
+  "RMNI": 3,
+  "SKYW": 3,
+  "SYK": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "e59b21dd42162f891f9bbd3a2b28a7aa1b2c98a99a74c854fa361dd3c1d897eb",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2304
+ },
+ "priced": 2304,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OSPN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BFAM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ILMN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PIPR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SYK"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 42,
+   "skip": null,
+   "symbol": "ABOS"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ACCO"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "COUR"
+  }
+ ],
+ "slot": "2026-10-30T09:35",
+ "t": "2026-10-30T13:35:20.512059+00:00",
+ "universe": 3417,
+ "written_utc": "2026-10-30T13:35:38.942598Z"
+}
