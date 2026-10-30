@@ -1,0 +1,107 @@
+import numpy as np
+import pandas as pd
+
+from tracks.main import ch_data as C
+
+
+def _rows(n=300, price=20.0, v=1e6):
+    days = pd.bdate_range("2016-01-04", periods=n)
+    return pd.DataFrame({"symbol": "X", "date": days, "o": price, "h": price * 1.01, "l": price * 0.99, "c": price,
+                         "v": v, "ao": price, "ac": price, "dv20": price * v, "seg": 0, "cik": 1}).assign(
+        h=lambda x: np.where(x.index.isin([50, 150]), price * 2, x["h"]),      # far 52-week extremes, so the
+        l=lambda x: np.where(x.index.isin([50, 150]), price / 2, x["l"]))      # flat days aren't "near" them
+
+
+def test_quiet_days_are_not_candidates_and_track_uses_prior_day():
+    d = C.flag_days(_rows())
+    assert not d["cand"].iloc[260:].any()
+    assert (d["track"].iloc[1:] == "main").all() and d["track"].iloc[0] == ""
+
+
+def test_volume_gap_and_breakout_flags():
+    r = _rows()
+    r.loc[270, "v"] = 2e6                                   # 2x volume
+    r.loc[280, ["o", "ao"]] = 20.8                          # +4% gap
+    r.loc[290, "h"] = 21.0                                  # new 20-day high
+    d = C.flag_days(r)
+    assert d["cand"].iloc[[270, 280, 290]].all()
+    assert not d["cand"].iloc[[271, 281]].any()
+
+
+def test_split_day_is_not_a_gap():
+    r = _rows()
+    r.loc[:279, ["o", "h", "l", "c"]] *= 2                  # 2:1 split on row 280: raw halves, adjusted flat
+    r.loc[:279, "v"] = 0.5e6
+    d = C.flag_days(r)
+    assert abs(d["gap"].iloc[280]) < 1e-9 and not d["cand"].iloc[280]
+
+
+def test_penny_track():
+    d = C.flag_days(_rows(price=3.0, v=1e6))
+    assert (d["track"].iloc[1:] == "penny").all()
+
+
+from tracks.main import ch_build as B
+
+
+def _session(day, closes, vols=None, o=None):
+    n = len(closes)
+    t = pd.date_range(day + B.OPEN, periods=n, freq="5min")
+    c = np.asarray(closes, float)
+    o = c if o is None else np.asarray(o, float)
+    return pd.DataFrame({"t": t, "o": o, "h": np.maximum(o, c) * 1.001, "l": np.minimum(o, c) * 0.999, "c": c,
+                         "v": 1000.0 if vols is None else vols, "vw": c})
+
+
+CTX = {"prev_c": 20.0, "prev_dv20": 2e7, "vol20": 78_000.0, "hi20": 30.0, "lo20": 10.0, "hi252": 40.0, "lo252": 5.0}
+CURVE = np.linspace(1 / 78, 1, 78)
+
+
+def test_no_trigger_on_a_quiet_day_and_none_before_945():
+    day = pd.Timestamp("2019-03-04")
+    b = B.session(_session(day, [20.0] * 78), day, pd.Timedelta(hours=16))
+    assert B.first_trigger(b, CTX, CURVE, "main", pd.Timedelta(hours=15, minutes=30)) == (None, None)
+    v = np.full(78, 1000.0)
+    v[0] = 1e6                                             # huge first bar: relative volume fires at 9:45, not 9:35
+    b = B.session(_session(day, [20.0] * 78, v), day, pd.Timedelta(hours=16))
+    i, trig = B.first_trigger(b, CTX, CURVE, "main", pd.Timedelta(hours=15, minutes=30))
+    assert trig == "rvol" and b["end"].iloc[i] == day + B.FIRST_S
+
+
+def test_gap_and_breakout_triggers():
+    day = pd.Timestamp("2019-03-04")
+    b = B.session(_session(day, [20.8] * 78), day, pd.Timedelta(hours=16))
+    assert B.first_trigger(b, CTX, CURVE, "main", pd.Timedelta(hours=15, minutes=30))[1] == "gap"
+    closes = [20.0] * 40 + [31.0] * 38
+    b = B.session(_session(day, closes), day, pd.Timedelta(hours=16))
+    i, trig = B.first_trigger(b, CTX, CURVE, "main", pd.Timedelta(hours=15, minutes=30))
+    assert trig == "hl20" and i == 40
+
+
+def test_labels_target_stop_and_costs():
+    day = pd.Timestamp("2019-03-04")
+    after = pd.DataFrame({"o": [100.0, 100.0], "h": [101.0, 104.5], "l": [99.5, 100.0], "c": [100.0, 104.0]})
+    later = pd.DataFrame({"date": pd.bdate_range("2019-03-05", periods=4), "h": 101.0, "l": 99.0, "c": 100.0})
+    lab = B.labels(after, 100.0, 2.0, later, "main", day)
+    c = B.cost_frac("main", 100.0, False, 1)
+    assert np.isclose(lab["long_1.0"], 0.04 - c)          # target 104 hit on day 0
+    assert lab["short_1.0"] < -0.02                         # stop at 102 hit first for the short
+    both = pd.DataFrame({"o": [100.0], "h": [105.0], "l": [97.0], "c": [100.0]})
+    assert np.isclose(B.labels(both, 100.0, 2.0, later.iloc[:0], "main", day)["long_1.0"],
+                      -0.02 - B.cost_frac("main", 100.0, False, 1))   # both in one bar: the stop counts
+
+
+def test_features_count_and_no_future_bars():
+    day = pd.Timestamp("2019-03-04")
+    rng = np.random.default_rng(0)
+    c = 20 * np.exp(np.cumsum(rng.normal(0, 0.002, 78)))
+    b = B.session(_session(day, c), day, pd.Timedelta(hours=16))
+    daily = pd.DataFrame({"o": 20.0, "h": 20.4, "l": 19.6, "c": 20 * np.exp(np.cumsum(rng.normal(0, 0.01, 260))),
+                          "v": 1e6})
+    mkt = {"dow": 0.0}
+    f1 = B.features(b, 20, daily, CTX, mkt, CURVE, "rvol")
+    b2 = b.copy()
+    b2.loc[21:, ["o", "h", "l", "c"]] *= 3                  # changing later bars must not change the inputs
+    f2 = B.features(b2, 20, daily, CTX, mkt, CURVE, "rvol")
+    assert len(f1) == 68
+    assert all((np.isnan(f1[k]) and np.isnan(f2[k])) or f1[k] == f2[k] for k in f1)

@@ -12,6 +12,10 @@ on:
         description: "Run id whose tone files to reuse (empty: score them now)"
         required: false
         default: ""
+      last_stage:
+        description: "The last job's nx1_study stage: all (events and training) or events (rebuild the cache only)"
+        required: false
+        default: all
 
 permissions: {}
 
@@ -127,8 +131,10 @@ jobs:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          LAST: ${{ inputs.last_stage }}
         run: |
-          PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx1_study --stage all --cache cache/nx1 \
+          [[ "$LAST" == all || "$LAST" == events ]] || { echo "::error::last_stage must be all or events"; exit 1; }
+          PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx1_study --stage "$LAST" --cache cache/nx1 \
             --out research/results/NX1 --budget-min 290
 
       - name: Save the data cache
