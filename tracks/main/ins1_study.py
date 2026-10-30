@@ -245,7 +245,7 @@ def stage_measure(cache, out):
     pm, _, pt = nw_tstat(c["pick"], LAGS)
     ff5, sha5 = stats.fetch_french(stats.FF5)
     umd, shau = stats.fetch_french(stats.UMD)
-    f = ff5.join(umd, how="inner").reindex(c.index)
+    f = ff5.join(umd, how="inner").reindex(c.index)[["Mkt-RF", "SMB", "HML", "RMW", "CMA", umd.columns[0]]]
     ok = f.notna().all(axis=1).to_numpy()
     alpha = stats.ols_hac(c["diff"].to_numpy(float)[ok], f.to_numpy()[ok], LAGS) if ok.sum() > 8 else None
     a = alpha or {"alpha": float("nan"), "t": float("nan")}
