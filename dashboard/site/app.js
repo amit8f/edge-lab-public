@@ -417,11 +417,16 @@ function pickedBy(ev) {
 function evCard(ev, today) {
   const dcs = decisionOf(ev);
   const res = el("div", { class: "res" });
-  // every stock: its price now and how far it moved since the decision (the stock itself, up or down)
+  // every stock: its price now and how far the stock itself moved since the decision (grey: up or down
+  // is good or bad depending on the side); an open trade's line is in its own direction (a short gains
+  // when the stock falls), green when it is making money
   const mv = ev.last_price && ev.entry_iex ? ev.last_price / ev.entry_iex - 1 : null;
   if (ev.last_price) res.append(el("div", { class: "small" }, el("span", { text: `now ${money(ev.last_price)} ` }),
-    el("span", { class: mv >= 0 ? "up" : "down", text: pct(mv) })));
+    el("span", { class: "muted", text: `stock ${pct(mv)}` })));
+  const run = ev.side && mv != null ? ev.side * mv : null;
   if (ev.result) res.append(el("div", { class: `small ${ev.result.net >= 0 ? "up" : "down"}`, text: `trade ${pct(ev.result.net)} net` }));
+  else if (run != null) res.append(el("div", { class: `small ${run >= 0 ? "up" : "down"}`,
+    text: `trade ${pct(run)} so far${today ? "" : ", settling"}` }));
   else if (ev.side) res.append(el("div", { class: "muted small", text: today ? "trade open" : "settling" }));
   else if (ev.next_move != null) res.append(el("div", { class: "muted small", text: `next close ${pct(ev.next_move)}` }));
   const card = el("div", { class: `ev ${ev.side ? "" : "skipped"}`, role: "button", tabindex: "0" },

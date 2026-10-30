@@ -105,3 +105,59 @@ def test_features_count_and_no_future_bars():
     f2 = B.features(b2, 20, daily, CTX, mkt, CURVE, "rvol")
     assert len(f1) == 68
     assert all((np.isnan(f1[k]) and np.isnan(f2[k])) or f1[k] == f2[k] for k in f1)
+
+
+from tracks.main import ch_study as S
+
+
+def _srows(n_days=900, per_day=6, seed=0):
+    rng = np.random.default_rng(seed)
+    days = pd.bdate_range("2017-01-02", periods=n_days)
+    d = pd.DataFrame({"date": np.repeat(days, per_day), "symbol": np.tile([f"S{i}" for i in range(per_day)], n_days)})
+    d["track"], d["trig"], d["cik"] = "main", "rvol", 1
+    d["month"] = d["date"].dt.strftime("%Y-%m")
+    d["k"] = d.groupby("month").cumcount()
+    d["x1"] = rng.normal(size=len(d))
+    for j, lab in enumerate(B.LABELS):
+        d[lab] = 0.01 * d["x1"] * (1 if lab.startswith("long") else -1) + rng.normal(0, 0.01, len(d))
+    return d
+
+
+def test_splits_purge_and_years():
+    r = _srows()
+    a, v, b, t = S.splits(r, 2019)
+    assert r["date"][a].max() < pd.Timestamp("2018-01-01") and (r["date"][v].dt.year == 2018).all()
+    assert r["date"][b].max() <= pd.Timestamp("2018-12-24") and (r["date"][t].dt.year == 2019).all()
+
+
+def test_decide_cut_and_size():
+    scale = np.linspace(0, 1, 101)                         # validation percentiles of the largest prediction
+    p = np.array([[0.5, 0.1, 0, 0, 0, 0], [0, 0, 0, 0, 0.995, 0], [0.9, 0, 0, 0, 0, 0]])
+    pick, trade, size = S.decide(p, 0.8, scale)
+    assert list(pick) == [0, 4, 0] and list(trade) == [False, True, True]
+    assert np.isclose(size[1], S.SIZE_HI) and np.isclose(size[2], S.SIZE_LO + (S.SIZE_HI - S.SIZE_LO) * 0.1 / 0.19)
+
+
+def test_walk_forward_learns_a_planted_signal_and_controls_differ():
+    r = _srows()
+    fit = lambda X, Y, s: [np.linalg.lstsq(np.c_[X, np.ones(len(X))], np.nan_to_num(Y[:, j]), rcond=None)[0]
+                           for j in range(Y.shape[1])]
+    pred = lambda m, X: np.column_stack([np.c_[X, np.ones(len(X))] @ w for w in m])
+    dec, ins = S.walk_forward(r, fit, pred, "test", log=lambda *a: None)
+    assert set(dec["year"]) == {2019, 2020} and dec["trade"].mean() < 0.4
+    p = S.with_control(dec, r)
+    assert (p["symbol"] != "").all() and p["ctrl"].notna().all()
+    w = S.daily(p)
+    assert w["diff"].mean() > 0                            # the planted signal beats random same-day picks
+    assert ins["date"].min() < pd.Timestamp("2019-01-01")
+
+
+def test_render_shapes_and_no_nan():
+    rng = np.random.default_rng(1)
+    c = 20 * np.exp(np.cumsum(rng.normal(0, 0.003, 156)))
+    intr = np.c_[c, c * 1.002, c * 0.998, c, rng.uniform(1e3, 1e4, 156)].astype(np.float32)
+    intr[120:] = np.nan                                    # today ends at s
+    dc = 20 * np.exp(np.cumsum(rng.normal(0, 0.01, 60)))
+    dly = np.c_[dc, dc * 1.01, dc * 0.99, dc, rng.uniform(1e5, 1e6, 60)].astype(np.float32)
+    img = S.render(intr, dly)
+    assert img.shape == (3, 64, 192) and np.isfinite(img).all() and img[0].sum() > 0 and img[2].sum() > 0

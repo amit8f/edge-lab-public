@@ -1,14 +1,15 @@
 # CH (research/prereg/CH.md): chart-model arms, main and penny. Manual runs only, one at a time (own cache
 # cache/w1/ch, beside W1's daily cache, which it only reads). Order:
 #   stage=candidates, stage=context, then stage=build (rerun until CH_build_progress.json says finished),
-#   then the hand check (stage added with it).
+#   then stage=check (research/checks/CH.csv; hand-check.yml pulls each row's 5-minute bars), the hand check,
+#   then stage=trees, stage=img (rerun until all years are saved) and stage=measure.
 name: ch-study
 
 on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "candidates, context or build"
+        description: "candidates, context, build, check, trees, img or measure"
         required: true
         default: candidates
 
@@ -38,6 +39,9 @@ jobs:
           uv python install 3.12.10
           uv venv --python 3.12.10 .venv
           uv pip install --python .venv/bin/python -r requirements.txt
+          if [[ "${{ github.event.inputs.stage }}" == img ]]; then
+            uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          fi
 
       - name: Check secrets are present
         env:
@@ -69,7 +73,12 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: |
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
-          .venv/bin/python -m tracks.main.ch_data --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320
+          case "$STAGE" in
+            candidates|context|build) mod=tracks.main.ch_data ;;
+            check|trees|img|measure) mod=tracks.main.ch_study ;;
+            *) echo "::error::unknown stage $STAGE"; exit 1 ;;
+          esac
+          .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320
 
       - name: Save CH's cache (also after a failure, so a rerun resumes)
         if: always()

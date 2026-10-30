@@ -51,6 +51,7 @@ LOOKBACK_DAYS = 420
 NEWS_DAYS_KEEP = 40
 IEX_SHARE_DAYS = 5
 SETTLE_AFTER = pd.Timedelta(minutes=20)     # SIP bars are free 15 minutes after the fact
+PREP = pd.Timedelta(minutes=15)             # polling starts this long before the open to fetch context early
 # settled and kept, but left out of the forward test: no pre-open event was decided (NX3.md, bug fixes 2026-10-28)
 BUG_DAYS = {"2026-10-26", "2026-10-27", "2026-10-28"}
 BOOK_CASH = 5000.0
@@ -460,10 +461,10 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
                 O.guarded(O.log_day, root, day, d, br)
         settle(root, api, cal, d)
         return 3
-    if now < ses["open_t"] - pd.Timedelta(minutes=5):
-        while time.monotonic() < stop and clock() < ses["open_t"] - pd.Timedelta(minutes=5):
+    if now < ses["open_t"] - PREP:
+        while time.monotonic() < stop and clock() < ses["open_t"] - PREP:
             sleep(POLL_S)
-        if clock() < ses["open_t"] - pd.Timedelta(minutes=5):
+        if clock() < ses["open_t"] - PREP:
             return 0
     day = Day(root, d)
     meta = json.loads(META.read_text())
@@ -489,14 +490,17 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
         for r in missed.to_dict("records"):
             day.log({"key": r["key"], "symbol": r["symbol"], "d": r["d"], "t": r["t"], "status": "missed",
                      "decided_at": now})
+        # context for every symbol with news so far, not only the ready ones: it reads the previous session
+        # only, so the pre-open news gets it before the open and the open's batch is decided in its first
+        # minute (fetched at 9:31 for ~1,500 symbols on 2026-10-30, it took 9 minutes and 232 events missed)
+        new = sorted(set(ev["symbol"]) - set(ctx) - set(day.ctx.get("no_ctx", [])))
+        # only symbols Alpaca lists: one foreign symbol (TSX:CAE, 002594) made it refuse the whole request
+        ask = [s for s in new if s in listed]
+        if ask or (market is None and len(ready)):
+            c, market = stock_context(api, ask, ses["prev"], cal)
+            ctx |= c
+        day.ctx["no_ctx"] = sorted(set(day.ctx.get("no_ctx", [])) | (set(new) - set(ctx)))
         if len(ready):
-            new = sorted(set(ready["symbol"]) - set(ctx) - set(day.ctx.get("no_ctx", [])))
-            # only symbols Alpaca lists: one foreign symbol (TSX:CAE, 002594) made it refuse the whole request
-            ask = [s for s in new if s in listed]
-            if ask or market is None:
-                c, market = stock_context(api, ask, ses["prev"], cal)
-                ctx |= c
-            day.ctx["no_ctx"] = sorted(set(day.ctx.get("no_ctx", [])) | (set(new) - set(ctx)))
             decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now)
         if br and now >= ses["open_t"]:
             O.guarded(O.send_exits, day, d, br)
