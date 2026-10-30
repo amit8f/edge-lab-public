@@ -1,6 +1,7 @@
 """Independent bar pull for hand checks (PROTOCOL rule 14). Reads research/checks/<name>.csv with columns
 symbol, start, end and writes research/checks/<name>_bars.json: each symbol's daily SIP bars over
-[start, end] with both adjustment=raw and adjustment=all. A file with columns cik, accession instead writes
+[start, end] with both adjustment=raw and adjustment=all (an optional timeframe column, such as 5Min, pulls
+that bar size over the whole of each day instead). A file with columns cik, accession instead writes
 research/checks/<name>_edgar.json: each filing's acceptance time, form and filer names from its EDGAR index
 page (not the header file the studies read). Plain HTTP on purpose, so a check never reuses a study's code."""
 import csv
@@ -16,10 +17,10 @@ URL = "https://data.alpaca.markets/v2/stocks/{s}/bars"
 EDGAR = "https://www.sec.gov/Archives/edgar/data/{cik}/{nodash}/{acc}-index.htm"
 
 
-def bars(sym, start, end, adjustment, headers):
+def bars(sym, start, end, adjustment, headers, timeframe="1Day"):
     out, token = [], None
     while True:
-        p = {"timeframe": "1Day", "start": start, "end": end, "feed": "sip", "adjustment": adjustment,
+        p = {"timeframe": timeframe, "start": start, "end": end, "feed": "sip", "adjustment": adjustment,
              "limit": 10000, **({"page_token": token} if token else {})}
         for attempt in range(4):
             r = requests.get(URL.format(s=sym), params=p, headers=headers, timeout=60)
@@ -74,8 +75,10 @@ def main(name):
                "APCA-API-SECRET-KEY": os.environ["ALPACA_API_SECRET_KEY"]}
     res = []
     for r in rows:
-        res.append({**r, "raw": bars(r["symbol"], r["start"], r["end"], "raw", headers),
-                    "all": bars(r["symbol"], r["start"], r["end"], "all", headers)})
+        tf = r.get("timeframe") or "1Day"
+        end = r["end"] if tf == "1Day" else f'{r["end"]}T23:59:59Z'
+        res.append({**r, "raw": bars(r["symbol"], r["start"], end, "raw", headers, tf),
+                    "all": bars(r["symbol"], r["start"], end, "all", headers, tf)})
     tmp = f"research/checks/{name}_bars.json.tmp"
     with open(tmp, "w") as f:
         json.dump(res, f)
