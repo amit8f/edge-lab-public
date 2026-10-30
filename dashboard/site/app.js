@@ -452,6 +452,9 @@ function renderBooks() {
           text: b.pnl_pct == null ? "" : `${b.pnl_pct >= 0 ? "+" : ""}${b.pnl_pct.toFixed(2)}%` })),
       b.open != null ? el("div", { class: "kv muted small" }, el("span", { text: `${b.open} open` }),
         el("span", { text: b.account || "" })) : null,
+      b.edge_pct != null ? el("div", { class: "kv small" }, el("span", { class: "muted", text: "picks minus random so far" }),
+        el("span", { class: b.edge_pct >= 0 ? "up" : "down", text: `${b.edge_pct >= 0 ? "+" : ""}${b.edge_pct.toFixed(2)}%` +
+          (b.t_nw != null ? ` · t ${b.t_nw.toFixed(2)}` : "") })) : null,
       b.first_day && b.closed === 0 ? el("div", { class: "muted small", text: `counts from ${b.first_day}` }) : null,
       b.excluded_days && b.excluded_days.length ? el("div", { class: "muted small", text: `left out: ${b.excluded_days.join(", ")}` }) : null,
       tw ? el("div", { class: "kv muted small" }, el("span", { text: `coin-flip twin: ${tw.closed} trades` }),

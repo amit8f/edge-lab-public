@@ -85,3 +85,12 @@ kinds `I1F_picks` and `A1F_picks`.
   close. Costs: I1F 2% round trip; A1F 2% plus 20% a year borrow.
 - A day the job misses stays missed. Days before 2026-10-26 are built and printed only (a dry run), never
   logged.
+
+## Amendment 1 (2026-10-30, before any A1F record exists)
+
+Asked for by Amit after V6 (`results/V6/REPORT.md`): in A1's history, two squeezed random-control shorts
+decided most of the flag-minus-control result. A1F's pass rule gains one condition. The cohort
+flag-minus-control mean, recomputed without its single best cohort, must still be > 0. The other
+conditions (t >= 2.0, the flags' own mean after costs > 0, the 60-day and 30-short minimums) are
+unchanged. Nothing else in FWD2 changes. The first A1F signal day is 2026-10-30, and no A1F record had been
+written when this was added.

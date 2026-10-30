@@ -24,3 +24,15 @@ def test_month_events_keeps_one_symbol_named_short_seller_articles(monkeypatch):
     monkeypatch.setattr(W.W, "classified", fake)
     monkeypatch.setattr(W, "named", lambda h, s, n: True)
     assert W.month_events(news, {})["id"].tolist() == [1]
+
+
+def test_fill_urls_matches_by_id_and_keeps_existing():
+    chk = pd.DataFrame({"id": [10, 11], "t": ["2020-03-02 10:00:00", "2020-03-03 10:00:00"], "symbol": ["AAA", "BBB"],
+                        "url": [None, "https://kept"]})
+    calls = []
+
+    def fetch(sym, a, b):
+        calls.append(sym)
+        return [{"id": 9, "url": "https://wrong"}, {"id": 10, "url": "https://right"}]
+    out = W.fill_urls(chk, fetch)
+    assert out["url"].tolist() == ["https://right", "https://kept"] and calls == ["AAA"]
