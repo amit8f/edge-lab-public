@@ -31,6 +31,7 @@ CLUSTER, HOLD, N_CTRL, LAGS = 5, 20, 5, 11
 FIRST_ENTRY, LAST_ENTRY, HOLDOUT = pd.Timestamp("2017-01-01"), pd.Timestamp("2025-08-31"), pd.Timestamp("2025-10-01")
 MIN_EVENTS = 200
 CHECK = Path("research/checks/INS1.csv")
+QDIR = "q2"  # v1 ("q") counted multi-owner trades once per owner and kept preferred stock (fixed 2026-10-30)
 
 
 def idir(cache):
@@ -48,11 +49,17 @@ def read_quarter(raw):
                                 "ISSUERTRADINGSYMBOL"])
     sub = sub[sub["DOCUMENT_TYPE"] == "4"]
     own = rd("REPORTINGOWNER.tsv", ["ACCESSION_NUMBER", "RPTOWNERCIK", "RPTOWNER_RELATIONSHIP"])
-    tr = rd("NONDERIV_TRANS.tsv", ["ACCESSION_NUMBER", "TRANS_DATE", "TRANS_CODE", "TRANS_SHARES",
-                                   "TRANS_PRICEPERSHARE"])
+    tr = rd("NONDERIV_TRANS.tsv", ["ACCESSION_NUMBER", "NONDERIV_TRANS_SK", "SECURITY_TITLE", "TRANS_DATE",
+                                   "TRANS_CODE", "TRANS_SHARES", "TRANS_PRICEPERSHARE"])
+    tr = tr[common_stock(tr["SECURITY_TITLE"])]
     rel = own["RPTOWNER_RELATIONSHIP"].fillna("").str.lower()
     own = own.assign(officer_dir=rel.str.contains("officer") | rel.str.contains("director"))
     m = tr.merge(sub, on="ACCESSION_NUMBER").merge(own, on="ACCESSION_NUMBER")
+    # a filing with several reporting owners (a fund and its manager) lists each trade once: keep one owner per
+    # trade, an officer/director first, so values and histories are not counted once per owner
+    m = (m.assign(_oc=pd.to_numeric(m["RPTOWNERCIK"], errors="coerce"))
+         .sort_values(["officer_dir", "_oc"], ascending=[False, True], kind="stable")
+         .drop_duplicates("NONDERIV_TRANS_SK"))
     out = pd.DataFrame({
         "accession": m["ACCESSION_NUMBER"],
         "filed": pd.to_datetime(m["FILING_DATE"], format="%d-%b-%Y", errors="coerce"),
@@ -67,8 +74,18 @@ def read_quarter(raw):
     return out[out["code"].isin(["P", "S"])].dropna(subset=["filed", "issuer_cik", "owner_cik", "trade_date"])
 
 
+NOT_COMMON = ("prefer", "pfd", "%", "note", "debenture", "bond", "warrant", "right")
+
+
+def common_stock(title):
+    """True where a non-derivative security title is the issuer's common equity (not preferred, notes or
+    warrants)."""
+    t = title.fillna("").str.lower()
+    return ~t.apply(lambda x: any(w in x for w in NOT_COMMON))
+
+
 def stage_data(cache, out):
-    d = idir(cache) / "q"
+    d = idir(cache) / QDIR
     d.mkdir(parents=True, exist_ok=True)
     for q in QUARTERS:
         f = d / f"{q}.parquet"
@@ -84,7 +101,7 @@ def stage_data(cache, out):
 
 
 def load_trades(cache):
-    return pd.concat([pd.read_parquet(f) for f in sorted((idir(cache) / "q").glob("*.parquet"))], ignore_index=True)
+    return pd.concat([pd.read_parquet(f) for f in sorted((idir(cache) / QDIR).glob("*.parquet"))], ignore_index=True)
 
 
 # ---------- events (pure helpers tested) ----------

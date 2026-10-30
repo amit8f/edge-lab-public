@@ -38,9 +38,20 @@ def test_read_quarter_keeps_form_4_open_market_trades():
         f.writestr("SUBMISSION.tsv", "ACCESSION_NUMBER\tFILING_DATE\tDOCUMENT_TYPE\tISSUERCIK\tISSUERTRADINGSYMBOL\n"
                                      "x1\t05-MAR-2024\t4\t100\tabc\nx2\t05-MAR-2024\t3\t100\tABC\n")
         f.writestr("REPORTINGOWNER.tsv", "ACCESSION_NUMBER\tRPTOWNERCIK\tRPTOWNER_RELATIONSHIP\n"
-                                         "x1\t9\tDirector\nx2\t9\tTenPercentOwner\n")
-        f.writestr("NONDERIV_TRANS.tsv", "ACCESSION_NUMBER\tTRANS_DATE\tTRANS_CODE\tTRANS_SHARES\tTRANS_PRICEPERSHARE\n"
-                                         "x1\t01-MAR-2024\tP\t1000\t30\nx1\t01-MAR-2024\tA\t10\t0\nx2\t01-MAR-2024\tP\t5\t1\n")
+                                         "x1\t8\tTenPercentOwner\nx1\t9\tDirector\nx2\t9\tTenPercentOwner\n")
+        f.writestr("NONDERIV_TRANS.tsv", "ACCESSION_NUMBER\tNONDERIV_TRANS_SK\tSECURITY_TITLE\tTRANS_DATE\tTRANS_CODE"
+                                         "\tTRANS_SHARES\tTRANS_PRICEPERSHARE\n"
+                                         "x1\t1\tCommon Stock\t01-MAR-2024\tP\t1000\t30\n"
+                                         "x1\t2\tCommon Stock\t01-MAR-2024\tA\t10\t0\n"
+                                         "x1\t3\t5.95% Preferred Stock\t01-MAR-2024\tP\t1000\t25\n"
+                                         "x2\t4\tCommon Stock\t01-MAR-2024\tP\t5\t1\n")
     t = I.read_quarter(z.getvalue())
     assert len(t) == 1 and t["issuer_symbol"].iloc[0] == "ABC" and bool(t["officer_dir"].iloc[0])
     assert t["filed"].iloc[0] == pd.Timestamp("2024-03-05") and t["shares"].iloc[0] * t["price"].iloc[0] == 30000
+    assert t["owner_cik"].iloc[0] == 9                                     # one owner per trade, the director
+
+
+def test_common_stock_titles():
+    t = pd.Series(["Common Stock", "Class A Common Stock", "Common Units", "5.95% Preferred Stock",
+                   "Series B Preferred", "Warrants", "Senior Notes", None])
+    assert I.common_stock(t).tolist() == [True, True, True, False, False, False, False, True]
