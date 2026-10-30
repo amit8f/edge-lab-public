@@ -70,6 +70,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           STATE_BRANCH: state-nx3
           RUN_LABEL: nx3-live ${{ github.run_id }}-${{ github.run_attempt }}
+          PYTHONUNBUFFERED: "1"      # log lines carry the time they happened, not the flush time
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           ALPACA_NX3_KEY_ID: ${{ secrets.ALPACA_NX3_KEY_ID }}

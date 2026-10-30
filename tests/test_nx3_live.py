@@ -161,3 +161,25 @@ def test_a_day_end_to_end(tmp_path, monkeypatch):
     assert len(s["trades"]) == 2 * len(rec["picks"]) and s["pick_minus_control"] is not None
     assert {x["days"] for x in s["trades"]} == {2} and "bug days" in s["excluded"]   # D is one of them
     assert led.verify() == []
+
+
+def test_context_is_fetched_before_the_open(tmp_path, monkeypatch):
+    monkeypatch.setattr(S, "daily_closes", lambda syms, first, last, h: {})
+    api = FakeApi()
+    api.clock = OPEN - pd.Timedelta(minutes=15)
+    asked = []
+    daily = api.daily
+
+    def spy_daily(symbols, start, end, adjustment):
+        asked.append((api.clock, tuple(symbols)))
+        return daily(symbols, start, end, adjustment)
+    api.daily = spy_daily
+
+    def sleep(s):
+        api.clock += pd.Timedelta(seconds=30)
+    L.run(tmp_path, 20, api=api, clock=lambda: api.clock, sleep=sleep)
+    first = min(c for c, syms in asked if "AAA" in syms)
+    assert first < OPEN                     # the open's events then only wait for their decision
+    dec = [json.loads(x) for x in (tmp_path / "nx3" / "days" / "2026-10-26" / "decisions.jsonl").read_text().splitlines()]
+    aaa = next(x for x in dec if x["symbol"] == "AAA")
+    assert aaa["status"] == "decided" and pd.Timestamp(aaa["decided_at"]) < OPEN + pd.Timedelta(minutes=2)
