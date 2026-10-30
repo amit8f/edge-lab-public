@@ -5,6 +5,11 @@ name: nx2-study
 
 on:
   workflow_dispatch:
+    inputs:
+      models_only:
+        description: "skip the walk-forward; save the version 1 models for FWD1's near-miss book"
+        type: boolean
+        default: false
 
 permissions: {}
 
@@ -51,7 +56,11 @@ jobs:
           sudo mkswap /mnt/nx2.swap >/dev/null && sudo swapon /mnt/nx2.swap && free -g
 
       - name: Walk-forward, gate and models
-        run: PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx2_study --cache cache/nx1 --out research/results/NX2
+        env:
+          MODELS_ONLY: ${{ inputs.models_only }}
+        run: |
+          flag=""; [[ "$MODELS_ONLY" == "true" ]] && flag="--models-only"
+          PYTHONPATH=. .venv/bin/python -u -m tracks.news.nx2_study --cache cache/nx1 --out research/results/NX2 $flag
 
       - name: Commit the results to this branch
         env:
