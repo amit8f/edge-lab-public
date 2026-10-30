@@ -10,3 +10,5 @@
 
 Both are data bugs, not method changes. The Form 4 data were rebuilt (`QDIR = "q2"`), the events redrawn and a
 new hand check of 20 drawn; it must again have at least 19 right before returns are computed.
+
+## 2026-10-30: hand check round 2 after the fixes: 20 of 20 right (`research/checks/INS1.csv`)
