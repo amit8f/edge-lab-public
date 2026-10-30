@@ -21,13 +21,17 @@ import re
 import subprocess
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
+import pandas as pd
 import requests
 
 from adaptive import accounts as A
 from core.alpaca import TRADE
+from paper import fwd_eval as F
 
 DATA = "https://data.alpaca.markets/v2"
+ET = ZoneInfo("America/New_York")
 NX3_DAYS, STALE_DAYS = 7, 7
 NX3_COST = 0.002          # NX3's round trip (config/risk.yaml news track), for the skipped stocks' moves
 SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs"]
@@ -163,8 +167,7 @@ def log_books(st):
     """Books that log picks on a schedule (weekly or monthly) and are judged later from those logs."""
     out = []
     led = _jsonl(st / "state" / "longterm" / "ledger.jsonl")
-    for kind, idea in (("M3_picks", "M3"), ("M4_picks", "M4"), ("M8_picks", "M6"), ("R1_picks", "R1"),
-                       ("I1F_picks", "I1F"), ("A1F_picks", "A1F"), ("META3_picks", "META3"),
+    for kind, idea in (("M3_picks", "M3"), ("M4_picks", "M4"), ("M8_picks", "M6"), ("META3_picks", "META3"),
                        ("M10_watch", "M10"), ("P3_watch", "P3")):
         n = sum(1 for x in led if x.get("kind") == kind)
         last = max((x["date"] for x in led if x.get("kind") == kind), default=None)
@@ -262,6 +265,62 @@ def daily_closes(symbols, start, end, adjustment):
         token = j.get("next_page_token")
         if not token:
             break
+    return out
+
+
+def daily_bars(symbols, start):
+    """{symbol: DataFrame(o, c) by session} from SIP all-adjusted daily bars, start to now - 16 minutes, and the
+    sessions SPY traded (the finished-session calendar). Symbols go 100 to a request."""
+    end = (datetime.now(timezone.utc) - timedelta(minutes=16)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    syms, rows = sorted(set(symbols) | {"SPY"}), {}
+    for i in range(0, len(syms), 100):
+        token = None
+        while True:
+            p = {"symbols": ",".join(syms[i:i + 100]), "timeframe": "1Day", "start": start, "end": end, "feed": "sip",
+                 "adjustment": "all", "limit": 10000, **({"page_token": token} if token else {})}
+            j = alpaca_get("/stocks/bars", p)
+            if not j:
+                break
+            for sym, bars in (j.get("bars") or {}).items():
+                rows.setdefault(sym, []).extend(b for b in bars if b.get("v"))
+            token = j.get("next_page_token")
+            if not token:
+                break
+    frames = {sym: pd.DataFrame([{"t": pd.Timestamp(b["t"][:10]), "o": b["o"], "c": b["c"]} for b in bs])
+              .drop_duplicates("t").set_index("t").sort_index() for sym, bs in rows.items() if bs}
+    today = pd.Timestamp(datetime.now(ET).date())
+    cal = [d for d in frames.get("SPY", pd.DataFrame(index=[])).index
+           if d < today or datetime.now(ET).hour >= 17]           # today's session counts once it has closed
+    return frames, cal
+
+
+def _safe(fn, *a):
+    """A section that fails (a network error, a log it can't read yet) shows nothing instead of stopping the
+    whole summary; the error goes to the job log."""
+    try:
+        return fn(*a)
+    except Exception as e:          # noqa: BLE001
+        print(f"::warning::{fn.__name__} failed: {type(e).__name__}: {e}")
+        return []
+
+
+def fwd_books(st):
+    """The forward near-miss books (FWD1 R1 and L1 cells, FWD2 I1F and A1F) and COMBO1, scored from their logs
+    by paper.fwd_eval: closed trades toward the rule-20 minimum and the running picks-minus-control return."""
+    recs = F.records(st / "state")
+    start = min((r.get("as_of") or r.get("filed") or "2026-10-23" for _, r in recs), default=None)
+    if start is None:
+        return []
+    bars, cal = daily_bars(F.symbols(recs), (pd.Timestamp(start) - pd.Timedelta(days=7)).strftime("%Y-%m-%d"))
+    out = []
+    for b in F.evaluate(st / "state", bars, cal):
+        name = b["book"]
+        note = ("mix of the near-miss books, judged after 60 trading days with 2+ books open" if name == "COMBO1"
+                else "picks minus same-day random picks, after costs; judged at 60 trading days and 30 closed trades")
+        extra = {k: b[k] for k in ("t_nw", "own_mean", "mean_without_best") if b.get(k) is not None}
+        out.append(_book(f"{name} forward", name.split("-")[0], 30 if name != "COMBO1" else 60, b["closed_trades"]
+                         if name != "COMBO1" else b["days"], None, unit="trades" if name != "COMBO1" else "days",
+                         note=note, edge_pct=100 * b["cum"], **extra))
     return out
 
 
@@ -420,7 +479,8 @@ def last_change(repo_root, names):
 
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
-    books = nx3_books(st) + paper_books(st) + nx1_book(st) + watch_books(st) + log_books(st) + ai_books(st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+             + ai_books(st))
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),
            "nx3": nx3_days(st, Path(out) / "cache"), "ideas": ideas(repo_root, books)}
