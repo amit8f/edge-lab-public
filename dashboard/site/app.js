@@ -385,7 +385,10 @@ function asModel(ev) {
 function renderFeed(day) {
   const d = SUMMARY && SUMMARY.nx3.find(x => x.day === day);
   const evs = [...dayEvents(day)].sort((a, b) => (b.t > a.t ? 1 : -1)).map(asModel);
-  $("modelfilter").replaceChildren(...MODELS.map(([k, label]) => {
+  // the NXM / NXR books pick after the close, so on today's list they only appear once they have
+  const booksIn = day !== etDate() || evs.some(ev => ev.arms);
+  if (!booksIn) selModel = "NX3";
+  $("modelfilter").replaceChildren(...MODELS.filter(([k]) => booksIn || k === "NX3").map(([k, label]) => {
     const n = k === "NX3" ? evs.filter(ev => ev.side).length : evs.filter(ev => (ev.arms || {})[k]).length;
     const b = el("button", { "aria-pressed": String(selModel === k), text: `${label} ${n}`,
       title: k === "NX3" ? "NX3, the model the tree shows" : "this book's picks; the tree still shows NX3" });
