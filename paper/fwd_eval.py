@@ -1,6 +1,8 @@
 """Scorer for the forward near-miss books (research/prereg/FWD1.md rule 20, FWD2.md) and COMBO1: reads their
 append-only logs, prices every pick and control from SIP all-adjusted daily bars, and returns each book's
 daily pick-minus-control series, its closed cohorts and the pass-rule numbers, plus COMBO1's daily mix.
+NX2's records (FWD1) give each pick and control its own side and cost; NX1's 10% stop is not applied here
+(a running read only: the rule-20 judgement re-scores NX2 with the stop).
 Read-only: it never writes to a ledger. The dashboard calls it; nothing trades on it.
 
 Trade path (each registration's entry and exit): entry at the open of the first session after the signal
@@ -18,8 +20,8 @@ from tracks.main.longterm.stats import nw_tstat
 
 BOOKS = {"R1_picks": "R1", "I1F_picks": "I1F", "A1F_picks": "A1F"}
 L1_CELLS = {("offering", "penny"): "L1-offering-penny", ("late_filing", "main"): "L1-late-main"}
-COMBO = ["R1", "L1-offering-penny", "L1-late-main", "I1F", "A1F"]   # FWD2's members; NX2 joins once it logs
-LAGS = {"R1": 3, "I1F": 3, "A1F": 3, "L1-offering-penny": 3, "L1-late-main": 3, "COMBO1": 5}
+COMBO = ["R1", "NX2", "L1-offering-penny", "L1-late-main", "I1F", "A1F"]   # FWD2's members
+LAGS = {"R1": 3, "NX2": 5, "I1F": 3, "A1F": 3, "L1-offering-penny": 3, "L1-late-main": 3, "COMBO1": 5}
 VOL_DAYS, VOL_TARGET = 60, 0.01
 
 
@@ -28,9 +30,14 @@ def _jsonl(p):
     return [json.loads(x) for x in p.read_text().splitlines() if x.strip()] if p.exists() else []
 
 
-def records(state):
-    """[(book, record)] from the longterm ledger (R1, I1F, A1F) and the L1 forward ledger, in log order."""
+def records(state, nx1=None):
+    """[(book, record)] from the longterm ledger (R1, I1F, A1F), the L1 forward ledger and, given NX1's state
+    folder, NX2's near-miss log, in log order."""
     out = []
+    if nx1 is not None:
+        root = Path(nx1) / "nx1"
+        out += [("NX2", json.loads((root / e["file"]).read_text()))
+                for e in _jsonl(root / "ledger.jsonl") if e.get("kind") == "NX2_picks"]
     lt = Path(state) / "longterm"
     for e in _jsonl(lt / "ledger.jsonl"):
         if e.get("kind") in BOOKS:
@@ -47,8 +54,16 @@ def symbols(recs):
     for book, r in recs:
         if book == "L1":
             continue
-        s |= {p["symbol"] for p in r.get("picks", [])} | set(r.get("control", []))
+        s |= {p["symbol"] for p in r.get("picks", [])} | {_leg(c)[0] for c in r.get("control", [])}
     return s
+
+
+def _leg(x, side=None, cost=0.0):
+    """(symbol, sign, cost) of a pick or control entry: a bare symbol takes the record's side and cost, a
+    dict (NX2) carries its own."""
+    if isinstance(x, str):
+        return x, (-1 if side == "short" else 1), cost
+    return x["symbol"], (-1 if x.get("side", side) == "short" else 1), float(x.get("cost", cost))
 
 
 def trade_days(bars, cal, as_of, hold, sign, cost, stop=None, borrow=0.0):
@@ -76,14 +91,14 @@ def bar_book(book, recs, bars, cal):
     """Daily and per-cohort numbers for one bar-priced book (R1, I1F, A1F)."""
     daily, cohorts = {}, []
     for r in recs:
-        short = r.get("side") == "short"
-        sign = -1 if short else 1
+        side = r.get("side")
         hold = int(r.get("hold_sessions") or 5)
         cost = float(r.get("cost_round_trip") or 0)
-        stop = r.get("stop") if short else None
+        stop = r.get("stop") if side == "short" else None
         borrow = float(r.get("borrow_per_year") or 0)
-        legs = {"pick": [p["symbol"] for p in r.get("picks", [])], "control": list(r.get("control", []))}
-        paths = {k: [trade_days(bars.get(s), cal, r["as_of"], hold, sign, cost, stop, borrow) for s in v]
+        picks = [p if "side" in p or "cost" in p else p["symbol"] for p in r.get("picks", [])]
+        legs = {"pick": [_leg(p, side, cost) for p in picks], "control": [_leg(c, side, cost) for c in r.get("control", [])]}
+        paths = {k: [trade_days(bars.get(s), cal, r["as_of"], hold, sg, c, stop, borrow) for s, sg, c in v]
                  for k, v in legs.items()}
         for d in sorted({d for k in paths for p, _ in paths[k] for d in p}):
             m = {k: [p[d] for p, _ in paths[k] if d in p] for k in paths}
@@ -147,12 +162,12 @@ def combo(series):
     return out
 
 
-def evaluate(state, bars, cal):
+def evaluate(state, bars, cal, nx1=None):
     """Everything above for all books. bars: {symbol: DataFrame(o, c) indexed by session}; cal: sessions."""
-    recs = records(state)
+    recs = records(state, nx1)
     cal = pd.DatetimeIndex(sorted(cal))
     series, books = {}, []
-    for name in ("R1", "I1F", "A1F"):
+    for name in ("R1", "NX2", "I1F", "A1F"):
         daily, cohorts = bar_book(name, [r for b, r in recs if b == name], bars, cal)
         series[name] = daily
         books.append(status(name, daily, cohorts))

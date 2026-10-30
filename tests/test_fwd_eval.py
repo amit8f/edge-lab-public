@@ -56,3 +56,20 @@ def test_a1f_reports_the_mean_without_its_best_cohort():
     cohorts = [{"closed": True, "picks": 1, "pick_net": x, "control_net": 0.0} for x in (0.01, 0.02, 0.9)]
     s = F.status("A1F", {}, cohorts)
     assert s["mean_without_best"] == pytest.approx(0.015)
+
+
+def test_nx2_mixed_sides_and_own_costs(tmp_path):
+    nx1 = tmp_path / "state-nx1"
+    _w(nx1 / "nx1" / "nx2" / "a.json", {"as_of": "2026-10-23", "hold_sessions": 2,
+                                        "picks": [{"symbol": "L", "side": "long", "cost": 0.01},
+                                                  {"symbol": "S", "side": "short", "cost": 0.03}],
+                                        "control": [{"symbol": "C", "side": "long", "cost": 0.0},
+                                                    {"symbol": "D", "side": "short", "cost": 0.0}]})
+    _w(nx1 / "nx1" / "ledger.jsonl", json.dumps({"kind": "NX2_picks", "file": "nx2/a.json", "date": "2026-10-23"}))
+    cal = pd.DatetimeIndex(["2026-10-23", "2026-10-26", "2026-10-27"])
+    flat = _bars([(10, 10)] * 3, cal)
+    bars = {"L": _bars([(10, 10), (10, 11), (11, 11)], cal), "S": _bars([(10, 10), (10, 9), (9, 9)], cal), "C": flat, "D": flat}
+    assert F.symbols(F.records(tmp_path / "state", nx1)) == {"L", "S", "C", "D"}
+    nx2 = {b["book"]: b for b in F.evaluate(tmp_path / "state", bars, cal, nx1)}["NX2"]
+    assert nx2["closed_trades"] == 2
+    assert nx2["own_mean"] == pytest.approx(((0.1 - 0.01) + (0.1 - 0.03)) / 2)

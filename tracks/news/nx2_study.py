@@ -4,7 +4,10 @@ Reads NX1's cached event files (real and placebo events with their 32 inputs, la
 tracks/news/nx1_study.py) and adds no data. Writes summary numbers and, when the gate passes, the version 1
 models to research/results/NX2/.
 
-Usage: python -m tracks.news.nx2_study --cache <dir> --out <dir>
+With --models-only it skips the walk-forward and saves the version 1 models whatever the gate said: NX2
+failed its gate but entered FWD1's near-miss lane (PROTOCOL rule 19), which trades those models forward.
+
+Usage: python -m tracks.news.nx2_study --cache <dir> --out <dir> [--models-only]
 """
 import argparse
 import hashlib
@@ -161,6 +164,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX2")
+    ap.add_argument("--models-only", action="store_true",
+                    help="skip the walk-forward and save the version 1 models (FWD1's near-miss book trades them)")
     a = ap.parse_args()
     root = N.nx1dir(a.cache)
     cols = sorted(set(N.INPUTS) | {"kind", "d", "exit", "ret", "mret", "price", "days", "symbol"})
@@ -170,10 +175,13 @@ def main():
     cal = pd.read_parquet(root / "cal.parquet")
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    wf, pooled, gate = walk_forward(ev, cal)
-    rep = {"walk_forward": wf, "pooled": pooled, "gate": gate, "gate_passed": all(gate.values()),
-           "events": {"real": int((ev["kind"] == "real").sum()), "placebo": int((ev["kind"] == "placebo").sum())}}
-    if rep["gate_passed"]:
+    if a.models_only:
+        rep = None
+    else:
+        wf, pooled, gate = walk_forward(ev, cal)
+        rep = {"walk_forward": wf, "pooled": pooled, "gate": gate, "gate_passed": all(gate.values()),
+               "events": {"real": int((ev["kind"] == "real").sum()), "placebo": int((ev["kind"] == "placebo").sum())}}
+    if a.models_only or rep["gate_passed"]:
         import xgboost
         m = Model(ev)
         files = {"base": out / "nx2_v1_base.json", "news": out / "nx2_v1_news.json"}
@@ -185,8 +193,9 @@ def main():
                 "importance_gain_by_group": importance(m),
                 "sha256": {k: hashlib.sha256(f.read_bytes()).hexdigest() for k, f in files.items()}}
         (out / "nx2_v1_meta.json").write_text(json.dumps(meta, indent=1, default=str))
-    (out / "NX2_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
-    print(json.dumps({"pooled": pooled, "gate": gate}, indent=1, default=float))
+    if rep is not None:
+        (out / "NX2_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+        print(json.dumps({"pooled": pooled, "gate": gate}, indent=1, default=float))
 
 
 if __name__ == "__main__":

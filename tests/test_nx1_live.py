@@ -101,6 +101,15 @@ class FakeApi:
     def model(self):
         return lambda X: np.tile([0.2, 0.3, 0.5], (len(X), 1))
 
+    def nx2(self):
+        return None
+
+
+class FakeNX2(FakeApi):
+    def nx2(self):
+        # effect follows the first news input, which differs between real and no-news rows
+        return (lambda X: X[:, 0] * 10.0), {"fire_cut": 0.0, "sha256": {"news": "y"}}
+
 
 def test_run_logs_a_night_and_books(tmp_path, monkeypatch):
     m = tmp_path / "m.json"
@@ -125,3 +134,20 @@ def test_run_logs_a_night_and_books(tmp_path, monkeypatch):
     out2 = L.run(tmp_path / "state", FakeApi(), nxt)
     assert out2["fills"]["picks"] and out2["books"]["picks"]["open"] >= 1
     assert out2["batch_headlines"] == 1                                     # the 23:00 article joins Oct 23's batch
+
+
+def test_nx2_near_miss_book_is_logged_beside_nx1(tmp_path, monkeypatch):
+    m = tmp_path / "m.json"
+    m.write_text("{}")
+    meta = tmp_path / "meta.json"
+    meta.write_text(json.dumps({"model_sha256": "x", "finbert": {"revision": "abc"}}))
+    monkeypatch.setattr(L, "MODEL", m)
+    monkeypatch.setattr(L, "META", meta)
+    now = pd.Timestamp("2026-10-22 23:15", tz="America/New_York").tz_convert("UTC")
+    out = L.run(tmp_path / "state", FakeNX2(), now)
+    rec = out["nx2"]
+    assert rec["as_of"] == "2026-10-22" and rec["hold_sessions"] == 3 and rec["events"] == 3
+    assert len(rec["control"]) == len(rec["picks"]) and all(np.isfinite(p["cost"]) for p in rec["picks"])
+    assert all(p["side"] == "long" or p["symbol"] != "N2" for p in rec["picks"])     # N2 isn't easy to borrow
+    led = (tmp_path / "state" / "nx1" / "ledger.jsonl").read_text()
+    assert '"kind": "NX2_picks"' in led and (tmp_path / "state" / "nx1" / "nx2" / "2026-10-22.json").exists()
