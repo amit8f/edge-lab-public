@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
     inputs:
       part:
-        description: "w1a, w1b, w1c, w2, pd1, eap1 or sp1"
+        description: "w1a, w1b, w1c, w2, pd1, eap1, sp1 or ins1"
         required: true
         default: w1a
       stage:
@@ -85,7 +85,9 @@ jobs:
                 exit 0 ;;
             sp1) .venv/bin/python -m tracks.main.sp1_study --stage "$STAGE" --cache cache/w1 --out research/results/SP1
                 exit 0 ;;
-            *) echo "::error::part must be w1a, w1b, w1c, w2, pd1, eap1 or sp1"; exit 1 ;;
+            ins1) .venv/bin/python -m tracks.main.ins1_study --stage "$STAGE" --cache cache/w1 --out research/results/INS1
+                exit 0 ;;
+            *) echo "::error::part must be w1a, w1b, w1c, w2, pd1, eap1, sp1 or ins1"; exit 1 ;;
           esac
           .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/W1 --budget-min 290
 
@@ -102,8 +104,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/W1 research/results/W2 research/results/PD1 research/results/EAP1 research/results/SP1 research/checks
-          git add research/results/W1 research/results/W2 research/results/PD1 research/results/EAP1 research/results/SP1 research/checks
+          mkdir -p research/results/W1 research/results/W2 research/results/PD1 research/results/EAP1 research/results/SP1 research/results/INS1 research/checks
+          git add research/results/W1 research/results/W2 research/results/PD1 research/results/EAP1 research/results/SP1 research/results/INS1 research/checks
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "W1 ${{ github.event.inputs.part }} output (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
