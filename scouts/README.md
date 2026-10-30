@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-10-30T12:55 ET: 834 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-10-30T13:00 ET: 862 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,952.96 | -0.94% | 14 | 5 | long AGBK, long AMGN, long BAH, long DEA, long FWRD, long MFIC, long ORKA, long PTCT, long THRM, long VLO, short VOR, long XP | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,954.30 | -0.91% | 14 | 1 | long AGBK, long BAH, long DEA, long FWRD, short MFIC, long ORKA, short OSS, long PTCT, long THRM, short VLO, long VOR, long XP | ok |
-| SCOUT-PENNY | $488.22 | -2.36% | 4 | 0 | long NVA, short OPEN, long SIGA | 1 unreadable agent answers |
-| SCOUT-PENNY-coin | $490.71 | -1.86% | 4 | 1 | long NVA, short OPEN, long SIGA | ok |
+| SCOUT-MAIN | $4,947.48 | -1.05% | 14 | 5 | long AGBK, long AMGN, long BAH, long DEA, long FWRD, long MFIC, long ORKA, long PTCT, long THRM, long VLO, short VOR, long XP | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,947.63 | -1.05% | 14 | 1 | long AGBK, long BAH, long DEA, long FWRD, short MFIC, long ORKA, short OSS, long PTCT, long THRM, short VLO, long VOR, long XP | ok |
+| SCOUT-PENNY | $488.15 | -2.37% | 4 | 0 | long NVA, short OPEN, long SIGA | 1 unreadable agent answers |
+| SCOUT-PENNY-coin | $490.64 | -1.87% | 4 | 1 | long NVA, short OPEN, long SIGA | ok |
