@@ -246,7 +246,7 @@ def build_month(cand, bars, daily, ctxd, curve, cal):
         f0 = r.ac / r.c
         ctx = {"prev_c": r.prev_c, "prev_dv20": r.prev_dv20, "vol20": r.vol20 * f0, "hi20": r.hi20 / f0,
                "lo20": r.lo20 / f0, "hi252": r.hi252 / f0, "lo252": r.lo252 / f0}
-        i, trig = B.first_trigger(b, ctx, curve[r.track], close_t - pd.Timedelta(minutes=30))
+        i, trig = B.first_trigger(b, ctx, curve[r.track], r.track, close_t - pd.Timedelta(minutes=30))
         if i is None:
             continue
         s_end = b["end"].iloc[i]
