@@ -305,15 +305,15 @@ def _safe(fn, *a):
 
 
 def fwd_books(st):
-    """The forward near-miss books (FWD1 R1 and L1 cells, FWD2 I1F and A1F) and COMBO1, scored from their logs
+    """The forward near-miss books (FWD1 R1, NX2 and L1 cells, FWD2 I1F and A1F) and COMBO1, scored from their logs
     by paper.fwd_eval: closed trades toward the rule-20 minimum and the running picks-minus-control return."""
-    recs = F.records(st / "state")
+    recs = F.records(st / "state", st / "state-nx1")
     start = min((r.get("as_of") or r.get("filed") or "2026-10-23" for _, r in recs), default=None)
     if start is None:
         return []
     bars, cal = daily_bars(F.symbols(recs), (pd.Timestamp(start) - pd.Timedelta(days=7)).strftime("%Y-%m-%d"))
     out = []
-    for b in F.evaluate(st / "state", bars, cal):
+    for b in F.evaluate(st / "state", bars, cal, st / "state-nx1"):
         name = b["book"]
         note = ("mix of the near-miss books, judged after 60 trading days with 2+ books open" if name == "COMBO1"
                 else "picks minus same-day random picks, after costs; judged at 60 trading days and 30 closed trades")

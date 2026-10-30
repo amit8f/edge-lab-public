@@ -12,6 +12,10 @@ Each trading night d:
    to borrow), the same number of random control events, and as many placebo events as real ones.
 4. Log the night (inputs, probabilities, picks, control, placebo, fills; no headline text) to the
    hash-chained ledger in <state>/nx1.
+5. NX2's near-miss book (research/prereg/FWD1.md), once its version 1 models exist: the same night's real
+   events scored by NX2 (effect e = N(x) - N(x0), fired at |e| >= its training cut), up to 3 longs and 3
+   shorts (shortable and easy to borrow), a same-size random control with the same sides, and the 5 largest
+   |e| as the most-confident variant. Logged as kind NX2_picks; returns are read later from SIP bars.
 
 Usage: python -m tracks.news.nx1_live --state <dir>
 """
@@ -40,6 +44,8 @@ STOP = 0.10
 LOOKBACK_DAYS = 420                 # calendar days of bars for the 250-return beta
 NEWS_DAYS_KEEP = 40
 BOOKS = ("picks", "control")
+NX2_DIR = Path("research/results/NX2")
+NX2_TOP = 5
 
 
 # ---------- pure helpers (tested) ----------
@@ -135,6 +141,36 @@ def choose(ev, rng, picks_n=S.PICKS):
     return p, pd.DataFrame(rows)
 
 
+def nx2_record(real, news_model, cut, rng, day, entry_day, exit_day, closes):
+    """The NX2_picks record for one night (research/prereg/NX2.md picks, FWD1's book rules)."""
+    from tracks.news import nx2_study as N2
+    X = real[S.INPUTS].to_numpy(float)
+    e = news_model(X) - news_model(N2.no_news(X))
+    r = real.assign(e=e, fired=(np.abs(e) >= cut) & (np.abs(e) > 0))
+    f = r[r["fired"]]
+    lo = f[f["e"] > 0].nlargest(S.PICKS, "e").assign(side=1)
+    sh = f[(f["e"] < 0) & f["short_ok"]].nsmallest(S.PICKS, "e").assign(side=-1)
+    p = pd.concat([lo, sh])
+    used, ctrl = set(), []
+    for side in p["side"]:
+        pool = [i for i in r.index if i not in used and (side > 0 or r.at[i, "short_ok"])]
+        if pool:
+            i = pool[int(rng.integers(len(pool)))]
+            used.add(i)
+            ctrl.append({"symbol": r.at[i, "symbol"], "side": "long" if side > 0 else "short"})
+    days = (pd.Timestamp(exit_day) - pd.Timestamp(entry_day)).days + 1
+
+    def cost(sym, side):
+        return float(S.cost_frac([closes.get(sym, np.nan)], [side < 0], [days])[0])
+    return {"idea": "NX2", "book": "FWD1 near-miss shadow book", "as_of": day, "events": int(len(r)),
+            "fired": int(r["fired"].sum()), "fire_cut": cut,
+            "picks": [{"symbol": x["symbol"], "side": "long" if x["side"] > 0 else "short", "e": float(x["e"]),
+                       "cost": cost(x["symbol"], x["side"])} for _, x in p.iterrows()],
+            "control": [c | {"cost": cost(c["symbol"], 1 if c["side"] == "long" else -1)} for c in ctrl],
+            "top5": p.reindex(p["e"].abs().sort_values(ascending=False).index)["symbol"].head(NX2_TOP).tolist(),
+            "hold_sessions": S.HOLD, "entry": "next session's open", "exit": f"close of session {S.HOLD}"}
+
+
 def plan(b, chosen, closes, entry_day, exit_day):
     """Sized pending entries for tomorrow's open at the SYS1 shadow limits (1% risk to a 10% stop, 10% name
     cap, 5% per short, 1x gross, 0.5% of median daily dollar volume)."""
@@ -184,6 +220,17 @@ class Api:
         m = xgb.Booster()
         m.load_model(MODEL)
         return lambda X: m.predict(xgb.DMatrix(X))
+
+    def nx2(self):
+        """NX2's version 1 news model as a function of the 32 inputs, and its fire cut; None before training."""
+        meta_f = NX2_DIR / "nx2_v1_meta.json"
+        if not meta_f.exists():
+            return None
+        import xgboost as xgb
+        m = xgb.Booster()
+        m.load_model(NX2_DIR / "nx2_v1_news.json")
+        meta = json.loads(meta_f.read_text())
+        return (lambda X: m.predict(xgb.DMatrix(X))), meta
 
 
 def news_days_of(news):
@@ -312,6 +359,19 @@ def run(state, api=None, now=None):
     save_parquet(keep.reset_index(drop=True), heads_f)
     (root / "README.md").write_text(summary(out))
     print(summary(out))
+    nx2 = api.nx2() if len(ev) else None
+    if nx2 is not None and not led.has("NX2_picks", day):
+        try:
+            rec = nx2_record(ev[ev["kind"] == "real"], nx2[0], float(nx2[1]["fire_cut"]),
+                             np.random.default_rng(S.SEED + 2 + int(d.strftime("%Y%m%d"))), day,
+                             f"{nxt[0]:%Y-%m-%d}", f"{nxt[S.HOLD - 1]:%Y-%m-%d}", closes)
+            rec["model_sha256"] = nx2[1]["sha256"]
+            led.write_json("NX2_picks", day, f"nx2/{day}.json", json.loads(json.dumps(rec, default=_js)))
+            out["nx2"] = rec
+            print(f"[nx2] {day}: {rec['fired']} of {rec['events']} fired; picks "
+                  + ", ".join(f"{p['side']} {p['symbol']}" for p in rec["picks"]))
+        except Exception as x:                      # NX1's night is already logged; NX2 must not break it
+            print(f"::warning::[nx2] {day}: {type(x).__name__}: {x}")
     return out
 
 
