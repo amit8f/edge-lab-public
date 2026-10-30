@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-30 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-30 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8715.98 | -12.84% | 103 | 24 | short FTNT, short GOOGL, short INTC, long LNG, short NOW |
-| Coin flip on C's picks | $9724.73 | -2.75% | 103 | 49 | short FTNT, short GOOGL, short INTC, long LNG, short NOW |
-| C's prompt on Groq (K7) | $8130.91 | -18.69% | 263 | 59 | long AZN, short INTC, long LNG, short NOW, long REGN |
-| Coin flip on C-groq's picks | $9189.29 | -8.11% | 263 | 130 | short AZN, short INTC, short LNG, long NOW, long REGN |
-| C-groq's answers, acted on once a day (K8) | $10093.05 | +0.93% | 3 | 2 | long AZN, short INTC, long LNG, short NOW, long REGN |
-| Coin flip on C-groq-slow's picks | $9952.21 | -0.48% | 3 | 2 | long AZN, short INTC, short LNG, long NOW, short REGN |
-| C's answers, acted on once a day (K8) | $10088.90 | +0.89% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long VRT |
-| Coin flip on C-slow's picks | $10350.35 | +3.50% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, short VRT |
-| Just hold SPY | $9813.81 | -1.86% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8699.20 | -13.01% | 103 | 24 | short FTNT, short GOOGL, short INTC, long LNG, short NOW |
+| Coin flip on C's picks | $9706.01 | -2.94% | 103 | 49 | short FTNT, short GOOGL, short INTC, long LNG, short NOW |
+| C's prompt on Groq (K7) | $8106.90 | -18.93% | 264 | 59 | long AMD, long AZN, long LNG, short NOW, long REGN |
+| Coin flip on C-groq's picks | $9176.39 | -8.24% | 264 | 130 | long AMD, short AZN, short LNG, long NOW, long REGN |
+| C-groq's answers, acted on once a day (K8) | $10066.97 | +0.67% | 3 | 2 | long AZN, short INTC, long LNG, short NOW, long REGN |
+| Coin flip on C-groq-slow's picks | $9937.27 | -0.63% | 3 | 2 | long AZN, short INTC, short LNG, long NOW, short REGN |
+| C's answers, acted on once a day (K8) | $10087.88 | +0.88% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long VRT |
+| Coin flip on C-slow's picks | $10345.44 | +3.45% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, short VRT |
+| Just hold SPY | $9815.38 | -1.85% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-30 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-30 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-30 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-30 15:17 | short FTNT, short GOOGL, short INTC, long LNG, short NOW | sold REGN @ $916.94; sold INTC @ $63.65 | Maintained profitable short positions in FTNT, GOOGL, and NOW, and a profitable long position in LNG. Closed the losing REGN long position. Opened a new short position in INTC due to its severe daily decline and negative outlook. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-30 15:3
 | 2026-10-28 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 14:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-28 14:37 | long FLEX, long ORCL, long SNDK, long SOFI, long VRT | bought CBRS @ $111.09; bought ORCL @ $144.47 | Selling CBRS due to adverse price movement against the short position despite bearish news. Maintaining long positions in FLEX, SNDK, SOFI, and VRT due to strong positive momentum and favorable news. Initiating a new long position in ORCL based on its strong daily performance and positive long-term  |
