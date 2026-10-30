@@ -253,7 +253,7 @@ def cohort_test(tr, ff5, umd, hold=HOLD, side="top"):
     m, se, tt = nw_tstat(c["diff"], LAGS)
     lo, hi = block_bootstrap_ci(c["diff"], 3, 10_000, SEED)
     pm, _, pt = nw_tstat(c["pick"], LAGS)
-    f = ff5.join(umd, how="inner")
+    f = ff5.join(umd, how="inner")[["Mkt-RF", "SMB", "HML", "RMW", "CMA", umd.columns[0]]]
     f3 = f.rolling(3).sum().shift(-2).reindex(c.index)
     alpha = stats.ols_hac(c["diff"].to_numpy(float), f3.to_numpy(), LAGS)
     alpha["factors"] = list(f.columns)
