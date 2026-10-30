@@ -173,10 +173,11 @@ def test_build_month_end_to_end_on_one_synthetic_candidate():
     yday = _session(prev, [20.0] * 78).assign(symbol="X", date=prev)
     spy = pd.concat([_session(d, [300.0] * 78).assign(symbol="SPY", date=d) for d in (prev, day)])
     bars = pd.concat([today, yday, spy], ignore_index=True)
-    cand = pd.DataFrame([{"symbol": "X", "date": day, "track": "main", "ac": 20.0, "c": 20.0, **CTX, "vol20": 78_000.0,
-                          "cik": 1}])
+    one = {"date": day, "track": "main", "ac": 20.0, "c": 20.0, **CTX, "vol20": 78_000.0, "cik": 1}
+    cand = pd.DataFrame([{"symbol": "X", **one}, {"symbol": "NOBARS", **one}, {"symbol": "NODAILY", **one}, {"symbol": "X", **one, "cik": float("nan")}])
+    bars = pd.concat([bars, today.assign(symbol="NODAILY")], ignore_index=True)
     etf = pd.DataFrame({"symbol": "SPY", "date": days, "c": 300.0})
     ctxd = {"etf_raw": etf, "etf_all": etf, "vix": pd.DataFrame({"date": days, "vix": 15.0}), "sic": {1: "3570"}}
     rows, intr, dimg = C.build_month(cand, bars, daily, ctxd, {"main": CURVE}, cal)
-    assert len(rows) == 1 and rows["trig"].iloc[0] == "gap"
-    assert intr.shape == (1, 156, 5) and dimg.shape[0] == 1
+    assert len(rows) == 2 and (rows["trig"] == "gap").all() and rows["cik"].tolist() == [1, -1]
+    assert intr.shape == (2, 156, 5) and dimg.shape[0] == 2

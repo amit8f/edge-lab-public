@@ -264,12 +264,13 @@ def build_month(cand, bars, daily, ctxd, curve, cal):
         later = base[base["date"] > day].head(B.HOLD - 1)
         if len(prior) < 30:
             continue
-        mkt = market(day, s_end, by_sd, etf_raw, etf_all, vix, sector_etf(sic.get(int(r.cik))), days)
+        cik = int(r.cik) if pd.notna(r.cik) else -1
+        mkt = market(day, s_end, by_sd, etf_raw, etf_all, vix, sector_etf(sic.get(cik)), days)
         A = B.atr(prior["h"], prior["l"], prior["c"])
         feat = B.features(b, i, prior[["o", "h", "l", "c", "v"]], ctx, mkt, curve[r.track], trig)
         lab = B.labels(after[["o", "h", "l", "c"]], float(after["o"].iloc[0]), A, later[["date", "h", "l", "c"]],
                        r.track, day)
-        rows.append({"symbol": r.symbol, "date": day, "cik": int(r.cik), "track": r.track, "trig": trig,
+        rows.append({"symbol": r.symbol, "date": day, "cik": cik, "track": r.track, "trig": trig,
                      "s": s_end, "entry_t": after["t"].iloc[0], "entry": float(after["o"].iloc[0]), "atr": A,
                      **feat, **lab})
         pi = days.searchsorted(day) - 1
