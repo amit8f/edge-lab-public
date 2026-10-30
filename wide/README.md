@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-30 09:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-30 10:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8670.29 | -13.30% | 102 | 24 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| Coin flip on C's picks | $9673.79 | -3.26% | 102 | 49 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| C's prompt on Groq (K7) | $8194.52 | -18.05% | 254 | 58 | long AZN, short FTNT, short INTC, long LNG, short NOW |
-| Coin flip on C-groq's picks | $9268.25 | -7.32% | 254 | 126 | short AZN, short FTNT, short INTC, short LNG, long NOW |
-| C-groq's answers, acted on once a day (K8) | $10043.95 | +0.44% | 0 | 0 | long CVNA, short FTNT, long LNG, short NOW, long VRT |
-| Coin flip on C-groq-slow's picks | $10004.89 | +0.05% | 0 | 0 | short CVNA, short FTNT, short LNG, long NOW, short VRT |
-| C's answers, acted on once a day (K8) | $10065.44 | +0.65% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long VRT |
-| Coin flip on C-slow's picks | $10208.85 | +2.09% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, short VRT |
-| Just hold SPY | $9904.06 | -0.96% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8633.28 | -13.67% | 102 | 24 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| Coin flip on C's picks | $9632.49 | -3.68% | 102 | 49 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| C's prompt on Groq (K7) | $8127.48 | -18.73% | 255 | 58 | long AZN, short FTNT, long LNG, short NOW, long REGN |
+| Coin flip on C-groq's picks | $9239.07 | -7.61% | 255 | 126 | short AZN, short FTNT, short LNG, long NOW, long REGN |
+| C-groq's answers, acted on once a day (K8) | $9982.31 | -0.18% | 0 | 0 | long CVNA, short FTNT, long LNG, short NOW, long VRT |
+| Coin flip on C-groq-slow's picks | $10040.37 | +0.40% | 0 | 0 | short CVNA, short FTNT, short LNG, long NOW, short VRT |
+| C's answers, acted on once a day (K8) | $10034.58 | +0.35% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long VRT |
+| Coin flip on C-slow's picks | $10191.28 | +1.91% | 0 | 0 | short FTNT, short GOOGL, long LNG, short NOW, short VRT |
+| Just hold SPY | $9898.53 | -1.01% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-10-30 10:07 | short FTNT, short GOOGL, long LNG, short NOW, long REGN | none | All existing positions are maintained due to their current trends and profitability. FTNT, GOOGL, and NOW shorts are performing well in downtrends, while LNG and REGN longs are benefiting from strong uptrends and positive news. |
 | 2026-10-30 09:57 | short FTNT, short GOOGL, long LNG, short NOW, long REGN | sold VRT @ $237.91; bought REGN @ $924.22 | Maintaining existing short positions in FTNT, GOOGL, and NOW due to continued weakness. Closing VRT long position due to reversal in hourly trend. Keeping LNG long due to strong performance and replacing VRT with a new long position in REGN, which shows strong positive momentum and earnings. |
 | 2026-10-30 09:50 | short FTNT, short GOOGL, long LNG, short NOW, long VRT | none | All existing profitable positions are maintained due to continued favorable price action and supporting news/trends. No new positions are opened at this time. |
 | 2026-10-29 15:59 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-10-30 09:5
 | 2026-10-28 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-28 13:27 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all current long positions due to continued strong positive momentum and supportive news for each stock, with all positions showing profit or near breakeven. |
 | 2026-10-28 13:17 | long FLEX, long MU, long SOFI, long TWST, long VRT | none | Maintaining all five existing long positions due to strong positive momentum, favorable news catalysts, and continued profitability across the portfolio. |
-| 2026-10-28 13:07 | no answer, nothing changed | none | unreadable answer |
