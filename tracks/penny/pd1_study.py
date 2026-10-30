@@ -32,6 +32,7 @@ TRIALS, MIN_EVENTS = 71, 300
 CHECK = Path("research/checks/PD1.csv")
 SUBS = "https://data.sec.gov/submissions/"
 COLS = ["cik", "accession", "form", "filed", "accepted_et", "items"]
+ET = "America/New_York"
 
 
 def pd1dir(cache):
@@ -39,9 +40,9 @@ def pd1dir(cache):
 
 
 def earnings_rows(cik, get=sec.get, first=FIRST, last=LAST):
-    """Form 8-K filings listing item 2.02, filed first .. last, with their acceptance time. The submissions
-    record writes acceptanceDateTime with a 'Z' but the clock is EDGAR's (ET); the hand check compares it
-    with the filing's index page."""
+    """Form 8-K filings listing item 2.02, filed first .. last, with their acceptance time in New York time
+    (naive). The submissions record's acceptanceDateTime is UTC: the hand check found every one 4-5 hours
+    ahead of the filing index page's Eastern time."""
     r = get(f"{SUBS}CIK{int(cik):010d}.json")
     if r is None:
         return []
@@ -61,7 +62,7 @@ def earnings_rows(cik, get=sec.get, first=FIRST, last=LAST):
             its = [i.strip() for i in (items or "").split(",") if i.strip()]
             if form == "8-K" and "2.02" in its and first <= pd.Timestamp(filed) <= last and at:
                 out.append({"cik": int(cik), "accession": acc, "form": form, "filed": filed,
-                            "accepted_et": pd.Timestamp(at[:19]), "items": ",".join(its)})
+                            "accepted_et": pd.Timestamp(at[:19], tz="UTC").tz_convert(ET).tz_localize(None), "items": ",".join(its)})
     return out
 
 
@@ -94,7 +95,7 @@ def penny_rows(cache):
 
 
 def stage_filings(cache, ciks):
-    d = pd1dir(cache) / "subs"
+    d = pd1dir(cache) / "subs_et"            # "subs" held UTC times as ET (hand check, 2026-10-30)
     d.mkdir(parents=True, exist_ok=True)
     for b in range(0, len(ciks), BATCH):
         f = d / f"e_{b // BATCH:04d}.parquet"

@@ -23,7 +23,7 @@ def test_earnings_rows_keep_only_8k_with_202_and_read_the_et_clock():
               "acceptanceDateTime": ["2019-05-08T16:05:12.000Z"] * 4}
     rows = P.earnings_rows(7, get=lambda url: R({"filings": {"recent": recent, "files": []}}))
     assert [r["accession"] for r in rows] == ["a1"]
-    assert rows[0]["accepted_et"] == pd.Timestamp("2019-05-08 16:05:12")
+    assert rows[0]["accepted_et"] == pd.Timestamp("2019-05-08 12:05:12")   # 16:05 UTC is 12:05 EDT
 
 
 def test_day0_is_the_first_close_after_acceptance():
