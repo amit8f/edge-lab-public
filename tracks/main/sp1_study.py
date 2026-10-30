@@ -26,6 +26,11 @@ HOLD, HOLDS, COST, LAGS = 250, (125, 250), 0.002, 11
 FIRST_F, FIRST_ENTRY, HOLDOUT = pd.Timestamp("2015-10-01"), pd.Timestamp("2016-01-01"), pd.Timestamp("2025-10-01")
 TRIALS, MIN_EVENTS = 83, 60
 CHECK = Path("research/checks/SP1.csv")
+# Rule 23 fix (hand check round 1, 13/20: the first bar was a when-issued or record-date day, or late, or the
+# cache's first day). Each candidate's first regular-way day is looked up by hand from the parent's or the
+# company's completion release (LISTED lists the candidates; DATES holds cik, symbol, regular_way, source).
+LISTED = Path("research/checks/SP1_listings.csv")
+DATES = Path("research/checks/SP1_dates.csv")
 COLS = ["symbol", "date", "c", "dv20", "cik"]
 
 
@@ -40,9 +45,10 @@ def first_10(fil):
     return first[first >= FIRST_F], f.groupby("cik")["filed"].apply(lambda s: np.sort(s.to_numpy()))
 
 
-def listings(rows, first, days):
+def listings(rows, first, days, regular=None):
     """Per company: listing day L (first bar on or after f0, within 365 days, none in the 365 days before
-    f0), entry (the WAIT+1-th session counting L), the symbol and price row on the session before entry."""
+    f0), entry (the WAIT+1-th session counting L), the symbol and price row on the session before entry.
+    With `regular` (cik -> documented first regular-way day), L is that day and companies without one drop."""
     out = []
     for cik, g in rows.groupby("cik"):
         f0 = first.get(cik)
@@ -55,12 +61,17 @@ def listings(rows, first, days):
         if after.empty:
             continue
         L = after["date"].iloc[0]
+        L_bar = L
+        if regular is not None:
+            if cik not in regular.index or pd.isna(regular[cik]) or regular[cik] < days[0]:
+                continue
+            L = days[days.searchsorted(regular[cik])]
         i = days.searchsorted(L)
         if i + WAIT >= len(days):
             continue
         entry, prior = days[i + WAIT], days[i + WAIT - 1]
         pr = g[g["date"] == prior].sort_values("dv20", ascending=False)
-        out.append({"cik": int(cik), "f0": f0, "listing_day": L, "entry": entry, "prior_day": prior,
+        out.append({"cik": int(cik), "f0": f0, "listing_day": L, "first_bar": L_bar, "entry": entry, "prior_day": prior,
                     "symbol": pr["symbol"].iloc[0] if len(pr) else after["symbol"].iloc[0],
                     "prior_close": float(pr["c"].iloc[0]) if len(pr) else np.nan,
                     "prior_dv20": float(pr["dv20"].iloc[0]) if len(pr) else np.nan})
@@ -99,7 +110,17 @@ def stage_events(cache, out):
     need = sorted(int(c) for c in first.index)
     rows = pd.concat([pd.read_parquet(p, columns=COLS, filters=[("cik", "in", need)]) for p in D.batch_files(cache)],
                      ignore_index=True).dropna(subset=["cik"]).astype({"cik": "int64"})
-    ev = listings(rows, first, days)
+    raw = listings(rows, first, days)
+    out.mkdir(parents=True, exist_ok=True)
+    LISTED.parent.mkdir(parents=True, exist_ok=True)
+    raw[["cik", "symbol", "f0", "first_bar"]].assign(
+        f0=raw["f0"].dt.strftime("%Y-%m-%d"), first_bar=raw["first_bar"].dt.strftime("%Y-%m-%d")).to_csv(LISTED, index=False)
+    if not DATES.exists():
+        print(f"[sp1] wrote {LISTED} ({len(raw)} companies); fill {DATES} with each first regular-way day, then rerun")
+        return
+    d = pd.read_csv(DATES, parse_dates=["regular_way"])
+    regular = d.set_index("cik")["regular_way"]
+    ev = listings(rows, first, days, regular)
     ev = exits(ev, days)
     ev["main"] = (ev["prior_close"] >= MIN_PRICE) & (ev["prior_dv20"] >= MIN_DV20)
     sig = ev[ev["main"] & (ev["entry"] >= FIRST_ENTRY) & ev[f"exit{HOLD}"].notna()
@@ -116,14 +137,14 @@ def stage_events(cache, out):
     tmp = sdir(cache) / "events.tmp"
     sig.to_parquet(tmp)
     tmp.replace(sdir(cache) / "events.parquet")
-    out.mkdir(parents=True, exist_ok=True)
     if not CHECK.exists() and len(sig):
         k = np.sort(np.random.default_rng(SEED).choice(len(sig), size=min(CHECK_N, len(sig)), replace=False))
         CHECK.parent.mkdir(parents=True, exist_ok=True)
         sig.iloc[k][["cik", "symbol", "f0", "listing_day", "entry"]].assign(
             **{c: (lambda x, c=c: x[c].dt.strftime("%Y-%m-%d")) for c in ("f0", "listing_day", "entry")},
             ok="", note="").to_csv(CHECK, index=False)
-    cov = {"first_10_12b_filers": int(len(first)), "with_new_listing": int(len(ev)),
+    cov = {"first_10_12b_filers": int(len(first)), "with_new_listing": int(len(raw)),
+           "with_documented_regular_way_day": int(len(ev)),
            "main_at_entry": int(ev["main"].sum()), "events_in_window": int(len(sig)),
            "per_year": {str(y): int(n) for y, n in sig["entry"].dt.year.value_counts().sort_index().items()}}
     (out / "SP1_coverage.json").write_text(json.dumps(cov, indent=1))
