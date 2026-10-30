@@ -67,6 +67,9 @@ def main(name):
         rows = list(csv.DictReader(f))
     if rows and "accession" in rows[0]:
         return main_edgar(name, rows)
+    if not rows or not {"symbol", "start", "end"} <= set(rows[0]):
+        print(f"{name}.csv is not a bar or filing request (no symbol/start/end or cik/accession columns); skipped")
+        return
     headers = {"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY_ID"],
                "APCA-API-SECRET-KEY": os.environ["ALPACA_API_SECRET_KEY"]}
     res = []
