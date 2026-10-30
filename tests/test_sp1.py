@@ -22,6 +22,21 @@ def test_first_10_and_listing_rules():
     assert r["prior_day"] == days[days.searchsorted(r["entry"]) - 1]
 
 
+def test_documented_regular_way_day_replaces_first_bar():
+    fil = pd.DataFrame({"cik": [1, 2], "form": ["10-12B", "10-12B"],
+                        "filed": pd.to_datetime(["2018-01-10", "2018-01-10"])})
+    first, _ = S.first_10(fil)
+    days = pd.bdate_range("2017-01-02", "2019-12-31")
+    rows = pd.concat([pd.DataFrame({"cik": c, "symbol": s, "date": days[days >= "2018-03-01"], "c": 20.0, "dv20": 5e6})
+                      for c, s in ((1, "NEW"), (2, "UND"))])
+    regular = pd.Series({1: pd.Timestamp("2018-03-12")})   # first bar was a when-issued day; 2 has no date
+    ev = S.listings(rows, first, days, regular)
+    assert ev["cik"].tolist() == [1]
+    r = ev.iloc[0]
+    assert r["listing_day"] == pd.Timestamp("2018-03-12") and r["first_bar"] == pd.Timestamp("2018-03-01")
+    assert (days.searchsorted(r["entry"]) - days.searchsorted(r["listing_day"])) == S.WAIT
+
+
 def test_controls_skip_recent_form_10_filers_and_the_event_itself():
     ev = pd.DataFrame({"cik": [1], "entry": [pd.Timestamp("2019-05-01")], "prior_day": [pd.Timestamp("2019-04-30")]})
     uni = pd.DataFrame({"date": pd.Timestamp("2019-04-30"), "cik": [1, 2, 3, 4], "symbol": ["A", "B", "C", "D"]})
