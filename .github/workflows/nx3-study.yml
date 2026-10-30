@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, events, minutes, train, extremes models (NXM, research/prereg/NXM.md) or tame (NXR, research/prereg/NXR.md)"
+        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) or nxe (NXE and NXF, research/prereg/NXE.md, NXF.md)"
         required: false
         default: all
 
@@ -79,12 +79,26 @@ jobs:
           key: nxr-v1-${{ github.run_id }}
           restore-keys: nxr-v1-
 
+      - name: Restore NXE's progress
+        if: inputs.stage == 'nxe'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nxe
+          key: nxe-v1-${{ github.run_id }}
+          restore-keys: nxe-v1-
+
       - name: Run the stage
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           STAGE: ${{ inputs.stage || 'all' }}
         run: |
+          if [ "$STAGE" = nxe ]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.news.nxe_study --cache cache/nx1 --state cache/nxe \
+              --out research/results/NXE --budget-min 300
+            exit 0
+          fi
           if [ "$STAGE" = models ]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.news.nxm_study --cache cache/nx1 --state cache/nxm \
               --out research/results/NXM --budget-min 300
@@ -99,7 +113,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3
@@ -119,16 +133,23 @@ jobs:
           path: cache/nxr
           key: nxr-v1-${{ github.run_id }}
 
+      - name: Save NXE's progress
+        if: always() && inputs.stage == 'nxe'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/nxe
+          key: nxe-v1-${{ github.run_id }}
+
       - name: Commit the results to this branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NX3 research/results/NXM research/results/NXR
-          git add research/results/NX3 research/results/NXM research/results/NXR
+          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF
+          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
-          git commit -q -m "NX3/NXM/NXR ${{ inputs.stage }} results (run ${{ github.run_id }})"
+          git commit -q -m "NX3/NXM/NXR/NXE ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
           git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
