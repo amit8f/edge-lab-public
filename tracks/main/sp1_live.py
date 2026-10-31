@@ -27,6 +27,7 @@ from core.ledger import Ledger
 ET = "America/New_York"
 FORMS = {"10-12B", "10-12B/A"}
 FIRST_DAY = "2025-10-01"
+STALE = 3                     # an index still missing after 3 business days was never published
 WAIT, HOLD = 21, 250          # entry = the 22nd session counting the listing day; exit 250 sessions later
 DATES = Path("research/checks/SP1_live_dates.csv")
 SUBS = "https://data.sec.gov/submissions/CIK{:010d}.json"
@@ -40,7 +41,9 @@ def scan(root, yesterday, index=sec.daily_form_index):
     for d in pd.bdate_range(start, yesterday):
         idx = index(d)
         if idx is None:
-            break                                     # not published yet (holidays come back empty)
+            if d >= yesterday - pd.offsets.BDay(STALE):
+                break                                 # recent: not published yet, try again tomorrow
+            idx = sec.parse_form_index("----\n")    # older: EDGAR was closed (e.g. 2025-12-24), no index
         rows = [{"form": r.form, "company": r.company, "cik": int(r.cik), "filed": f"{r.filed:%Y-%m-%d}"}
                 for r in idx[idx["form"].isin(FORMS)].itertuples(index=False)]
         with open(f, "a", encoding="utf-8") as fh:
