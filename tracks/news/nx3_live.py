@@ -40,6 +40,7 @@ from tracks.news import nx1_study as N
 from tracks.news import nx3_study as S
 from tracks.news import nx3_orders as O
 from tracks.news import nx3all_live as A
+from tracks.news import nxe_live as XL
 from tracks.news import nxm_live as M
 from tracks.news import w1_data as W
 
@@ -375,7 +376,7 @@ def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
                         "dv20": c["dv20"], "etb": r["symbol"] in short_ok})
 
 
-def close_day(root, day, d):
+def close_day(root, day, d, api=None):
     """After the close: control and the day record (ledger kind nx3_day)."""
     led = Ledger(root)
     day_s = f"{d:%Y-%m-%d}"
@@ -399,6 +400,11 @@ def close_day(root, day, d):
         A.close_day(root, day.decisions, d, day_seed(d), day.ctx["cut"])
     except Exception as ex:
         print(f"[nx3all] day not logged: {type(ex).__name__}: {ex}")
+    try:    # the Gemini exit agent's log (research/prereg/NXE.md, EXL); it never stops NX3
+        if api is not None:
+            XL.close_day(root, api, day.decisions, d, day.ctx["cut"])
+    except Exception as ex:
+        print(f"[nxe_exl] day not logged: {type(ex).__name__}: {ex}")
     return out
 
 
@@ -465,7 +471,7 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
     if now >= ses["close_t"] + SETTLE_AFTER:
         day = Day(root, d)
         if day.ctx:
-            close_day(root, day, d)
+            close_day(root, day, d, api)
             if br := broker():
                 O.guarded(O.log_day, root, day, d, br)
         settle(root, api, cal, d)
@@ -520,7 +526,7 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
     while time.monotonic() < stop and clock() < ses["close_t"] + SETTLE_AFTER:
         sleep(POLL_S)
     if clock() >= ses["close_t"] + SETTLE_AFTER:
-        close_day(root, day, d)
+        close_day(root, day, d, api)
         if br:
             O.guarded(O.log_day, root, day, d, br)
         settle(root, api, cal, d)
