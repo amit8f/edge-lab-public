@@ -70,3 +70,13 @@ def test_entry_after_22nd_session(tmp_path, monkeypatch):
     assert rec["exit_day"] == f"{days[days.searchsorted(entry) + 250]:%Y-%m-%d}"
     _, _, ent = S.run(tmp_path, now, fake_index("2025-10-01"), fake_get, opens, cal)
     assert ent == []                                         # logged once
+
+
+def test_old_missing_index_is_a_closed_day(tmp_path):
+    base = fake_index("2025-10-31")
+
+    def index(d):
+        return None if pd.Timestamp(d) == pd.Timestamp("2025-10-03") else base(d)
+    rows, _, _ = S.run(tmp_path, pd.Timestamp("2025-11-01 03:00", tz="UTC"), index, fake_get)
+    assert len(rows) == 3                                   # skipped past the closed day
+    assert json.loads((tmp_path / "sp1" / "cursor.json").read_text())["last_day"] == "2025-10-30"
