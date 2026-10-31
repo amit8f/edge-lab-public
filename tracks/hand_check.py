@@ -1,6 +1,6 @@
 """Independent bar pull for hand checks (PROTOCOL rule 14). Reads research/checks/<name>.csv with columns
 symbol, start, end and writes research/checks/<name>_bars.json: each symbol's daily SIP bars over
-[start, end] with both adjustment=raw and adjustment=all (an optional timeframe column, such as 5Min, pulls
+[start, end] with both adjustment=raw and adjustment=all, with each bar's VWAP (vw) when Alpaca gives it (an optional timeframe column, such as 5Min, pulls
 that bar size over the whole of each day instead). A file with columns cik, accession instead writes
 research/checks/<name>_edgar.json: each filing's acceptance time, form and filer names from its EDGAR index
 page (not the header file the studies read). Plain HTTP on purpose, so a check never reuses a study's code."""
@@ -29,7 +29,7 @@ def bars(sym, start, end, adjustment, headers, timeframe="1Day"):
             time.sleep(2 ** attempt)
         r.raise_for_status()
         j = r.json()
-        out += [{k: b[k] for k in ("t", "o", "h", "l", "c", "v")} for b in j.get("bars") or []]
+        out += [{k: b[k] for k in ("t", "o", "h", "l", "c", "v", "vw") if k in b} for b in j.get("bars") or []]
         token = j.get("next_page_token")
         if not token:
             return out
