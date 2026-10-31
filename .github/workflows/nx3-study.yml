@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) or nxe (NXE and NXF, research/prereg/NXE.md, NXF.md)"
+        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) nxe (NXE, NXF and NXT, research/prereg/NXE.md, NXF.md, NXT.md) or uncapped (NX3-ALL, research/prereg/NX3ALL.md)"
         required: false
         default: all
 
@@ -113,7 +113,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3

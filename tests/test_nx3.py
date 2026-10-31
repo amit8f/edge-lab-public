@@ -125,6 +125,8 @@ def test_picks_go_in_time_order():
     p, c = X.picks(day, np.random.default_rng(0))
     assert p.loc[p["side"] == 1, "e"].tolist() == [1.0, 5.0, 2.0] and p.loc[p["side"] == -1, "e"].tolist() == [-1.0]
     assert len(c) == 4 and c["side"].tolist() == [1, 1, 1, -1]
+    p, c = X.picks(day, np.random.default_rng(0), cap=None)      # NX3-ALL: every fired event
+    assert p.loc[p["side"] == 1, "e"].tolist() == [1.0, 5.0, 2.0, 3.0, 4.0] and len(c) == 6
 
 
 def test_gate_passes_a_news_effect_and_fails_without_one():
@@ -132,6 +134,16 @@ def test_gate_passes_a_news_effect_and_fails_without_one():
     assert gate == {"pick_minus_control": True, "pick_minus_shuffled": True}
     _, pooled, gate = X.walk_forward(events(0.0, seed=2), CAL, years=[2019])
     assert not any(gate.values())
+
+
+def test_uncapped_walk_forward_takes_more_picks_with_the_same_models():
+    ev = events(1.5, seed=1)
+    capped, _, _ = X.walk_forward(ev, CAL, years=[2019])
+    allp, _, _ = X.walk_forward(ev, CAL, years=[2019], cap=None)
+    assert capped["2019"]["fire_cut"] == allp["2019"]["fire_cut"]
+    assert allp["2019"]["picks_per_day"] >= capped["2019"]["picks_per_day"] and capped["2019"]["picks_per_day"] <= 6
+    _, pooled, _ = X.walk_forward(ev, CAL, years=[2019], cap=None)
+    assert pooled["sized_pick_minus_control"]["mean"] > 0 and 0 < pooled["invested_share_median"] <= 1
 
 
 def test_extremes_lists_the_walk_forward_picks_by_size():
@@ -181,3 +193,9 @@ def test_daily_closes_end_waits_for_the_sip_delay(monkeypatch):
     monkeypatch.setattr(X.alpaca, "get", lambda url, p, headers=None: seen.append(p["end"]) or {"bars": {}})
     X.daily_closes(["ASIC", "SPY"], pd.Timestamp("2026-10-23"), pd.Timestamp("2026-10-27"), {})
     assert seen == ["2026-10-27T23:37:00Z"] * 2                 # the settle night of 2026-10-27, not the whole day
+
+
+def test_conf_sizes_run_from_5_to_10_percent_and_fit_the_book():
+    assert np.allclose(X.conf_sizes([1.0, 1.5, 2.0, 3.0]), [0.05, 0.075, 0.10, 0.10])
+    w = X.conf_sizes([2.0] * 15)                      # 15 x 10% = 150%: scaled to the whole book
+    assert np.isclose(w.sum(), 1.0) and np.allclose(w, 1 / 15)
