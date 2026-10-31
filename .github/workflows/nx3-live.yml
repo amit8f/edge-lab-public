@@ -75,6 +75,7 @@ jobs:
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           ALPACA_NX3_KEY_ID: ${{ secrets.ALPACA_NX3_KEY_ID }}
           ALPACA_NX3_SECRET_KEY: ${{ secrets.ALPACA_NX3_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}     # NXS-LLM sizes, once a day after the close
         run: |
           stop=$(( $(date +%s) + 330 * 60 ))
           while (( $(date +%s) + 20 * 60 < stop )); do
