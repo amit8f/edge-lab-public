@@ -244,7 +244,7 @@ def build_month(cand, bars, daily, ctxd, curve, cal):
         if b.empty:
             continue
         f0 = r.ac / r.c
-        ctx = {"prev_c": r.prev_c, "prev_dv20": r.prev_dv20, "vol20": r.vol20 * f0, "hi20": r.hi20 / f0,
+        ctx = {"prev_c": r.prev_ac / f0, "prev_dv20": r.prev_dv20, "vol20": r.vol20 * f0, "hi20": r.hi20 / f0,
                "lo20": r.lo20 / f0, "hi252": r.hi252 / f0, "lo252": r.lo252 / f0}
         i, trig = B.first_trigger(b, ctx, curve[r.track], r.track, close_t - pd.Timedelta(minutes=30))
         if i is None:
@@ -360,9 +360,36 @@ def stage_build(cache, deadline):
     return True
 
 
+REBASE_TOL = 0.01
+
+
+def stage_rebase(cache, out):
+    """Bug fix (2026-10-31): until then build_month compared today's raw bars with yesterday's RAW close, so a
+    split day showed a fake gap (a 2:1 split read as -50%). Deletes the rows and images of every month holding a
+    candidate whose price basis moved more than 1% overnight (splits, large distributions), so stage=build
+    rebuilds just those months (this stage runs it next); ordinary dividends move the basis by less and their rows stay. Writes counts."""
+    d = chdir(cache)
+    rep = {"tol": REBASE_TOL, "months": [], "affected_rows": 0, "affected_gap_rows": 0}
+    for f in sorted((d / "rows").glob("*.parquet")):
+        c = pd.read_parquet(d / "cand" / f.name, columns=["symbol", "date", "prev_c", "prev_ac", "c", "ac"])
+        moved = c[((c["prev_ac"] / c["prev_c"]) / (c["ac"] / c["c"]) - 1).abs() > REBASE_TOL]
+        if moved.empty:
+            continue
+        rows = pd.read_parquet(f, columns=["symbol", "date", "trig"]).merge(moved[["symbol", "date"]])
+        rep["months"].append(f.stem)
+        rep["affected_rows"] += len(rows)
+        rep["affected_gap_rows"] += int((rows["trig"] == "gap").sum())
+        f.unlink()
+        (d / "img" / f"{f.stem}.npz").unlink(missing_ok=True)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "CH_rebase.json").write_text(json.dumps(rep, indent=1))
+    print(f"[ch rebase] {len(rep['months'])} months to rebuild, {rep['affected_rows']} rows "
+          f"({rep['affected_gap_rows']} fired the gap trigger)")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", choices=["candidates", "context", "build"], required=True)
+    ap.add_argument("--stage", choices=["candidates", "context", "build", "rebase"], required=True)
     ap.add_argument("--cache", default="cache/w1")
     ap.add_argument("--out", default="research/results/CH")
     ap.add_argument("--budget-min", type=float, default=330)
@@ -373,6 +400,8 @@ def main():
     elif a.stage == "context":
         stage_context(a.cache)
     else:
+        if a.stage == "rebase":                   # then rebuild the deleted months in the same run
+            stage_rebase(a.cache, Path(a.out))
         done = stage_build(a.cache, deadline)
         Path(a.out).mkdir(parents=True, exist_ok=True)
         n = len(list((chdir(a.cache) / "rows").glob("*.parquet")))

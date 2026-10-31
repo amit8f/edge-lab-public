@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "candidates, context, build, check, trees, img or measure"
+        description: "candidates, context, build, rebase, check, trees, img or measure"
         required: true
         default: candidates
 
@@ -74,7 +74,7 @@ jobs:
         run: |
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
           case "$STAGE" in
-            candidates|context|build) mod=tracks.main.ch_data ;;
+            candidates|context|build|rebase) mod=tracks.main.ch_data ;;
             check|trees|img|measure) mod=tracks.main.ch_study ;;
             *) echo "::error::unknown stage $STAGE"; exit 1 ;;
           esac

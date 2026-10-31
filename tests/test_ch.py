@@ -173,7 +173,7 @@ def test_build_month_end_to_end_on_one_synthetic_candidate():
     yday = _session(prev, [20.0] * 78).assign(symbol="X", date=prev)
     spy = pd.concat([_session(d, [300.0] * 78).assign(symbol="SPY", date=d) for d in (prev, day)])
     bars = pd.concat([today, yday, spy], ignore_index=True)
-    one = {"date": day, "track": "main", "ac": 20.0, "c": 20.0, **CTX, "vol20": 78_000.0, "cik": 1}
+    one = {"date": day, "track": "main", "ac": 20.0, "c": 20.0, **CTX, "prev_ac": 20.0, "vol20": 78_000.0, "cik": 1}
     cand = pd.DataFrame([{"symbol": "X", **one}, {"symbol": "NOBARS", **one}, {"symbol": "NODAILY", **one}, {"symbol": "X", **one, "cik": float("nan")}])
     bars = pd.concat([bars, today.assign(symbol="NODAILY")], ignore_index=True)
     etf = pd.DataFrame({"symbol": "SPY", "date": days, "c": 300.0})
@@ -181,3 +181,38 @@ def test_build_month_end_to_end_on_one_synthetic_candidate():
     rows, intr, dimg = C.build_month(cand, bars, daily, ctxd, {"main": CURVE}, cal)
     assert len(rows) == 2 and (rows["trig"] == "gap").all() and rows["cik"].tolist() == [1, -1]
     assert intr.shape == (2, 156, 5) and dimg.shape[0] == 2
+
+
+def test_build_month_split_day_gap_uses_todays_basis():
+    days = pd.bdate_range("2017-01-02", periods=80)
+    day, prev = days[60], days[59]
+    cal = pd.DataFrame({"date": days, "close": "16:00"})
+    raw = np.where(days < day, 40.0, 20.0)                                      # 2:1 split on `day`
+    daily = pd.DataFrame({"symbol": "X", "date": days, "o": raw, "h": raw * 1.01, "l": raw * 0.99, "c": raw,
+                          "v": 78_000.0, "ac": 20.0, "seg": 0})
+    today = _session(day, [20.0] * 3 + [21.0] * 75, o=[20.0] * 78).assign(symbol="X", date=day)
+    spy = pd.concat([_session(d, [300.0] * 78).assign(symbol="SPY", date=d) for d in (prev, day)])
+    bars = pd.concat([today, spy], ignore_index=True)
+    cand = pd.DataFrame([{"symbol": "X", "date": day, "track": "main", "ac": 20.0, "c": 20.0, **CTX,
+                          "prev_c": 40.0, "prev_ac": 20.0, "hi20": 20.2, "lo20": 19.8, "vol20": 78_000.0, "cik": 1}])
+    etf = pd.DataFrame({"symbol": "SPY", "date": days, "c": 300.0})
+    ctxd = {"etf_raw": etf, "etf_all": etf, "vix": pd.DataFrame({"date": days, "vix": 15.0}), "sic": {1: "3570"}}
+    rows, _, _ = C.build_month(cand, bars, daily, ctxd, {"main": CURVE}, cal)
+    assert rows["trig"].tolist() == ["hl20"]                                     # not a fake -50% gap
+    assert abs(rows["gap"].iloc[0]) < 1e-9 and abs(rows["ret_today"].iloc[0] - 0.05) < 1e-9
+
+
+def test_rebase_drops_only_months_with_a_split(tmp_path):
+    d = C.chdir(tmp_path)
+    for m, ratio in (("2018-01", 1.0), ("2018-02", 2.0)):
+        c = pd.DataFrame({"symbol": ["X", "Y"], "date": pd.to_datetime([f"{m}-10"] * 2), "prev_c": [40.0, 10.0],
+                          "prev_ac": [40.0 / ratio, 10.0], "c": [20.0, 10.0], "ac": [20.0, 10.0]})
+        (d / "cand").mkdir(parents=True, exist_ok=True)
+        (d / "rows").mkdir(exist_ok=True)
+        c.to_parquet(d / "cand" / f"{m}.parquet")
+        c.assign(trig="gap")[["symbol", "date", "trig"]].to_parquet(d / "rows" / f"{m}.parquet")
+    C.stage_rebase(tmp_path, tmp_path / "out")
+    assert sorted(p.stem for p in (d / "rows").glob("*.parquet")) == ["2018-01"]
+    import json
+    rep = json.loads((tmp_path / "out" / "CH_rebase.json").read_text())
+    assert rep["months"] == ["2018-02"] and rep["affected_rows"] == 1 and rep["affected_gap_rows"] == 1
