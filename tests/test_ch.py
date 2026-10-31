@@ -161,3 +161,23 @@ def test_render_shapes_and_no_nan():
     dly = np.c_[dc, dc * 1.01, dc * 0.99, dc, rng.uniform(1e5, 1e6, 60)].astype(np.float32)
     img = S.render(intr, dly)
     assert img.shape == (3, 64, 192) and np.isfinite(img).all() and img[0].sum() > 0 and img[2].sum() > 0
+
+
+def test_build_month_end_to_end_on_one_synthetic_candidate():
+    days = pd.bdate_range("2017-01-02", periods=80)
+    day, prev = days[60], days[59]
+    cal = pd.DataFrame({"date": days, "close": "16:00"})
+    daily = pd.DataFrame({"symbol": "X", "date": days, "o": 20.0, "h": 20.2, "l": 19.8, "c": 20.0, "v": 78_000.0,
+                          "ac": 20.0, "seg": 0})
+    today = _session(day, [21.0] * 78, o=[21.0] * 78).assign(symbol="X", date=day)     # +5% gap at the open
+    yday = _session(prev, [20.0] * 78).assign(symbol="X", date=prev)
+    spy = pd.concat([_session(d, [300.0] * 78).assign(symbol="SPY", date=d) for d in (prev, day)])
+    bars = pd.concat([today, yday, spy], ignore_index=True)
+    one = {"date": day, "track": "main", "ac": 20.0, "c": 20.0, **CTX, "vol20": 78_000.0, "cik": 1}
+    cand = pd.DataFrame([{"symbol": "X", **one}, {"symbol": "NOBARS", **one}, {"symbol": "NODAILY", **one}, {"symbol": "X", **one, "cik": float("nan")}])
+    bars = pd.concat([bars, today.assign(symbol="NODAILY")], ignore_index=True)
+    etf = pd.DataFrame({"symbol": "SPY", "date": days, "c": 300.0})
+    ctxd = {"etf_raw": etf, "etf_all": etf, "vix": pd.DataFrame({"date": days, "vix": 15.0}), "sic": {1: "3570"}}
+    rows, intr, dimg = C.build_month(cand, bars, daily, ctxd, {"main": CURVE}, cal)
+    assert len(rows) == 2 and (rows["trig"] == "gap").all() and rows["cik"].tolist() == [1, -1]
+    assert intr.shape == (2, 156, 5) and dimg.shape[0] == 2

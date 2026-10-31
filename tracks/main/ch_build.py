@@ -126,6 +126,8 @@ def share_curve(bars):
 def session(bars, day, close_t):
     """Regular-session bars of one symbol-day, with slot numbers and bar close times."""
     t0 = day + OPEN
+    if bars.empty:
+        return pd.DataFrame(columns=[*bars.columns, "slot", "end"])
     b = bars[(bars["t"] >= t0) & (bars["t"] < day + close_t)].sort_values("t").copy()
     b["slot"] = ((b["t"] - t0) / SLOT).astype(int)
     b["end"] = b["t"] + SLOT

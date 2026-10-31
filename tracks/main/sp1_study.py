@@ -172,7 +172,7 @@ def test(c, ff5, umd, h=HOLD):
     lo, hi = block_bootstrap_ci(c["diff"], 12, 10_000, SEED)
     pm, _, pt = nw_tstat(c["pick"], LAGS)
     months = max(1, round(h / 21))
-    f = ff5.join(umd, how="inner")
+    f = ff5.join(umd, how="inner")[["Mkt-RF", "SMB", "HML", "RMW", "CMA", umd.columns[0]]]
     fh = f.rolling(months).sum().shift(-(months - 1)).reindex(c.index)
     ok = fh.notna().all(axis=1).to_numpy()
     alpha = stats.ols_hac(c["diff"].to_numpy(float)[ok], fh.to_numpy()[ok], LAGS) if ok.sum() > 8 else None

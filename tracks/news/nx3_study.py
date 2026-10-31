@@ -34,6 +34,7 @@ LAST_T = pd.Timedelta(minutes=2)          # no decision later than 2 minutes bef
 HOLD_SCALE = np.sqrt(1.5)
 SEED = 20261024
 Z_CLIP, FIRE_Q, GATE_T, PICKS = 6.0, 0.90, 2.0, 3
+ALL_PASS_T, ALL_MIN, ALL_MAX = 1.5, 0.05, 0.10   # NX3-ALL: near-miss bar; size 5%..10% of the book by confidence
 SYM_CHUNK = 200
 TRADES = "trades_v2"   # v1 mixed minute all-adjusted entries with daily exits (fixed 2026-10-24)
 INTRADAY = ["mins_open", "r_open", "r_react", "rv30", "spy_open"]
@@ -170,15 +171,25 @@ class Model:
         return (np.abs(e) >= self.cut) & (np.abs(e) > 0)
 
 
-def picks(day, rng, col="e"):
-    """Fired events in time order: the first PICKS with e > 0 go long, the first PICKS with e < 0 short.
-    Control: as many of the day's real events at random, same sides."""
+def picks(day, rng, col="e", cap=PICKS):
+    """Fired events in time order: the first `cap` with e > 0 go long, the first `cap` with e < 0 short
+    (cap None: all of them, NX3-ALL). Control: as many of the day's real events at random, same sides."""
     f = day[day["fired"]].sort_values("t", kind="stable")
-    p = pd.concat([f[f[col] > 0].head(PICKS).assign(side=1), f[f[col] < 0].head(PICKS).assign(side=-1)])
+    lo, sh = f[f[col] > 0], f[f[col] < 0]
+    if cap is not None:
+        lo, sh = lo.head(cap), sh.head(cap)
+    p = pd.concat([lo.assign(side=1), sh.assign(side=-1)])
     if p.empty or len(day) < len(p):
         return p, p.iloc[0:0]
     c = day.iloc[rng.choice(len(day), size=len(p), replace=False)].assign(side=p["side"].to_numpy())
     return p, c
+
+
+def conf_sizes(c, book=1.0):
+    """NX3-ALL sizes as fractions of the book: 5% at confidence c = |e|/cut 1 rising to 10% at c >= 2; if the
+    day's sizes add up to more than the book, all are scaled down together."""
+    w = ALL_MIN + (ALL_MAX - ALL_MIN) * np.clip(np.asarray(c, float) - 1.0, 0.0, 1.0)
+    return w * min(1.0, book / w.sum()) if w.sum() > 0 else w
 
 
 def shuffled(day, model, rng):
@@ -200,7 +211,7 @@ def importance(model):
     return {g: float(sum(by.get(k, 0.0) for k in ks)) for g, ks in GROUPS.items()}
 
 
-def evaluate(te, model, seed):
+def evaluate(te, model, seed, cap=PICKS):
     real = te[te["kind"] == "real"]
     e = model.effect(real[INPUTS].to_numpy(float))
     real = real.assign(e=e, fired=model.fires(e))
@@ -209,18 +220,23 @@ def evaluate(te, model, seed):
     rng = np.random.default_rng(seed)
     rows, pk = [], []
     for d, day in real.groupby("d", sort=True):
-        p, c = picks(day, rng)
+        p, c = picks(day, rng, cap=cap)
         if p.empty or c.empty:
             continue
-        s, _ = picks(shuffled(day, model, rng), rng)
+        s, _ = picks(shuffled(day, model, rng), rng, cap=cap)
         pn = N.net(p).mean()
-        rows.append({"d": d, "pick_minus_control": pn - N.net(c).mean(),
-                     "pick_minus_shuffled": pn - N.net(s).mean() if len(s) else np.nan})
+        row = {"d": d, "pick_minus_control": pn - N.net(c).mean(),
+               "pick_minus_shuffled": pn - N.net(s).mean() if len(s) else np.nan}
+        if cap is None:      # NX3-ALL: sized by confidence, the control trade i takes pick i's size
+            w = conf_sizes(np.abs(p["e"].to_numpy(float)) / model.cut)
+            row["sized_pick_minus_control"] = float(w @ (N.net(p).to_numpy(float) - N.net(c).to_numpy(float)))
+            row["invested"] = float(w.sum())
+        rows.append(row)
         pk.append(p.assign(vpct=day["vol20"].rank(pct=True).loc[p.index]))
     return pd.DataFrame(rows), (pd.concat(pk) if pk else pd.DataFrame(columns=["vpct", "mins_open"])), real, pe
 
 
-def walk_forward(ev, cal, years=N.TEST_YEARS):
+def walk_forward(ev, cal, years=N.TEST_YEARS, cap=PICKS):
     caldates = pd.DatetimeIndex(cal["date"])
     out, days = {}, []
     for yr in years:
@@ -231,7 +247,7 @@ def walk_forward(ev, cal, years=N.TEST_YEARS):
         if tr.empty or te.empty:
             continue
         model = Model(tr)
-        n, pk, real, pe = evaluate(te, model, SEED + yr)
+        n, pk, real, pe = evaluate(te, model, SEED + yr, cap)
         days.append(n)
         out[str(yr)] = {"train_placebo": model.n_base, "train_real": model.n_news, "fire_cut": model.cut,
                         "real_fire_rate": float(real["fired"].mean()),
@@ -240,11 +256,15 @@ def walk_forward(ev, cal, years=N.TEST_YEARS):
                         "pick_minus_shuffled": tstat(n["pick_minus_shuffled"].to_numpy(float)) if len(n) else None,
                         "picks_median_vol20_pct": float(pk["vpct"].median()) if len(pk) else None,
                         "picks_share_before_open": float((pk["mins_open"] <= 0).mean()) if len(pk) else None,
+                        "picks_per_day": float(len(pk) / len(n)) if len(n) else None,
                         "importance_gain_by_group": importance(model)}
     alln = pd.concat(days, ignore_index=True) if days else pd.DataFrame(
         columns=["pick_minus_control", "pick_minus_shuffled"])
-    pooled = {k: tstat(alln[k].to_numpy(float)) for k in ("pick_minus_control", "pick_minus_shuffled")}
-    gate = {k: bool(v["mean"] > 0 and v["t_nw"] >= GATE_T) for k, v in pooled.items()}
+    pooled = {k: tstat(alln[k].to_numpy(float)) for k in ("pick_minus_control", "pick_minus_shuffled",
+                                                         "sized_pick_minus_control") if k in alln}
+    if "invested" in alln:
+        pooled["invested_share_median"] = float(alln["invested"].median())
+    gate = {k: bool(pooled[k]["mean"] > 0 and pooled[k]["t_nw"] >= GATE_T) for k in ("pick_minus_control", "pick_minus_shuffled")}
     return out, pooled, gate
 
 
@@ -520,9 +540,25 @@ def stage_extremes(cache, out):
     print(json.dumps(summ, indent=1))
 
 
+def stage_uncapped(cache, out):
+    """NX3-ALL (research/prereg/NX3ALL.md): NX3's walk-forward with every fired event taken, same models and
+    seeds. Writes NX3ALL_walkforward.json next to NX3's results; NX3's own files are untouched."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    wf, pooled, _ = walk_forward(ev, calendar(cache), cap=None)
+    pm = pooled["sized_pick_minus_control"]
+    rep = {"walk_forward": wf, "pooled": pooled, "pass_t": ALL_PASS_T,
+           "verdict": "passed" if pm["mean"] > 0 and pm["t_nw"] >= ALL_PASS_T else "failed"}
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "NX3ALL_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps({"pooled": pooled, "verdict": rep["verdict"]}, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -530,6 +566,9 @@ def main():
     deadline = time.monotonic() + a.budget_min * 60
     if a.stage == "extremes":
         stage_extremes(a.cache, a.out)
+        return
+    if a.stage == "uncapped":
+        stage_uncapped(a.cache, a.out)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):

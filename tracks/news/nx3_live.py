@@ -39,6 +39,7 @@ from tracks.main.longterm import news_history
 from tracks.news import nx1_study as N
 from tracks.news import nx3_study as S
 from tracks.news import nx3_orders as O
+from tracks.news import nx3all_live as A
 from tracks.news import nxm_live as M
 from tracks.news import w1_data as W
 
@@ -394,6 +395,10 @@ def close_day(root, day, d):
         M.close_day(root, day.decisions, d, day_seed(d))
     except Exception as ex:
         print(f"[nxm] day not logged: {type(ex).__name__}: {ex}")
+    try:    # the NX3-ALL book and NXS-LLM sizes (research/prereg/NX3ALL.md, NXS.md); they never stop NX3
+        A.close_day(root, day.decisions, d, day_seed(d), day.ctx["cut"])
+    except Exception as ex:
+        print(f"[nx3all] day not logged: {type(ex).__name__}: {ex}")
     return out
 
 
@@ -432,6 +437,10 @@ def settle(root, api, cal, today):
         M.settle(root, api, cal, today)
     except Exception as ex:
         print(f"[nxm] settle failed: {type(ex).__name__}: {ex}")
+    try:
+        A.settle(root, api, cal, today)
+    except Exception as ex:
+        print(f"[nx3all] settle failed: {type(ex).__name__}: {ex}")
     return out
 
 
