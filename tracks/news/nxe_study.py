@@ -40,6 +40,7 @@ Q_STOP, Q_TARGET, Q_CLIP = 0.80, 0.50, (0.5, 6.0)
 EXQ_LGBM = dict(n_estimators=200, max_depth=3, num_leaves=7, min_child_samples=200, learning_rate=0.05,
                 deterministic=True, force_row_wise=True, verbose=-1, random_state=X3.SEED)
 PASS_T = 1.5
+TRAIL_K, TRAIL_ARM, TRAIL_C_MAX = 1.5, 1.0, 2.0   # NXT: trail distance, profit (ATRs) that arms it, cap on c
 HOLDOUT = pd.Timestamp("2025-10-01")
 FILTER_SEED = {"NOV": 101, "RV": 202, "NO8K": 303}
 BAD_8K = {"1.03", "2.06", "3.01", "4.01", "4.02"}
@@ -91,6 +92,27 @@ def frame_exit(entry, side, stop_px, target_px, sessions):
             return stop_px, dt, "stop"
         if (h >= target_px) if side > 0 else (lo <= target_px):
             return target_px, dt, "target"
+    return sessions[-1][3], sessions[-1][4], "time"
+
+
+def trail_exit(entry, side, atr, k, sessions):
+    """NXT on sessions [(open, high, low, close, date)], the first being d after the entry (its open
+    unused). The stop starts k ATRs away; each session is checked against the stop before its best price
+    moves it; once the best is 1 ATR in profit the stop goes to max(stop, entry, best - k ATR), never back.
+    (price, date, reason)."""
+    stop, best, why = entry - side * k * atr, entry, "stop"
+    for i, (o, h, lo, c, dt) in enumerate(sessions):
+        if not all(np.isfinite(x) for x in (h, lo, c)):
+            return np.nan, dt, "missing"
+        if i > 0 and np.isfinite(o) and (o <= stop if side > 0 else o >= stop):
+            return o, dt, why
+        if (lo <= stop) if side > 0 else (h >= stop):
+            return stop, dt, why
+        best = max(best, h) if side > 0 else min(best, lo)
+        if side * (best - entry) >= TRAIL_ARM * atr:
+            new = max(entry, best - k * atr) if side > 0 else min(entry, best + k * atr)
+            if side * (new - stop) > 0:
+                stop, why = new, ("breakeven" if new == entry else "trail")
     return sessions[-1][3], sessions[-1][4], "time"
 
 
@@ -454,6 +476,14 @@ def arm_trades(t, arm, levels=None):
                 continue
             p, w = path_exit(e, s, sp, tp, ph, r["path_l"], r["path_c"])
             px.append(p), dates.append(r["d"]), why.append(w)
+        elif arm in ("NXT-TR", "NXT-TC"):
+            if not a > 0:
+                px.append(np.nan), dates.append(pd.NaT), why.append("none")
+                continue
+            c = max(abs(r["e"]) / r["cut"], 1.0) if r.get("cut", 0) > 0 and np.isfinite(r.get("e", np.nan)) else 1.0
+            k = TRAIL_K if arm == "NXT-TR" else TRAIL_K * min(c, TRAIL_C_MAX)
+            p, dt, w = trail_exit(e, s, a, k, frame_sessions(r))
+            px.append(p), dates.append(dt), why.append(w)
         else:
             k_s, k_t = (DAY_STOP, DAY_TARGET) if levels is None else levels[r["_i"]]
             if not a > 0:
@@ -521,7 +551,8 @@ def measure_nxe(t, state):
     h1 = h1[(h1["next"] < HOLDOUT).to_numpy()]
     rep = {"H1 (NX3 itself)": summary(h1, 1)}
     arms = {}
-    for arm, lags in [("H2", 2), ("H3", 3), ("H5", 5), ("H20", 20), ("DAY", 1), ("EXA1", FRAME)]:
+    for arm, lags in [("H2", 2), ("H3", 3), ("H5", 5), ("H20", 20), ("DAY", 1), ("EXA1", FRAME),
+                      ("NXT-TR", FRAME), ("NXT-TC", FRAME)]:
         arms[arm] = (arm_trades(pc, arm), lags)
     # EXQ: per test year, models fitted on that year's model's fired training events
     exq, ins, outs = [], [], []
@@ -554,6 +585,9 @@ def measure_nxe(t, state):
                        "minus_EXA1_same_picks": vs}
         if overfit or not (vs["mean"] > 0 and vs["t_nw"] >= PASS_T):
             rep["EXQ"]["verdict"] = "failed"
+    for arm in ("NXT-TR", "NXT-TC"):    # NXT.md: also reported against EXA1, and TC against TR
+        rep[arm]["minus_EXA1_same_picks"] = paired(arms[arm][0], arms["EXA1"][0], FRAME)
+    rep["NXT-TC"]["minus_NXT-TR_same_picks"] = paired(arms["NXT-TC"][0], arms["NXT-TR"][0], FRAME)
     return rep
 
 
