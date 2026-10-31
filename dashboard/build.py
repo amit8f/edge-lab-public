@@ -45,7 +45,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL"}
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX2", "SP1"}
 
 
 def _json(p):
@@ -184,6 +184,13 @@ def log_books(st):
     out.append(_book("P4", "P4", None, sig, None, unit="signals", account="EL-P4"))
     k = _jsonl(st / "state-kronos" / "kronos" / "ledger.jsonl")
     out.append(_book("K3", "K3", None, len(k), None, unit="weekly logs"))
+    sp = _jsonl(st / "state" / "sp1" / "ledger.jsonl")
+    cand = [_json(st / "state" / "sp1" / x["file"]) or {} for x in sp if x.get("kind") == "SP1_candidate"]
+    ent = [x for x in sp if x.get("kind") == "SP1_entry"]
+    n = sum(1 for c in cand if c.get("candidate"))
+    out.append(_book("SP1", "SP1", None, 0, len(ent), unit="closed trades (1-year holds)", candidates=n,
+                     note=f"log only: {n} new spin-off filers seen since 2025-10-01; each is bought on its 22nd "
+                          "trading session and held 250; judged later"))
     return out
 
 

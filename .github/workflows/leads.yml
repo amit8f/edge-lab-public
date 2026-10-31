@@ -109,6 +109,15 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: .venv/bin/python -m tracks.news.l1_live --state state
 
+      - name: SP1 spin-off log (logs only, no orders)
+        if: always()
+        continue-on-error: true
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: .venv/bin/python -m tracks.main.sp1_live --state state
+
       - name: Commit the state back
         if: always()
         env:

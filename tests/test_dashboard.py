@@ -117,3 +117,13 @@ def test_nx3_all_book_and_its_day_button(tmp_path):
     b = {x["name"]: x for x in B.nx3_books(st)}["NX3-ALL"]
     assert (b["closed"], b["open"]) == (1, 0) and b["realized"] == pytest.approx(20.0)
     assert B.arm_picks(root, "2026-10-29")["ALL"]["AAA"] == {"side": 1, "net": 0.05, "w": 0.08, "w_llm": 0.06}
+
+
+def test_sp1_row(tmp_path):
+    from core.ledger import Ledger
+    led = Ledger(tmp_path / "state" / "sp1")
+    led.write_json("SP1_candidate", "111", "candidates/111.json", {"candidate": True})
+    led.write_json("SP1_candidate", "333", "candidates/333.json", {"candidate": False})
+    led.write_json("SP1_entry", "111", "entries/111.json", {"symbol": "SPNA"})
+    sp = next(b for b in B.log_books(tmp_path) if b["name"] == "SP1")
+    assert (sp["closed"], sp["open"], sp["candidates"]) == (0, 1, 1)
