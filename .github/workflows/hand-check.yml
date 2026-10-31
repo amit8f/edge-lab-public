@@ -49,6 +49,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add research/checks
+          if git diff --cached --quiet; then echo "nothing new to commit"; exit 0; fi
           git commit -q -m "Hand-check bars (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
