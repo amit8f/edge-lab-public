@@ -45,7 +45,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR"}
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL"}
 
 
 def _json(p):
@@ -105,6 +105,13 @@ def nx3_books(st):
         open_a = len((last or {}).get("arms", {}).get(a, {}).get("picks", [])) if last else 0
         out.append(_book(f"{idea}-{a}", idea, 100, len(tr), open_a, realized=sum(500 * (t["net"] or 0) for t in tr),
                          size=5000.0, first_day="2026-10-30" if idea == "NXR" else "2026-10-29"))
+    asettled = [_json(f) for f in sorted((root / "nx3all" / "settled").glob("*.json"))]
+    adays = sorted((root / "nx3all" / "days").glob("*.json"))
+    tr = [t for x in asettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
+    alast = _json(adays[-1]) if adays and adays[-1].stem > max((x["day"] for x in asettled if x), default="") else None
+    out.append(_book("NX3-ALL", "NX3-ALL", 30, len(tr), len((alast or {}).get("picks", [])),
+                     realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in tr), size=5000.0,
+                     first_day="2026-11-02"))
     return out
 
 
@@ -416,6 +423,12 @@ def arm_picks(root, day):
         net = {t["symbol"]: t.get("net") for t in st.get("arms", {}).get(a, {}).get("trades", []) if t.get("role") == "picks"}
         out[a] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"])}
                   for p in rec.get("arms", {}).get(a, {}).get("picks", [])}
+    al = _json(root / "nx3all" / "days" / f"{day}.json") or {}          # NX3-ALL (research/prereg/NX3ALL.md)
+    ast = _json(root / "nx3all" / "settled" / f"{day}.json") or {}
+    net = {t["symbol"]: t.get("net") for t in ast.get("trades", []) if t.get("role") == "picks"}
+    if al.get("picks"):
+        out["ALL"] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w"),
+                                    "w_llm": p.get("w_llm")} for p in al["picks"]}
     return out
 
 
