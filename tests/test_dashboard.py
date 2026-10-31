@@ -106,3 +106,14 @@ def test_accounts_without_keys_and_build(tmp_path, monkeypatch):
     res = B.build(st, tmp_path / "out", repo_root=tmp_path)
     j = json.loads((tmp_path / "out" / "summary.json").read_text())
     assert j["books"][0]["name"] == "NX3" and j["jobs"] == [] and res["nx3"][0]["day"] == "2026-10-29"
+
+
+def test_nx3_all_book_and_its_day_button(tmp_path):
+    st = _state(tmp_path)
+    root = st / "state-nx3" / "nx3"
+    _w(root / "nx3all" / "days" / "2026-10-29.json", {"picks": [{"symbol": "AAA", "side": 1, "w": 0.08, "w_llm": 0.06}]})
+    _w(root / "nx3all" / "settled" / "2026-10-29.json", {"day": "2026-10-29", "trades": [
+        {"symbol": "AAA", "role": "picks", "w": 0.08, "net": 0.05}, {"symbol": "BBB", "role": "control", "w": 0.08, "net": 0.0}]})
+    b = {x["name"]: x for x in B.nx3_books(st)}["NX3-ALL"]
+    assert (b["closed"], b["open"]) == (1, 0) and b["realized"] == pytest.approx(20.0)
+    assert B.arm_picks(root, "2026-10-29")["ALL"]["AAA"] == {"side": 1, "net": 0.05, "w": 0.08, "w_llm": 0.06}
