@@ -216,3 +216,29 @@ def test_rebase_drops_only_months_with_a_split(tmp_path):
     import json
     rep = json.loads((tmp_path / "out" / "CH_rebase.json").read_text())
     assert rep["months"] == ["2018-02"] and rep["affected_rows"] == 1 and rep["affected_gap_rows"] == 1
+
+
+def test_shrink_keeps_a_thin_line_and_halves_the_height():
+    img = np.zeros((3, 64, 192), np.float32)
+    img[1, 47, 5] = 1.0                                    # a one-pixel line must survive the halving
+    out = S.shrink(img)
+    assert out.shape == (3, 32, 192) and out[1, 23, 5] == 1.0 and out.sum() == 1.0
+
+
+def test_image_fits_use_a_fixed_random_sample():
+    mask = np.zeros(500_000, bool)
+    mask[::2] = True
+    a, b = S.pick_rows(mask, 7), S.pick_rows(mask, 7)
+    assert len(a) == S.IMG_ROWS and (a == b).all() and mask[a].all() and (np.diff(a) > 0).all()
+    small = S.pick_rows(mask[:1000], 7)
+    assert len(small) == 500                                # fewer rows than the cap: all of them
+
+
+def test_tamer_lightgbm_arm_is_depth_two_with_big_leaves():
+    assert S.LGBR["max_depth"] == 2 and S.LGBR["min_child_samples"] == 500 and S.LGBR["reg_lambda"] == 10.0
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(3000, 5)).astype(np.float32)
+    Y = (X[:, :1] * 0.01 + rng.normal(0, 0.01, (3000, 1)))
+    Y[::7] = np.nan                                        # a missing label is left out of the fit
+    m = S.fit_trees("lgbr", X, Y, 1)
+    assert m[0].get_params()["max_depth"] == 2 and m[0].predict(X[:5]).shape == (5,)
