@@ -29,6 +29,24 @@ test number of -1.09%):
 - Not mainly the data: the hand check found 40 of 50 events right, so a fifth of the events are not real short reports; that dilutes the result but doesn't explain the squeeze tail.
 What would show it's real: the same rule on days after registration, with a stop that cuts the squeeze tail.
 
+### CH tree arms (chart-reading XGBoost and LightGBM on the 5-minute scanner) - cause: 1, shown for three of four
+
+Scored 2026-11-01 (`results/CH/CH_result.json`; image arms still to come). Under the registered order, rule 21 comes first.
+- CHX-M, CHX-P, CHL-P are flagged overfit: their in-sample edge is 2.1x to 4.4x the out-of-sample one. By rule they
+  fail before their t is read.
+- CHL-M is not overfit but ends at t 2.92 with picks' own mean -0.09% a trade: the edge over random is smaller
+  than the cost of trading the flagged stocks at all.
+- The penny arms are the interesting ones: out of sample t 3.8 to 4.0, picks' own mean +0.6% a trade after costs,
+  factor alpha t 3.6 to 4.4, ahead of the control in 6 or 7 of 7 years, shorts (t ~4) stronger than longs (t ~3).
+  The registered rule still calls them failures because the model memorised too (+5% in sample).
+- The ORB benchmark didn't reproduce the published result (main +0.01%, t 0.19; penny +0.27%, t 0.83), so any edge
+  comes from the models, not from the opening-range idea.
+- Pattern: this is NXM-RF again. NX3's tamer trees (NXR: depth 2, large leaves) kept the signal and lost the
+  memorising. The same fix is the obvious one here.
+Suggested fix (section C, item 3): tamer penny and main arms, history can only reject, a forward book for any that
+pass. Odds Claude gives the penny arm: about 0.3 (the out-of-sample number is strong, but costs on penny shorts
+depend on borrow, which P1 showed is often missing); the main arm about 0.1.
+
 ### G2 (customer-supplier links, exact-name matcher, t 0.10) - cause: 6 (faded), shown
 
 The matcher was fixed (46 of 50 links right, 1,759 links) and the effect still isn't there: +0.04% a month, FF5 +
@@ -110,5 +128,10 @@ failed. Proposed in the monthly review: log skipped signals as hypothetical shor
    because the 3% rule was picked from these results and the stop may cost the best winners too. It also needs
    short sellers' reports to keep coming (about 40 events a year).
 2. **P1 skipped-signal log** (no idea count), already in the monthly review.
+
+3. **CHR-P and CHR-M** (2 ideas): CH's tree arms with NXR-style regularisation (LightGBM depth 2, 500-row leaves,
+   L2 10, the same 68 inputs and rows), rule 21 first, then rule 12 and 11; history can only reject (as NXR); passing
+   arms get a $1,000 (penny) or $5,000 (main) shadow book judged by rule 20. Cost: about 30 minutes of GitHub time.
+   Odds: CHR-P about 0.3, CHR-M about 0.1. Shorts in penny stocks only where Alpaca allows borrowing.
 
 Everything else above is closed with a reason.
