@@ -103,7 +103,7 @@ failed. Proposed in the monthly review: log skipped signals as hypothetical shor
 
 ## C. Suggested adjustments (not registered)
 
-1. **W2F** (forward only, 1 idea): the W2 events, but enter only if the stock is already down more than 3% from the
+1. **W2F** (forward only, 1 idea) - **skipped by Amit, 2026-11-01**; W2 stays closed: the W2 events, but enter only if the stock is already down more than 3% from the
    prior close at entry, and stop out if it rises 15% against us; shorts only in names Alpaca can borrow. Judged
    after 60 trading days and 30 closed trades, minus a same-day random control, NW t >= 1.5. Why: it targets
    the two things the diagnosis found (a squeeze tail and entries after the move). Odds Claude gives it: about 0.15,
