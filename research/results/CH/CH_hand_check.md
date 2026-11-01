@@ -41,3 +41,10 @@ wrong. None of the 40 sampled rows was a split day, so the sample didn't show it
 - Not rebuilt: ordinary dividend days (basis move under 1%). Their gap input is off by the dividend yield, which never comes near the 3% gap threshold.
 
 The 40 checked rows aren't split days, so the rebuild doesn't change them, and the check stands.
+
+## Rebuild counts (run 41232026486)
+
+Every one of the 105 months (2017-01 to 2025-09) held at least one split or large distribution, so the rebase stage
+deleted all of them and the build is rerunning in full. 2,584 built rows (out of all triggered rows) were on such
+days, and 369 of them had fired the fake gap trigger. The first run rebuilt 45 months; `stage=build` continues
+until `CH_build_progress.json` says finished.
