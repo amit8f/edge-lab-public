@@ -26,7 +26,7 @@ test number of -1.09%):
   our entry (144 trades) the net was +1.08% a trade (median +0.62%). Where it had risen (85 trades) the net
   was -4.07%. This split was chosen after seeing results, so it is a hint only.
 - Article time doesn't matter (before open -0.8%, in session -1.1%, after close +1.8% on 9 trades).
-- Not the data: 40 of 50 hand-checked events were right (the checked set carried the misses).
+- Not mainly the data: the hand check found 40 of 50 events right, so a fifth of the events are not real short reports; that dilutes the result but doesn't explain the squeeze tail.
 What would show it's real: the same rule on days after registration, with a stop that cuts the squeeze tail.
 
 ### G2 (customer-supplier links, exact-name matcher, t 0.10) - cause: 6 (faded), shown
@@ -67,7 +67,7 @@ by just +0.06% (t 0.44). So getting the dates right doesn't bring it back. Close
 
 ### INS1 (insider buys, $5+ stocks, t 0.60) - cause: 5 and 6, guess
 
-+0.19% a month vs control, picks' own mean +0.52% against control +0.34%. Right size for a faded effect. Whether
++0.19% per 20-session hold vs control, picks' own mean +0.52% against control +0.34%. Right size for a faded effect. Whether
 clustering buys (2 or more insiders) helps is untested for $5+ stocks; P4 tested clusters in pennies and found
 nothing (t -0.02). Fix: low odds (about 0.1). Not suggested.
 
