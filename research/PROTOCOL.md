@@ -91,3 +91,13 @@ which had no result then. Screens with results keep their verdicts; M11 keeps it
     A change picked from a data check that saw no returns (a matcher fixed after a hand check) may be
     tested on history.
 
+
+## Added 2026-11-01 (Amit: "after each fail we need to understand why it lost, note it somewhere with all the notes we gathered, and see if we can adjust some stuff to make it work"; his merge of this change is his signature)
+
+24. **Every failure gets a diagnosis.** When an idea ends as FAILED or STOPPED, the same PR adds an entry to
+    `research/DIAGNOSES.md`: what was lost (gross return, costs, mean against median, the best and worst 5%),
+    the best-supported cause among the seven in `FAILURE_REVIEW_2026-10-24.md` (or a new one), whether that
+    cause is shown by the data or a guess, and either one named fix (with the odds Claude gives it) or
+    "closed" with the reason. A fix picked from the results is a new counted idea tested forward (rule 23),
+    and Amit decides whether to register it. Failures whose cause can't be read from the stored numbers get
+    a post-hoc diagnosis stage first, as W2 did.
