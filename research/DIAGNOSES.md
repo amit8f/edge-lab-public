@@ -31,7 +31,7 @@ What would show it's real: the same rule on days after registration, with a stop
 
 ### CH tree arms (chart-reading XGBoost and LightGBM on the 5-minute scanner) - cause: 1, shown for three of four
 
-Scored 2026-11-01 (`results/CH/CH_result.json`; image arms still to come). Under the registered order, rule 21 comes first.
+Scored 2026-11-01 (`results/CH/CH_result.json`; image arms and CHR-P in the next two entries). Under the registered order, rule 21 comes first.
 - CHX-M, CHX-P, CHL-P are flagged overfit: their in-sample edge is 2.1x to 4.4x the out-of-sample one. By rule they
   fail before their t is read.
 - CHL-M is not overfit but ends at t 2.92 with picks' own mean -0.09% a trade: the edge over random is smaller
@@ -46,6 +46,36 @@ Scored 2026-11-01 (`results/CH/CH_result.json`; image arms still to come). Under
 Suggested fix (section C, item 3): tamer penny and main arms, history can only reject, a forward book for any that
 pass. Odds Claude gives the penny arm: about 0.3 (the out-of-sample number is strong, but costs on penny shorts
 depend on borrow, which P1 showed is often missing); the main arm about 0.1.
+
+### CH picture arms (CHI-M, CHI-P: a small CNN reading the chart) - cause: 1 and 7, partly shown
+
+Scored 2026-11-01 after Amendment 1 shrank the net (`results/CH/CH_result.json`). Rule 21 comes first.
+- CHI-M: in sample +0.22% a day over the control, out of sample -0.04%, so it learned something in sample and nothing
+  that carried over. t -0.60, picks' own mean -0.72% a trade. It made no picks at all in 2025 (why is a guess: the
+  model's predictions may all have sat under the cut; the saved predictions weren't inspected).
+- CHI-P: +0.82% in sample vs +0.36% out (2.3x, flagged), t 1.90, CI just under zero, picks' own mean -0.81% a trade.
+  Its 2025 daily mean is +16%, so a few huge days likely carry the t of 1.90 (not checked).
+- Why it lost: guess, two ways. (1) The net was cut down to fit free compute (100,000 sampled training rows a fit,
+  3 passes, 8/16/32 filters), and the paper it copies used far more data and larger nets; a fair test of the picture
+  idea wasn't possible here. (2) The tree arms on the same rows found the penny signal, so the signal exists in
+  numbers; the picture adds nothing the 68 numbers don't already hold. Neither is proven.
+- What would change it: more compute (a paid GPU, which Plan v3 says to flag) or a different picture. Odds Claude
+  gives either: about 0.05, because the tree arms already hold the same information. Closed; no fix suggested.
+
+### CHR-P (penny tamer LightGBM on the chart scanner) - cause: 5, shown
+
+Scored 2026-11-01 (`results/CH/CH_result.json`), registered the same day as `prereg/CHR.md`.
+- The fix worked on the thing it targeted: in sample +1.75% vs out of sample +0.97% (1.8x, under the 2x limit), where
+  CHX-P and CHL-P were at 4.3x to 4.4x.
+- It paid for that. The out-of-sample edge over the control fell from +1.2% a day to +0.97%, and t from about 3.9 to
+  2.91 (rule 12 needs 3.0). Picks' own mean after costs fell from +0.6% a trade to +0.01%. The edge over random is
+  real (CI +0.26%..+1.66%, alpha t 3.05) but is about the size of what trading these stocks costs.
+- Longs carry it (t 2.80); shorts are weak (t 1.52), and penny shorts also depend on Alpaca having borrow, which P1
+  showed it often doesn't.
+- Rule 19 on paper: hand check passed, t >= 1.5, picks' own mean > 0 (by 0.01%), so it counts as a near-miss.
+  CHR.md says a fail closes, so Amit decides whether it gets a near-miss shadow book (his Oct 24 rule).
+- Not checked: the by-year means are 3% to 4% a day in 2021 and 2023 and 3% in 2025 against about 0.2% in other years,
+  so a few extreme days may carry the result (rule 22 asks for means and the extreme 5%).
 
 ### G2 (customer-supplier links, exact-name matcher, t 0.10) - cause: 6 (faded), shown
 
