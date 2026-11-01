@@ -78,7 +78,7 @@ jobs:
             check|trees|treesr|img|measure) mod=tracks.main.ch_study ;;
             *) echo "::error::unknown stage $STAGE"; exit 1 ;;
           esac
-          .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320
+          .venv/bin/python -u -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320
 
       - name: Save CH's cache (also after a failure, so a rerun resumes)
         if: always()
