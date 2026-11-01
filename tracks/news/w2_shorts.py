@@ -152,9 +152,49 @@ def stage_report(cache, out):
     print(json.dumps({k: res[k] for k in ("status_counts", "events_traded", "verdict")}, indent=1, default=str))
 
 
+def _slice(x):
+    """Mean and median of the net return of a set of trades (None when it is empty)."""
+    return {"n": int(len(x)), "mean": float(x["net"].mean()), "median": float(x["net"].median()),
+            "gross_mean": float(x["gross"].mean())} if len(x) else {"n": 0}
+
+
+def diagnose(m):
+    """Why W2 lost (PROTOCOL rule 22: means and tails, not only ranks). m: measured trades (status ok) with
+    sign, r, r_spy, net, ac and entry_px. Post-hoc, not a test."""
+    m = m.copy()
+    m["gross"] = m["sign"] * (m["r"] - m["r_spy"])
+    m["costs"] = m["gross"] - m["net"]
+    m["pre"] = m["entry_px"] / m["ac"] - 1            # move from the prior close to the entry price
+    lo, hi = m["net"].quantile([0.05, 0.95])
+    mid = m[(m["net"] >= lo) & (m["net"] <= hi)]
+    d = {"n": int(len(m)), "gross_mean": float(m["gross"].mean()), "gross_median": float(m["gross"].median()),
+         "costs_mean": float(m["costs"].mean()), "net_mean": float(m["net"].mean()),
+         "net_median": float(m["net"].median()),
+         "net_mean_without_best_and_worst_5pct": float(mid["net"].mean()),
+         "worst_5pct_mean": float(m[m["net"] <= lo]["net"].mean()), "best_5pct_mean": float(m[m["net"] >= hi]["net"].mean())}
+    ok = m.dropna(subset=["pre"])
+    d["pre_entry_move_median"] = float(ok["pre"].median())
+    d["by_pre_entry_move"] = {"fell_over_3pct": _slice(ok[ok["pre"] < -0.03]),
+                              "fell_0_to_3pct": _slice(ok[(ok["pre"] >= -0.03) & (ok["pre"] < 0)]),
+                              "rose": _slice(ok[ok["pre"] >= 0])}
+    hr = pd.to_datetime(m["t"]).dt.hour + pd.to_datetime(m["t"]).dt.minute / 60
+    d["by_article_time"] = {"before_open": _slice(m[hr < 9.5]), "in_session": _slice(m[(hr >= 9.5) & (hr < 16)]),
+                            "after_close": _slice(m[hr >= 16])}
+    return d
+
+
+def stage_diagnose(cache, out):
+    rows = [json.loads(p.read_text()) for p in sorted((D.w1dir(cache) / MEASURE_DIR).glob("*.json"))]
+    m = pd.DataFrame(rows)
+    m = m[m["status"] == "ok"]
+    d = diagnose(m)
+    (out / "W2_diagnosis.json").write_text(json.dumps(d, indent=1, default=str))
+    print(json.dumps(d, indent=1, default=str))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["check", "urls", "measure", "report"])
+    ap.add_argument("--stage", required=True, choices=["check", "urls", "measure", "report", "diagnose"])
     ap.add_argument("--cache", required=True)
     ap.add_argument("--out", default="research/results/W2")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -166,6 +206,8 @@ def main():
             print("[w2] measure unfinished or refused; rerun to continue")
     elif a.stage == "report":
         stage_report(Path(a.cache), Path(a.out))
+    elif a.stage == "diagnose":
+        stage_diagnose(Path(a.cache), Path(a.out))
     else:
         stage_check(Path(a.cache), Path(a.out))
 
