@@ -2,14 +2,14 @@
 # cache/w1/ch, beside W1's daily cache, which it only reads). Order:
 #   stage=candidates, stage=context, then stage=build (rerun until CH_build_progress.json says finished),
 #   then stage=check (research/checks/CH.csv; hand-check.yml pulls each row's 5-minute bars), the hand check,
-#   then stage=trees, stage=img (rerun until all years are saved) and stage=measure.
+#   then stage=trees, stage=treesr (CHR-P), stage=img (rerun until all years are saved) and stage=measure.
 name: ch-study
 
 on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "candidates, context, build, rebase, check, trees, img or measure"
+        description: "candidates, context, build, rebase, check, trees, treesr, img or measure"
         required: true
         default: candidates
 
@@ -75,7 +75,7 @@ jobs:
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
           case "$STAGE" in
             candidates|context|build|rebase) mod=tracks.main.ch_data ;;
-            check|trees|img|measure) mod=tracks.main.ch_study ;;
+            check|trees|treesr|img|measure) mod=tracks.main.ch_study ;;
             *) echo "::error::unknown stage $STAGE"; exit 1 ;;
           esac
           .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320

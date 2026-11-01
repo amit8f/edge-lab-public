@@ -129,7 +129,7 @@ failed. Proposed in the monthly review: log skipped signals as hypothetical shor
    short sellers' reports to keep coming (about 40 events a year).
 2. **P1 skipped-signal log** (no idea count), already in the monthly review.
 
-3. **CHR-P and CHR-M** (2 ideas): CH's tree arms with NXR-style regularisation (LightGBM depth 2, 500-row leaves,
+3. **CHR-P** (registered 2026-11-01, `prereg/CHR.md`; Amit chose penny only, CHR-M not registered) (was: CHR-P and CHR-M, 2 ideas): CH's tree arms with NXR-style regularisation (LightGBM depth 2, 500-row leaves,
    L2 10, the same 68 inputs and rows), rule 21 first, then rule 12 and 11; history can only reject (as NXR); passing
    arms get a $1,000 (penny) or $5,000 (main) shadow book judged by rule 20. Cost: about 30 minutes of GitHub time.
    Odds: CHR-P about 0.3, CHR-M about 0.1. Shorts in penny stocks only where Alpaca allows borrowing.

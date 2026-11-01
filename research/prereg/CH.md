@@ -187,3 +187,20 @@ Main: picks beat the control by +0.05% to +0.15% a trade before costs, HAC t bel
 are about 0.7% a round trip in main and 1% in penny (spread plus the $0.35 minimum commission), so picks' own
 mean net is below 0 in both tracks. The image arms do no better than the tree arms. Penny moves are larger
 but noisier. Most likely all six fail, with at most one main arm reaching the near-miss lane.
+
+## Amendment 1 (2026-11-01): the image arms, shrunk to fit free compute
+
+Written before any image-arm result exists; the tree arms' results were seen first and are unaffected. Reason: the
+registered net (32/64/128 filters on 64 x 192 pictures, about 3.5 GFLOP a picture a pass) cannot be trained in a
+GitHub job, and the first run died of memory building every picture at once (36.8 GiB). Amit, 2026-11-01:
+"Shrink". CH.md already allows training on a random sample if a fit cannot finish; this goes further, so it is
+written here. Changes, for CHI-M and CHI-P:
+- The net reads the picture at half height (32 x 192; each pair of rows becomes its maximum). The drawing, the
+  inputs and the panels are unchanged.
+- Filters 8, 16, 32 (5 x 3 kernels, batch norm, leaky ReLU, (2,1) max-pooling, dropout 0.5, 6 outputs).
+- Each fit sees a fixed random sample of at most 100,000 training rows (seeded), at most 3 passes; the early stop
+  on a random 10% stays. Adam 1e-3, batch 256, seed 20261030 + year, as before.
+- Pictures are drawn only for the rows a fit or a prediction needs.
+- Rule 21 for the image arms scores the same 100,000-row sample each final model was fitted on, not every
+  training row.
+- Everything else (labels, cut, size, control, tests, pass rules, the count of 89 trials) is unchanged.

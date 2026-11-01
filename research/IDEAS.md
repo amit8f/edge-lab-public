@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 93** (main 36, penny 13, news 33, cross-track 10, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 108.
+**Phase 2 count: 94** (main 36, penny 14, news 33, cross-track 10, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 109.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
@@ -75,6 +75,7 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | K8 | main | 2026-10-28 | Bots C and C-groq's own answers acted on once a day (first readable answer from 15:30 ET, held overnight), $10,000 books with coin twins, no extra AI calls; primary test slow book minus its parent, NW t >= 3 after 120 trading days | Amit: "add all of those" (sweep 2026-10-28); Bloomberg on AI trading contests (Oct 2026); Barber & Odean (2000) | [prereg/K8.md](prereg/K8.md) | |
 | NX3-BAG | news | 2026-11-01 | NX3 with 25 bagged models (bootstrap resamples of the training days, own seeds) instead of one; same walk-forward, picks and costs; picks minus same-day random control NW t >= 1.5, and the per-year fire cut varies less than NX3's across 5 reruns on bootstrap draws of the event file; passing gets a $5,000 shadow book beside NX3 | Monthly review 2026-11-01 (idea A); Amit: "do both and we will see"; NX3's cut moved 0.36 -> 0.27 on under 0.1% different events | [prereg/NX3BAG.md](prereg/NX3BAG.md) | Registered; history run next |
 | C-INV | main | 2026-11-01 | The opposite side of AI bot C's wanted positions, acted on once a day from 10:00 ET (up to 5 names, C's costs), vs a coin flip on the same names; forward only, NW t >= 1.5 after 60 trading days and 30 closed trades | Monthly review 2026-11-01 (idea B); Amit: "do both and we will see"; C -13.3% vs coin flip -3.4% over 8 sessions (seen first) | [prereg/CINV.md](prereg/CINV.md) | Registered; forward book to build |
+| CHR-P | penny | 2026-11-01 | CH's penny chart model with tamer LightGBM (depth 2, 500-row leaves, L2 10, same 68 inputs and rows); rule 21 first, then rules 12 and 11; passing gets a $1,000 shadow book | CH tree arms: CHX-P/CHL-P +5% in sample vs +0.6% out of sample; Amit tapped "Penny only" 2026-11-01 (NXR precedent; history can only reject) | [prereg/CHR.md](prereg/CHR.md) | Registered; run next |
 
 ## Validation studies (not trading ideas; not counted)
 
