@@ -73,6 +73,8 @@ jobs:
           ALPACA_NX3_SECRET_KEY: ${{ secrets.ALPACA_NX3_SECRET_KEY }}
           ALPACA_DAY1_KEY_ID: ${{ secrets.ALPACA_DAY1_KEY_ID }}
           ALPACA_DAY1_SECRET_KEY: ${{ secrets.ALPACA_DAY1_SECRET_KEY }}
+          ALPACA_NX3ALL_KEY_ID: ${{ secrets.ALPACA_NX3ALL_KEY_ID }}
+          ALPACA_NX3ALL_SECRET_KEY: ${{ secrets.ALPACA_NX3ALL_SECRET_KEY }}
         run: python3 -m dashboard.build --states st --out sd/dash
 
       - name: Save to state-dash
