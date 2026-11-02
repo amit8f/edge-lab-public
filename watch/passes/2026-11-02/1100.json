@@ -1,0 +1,579 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "a988063f07a7cb11ec4b6b1f32aa8765cd9a0c1a08cd8bfc15c5da29d9e68010",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "374372c61363a0300a32feb377a041630eda996e1fd3c3c88a0c09f53c30538d",
+   "views": [
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "HGV",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MTX",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "FHI",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BTE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BDL",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "AEBI",
+     "tone": 0
+    },
+    {
+     "confidence": 60,
+     "event": "deal",
+     "symbol": "BYD",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "AX",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ENGS",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PSIG",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "e3b6f1c378613867264d488d6fa5ebe0ef8e005817669ec27102fa7d83b3f614",
+   "decisions": [
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong up move with high volume and analyst confidence",
+     "stop_pct": 10.0,
+     "symbol": "HGV"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "High z\u2011score and price jump despite modest volume",
+     "stop_pct": 12.0,
+     "symbol": "MTX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive analyst tone and strong momentum",
+     "stop_pct": 12.0,
+     "symbol": "FHI"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp down move with negative z\u2011score, shortable",
+     "stop_pct": 13.0,
+     "symbol": "BTE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Cannot short and price already surged; risk of reversal",
+     "stop_pct": 0.0,
+     "symbol": "BDL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Low volume despite up move; insufficient confidence",
+     "stop_pct": 0.0,
+     "symbol": "AEBI"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Moderate momentum and analyst confidence meets threshold",
+     "stop_pct": 14.0,
+     "symbol": "BYD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Low volume and modest move; not enough confidence",
+     "stop_pct": 0.0,
+     "symbol": "AX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable and minimal price change",
+     "stop_pct": 0.0,
+     "symbol": "ENGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal and not shortable",
+     "stop_pct": 0.0,
+     "symbol": "PSIG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NPKI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "STNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "UGP"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "b10ab00cde3e793a7bed9274c87541bd498d05999e6037dbd479c80d053062db"
+  },
+  "reviewer": {
+   "answer_sha256": "e8148515071ab02b057e9475485cc96922ad60baac873f38aafbc5b8557db1f7",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "f58a3497a6e32ef1c64ec2607400f2a5379cbc1d416148376c332ba5d3e3e719",
+   "reviews": [
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum with high volume and positive analyst alignment.",
+     "symbol": "HGV"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid price surge today despite mixed medium-term performance.",
+     "symbol": "MTX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive price action backed by favorable analyst tone and stable volume.",
+     "symbol": "FHI"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop supports continuation of short momentum.",
+     "symbol": "BTE"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Good intraday gains aligning with positive multi-day trends.",
+     "symbol": "BYD"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.07492,
+   "news": 0,
+   "pace": 3.28,
+   "price": 41.32,
+   "r20": 0.1027,
+   "r5": 0.07105,
+   "short": true,
+   "src": "iex",
+   "symbol": "HGV",
+   "z": 3.018
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.04877,
+   "news": 0,
+   "pace": 1.109,
+   "price": 65.8,
+   "r20": -0.05555,
+   "r5": -0.00254,
+   "short": true,
+   "src": "iex",
+   "symbol": "MTX",
+   "z": 4.428
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06156,
+   "news": 0,
+   "pace": 0.966,
+   "price": 62.08,
+   "r20": 0.04298,
+   "r5": 0.0294,
+   "short": true,
+   "src": "iex",
+   "symbol": "FHI",
+   "z": 4.362
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07063,
+   "news": 0,
+   "pace": 0.952,
+   "price": 5.0,
+   "r20": 0.16199,
+   "r5": -0.02182,
+   "short": true,
+   "src": "iex",
+   "symbol": "BTE",
+   "z": -4.239
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12223,
+   "news": 0,
+   "pace": 1.653,
+   "price": 67.3,
+   "r20": 0.2894,
+   "r5": 0.22915,
+   "short": false,
+   "src": "iex",
+   "symbol": "BDL",
+   "z": 4.139
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.05688,
+   "news": 0,
+   "pace": 0.663,
+   "price": 11.985,
+   "r20": 0.03941,
+   "r5": 0.02624,
+   "short": true,
+   "src": "iex",
+   "symbol": "AEBI",
+   "z": 3.947
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.05863,
+   "news": 0,
+   "pace": 0.862,
+   "price": 77.1,
+   "r20": 0.08297,
+   "r5": 0.0159,
+   "short": true,
+   "src": "iex",
+   "symbol": "BYD",
+   "z": 3.927
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.04924,
+   "news": 0,
+   "pace": 0.751,
+   "price": 94.83,
+   "r20": 0.0163,
+   "r5": -0.01536,
+   "short": true,
+   "src": "iex",
+   "symbol": "AX",
+   "z": 3.84
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.00221,
+   "news": 0,
+   "pace": 4.239,
+   "price": 4.52,
+   "r20": 0.48525,
+   "r5": 0.05594,
+   "short": false,
+   "src": "iex",
+   "symbol": "ENGS",
+   "z": -0.142
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.00305,
+   "news": 0,
+   "pace": 3.151,
+   "price": 4.925,
+   "r20": 0.07205,
+   "r5": 0.04025,
+   "short": false,
+   "src": "iex",
+   "symbol": "PSIG",
+   "z": 0.04
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4945.4416,
+  "PICK-MAIN-coin": 5002.1718,
+  "PICK-PENNY": 498.8435,
+  "PICK-PENNY-coin": 487.1849
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 93,
+  "news": 5,
+  "volume": 139
+ },
+ "flagged": 207,
+ "headline_counts": {
+  "BYD": 2,
+  "FHI": 3,
+  "HGV": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "375eb5314790b2fa9b3d760e6d4a4dc0f6278925f69b31204a079ba2da84ebe2",
+ "price_sources": {
+  "delayed_sip": 192,
+  "iex": 3216
+ },
+ "priced": 3408,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HGV"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MTX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FHI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BTE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BYD"
+  }
+ ],
+ "slot": "2026-11-02T11:00",
+ "t": "2026-11-02T16:00:20.430931+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T16:00:33.328987Z"
+}
