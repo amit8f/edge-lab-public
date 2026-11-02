@@ -259,3 +259,22 @@ def test_freeze_chrp_writes_six_checked_models_and_a_cut(tmp_path):
     b = lgb.Booster(model_file=str(tmp_path / "long_1.0.txt"))
     assert b.predict(np.array([[1.0], [-1.0]]))[0] > b.predict(np.array([[1.0], [-1.0]]))[1]   # the planted signal
     assert json.loads((tmp_path / "manifest.json").read_text())["cut"] == man["cut"]
+
+
+def test_diagnose_reports_means_medians_extremes_and_splits():
+    rng = np.random.default_rng(3)
+    days = pd.bdate_range("2021-01-04", periods=200)
+    n = 1200
+    d = pd.DataFrame({"symbol": [f"S{i % 40}" for i in range(n)], "date": rng.choice(days, n)})
+    d = d.drop_duplicates(["symbol", "date"]).reset_index(drop=True)
+    m = len(d)
+    rows = d.assign(log_price=np.log(rng.uniform(1, 5, m)), atr_pct=rng.uniform(0.02, 0.2, m),
+                    minutes=rng.uniform(15, 380, m), rvol=2.0, gap=0.0)
+    p = d.assign(net=rng.normal(0.002, 0.03, m), ctrl=rng.normal(0.0, 0.03, m), label=rng.choice(["long_1.5", "short_2.0"], m),
+                 trig=rng.choice(["rvol", "gap"], m), pred=rng.normal(0, 1, m), trade=True, size=0.05)
+    p.loc[0, "net"] = 5.0                                   # one huge trade must show up in the mean, not the median
+    r = S.diagnose(p, rows)
+    assert r["pick_best5pct_mean"] > r["pick_median"] and r["pick_mean"] > r["pick_median"]
+    assert set(r["splits"]) >= {"year", "side", "pair", "trigger", "price", "atr_pct", "time_of_day", "pred_quintile"}
+    assert r["diff_without_best_days"]["10"]["mean"] < r["mean_diff"]
+    assert abs(sum(v["n"] for v in r["splits"]["side"].values()) - m) <= 0

@@ -513,9 +513,74 @@ def stage_measure(cache, out):
     print(json.dumps(res, default=float)[:3000])
 
 
+# ---------- post-hoc diagnosis (NOT pre-registered; PROTOCOL rules 22 and 24) ----------
+
+def _tstat(x):
+    x = pd.Series(x).dropna()
+    return float(nw_tstat(x, LAGS)[2]) if len(x) > 30 else None
+
+
+def diagnose(p, rows):
+    """Where an arm's picks won and lost, from its measured trades `p` (`with_control` output) and the input rows.
+    Reports means beside medians and the extreme 5%, the daily difference with its best days removed, and splits by
+    year, side, stop/target pair, trigger, price, volatility and time of day. Nothing here is a test."""
+    w = daily(p)
+    d = w["diff"]
+    srt = d.sort_values()
+    n = len(d)
+    out = {"trades": int(len(p)), "days": int(n), "mean_diff": float(d.mean()), "median_diff": float(d.median()),
+           "t": _tstat(d), "pick_mean": float(p["net"].mean()), "pick_median": float(p["net"].median()),
+           "ctrl_mean": float(p["ctrl"].mean()), "ctrl_median": float(p["ctrl"].median()),
+           "pick_win_rate": float((p["net"] > 0).mean()), "ctrl_win_rate": float((p["ctrl"] > 0).mean())}
+    q5, q95 = p["net"].quantile([0.05, 0.95])
+    out["pick_worst5pct_mean"], out["pick_best5pct_mean"] = float(p.loc[p["net"] <= q5, "net"].mean()), float(
+        p.loc[p["net"] >= q95, "net"].mean())
+    c5, c95 = p["ctrl"].quantile([0.05, 0.95])
+    out["ctrl_worst5pct_mean"], out["ctrl_best5pct_mean"] = float(p.loc[p["ctrl"] <= c5, "ctrl"].mean()), float(
+        p.loc[p["ctrl"] >= c95, "ctrl"].mean())
+    out["diff_without_best_days"] = {str(k): {"mean": float(srt.iloc[:n - k].mean()), "t": _tstat(srt.iloc[:n - k])}
+                                     for k in (5, 10, 25)}
+    out["diff_without_worst_days"] = {str(k): {"mean": float(srt.iloc[k:].mean()), "t": _tstat(srt.iloc[k:])}
+                                      for k in (5, 10, 25)}
+    out["diff_winsorised_1pct"] = {"mean": float(d.clip(*d.quantile([0.01, 0.99])).mean()),
+                                   "t": _tstat(d.clip(*d.quantile([0.01, 0.99])))}
+    out["share_of_total_from_top10_days"] = float(srt.iloc[-10:].sum() / srt.sum()) if srt.sum() > 0 else None
+    out["trimmed_pick_minus_ctrl_per_trade"] = float((p["net"].clip(*p["net"].quantile([0.01, 0.99]))
+                                                      - p["ctrl"].clip(*p["ctrl"].quantile([0.01, 0.99]))).mean())
+    q = p.assign(date=pd.to_datetime(p["date"])).merge(
+        rows[["symbol", "date", "log_price", "atr_pct", "minutes", "rvol", "gap"]], on=["symbol", "date"], how="left")
+    q["diff"] = q["net"] - q["ctrl"]
+    splits = {"year": q["date"].dt.year, "side": q["label"].str.split("_").str[0], "pair": q["label"].str.split("_").str[1],
+              "trigger": q["trig"],
+              "price": pd.qcut(np.exp(q["log_price"]), 3, labels=["low", "mid", "high"], duplicates="drop"),
+              "atr_pct": pd.qcut(q["atr_pct"], 3, labels=["calm", "mid", "wild"], duplicates="drop"),
+              "time_of_day": pd.cut(q["minutes"], [0, 45, 120, 240, 400], labels=["9:45-10:15", "-11:30", "-1:30", "-3:30"]),
+              "pred_quintile": pd.qcut(q["pred"], 5, labels=False, duplicates="drop")}
+    out["splits"] = {}
+    for name, key in splits.items():
+        g = q.groupby(key, observed=True)
+        out["splits"][name] = {str(k): {"n": int(len(x)), "pick": float(x["net"].mean()), "pick_median": float(x["net"].median()),
+                                        "ctrl": float(x["ctrl"].mean()), "diff": float(x["diff"].mean())} for k, x in g}
+    return out
+
+
+def stage_diagnose(cache, out):
+    od = outdir(cache)
+    res = {"note": "POST-HOC / NOT PRE-REGISTERED (PROTOCOL rules 22 and 24); trades from the measure stage", "arms": {}}
+    for t in TRACKS:
+        rows = load_rows(cache, t)
+        for kind, arm in (("xgb", "CHX"), ("lgbm", "CHL"), ("lgbr", "CHR"), ("img", "CHI")):
+            f = od / f"{kind}_{t}_trades.parquet"
+            if f.exists():
+                res["arms"][f"{arm}-{'M' if t == 'main' else 'P'}"] = diagnose(pd.read_parquet(f), rows)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "CH_diagnosis.json").write_text(json.dumps(res, indent=1, default=float))
+    print(f"[ch diagnose] {len(res['arms'])} arms")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", choices=["check", "trees", "treesr", "freeze", "img", "measure"], required=True)
+    ap.add_argument("--stage", choices=["check", "trees", "treesr", "freeze", "img", "measure", "diagnose"], required=True)
     ap.add_argument("--cache", default="cache/w1")
     ap.add_argument("--out", default="research/results/CH")
     ap.add_argument("--budget-min", type=float, default=320)
@@ -525,6 +590,8 @@ def main():
         stage_check(a.cache)
     elif a.stage == "trees":
         stage_trees(a.cache)
+    elif a.stage == "diagnose":
+        stage_diagnose(a.cache, Path(a.out))
     elif a.stage == "freeze":
         stage_freeze(a.cache)
     elif a.stage == "treesr":
