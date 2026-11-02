@@ -45,7 +45,7 @@ jobs:
           auth=(-c "http.extraheader=AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)")
           url="https://github.com/${GITHUB_REPOSITORY}.git"
           mkdir -p st
-          for b in state state-nx3 state-nx1 state-scouts state-watch state-ai state-wide state-kronos state-chrp; do
+          for b in state state-nx3 state-nx1 state-scouts state-watch state-ai state-wide state-kronos state-chrp state-day1; do
             git "${auth[@]}" clone -q --depth 1 --branch "$b" "$url" "st/$b" || echo "no branch $b"
           done
           git "${auth[@]}" clone -q --depth 1 --branch state-dash "$url" sd || mkdir -p sd
@@ -71,6 +71,8 @@ jobs:
           ALPACA_PICK_PENNY_SECRET_KEY: ${{ secrets.ALPACA_PICK_PENNY_SECRET_KEY }}
           ALPACA_NX3_KEY_ID: ${{ secrets.ALPACA_NX3_KEY_ID }}
           ALPACA_NX3_SECRET_KEY: ${{ secrets.ALPACA_NX3_SECRET_KEY }}
+          ALPACA_DAY1_KEY_ID: ${{ secrets.ALPACA_DAY1_KEY_ID }}
+          ALPACA_DAY1_SECRET_KEY: ${{ secrets.ALPACA_DAY1_SECRET_KEY }}
         run: python3 -m dashboard.build --states st --out sd/dash
 
       - name: Save to state-dash

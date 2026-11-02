@@ -45,7 +45,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX2", "SP1", "CHR-P"}
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX2", "SP1", "CHR-P", "DAY1"}
 
 
 def _json(p):
@@ -122,6 +122,19 @@ def chrp_book(st):
     op = [x for x in (_json(w / "open.json") or []) if x.get("role") == "pick"]
     return [_book("CHR-P", "CHR-P", 30, len(tr), len(op), realized=sum(1000 * (t.get("size") or 0) * (t.get("net") or 0)
                                                                      for t in tr), size=1000.0)]
+
+
+def day1_book(st):
+    """DAY1, the all-day $1,000 bot (research/prereg/DAY1.md): the last logged day's equity and its twin's."""
+    days = sorted((st / "state-day1" / "day1" / "ledger" / "days").glob("*.json"))
+    last = _json(days[-1]) if days else None
+    if not last:
+        return []
+    closed = sum(1 for f in days for x in (_json(f) or {}).get("closed", []) if x.get("role") == "bot")
+    open_n = sum(1 for x in last.get("open", []) if x.get("role") == "bot")
+    return [_book("DAY1", "DAY1", 100, closed, open_n, realized=last["equity"] - 1000.0, size=1000.0,
+                  account="EL-DAY1", unit="trades", twin_pnl_pct=(last["twin_equity"] - 1000.0) / 10.0,
+                  days=len(days))]
 
 
 def nx1_book(st):
@@ -508,7 +521,7 @@ def last_change(repo_root, names):
 
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),
