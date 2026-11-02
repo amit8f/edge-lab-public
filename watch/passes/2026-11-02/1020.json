@@ -1,0 +1,614 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "69161057100adc696afcd7ec71b7943473bab4a0c758e2ffcbb7d24cc0578a4a",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "229a5fb5d77b4b39afe3d5ae7d305f3220ce5d517da0287e6f81cac399399216",
+   "views": [
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "TOP",
+     "tone": 0
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "SGML",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "DMLP",
+     "tone": 1
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "SVRN",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "MAR",
+     "tone": 2
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "QNBC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "DNUT",
+     "tone": 1
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "XTND",
+     "tone": 0
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "UIS",
+     "tone": 0
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "HRZN",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "79f4d933be34b5d698618432bf9844d927f2b3084429c358609ab2ae7f38e832",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No significant signal",
+     "stop_pct": 0.0,
+     "symbol": "TOP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No significant signal",
+     "stop_pct": 0.0,
+     "symbol": "SGML"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Acquisition deal catalyst, strong analyst confidence",
+     "stop_pct": 10.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No significant signal",
+     "stop_pct": 0.0,
+     "symbol": "SVRN"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat and upbeat outlook, bullish momentum",
+     "stop_pct": 12.0,
+     "symbol": "MAR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No significant signal",
+     "stop_pct": 0.0,
+     "symbol": "QNBC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive product news, high volume and analyst confidence",
+     "stop_pct": 20.0,
+     "symbol": "DNUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No significant signal",
+     "stop_pct": 0.0,
+     "symbol": "XTND"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No significant signal",
+     "stop_pct": 0.0,
+     "symbol": "UIS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No significant signal",
+     "stop_pct": 0.0,
+     "symbol": "HRZN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "NPKI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "STNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "UGP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "WEN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "ABEV"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "ABOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "CATX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop limits",
+     "stop_pct": 0.0,
+     "symbol": "CHRS"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "3b7d31c121bf3199c8308b30ebbbc1ac920ce0068f6ec3b2013d2a7596e359de"
+  },
+  "reviewer": {
+   "answer_sha256": "46980321fa837d7d1da8dafe2d4ff2ccad50a3e2647e4eb97e1991cb93f1310c",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "88a1080ac4b6a003f19da9720f3ad85aff97602bb2bdf7aa4ee2420ea1162b88",
+   "reviews": [
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume surge and positive deal catalyst support the proposed long trade despite recent dip.",
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum with earnings catalyst and positive tone justify the long position.",
+     "symbol": "MAR"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid short-term momentum and volume pace align with the long proposal.",
+     "symbol": "DNUT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.37309,
+   "news": 0,
+   "pace": 5.42,
+   "price": 6.965,
+   "r20": -0.27716,
+   "r5": -0.27338,
+   "short": false,
+   "src": "iex",
+   "symbol": "TOP",
+   "z": -6.447
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19143,
+   "news": 0,
+   "pace": 3.458,
+   "price": 5.66,
+   "r20": -0.22992,
+   "r5": -0.106,
+   "short": true,
+   "src": "iex",
+   "symbol": "SGML",
+   "z": -4.729
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.03691,
+   "news": 0,
+   "pace": 10.104,
+   "price": 28.7,
+   "r20": 0.04066,
+   "r5": -0.02725,
+   "short": true,
+   "src": "iex",
+   "symbol": "DMLP",
+   "z": -3.377
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.40075,
+   "news": 0,
+   "pace": 6.721,
+   "price": 17.66,
+   "r20": -0.18501,
+   "r5": -0.16563,
+   "short": false,
+   "src": "delayed_sip",
+   "symbol": "SVRN",
+   "z": -3.328
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.04404,
+   "news": 0,
+   "pace": 3.713,
+   "price": 416.885,
+   "r20": 0.11238,
+   "r5": 0.02199,
+   "short": true,
+   "src": "iex",
+   "symbol": "MAR",
+   "z": 3.199
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.02133,
+   "news": 0,
+   "pace": 3.821,
+   "price": 48.125,
+   "r20": 0.03311,
+   "r5": 0.02457,
+   "short": false,
+   "src": "iex",
+   "symbol": "QNBC",
+   "z": 3.052
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.04275,
+   "news": 0,
+   "pace": 3.784,
+   "price": 3.415,
+   "r20": 0.13322,
+   "r5": 0.16135,
+   "short": true,
+   "src": "iex",
+   "symbol": "DNUT",
+   "z": 1.492
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.1039,
+   "news": 0,
+   "pace": 3.679,
+   "price": 1.38,
+   "r20": -0.53333,
+   "r5": -0.12994,
+   "short": false,
+   "src": "iex",
+   "symbol": "XTND",
+   "z": -1.379
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.03448,
+   "news": 0,
+   "pace": 3.471,
+   "price": 2.52,
+   "r20": 0.14474,
+   "r5": 0.03162,
+   "short": true,
+   "src": "iex",
+   "symbol": "UIS",
+   "z": -1.314
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.02211,
+   "news": 0,
+   "pace": 4.839,
+   "price": 3.98,
+   "r20": -0.10155,
+   "r5": 0.02778,
+   "short": false,
+   "src": "iex",
+   "symbol": "HRZN",
+   "z": -1.159
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4950.1694,
+  "PICK-MAIN-coin": 4983.4697,
+  "PICK-PENNY": 499.0415,
+  "PICK-PENNY-coin": 491.1023
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.3502,
+   "price": 28.7,
+   "qty": 17,
+   "side": 1,
+   "stop": 25.83,
+   "symbol": "DMLP"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.3502,
+   "price": 28.7,
+   "qty": 17,
+   "side": 1,
+   "stop": 25.83,
+   "symbol": "DMLP"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.0905,
+   "price": 3.415,
+   "qty": 2,
+   "side": 1,
+   "stop": 2.732,
+   "symbol": "DNUT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.091,
+   "price": 3.415,
+   "qty": 2,
+   "side": -1,
+   "stop": 4.098,
+   "symbol": "DNUT"
+  }
+ ],
+ "flag_counts": {
+  "move": 53,
+  "news": 9,
+  "volume": 258
+ },
+ "flagged": 289,
+ "headline_counts": {
+  "DMLP": 1,
+  "DNUT": 1,
+  "MAR": 3,
+  "SVRN": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "729faac5c3c5367d53df448c141ffe80600871a4e9aaef7890ce1c4d35e2e936",
+ "price_sources": {
+  "delayed_sip": 307,
+  "iex": 3099
+ },
+ "priced": 3406,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 17,
+   "skip": null,
+   "symbol": "DMLP"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (risk)",
+   "symbol": "MAR"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 2,
+   "skip": null,
+   "symbol": "DNUT"
+  }
+ ],
+ "slot": "2026-11-02T10:20",
+ "t": "2026-11-02T15:20:20.980847+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T15:20:33.759935Z"
+}
