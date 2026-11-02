@@ -210,7 +210,7 @@ def stage_events(cache, out):
     e = er.stack().rename("er").reset_index()
     e.columns = ["date", "etf", "er"]
     uni = uni.merge(e, on=["date", "etf"], how="left").merge(
-        er["SPY"].rename("spy_ret5").reset_index(names="date"), on="date", how="left")
+        er["SPY"].rename("spy_ret5").rename_axis("date").reset_index(), on="date", how="left")
     uni["etf"] = np.where(uni["er"].isna(), "SPY", uni["etf"])        # XLC before 2018-06: SPY
     uni["etf_ret5"] = uni["er"].fillna(uni["spy_ret5"])
     uni["resid"] = uni["ret5"] - uni["etf_ret5"]
