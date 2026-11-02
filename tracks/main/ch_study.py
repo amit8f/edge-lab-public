@@ -178,7 +178,7 @@ CHRP_DIR = Path("models/chr_p")                      # the frozen CHR-P (prereg/
 CHRP_VAL = (pd.Timestamp("2025-01-01"), pd.Timestamp("2025-09-23"))
 
 
-def freeze_chrp(rows, out=CHRP_DIR):
+def freeze_chrp(rows, out=CHRP_DIR, curve=None):
     """CHR-P's frozen version 1: the cut and size scale come from a model fitted on 2017 .. 2024 (7-day purge)
     and scored on 2025-01-01 .. 2025-09-23; the final model is fitted on every row to 2025-09-23. Six LightGBM
     boosters (one per label) go to `out` as text files with a manifest holding the cut, the scale, the input
@@ -202,14 +202,16 @@ def freeze_chrp(rows, out=CHRP_DIR):
         files[f.name] = hashlib.sha256(f.read_bytes()).hexdigest()
     man = {"idea": "CHR-P", "prereg": "research/prereg/CHR.md", "labels": B.LABELS, "features": cols, "cut": cut,
            "scale": scale.tolist(), "fit_rows": int(allr.sum()), "val_rows": int(v.sum()),
-           "fit_to": str(CHRP_VAL[1].date()), "sha256": files, "lgbr": LGBR}
+           "fit_to": str(CHRP_VAL[1].date()), "sha256": files, "lgbr": LGBR,
+           "curve": curve}                           # the penny volume share curve (78 slots), an input of rvol
     (out / "manifest.json").write_text(json.dumps(man, indent=1))
     return man
 
 
 def stage_freeze(cache):
     rows = load_rows(cache, "penny")
-    man = freeze_chrp(rows)
+    curve = json.loads((C.chdir(cache) / "curve.json").read_text())["penny"]
+    man = freeze_chrp(rows, curve=curve)
     print(f"[ch freeze] CHR-P: {man['fit_rows']} rows, cut {man['cut']:.4%}, {len(man['features'])} inputs")
 
 

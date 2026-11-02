@@ -1,0 +1,104 @@
+# CHR-P live scanner and $1,000 shadow book (tracks/main/chr_live.py, research/prereg/CHR.md, "Live book"). Ledger
+# only: no orders. One job scans every 5 minutes from the open until 30 minutes before the close, saving to the
+# orphan branch `state-chrp` every 20 minutes, then queues the next job; after the close it logs the day, draws the
+# controls and settles positions whose 5 sessions are over. The crons only start the day (DST-proof: the code
+# waits for the open).
+name: chr-live
+
+on:
+  schedule:
+    - cron: "15 13 * * 1-5"
+    - cron: "15 14 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      check:
+        description: "true = read every source once and print counts (no state)"
+        required: false
+        default: "false"
+
+permissions: {}
+
+concurrency:
+  group: chrp-state
+  cancel-in-progress: false
+
+jobs:
+  live:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Check the sources once
+        if: inputs.check == 'true'
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: PYTHONPATH=. .venv/bin/python -u -m tracks.main.chr_live --check
+
+      - name: Restore the state branch
+        if: inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-chrp
+        run: bash deploy/state.sh restore
+
+      - name: Score the session, saving every 20 minutes
+        if: inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-chrp
+          RUN_LABEL: chr-live ${{ github.run_id }}-${{ github.run_attempt }}
+          PYTHONUNBUFFERED: "1"      # log lines carry the time they happened, not the flush time
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          stop=$(( $(date +%s) + 330 * 60 ))
+          while (( $(date +%s) + 20 * 60 < stop )); do
+            rc=0; PYTHONPATH=. .venv/bin/python -m tracks.main.chr_live --state state --minutes 20 || rc=$?
+            if (( rc == 3 )); then echo "done for today"; touch /tmp/session_over; break; fi
+            (( rc != 0 )) && { echo "::warning::chr_live exited $rc; restarting"; sleep 10; }
+            bash deploy/state.sh save || echo "::warning::state save failed"
+          done
+
+      - name: Save the state
+        if: always() && inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-chrp
+          RUN_LABEL: chr-live ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
+
+      - name: Queue the next job unless the day is done
+        if: always() && inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if [[ -f /tmp/session_over ]]; then echo "done for today"; exit 0; fi
+          others=$(gh run list -R "$REPO" --workflow chr-live.yml --limit 20 --json databaseId,status \
+            --jq "[.[] | select(.databaseId != $RUN_ID and (.status == \"queued\" or .status == \"in_progress\" or .status == \"pending\" or .status == \"waiting\"))] | length")
+          if [[ "$others" == "0" ]]; then gh workflow run chr-live.yml -R "$REPO" --ref main; echo queued; else echo "another run is queued"; fi
