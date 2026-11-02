@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 12:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 13:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8500.74 | -14.99% | 114 | 28 | long CRH, long MPWR, long REGN, long RKT, long TEM |
-| Coin flip on C's picks | $9628.83 | -3.71% | 114 | 55 | short CRH, short MPWR, long REGN, long RKT, long TEM |
-| C's prompt on Groq (K7) | $8086.15 | -19.14% | 282 | 65 | short CBRS, long RCL, long REGN, long RKT, long TEM |
-| Coin flip on C-groq's picks | $9333.48 | -6.67% | 282 | 139 | short CBRS, long RCL, long REGN, short RKT, short TEM |
-| C-groq's answers, acted on once a day (K8) | $10043.76 | +0.44% | 3 | 2 | long AZN, short INTC, long LNG, short NOW, long REGN |
-| Coin flip on C-groq-slow's picks | $10115.90 | +1.16% | 3 | 2 | long AZN, short INTC, short LNG, long NOW, short REGN |
-| C's answers, acted on once a day (K8) | $10028.26 | +0.28% | 1 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| Coin flip on C-slow's picks | $10260.84 | +2.61% | 1 | 1 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| Just hold SPY | $9873.13 | -1.27% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8523.26 | -14.77% | 114 | 28 | long CRH, long MPWR, long REGN, long RKT, long TEM |
+| Coin flip on C's picks | $9636.79 | -3.63% | 114 | 55 | short CRH, short MPWR, long REGN, long RKT, long TEM |
+| C's prompt on Groq (K7) | $8096.01 | -19.04% | 283 | 66 | short CBRS, long HWM, long REGN, long RKT, long TEM |
+| Coin flip on C-groq's picks | $9313.03 | -6.87% | 283 | 140 | short CBRS, short HWM, long REGN, short RKT, short TEM |
+| C-groq's answers, acted on once a day (K8) | $10056.77 | +0.57% | 3 | 2 | long AZN, short INTC, long LNG, short NOW, long REGN |
+| Coin flip on C-groq-slow's picks | $10104.40 | +1.04% | 3 | 2 | long AZN, short INTC, short LNG, long NOW, short REGN |
+| C's answers, acted on once a day (K8) | $10041.84 | +0.42% | 1 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| Coin flip on C-slow's picks | $10274.42 | +2.74% | 1 | 1 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| Just hold SPY | $9884.40 | -1.16% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-02 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 12:47 | long CRH, long MPWR, long REGN, long RKT, long TEM | sold DASH @ $189.21; bought CRH @ $96.05 | Maintaining long positions in TEM, REGN, RKT, and MPWR due to strong positive momentum and favorable news. Selling DASH due to recent weakness and adding CRH long based on strong earnings and positive price action. |
 | 2026-11-02 12:37 | long DASH, long MPWR, long REGN, long RKT, long TEM | sold UAL @ $110.15; bought DASH @ $190.53 | Maintaining long positions in TEM, REGN, RKT, and MPWR due to strong positive momentum and favorable news. Selling UAL due to continued underperformance. Adding DASH as a new long position based on strong intraday performance and positive news. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 12:5
 | 2026-10-29 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 12:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-29 11:57 | no answer, nothing changed | none | unreadable answer |
