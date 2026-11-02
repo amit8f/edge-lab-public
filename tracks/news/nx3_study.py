@@ -171,10 +171,12 @@ class Model:
         return (np.abs(e) >= self.cut) & (np.abs(e) > 0)
 
 
-def picks(day, rng, col="e", cap=PICKS):
+def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None):
     """Fired events in time order: the first `cap` with e > 0 go long, the first `cap` with e < 0 short
     (cap None: all of them, NX3-ALL). Control: as many of the day's real events at random, same sides."""
     f = day[day["fired"]].sort_values("t", kind="stable")
+    if hi > 1.0:      # NX3-HI (research/prereg/NX3HI.md): only confidence |e|/cut >= hi takes a slot
+        f = f[f[col].abs() >= hi * cut]
     lo, sh = f[f[col] > 0], f[f[col] < 0]
     if cap is not None:
         lo, sh = lo.head(cap), sh.head(cap)
@@ -193,7 +195,7 @@ def conf_sizes(c, book=1.0):
 
 
 def shuffled(day, model, rng):
-    X = day[INPUTS].to_numpy(float)
+    X = day[INPUTS].to_numpy(float, copy=True)      # a copy: newer pandas hands back a read-only view
     idx = [INPUTS.index(k) for k in N.NEWS_INPUTS]
     X[:, idx] = X[rng.permutation(len(X))][:, idx]
     e = model.effect(X)
@@ -211,7 +213,7 @@ def importance(model):
     return {g: float(sum(by.get(k, 0.0) for k in ks)) for g, ks in GROUPS.items()}
 
 
-def evaluate(te, model, seed, cap=PICKS):
+def evaluate(te, model, seed, cap=PICKS, hi=1.0):
     real = te[te["kind"] == "real"]
     e = model.effect(real[INPUTS].to_numpy(float))
     real = real.assign(e=e, fired=model.fires(e))
@@ -220,10 +222,10 @@ def evaluate(te, model, seed, cap=PICKS):
     rng = np.random.default_rng(seed)
     rows, pk = [], []
     for d, day in real.groupby("d", sort=True):
-        p, c = picks(day, rng, cap=cap)
+        p, c = picks(day, rng, cap=cap, hi=hi, cut=model.cut)
         if p.empty or c.empty:
             continue
-        s, _ = picks(shuffled(day, model, rng), rng, cap=cap)
+        s, _ = picks(shuffled(day, model, rng), rng, cap=cap, hi=hi, cut=model.cut)
         pn = N.net(p).mean()
         row = {"d": d, "pick_minus_control": pn - N.net(c).mean(),
                "pick_minus_shuffled": pn - N.net(s).mean() if len(s) else np.nan}
@@ -556,9 +558,51 @@ def stage_uncapped(cache, out):
     print(json.dumps({"pooled": pooled, "verdict": rep["verdict"]}, indent=1, default=float))
 
 
+def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0)):
+    """NX3-HI (research/prereg/NX3HI.md): NX3's walk-forward with only fired events of confidence |e|/cut >= bar
+    taking the 3+3 slots. Registered variant: 1.5; 1.25 and 2.0 are exploratory; 1.0 is NX3 itself. Same models and
+    seeds per year (controls are drawn per variant, so they differ a little between variants)."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    days = {b: [] for b in bars}
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        model = Model(tr)
+        for b in bars:
+            n, pk, _, _ = evaluate(te, model, SEED + yr, PICKS, hi=b)
+            if len(n):
+                days[b].append(n.assign(year=yr, picks=len(pk)))
+    empty = pd.DataFrame(columns=["d", "pick_minus_control", "year"])
+    cat = lambda fr: pd.concat(fr, ignore_index=True) if fr else empty     # noqa: E731 - a bar may have no pick days
+    base = cat(days[1.0])
+    rep = {"bars": {}, "registered_bar": 1.5, "pass_t": ALL_PASS_T}
+    for b in bars:
+        a = cat(days[b])
+        row = {"pick_minus_control": tstat(a["pick_minus_control"].to_numpy(float)),
+               "pick_days": int(len(a)), "per_year": {int(y): tstat(g["pick_minus_control"].to_numpy(float))
+                                                       for y, g in a.groupby("year")}}
+        if b != 1.0:
+            m = a.merge(base, on="d", suffixes=("", "_nx3"))
+            row["minus_nx3_shared_days"] = tstat((m["pick_minus_control"] - m["pick_minus_control_nx3"]).to_numpy(float))
+        rep["bars"][str(b)] = row
+    pm = rep["bars"]["1.5"]["pick_minus_control"]
+    rep["verdict"] = "passed" if pm["mean"] > 0 and pm["t_nw"] >= ALL_PASS_T else "failed"
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "NX3HI_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -569,6 +613,9 @@ def main():
         return
     if a.stage == "uncapped":
         stage_uncapped(a.cache, a.out)
+        return
+    if a.stage == "highbar":
+        stage_highbar(a.cache, a.out)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
