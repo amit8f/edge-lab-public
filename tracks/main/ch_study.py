@@ -7,6 +7,7 @@ Stages (rows and image windows come from `tracks/main/ch_data.py` stage build):
   predict Y-1 to fix the cut (80th percentile of the largest of the six predictions) and the size scale; refit
   on 2017 .. Y-1 (5-session purge before Y) and decide year Y. In-sample decisions are kept for rule 21.
 - "treesr": CHR-P, the tamer LightGBM arm, penny only (prereg/CHR.md).
+- "freeze": CHR-P version 1 for the forward book (models/chr_p).
 - "img": the image arm, the same walk-forward, one fit per run step (resumable; CPU), shrunk by CH.md
   Amendment 1 (half-height pictures, a small net, random training samples).
 - "measure": rule 21, then the control, the daily test, rule 12 and 11, and the exploratory list.
@@ -171,6 +172,45 @@ def walk_forward(rows, fit, predict_fn, name, log=print):
         log(f"[ch {name}] {Y}: cut {cut:.4%}, {int(trade.sum())} trades of {int(t.sum())} "
             f"({time.monotonic() - t0:.0f}s)")
     return pd.concat(out, ignore_index=True), pd.concat(ins, ignore_index=True)
+
+
+CHRP_DIR = Path("models/chr_p")                      # the frozen CHR-P (prereg/CHR.md, "Live book")
+CHRP_VAL = (pd.Timestamp("2025-01-01"), pd.Timestamp("2025-09-23"))
+
+
+def freeze_chrp(rows, out=CHRP_DIR):
+    """CHR-P's frozen version 1: the cut and size scale come from a model fitted on 2017 .. 2024 (7-day purge)
+    and scored on 2025-01-01 .. 2025-09-23; the final model is fitted on every row to 2025-09-23. Six LightGBM
+    boosters (one per label) go to `out` as text files with a manifest holding the cut, the scale, the input
+    names and each file's sha256."""
+    import hashlib
+    cols = feature_names(rows)
+    X = rows[cols].to_numpy(np.float32)
+    Yl = rows[B.LABELS].to_numpy(np.float64)
+    d = rows["date"]
+    a = (d < CHRP_VAL[0] - pd.Timedelta(days=PURGE_DAYS)).to_numpy()
+    v = ((d >= CHRP_VAL[0]) & (d <= CHRP_VAL[1])).to_numpy()
+    allr = (d <= CHRP_VAL[1]).to_numpy()
+    pv = predict(fit_trees("lgbr", X[a], Yl[a], SEED + 2025), X[v]).max(axis=1)
+    cut, scale = float(np.quantile(pv, CUT_Q)), np.quantile(pv, np.linspace(0, 1, 101))
+    models = fit_trees("lgbr", X[allr], Yl[allr], SEED + 2025)
+    out.mkdir(parents=True, exist_ok=True)
+    files = {}
+    for lab, m in zip(B.LABELS, models):
+        f = out / f"{lab}.txt"
+        m.booster_.save_model(str(f))
+        files[f.name] = hashlib.sha256(f.read_bytes()).hexdigest()
+    man = {"idea": "CHR-P", "prereg": "research/prereg/CHR.md", "labels": B.LABELS, "features": cols, "cut": cut,
+           "scale": scale.tolist(), "fit_rows": int(allr.sum()), "val_rows": int(v.sum()),
+           "fit_to": str(CHRP_VAL[1].date()), "sha256": files, "lgbr": LGBR}
+    (out / "manifest.json").write_text(json.dumps(man, indent=1))
+    return man
+
+
+def stage_freeze(cache):
+    rows = load_rows(cache, "penny")
+    man = freeze_chrp(rows)
+    print(f"[ch freeze] CHR-P: {man['fit_rows']} rows, cut {man['cut']:.4%}, {len(man['features'])} inputs")
 
 
 def stage_trees(cache, kinds=("xgb", "lgbm")):
@@ -473,7 +513,7 @@ def stage_measure(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", choices=["check", "trees", "treesr", "img", "measure"], required=True)
+    ap.add_argument("--stage", choices=["check", "trees", "treesr", "freeze", "img", "measure"], required=True)
     ap.add_argument("--cache", default="cache/w1")
     ap.add_argument("--out", default="research/results/CH")
     ap.add_argument("--budget-min", type=float, default=320)
@@ -483,6 +523,8 @@ def main():
         stage_check(a.cache)
     elif a.stage == "trees":
         stage_trees(a.cache)
+    elif a.stage == "freeze":
+        stage_freeze(a.cache)
     elif a.stage == "treesr":
         stage_trees(a.cache, ("lgbr",))
     elif a.stage == "img":

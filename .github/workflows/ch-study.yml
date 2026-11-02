@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "candidates, context, build, rebase, check, trees, treesr, img or measure"
+        description: "candidates, context, build, rebase, check, trees, treesr, freeze, img or measure"
         required: true
         default: candidates
 
@@ -75,7 +75,7 @@ jobs:
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
           case "$STAGE" in
             candidates|context|build|rebase) mod=tracks.main.ch_data ;;
-            check|trees|treesr|img|measure) mod=tracks.main.ch_study ;;
+            check|trees|treesr|freeze|img|measure) mod=tracks.main.ch_study ;;
             *) echo "::error::unknown stage $STAGE"; exit 1 ;;
           esac
           .venv/bin/python -u -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320
@@ -93,8 +93,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/CH research/checks
-          git add research/results/CH research/checks
+          mkdir -p research/results/CH research/checks models/chr_p
+          git add research/results/CH research/checks models/chr_p
           git diff --cached --quiet && { echo "No results yet"; exit 0; }
           git commit -q -m "CH ${{ github.event.inputs.stage }} output (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"

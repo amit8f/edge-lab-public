@@ -242,3 +242,20 @@ def test_tamer_lightgbm_arm_is_depth_two_with_big_leaves():
     Y[::7] = np.nan                                        # a missing label is left out of the fit
     m = S.fit_trees("lgbr", X, Y, 1)
     assert m[0].get_params()["max_depth"] == 2 and m[0].predict(X[:5]).shape == (5,)
+
+
+def test_freeze_chrp_writes_six_checked_models_and_a_cut(tmp_path):
+    import hashlib
+    import json
+    import lightgbm as lgb
+    r = _srows(n_days=2300, per_day=3)
+    r = r[r["date"] <= S.CHRP_VAL[1]].reset_index(drop=True)
+    man = S.freeze_chrp(r, tmp_path)
+    assert man["val_rows"] > 100 and man["fit_to"] == "2025-09-23" and np.isfinite(man["cut"])
+    assert len(man["scale"]) == 101 and man["features"] == ["x1"]
+    for lab in B.LABELS:
+        f = tmp_path / f"{lab}.txt"
+        assert hashlib.sha256(f.read_bytes()).hexdigest() == man["sha256"][f.name]
+    b = lgb.Booster(model_file=str(tmp_path / "long_1.0.txt"))
+    assert b.predict(np.array([[1.0], [-1.0]]))[0] > b.predict(np.array([[1.0], [-1.0]]))[1]   # the planted signal
+    assert json.loads((tmp_path / "manifest.json").read_text())["cut"] == man["cut"]
