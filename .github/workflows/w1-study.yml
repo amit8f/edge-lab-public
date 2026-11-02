@@ -9,6 +9,7 @@
 #   part=pd1 stage=events (research/prereg/PD1.md): earnings 8-K events and research/checks/PD1.csv.
 #   part=eap1 / part=sp1 stage=events, then measure after research/checks/EAP1.csv / SP1.csv is filled.
 #   part=tom1 stage=measure (research/prereg/TOM1.md): market and SPY over month ends and before holidays.
+#   part=nr1 stage=events, then measure after research/checks/NR1.csv is filled (research/prereg/NR1.md).
 # Own data cache (cache/w1). Results are committed back to the branch that ran it.
 name: w1-study
 
@@ -16,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       part:
-        description: "w1a, w1b, w1c, w2, pd1, eap1, sp1, ins1 or tom1"
+        description: "w1a, w1b, w1c, w2, pd1, eap1, sp1, ins1, tom1 or nr1"
         required: true
         default: w1a
       stage:
@@ -90,7 +91,9 @@ jobs:
                 exit 0 ;;
             tom1) .venv/bin/python -m tracks.main.tom1_study --stage "$STAGE" --out research/results/TOM1
                 exit 0 ;;
-            *) echo "::error::part must be w1a, w1b, w1c, w2, pd1, eap1, sp1, ins1 or tom1"; exit 1 ;;
+            nr1) .venv/bin/python -m tracks.main.nr1_study --stage "$STAGE" --cache cache/w1 --out research/results/NR1
+                exit 0 ;;
+            *) echo "::error::part must be w1a, w1b, w1c, w2, pd1, eap1, sp1, ins1, tom1 or nr1"; exit 1 ;;
           esac
           .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/W1 --budget-min 290
 
