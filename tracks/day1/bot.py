@@ -224,14 +224,16 @@ def exit_order(pos, moc, tag):
 def send(br, body, sink):
     if br is None:
         sink.append({"body": body, "sent": False})
-        return
+        return None
     try:
         code, js = br.order(body)
         sink.append({"body": body, "http": code, "status": js.get("status"),
                      "message": None if code < 300 else js.get("message")})
         print(f"[day1-orders] {body['side']} {body['symbol']}: {code} {js.get('status') or js.get('message')}")
+        return code, js.get("message")
     except Exception as e:  # noqa: BLE001 - orders never stop the ledger book
         sink.append({"body": body, "error": f"{type(e).__name__}: {e}"[:200]})
+        return None
 
 
 # ---------- one minute ----------
@@ -316,7 +318,13 @@ def fund(st, api, br, now, d, cands, pools, sessions, short_c):
             st.log(d, rec | {"funded": False, "reason": "under one share"})
             continue
         pos.append(bot)
-        send(br, entry_order(bot), orders)
+        res = send(br, entry_order(bot), orders)
+        if res and res[0] == 403 and "fractionable" in (res[1] or ""):
+            # whole shares only for this stock: size the ledger position to what the account can buy
+            bot["qty"] = float(int(bot["usd"] // bot["entry"]))
+            if bot["qty"] >= 1:
+                whole = {k: v for k, v in entry_order(bot).items() if k != "notional"}
+                send(br, whole | {"qty": f"{bot['qty']:g}"}, orders)
         # the twin: a random other stock from the same sleeve's pool today, same size, minute and exit rule
         pool = sorted({x["symbol"]: x for x in pools[c["sleeve"]] if x["symbol"] != c["symbol"]}.items())
         twin = None

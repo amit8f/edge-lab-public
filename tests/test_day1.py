@@ -216,3 +216,19 @@ def test_penny_entry_limit_price_is_whole_cents():
     pos = {"symbol": "EVGO", "entry": 1.7845, "qty": 29, "usd": 52.0, "date": "2026-11-02"}
     o = D.entry_order(pos)
     assert o["type"] == "limit" and len(o["limit_price"].split(".")[1]) == 2
+
+
+def test_non_fractionable_entry_retries_whole_shares():
+    sent = []
+
+    class B:
+        def order(self, body):
+            sent.append(body)
+            if "notional" in body:
+                return 403, {"message": 'asset "SPTX" is not fractionable'}
+            return 200, {"status": "pending_new"}
+
+    pos = {"symbol": "SPTX", "entry": 20.0, "usd": 105.0, "qty": 5.25, "date": "2026-11-02"}
+    orders = []
+    res = D.send(B(), D.entry_order(pos), orders)
+    assert res[0] == 403
