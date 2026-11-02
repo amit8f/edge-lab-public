@@ -2,14 +2,14 @@
 # cache/w1/ch, beside W1's daily cache, which it only reads). Order:
 #   stage=candidates, stage=context, then stage=build (rerun until CH_build_progress.json says finished),
 #   then stage=check (research/checks/CH.csv; hand-check.yml pulls each row's 5-minute bars), the hand check,
-#   then stage=trees, stage=img (rerun until all years are saved) and stage=measure.
+#   then stage=trees, stage=treesr (CHR-P), stage=img (rerun until all years are saved) and stage=measure.
 name: ch-study
 
 on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "candidates, context, build, rebase, check, trees, img or measure"
+        description: "candidates, context, build, rebase, check, trees, treesr, freeze, img, measure, diagnose or chrcheck"
         required: true
         default: candidates
 
@@ -73,12 +73,15 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: |
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
+          if [[ "$STAGE" == chrcheck ]]; then   # CHR-P's live scanner, one dry read of every source (no state)
+            PYTHONPATH=. .venv/bin/python -u -m tracks.main.chr_live --check; exit $?
+          fi
           case "$STAGE" in
             candidates|context|build|rebase) mod=tracks.main.ch_data ;;
-            check|trees|img|measure) mod=tracks.main.ch_study ;;
+            check|trees|treesr|freeze|img|measure|diagnose) mod=tracks.main.ch_study ;;
             *) echo "::error::unknown stage $STAGE"; exit 1 ;;
           esac
-          .venv/bin/python -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320
+          .venv/bin/python -u -m "$mod" --stage "$STAGE" --cache cache/w1 --out research/results/CH --budget-min 320
 
       - name: Save CH's cache (also after a failure, so a rerun resumes)
         if: always()
@@ -93,8 +96,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/CH research/checks
-          git add research/results/CH research/checks
+          mkdir -p research/results/CH research/checks models/chr_p
+          git add research/results/CH research/checks models/chr_p
           git diff --cached --quiet && { echo "No results yet"; exit 0; }
           git commit -q -m "CH ${{ github.event.inputs.stage }} output (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"

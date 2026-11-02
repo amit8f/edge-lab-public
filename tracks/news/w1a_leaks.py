@@ -296,10 +296,10 @@ def group_stats(m, col="net"):
             "ci95": list(ci), "hit_rate": float((ok[col] > 0).mean())}
 
 
-def check_passed(out):
-    f = Path(out) / "W1a_check.csv"
+def check_passed(out, name="W1a_check.csv"):
+    f = Path(out) / name
     if not f.exists():
-        return False, "W1a_check.csv is missing (run the events stage)"
+        return False, f"{name} is missing (run the events stage)"
     c = pd.read_csv(f, dtype=str).fillna("")
     filled = c["ok"].str.lower().isin(["y", "n"])
     if not filled.all():
@@ -425,18 +425,21 @@ def stage_gdelt(out, get=requests.get):
     (out / "W1a_gdelt.json").write_text(json.dumps(res, indent=1))
 
 
-def stage_measure(cache, out, budget_min):
-    ok, why = check_passed(out)
+def stage_measure(cache, out, budget_min, check="W1a_check.csv", events="w1a_events.parquet", measure="w1a_measure"):
+    """W2 reuses this with its own check file, events file and measure folder (tracks/news/w2_shorts.py)."""
+    ok, why = check_passed(out, check)
     if not ok:
         print(f"[measure] hand check not passed: {why}; measure stage refused")
         return False
     deadline = time.monotonic() + budget_min * 60
     h = alpaca_headers()
     cal = D.calendar()
-    ev = pd.read_parquet(D.w1dir(cache) / "w1a_events.parquet")
+    ev = pd.read_parquet(D.w1dir(cache) / events)
+    if "price_group" not in ev:
+        ev["price_group"] = np.where(ev["close"] < L1.PENNY_MAX, "penny", "main")
     c0p = Path("research/results/C0/C0_costs.json")
     c0 = json.loads(c0p.read_text()) if c0p.exists() else None
-    mdir = D.w1dir(cache) / "w1a_measure"
+    mdir = D.w1dir(cache) / measure
     mdir.mkdir(parents=True, exist_ok=True)
     done = {p.stem for p in mdir.glob("*.json")}
     spy, rngs, uni_year, uni = {}, {}, None, None

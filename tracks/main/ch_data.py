@@ -98,10 +98,16 @@ def stage_candidates(cache, out):
     print("CH", json.dumps(cov))
 
 
-def day_bars(syms, day, headers):
-    """5-minute SIP raw bars of `syms` on `day`, 04:00-20:00 ET, as rows (symbol, t in ET, o, h, l, c, v, vw)."""
+def day_bars(syms, day, headers, end=None):
+    """5-minute SIP raw bars of `syms` on `day`, 04:00-20:00 ET, as rows (symbol, t in ET, o, h, l, c, v, vw).
+    `end` (a UTC timestamp, for the live scanner: now - 16 minutes) cuts the window short."""
     s = pd.Timestamp(f"{day:%Y-%m-%d} 04:00", tz=ET).tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
-    e = pd.Timestamp(f"{day:%Y-%m-%d} 20:00", tz=ET).tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
+    e = pd.Timestamp(f"{day:%Y-%m-%d} 20:00", tz=ET).tz_convert("UTC")
+    if end is not None:
+        e = min(e, pd.Timestamp(end))
+        if e <= pd.Timestamp(s):
+            return pd.DataFrame(columns=["symbol", "t", "o", "h", "l", "c", "v", "vw"])
+    e = e.strftime("%Y-%m-%dT%H:%M:%SZ")
     rows, tok = [], None
     while True:
         p = {"symbols": ",".join(syms), "timeframe": "5Min", "start": s, "end": e, "feed": "sip",

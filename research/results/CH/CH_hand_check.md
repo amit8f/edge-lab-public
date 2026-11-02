@@ -38,6 +38,13 @@ wrong. None of the 40 sampled rows was a split day, so the sample didn't show it
 - Fix: `ctx["prev_c"] = r.prev_ac / f0` (yesterday's adjusted close on today's raw basis).
 - Test: `tests/test_ch.py::test_build_month_split_day_gap_uses_todays_basis` failed before the fix with `['gap'] != ['hl20']` and passes after it.
 - Rebuild: `stage=rebase` deletes every month holding a candidate whose price basis moved by more than 1% overnight (splits and large distributions), then rebuilds those months in the same run. Its counts go to `CH_rebase.json`.
-- Not rebuilt: ordinary dividend days (basis move under 1%). Their gap input is off by the dividend yield, which never comes near the 3% gap threshold.
+- Dividend days: the rule would have left days with a basis move under 1% unrebuilt, but every month ended up rebuilt (below), so all rows use the fixed code.
 
 The 40 checked rows aren't split days, so the rebuild doesn't change them, and the check stands.
+
+## Rebuild counts (run 41232026486)
+
+Every one of the 105 months (2017-01 to 2025-09) held at least one split or large distribution, so the rebase stage
+deleted all of them and the build is rerunning in full. 2,584 built rows (out of all triggered rows) were on such
+days, and 369 of them had fired the fake gap trigger. The first run rebuilt 45 months; `stage=build` continues
+until `CH_build_progress.json` says finished.

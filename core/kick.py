@@ -19,6 +19,7 @@ HOLIDAYS = Path(__file__).resolve().parent.parent / "deploy" / "nyse_holidays.tx
 # workflow -> (first ET time to start it, last ET time it is still worth starting)
 JOBS = {"listen.yml": (dtime(3, 55), dtime(19, 30)),
         "nx3-live.yml": (dtime(9, 15), dtime(15, 30)),
+        "chr-live.yml": (dtime(9, 15), dtime(15, 30)),
         "watch.yml": (dtime(9, 20), dtime(15, 30)),
         "scouts.yml": (dtime(9, 20), dtime(15, 30))}
 # workflow -> [(first ET time, last ET time, minutes between starts)]: short jobs started again and again.

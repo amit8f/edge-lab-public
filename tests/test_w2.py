@@ -36,3 +36,35 @@ def test_fill_urls_matches_by_id_and_keeps_existing():
         return [{"id": 9, "url": "https://wrong"}, {"id": 10, "url": "https://right"}]
     out = W.fill_urls(chk, fetch)
     assert out["url"].tolist() == ["https://right", "https://kept"] and calls == ["AAA"]
+
+
+def test_verdict_follows_the_registered_reading():
+    ok = {"mean": 0.02, "t_hac": 3.4, "ci95": [0.004, 0.04]}
+    good = {"alpha": 0.01, "t": 2.3}
+    assert W.verdict(ok, good, 99) == "inconclusive"                      # under 100 events
+    assert W.verdict(ok, good, 150) == "passed"
+    assert W.verdict(dict(ok, t_hac=2.9), good, 150) == "failed"           # t below 3
+    assert W.verdict(ok, {"alpha": 0.01, "t": 1.4}, 150) == "failed"       # alpha t below 2
+    assert W.verdict(dict(ok, ci95=[-0.001, 0.04]), good, 150) == "failed"
+    assert W.verdict(ok, None, 150) == "failed"
+
+
+def test_measure_refuses_until_the_w2_hand_check_passes(tmp_path):
+    chk = pd.DataFrame({"id": range(50), "ok": ["y"] * 39 + ["n"] * 11})
+    chk.to_csv(tmp_path / "W2_check.csv", index=False)
+    assert not W.W.check_passed(tmp_path, W.CHECK_FILE)[0]
+    assert W.stage_measure("unused-cache", tmp_path, 1) is False
+    chk["ok"] = ["y"] * 40 + ["n"] * 10
+    chk.to_csv(tmp_path / "W2_check.csv", index=False)
+    assert W.W.check_passed(tmp_path, W.CHECK_FILE)[0]
+
+
+def test_diagnose_splits_gross_costs_and_the_move_before_entry():
+    n = 40
+    m = pd.DataFrame({"sign": -1, "r": [-0.02] * n, "r_spy": [0.0] * n, "net": [0.02 - 0.03] * n,
+                      "ac": [100.0] * n, "entry_px": [95.0] * (n // 2) + [101.0] * (n // 2),
+                      "t": pd.to_datetime(["2020-03-02 08:00"] * n)})
+    d = W.diagnose(m)
+    assert abs(d["gross_mean"] - 0.02) < 1e-9 and abs(d["costs_mean"] - 0.03) < 1e-9
+    assert d["by_pre_entry_move"]["fell_over_3pct"]["n"] == 20 and d["by_pre_entry_move"]["rose"]["n"] == 20
+    assert d["by_article_time"]["before_open"]["n"] == 40 and d["by_article_time"]["in_session"]["n"] == 0

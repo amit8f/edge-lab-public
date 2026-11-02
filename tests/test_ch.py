@@ -216,3 +216,65 @@ def test_rebase_drops_only_months_with_a_split(tmp_path):
     import json
     rep = json.loads((tmp_path / "out" / "CH_rebase.json").read_text())
     assert rep["months"] == ["2018-02"] and rep["affected_rows"] == 1 and rep["affected_gap_rows"] == 1
+
+
+def test_shrink_keeps_a_thin_line_and_halves_the_height():
+    img = np.zeros((3, 64, 192), np.float32)
+    img[1, 47, 5] = 1.0                                    # a one-pixel line must survive the halving
+    out = S.shrink(img)
+    assert out.shape == (3, 32, 192) and out[1, 23, 5] == 1.0 and out.sum() == 1.0
+
+
+def test_image_fits_use_a_fixed_random_sample():
+    mask = np.zeros(500_000, bool)
+    mask[::2] = True
+    a, b = S.pick_rows(mask, 7), S.pick_rows(mask, 7)
+    assert len(a) == S.IMG_ROWS and (a == b).all() and mask[a].all() and (np.diff(a) > 0).all()
+    small = S.pick_rows(mask[:1000], 7)
+    assert len(small) == 500                                # fewer rows than the cap: all of them
+
+
+def test_tamer_lightgbm_arm_is_depth_two_with_big_leaves():
+    assert S.LGBR["max_depth"] == 2 and S.LGBR["min_child_samples"] == 500 and S.LGBR["reg_lambda"] == 10.0
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(3000, 5)).astype(np.float32)
+    Y = (X[:, :1] * 0.01 + rng.normal(0, 0.01, (3000, 1)))
+    Y[::7] = np.nan                                        # a missing label is left out of the fit
+    m = S.fit_trees("lgbr", X, Y, 1)
+    assert m[0].get_params()["max_depth"] == 2 and m[0].predict(X[:5]).shape == (5,)
+
+
+def test_freeze_chrp_writes_six_checked_models_and_a_cut(tmp_path):
+    import hashlib
+    import json
+    import lightgbm as lgb
+    r = _srows(n_days=2300, per_day=3)
+    r = r[r["date"] <= S.CHRP_VAL[1]].reset_index(drop=True)
+    man = S.freeze_chrp(r, tmp_path, curve=[0.01] * 78)
+    assert man["val_rows"] > 100 and man["fit_to"] == "2025-09-23" and np.isfinite(man["cut"])
+    assert len(man["curve"]) == 78 and len(man["scale"]) == 101 and man["features"] == ["x1"]
+    for lab in B.LABELS:
+        f = tmp_path / f"{lab}.txt"
+        assert hashlib.sha256(f.read_bytes()).hexdigest() == man["sha256"][f.name]
+    b = lgb.Booster(model_file=str(tmp_path / "long_1.0.txt"))
+    assert b.predict(np.array([[1.0], [-1.0]]))[0] > b.predict(np.array([[1.0], [-1.0]]))[1]   # the planted signal
+    assert json.loads((tmp_path / "manifest.json").read_text())["cut"] == man["cut"]
+
+
+def test_diagnose_reports_means_medians_extremes_and_splits():
+    rng = np.random.default_rng(3)
+    days = pd.bdate_range("2021-01-04", periods=200)
+    n = 1200
+    d = pd.DataFrame({"symbol": [f"S{i % 40}" for i in range(n)], "date": rng.choice(days, n)})
+    d = d.drop_duplicates(["symbol", "date"]).reset_index(drop=True)
+    m = len(d)
+    rows = d.assign(log_price=np.log(rng.uniform(1, 5, m)), atr_pct=rng.uniform(0.02, 0.2, m),
+                    minutes=rng.uniform(15, 380, m), rvol=2.0, gap=0.0)
+    p = d.assign(net=rng.normal(0.002, 0.03, m), ctrl=rng.normal(0.0, 0.03, m), label=rng.choice(["long_1.5", "short_2.0"], m),
+                 trig=rng.choice(["rvol", "gap"], m), pred=rng.normal(0, 1, m), trade=True, size=0.05)
+    p.loc[0, "net"] = 5.0                                   # one huge trade must show up in the mean, not the median
+    r = S.diagnose(p, rows)
+    assert r["pick_best5pct_mean"] > r["pick_median"] and r["pick_mean"] > r["pick_median"]
+    assert set(r["splits"]) >= {"year", "side", "pair", "trigger", "price", "atr_pct", "time_of_day", "pred_quintile"}
+    assert r["diff_without_best_days"]["10"]["mean"] < r["mean_diff"]
+    assert abs(sum(v["n"] for v in r["splits"]["side"].values()) - m) <= 0

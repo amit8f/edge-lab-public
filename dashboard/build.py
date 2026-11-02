@@ -45,7 +45,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX2", "SP1"}
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX2", "SP1", "CHR-P"}
 
 
 def _json(p):
@@ -113,6 +113,15 @@ def nx3_books(st):
                      realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in tr), size=5000.0,
                      first_day="2026-11-02"))
     return out
+
+
+def chrp_book(st):
+    """CHR-P $1,000 penny ledger book (research/prereg/CHR.md); size is a fraction of the book, net a return."""
+    w = st / "state-chrp" / "chrp" / "work"
+    tr = [t for t in (_json(f) for f in sorted((w / "settled").glob("*.json"))) if t and t.get("role") == "pick"]
+    op = [x for x in (_json(w / "open.json") or []) if x.get("role") == "pick"]
+    return [_book("CHR-P", "CHR-P", 30, len(tr), len(op), realized=sum(1000 * (t.get("size") or 0) * (t.get("net") or 0)
+                                                                     for t in tr), size=1000.0)]
 
 
 def nx1_book(st):
@@ -499,7 +508,7 @@ def last_change(repo_root, names):
 
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),

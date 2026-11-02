@@ -10,10 +10,10 @@ def utc(*a):
 
 def test_due_starts_each_job_once_inside_its_window():
     mon = utc(2026, 10, 26, 13, 25)                      # 9:25am ET
-    assert kick.due(mon, {}, set()) == ["listen.yml", "nx3-live.yml", "watch.yml", "scouts.yml", "dashboard.yml"]
+    assert kick.due(mon, {}, set()) == ["listen.yml", "nx3-live.yml", "chr-live.yml", "watch.yml", "scouts.yml", "dashboard.yml"]
     runs = {"listen.yml": [utc(2026, 10, 26, 8, 0)], "nx3-live.yml": [utc(2026, 10, 26, 13, 16)],
             "watch.yml": [utc(2026, 10, 23, 13, 20)], "scouts.yml": [utc(2026, 10, 26, 7, 0)]}
-    assert kick.due(mon, runs, set()) == ["watch.yml", "scouts.yml", "dashboard.yml"]   # Friday's and pre-start runs don't count
+    assert kick.due(mon, runs, set()) == ["chr-live.yml", "watch.yml", "scouts.yml", "dashboard.yml"]   # Friday's and pre-start runs don't count
     assert kick.due(utc(2026, 10, 26, 7, 54), {}, set()) == []          # 3:54am ET, before listen's start
     assert kick.due(utc(2026, 10, 26, 7, 56), {}, set()) == ["listen.yml"]
     assert kick.due(utc(2026, 10, 26, 20, 0), {}, set()) == ["listen.yml", "dashboard.yml"]   # 4pm ET: only listen's window left

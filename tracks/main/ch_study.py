@@ -6,7 +6,10 @@ Stages (rows and image windows come from `tracks/main/ch_data.py` stage build):
 - "trees": XGB and LGBM arms, both tracks. For each test year Y (2019 .. 2025-09): fit on 2017 .. Y-2,
   predict Y-1 to fix the cut (80th percentile of the largest of the six predictions) and the size scale; refit
   on 2017 .. Y-1 (5-session purge before Y) and decide year Y. In-sample decisions are kept for rule 21.
-- "img": the image arm, the same walk-forward, one fit per run step (resumable; CPU).
+- "treesr": CHR-P, the tamer LightGBM arm, penny only (prereg/CHR.md).
+- "freeze": CHR-P version 1 for the forward book (models/chr_p).
+- "img": the image arm, the same walk-forward, one fit per run step (resumable; CPU), shrunk by CH.md
+  Amendment 1 (half-height pictures, a small net, random training samples).
 - "measure": rule 21, then the control, the daily test, rule 12 and 11, and the exploratory list.
 
 Usage: python -m tracks.main.ch_study --stage check|trees|img|measure --cache cache/w1
@@ -39,6 +42,9 @@ XGB = dict(n_estimators=400, max_depth=4, learning_rate=0.05, subsample=0.8, col
 LGB = dict(n_estimators=400, num_leaves=15, max_depth=4, learning_rate=0.05, subsample=0.8, subsample_freq=1,
            colsample_bytree=0.8, min_child_samples=200, reg_lambda=10.0, deterministic=True, force_row_wise=True,
            verbose=-1)
+LGBR = dict(n_estimators=300, num_leaves=4, max_depth=2, learning_rate=0.03, subsample=0.5, subsample_freq=1,
+            colsample_bytree=0.5, min_child_samples=500, reg_lambda=10.0, deterministic=True, force_row_wise=True,
+            verbose=-1)                              # CHR-P (prereg/CHR.md): NXR-style tamer trees, penny only
 META = ["symbol", "date", "cik", "track", "trig", "s", "entry_t", "entry", "atr"]
 
 
@@ -130,7 +136,7 @@ def fit_trees(kind, X, Y, seed):
             m = xgb.XGBRegressor(objective="reg:pseudohubererror", huber_slope=d, random_state=seed, **XGB)
         else:
             import lightgbm as lgb
-            m = lgb.LGBMRegressor(objective="huber", alpha=d, random_state=seed, **LGB)
+            m = lgb.LGBMRegressor(objective="huber", alpha=d, random_state=seed, **(LGBR if kind == "lgbr" else LGB))
         m.fit(X[ok], Y[ok, j])
         models.append(m)
     return models
@@ -168,12 +174,55 @@ def walk_forward(rows, fit, predict_fn, name, log=print):
     return pd.concat(out, ignore_index=True), pd.concat(ins, ignore_index=True)
 
 
-def stage_trees(cache):
+CHRP_DIR = Path("models/chr_p")                      # the frozen CHR-P (prereg/CHR.md, "Live book")
+CHRP_VAL = (pd.Timestamp("2025-01-01"), pd.Timestamp("2025-09-23"))
+
+
+def freeze_chrp(rows, out=CHRP_DIR, curve=None):
+    """CHR-P's frozen version 1: the cut and size scale come from a model fitted on 2017 .. 2024 (7-day purge)
+    and scored on 2025-01-01 .. 2025-09-23; the final model is fitted on every row to 2025-09-23. Six LightGBM
+    boosters (one per label) go to `out` as text files with a manifest holding the cut, the scale, the input
+    names and each file's sha256."""
+    import hashlib
+    cols = feature_names(rows)
+    X = rows[cols].to_numpy(np.float32)
+    Yl = rows[B.LABELS].to_numpy(np.float64)
+    d = rows["date"]
+    a = (d < CHRP_VAL[0] - pd.Timedelta(days=PURGE_DAYS)).to_numpy()
+    v = ((d >= CHRP_VAL[0]) & (d <= CHRP_VAL[1])).to_numpy()
+    allr = (d <= CHRP_VAL[1]).to_numpy()
+    pv = predict(fit_trees("lgbr", X[a], Yl[a], SEED + 2025), X[v]).max(axis=1)
+    cut, scale = float(np.quantile(pv, CUT_Q)), np.quantile(pv, np.linspace(0, 1, 101))
+    models = fit_trees("lgbr", X[allr], Yl[allr], SEED + 2025)
+    out.mkdir(parents=True, exist_ok=True)
+    files = {}
+    for lab, m in zip(B.LABELS, models):
+        f = out / f"{lab}.txt"
+        m.booster_.save_model(str(f))
+        files[f.name] = hashlib.sha256(f.read_bytes()).hexdigest()
+    man = {"idea": "CHR-P", "prereg": "research/prereg/CHR.md", "labels": B.LABELS, "features": cols, "cut": cut,
+           "scale": scale.tolist(), "fit_rows": int(allr.sum()), "val_rows": int(v.sum()),
+           "fit_to": str(CHRP_VAL[1].date()), "sha256": files, "lgbr": LGBR,
+           "curve": curve}                           # the penny volume share curve (78 slots), an input of rvol
+    (out / "manifest.json").write_text(json.dumps(man, indent=1))
+    return man
+
+
+def stage_freeze(cache):
+    rows = load_rows(cache, "penny")
+    curve = json.loads((C.chdir(cache) / "curve.json").read_text())["penny"]
+    man = freeze_chrp(rows, curve=curve)
+    print(f"[ch freeze] CHR-P: {man['fit_rows']} rows, cut {man['cut']:.4%}, {len(man['features'])} inputs")
+
+
+def stage_trees(cache, kinds=("xgb", "lgbm")):
     od = outdir(cache)
     od.mkdir(parents=True, exist_ok=True)
     for t in TRACKS:
+        if "lgbr" in kinds and t != "penny":
+            continue                                 # CHR-P is penny only (Amit, 2026-11-01)
         rows = load_rows(cache, t)
-        for kind in ("xgb", "lgbm"):
+        for kind in kinds:
             f = od / f"{kind}_{t}.parquet"
             if f.exists():
                 continue
@@ -185,6 +234,8 @@ def stage_trees(cache):
 # ---------- image arm ----------
 
 H, W = 64, 96                                       # per panel; price in the top 48 rows, volume below
+HS = 32                                             # the net reads the picture at half height (Amendment 1)
+IMG_ROWS, IMG_EPOCHS = 100_000, 3                   # random training rows per fit and passes (Amendment 1)
 
 
 def render(intraday, daily):
@@ -227,16 +278,22 @@ def render(intraday, daily):
     return img
 
 
+def shrink(img):
+    """Half the height: each pair of rows becomes their maximum (a bar or line stays visible)."""
+    return img.reshape(*img.shape[:-2], HS, 2, img.shape[-1]).max(axis=-2)
+
+
 def images(cache, rows):
-    """Rendered pictures for `rows` (month, k), month file by month file."""
-    out = np.zeros((len(rows), 3, H, 2 * W), np.uint8)
+    """Pictures for `rows` (month, k), month file by month file, at the net's half height. Render only the rows
+    a fit or a prediction needs, never a whole track at once."""
+    out = np.zeros((len(rows), 3, HS, 2 * W), np.uint8)
     pos = {m: g.index.to_numpy() for m, g in rows.reset_index(drop=True).groupby("month")}
     ks = rows["k"].to_numpy()
     for m, idx in pos.items():
         z = np.load(C.chdir(cache) / "img" / f"{m}.npz")
         intr, dly = z["intraday"], z["daily"]
         for i in idx:
-            out[i] = render(intr[ks[i]], dly[ks[i]]).astype(np.uint8)
+            out[i] = shrink(render(intr[ks[i]], dly[ks[i]]).astype(np.uint8))
     return out
 
 
@@ -244,16 +301,16 @@ def cnn():
     import torch.nn as nn
     blk = lambda i, o: [nn.Conv2d(i, o, (5, 3), padding=(2, 1)), nn.BatchNorm2d(o), nn.LeakyReLU(0.01),
                         nn.MaxPool2d((2, 1))]
-    return nn.Sequential(*blk(3, 32), *blk(32, 64), *blk(64, 128), nn.Flatten(), nn.Dropout(0.5),
-                         nn.Linear(128 * (H // 8) * 2 * W, 6))
+    return nn.Sequential(*blk(3, 8), *blk(8, 16), *blk(16, 32), nn.Flatten(), nn.Dropout(0.5),
+                         nn.Linear(32 * (HS // 8) * 2 * W, 6))
 
 
-def fit_cnn(imgs, Y, seed, max_rows=None):
+def fit_cnn(imgs, Y, seed):
     import torch
     torch.manual_seed(seed)
     torch.set_num_threads(4)
     rng = np.random.default_rng(seed)
-    idx = np.arange(len(Y)) if max_rows is None or len(Y) <= max_rows else np.sort(rng.choice(len(Y), max_rows, False))
+    idx = np.arange(len(Y))
     va = rng.random(len(idx)) < 0.1
     tr_i, va_i = idx[~va], idx[va]
     Yf = np.nan_to_num(Y.astype(np.float32))
@@ -265,7 +322,7 @@ def fit_cnn(imgs, Y, seed, max_rows=None):
     batch = lambda ii: (torch.tensor(imgs[ii], dtype=torch.float32), torch.tensor(Yf[ii] / d.numpy()),
                         torch.tensor(mask[ii]))
     best, best_state, bad = np.inf, None, 0
-    for ep in range(10):
+    for ep in range(IMG_EPOCHS):
         net.train()
         perm = rng.permutation(len(tr_i))
         for s in range(0, len(tr_i), 256):
@@ -303,15 +360,27 @@ def predict_cnn(net, imgs):
     return np.concatenate(out)
 
 
-def stage_img(cache, deadline, max_rows=None):
-    """One (track, year) at a time; each finished year is saved, so a rerun continues."""
+def pick_rows(mask, seed, n=IMG_ROWS):
+    """Positions of at most `n` random rows of `mask` (Amendment 1: a fit sees a fixed random sample)."""
+    i = np.flatnonzero(mask)
+    return i if len(i) <= n else np.sort(np.random.default_rng(seed).choice(i, n, replace=False))
+
+
+def predict_rows(net, cache, rows, idx, step=20_000):
+    """Predictions for rows at positions `idx`, rendering `step` pictures at a time."""
+    return np.concatenate([predict_cnn(net, images(cache, rows.iloc[idx[s:s + step]]))
+                           for s in range(0, len(idx), step)])
+
+
+def stage_img(cache, deadline):
+    """One (track, year) at a time; each finished year is saved, so a rerun continues. Each fit sees a fixed
+    random sample of at most IMG_ROWS training rows; rule 21 scores that same sample (Amendment 1)."""
     od = outdir(cache) / "img"
     od.mkdir(parents=True, exist_ok=True)
     for t in TRACKS:
         if (outdir(cache) / f"img_{t}.parquet").exists():
             continue
         rows = load_rows(cache, t)
-        pics = images(cache, rows)
         Yl = rows[B.LABELS].to_numpy(np.float64)
         for Y in range(FIRST_TEST, LAST_ENTRY.year + 1):
             f = od / f"{t}_{Y}.parquet"
@@ -322,17 +391,20 @@ def stage_img(cache, deadline, max_rows=None):
             a, v, b, te = splits(rows, Y)
             if not te.any() or not v.any():
                 continue
-            m = fit_cnn(pics[a], Yl[a], SEED + Y, max_rows)
-            pv = predict_cnn(m, pics[v]).max(axis=1)
+            ia = pick_rows(a, SEED + Y)
+            m = fit_cnn(images(cache, rows.iloc[ia]), Yl[ia], SEED + Y)
+            iv = np.flatnonzero(v)
+            pv = predict_rows(m, cache, rows, iv).max(axis=1)
             cut, scale = float(np.quantile(pv, CUT_Q)), np.quantile(pv, np.linspace(0, 1, 101))
-            m = fit_cnn(pics[b], Yl[b], SEED + Y, max_rows)
+            ib = pick_rows(b, SEED + Y)
+            m = fit_cnn(images(cache, rows.iloc[ib]), Yl[ib], SEED + Y)
             parts = []
-            for mask, kind in ((te, "test"), (b, "insample")):
-                p = predict_cnn(m, pics[mask])
+            for idx, kind in ((np.flatnonzero(te), "test"), (ib, "insample")):
+                p = predict_rows(m, cache, rows, idx)
                 pick, trade, size = decide(p, cut, scale)
-                d = rows.loc[mask, ["symbol", "date", "track", "month", "k", "trig"]].copy()
+                d = rows.iloc[idx][["symbol", "date", "track", "month", "k", "trig"]].copy()
                 d["label"] = np.array(B.LABELS)[pick]
-                d["net"] = Yl[mask][np.arange(mask.sum()), pick]
+                d["net"] = Yl[idx][np.arange(len(idx)), pick]
                 d["trade"], d["size"], d["pred"], d["year"], d["kind"] = trade, size, p.max(axis=1), Y, kind
                 parts.append(d)
             pd.concat(parts).to_parquet(f)
@@ -400,8 +472,10 @@ def stage_measure(cache, out):
             res["arms"][t] = f"hand check {ok[t]}/{CHECK_N} < {CHECK_PASS}: nothing measured"
             continue
         rows = load_rows(cache, t)
-        for kind, arm in (("xgb", "CHX"), ("lgbm", "CHL"), ("img", "CHI")):
+        for kind, arm in (("xgb", "CHX"), ("lgbm", "CHL"), ("img", "CHI"), ("lgbr", "CHR")):
             name = f"{arm}-{'M' if t == 'main' else 'P'}"
+            if kind == "lgbr" and t != "penny":
+                continue
             f = od / f"{kind}_{t}.parquet"
             if not f.exists():
                 res["arms"][name] = "not run"
@@ -439,21 +513,91 @@ def stage_measure(cache, out):
     print(json.dumps(res, default=float)[:3000])
 
 
+# ---------- post-hoc diagnosis (NOT pre-registered; PROTOCOL rules 22 and 24) ----------
+
+def _tstat(x):
+    x = pd.Series(x).dropna()
+    return float(nw_tstat(x, LAGS)[2]) if len(x) > 30 else None
+
+
+def diagnose(p, rows):
+    """Where an arm's picks won and lost, from its measured trades `p` (`with_control` output) and the input rows.
+    Reports means beside medians and the extreme 5%, the daily difference with its best days removed, and splits by
+    year, side, stop/target pair, trigger, price, volatility and time of day. Nothing here is a test."""
+    w = daily(p)
+    d = w["diff"]
+    srt = d.sort_values()
+    n = len(d)
+    out = {"trades": int(len(p)), "days": int(n), "mean_diff": float(d.mean()), "median_diff": float(d.median()),
+           "t": _tstat(d), "pick_mean": float(p["net"].mean()), "pick_median": float(p["net"].median()),
+           "ctrl_mean": float(p["ctrl"].mean()), "ctrl_median": float(p["ctrl"].median()),
+           "pick_win_rate": float((p["net"] > 0).mean()), "ctrl_win_rate": float((p["ctrl"] > 0).mean())}
+    q5, q95 = p["net"].quantile([0.05, 0.95])
+    out["pick_worst5pct_mean"], out["pick_best5pct_mean"] = float(p.loc[p["net"] <= q5, "net"].mean()), float(
+        p.loc[p["net"] >= q95, "net"].mean())
+    c5, c95 = p["ctrl"].quantile([0.05, 0.95])
+    out["ctrl_worst5pct_mean"], out["ctrl_best5pct_mean"] = float(p.loc[p["ctrl"] <= c5, "ctrl"].mean()), float(
+        p.loc[p["ctrl"] >= c95, "ctrl"].mean())
+    out["diff_without_best_days"] = {str(k): {"mean": float(srt.iloc[:n - k].mean()), "t": _tstat(srt.iloc[:n - k])}
+                                     for k in (5, 10, 25)}
+    out["diff_without_worst_days"] = {str(k): {"mean": float(srt.iloc[k:].mean()), "t": _tstat(srt.iloc[k:])}
+                                      for k in (5, 10, 25)}
+    out["diff_winsorised_1pct"] = {"mean": float(d.clip(*d.quantile([0.01, 0.99])).mean()),
+                                   "t": _tstat(d.clip(*d.quantile([0.01, 0.99])))}
+    out["share_of_total_from_top10_days"] = float(srt.iloc[-10:].sum() / srt.sum()) if srt.sum() > 0 else None
+    out["trimmed_pick_minus_ctrl_per_trade"] = float((p["net"].clip(*p["net"].quantile([0.01, 0.99]))
+                                                      - p["ctrl"].clip(*p["ctrl"].quantile([0.01, 0.99]))).mean())
+    q = p.assign(date=pd.to_datetime(p["date"])).merge(
+        rows[["symbol", "date", "log_price", "atr_pct", "minutes", "rvol", "gap"]], on=["symbol", "date"], how="left")
+    q["diff"] = q["net"] - q["ctrl"]
+    splits = {"year": q["date"].dt.year, "side": q["label"].str.split("_").str[0], "pair": q["label"].str.split("_").str[1],
+              "trigger": q["trig"],
+              "price": pd.qcut(np.exp(q["log_price"]), 3, labels=["low", "mid", "high"], duplicates="drop"),
+              "atr_pct": pd.qcut(q["atr_pct"], 3, labels=["calm", "mid", "wild"], duplicates="drop"),
+              "time_of_day": pd.cut(q["minutes"], [0, 45, 120, 240, 400], labels=["9:45-10:15", "-11:30", "-1:30", "-3:30"]),
+              "pred_quintile": pd.qcut(q["pred"], 5, labels=False, duplicates="drop")}
+    out["splits"] = {}
+    for name, key in splits.items():
+        g = q.groupby(key, observed=True)
+        out["splits"][name] = {str(k): {"n": int(len(x)), "pick": float(x["net"].mean()), "pick_median": float(x["net"].median()),
+                                        "ctrl": float(x["ctrl"].mean()), "diff": float(x["diff"].mean())} for k, x in g}
+    return out
+
+
+def stage_diagnose(cache, out):
+    od = outdir(cache)
+    res = {"note": "POST-HOC / NOT PRE-REGISTERED (PROTOCOL rules 22 and 24); trades from the measure stage", "arms": {}}
+    for t in TRACKS:
+        rows = load_rows(cache, t)
+        for kind, arm in (("xgb", "CHX"), ("lgbm", "CHL"), ("lgbr", "CHR"), ("img", "CHI")):
+            f = od / f"{kind}_{t}_trades.parquet"
+            if f.exists():
+                res["arms"][f"{arm}-{'M' if t == 'main' else 'P'}"] = diagnose(pd.read_parquet(f), rows)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "CH_diagnosis.json").write_text(json.dumps(res, indent=1, default=float))
+    print(f"[ch diagnose] {len(res['arms'])} arms")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", choices=["check", "trees", "img", "measure"], required=True)
+    ap.add_argument("--stage", choices=["check", "trees", "treesr", "freeze", "img", "measure", "diagnose"], required=True)
     ap.add_argument("--cache", default="cache/w1")
     ap.add_argument("--out", default="research/results/CH")
     ap.add_argument("--budget-min", type=float, default=320)
-    ap.add_argument("--img-max-rows", type=int, default=None)
     a = ap.parse_args()
     deadline = time.monotonic() + 60 * a.budget_min
     if a.stage == "check":
         stage_check(a.cache)
     elif a.stage == "trees":
         stage_trees(a.cache)
+    elif a.stage == "diagnose":
+        stage_diagnose(a.cache, Path(a.out))
+    elif a.stage == "freeze":
+        stage_freeze(a.cache)
+    elif a.stage == "treesr":
+        stage_trees(a.cache, ("lgbr",))
     elif a.stage == "img":
-        stage_img(a.cache, deadline, a.img_max_rows)
+        stage_img(a.cache, deadline)
     else:
         stage_measure(a.cache, Path(a.out))
 
