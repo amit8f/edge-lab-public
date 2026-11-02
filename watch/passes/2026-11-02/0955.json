@@ -1,0 +1,624 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "52e2badcbc404e528a1370ac6841b1d12074a62c48789d702aff6656e568f837",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "7e7f3314f30a5c0d3d8d14e4caf6f31a1646936f608decf2c401d2e5a8af21e6",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GTE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CPA",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PRKS",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PAA",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ACEL",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "EGY",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LOAR",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "FND",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "CHD",
+     "tone": 2
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "BLDR",
+     "tone": 2
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "656a44f862a316dd4b1aaeb579a994ea337c674bcc04cc43f3effc33aca8c593",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down 6% with z -3.5, potential mean reversion",
+     "stop_pct": 10.0,
+     "symbol": "GTE"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 6% with z +3.4, likely pullback",
+     "stop_pct": 10.0,
+     "symbol": "CPA"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 9.3% with z +3.3, overbought momentum",
+     "stop_pct": 10.0,
+     "symbol": "PRKS"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down 2.9% with z -3.3, possible rebound",
+     "stop_pct": 10.0,
+     "symbol": "PAA"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 3.7% with z +3.1, shortable overbought",
+     "stop_pct": 10.0,
+     "symbol": "ACEL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down 6.1% with z -3.0, oversold signal",
+     "stop_pct": 10.0,
+     "symbol": "EGY"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 7.6% with z +3.0, momentum reversal risk",
+     "stop_pct": 10.0,
+     "symbol": "LOAR"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst tone -2 despite price rise, bearish outlook",
+     "stop_pct": 10.0,
+     "symbol": "FND"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst tone +2 and price up, bullish catalyst",
+     "stop_pct": 10.0,
+     "symbol": "CHD"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst tone +2 and strong price gain, bullish view",
+     "stop_pct": 10.0,
+     "symbol": "BLDR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "GL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "KNSL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "LKQ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "NPKI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "RITM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "4305bdafd1963dcb3860c8235dc6b1f9528386a08684fd95bf6ff9a82dc892f2"
+  },
+  "reviewer": {
+   "answer_sha256": "99e67eff6dcd253ce4ce847e0abc347a444d310ddbaf197cf109a3267b61f4c9",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "397befd3c10c4ee3c4e6f474e3135abd7543f6e638e0dfbee802ad580ced3d8b",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong mean reversion buy after a 6% drop with z-score -3.5.",
+     "symbol": "GTE"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Overextended upward move of 6% with z-score +3.4 favors fading.",
+     "symbol": "CPA"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday spike of 9.3% with z-score +3.3 presents short opportunity.",
+     "symbol": "PRKS"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Pullback of 2.9% with z-score -3.3 in a strong 20-day trend offers a dip-buying setup.",
+     "symbol": "PAA"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Intraday extension of 3.7% with z-score +3.1 warrants a short fade.",
+     "symbol": "ACEL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Oversold bounce candidate after falling 6.1% with z-score -3.0.",
+     "symbol": "EGY"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong intraday momentum up 7.6% with z-score +3.0 makes it a good short fade.",
+     "symbol": "LOAR"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative analyst tone combined with positive price movement favors shorting.",
+     "symbol": "FND"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive analyst tone and strong multi-week trend support continuing long.",
+     "symbol": "CHD"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum with positive analyst tone supports continuation long.",
+     "symbol": "BLDR"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.06046,
+   "news": 0,
+   "pace": null,
+   "price": 10.645,
+   "r20": 0.08525,
+   "r5": -0.0341,
+   "short": true,
+   "src": "iex",
+   "symbol": "GTE",
+   "z": -3.497
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06023,
+   "news": 0,
+   "pace": null,
+   "price": 136.685,
+   "r20": -0.02687,
+   "r5": -0.01872,
+   "short": true,
+   "src": "iex",
+   "symbol": "CPA",
+   "z": 3.407
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09318,
+   "news": 0,
+   "pace": null,
+   "price": 33.67,
+   "r20": -0.05114,
+   "r5": 0.01617,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRKS",
+   "z": 3.34
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.02905,
+   "news": 0,
+   "pace": null,
+   "price": 25.74,
+   "r20": 0.13388,
+   "r5": 0.01106,
+   "short": true,
+   "src": "iex",
+   "symbol": "PAA",
+   "z": -3.293
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.03697,
+   "news": 0,
+   "pace": null,
+   "price": 11.78,
+   "r20": 0.04797,
+   "r5": 0.03273,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACEL",
+   "z": 3.082
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.06056,
+   "news": 0,
+   "pace": null,
+   "price": 6.05,
+   "r20": 0.12391,
+   "r5": -0.01829,
+   "short": true,
+   "src": "iex",
+   "symbol": "EGY",
+   "z": -3.049
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.07616,
+   "news": 0,
+   "pace": null,
+   "price": 66.84,
+   "r20": 0.00632,
+   "r5": 0.00877,
+   "short": true,
+   "src": "iex",
+   "symbol": "LOAR",
+   "z": 3.015
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.03803,
+   "news": 1,
+   "pace": null,
+   "price": 49.4,
+   "r20": 0.04616,
+   "r5": -0.00502,
+   "short": true,
+   "src": "iex",
+   "symbol": "FND",
+   "z": 1.256
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01819,
+   "news": 1,
+   "pace": null,
+   "price": 109.18,
+   "r20": 0.137,
+   "r5": 0.01939,
+   "short": true,
+   "src": "iex",
+   "symbol": "CHD",
+   "z": 1.255
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.04113,
+   "news": 1,
+   "pace": null,
+   "price": 67.58,
+   "r20": 0.15396,
+   "r5": 0.14178,
+   "short": true,
+   "src": "iex",
+   "symbol": "BLDR",
+   "z": 1.025
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4974.3179,
+  "PICK-MAIN-coin": 4992.8499,
+  "PICK-PENNY": 496.0384,
+  "PICK-PENNY-coin": 489.8607
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 31,
+  "news": 8,
+  "volume": 0
+ },
+ "flagged": 39,
+ "headline_counts": {
+  "BLDR": 1,
+  "CHD": 3,
+  "FND": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "c61c5407ee1e294fe4ab1455a2e39c2031a6d6f1a8431e3ae2c7ac022626cee5",
+ "price_sources": {
+  "delayed_sip": 522,
+  "iex": 2882
+ },
+ "priced": 3404,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GTE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CPA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PRKS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PAA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ACEL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EGY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LOAR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FND"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CHD"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BLDR"
+  }
+ ],
+ "slot": "2026-11-02T09:55",
+ "t": "2026-11-02T14:55:20.687013+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T14:55:34.010366Z"
+}
