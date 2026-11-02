@@ -1,5 +1,6 @@
 """Dashboard data step and tree export (synthetic data only, no network)."""
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -127,3 +128,14 @@ def test_sp1_row(tmp_path):
     led.write_json("SP1_entry", "111", "entries/111.json", {"symbol": "SPNA"})
     sp = next(b for b in B.log_books(tmp_path) if b["name"] == "SP1")
     assert (sp["closed"], sp["open"], sp["candidates"]) == (0, 1, 1)
+
+
+def test_nx3all_picks_before_the_close(monkeypatch):
+    cut = json.loads(Path("research/results/NX3/nx3_v1_meta.json").read_text())["fire_cut"]
+    rows = [{"symbol": "A", "t": "2026-11-02T09:31", "e": 2 * cut, "fired": True, "etb": True},
+            {"symbol": "B", "t": "2026-11-02T09:32", "e": -1.2 * cut, "fired": True, "etb": False},    # hard to borrow
+            {"symbol": "C", "t": "2026-11-02T09:33", "e": -1.5 * cut, "fired": True, "etb": True},
+            {"symbol": "D", "t": "2026-11-02T09:34", "e": 0.5 * cut, "fired": False, "etb": True}]
+    got = B._nx3all_so_far(rows)
+    assert set(got) == {"A", "C"} and got["A"]["side"] == 1 and got["C"]["side"] == -1
+    assert got["A"]["w"] == pytest.approx(0.10) and got["C"]["w"] == pytest.approx(0.075)
