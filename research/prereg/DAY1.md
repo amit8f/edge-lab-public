@@ -33,29 +33,32 @@ candidates to fund and how much. Budgets are shares of the bot's $1,000.
 
 | Sleeve | Registration | Candidates | Exit (its own) | Budget |
 |---|---|---|---|---|
-| News | NX3 (`prereg/NX3.md`), confidence from NX3-ALL | NX3's fired long events | next session's close | 50% |
-| Penny charts | CHR-P (`prereg/CHR.md`), near-miss | CHR-P's taken longs | first stop/target or 5th session close | 25% |
-| Weekly reversal | R1 (`prereg/R1.md`), near-miss under rule 19 | R1's weekly picks (bottom-decile 5-day losers in uptrends, $300M+) | 5 sessions | 15% |
+| News | NX3 (`prereg/NX3.md`), uncapped as NX3-ALL | NX3's fired long events (no 3-a-day cap) | next session's close | 50% |
+| Penny charts | CHR-P (`prereg/CHR.md`), near-miss | CHR-P's longs above its cut | first stop/target or 5th session close | 25% |
 | Filings | FIL1 (`prereg/FIL1.md`) | buyback-authorization 8-Ks | 5 sessions | 0% (shadow) |
 | AI reader | AIR1 (`prereg/AIR1.md`) | headlines scored by an LLM | next session's close | 0% (shadow) |
 
-10% stays as cash. R1 qualifies for rule 19 as registered (hand check 20/20, picks minus control HAC t 1.89,
-picks' own mean +0.33% a week after costs); its FAILED verdict stays in IDEAS.md and it is not re-counted.
+25% stays as cash. R1 (weekly reversal, a rule 19 near-miss) was in the plan but is left out before any data: its
+history mean of +0.53% a trade is below twice the cost check's round trip under any fee basis, so the boss could
+never fund it (2026-11-02, Claude; Amit told on the decision card). Its own FWD1 shadow book continues.
 A shadow sleeve's candidates are logged with the same entry, cost and exit rules and its own same-day random
 control. It gets a budget only after PROTOCOL rule 20's numbers (60 trading days, 30 closed trades, beats its
 control after costs at NW t >= 2, own mean > 0); the budget then comes out of the cash share first, then pro rata.
 
 ## The boss (fixed rules)
 
-1. **Expected move.** NX3: its model's predicted excess return. CHR-P: its model's prediction for the chosen
-   label. R1: +0.53% a trade (its history gross mean, fixed). Promoted shadow sleeves: their forward gross mean
-   at promotion, fixed.
-2. **Cost check.** A candidate is funded only if its expected move is at least 2x its round-trip cost in percent:
-   `config/risk.yaml` spread and slippage for its price band (main 0.2%, penny 2%) plus fees at the actual
-   dollar size (the $0.35 minimum commission each way on Alpaca-IBKR-style costs, `adaptive/costs.py`).
+1. **Expected move (gross, in %).** NX3: e x vol20 x sqrt(1.5) (NX3's label is the excess return divided by
+   vol20 x sqrt(1.5), so this undoes the scaling). CHR-P: its prediction for the chosen long label plus the cost
+   CH's label subtracted (`ch_build.cost_frac` at the entry price), since CH's labels are net. Promoted shadow
+   sleeves: their forward gross mean at promotion, fixed.
+2. **Cost check.** A candidate is funded only if its expected move is at least 2x its round-trip cost in percent
+   at its planned dollar size: `adaptive/costs.py`'s measured spread for its band (main 0.41%, penny 0.65%;
+   penny = entry under $5) plus commission and sale fees on that fee basis (see "Fee basis" below). The same
+   cost is charged in the ledger, for the bot and the twin.
 3. **Size.** $50 to $200 a trade (5% to 20%), scaled linearly by the sleeve's own confidence (NX3: |e|/cut from 1
-   to 2; CHR-P: its 2%-10% size scale; R1 and promoted sleeves: $100 flat). Never more than 20% of the bot in
-   one stock (all sleeves together), never more than the sleeve's budget open, never more than 100% invested.
+   to 2; CHR-P: its size scale from 2% to 10%; promoted sleeves: $100 flat). Never more than 20% of the bot in
+   one stock (all sleeves together), never more than the sleeve's budget held past today's close (a position
+   whose time exit is today's close frees its share for today's new entries), never more than 100% invested.
 4. **Same stock, two sleeves.** The larger expected move wins; the other is logged "duplicate".
 5. **Overnight cap.** At most 50% of the bot held overnight. A multi-day candidate that would push open overnight
    positions above 50% is skipped and logged "overnight cap" (every starting sleeve holds overnight, so in practice
@@ -67,12 +70,19 @@ control after costs at NW t >= 2, own mean > 0); the budget then comes out of th
 8. **Stops** registered by a sleeve (CHR-P) are checked every minute on the IEX last trade and closed with a
    marketable order; exits at a session close use market-on-close orders.
 
+## Fee basis
+
+Alpaca's $0 commission (Amit, 2026-11-02, tapped "Alpaca $0 fee" on the card "Count Alpaca's real $0 commission
+in the bot's cost check, or keep the stricter IBKR-style fee?"), which is what the paper and a real Alpaca account
+charge. Sale fees (SEC and FINRA TAF, `adaptive/costs.regulatory`) and the measured spread apply. Decided before the
+first forward day.
+
 ## Reweighting every 2 weeks (Amit: "do it every 2 weeks")
 
 Every second Friday after the close, from the first Friday with 10 trading days of data: candidate budgets =
 equal risk (inverse of each funded sleeve's forward daily-return volatility, sleeves with fewer than 10 closed
 trades keep their current budget), a sleeve whose forward mean after costs is below 0 over 30+ trades gets 0,
-and the result is scaled to 90% (10% cash). The candidate runs as a shadow copy of the whole bot for the next 2
+and the result is scaled to the funded share (75% at the start, 25% cash). The candidate runs as a shadow copy of the whole bot for the next 2
 weeks. At the following checkpoint it replaces the live budgets only if its 2-week net return beat the live
 bot's; either way a new candidate is computed. Each change is logged (`day1_weights`) with both returns. This
 process is part of DAY1 and adds no idea; any other change to the boss is a new idea.
@@ -80,8 +90,8 @@ process is part of DAY1 and adds no idea; any other change to the boss is a new 
 ## Random twin (the control)
 
 For every funded trade, the twin funds one random candidate from the same sleeve's same-day control pool (the
-sleeve's own registered control: NX3's random news events, CHR-P's random triggered stocks, R1's random
-uptrend stocks), drawn with `default_rng(20261102 + date ordinal)`, same dollar size, entry minute and exit rule,
+sleeve's own registered control pool: the day's other decided NX3 news events, the day's other CHR-P triggered
+stocks), drawn with `default_rng(20261102 + date ordinal)`, same dollar size, entry minute and exit rule,
 same costs. The twin obeys the same budgets but not the day stop (its stop would depend on the bot's results).
 
 ## Primary test (forward only)

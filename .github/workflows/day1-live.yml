@@ -1,0 +1,119 @@
+# DAY1, the all-day $1,000 paper bot (tracks/day1/bot.py, research/prereg/DAY1.md). Fake money: long orders to the
+# Alpaca paper account EL-DAY1, shorts logged only. One job runs the bot beside its own copies of the NX3 scorer and
+# the CHR-P scanner (same frozen models; no orders of their own, state under state/sleeves), in 20-minute rounds,
+# saving to the orphan branch `state-day1` after each round, then queues the next job. After the close it settles the
+# day (ledger kind day1_day). The crons only start the day (DST-proof: the code waits for the open).
+name: day1-live
+
+on:
+  schedule:
+    - cron: "15 13 * * 1-5"
+    - cron: "15 14 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      check:
+        description: "true = read IEX quotes once and say whether the EL-DAY1 keys are set (no state)"
+        required: false
+        default: "false"
+      resume:
+        description: "true = restart the bot after a 10% pause (Amit only)"
+        required: false
+        default: "false"
+
+permissions: {}
+
+concurrency:
+  group: day1-state
+  cancel-in-progress: false
+
+jobs:
+  live:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    env:
+      # the bot's own key pair also reads market data, so its calls don't share the EL-DATA rate limit
+      ALPACA_API_KEY_ID: ${{ secrets.ALPACA_DAY1_KEY_ID || secrets.ALPACA_API_KEY_ID }}
+      ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_DAY1_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY }}
+      ALPACA_DAY1_KEY_ID: ${{ secrets.ALPACA_DAY1_KEY_ID }}
+      ALPACA_DAY1_SECRET_KEY: ${{ secrets.ALPACA_DAY1_SECRET_KEY }}
+      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages (CPU-only torch for NX3's FinBERT)
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
+
+      - name: Check the sources once
+        if: inputs.check == 'true'
+        run: PYTHONPATH=. .venv/bin/python -m tracks.day1.bot --check
+
+      - name: Restore the state branch
+        if: inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-day1
+        run: bash deploy/state.sh restore
+
+      - name: Restart after a pause
+        if: inputs.resume == 'true' && inputs.check != 'true'
+        run: PYTHONPATH=. .venv/bin/python -m tracks.day1.bot --state state --resume
+
+      - name: Run the bot and its sleeves, saving every 20 minutes
+        if: inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-day1
+          RUN_LABEL: day1-live ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          stop=$(( $(date +%s) + 330 * 60 ))
+          while (( $(date +%s) + 20 * 60 < stop )); do
+            ( PYTHONPATH=. .venv/bin/python -m tracks.news.nx3_live --state state/sleeves --minutes 20; echo $? > /tmp/rc_nx3 ) &
+            ( PYTHONPATH=. .venv/bin/python -u -m tracks.main.chr_live --state state/sleeves --minutes 20; echo $? > /tmp/rc_chr ) &
+            rc=0; PYTHONPATH=. .venv/bin/python -m tracks.day1.bot --state state --sleeves state/sleeves --minutes 20 || rc=$?
+            wait
+            bash deploy/state.sh save || echo "::warning::state save failed"
+            if (( rc == 3 )) && [[ "$(cat /tmp/rc_nx3)" == 3 && "$(cat /tmp/rc_chr)" == 3 ]]; then
+              echo "done for today"; touch /tmp/session_over; break
+            fi
+            (( rc != 0 && rc != 3 )) && { echo "::warning::day1 bot exited $rc; restarting"; sleep 10; }
+          done
+
+      - name: Save the state
+        if: always() && inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-day1
+          RUN_LABEL: day1-live ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save
+
+      - name: Queue the next job unless the day is done
+        if: always() && inputs.check != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if [[ -f /tmp/session_over ]]; then echo "done for today"; exit 0; fi
+          others=$(gh run list -R "$REPO" --workflow day1-live.yml --limit 20 --json databaseId,status \
+            --jq "[.[] | select(.databaseId != $RUN_ID and (.status == \"queued\" or .status == \"in_progress\" or .status == \"pending\" or .status == \"waiting\"))] | length")
+          if [[ "$others" == "0" ]]; then gh workflow run day1-live.yml -R "$REPO" --ref main; echo queued; else echo "another run is queued"; fi
