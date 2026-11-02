@@ -1,0 +1,616 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "41a82498006875a8c5fddbec6e7b964ad9b72eb06b1e886c25979ec31c6e2efe",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ddc041976622943f0ead6758fe07b9703a3e67617a731b0ee43dd7d4d0bc7741",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MGRC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "XMAX",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CPA",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MWA",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CALY",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "BAM",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "UNCY",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MPT",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "RBBN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "NKTX",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "955c759eba54ffe0720573b247bd7c4da584875959fa6e57f494e7f35dd4681a",
+   "decisions": [
+    {
+     "confidence": 95,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside momentum, high z-score and volume",
+     "stop_pct": 12.0,
+     "symbol": "MGRC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Heavy oversell with extreme volume, potential rebound",
+     "stop_pct": 15.0,
+     "symbol": "XMAX"
+    },
+    {
+     "confidence": 95,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Solid upside move with elevated volume",
+     "stop_pct": 10.0,
+     "symbol": "CPA"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Modest gain, stable volume",
+     "stop_pct": 10.0,
+     "symbol": "MWA"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong price rise despite low volume, momentum",
+     "stop_pct": 12.0,
+     "symbol": "CALY"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Deal news driving price up, positive tone",
+     "stop_pct": 12.0,
+     "symbol": "BAM"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline with high volume, shortable",
+     "stop_pct": 20.0,
+     "symbol": "UNCY"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop and volume, shortable",
+     "stop_pct": 20.0,
+     "symbol": "MPT"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large upside move with high volume",
+     "stop_pct": 20.0,
+     "symbol": "RBBN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst buy rating despite dip, potential upside",
+     "stop_pct": 20.0,
+     "symbol": "NKTX"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position exceeds 10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "PRQR"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position exceeds 10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "REI"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "1672d3c77d0e614b9492aaf421e35e74167e9f2c35d691bca7fd883a4f002c15"
+  },
+  "reviewer": {
+   "answer_sha256": "a2fb6528d4ce1dc49a2535597054f755afbdc809b0ca9544bf8f57b90f2e8908",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "a5808e73797ff2a21fe37c7b8d3398dac05746bd982da01e41505ba7fbf36599",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and very high volume pace support the long proposal.",
+     "symbol": "MGRC"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive drop and high volume make the long proposal too risky despite the deal analyst note.",
+     "symbol": "XMAX"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid breakout with strong volume pace justifies going long.",
+     "symbol": "CPA"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Steady upward movement and positive z-score support the long trade.",
+     "symbol": "MWA"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continued upward trend aligns well with the proposed long.",
+     "symbol": "CALY"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Good momentum and deal catalyst support the long proposal.",
+     "symbol": "BAM"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weakness and high volume pace support the short proposal.",
+     "symbol": "UNCY"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Ongoing downtrend and volume back the short position.",
+     "symbol": "MPT"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong volume and positive momentum support the long trade.",
+     "symbol": "RBBN"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Mixed signals with multi-week downtrend make the long proposal risky.",
+     "symbol": "NKTX"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09114,
+   "news": 0,
+   "pace": 5.298,
+   "price": 129.06,
+   "r20": 0.01051,
+   "r5": 0.00956,
+   "short": true,
+   "src": "iex",
+   "symbol": "MGRC",
+   "z": 6.168
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.25877,
+   "news": 0,
+   "pace": 14.965,
+   "price": 4.755,
+   "r20": -0.2532,
+   "r5": -0.25924,
+   "short": false,
+   "src": "iex",
+   "symbol": "XMAX",
+   "z": -5.461
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.06865,
+   "news": 0,
+   "pace": 3.363,
+   "price": 137.77,
+   "r20": -0.02687,
+   "r5": -0.01872,
+   "short": true,
+   "src": "iex",
+   "symbol": "CPA",
+   "z": 3.868
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.0509,
+   "news": 0,
+   "pace": 1.096,
+   "price": 23.95,
+   "r20": 0.05217,
+   "r5": 0.02381,
+   "short": true,
+   "src": "iex",
+   "symbol": "MWA",
+   "z": 4.299
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.07322,
+   "news": 0,
+   "pace": 0.898,
+   "price": 16.27,
+   "r20": 0.04913,
+   "r5": 0.07289,
+   "short": true,
+   "src": "iex",
+   "symbol": "CALY",
+   "z": 3.932
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06133,
+   "news": 0,
+   "pace": 1.035,
+   "price": 51.22,
+   "r20": 0.07603,
+   "r5": 0.02615,
+   "short": true,
+   "src": "iex",
+   "symbol": "BAM",
+   "z": 3.843
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08824,
+   "news": 0,
+   "pace": 3.943,
+   "price": 3.41,
+   "r20": -0.11374,
+   "r5": -0.03856,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "UNCY",
+   "z": -2.291
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.05778,
+   "news": 0,
+   "pace": 3.174,
+   "price": 2.12,
+   "r20": -0.31193,
+   "r5": -0.16667,
+   "short": true,
+   "src": "iex",
+   "symbol": "MPT",
+   "z": -1.604
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.09355,
+   "news": 0,
+   "pace": 4.517,
+   "price": 1.695,
+   "r20": -0.12429,
+   "r5": 0.10714,
+   "short": true,
+   "src": "iex",
+   "symbol": "RBBN",
+   "z": 1.398
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.02885,
+   "news": 0,
+   "pace": 3.299,
+   "price": 1.515,
+   "r20": -0.39417,
+   "r5": -0.12849,
+   "short": true,
+   "src": "iex",
+   "symbol": "NKTX",
+   "z": -0.884
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4953.3616,
+  "PICK-MAIN-coin": 4994.6818,
+  "PICK-PENNY": 498.6483,
+  "PICK-PENNY-coin": 489.9969
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-02T15:50:20.978751+00:00",
+   "entry": 1.27,
+   "exit": 1.41,
+   "net": -3.1052,
+   "opened": "2026-10-23T16:15:20.566219+00:00",
+   "qty": 17,
+   "side": -1,
+   "symbol": "PRQR",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-02T15:50:20.978751+00:00",
+   "entry": 1.415,
+   "exit": 1.37,
+   "net": -1.3137,
+   "opened": "2026-10-23T16:15:20.566219+00:00",
+   "qty": 16,
+   "side": 1,
+   "symbol": "REI",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-02T15:50:20.978751+00:00",
+   "entry": 1.27,
+   "exit": 1.41,
+   "net": 1.7728,
+   "opened": "2026-10-23T16:15:20.566219+00:00",
+   "qty": 17,
+   "side": 1,
+   "symbol": "PRQR",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-02T15:50:20.978751+00:00",
+   "entry": 1.415,
+   "exit": 1.37,
+   "net": -1.3137,
+   "opened": "2026-10-23T16:15:20.566219+00:00",
+   "qty": 16,
+   "side": 1,
+   "symbol": "REI",
+   "why": "picker exit"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3181,
+   "price": 3.41,
+   "qty": 7,
+   "side": -1,
+   "stop": 4.092,
+   "symbol": "UNCY"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3163,
+   "price": 3.41,
+   "qty": 7,
+   "side": 1,
+   "stop": 2.728,
+   "symbol": "UNCY"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2831,
+   "price": 2.12,
+   "qty": 10,
+   "side": -1,
+   "stop": 2.544,
+   "symbol": "MPT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2831,
+   "price": 2.12,
+   "qty": 10,
+   "side": -1,
+   "stop": 2.544,
+   "symbol": "MPT"
+  }
+ ],
+ "flag_counts": {
+  "move": 85,
+  "news": 6,
+  "volume": 163
+ },
+ "flagged": 224,
+ "headline_counts": {
+  "BAM": 2,
+  "NKTX": 2,
+  "XMAX": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "bc3a5f76f0684a32e3dd7b6a99dd52d618f1d42267505df4e0c3f35fe70a7af6",
+ "price_sources": {
+  "delayed_sip": 248,
+  "iex": 3160
+ },
+ "priced": 3408,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MGRC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "XMAX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CPA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MWA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CALY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BAM"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 7,
+   "skip": null,
+   "symbol": "UNCY"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 10,
+   "skip": null,
+   "symbol": "MPT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RBBN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NKTX"
+  }
+ ],
+ "slot": "2026-11-02T10:50",
+ "t": "2026-11-02T15:50:20.978751+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T15:50:32.663434Z"
+}
