@@ -1,0 +1,389 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "203e152148574e73861d0d4dd695ca33ce57fb08fac68a500d214ef16d89715f",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "698dc5c65bc97e5b8a55ce0120a893c35fcc7e99e4b17331d73ac2465ff7d421",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "TOP",
+     "tone": -2
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "SGML",
+     "tone": 0
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "LEGH",
+     "tone": 0
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "SVRN",
+     "tone": 0
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "PFIS",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "FELE",
+     "tone": 2
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "XTND",
+     "tone": 0
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "COUR",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "NRXP",
+     "tone": 2
+    },
+    {
+     "confidence": 0,
+     "event": "none",
+     "symbol": "NFGC",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "f49caa9f171d892944db0b3bd9ff9e140d0bf9623cd1d79ee75e5cf5a9ecc2fc",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no action",
+     "stop_pct": 0.0,
+     "symbol": "TOP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no action",
+     "stop_pct": 0.0,
+     "symbol": "SGML"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no action",
+     "stop_pct": 0.0,
+     "symbol": "LEGH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no action",
+     "stop_pct": 0.0,
+     "symbol": "SVRN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no action",
+     "stop_pct": 0.0,
+     "symbol": "PFIS"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive analyst tone and high confidence",
+     "stop_pct": 12.0,
+     "symbol": "FELE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no action",
+     "stop_pct": 0.0,
+     "symbol": "XTND"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no action",
+     "stop_pct": 0.0,
+     "symbol": "COUR"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive tone, high volume, high confidence",
+     "stop_pct": 20.0,
+     "symbol": "NRXP"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f894314331a722b58edbb22bb12a9e69c5a56d48eddcaa137d244ff842dbd0b3"
+  },
+  "reviewer": {
+   "answer_sha256": "e30474381cfd8371303c550a1a5a1ee58beb38ece1b2bc354d486e62d870b9bc",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "8b02c039f5abfe4008f26f883e3067cae96a84edb12fadb1b20279ff58777a2c",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum today with high analyst confidence and reasonable stop.",
+     "symbol": "FELE"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume pace but persistent negative multi-day trend and not shortable makes it risky.",
+     "symbol": "NRXP"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.31683,
+   "news": 0,
+   "pace": 5.306,
+   "price": 7.59,
+   "r20": -0.27716,
+   "r5": -0.27338,
+   "short": false,
+   "src": "iex",
+   "symbol": "TOP",
+   "z": -5.26
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.17071,
+   "news": 0,
+   "pace": 8.352,
+   "price": 5.805,
+   "r20": -0.22992,
+   "r5": -0.106,
+   "short": true,
+   "src": "iex",
+   "symbol": "SGML",
+   "z": -4.166
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0717,
+   "news": 0,
+   "pace": 4.912,
+   "price": 31.465,
+   "r20": 0.00034,
+   "r5": 0.04708,
+   "short": true,
+   "src": "iex",
+   "symbol": "LEGH",
+   "z": 3.889
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.42382,
+   "news": 0,
+   "pace": 5.057,
+   "price": 16.98,
+   "r20": -0.18501,
+   "r5": -0.16563,
+   "short": false,
+   "src": "iex",
+   "symbol": "SVRN",
+   "z": -3.583
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.04152,
+   "news": 0,
+   "pace": 5.148,
+   "price": 73.24,
+   "r20": 0.01487,
+   "r5": -0.00509,
+   "short": true,
+   "src": "iex",
+   "symbol": "PFIS",
+   "z": 3.095
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06228,
+   "news": 0,
+   "pace": 1.244,
+   "price": 101.32,
+   "r20": -0.03315,
+   "r5": -0.0303,
+   "short": true,
+   "src": "iex",
+   "symbol": "FELE",
+   "z": 6.226
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.13961,
+   "news": 0,
+   "pace": 3.302,
+   "price": 1.325,
+   "r20": -0.53333,
+   "r5": -0.12994,
+   "short": false,
+   "src": "iex",
+   "symbol": "XTND",
+   "z": -1.891
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07061,
+   "news": 0,
+   "pace": 3.23,
+   "price": 3.715,
+   "r20": -0.30876,
+   "r5": -0.31693,
+   "short": true,
+   "src": "iex",
+   "symbol": "COUR",
+   "z": 0.984
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.02863,
+   "news": 0,
+   "pace": 7.323,
+   "price": 2.205,
+   "r20": -0.21859,
+   "r5": -0.08835,
+   "short": false,
+   "src": "iex",
+   "symbol": "NRXP",
+   "z": -0.596
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.00313,
+   "news": 0,
+   "pace": 4.531,
+   "price": 1.595,
+   "r20": -0.01235,
+   "r5": 0.01266,
+   "short": true,
+   "src": "iex",
+   "symbol": "NFGC",
+   "z": -0.066
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4949.0566,
+  "PICK-MAIN-coin": 4995.4068,
+  "PICK-PENNY": 498.4385,
+  "PICK-PENNY-coin": 488.1221
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 83,
+  "news": 7,
+  "volume": 152
+ },
+ "flagged": 212,
+ "headline_counts": {
+  "FELE": 2,
+  "NRXP": 2,
+  "SVRN": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "b15b9efa4fe286e7d2bb3ff4bf6390ce028b3d928576dc5215fa69b063e5e92b",
+ "price_sources": {
+  "delayed_sip": 185,
+  "iex": 3223
+ },
+ "priced": 3408,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FELE"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 1,
+   "skip": "reviewer said none",
+   "symbol": "NRXP"
+  }
+ ],
+ "slot": "2026-11-02T10:55",
+ "t": "2026-11-02T15:55:21.204455+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T15:55:33.386635Z"
+}
