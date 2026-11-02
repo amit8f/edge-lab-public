@@ -1,0 +1,595 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "7af278b3d5dce8f1d503bbc909b1d7c05dedf903a2cf6ea69d3bdbf2355ef98f",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "c1f3d93328dc9978d204dbac59609d6280bb9b56338fda4c709b22ef967e18d0",
+   "views": [
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "SUPX",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "NXT",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "LOAR",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "NWL",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "FSLR",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "PRTH",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "ABR",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "OPK",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "product",
+     "symbol": "MEDS",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "QSI",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "7a94d1f35a9b81752693e98b66d0fb490ed8c8fe4eba9bdd93d75a5508e0d06a",
+   "decisions": [
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no shortable, neutral outlook",
+     "stop_pct": 0.0,
+     "symbol": "SUPX"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, strong momentum",
+     "stop_pct": 8.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant price rise with high volume",
+     "stop_pct": 10.0,
+     "symbol": "LOAR"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up on strong volume",
+     "stop_pct": 10.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst bearish despite price increase",
+     "stop_pct": 12.0,
+     "symbol": "FSLR"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "minimal move, low volume",
+     "stop_pct": 0.0,
+     "symbol": "PRTH"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp decline with high volume",
+     "stop_pct": 20.0,
+     "symbol": "ABR"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "moderate rise with solid volume",
+     "stop_pct": 15.0,
+     "symbol": "OPK"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive product news, high confidence",
+     "stop_pct": 15.0,
+     "symbol": "MEDS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price drop on elevated volume",
+     "stop_pct": 20.0,
+     "symbol": "QSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "NPKI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within stop, hold",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f4089768904e85557d6310180d2df7913d505a62959f6b460f545c3bbd702a57"
+  },
+  "reviewer": {
+   "answer_sha256": "3871c5b0dc9607030bc9a31cbb03054287cd8c917d2ee3b302d3e2330e654c10",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "60f634c81c4d041f8f19639bf6c293ad8924475b92c928f9953e5af6725aa056",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum with high volume and positive earnings tone.",
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid volume and upward price momentum.",
+     "symbol": "LOAR"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Good volume surge supporting the intraday gain.",
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative analyst tone despite the intraday pop.",
+     "symbol": "FSLR"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy losses over 5 and 20 days make shorting risky at support levels.",
+     "symbol": "ABR"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Steady short-term gains with moderate volume.",
+     "symbol": "OPK"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume pace and positive product tone.",
+     "symbol": "MEDS"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Mixed signals with recent weakness offset by short-term bounce.",
+     "symbol": "QSI"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.18696,
+   "news": 0,
+   "pace": 6.177,
+   "price": 4.74,
+   "r20": -0.12331,
+   "r5": -0.05968,
+   "short": false,
+   "src": "iex",
+   "symbol": "SUPX",
+   "z": -5.565
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.15631,
+   "news": 0,
+   "pace": 3.337,
+   "price": 91.73,
+   "r20": -0.05896,
+   "r5": 0.00558,
+   "short": true,
+   "src": "iex",
+   "symbol": "NXT",
+   "z": 4.245
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09242,
+   "news": 0,
+   "pace": 4.863,
+   "price": 67.85,
+   "r20": 0.00632,
+   "r5": 0.00877,
+   "short": true,
+   "src": "iex",
+   "symbol": "LOAR",
+   "z": 3.631
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.08977,
+   "news": 0,
+   "pace": 3.454,
+   "price": 5.645,
+   "r20": -0.04074,
+   "r5": -0.03358,
+   "short": true,
+   "src": "iex",
+   "symbol": "NWL",
+   "z": 3.119
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0664,
+   "news": 0,
+   "pace": 3.008,
+   "price": 185.98,
+   "r20": -0.0012,
+   "r5": 0.01401,
+   "short": true,
+   "src": "iex",
+   "symbol": "FSLR",
+   "z": 3.044
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.0051,
+   "news": 0,
+   "pace": 0.92,
+   "price": 7.88,
+   "r20": 0.00771,
+   "r5": 0.00256,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRTH",
+   "z": 3.855
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06776,
+   "news": 0,
+   "pace": 5.68,
+   "price": 1.995,
+   "r20": -0.39888,
+   "r5": -0.26712,
+   "short": true,
+   "src": "iex",
+   "symbol": "ABR",
+   "z": -0.818
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.03916,
+   "news": 0,
+   "pace": 3.183,
+   "price": 1.725,
+   "r20": 0.0641,
+   "r5": 0.0184,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPK",
+   "z": 0.782
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.04167,
+   "news": 0,
+   "pace": 5.806,
+   "price": 2.0,
+   "r20": -0.47826,
+   "r5": -0.13901,
+   "short": false,
+   "src": "iex",
+   "symbol": "MEDS",
+   "z": 0.546
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.05822,
+   "news": 0,
+   "pace": 3.084,
+   "price": 1.375,
+   "r20": -0.05806,
+   "r5": 0.04286,
+   "short": true,
+   "src": "iex",
+   "symbol": "QSI",
+   "z": -0.533
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4950.2716,
+  "PICK-MAIN-coin": 4980.3018,
+  "PICK-PENNY": 500.1881,
+  "PICK-PENNY-coin": 492.5385
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.2902,
+   "price": 91.73,
+   "qty": 5,
+   "side": 1,
+   "stop": 84.3916,
+   "symbol": "NXT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.2902,
+   "price": 91.73,
+   "qty": 5,
+   "side": 1,
+   "stop": 84.3916,
+   "symbol": "NXT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.4426,
+   "price": 5.645,
+   "qty": 8,
+   "side": 1,
+   "stop": 5.0805,
+   "symbol": "NWL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.4426,
+   "price": 5.645,
+   "qty": 8,
+   "side": 1,
+   "stop": 5.0805,
+   "symbol": "NWL"
+  }
+ ],
+ "flag_counts": {
+  "move": 68,
+  "news": 4,
+  "volume": 214
+ },
+ "flagged": 257,
+ "headline_counts": {
+  "FSLR": 3,
+  "MEDS": 1,
+  "NWL": 1,
+  "NXT": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "b54ca2faabd64a730c5b4b3636b5d9a1334a5be0430fd3371c478d773ceb7125",
+ "price_sources": {
+  "delayed_sip": 244,
+  "iex": 3163
+ },
+ "priced": 3407,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 5,
+   "skip": null,
+   "symbol": "NXT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LOAR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 8,
+   "skip": null,
+   "symbol": "NWL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FSLR"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ABR"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OPK"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MEDS"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "QSI"
+  }
+ ],
+ "slot": "2026-11-02T10:30",
+ "t": "2026-11-02T15:30:20.972291+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T15:30:33.639151Z"
+}
