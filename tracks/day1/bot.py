@@ -273,7 +273,10 @@ def fund(st, api, br, now, d, cands, pools, sessions, short_c):
             why = "cost check"
         elif any(x["symbol"] == c["symbol"] for x in open_bot):
             why = "duplicate"
-        elif sum(x["usd"] for x in open_bot if x["sleeve"] == c["sleeve"]) + usd > BUDGET[c["sleeve"]] * BOOK + 1e-9:
+        # a sleeve's budget counts what it will still hold after today's close: a position whose time exit is
+        # today's close frees its share for the next day's entries (else NX3 could only trade every other day)
+        elif sum(x["usd"] for x in open_bot if x["sleeve"] == c["sleeve"] and x["end"] > f"{d:%Y-%m-%d}") \
+                + usd > BUDGET[c["sleeve"]] * BOOK + 1e-9:
             why = "sleeve budget"
         elif sum(x["usd"] for x in open_bot) + usd > BOOK + 1e-9:
             why = "fully invested"

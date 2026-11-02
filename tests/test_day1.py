@@ -171,3 +171,16 @@ def test_resume_clears_pause(tmp_path):
     D.resume(tmp_path)
     a = st.load("account.json", {})
     assert not a["paused"] and a["peak"] == pytest.approx(890.0)
+
+
+def test_positions_ending_today_free_the_budget(tmp_path):
+    nx3_day(tmp_path, [dec("a", "AAA", 0.4)])
+    st = D.State(tmp_path / "state")
+    old = [{"id": f"o{i}", "role": "bot", "sleeve": "nx3", "symbol": f"OLD{i}", "date": "2026-11-02", "entry": 10.0,
+            "usd": 250.0, "qty": 25.0, "round_trip": 0.004, "end": "2026-11-03", "exit": {"type": "close", "sessions": 1}}
+           for i in range(2)]
+    st.save("positions.json", old)
+    c, s, pool = D.nx3_cands(tmp_path / "sleeves", DAY)
+    n = D.fund(st, FakeApi({"AAA": 20.0, "OLD0": 10.0, "OLD1": 10.0}), FakeBroker(), pd.Timestamp("2026-11-03 09:32"),
+               DAY, c, {"nx3": pool, "chrp": []}, SESSIONS, s)
+    assert n == 1                      # $500 of NX3 closes today, so today's $200 entry fits the $500 budget

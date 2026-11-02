@@ -57,7 +57,8 @@ control after costs at NW t >= 2, own mean > 0); the budget then comes out of th
    cost is charged in the ledger, for the bot and the twin.
 3. **Size.** $50 to $200 a trade (5% to 20%), scaled linearly by the sleeve's own confidence (NX3: |e|/cut from 1
    to 2; CHR-P: its size scale from 2% to 10%; promoted sleeves: $100 flat). Never more than 20% of the bot in
-   one stock (all sleeves together), never more than the sleeve's budget open, never more than 100% invested.
+   one stock (all sleeves together), never more than the sleeve's budget held past today's close (a position
+   whose time exit is today's close frees its share for today's new entries), never more than 100% invested.
 4. **Same stock, two sleeves.** The larger expected move wins; the other is logged "duplicate".
 5. **Overnight cap.** At most 50% of the bot held overnight. A multi-day candidate that would push open overnight
    positions above 50% is skipped and logged "overnight cap" (every starting sleeve holds overnight, so in practice
