@@ -156,3 +156,9 @@ def test_open_nx3_trades_count_in_the_book_percent():
     assert nx3["pnl_pct"] == pytest.approx(100 * (-21.76 + 75.0) / 5000)
     assert allb["open"] == 2 and allb["unrealized"] == pytest.approx(5000 * 0.1 * 0.1 + 5000 * 0.05 * -1 * 0.2)
     assert other["unrealized"] is None
+
+
+def test_nx3all_has_no_provisional_picks_before_its_first_day(tmp_path):
+    rows = [{"symbol": "A", "t": "2026-10-30T09:31", "e": 9.9, "fired": True, "etb": True}]
+    assert "ALL" not in B.arm_picks(tmp_path, "2026-10-30", rows)
+    assert "ALL" in B.arm_picks(tmp_path, "2026-11-02", rows)

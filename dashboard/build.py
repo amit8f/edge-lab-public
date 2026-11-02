@@ -33,6 +33,7 @@ from paper import fwd_eval as F
 DATA = "https://data.alpaca.markets/v2"
 ET = ZoneInfo("America/New_York")
 NX3_DAYS, STALE_DAYS = 7, 7
+NX3ALL_FIRST_DAY = "2026-11-02"      # the NX3-ALL book has no picks before this day
 NX3_COST = 0.002          # NX3's round trip (config/risk.yaml news track), for the skipped stocks' moves
 SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs"]
 
@@ -486,7 +487,7 @@ def arm_picks(root, day, rows=()):
     if al.get("picks"):
         out["ALL"] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w"),
                                     "w_llm": p.get("w_llm")} for p in al["picks"]}
-    elif rows:      # today, before the close writes the book: the picks so far from the day's decided events
+    elif rows and day >= NX3ALL_FIRST_DAY:      # today, before the close writes the book: the picks so far from the day's decided events
         live = _nx3all_so_far(rows)
         if live:
             out["ALL"] = live
