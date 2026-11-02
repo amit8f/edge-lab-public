@@ -115,6 +115,34 @@ def nx3_books(st):
     return out
 
 
+def mark_open_nx3(books, days):
+    """NX3 and NX3-ALL ledger books show settled results only; add the trades still open (days not settled yet) marked
+    at the latest price against the IEX price at decision, before costs, so the card is the overall P&L."""
+    un = {"NX3": 0.0, "NX3-ALL": 0.0}
+    n = {"NX3": 0, "NX3-ALL": 0}
+    for d in days:
+        if d.get("settled") or d.get("excluded"):
+            continue
+        for e in d["events"]:
+            px, last = e.get("entry_iex"), e.get("last_price")
+            if not px or not last:
+                continue
+            mv = last / px - 1
+            if e.get("side"):
+                un["NX3"] += 500 * e["side"] * mv
+                n["NX3"] += 1
+            a = (e.get("arms") or {}).get("ALL")
+            if a and a.get("side") and a.get("w"):
+                un["NX3-ALL"] += 5000 * a["w"] * a["side"] * mv
+                n["NX3-ALL"] += 1
+    for b in books:
+        if b["name"] in un and b.get("size") and n[b["name"]]:
+            b["open"] = n[b["name"]]
+            b["unrealized"] = un[b["name"]]
+            b["pnl_pct"] = 100 * ((b["realized"] or 0.0) + un[b["name"]]) / b["size"]
+    return books
+
+
 def chrp_book(st):
     """CHR-P $1,000 penny ledger book (research/prereg/CHR.md); size is a fraction of the book, net a return."""
     w = st / "state-chrp" / "chrp" / "work"
@@ -551,9 +579,11 @@ def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
+    nx3 = nx3_days(st, Path(out) / "cache")
+    mark_open_nx3(books, nx3)
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),
-           "nx3": nx3_days(st, Path(out) / "cache"), "ideas": ideas(repo_root, books)}
+           "nx3": nx3, "ideas": ideas(repo_root, books)}
     Path(out).mkdir(parents=True, exist_ok=True)
     tmp = Path(out) / "summary.json.tmp"
     tmp.write_text(json.dumps(_clean(res), separators=(",", ":"), default=str))

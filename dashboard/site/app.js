@@ -471,7 +471,7 @@ function renderBooks() {
       el("div", { class: "kv" }, el("span", { text: b.target ? `${b.closed} of ${b.target} ${b.unit}` : `${b.closed} ${b.unit}` }),
         el("span", { class: b.pnl_pct == null ? "muted" : b.pnl_pct >= 0 ? "up" : "down",
           text: b.pnl_pct == null ? "" : `${b.pnl_pct >= 0 ? "+" : ""}${b.pnl_pct.toFixed(2)}%` })),
-      b.open != null ? el("div", { class: "kv muted small" }, el("span", { text: `${b.open} open` }),
+      b.open != null ? el("div", { class: "kv muted small" }, el("span", { text: b.unrealized != null ? `${b.open} open, counted in the %` : `${b.open} open` }),
         el("span", { text: b.account || "" })) : null,
       b.edge_pct != null ? el("div", { class: "kv small" }, el("span", { class: "muted", text: "picks minus random so far" }),
         el("span", { class: b.edge_pct >= 0 ? "up" : "down", text: `${b.edge_pct >= 0 ? "+" : ""}${b.edge_pct.toFixed(2)}%` +
