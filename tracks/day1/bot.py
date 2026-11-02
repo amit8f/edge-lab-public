@@ -212,7 +212,7 @@ def entry_order(pos):
             "client_order_id": f"day1-{pos['date'].replace('-', '')}-{sym}-in"}
     if band(px) == "main":
         return body | {"type": "market", "notional": f"{pos['usd']:.2f}"}
-    return body | {"type": "limit", "qty": str(int(pos["qty"])), "limit_price": f"{px * 1.01:.4f}"}
+    return body | {"type": "limit", "qty": str(int(pos["qty"])), "limit_price": f"{px * 1.01:.2f}"}
 
 
 def exit_order(pos, moc, tag):

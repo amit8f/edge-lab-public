@@ -210,3 +210,9 @@ def test_tight_quote_lets_a_small_move_through(tmp_path):
     n2 = D.fund(st2, FakeApi({"DDD": 20.0}, quotes={"DDD": (19.998, 20.002)}), FakeBroker(),
                 pd.Timestamp("2026-11-03 09:32"), DAY, c, {"nx3": pool, "chrp": []}, SESSIONS, s)
     assert n2 == 1
+
+
+def test_penny_entry_limit_price_is_whole_cents():
+    pos = {"symbol": "EVGO", "entry": 1.7845, "qty": 29, "usd": 52.0, "date": "2026-11-02"}
+    o = D.entry_order(pos)
+    assert o["type"] == "limit" and len(o["limit_price"].split(".")[1]) == 2
