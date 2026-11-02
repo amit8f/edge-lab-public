@@ -1,0 +1,306 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "ec3108d9cef9f79de7f18d6f40a50d2a79cf54e007215be03f81afb4cafd0c84",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "173395d31ce968fea417606038ca4bdac21a921a1567a4e9ff96b8505f6d046a",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "a5ea59745e4028c898415115693fe686b9e629554340d421b0dfbadf62414097",
+    "model": "openai/gpt-oss-20b",
+    "prompt_sha256": "4aa2ff1c66b63ecbe452fcdf4fcf7994cc188a21190cd04540bca91d14be3ab9"
+   },
+   "views": [
+    {
+     "confidence": 80,
+     "event": "regulatory",
+     "symbol": "PGEN",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "guidance",
+     "symbol": "MAR",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "regulatory",
+     "symbol": "DRUG",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "deal",
+     "symbol": "PERI",
+     "tone": 2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "OFRM",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NSSC",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "deal",
+     "symbol": "EVGO",
+     "tone": 2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "IDXX",
+     "tone": 2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "JAGX",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "JOBY",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "25962175bc43ef1341490026f0fe796ebf6969305bff7b52638623f907ee109f",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.26297,
+   "news": 1,
+   "pace": null,
+   "price": 5.115,
+   "r20": -0.18735,
+   "r5": 0.12116,
+   "short": true,
+   "src": "iex",
+   "symbol": "PGEN",
+   "z": -6.541
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.05392,
+   "news": 1,
+   "pace": null,
+   "price": 420.83,
+   "r20": 0.11238,
+   "r5": 0.02199,
+   "short": true,
+   "src": "iex",
+   "symbol": "MAR",
+   "z": 3.898
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.51946,
+   "news": 0,
+   "pace": null,
+   "price": 26.42,
+   "r20": 0.08463,
+   "r5": 0.04764,
+   "short": true,
+   "src": "iex",
+   "symbol": "DRUG",
+   "z": -16.564
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.30805,
+   "news": 0,
+   "pace": null,
+   "price": 11.38,
+   "r20": 0.02353,
+   "r5": 0.00462,
+   "short": true,
+   "src": "iex",
+   "symbol": "PERI",
+   "z": 15.093
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.26864,
+   "news": 0,
+   "pace": null,
+   "price": 10.985,
+   "r20": -0.07398,
+   "r5": -0.05653,
+   "short": true,
+   "src": "iex",
+   "symbol": "OFRM",
+   "z": -11.082
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.18526,
+   "news": 0,
+   "pace": null,
+   "price": 32.06,
+   "r20": 0.08792,
+   "r5": 0.01365,
+   "short": true,
+   "src": "iex",
+   "symbol": "NSSC",
+   "z": -10.883
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.42857,
+   "news": 0,
+   "pace": null,
+   "price": 1.8,
+   "r20": -0.08696,
+   "r5": 0.23529,
+   "short": true,
+   "src": "iex",
+   "symbol": "EVGO",
+   "z": 8.2
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.16618,
+   "news": 0,
+   "pace": null,
+   "price": 642.81,
+   "r20": 0.06331,
+   "r5": -0.01636,
+   "short": true,
+   "src": "iex",
+   "symbol": "IDXX",
+   "z": 7.926
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.47525,
+   "news": 0,
+   "pace": null,
+   "price": 0.8501,
+   "r20": -0.55738,
+   "r5": -0.20588,
+   "short": false,
+   "src": "iex",
+   "symbol": "JAGX",
+   "z": -4.783
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00714,
+   "news": 1,
+   "pace": null,
+   "price": 4.935,
+   "r20": -0.17647,
+   "r5": 0.02941,
+   "short": true,
+   "src": "iex",
+   "symbol": "JOBY",
+   "z": 0.213
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4993.2979,
+  "PICK-MAIN-coin": 5005.0799,
+  "PICK-PENNY": 497.1526,
+  "PICK-PENNY-coin": 493.2172
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 18,
+  "news": 172,
+  "volume": 0
+ },
+ "flagged": 188,
+ "flip_test": {
+  "after": null,
+  "answer_sha256": "2063cbc00f36e5adafb490422cdfeef86057e0e9140fec7f8819d3a27e808dd3",
+  "before": -2,
+  "model": "openai/gpt-oss-20b",
+  "moved": null,
+  "prompt_sha256": "82b89dfa1e1a286fafc0f86c86fec5f72650748bc58901369fdc44bf9c154555",
+  "quota": false,
+  "retry": {
+   "answer_sha256": "3b862112f5b6f5696963a52abe28b932183fc439aacd653e1f6d529b50861bf6",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "99df4ada226ff8db3186af27b544d05d46d946ebab34a86182377fbf20d831c5"
+  },
+  "swaps": 2,
+  "symbol": "PGEN"
+ },
+ "headline_counts": {
+  "DRUG": 3,
+  "EVGO": 2,
+  "IDXX": 3,
+  "JAGX": 2,
+  "JOBY": 1,
+  "MAR": 3,
+  "NSSC": 3,
+  "OFRM": 3,
+  "PERI": 3,
+  "PGEN": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "687ac206a72550e616a05fd77e4631bef937d09682a96ee6d4a1243162754460",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2247
+ },
+ "priced": 2247,
+ "risk": [],
+ "slot": "2026-11-02T09:35",
+ "t": "2026-11-02T14:35:21.306961+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T14:35:37.750279Z"
+}
