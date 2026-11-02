@@ -25,6 +25,22 @@ def test_dod_saves_new_pages_and_retries_blocked(tmp_path):
     assert leads.run_dod(tmp_path, get) == (0, 1)       # saved day skipped, blocked day retried
 
 
+
+def test_dod_keeps_rss_text_when_the_page_is_blocked(tmp_path):
+    rss = RSS.replace("<pubDate>Tue, 13 Oct 2026 21:00:04 GMT</pubDate>",
+                      "<pubDate>Tue, 13 Oct 2026 21:00:04 GMT</pubDate>"
+                      "<description><![CDATA[<p>ACME Corp., Ohio, was awarded $9,000,000.</p>]]></description>")
+
+    def get(url, params=None):
+        if url == leads.DOD_RSS:
+            return 200, rss
+        return (403, "Access Denied") if "/1/" in url else (200, "<html>contracts</html>")
+    assert leads.run_dod(tmp_path, get) == (1, 0)
+    assert (tmp_path / "leads/dod/2026-10-13.rss.html").read_text() == "<p>ACME Corp., Ohio, was awarded $9,000,000.</p>"
+    idx = [json.loads(x) for x in (tmp_path / "leads/dod/index.jsonl").read_text().splitlines()]
+    assert {(r["day"], r["source"]) for r in idx} == {("2026-10-14", "page"), ("2026-10-13", "rss")}
+    assert leads.run_dod(tmp_path, get) == (0, 0)       # the RSS copy is kept once; the page is still tried
+
 def test_trials_fills_days_to_yesterday_and_pages(tmp_path):
     calls = []
 

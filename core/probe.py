@@ -4,6 +4,7 @@ file formats before B0's code and the borrow logger depend on them.
 
 Usage: python -m core.probe
 """
+import re
 import ftplib
 import io
 import zipfile
@@ -143,6 +144,15 @@ def dod_sources():
             out.append(f"-- {name}: " + http(url, 300, headers=br))
         except Exception as e:  # noqa: BLE001
             out.append(f"-- {name}: FAILED {type(e).__name__}: {str(e)[:150]}")
+    try:
+        from core import leads
+        r = requests.get(leads.DOD_RSS, headers=br, timeout=60)
+        items = leads.parse_rss(r.text, with_text=True)
+        out.append(f"-- war.gov RSS items: {len(items)}; " + "; ".join(f"{d} {len(t)} chars" for d, _, t, _ in items[:5]))
+        if items:
+            out.append("   first item text: " + re.sub(r"<[^>]+>", " ", items[0][2])[:700])
+    except Exception as e:  # noqa: BLE001
+        out.append(f"-- war.gov RSS items: FAILED {type(e).__name__}: {str(e)[:150]}")
     body = {"filters": {"award_type_codes": ["A", "B", "C", "D"], "agencies": [{"type": "awarding", "tier": "toptier",
             "name": "Department of Defense"}], "time_period": [{"start_date": "2024-01-02", "end_date": "2024-01-03"}]},
             "fields": ["Award ID", "Recipient Name", "Award Amount", "Action Date"], "limit": 3}

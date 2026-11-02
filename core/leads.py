@@ -5,8 +5,10 @@ later pre-registered idea can test them; nothing here scores or trades.
 
 - dod:    the daily "Contracts for <date>" page (posted ~5pm ET; contracts of $7.5M or more), saved as raw
           HTML to <state>/leads/dod/<date>.html. Days are taken from the RSS feed; a page that fails to
-          download is retried on the next run. Opt-in (--dod): war.gov's CDN refuses cloud IPs (GitHub
-          Actions got 403 on every page on 2026-10-15), so it only works from a home connection.
+          download is retried on the next run. war.gov's CDN refuses cloud IPs for the pages (GitHub
+          Actions got 403 on 2026-10-15 and 2026-11-02) but serves the RSS feed, so from a cloud IP each
+          item's <description> is saved instead, to <state>/leads/dod/<date>.rss.html (DOD1's forward log;
+          the page replaces it when a home connection fetches it). Opt-in (--dod).
 - trials: every industry-sponsored study whose last-update post date is d, one JSONL file per day
           (<state>/leads/trials/<d>.jsonl). Each run fills the days from the cursor to yesterday (ET).
           A study updated again before its day is fetched shows only its newer date, so a day fetched
@@ -58,8 +60,9 @@ def _write_atomic(path, text):
     os.replace(tmp, path)
 
 
-def parse_rss(xml):
-    """[(et_date 'YYYY-MM-DD', link)] for the contract items of the RSS feed."""
+def parse_rss(xml, with_text=False):
+    """[(et_date 'YYYY-MM-DD', link)] for the contract items of the RSS feed; with_text adds the item's
+    <description> (CDATA unwrapped) and its pubDate in UTC."""
     out = []
     for item in re.findall(r"<item>(.*?)</item>", xml, re.S):
         link = re.search(r"<link>\s*(.*?)\s*</link>", item, re.S)
@@ -67,7 +70,13 @@ def parse_rss(xml):
         if not (link and pub) or "/Contract/" not in link.group(1):
             continue
         t = pd.Timestamp(email.utils.parsedate_to_datetime(pub.group(1))).tz_convert(ET)
-        out.append((f"{t:%Y-%m-%d}", link.group(1)))
+        if not with_text:
+            out.append((f"{t:%Y-%m-%d}", link.group(1)))
+            continue
+        d = re.search(r"<description>\s*(.*?)\s*</description>", item, re.S)
+        text = d.group(1) if d else ""
+        text = re.sub(r"^<!\[CDATA\[(.*)\]\]>$", r"\1", text, flags=re.S)
+        out.append((f"{t:%Y-%m-%d}", link.group(1), text, f"{t.tz_convert('UTC'):%Y-%m-%dT%H:%M:%SZ}"))
     return out
 
 
@@ -78,21 +87,32 @@ def run_dod(state_dir, get=http_get, now=None):
     if status != 200:
         print(f"::warning::dod: RSS feed returned {status}")
         return 0, 1
-    saved = failed = 0
-    for day, link in parse_rss(xml):
+    saved = failed = from_rss = 0
+    fetched = f"{_now(now):%Y-%m-%dT%H:%M:%SZ}"
+    for day, link, text, pub_utc in parse_rss(xml, with_text=True):
         path = root / f"{day}.html"
         if path.exists():
             continue
         status, page = get(link)
         if status != 200 or "Access Denied" in page[:2000]:
-            print(f"::warning::dod: {day} page returned {status}; retried next run")
-            failed += 1
+            rss_path = root / f"{day}.rss.html"
+            if rss_path.exists():
+                continue                      # already kept from the feed; the page is tried again next run
+            if text:
+                _write_atomic(rss_path, text)
+                with open(root / "index.jsonl", "a", encoding="utf-8") as f:
+                    f.write(json.dumps({"day": day, "url": link, "source": "rss", "pub_utc": pub_utc,
+                                        "fetched_utc": fetched, "chars": len(text)}) + "\n")
+                from_rss += 1
+            else:
+                failed += 1
             continue
         _write_atomic(path, page)
         with open(root / "index.jsonl", "a", encoding="utf-8") as f:
-            f.write(json.dumps({"day": day, "url": link, "fetched_utc": f"{_now(now):%Y-%m-%dT%H:%M:%SZ}"}) + "\n")
+            f.write(json.dumps({"day": day, "url": link, "source": "page", "pub_utc": pub_utc,
+                                "fetched_utc": fetched}) + "\n")
         saved += 1
-    print(f"dod: {saved} pages saved, {failed} failed")
+    print(f"dod: {saved} pages saved, {from_rss} saved from the RSS text, {failed} not saved")
     return saved, failed
 
 
