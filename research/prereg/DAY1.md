@@ -71,9 +71,10 @@ control after costs at NW t >= 2, own mean > 0); the budget then comes out of th
 
 ## Fee basis
 
-Pending Amit's tap on 2026-11-02's card (recommended: Alpaca's $0 commission, which is what the paper and a real
-Alpaca account charge; the alternative is `adaptive/costs.py`'s IBKR-style commission, $0.0035 a share, $0.35
-minimum, 1% maximum). Sale fees (SEC and FINRA TAF) apply either way. Recorded here before the first forward day.
+Alpaca's $0 commission (Amit, 2026-11-02, tapped "Alpaca $0 fee" on the card "Count Alpaca's real $0 commission
+in the bot's cost check, or keep the stricter IBKR-style fee?"), which is what the paper and a real Alpaca account
+charge. Sale fees (SEC and FINRA TAF, `adaptive/costs.regulatory`) and the measured spread apply. Decided before the
+first forward day.
 
 ## Reweighting every 2 weeks (Amit: "do it every 2 weeks")
 
