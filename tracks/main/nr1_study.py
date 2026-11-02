@@ -75,25 +75,29 @@ def symbol_features(g, cal_pos):
 
 
 def stage_rows(cache, cal):
-    """Candidate rows ($5+, dv20 >= $5M, with a CIK) with their features, one parquet per W1 batch."""
+    """Candidate rows ($5+, dv20 >= $5M, with a CIK) with their features, and every row's all/raw price ratio
+    (for carrying share counts forward from the share date), one parquet pair per W1 batch."""
     cal_pos = pd.Series(np.arange(len(cal)), index=pd.DatetimeIndex(cal["date"]))
     d = ndir(cache) / "rows"
     for i, p in enumerate(D.batch_files(cache)):
-        f = d / f"r_{i:04d}.parquet"
-        if f.exists():
+        f, fk = d / f"r2_{i:04d}.parquet", d / f"k2_{i:04d}.parquet"
+        if f.exists() and fk.exists():
             continue
-        r = pd.read_parquet(p, columns=ROW_COLS, filters=[("date", ">=", pd.Timestamp("2016-06-01")),
+        r = pd.read_parquet(p, columns=ROW_COLS, filters=[("date", ">=", pd.Timestamp("2016-01-01")),
                                                           ("date", "<", HOLDOUT)])
         r = r[r["cik"].notna()]
         parts = [symbol_features(g, cal_pos) for _, g in r.groupby("symbol")]
-        x = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=ROW_COLS)
+        x = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=ROW_COLS + ["k"])
         keep = (x["c"] >= MIN_PRICE) & (x["dv20"] >= MIN_DV20) & (x["date"] >= FIRST_T - pd.Timedelta(days=10))
+        _atomic(x[["symbol", "date", "k"]], fk)
         _atomic(x[keep].astype({"cik": "int64"}), f)
         print(f"[nr1 rows] batch {i + 1}: {int(keep.sum())} rows")
-    return pd.concat([pd.read_parquet(p) for p in sorted(d.glob("r_*.parquet"))], ignore_index=True)
+    rows = pd.concat([pd.read_parquet(p) for p in sorted(d.glob("r2_*.parquet"))], ignore_index=True)
+    ktab = pd.concat([pd.read_parquet(p) for p in sorted(d.glob("k2_*.parquet"))], ignore_index=True)
+    return rows, ktab
 
 
-def market_caps(cache, rows):
+def market_caps(cache, rows, ktab):
     """mcap per row from cover-page shares (point in time by filing date)."""
     zp = ndir(cache) / "companyfacts.zip"
     fdir = ndir(cache) / "facts"
@@ -107,7 +111,7 @@ def market_caps(cache, rows):
     m = as_of(rows[["cik", "date"]], sh)
     # raw/all ratio on the share date, from the same symbol's rows (last row on or before sh_end)
     key = rows[["symbol"]].assign(sh_end=pd.to_datetime(m["sh_end"].to_numpy()), _i=np.arange(len(rows)))
-    ref = rows[["symbol", "date", "k"]].sort_values("date")
+    ref = ktab.sort_values("date")
     j = pd.merge_asof(key.dropna(subset=["sh_end"]).sort_values("sh_end"), ref, left_on="sh_end", right_on="date",
                       by="symbol", direction="backward", tolerance=pd.Timedelta(days=10))
     k_sh = np.full(len(rows), np.nan)
@@ -203,8 +207,9 @@ def build(uni, cal):
 
 def stage_events(cache, out):
     cal = D.calendar()
-    rows = stage_rows(cache, cal)
-    rows["mcap"] = market_caps(cache, rows)
+    rows, ktab = stage_rows(cache, cal)
+    rows["mcap"] = market_caps(cache, rows, ktab)
+    mcap_known = float(rows["mcap"].notna().mean())
     rows = rows[rows["mcap"].notna() & (rows["date"] >= FIRST_T)]
     rows = rows.sort_values("dv20", ascending=False).drop_duplicates(["date", "cik"])
     rows["rank"] = rows.groupby("date")["mcap"].rank(ascending=False, method="first")
@@ -244,7 +249,11 @@ def stage_events(cache, out):
            "picks_per_year": {str(y): int(n) for y, n in prim["t"].dt.year.value_counts().sort_index().items()}
            if len(prim) else {},
            "variant_picks": {k: int(v) for k, v in picks["variant"].value_counts().items()},
-           "controls": int(len(ctrls)), "earnings_8k": int(len(fil)),
+           "controls": int(len(ctrls)), "earnings_8k": int(len(fil)), "candidate_rows_with_mcap": mcap_known,
+           "mcap_of_500th_by_year_end": {str(y): float(g.loc[g["date"] == g["date"].max(), "mcap"].min())
+                                         for y, g in uni.groupby(uni["date"].dt.year)},
+           "megacaps_in_universe_share": {s: float(uni.loc[uni["symbol"] == s, "date"].nunique() / days_n)
+                                          for s in ("AAPL", "MSFT", "AMZN", "JPM", "XOM", "JNJ", "BRK.B", "WMT")},
            "prefilter": f"raw close >= ${MIN_PRICE:.0f} and 20-day median dollar volume >= ${MIN_DV20 / 1e6:.0f}M "
                         "before the market-cap ranking"}
     (out / "NR1_coverage.json").write_text(json.dumps(cov, indent=1))
