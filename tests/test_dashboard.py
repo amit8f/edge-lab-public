@@ -139,3 +139,20 @@ def test_nx3all_picks_before_the_close(monkeypatch):
     got = B._nx3all_so_far(rows)
     assert set(got) == {"A", "C"} and got["A"]["side"] == 1 and got["C"]["side"] == -1
     assert got["A"]["w"] == pytest.approx(0.10) and got["C"]["w"] == pytest.approx(0.075)
+
+
+def test_open_nx3_trades_count_in_the_book_percent():
+    books = [B._book("NX3", "NX3", 100, 3, 0, realized=-21.76, size=5000.0),
+             B._book("NX3-ALL", "NX3-ALL", 30, 0, 0, realized=0, size=5000.0), B._book("OTHER", "X", 1, 0, 0, realized=1, size=100.0)]
+    days = [{"day": "2026-11-02", "settled": False, "excluded": None, "events": [
+                {"symbol": "A", "side": 1, "entry_iex": 10.0, "last_price": 11.0, "arms": {"ALL": {"side": 1, "w": 0.1}}},
+                {"symbol": "B", "side": -1, "entry_iex": 20.0, "last_price": 19.0, "arms": {}},
+                {"symbol": "C", "side": None, "entry_iex": 5.0, "last_price": 6.0, "arms": {"ALL": {"side": -1, "w": 0.05}}}]},
+            {"day": "2026-10-29", "settled": True, "excluded": None, "events": [
+                {"symbol": "Z", "side": 1, "entry_iex": 1.0, "last_price": 9.0, "arms": {}}]}]
+    B.mark_open_nx3(books, days)
+    nx3, allb, other = books
+    assert nx3["open"] == 2 and nx3["unrealized"] == pytest.approx(500 * 0.1 + 500 * 0.05)        # settled day ignored
+    assert nx3["pnl_pct"] == pytest.approx(100 * (-21.76 + 75.0) / 5000)
+    assert allb["open"] == 2 and allb["unrealized"] == pytest.approx(5000 * 0.1 * 0.1 + 5000 * 0.05 * -1 * 0.2)
+    assert other["unrealized"] is None
