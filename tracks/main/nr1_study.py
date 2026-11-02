@@ -129,17 +129,23 @@ def etf_ret5(cal):
 
 def news_window(keys, news_days, filings, cal):
     """True where the symbol had a Benzinga article, or the company an item 2.02 8-K, on the ET calendar dates
-    from session t-4 through t."""
+    from session t-4 through t. Counted per name with sorted dates (a full merge of ten years of news days onto
+    every row runs out of memory)."""
     days = pd.DatetimeIndex(cal["date"])
     pos = days.searchsorted(keys["date"].to_numpy())
-    lo = days[np.maximum(pos - (BACK - 1), 0)]
-    k = keys.assign(_lo=lo, _i=np.arange(len(keys)))
+    lo = days[np.maximum(pos - (BACK - 1), 0)].to_numpy()
+    hi = keys["date"].to_numpy()
     hit = np.zeros(len(keys), dtype=bool)
-    nd = news_days.rename(columns={"date": "_d"})
-    fd = filings.assign(_d=filings["accepted_et"].dt.normalize())[["cik", "_d"]]
-    for days_tab, col in ((nd, "symbol"), (fd, "cik")):
-        j = k[[col, "_lo", "date", "_i"]].merge(days_tab, on=col)
-        hit[j.loc[(j["_d"] >= j["_lo"]) & (j["_d"] <= j["date"]), "_i"].unique()] = True
+    fd = pd.DataFrame({"cik": filings["cik"].astype("int64"), "date": filings["accepted_et"].dt.normalize()})
+    for tab, col in ((news_days, "symbol"), (fd, "cik")):
+        dates = {k: np.sort(g.to_numpy()) for k, g in tab.groupby(col)["date"]}
+        for k, idx in pd.Series(np.arange(len(keys))).groupby(keys[col].to_numpy()).groups.items():
+            d = dates.get(k)
+            if d is None:
+                continue
+            idx = np.asarray(idx)
+            n = np.searchsorted(d, hi[idx], side="right") - np.searchsorted(d, lo[idx], side="left")
+            hit[idx[n > 0]] = True
     return hit
 
 
