@@ -1,0 +1,515 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "eadcd435320187a733737959682209ec38f5574a2044444b2e3474786725d429",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "d7e61fa00cc3d6bf711ec465292a73106863c5a8f9ce7301ab1809a37e314372",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "RIVN",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "BP",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "TEVA",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "TFII",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "BYD",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CYH",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CNA",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NVA",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "WTI",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "XPOF",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "55e8efcfe838b391d8c6c7ff2fb6d8646fffee2babfe60741ff489e9d8150630",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong momentum, high volume and analyst upgrade",
+     "stop_pct": 12.0,
+     "symbol": "RIVN"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price dip with positive analyst view and high volume",
+     "stop_pct": 12.0,
+     "symbol": "BP"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative analyst tone, not taking new position",
+     "stop_pct": 0.0,
+     "symbol": "TEVA"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst negative, modest move",
+     "stop_pct": 0.0,
+     "symbol": "TFII"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up with high z despite slight negative tone",
+     "stop_pct": 13.0,
+     "symbol": "BYD"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price dip with positive analyst view and high volume",
+     "stop_pct": 12.0,
+     "symbol": "CNA"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp decline with high volume, momentum continuation",
+     "stop_pct": 20.0,
+     "symbol": "CYH"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large intraday gain and volume, bullish momentum",
+     "stop_pct": 20.0,
+     "symbol": "NVA"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant drop with high volume, bearish momentum",
+     "stop_pct": 20.0,
+     "symbol": "WTI"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong rise with volume, short not allowed",
+     "stop_pct": 20.0,
+     "symbol": "XPOF"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "E"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "FLG"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "a7cb758c59dbcfeac5f673818f0e0e463be76a3e8c0d10a277d39fad1e3b8238"
+  },
+  "reviewer": {
+   "answer_sha256": "6f9fb39d63b91bf2adb9125a8ab1e90f4cb638414f14a8429097d5e4234245be",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "25b94d6997a16ca87068a91ccecc22e8fa299cd10415cbf294c3ab8f6ddca0ba",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum with high volume supporting the long proposal.",
+     "symbol": "RIVN"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Conflicting negative daily move against positive analyst tone and higher term trend.",
+     "symbol": "BP"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Decent upward price action despite lower volume pace.",
+     "symbol": "BYD"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop warrants caution despite earnings analyst context.",
+     "symbol": "CNA"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selling pressure and negative multi-day trend align well with short proposal.",
+     "symbol": "CYH"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive volume and strong recent momentum support the long bias.",
+     "symbol": "NVA"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Intraday weakness and negative short-term trend justify short proposal.",
+     "symbol": "WTI"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and volume is moderate, but long proposal is acceptable given positive momentum.",
+     "symbol": "XPOF"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0884,
+   "news": 0,
+   "pace": 7.732,
+   "price": 13.235,
+   "r20": -0.14965,
+   "r5": 0.0279,
+   "short": true,
+   "src": "iex",
+   "symbol": "RIVN",
+   "z": 3.325
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.03731,
+   "news": 1,
+   "pace": 3.247,
+   "price": 48.51,
+   "r20": 0.12503,
+   "r5": -0.01812,
+   "short": true,
+   "src": "iex",
+   "symbol": "BP",
+   "z": -2.014
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.01414,
+   "news": 1,
+   "pace": 6.565,
+   "price": 41.495,
+   "r20": 0.06476,
+   "r5": 0.068,
+   "short": true,
+   "src": "iex",
+   "symbol": "TEVA",
+   "z": -0.865
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.01179,
+   "news": 1,
+   "pace": 3.504,
+   "price": 94.42,
+   "r20": -0.21514,
+   "r5": -0.17049,
+   "short": true,
+   "src": "iex",
+   "symbol": "TFII",
+   "z": 0.264
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.046,
+   "news": 0,
+   "pace": 0.791,
+   "price": 76.18,
+   "r20": 0.08297,
+   "r5": 0.0159,
+   "short": true,
+   "src": "iex",
+   "symbol": "BYD",
+   "z": 3.1
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.09375,
+   "news": 0,
+   "pace": 5.639,
+   "price": 2.175,
+   "r20": -0.11765,
+   "r5": -0.17808,
+   "short": true,
+   "src": "iex",
+   "symbol": "CYH",
+   "z": -2.765
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.02896,
+   "news": 0,
+   "pace": 4.074,
+   "price": 47.27,
+   "r20": 0.0505,
+   "r5": 0.00579,
+   "short": true,
+   "src": "iex",
+   "symbol": "CNA",
+   "z": -2.659
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.18898,
+   "news": 0,
+   "pace": 12.826,
+   "price": 4.53,
+   "r20": -0.33854,
+   "r5": 0.32753,
+   "short": true,
+   "src": "iex",
+   "symbol": "NVA",
+   "z": 2.593
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06914,
+   "news": 0,
+   "pace": 3.309,
+   "price": 3.77,
+   "r20": 0.13764,
+   "r5": -0.03341,
+   "short": true,
+   "src": "iex",
+   "symbol": "WTI",
+   "z": -2.456
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11659,
+   "news": 0,
+   "pace": 3.101,
+   "price": 4.98,
+   "r20": -0.05106,
+   "r5": 0.06444,
+   "short": false,
+   "src": "iex",
+   "symbol": "XPOF",
+   "z": 2.32
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4963.4779,
+  "PICK-MAIN-coin": 4987.9199,
+  "PICK-PENNY": 497.6338,
+  "PICK-PENNY-coin": 492.2659
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 36,
+  "news": 12,
+  "volume": 268
+ },
+ "flagged": 290,
+ "headline_counts": {
+  "BP": 3,
+  "BYD": 2,
+  "CNA": 3,
+  "RIVN": 3,
+  "TEVA": 3,
+  "TFII": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "46d1bdae22e46dd4aff110a486cc7dc5da7a5ec2fab3782fc42fcbefc424d34d",
+ "price_sources": {
+  "delayed_sip": 409,
+  "iex": 2997
+ },
+ "priced": 3406,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RIVN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BP"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BYD"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CNA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CYH"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NVA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "WTI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "XPOF"
+  }
+ ],
+ "slot": "2026-11-02T10:05",
+ "t": "2026-11-02T15:05:21.270395+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T15:05:33.380970Z"
+}
