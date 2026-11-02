@@ -76,6 +76,16 @@ Scored 2026-11-01 (`results/CH/CH_result.json`), registered the same day as `pre
   CHR.md says a fail closes, so Amit decides whether it gets a near-miss shadow book (his Oct 24 rule).
 - Not checked: the by-year means are 3% to 4% a day in 2021 and 2023 and 3% in 2025 against about 0.2% in other years,
   so a few extreme days may carry the result (rule 22 asks for means and the extreme 5%).
+- Rule 22 check, done 2026-11-02 (post-hoc, `results/CH/CH_diagnosis.json`, not pre-registered): the edge over
+  control is +0.97% a trade (t 2.91), median +0.57%, winsorised at 1% t 3.25, so it is not one outlier trade. It
+  is partly a few big days: the top 10 days give 40% of the total, and without the best 25 days t falls to 0.49.
+  Picks' median trade is -1.2% (win rate 46% vs control 44%).
+  Splits (diff over control, per trade): wild-ATR tercile +1.06% (calm +0.15%, mid -0.05%); lowest-price tercile
+  +0.75%; shorts +0.83% but picks' own short mean -1.31% (longs +0.26% own); top prediction quintile own mean
+  +0.61%, bottom two -0.7% to -0.8%. Years 2019 negative, 2024-25 +0.8% to +1.2%.
+  Reading: the signal is real against random picks, concentrated in volatile, cheap names, and the picks' own return
+  is near zero because shorts lose less than control shorts but still lose. The top-quintile own mean suggests a
+  higher cut helps; that is a fix chosen from results, so forward test only (rule 23).
 
 ### G2 (customer-supplier links, exact-name matcher, t 0.10) - cause: 6 (faded), shown
 
