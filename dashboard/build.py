@@ -418,7 +418,7 @@ def nx3_days(st, cache):
                     Path(cache).mkdir(parents=True, exist_ok=True)
                     f.write_text(json.dumps(_clean(moves)))
         ctrl = {c["symbol"]: c.get("side") for c in rec.get("control", [])}
-        arms = arm_picks(root, day)
+        arms = arm_picks(root, day, rows)
         ev = []
         for r in rows:
             x = {k: r.get(k) for k in SLIM}
@@ -442,7 +442,7 @@ def nx3_days(st, cache):
     return out[::-1]
 
 
-def arm_picks(root, day):
+def arm_picks(root, day, rows=()):
     """{arm: {symbol: {side, net}}} for the NXM and NXR books on one day: their picks from nxm/days and, once
     settled, each pick's net result from nxm/settled."""
     rec = _json(root / "nxm" / "days" / f"{day}.json") or {}
@@ -458,7 +458,35 @@ def arm_picks(root, day):
     if al.get("picks"):
         out["ALL"] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w"),
                                     "w_llm": p.get("w_llm")} for p in al["picks"]}
+    elif rows:      # today, before the close writes the book: the picks so far from the day's decided events
+        live = _nx3all_so_far(rows)
+        if live:
+            out["ALL"] = live
     return out
+
+
+def _nx3all_so_far(rows):
+    """NX3-ALL's picks from the decisions logged so far (same rule as tracks/news/nx3all_live.book: every fired event,
+    a short only if easy to borrow, sized by |e|/cut). Sizes are provisional: the day's total can still be scaled."""
+    from tracks.news import nx3_study as S
+    try:
+        cut = float(json.loads(Path("research/results/NX3/nx3_v1_meta.json").read_text())["fire_cut"])
+    except (OSError, KeyError, ValueError):
+        return {}
+    picks = []
+    for r in sorted(rows, key=lambda x: (x.get("t") or "", x["symbol"])):
+        e = r.get("e")
+        if e is None or not r.get("fired"):
+            continue
+        side = 1 if e > 0 else -1
+        if side < 0 and not r.get("etb"):
+            continue
+        picks.append((r["symbol"], side, abs(e) / cut))
+    if not picks:
+        return {}
+    w = S.conf_sizes([c for _, _, c in picks])
+    return {sym: {"side": side, "net": None, "w": float(wi), "w_llm": None, "live": True}
+            for (sym, side, _), wi in zip(picks, w)}
 
 
 def settled_next(dirs, i, settled):

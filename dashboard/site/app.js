@@ -379,7 +379,7 @@ const MODELS = [["NX3", "NX3"], ["LGBM", "NXM LightGBM"], ["LIN", "NXM linear"],
 function asModel(ev) {
   if (selModel === "NX3") return ev;
   const a = (ev.arms || {})[selModel];
-  return Object.assign({}, ev, { side: a ? a.side : null, skip: a ? null : "not picked", nx3_side: ev.side, orig: ev,
+  return Object.assign({}, ev, { side: a ? a.side : null, w: a ? a.w : null, skip: a ? null : "not picked", nx3_side: ev.side, orig: ev,
     result: a && a.net != null ? { net: a.net } : null });
 }
 function renderFeed(day) {
@@ -401,6 +401,19 @@ function renderFeed(day) {
     (d.excluded ? " · left out of the forward test (bug days)" : "") +
     (d.pick_minus_control != null ? ` · picks minus random control ${pct(d.pick_minus_control)}` : "") +
     (d.control && d.control.length ? ` · control: ${d.control.map(x => `${x.symbol} ${x.result ? pct(x.result.net) : "open"}`).join(", ")}` : "");
+  // the selected book's P&L for the day as a share of its $5,000: each trade's size times its result (net once
+  // settled, otherwise the move since the decision, before costs), summed. NX3 and the NXM / NXR arms put $500
+  // (10%) on a pick; NX3-ALL sizes each pick itself.
+  const open = evs.filter(ev => ev.side);
+  if (open.length) {
+    let tot = 0, cnt = 0;
+    for (const ev of open) {
+      const r = ev.result ? ev.result.net : (ev.last_price && ev.entry_iex ? ev.side * (ev.last_price / ev.entry_iex - 1) : null);
+      if (r == null) continue;
+      tot += (selModel === "ALL" && ev.w != null ? ev.w : 0.1) * r; cnt++;
+    }
+    if (cnt) $("daysum").textContent += ` · book P&L ${pct(tot)} of $5,000 so far (${cnt} of ${open.length} trades priced; open trades before costs)`;
+  }
   if (day === etDate()) $("daycounts").textContent = c ? `today: ${c.decided} decided, ${c.picks} picks` : "";
   const shownEvs = feedFilter === "all" ? evs : evs.filter(ev => decisionOf(ev).cls === feedFilter);
   $("feedfilter").replaceChildren(...[["all", "All"], ["buy", "Buy"], ["short", "Short"], ["skip", "Skip"]].map(([k, label]) => {
