@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "candidates, context, build, rebase, check, trees, treesr, freeze, img, measure or diagnose"
+        description: "candidates, context, build, rebase, check, trees, treesr, freeze, img, measure, diagnose or chrcheck"
         required: true
         default: candidates
 
@@ -73,6 +73,9 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: |
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
+          if [[ "$STAGE" == chrcheck ]]; then   # CHR-P's live scanner, one dry read of every source (no state)
+            PYTHONPATH=. .venv/bin/python -u -m tracks.main.chr_live --check; exit $?
+          fi
           case "$STAGE" in
             candidates|context|build|rebase) mod=tracks.main.ch_data ;;
             check|trees|treesr|freeze|img|measure|diagnose) mod=tracks.main.ch_study ;;
