@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8346.70 | -16.53% | 118 | 28 | long CRH, long HWM, long LITE, long REGN, long TEM |
-| Coin flip on C's picks | $9576.06 | -4.24% | 118 | 57 | short CRH, short HWM, short LITE, long REGN, long TEM |
-| C's prompt on Groq (K7) | $7936.78 | -20.63% | 288 | 67 | long CRH, short LITE, long REGN, long RKT, long TEM |
-| Coin flip on C-groq's picks | $9393.32 | -6.07% | 288 | 143 | short CRH, short LITE, long REGN, short RKT, short TEM |
-| C-groq's answers, acted on once a day (K8) | $10182.32 | +1.82% | 3 | 2 | long AZN, short INTC, long LNG, short NOW, long REGN |
-| Coin flip on C-groq-slow's picks | $10138.45 | +1.38% | 3 | 2 | long AZN, short INTC, short LNG, long NOW, short REGN |
-| C's answers, acted on once a day (K8) | $10166.02 | +1.66% | 1 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| Coin flip on C-slow's picks | $10398.47 | +3.98% | 1 | 1 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| Just hold SPY | $9812.25 | -1.88% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8312.79 | -16.87% | 118 | 28 | long CRH, long HWM, long LITE, long REGN, long TEM |
+| Coin flip on C's picks | $9561.39 | -4.39% | 118 | 57 | short CRH, short HWM, short LITE, long REGN, long TEM |
+| C's prompt on Groq (K7) | $7927.04 | -20.73% | 289 | 67 | long CRH, long HWM, short LITE, long REGN, long RKT |
+| Coin flip on C-groq's picks | $9408.09 | -5.92% | 289 | 144 | short CRH, short HWM, short LITE, long REGN, short RKT |
+| C-groq's answers, acted on once a day (K8) | $10153.03 | +1.53% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
+| Coin flip on C-groq-slow's picks | $10124.53 | +1.25% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
+| C's answers, acted on once a day (K8) | $10179.59 | +1.80% | 1 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| Coin flip on C-slow's picks | $10411.85 | +4.12% | 1 | 1 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| Just hold SPY | $9791.55 | -2.08% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-02 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 15:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 15:4
 | 2026-10-29 15:17 | long CMG, long CVNA, long LNG, short NOW, long VRT | none | All existing positions are performing well with favorable trends and news, so I will hold them. No changes to the portfolio at this time. |
 | 2026-10-29 15:07 | long CMG, long CVNA, long LNG, short NOW, long VRT | none | Maintaining all current profitable positions due to strong momentum or clear downtrends, supported by recent price action and news. |
 | 2026-10-29 14:57 | long CMG, long CVNA, long LNG, short NOW, long VRT | none | Maintaining all existing positions (long CMG, CVNA, LNG, VRT and short NOW) due to continued strong momentum or negative catalysts aligning with current trades. |
-| 2026-10-29 14:47 | no answer, nothing changed | none | unreadable answer |
