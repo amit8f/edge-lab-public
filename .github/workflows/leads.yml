@@ -1,7 +1,6 @@
 # Leading sources, forward only: clinicaltrials.gov updates of industry-sponsored studies (core/leads.py)
-# and SEC filings that often precede headlines (core/leads_sec.py), saved to the orphan branch `state` under leads/. Pentagon contract pages are blocked from GitHub's
-# servers, but the contracts RSS feed is not, so each day's announcement text is kept from the feed (DOD1's
-# forward log, research/prereg/DOD1.md). Runs once a night; the cursor fills any day a skipped run
+# and SEC filings that often precede headlines (core/leads_sec.py), saved to the orphan branch `state` under leads/. (Pentagon contract pages are blocked from GitHub's
+# servers, so they are not collected here.) Runs once a night; the cursor fills any day a skipped run
 # missed. The same job runs the penny track's P1/P2 paper trading (tracks/penny/nightly.py), which does
 # nothing before the night of 2026-10-19 and needs the night's articles up to 23:30 ET, and P4's paper
 # trading (tracks/penny/p4_live.py), from the night of 2026-10-23.
@@ -51,8 +50,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: bash deploy/state.sh restore
 
-      - name: Collect trials and Pentagon contract announcements
-        run: .venv/bin/python -m core.leads --state state --dod
+      - name: Collect trials
+        run: .venv/bin/python -m core.leads --state state
 
       - name: Collect SEC filings
         if: always()
