@@ -39,7 +39,7 @@ jobs:
           NAME: ${{ inputs.name }}
         run: |
           names="$NAME"
-          [[ -n "$names" ]] || names=$(git diff --name-only HEAD~1 HEAD -- 'research/checks/*.csv' | xargs -r -n1 basename | sed 's/\.csv$//')
+          [[ -n "$names" ]] || names=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'research/checks/*.csv' | xargs -r -n1 basename | sed 's/\.csv$//')
           for n in $names; do python3 -m tracks.hand_check "$n"; done
 
       - name: Commit the bars to this branch
