@@ -131,7 +131,31 @@ def listener_sources():
     return buf.getvalue()
 
 
+def dod_sources():
+    """DOD1 (contract awards): where the daily announcements can be read from GitHub's servers."""
+    br = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"}
+    out = []
+    for name, url in (("defense.gov RSS", "https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=400&Site=945&max=5"),
+                      ("war.gov RSS", "https://www.war.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=400&Site=945&max=5"),
+                      ("war.gov contracts page", "https://www.war.gov/News/Contracts/"),
+                      ("defense.gov contracts page", "https://www.defense.gov/News/Contracts/")):
+        try:
+            out.append(f"-- {name}: " + http(url, 300, headers=br))
+        except Exception as e:  # noqa: BLE001
+            out.append(f"-- {name}: FAILED {type(e).__name__}: {str(e)[:150]}")
+    body = {"filters": {"award_type_codes": ["A", "B", "C", "D"], "agencies": [{"type": "awarding", "tier": "toptier",
+            "name": "Department of Defense"}], "time_period": [{"start_date": "2024-01-02", "end_date": "2024-01-03"}]},
+            "fields": ["Award ID", "Recipient Name", "Award Amount", "Action Date"], "limit": 3}
+    try:
+        out.append("-- USAspending awards: " + http("https://api.usaspending.gov/api/v2/search/spending_by_award/", 500,
+                                                     method="post", json=body))
+    except Exception as e:  # noqa: BLE001
+        out.append(f"-- USAspending: FAILED {type(e).__name__}: {str(e)[:150]}")
+    return "\n".join(out)
+
+
 def main():
+    show("DOD1 contract sources", dod_sources)
     show("News listener sources", listener_sources)
     show("SYS2B lanes 15-20 on live sources", sys2b_lanes)
     show("House PTR PDF text (SYS2B lane 20)", ptr_pdf)

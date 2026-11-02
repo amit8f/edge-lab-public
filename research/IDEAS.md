@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 97** (main 36, penny 14, news 34, cross-track 12, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 112.
+**Phase 2 count: 100** (main 39, penny 14, news 34, cross-track 12, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 115.
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
@@ -79,6 +79,9 @@ measurement) and X1 ([prereg/X1.md](prereg/X1.md), limit vs market-on-open entri
 | DAY1 | cross | 2026-11-02 | The all-day $1,000 paper bot (account EL-DAY1): fixed budgets over live sleeves (NX3 news 50%, CHR-P penny charts 25%, 25% cash; FIL1 and AIR1 in shadow until rule 20), a 2x-cost check, $50-$200 sizes, 20% per stock, 50% overnight cap, -5% day stop, -10% pause, long-only orders (shorts logged), budgets reweighted every 2 weeks through a shadow copy; daily bot minus a random twin, NW t >= 2 after 60 trading days and 100 trades, own mean > 0, still > 0 without the 5 best days | Amit's 2026-11-02 grill (Q1-Q20) and plan yes; research report on all-day multi-model bots | [prereg/DAY1.md](prereg/DAY1.md) | Registered; build week 1 |
 | FIL1 | cross | 2026-11-02 | Buy after a buyback-authorization 8-K (items 7.01/8.01 with repurchase + authoriz), first DAY1 decision after acceptance + 1 minute, hold 5 sessions, vs same-day random stock; DAY1 shadow sleeve, rule 20 numbers forward; hand check 18/20 first | Amit (day-bot plan, filings specialist); Ikenberry, Lakonishok & Vermaelen (1995), Peyer & Vermaelen (2009) | [prereg/FIL1.md](prereg/FIL1.md) | Registered |
 | AIR1 | news | 2026-11-02 | Groq gpt-oss-120b (Gemini fallback) reads NX3's prefiltered tier-1 headlines: long at direction >= 0.6 and material, NX3's timing and next-close exit, vs same-day random news event; DAY1 shadow sleeve, rule 20 numbers forward; shorts logged only | Amit (day-bot plan Q18) | [prereg/AIR1.md](prereg/AIR1.md) | Registered |
+| NR1 | main | 2026-11-02 | Big stocks (top 500) that fell 3%+ against their sector ETF over 5 days with no Benzinga article, no earnings 8-K and below-normal volume: buy the 5 worst at the next open auction, sell at the 5th close auction; vs same-day random stock, 0.05% cost (0.41% also shown), rules 11-12 | Amit's "yes to all" to the no-news shortlist; Chan (2003); Medhat & Schmeling (2022); R1's no-8-K hint (disclosed) | [prereg/NR1.md](prereg/NR1.md) | |
+| TOM1 | main | 2026-11-02 | Hold SPY from the 2nd-to-last close of each month to the 3rd close of the next, and the two sessions before each market holiday; vs 10,000 random same-length windows, 0.02% cost, t >= 3 and placebo p < 0.01 | Amit's "yes to all" to the no-news shortlist; Ariel (1987); Lakonishok & Smidt (1988); McConnell & Xu (2008) | [prereg/TOM1.md](prereg/TOM1.md) | |
+| DOD1 | main | 2026-11-02 | Pentagon contract (new award, base + options) worth >= 1% of the recipient's annual revenue, $5+ listed stock, no Benzinga article: buy next open, hold 10 sessions; history from USAspending action dates (5pm proxy, hand-checked), vs 5 same-day random stocks, rules 11-12; forward log of the daily contracts page from Amit's PC | Amit's "yes to all" to the no-news shortlist; DellaVigna & Pollet (2009) | [prereg/DOD1.md](prereg/DOD1.md) | |
 
 ## Validation studies (not trading ideas; not counted)
 

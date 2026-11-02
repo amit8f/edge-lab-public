@@ -52,9 +52,8 @@ control after costs at NW t >= 2, own mean > 0); the budget then comes out of th
    CH's label subtracted (`ch_build.cost_frac` at the entry price), since CH's labels are net. Promoted shadow
    sleeves: their forward gross mean at promotion, fixed.
 2. **Cost check.** A candidate is funded only if its expected move is at least 2x its round-trip cost in percent
-   at its planned dollar size: `adaptive/costs.py`'s measured spread for its band (main 0.41%, penny 0.65%;
-   penny = entry under $5) plus commission and sale fees on that fee basis (see "Fee basis" below). The same
-   cost is charged in the ledger, for the bot and the twin.
+   at its planned dollar size, priced per trade (see "Cost per trade" below). The same cost is charged in the
+   ledger, for the bot and the twin (each at its own quote).
 3. **Size.** $50 to $200 a trade (5% to 20%), scaled linearly by the sleeve's own confidence (NX3: |e|/cut from 1
    to 2; CHR-P: its size scale from 2% to 10%; promoted sleeves: $100 flat). Never more than 20% of the bot in
    one stock (all sleeves together), never more than the sleeve's budget held past today's close (a position
@@ -76,6 +75,20 @@ Alpaca's $0 commission (Amit, 2026-11-02, tapped "Alpaca $0 fee" on the card "Co
 in the bot's cost check, or keep the stricter IBKR-style fee?"), which is what the paper and a real Alpaca account
 charge. Sale fees (SEC and FINRA TAF, `adaptive/costs.regulatory`) and the measured spread apply. Decided before the
 first forward day.
+
+## Cost per trade (2026-11-02, before the first forward day)
+
+Amit, 2026-11-02 09:34 UTC, "yes to all" to: "Price each trade at its own measured cost (live bid-ask spread, or
+zero spread for closing-auction orders) instead of one 0.41% average for all $5+ stocks". Source: the research
+report `/mnt/project-files/reports/No news edges for big stocks.md` (spreads in the largest names are about
+0.01-0.05%). This replaces the band average in boss rule 2 before any trade:
+
+- Spread = (ask - bid) / mid from IEX's latest quote at the decision. A missing, locked or crossed quote, or one
+  wider than 10%, falls back to `adaptive/costs.py`'s band average (main 0.41%, penny 0.65%).
+- Round trip = half the spread to enter + half to exit, except that an exit by market-on-close order (NX3's
+  next-close exit, any time exit at a session close) pays no spread; plus SEC and FINRA sale fees; $0 commission.
+- Disclosed: IEX's own quote is usually wider than the national best quote, so this tends to overstate the cost;
+  Alpaca's paper account does not run a real closing auction, so its MOC fills are simulated.
 
 ## Reweighting every 2 weeks (Amit: "do it every 2 weeks")
 
