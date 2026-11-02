@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 14:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8426.29 | -15.74% | 114 | 28 | long CRH, long MPWR, long REGN, long RKT, long TEM |
-| Coin flip on C's picks | $9558.83 | -4.41% | 114 | 55 | short CRH, short MPWR, long REGN, long RKT, long TEM |
-| C's prompt on Groq (K7) | $7976.86 | -20.23% | 286 | 67 | long CRH, long CVNA, long REGN, long RKT, long TEM |
-| Coin flip on C-groq's picks | $9341.09 | -6.59% | 286 | 142 | short CRH, short CVNA, long REGN, short RKT, long TEM |
-| C-groq's answers, acted on once a day (K8) | $10071.72 | +0.72% | 3 | 2 | long AZN, short INTC, long LNG, short NOW, long REGN |
-| Coin flip on C-groq-slow's picks | $10144.94 | +1.45% | 3 | 2 | long AZN, short INTC, short LNG, long NOW, short REGN |
-| C's answers, acted on once a day (K8) | $10045.03 | +0.45% | 1 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| Coin flip on C-slow's picks | $10277.31 | +2.77% | 1 | 1 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
-| Just hold SPY | $9861.22 | -1.39% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8409.54 | -15.90% | 115 | 28 | long CRH, long FSLR, long REGN, long RKT, long TEM |
+| Coin flip on C's picks | $9563.30 | -4.37% | 115 | 56 | short CRH, long FSLR, long REGN, long RKT, long TEM |
+| C's prompt on Groq (K7) | $7957.67 | -20.42% | 287 | 67 | long CRH, long CVNA, short LITE, long REGN, long RKT |
+| Coin flip on C-groq's picks | $9364.11 | -6.36% | 287 | 142 | short CRH, short CVNA, short LITE, long REGN, short RKT |
+| C-groq's answers, acted on once a day (K8) | $10088.32 | +0.88% | 3 | 2 | long AZN, short INTC, long LNG, short NOW, long REGN |
+| Coin flip on C-groq-slow's picks | $10144.57 | +1.45% | 3 | 2 | long AZN, short INTC, short LNG, long NOW, short REGN |
+| C's answers, acted on once a day (K8) | $10059.99 | +0.60% | 1 | 0 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| Coin flip on C-slow's picks | $10292.38 | +2.92% | 1 | 1 | short FTNT, short GOOGL, long LNG, short NOW, long REGN |
+| Just hold SPY | $9848.72 | -1.51% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-02 14:07 | long CRH, long FSLR, long REGN, long RKT, long TEM | sold MPWR @ $1,266.23; bought FSLR @ $184.12 | Maintaining long positions in CRH, REGN, and TEM due to strong positive momentum and supportive news. Selling MPWR due to continued underperformance. Adding FSLR and RKT long positions based on strong daily and short-term momentum. |
 | 2026-11-02 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 13:37 | long CRH, long MPWR, long REGN, long RKT, long TEM | none | Maintaining all five current long positions due to strong positive momentum today and favorable news for most holdings, indicating continued upward potential. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-02 13:5
 | 2026-10-29 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-10-29 13:17 | long CVNA, long LLY, long MA, long PWR, long VRT | none | Maintaining all five existing long positions due to continued positive momentum and favorable news, especially for CVNA, LLY, MA, PWR, and VRT. |
 | 2026-10-29 13:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-10-29 12:57 | no answer, nothing changed | none | unreadable answer |
