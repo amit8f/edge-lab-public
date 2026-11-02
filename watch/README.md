@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-02T10:10 ET: 321 flagged of 3405, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-02T10:15 ET: 306 flagged of 3405, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,959.84 | -0.80% | 2 | 0 | short AFYA, short BCAX, long E, short FLG, short GL, short INTR, long KNSL, short LKQ, short NPKI, short NU, short PAGS, short PAX, long RITM, long RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long WEN | ok |
-| PICK-MAIN-coin | $4,985.48 | -0.29% | 1 | 0 | long AGBK, short BCAX, long E, long FLG, long GL, short INTR, short KNSL, short LKQ, long NPKI, short NU, long PAGS, short PAX, short RITM, short RRC, short SGRY, long SIGI, short STNE, long TNGX, short UGP, long WEN, long XP | ok |
-| PICK-PENNY | $497.52 | -0.50% | 2 | 0 | short ABEV, short ABOS, short ALLO, short CATX, short CHRS, short CIG, long EMAT, short GERN, long IMSR, short ITRG, long KDK, long LUMN, short MDXG, long NAUT, long OSUR, short PACK, short PRME, short PRQR, long RCAT, long REI, short SID, long STLA, long TOYO, long UNIT, short VNDA, short VRRM, short XRX | ok |
-| PICK-PENNY-coin | $492.46 | -1.51% | 2 | 0 | short ABEV, long ALLO, short CATX, short CHRS, long CIG, long EMAT, short GERN, long IMSR, long ITRG, long JBLU, long KDK, short LUMN, long MDXG, long NAUT, long OSUR, short PACK, long PRME, long PRQR, long RCAT, long REI, short SID, short STLA, long TOYO, short UNIT, long VNDA, long VRRM, short XRX | ok |
+| PICK-MAIN | $4,958.20 | -0.84% | 10 | 3 | short AFYA, long AXSM, short BCAX, long III, short INTR, long KRYS, short NPKI, short NU, short PAGS, short PAX, long RRC, short SGRY, short STNE, long TATT, short UGP, long WEN | ok |
+| PICK-MAIN-coin | $4,978.35 | -0.43% | 9 | 2 | long AGBK, short AXSM, short BCAX, long III, short INTR, long KRYS, long NPKI, short NU, long PAGS, short PAX, short RRC, short SGRY, short STNE, long TATT, short UGP, long WEN, long XP | ok |
+| PICK-PENNY | $497.35 | -0.53% | 5 | 1 | short ABEV, short ABOS, short CATX, short CHRS, short CIG, long EMAT, short GERN, long IMSR, long KDK, short KOS, long LUMN, short MDXG, long NAUT, long NXH, short PACK, short PRME, short PRQR, long RCAT, long REI, short SID, long STLA, long TOYO, long UNIT, short VNDA, short VRRM, short XRX | ok |
+| PICK-PENNY-coin | $491.66 | -1.67% | 5 | 0 | short ABEV, short CATX, short CHRS, long CIG, long EMAT, short GERN, long IMSR, long JBLU, long KDK, short KOS, short LUMN, long MDXG, long NAUT, short NXH, short PACK, long PRME, long PRQR, long RCAT, long REI, short SID, short STLA, long TOYO, short UNIT, long VNDA, long VRRM, short XRX | ok |
