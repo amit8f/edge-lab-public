@@ -13,6 +13,17 @@ real news, and many of them get no headline, so the price adjusts slowly (limite
 **Counterparty:** holders who don't read the daily contracts page.
 **Decay:** the page is public and free; anyone with a scraper sees it. Prediction written now: about 75% this fails.
 
+## Amended 2026-11-02, before any DOD1 data was pulled
+
+Found while building it (probe run 41423470813): USAspending's search can't filter on the potential value, so
+new awards are pulled when their first obligation is at least $1M, and each matched award's value is the larger
+of that obligation and the base-and-all-options value on its USAspending record. An order whose first obligation
+is under $1M is missed (disclosed). Companies are those with a raw close >= $5 and a 20-day median dollar volume
+of at least $5M on some day (NR1's company-facts set, which holds the revenue). The daily contract pages refuse
+cloud servers, so the hand check reads each award's USAspending record, the company's SEC revenue and Benzinga
+instead of the page archive; the posting-date rule below is dropped (it needs the pages). Everything else is
+unchanged.
+
 ## Events (2017-01-03 to the last exit before 2025-10-01)
 
 - Source for history: USAspending.gov prime award transactions, awarding agency Department of Defense, new awards
