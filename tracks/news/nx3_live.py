@@ -451,6 +451,9 @@ def settle(root, api, cal, today):
     return out
 
 
+EXIT_BEFORE_CLOSE = pd.Timedelta(minutes=5)
+
+
 def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker, broker_all=OA.broker):
     """Polls until the session's last decision, then closes and settles the day. 3 = nothing more today."""
     root = Path(state) / "nx3"
@@ -521,12 +524,15 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker,
         day.ctx["no_ctx"] = sorted(set(day.ctx.get("no_ctx", [])) | (set(new) - set(ctx)))
         if len(ready):
             decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now)
+        late = now >= ses["close_t"] - EXIT_BEFORE_CLOSE      # exits are market orders sent 5 minutes before the close
         if br and now >= ses["open_t"]:
-            O.guarded(O.send_exits, day, d, br)
             O.guarded(O.send_entries, day, d, br)
+            if late:
+                O.guarded(O.send_exits, day, d, br)
         if bra and now >= ses["open_t"]:
-            O.guarded(OA.send_exits, day, d, bra)
             O.guarded(OA.send_entries, day, d, bra)
+            if late:
+                O.guarded(OA.send_exits, day, d, bra)
         day.save()
         sleep(max(0.0, POLL_S - (time.monotonic() - start)))
     day.save()

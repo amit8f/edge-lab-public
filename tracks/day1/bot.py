@@ -218,7 +218,9 @@ def entry_order(pos):
 def exit_order(pos, moc, tag):
     body = {"symbol": pos["symbol"], "side": "sell", "qty": f"{pos['qty']:g}",
             "client_order_id": f"day1-{pos['date'].replace('-', '')}-{pos['symbol']}-{tag}"}
-    return body | ({"type": "market", "time_in_force": "cls"} if moc else {"type": "market", "time_in_force": "day"})
+    # market-on-close orders expired unfilled in Alpaca paper (NX3's exits, 2026-11-02): the close-exit is a market
+    # day order sent 15 minutes before the close instead
+    return body | {"type": "market", "time_in_force": "day"}
 
 
 def send(br, body, sink):
