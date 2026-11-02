@@ -74,3 +74,9 @@ own mean +0.01% > 0), so it goes forward under the Oct 24 near-miss rule. Histor
   Days that fail the history download filter (CH.md) are flagged and reported separately.
 - **Disclosed**: the live entry price is a delayed or IEX-based quote, history entered at the next 5-minute open, so the
   forward book can differ from history for that reason alone.
+- **Disclosed, costs and sizes**: the cost model is charged on history's $250-position basis. Real book positions are
+  $20 to $100 (2% to 10% of $1,000), where the $0.35 minimum commission is a larger share, so true costs are higher
+  than the book shows. The book is judged as registered; a separate line in each review shows net returns with the
+  minimum commission applied at the real position size. Open exposure counts every position until its 5th session
+  settles, even if a stop or target was touched earlier (conservative). Sizes are flat fractions of $1,000 (no
+  compounding).

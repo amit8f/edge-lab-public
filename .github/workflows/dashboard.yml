@@ -45,7 +45,7 @@ jobs:
           auth=(-c "http.extraheader=AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)")
           url="https://github.com/${GITHUB_REPOSITORY}.git"
           mkdir -p st
-          for b in state state-nx3 state-nx1 state-scouts state-watch state-ai state-wide state-kronos; do
+          for b in state state-nx3 state-nx1 state-scouts state-watch state-ai state-wide state-kronos state-chrp; do
             git "${auth[@]}" clone -q --depth 1 --branch "$b" "$url" "st/$b" || echo "no branch $b"
           done
           git "${auth[@]}" clone -q --depth 1 --branch state-dash "$url" sd || mkdir -p sd
