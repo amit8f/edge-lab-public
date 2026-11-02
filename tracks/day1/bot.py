@@ -53,14 +53,32 @@ def qty_for(price, usd):
     return round(usd / price, 4) if band(price) == "main" else float(int(usd // price))
 
 
-def round_trip(price, usd):
-    """Round-trip cost as a fraction of the position: measured spread for the band plus sale fees (Alpaca charges
-    no commission; DAY1.md "Fee basis")."""
+MAX_QUOTED = 0.10                                # a quoted spread wider than this is treated as no quote
+
+
+def quoted_spread(quote):
+    """(ask - bid) / mid from an IEX (bid, ask) pair, or None when the quote is missing, locked, crossed or wider
+    than MAX_QUOTED."""
+    if not quote:
+        return None
+    bid, ask = quote
+    if not (bid and ask and ask > bid > 0):
+        return None
+    s = (ask - bid) / ((ask + bid) / 2)
+    return s if s <= MAX_QUOTED else None
+
+
+def round_trip(price, usd, spread=None, moc_exit=False):
+    """Round-trip cost as a fraction of the position (DAY1.md, "Cost per trade", 2026-11-02): half the trade's own
+    quoted spread to enter, half again to exit unless the exit is a closing-auction (market-on-close) order, which
+    pays no spread, plus sale fees (Alpaca charges no commission). Without a usable quote, the band's measured
+    average spread (adaptive/costs.py) stands in."""
     sh = qty_for(price, usd)
     if sh <= 0:
         return math.inf
     value = sh * price
-    return costs.SPREAD_ROUND_TRIP[band(price)] + costs.regulatory(sh, price, True) / value
+    s = costs.SPREAD_ROUND_TRIP[band(price)] if spread is None else spread
+    return s / 2 + (0.0 if moc_exit else s / 2) + costs.regulatory(sh, price, True) / value
 
 
 def size_usd(conf):
@@ -238,6 +256,8 @@ def fund(st, api, br, now, d, cands, pools, sessions, short_c):
     syms = sorted({c["symbol"] for c in new + shorts} | {p["symbol"] for p in pos if p["role"] == "bot"}
                   | {x["symbol"] for pl in pools.values() for x in pl})
     px = api.last_trades(syms) if syms else {}
+    qt = api.quotes(sorted({c["symbol"] for c in new} | {x["symbol"] for pl in pools.values() for x in pl})) \
+        if new else {}
     eq, acct = equity(st, {s: v[0] for s, v in px.items()})
     prev = acct.get("prev_close", BOOK)
     stopped = eq <= prev * (1 - DAY_STOP)
@@ -255,8 +275,9 @@ def fund(st, api, br, now, d, cands, pools, sessions, short_c):
                "expected": c["expected"], "conf": c["conf"]}
         p = px.get(c["symbol"], (None, None))[0]
         usd = size_usd(c["conf"])
-        rt = round_trip(p, usd) if p else math.inf
-        rec |= {"usd": usd, "entry": p, "round_trip": rt}
+        moc = c["exit"]["type"] == "close"
+        rt = round_trip(p, usd, quoted_spread(qt.get(c["symbol"])), moc) if p else math.inf
+        rec |= {"usd": usd, "entry": p, "round_trip": rt, "quote": qt.get(c["symbol"])}
         end = f"{end_session(sessions, d, c['exit']['sessions']):%Y-%m-%d}"
         open_bot = [x for x in pos if x["role"] == "bot"]
         overnight = sum(x["usd"] for x in open_bot if x["end"] > f"{d:%Y-%m-%d}")
@@ -308,7 +329,8 @@ def fund(st, api, br, now, d, cands, pools, sessions, short_c):
             tp = px.get(s, (None, None))[0]
             if tp:
                 twin = {**bot, "id": c["id"] + ":twin", "role": "twin", "symbol": s, "entry": tp,
-                        "entry_t": px[s][1], "qty": qty_for(tp, usd), "round_trip": round_trip(tp, usd)}
+                        "entry_t": px[s][1], "qty": qty_for(tp, usd),
+                        "round_trip": round_trip(tp, usd, quoted_spread(qt.get(s)), moc)}
                 if twin["exit"]["type"] == "barrier":
                     ta = float(info.get("atr") or np.nan)
                     twin["exit"] = {**twin["exit"], "atr": ta}
@@ -450,6 +472,17 @@ class Api:
                     out[s] = (float(tr["p"]), str(tr.get("t")))
         return out
 
+    def quotes(self, syms):
+        """{symbol: (bid, ask)} from IEX's latest quotes."""
+        out = {}
+        for i in range(0, len(syms), 200):
+            j = alpaca.get("https://data.alpaca.markets/v2/stocks/quotes/latest",
+                           {"symbols": ",".join(syms[i:i + 200]), "feed": "iex"}, headers=self.h)
+            for s, q in (j.get("quotes") or {}).items():
+                if q:
+                    out[s] = (float(q.get("bp") or 0), float(q.get("ap") or 0))
+        return out
+
     def closes(self, syms, d):
         """The SIP daily close of d (adjustment raw: the positions' own prices)."""
         from core.bars import fetch_daily_bars, to_frames
@@ -530,7 +563,8 @@ def main(argv=None):
     if a.check:
         api = Api()
         tr = api.last_trades(["SPY", "AAPL"])
-        print(f"[day1 check] IEX last trades {tr}; broker {'set' if broker() else 'missing (no orders)'}")
+        q = api.quotes(["SPY", "AAPL"])
+        print(f"[day1 check] IEX last trades {tr}; quotes {q}; broker {'set' if broker() else 'missing (no orders)'}")
         return 0
     return run(a.state, a.minutes, a.sleeves)
 

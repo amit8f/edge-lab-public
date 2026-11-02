@@ -14,8 +14,11 @@ SESSIONS = [pd.Timestamp(x) for x in ("2026-11-03", "2026-11-04", "2026-11-05", 
 
 
 class FakeApi:
-    def __init__(self, px, closes=None):
-        self.px, self.cl = px, closes or {}
+    def __init__(self, px, closes=None, quotes=None):
+        self.px, self.cl, self.q = px, closes or {}, quotes or {}
+
+    def quotes(self, syms):
+        return {s: self.q[s] for s in syms if s in self.q}
 
     def last_trades(self, syms):
         return {s: (self.px[s], "2026-11-03T14:31:00Z") for s in syms if s in self.px}
@@ -43,6 +46,15 @@ def nx3_day(tmp, decisions, cut=0.2):
 def dec(key, sym, e, vol=0.05, fired=True, t="2026-11-03 09:31:00"):
     return {"key": key, "symbol": sym, "status": "decided", "e": e, "fired": fired, "entry_iex": 10.0,
             "decided_at": t, "inputs": {"vol20": vol}}
+
+
+def test_quoted_spread_and_moc_exit():
+    assert D.quoted_spread((99.95, 100.05)) == pytest.approx(0.001)
+    assert D.quoted_spread((100.0, 100.0)) is None and D.quoted_spread((0, 1.0)) is None
+    assert D.quoted_spread((1.0, 1.5)) is None                  # wider than 10%: no usable quote
+    full = D.round_trip(100.0, 200.0, 0.001)
+    moc = D.round_trip(100.0, 200.0, 0.001, moc_exit=True)
+    assert full == pytest.approx(0.001, abs=5e-5) and moc == pytest.approx(0.0005, abs=5e-5)
 
 
 def test_round_trip_is_spread_plus_sale_fees():
@@ -76,7 +88,8 @@ def run_fund(tmp_path, decisions, px, now="2026-11-03 09:32:00"):
 
 
 def test_cost_check_funds_big_moves_only(tmp_path):
-    # AAA: 0.4 x 5% x 1.22 = 2.4% expected >> 2 x 0.42%; DDD: 0.21 x 1% x 1.22 = 0.26% < 0.84%
+    # no quotes: the band average stands in. AAA: 0.4 x 5% x 1.22 = 2.4% >> 2 x 0.21% (MOC exit);
+    # DDD: 0.21 x 1% x 1.22 = 0.26% < 0.42%
     st, br, n = run_fund(tmp_path, [dec("a", "AAA", 0.4), dec("d", "DDD", 0.21, vol=0.01), dec("q", "QQQ", 0.0, fired=False)],
                          {"AAA": 20.0, "DDD": 20.0, "QQQ": 30.0})
     assert n == 1
@@ -184,3 +197,16 @@ def test_positions_ending_today_free_the_budget(tmp_path):
     n = D.fund(st, FakeApi({"AAA": 20.0, "OLD0": 10.0, "OLD1": 10.0}), FakeBroker(), pd.Timestamp("2026-11-03 09:32"),
                DAY, c, {"nx3": pool, "chrp": []}, SESSIONS, s)
     assert n == 1                      # $500 of NX3 closes today, so today's $200 entry fits the $500 budget
+
+
+def test_tight_quote_lets_a_small_move_through(tmp_path):
+    # 0.21 x 1% x 1.22 = 0.26%: fails on the 0.41% band average, passes on a 0.02% quoted spread with a MOC exit
+    st, br, n = run_fund(tmp_path, [dec("d", "DDD", 0.21, vol=0.01)], {"DDD": 20.0})
+    assert n == 0
+    nx3 = tmp_path / "t2"
+    nx3_day(nx3, [dec("d", "DDD", 0.21, vol=0.01)])
+    st2 = D.State(nx3 / "state")
+    c, s, pool = D.nx3_cands(nx3 / "sleeves", DAY)
+    n2 = D.fund(st2, FakeApi({"DDD": 20.0}, quotes={"DDD": (19.998, 20.002)}), FakeBroker(),
+                pd.Timestamp("2026-11-03 09:32"), DAY, c, {"nx3": pool, "chrp": []}, SESSIONS, s)
+    assert n2 == 1
