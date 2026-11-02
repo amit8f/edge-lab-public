@@ -3,7 +3,9 @@ symbol, start, end and writes research/checks/<name>_bars.json: each symbol's da
 [start, end] with both adjustment=raw and adjustment=all, with each bar's VWAP (vw) when Alpaca gives it (an optional timeframe column, such as 5Min, pulls
 that bar size over the whole of each day instead). A file with columns cik, accession instead writes
 research/checks/<name>_edgar.json: each filing's acceptance time, form and filer names from its EDGAR index
-page (not the header file the studies read). Plain HTTP on purpose, so a check never reuses a study's code."""
+page (not the header file the studies read). Rows with news_start and news_end (RFC-3339) also get the Benzinga
+articles Alpaca lists for the symbol in that window (id, time and symbols only; no headline text is stored).
+Plain HTTP on purpose, so a check never reuses a study's code."""
 import csv
 import json
 import os
@@ -14,6 +16,7 @@ import time
 import requests
 
 URL = "https://data.alpaca.markets/v2/stocks/{s}/bars"
+NEWS = "https://data.alpaca.markets/v1beta1/news"
 EDGAR = "https://www.sec.gov/Archives/edgar/data/{cik}/{nodash}/{acc}-index.htm"
 
 
@@ -30,6 +33,19 @@ def bars(sym, start, end, adjustment, headers, timeframe="1Day"):
         r.raise_for_status()
         j = r.json()
         out += [{k: b[k] for k in ("t", "o", "h", "l", "c", "v", "vw") if k in b} for b in j.get("bars") or []]
+        token = j.get("next_page_token")
+        if not token:
+            return out
+
+
+def news(sym, start, end, headers):
+    out, token = [], None
+    while True:
+        p = {"symbols": sym, "start": start, "end": end, "limit": 50, **({"page_token": token} if token else {})}
+        r = requests.get(NEWS, params=p, headers=headers, timeout=60)
+        r.raise_for_status()
+        j = r.json()
+        out += [{"id": a["id"], "created_at": a["created_at"], "symbols": a.get("symbols")} for a in j.get("news") or []]
         token = j.get("next_page_token")
         if not token:
             return out
@@ -77,8 +93,11 @@ def main(name):
     for r in rows:
         tf = r.get("timeframe") or "1Day"
         end = r["end"] if tf == "1Day" else f'{r["end"]}T23:59:59Z'
-        res.append({**r, "raw": bars(r["symbol"], r["start"], end, "raw", headers, tf),
-                    "all": bars(r["symbol"], r["start"], end, "all", headers, tf)})
+        row = {**r, "raw": bars(r["symbol"], r["start"], end, "raw", headers, tf),
+               "all": bars(r["symbol"], r["start"], end, "all", headers, tf)}
+        if r.get("news_start"):
+            row["news"] = news(r["symbol"], r["news_start"], r["news_end"], headers)
+        res.append(row)
     tmp = f"research/checks/{name}_bars.json.tmp"
     with open(tmp, "w") as f:
         json.dump(res, f)
