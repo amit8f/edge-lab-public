@@ -1,5 +1,7 @@
 """NX3 on synthetic data (no network): decision times, the 1-minute entry, events, the zero effect without
 news and the gate."""
+import json
+
 import numpy as np
 import pandas as pd
 
@@ -129,6 +131,16 @@ def test_picks_go_in_time_order():
     assert p.loc[p["side"] == 1, "e"].tolist() == [1.0, 5.0, 2.0, 3.0, 4.0] and len(c) == 6
 
 
+def test_higher_bar_only_lets_confident_events_take_a_slot():
+    day = pd.DataFrame({"t": pd.to_datetime(["2019-01-02 09:31", "2019-01-02 10:00", "2019-01-02 11:00",
+                                             "2019-01-02 12:00", "2019-01-02 13:00", "2019-01-02 14:00"]),
+                        "e": [1.1, 1.6, 1.2, 2.5, -1.1, -1.7], "fired": [True] * 6})
+    p, _ = X.picks(day, np.random.default_rng(0), hi=1.5, cut=1.0)      # NX3-HI: c = |e| / cut >= 1.5
+    assert p.loc[p["side"] == 1, "e"].tolist() == [1.6, 2.5] and p.loc[p["side"] == -1, "e"].tolist() == [-1.7]
+    p, _ = X.picks(day, np.random.default_rng(0), hi=1.0, cut=1.0)      # bar 1.0 is NX3 itself
+    assert p.loc[p["side"] == 1, "e"].tolist() == [1.1, 1.6, 1.2]
+
+
 def test_gate_passes_a_news_effect_and_fails_without_one():
     _, _, gate = X.walk_forward(events(1.5, seed=1), CAL, years=[2019])
     assert gate == {"pick_minus_control": True, "pick_minus_shuffled": True}
@@ -199,3 +211,17 @@ def test_conf_sizes_run_from_5_to_10_percent_and_fit_the_book():
     assert np.allclose(X.conf_sizes([1.0, 1.5, 2.0, 3.0]), [0.05, 0.075, 0.10, 0.10])
     w = X.conf_sizes([2.0] * 15)                      # 15 x 10% = 150%: scaled to the whole book
     assert np.isclose(w.sum(), 1.0) and np.allclose(w, 1 / 15)
+
+
+def test_highbar_stage_writes_the_report(tmp_path, monkeypatch):
+    ev = events(1.5, seed=3).assign(next=pd.Timestamp("2019-01-01"))
+    d3 = X.nx3dir(str(tmp_path))
+    (d3 / X.TRADES).mkdir(parents=True)
+    ev.to_parquet(d3 / X.TRADES / "t_0.parquet")
+    monkeypatch.setattr(X, "calendar", lambda cache: CAL)
+    monkeypatch.setattr(pd, "read_parquet", lambda f: ev.copy())     # in-memory frame (parquet reads are read-only here)
+    monkeypatch.setattr(N, "TEST_YEARS", [2019])
+    X.stage_highbar(str(tmp_path), tmp_path / "out", bars=(1.0, 1.5))
+    rep = json.loads((tmp_path / "out" / "NX3HI_walkforward.json").read_text())
+    assert set(rep["bars"]) == {"1.0", "1.5"} and rep["verdict"] in ("passed", "failed")
+    assert "minus_nx3_shared_days" in rep["bars"]["1.5"] and "minus_nx3_shared_days" not in rep["bars"]["1.0"]
