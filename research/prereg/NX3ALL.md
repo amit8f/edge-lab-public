@@ -39,3 +39,15 @@ book invested; per year (`NX3ALL_walkforward.json`).
 
 Equal-size uncapped picks will be weaker than NX3's capped ones per trade (later events of the day get a worse
 entry), and confidence sizing will win back part of it. Probability it passes: about 0.5.
+
+## Clarification 2026-11-02: paper account EL-NX3ALL (decided before any NX3-ALL forward result exists)
+
+Amit set up a paper account for the book (secrets `ALPACA_NX3ALL_*`, replacing EL-M3's account; M3's month-end
+orders on Nov 30 need another account) and asked for the book to trade there. Nothing about the test changes: it
+stays the ledger book minus its control. The account is for real fills, costs and borrow, as EL-NX3 is for NX3.
+Orders (`tracks/news/nx3all_orders.py`): each fired event is sent as a market day order at its decision, in whole
+shares at the IEX price, sized by the confidence rule on the $5,000 book (5% at confidence 1 up to 10% at 2 or more).
+The ledger book scales a day's sizes down together after the close, which an order cannot wait for, so orders stop
+once the day's sent sizes would pass 100% of the book (an order and ledger size can therefore differ on busy days).
+Shorts only where the stock was easy to borrow. Exit: a market-on-close order on the next session for every
+position held before that session's own entries. Nothing is sent without the secrets.

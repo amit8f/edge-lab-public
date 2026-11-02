@@ -39,6 +39,7 @@ from tracks.main.longterm import news_history
 from tracks.news import nx1_study as N
 from tracks.news import nx3_study as S
 from tracks.news import nx3_orders as O
+from tracks.news import nx3all_orders as OA
 from tracks.news import nx3all_live as A
 from tracks.news import nxe_live as XL
 from tracks.news import nxm_live as M
@@ -450,7 +451,7 @@ def settle(root, api, cal, today):
     return out
 
 
-def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker):
+def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker, broker_all=OA.broker):
     """Polls until the session's last decision, then closes and settles the day. 3 = nothing more today."""
     root = Path(state) / "nx3"
     root.mkdir(parents=True, exist_ok=True)
@@ -474,6 +475,8 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
             close_day(root, day, d, api)
             if br := broker():
                 O.guarded(O.log_day, root, day, d, br)
+            if bra := broker_all():
+                O.guarded(OA.log_day, root, day, d, bra)
         settle(root, api, cal, d)
         return 3
     if now < ses["open_t"] - PREP:
@@ -494,6 +497,7 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
         fb.write_text(json.dumps(json.loads(NX1_META.read_text())["finbert"]))
     finbert, effect, last = api.finbert(fb), api.effect(), recent_heads(root)
     br = broker()           # EL-NX3 paper orders (nx3_orders); None without its secrets
+    bra = broker_all()      # EL-NX3ALL paper orders (nx3all_orders), same
     ctx, market = {}, None
     while time.monotonic() < stop:
         now = clock()
@@ -520,6 +524,9 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
         if br and now >= ses["open_t"]:
             O.guarded(O.send_exits, day, d, br)
             O.guarded(O.send_entries, day, d, br)
+        if bra and now >= ses["open_t"]:
+            O.guarded(OA.send_exits, day, d, bra)
+            O.guarded(OA.send_entries, day, d, bra)
         day.save()
         sleep(max(0.0, POLL_S - (time.monotonic() - start)))
     day.save()
@@ -529,6 +536,8 @@ def run(state, minutes, api=None, clock=None, sleep=time.sleep, broker=O.broker)
         close_day(root, day, d, api)
         if br:
             O.guarded(O.log_day, root, day, d, br)
+        if bra:
+            O.guarded(OA.log_day, root, day, d, bra)
         settle(root, api, cal, d)
         return 3
     return 0
