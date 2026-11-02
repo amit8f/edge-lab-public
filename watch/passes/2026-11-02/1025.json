@@ -1,0 +1,279 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "9ebf99a96f7afb7aae6c09e706faf752c5d2d62543bf12acc2b1f9a8b1ac6e65",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "9286c381c96e20dc20bf77911b063d2254760e437ada3da1ed30204bd34c31a8",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LEGH",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PFIS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "GOOG",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "GOOGL",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "FELE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MTX",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PNNT",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "COUR",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VOXR",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ARI",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "e66a8fc314a0e725003380c3e8be4f1cb61f13709d2fce8583f7e731c16fcab8",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0717,
+   "news": 0,
+   "pace": 6.085,
+   "price": 31.465,
+   "r20": 0.00034,
+   "r5": 0.04708,
+   "short": true,
+   "src": "iex",
+   "symbol": "LEGH",
+   "z": 3.889
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0502,
+   "news": 0,
+   "pace": 5.752,
+   "price": 73.85,
+   "r20": 0.01487,
+   "r5": -0.00509,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "PFIS",
+   "z": 3.726
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.02128,
+   "news": 1,
+   "pace": 4.126,
+   "price": 284.14,
+   "r20": -0.18255,
+   "r5": -0.12311,
+   "short": true,
+   "src": "iex",
+   "symbol": "GOOG",
+   "z": 0.674
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.02164,
+   "news": 1,
+   "pace": 4.105,
+   "price": 285.895,
+   "r20": -0.18533,
+   "r5": -0.12607,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "GOOGL",
+   "z": 0.664
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.05494,
+   "news": 0,
+   "pace": 1.638,
+   "price": 100.62,
+   "r20": -0.03315,
+   "r5": -0.0303,
+   "short": true,
+   "src": "iex",
+   "symbol": "FELE",
+   "z": 5.512
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.04208,
+   "news": 0,
+   "pace": 0.922,
+   "price": 65.38,
+   "r20": -0.05555,
+   "r5": -0.00254,
+   "short": true,
+   "src": "iex",
+   "symbol": "MTX",
+   "z": 3.833
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.01987,
+   "news": 0,
+   "pace": 3.227,
+   "price": 3.08,
+   "r20": -0.04672,
+   "r5": 0.05226,
+   "short": true,
+   "src": "iex",
+   "symbol": "PNNT",
+   "z": 1.121
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07061,
+   "news": 0,
+   "pace": 4.369,
+   "price": 3.715,
+   "r20": -0.30876,
+   "r5": -0.31693,
+   "short": true,
+   "src": "iex",
+   "symbol": "COUR",
+   "z": 0.984
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.0262,
+   "news": 0,
+   "pace": 3.081,
+   "price": 4.7,
+   "r20": -0.08946,
+   "r5": -0.04583,
+   "short": false,
+   "src": "iex",
+   "symbol": "VOXR",
+   "z": 0.975
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.01073,
+   "news": 0,
+   "pace": 3.012,
+   "price": 2.305,
+   "r20": 0.03143,
+   "r5": -0.00385,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARI",
+   "z": -0.878
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4948.1544,
+  "PICK-MAIN-coin": 4983.6247,
+  "PICK-PENNY": 499.7481,
+  "PICK-PENNY-coin": 491.2819
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 62,
+  "news": 9,
+  "volume": 240
+ },
+ "flagged": 282,
+ "headline_counts": {
+  "FELE": 2,
+  "GOOG": 3,
+  "GOOGL": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "496b54307317e93adb541e43b3278b4a79a91691244f1a2e8c5210e61e2fe563",
+ "price_sources": {
+  "delayed_sip": 241,
+  "iex": 3166
+ },
+ "priced": 3407,
+ "risk": [],
+ "slot": "2026-11-02T10:25",
+ "t": "2026-11-02T15:25:20.585423+00:00",
+ "universe": 3405,
+ "written_utc": "2026-11-02T15:25:32.434365Z"
+}
