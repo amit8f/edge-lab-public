@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-02T12:30 ET: 188 flagged of 3405, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-02T12:35 ET: 193 flagged of 3405, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $5,002.57 | +0.05% | 10 | 3 | short AFYA, long AXSM, short BCAX, long DMLP, long III, short INTR, long KRYS, short NPKI, short NU, long NWL, long NXT, short PAGS, short PAX, long RRC, short SGRY, short STNE, long TATT, short UGP, long WEN | 1 unreadable agent answers |
-| PICK-MAIN-coin | $4,978.83 | -0.42% | 9 | 2 | long AGBK, short AXSM, short BCAX, long DMLP, long III, short INTR, long KRYS, long NPKI, short NU, long NWL, long NXT, long PAGS, short PAX, short RRC, short SGRY, short STNE, long TATT, short UGP, long WEN, long XP | ok |
-| PICK-PENNY | $497.72 | -0.46% | 7 | 1 | short ABEV, short ABOS, short CATX, short CHRS, short CIG, short CYH, long DNUT, long EMAT, short GERN, long IMSR, long KDK, short KOS, short LENZ, long LUMN, short MDXG, short MPT, long NAUT, long NXH, short PACK, short PRME, long RCAT, short SID, long STLA, long TOYO, short UNCY, long UNIT, short VNDA, short VRRM, short XRX | 1 unreadable agent answers |
-| PICK-PENNY-coin | $487.92 | -2.42% | 7 | 1 | short ABEV, short CATX, short CHRS, long CIG, long CYH, short DNUT, long EMAT, short GERN, long IMSR, long JBLU, long KDK, short KOS, long LENZ, short LUMN, long MDXG, short MPT, long NAUT, short NXH, short PACK, long PRME, long RCAT, short SID, short STLA, long TOYO, long UNCY, short UNIT, long VNDA, long VRRM, short XRX | ok |
+| PICK-MAIN | $4,999.89 | -0.00% | 10 | 3 | short AFYA, long AXSM, short BCAX, long DMLP, long III, short INTR, long KRYS, short NPKI, short NU, long NWL, long NXT, short PAGS, short PAX, long RRC, short SGRY, short STNE, long TATT, short UGP, long WEN | 1 unreadable agent answers |
+| PICK-MAIN-coin | $4,981.70 | -0.37% | 9 | 2 | long AGBK, short AXSM, short BCAX, long DMLP, long III, short INTR, long KRYS, long NPKI, short NU, long NWL, long NXT, long PAGS, short PAX, short RRC, short SGRY, short STNE, long TATT, short UGP, long WEN, long XP | ok |
+| PICK-PENNY | $497.77 | -0.45% | 7 | 1 | short ABEV, short ABOS, short CATX, short CHRS, short CIG, short CYH, long DNUT, long EMAT, short GERN, long IMSR, long KDK, short KOS, short LENZ, long LUMN, short MDXG, short MPT, long NAUT, long NXH, short PACK, short PRME, long RCAT, short SID, long STLA, long TOYO, short UNCY, long UNIT, short VNDA, short VRRM, short XRX | 1 unreadable agent answers |
+| PICK-PENNY-coin | $488.13 | -2.37% | 7 | 1 | short ABEV, short CATX, short CHRS, long CIG, long CYH, short DNUT, long EMAT, short GERN, long IMSR, long JBLU, long KDK, short KOS, long LENZ, short LUMN, long MDXG, short MPT, long NAUT, short NXH, short PACK, long PRME, long RCAT, short SID, short STLA, long TOYO, long UNCY, short UNIT, long VNDA, long VRRM, short XRX | ok |
