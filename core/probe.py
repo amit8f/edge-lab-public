@@ -153,6 +153,30 @@ def dod_sources():
             out.append("   first item text: " + re.sub(r"<[^>]+>", " ", items[0][2])[:700])
     except Exception as e:  # noqa: BLE001
         out.append(f"-- war.gov RSS items: FAILED {type(e).__name__}: {str(e)[:150]}")
+    try:
+        cdx = requests.get("https://web.archive.org/cdx/search/cdx", timeout=120, params={
+            "url": "defense.gov/News/Contracts/Contract/Article/*", "output": "json", "fl": "timestamp,original,statuscode",
+            "filter": "statuscode:200", "from": "2017", "to": "2017", "collapse": "urlkey", "limit": 2000})
+        rows = cdx.json()[1:] if cdx.status_code == 200 else []
+        out.append(f"-- Wayback CDX 2017 contract pages: HTTP {cdx.status_code}, {len(rows)} unique URLs; first {rows[:2]}")
+        if rows:
+            ts, orig, _ = rows[len(rows) // 2]
+            page = requests.get(f"https://web.archive.org/web/{ts}id_/{orig}", timeout=120)
+            txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", page.text))
+            i = txt.find("awarded")
+            out.append(f"   snapshot {ts} {orig}: HTTP {page.status_code}, {len(page.text)} chars; ..." + txt[max(i - 300, 0):i + 400])
+    except Exception as e:  # noqa: BLE001
+        out.append(f"-- Wayback: FAILED {type(e).__name__}: {str(e)[:150]}")
+    tx = {"filters": {"award_type_codes": ["A", "B", "C", "D"], "agencies": [{"type": "awarding", "tier": "toptier",
+          "name": "Department of Defense"}], "time_period": [{"start_date": "2024-01-03", "end_date": "2024-01-03"}],
+          "award_amounts": [{"lower_bound": 7500000}]},
+          "fields": ["Award ID", "Mod", "Recipient Name", "Action Date", "Transaction Amount", "Action Type",
+                     "Transaction Description"], "limit": 5, "sort": "Transaction Amount", "order": "desc"}
+    try:
+        out.append("-- USAspending transactions: " + http("https://api.usaspending.gov/api/v2/search/spending_by_transaction/",
+                                                          900, method="post", json=tx))
+    except Exception as e:  # noqa: BLE001
+        out.append(f"-- USAspending transactions: FAILED {type(e).__name__}: {str(e)[:150]}")
     body = {"filters": {"award_type_codes": ["A", "B", "C", "D"], "agencies": [{"type": "awarding", "tier": "toptier",
             "name": "Department of Defense"}], "time_period": [{"start_date": "2024-01-02", "end_date": "2024-01-03"}]},
             "fields": ["Award ID", "Recipient Name", "Award Amount", "Action Date"], "limit": 3}
