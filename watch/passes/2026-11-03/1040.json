@@ -1,0 +1,286 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f717d74d6d655442b1580733b44f027d4c453aab540b47b552eaddf1975de74d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ff5d85fd289ccfef8225cc88fad02c627a68dd98b48fecb8ac23d46d56103b3f",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "STVN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BRCC",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "XIFR",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "NBIX",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ZBRA",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "SRTA",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ARRY",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TV",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "NRXP",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "45a3804175fe513152ce194089698f266b18db70e57d0ec1bb34a78a76d48abc",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.25887,
+   "news": 0,
+   "pace": 33.07,
+   "price": 14.63,
+   "r20": -0.01546,
+   "r5": -0.00704,
+   "short": true,
+   "src": "iex",
+   "symbol": "STVN",
+   "z": -15.447
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.27782,
+   "news": 0,
+   "pace": 8.49,
+   "price": 9.15,
+   "r20": 0.34074,
+   "r5": 0.08755,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "BRCC",
+   "z": -11.67
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.11399,
+   "news": 0,
+   "pace": 9.287,
+   "price": 8.55,
+   "r20": -0.05299,
+   "r5": 0.02008,
+   "short": true,
+   "src": "iex",
+   "symbol": "XIFR",
+   "z": -7.659
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.12659,
+   "news": 0,
+   "pace": 7.267,
+   "price": 163.75,
+   "r20": 0.00791,
+   "r5": -0.00356,
+   "short": true,
+   "src": "iex",
+   "symbol": "NBIX",
+   "z": 7.323
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16966,
+   "news": 0,
+   "pace": 6.946,
+   "price": 195.345,
+   "r20": 0.25298,
+   "r5": 0.01831,
+   "short": true,
+   "src": "iex",
+   "symbol": "IT",
+   "z": -6.348
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09301,
+   "news": 0,
+   "pace": 8.848,
+   "price": 327.54,
+   "r20": -0.03868,
+   "r5": -0.05992,
+   "short": true,
+   "src": "iex",
+   "symbol": "ZBRA",
+   "z": -5.502
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07009,
+   "news": 0,
+   "pace": 4.311,
+   "price": 4.58,
+   "r20": -0.11019,
+   "r5": -0.10084,
+   "short": true,
+   "src": "iex",
+   "symbol": "SRTA",
+   "z": 2.506
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11579,
+   "news": 0,
+   "pace": 3.896,
+   "price": 4.24,
+   "r20": -0.02564,
+   "r5": 0.20635,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARRY",
+   "z": 2.294
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.04455,
+   "news": 0,
+   "pace": 5.528,
+   "price": 2.11,
+   "r20": -0.1179,
+   "r5": -0.12174,
+   "short": true,
+   "src": "iex",
+   "symbol": "TV",
+   "z": 1.661
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.00461,
+   "news": 0,
+   "pace": 4.792,
+   "price": 2.18,
+   "r20": -0.2439,
+   "r5": -0.14902,
+   "short": false,
+   "src": "iex",
+   "symbol": "NRXP",
+   "z": 0.093
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5130.8827,
+  "PICK-MAIN-coin": 5019.5633,
+  "PICK-PENNY": 489.7159,
+  "PICK-PENNY-coin": 490.4874
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 59,
+  "news": 27,
+  "volume": 177
+ },
+ "flagged": 216,
+ "headline_counts": {
+  "BRCC": 3,
+  "IT": 3,
+  "NBIX": 3,
+  "NRXP": 1,
+  "SRTA": 3,
+  "STVN": 3,
+  "XIFR": 3,
+  "ZBRA": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "b79a83d5faf714ee75def20ff9f8a2acd76a63febfad3e3fa16f437d8bdc7295",
+ "price_sources": {
+  "delayed_sip": 232,
+  "iex": 3169
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-03T10:40",
+ "t": "2026-11-03T15:40:20.897630+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T15:40:32.897029Z"
+}
