@@ -1,0 +1,598 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "264576a764d06e2862bedbd068798c942e1cca2c3a14d465bdb4b08a819ef0c7",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "fb644f3eb2f8ce64aef29e2b39882ce39edfc50baa54fc59f60ed978b90c2457",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ACB",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ADEA",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CMCO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "JAZZ",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "HLF",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PAY",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "management",
+     "symbol": "AEHR",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "FRMI",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "AISP",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DFNS",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "57f824c5dcfb784b11d5b6f568daf13e4fda710a3449b51acb142faaaf03821f",
+   "decisions": [
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large upside move, not shortable, neutral tone",
+     "stop_pct": 0.0,
+     "symbol": "ACB"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp drop, high volume, negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "ADEA"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong upside move, positive earnings tone",
+     "stop_pct": 10.0,
+     "symbol": "CMCO"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "solid gain with positive analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "JAZZ"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up with positive earnings outlook",
+     "stop_pct": 12.0,
+     "symbol": "HLF"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price dip but earnings tone positive, good entry point",
+     "stop_pct": 12.0,
+     "symbol": "PAY"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "extreme upside move, risk of pullback",
+     "stop_pct": 0.0,
+     "symbol": "AEHR"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "minor move, no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "FRMI"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "small upside, not shortable",
+     "stop_pct": 0.0,
+     "symbol": "AISP"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "small upside, not shortable",
+     "stop_pct": 0.0,
+     "symbol": "DFNS"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "NPKI"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing long position",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding existing short position",
+     "stop_pct": 0.0,
+     "symbol": "STNE"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "bc1c8b0b9b827e5dbb25ac6c35e9a407c683ed40dcb000c23e628dea01578a1a"
+  },
+  "reviewer": {
+   "answer_sha256": "574b3504e4585e1e0f73480a9dc04bf631e7b73163e2584246e98ab3da2ed421",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "dd5d165dc04e17210a7c84373ae4c841073918951f7116d99dcbdbf02099b2ce",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe intraday drop with negative momentum and negative earnings tone.",
+     "symbol": "ADEA"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum on high volume pace with positive earnings tone.",
+     "symbol": "CMCO"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid upward price movement and volume pace supporting the analyst's positive view.",
+     "symbol": "JAZZ"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive price reaction and volume pace align with the favorable earnings tone.",
+     "symbol": "HLF"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Dip-buying opportunity supported by positive medium-term trend and earnings tone despite today's drop.",
+     "symbol": "PAY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.20735,
+   "news": 0,
+   "pace": 34.791,
+   "price": 5.095,
+   "r20": -0.05381,
+   "r5": 0.08205,
+   "short": false,
+   "src": "iex",
+   "symbol": "ACB",
+   "z": 7.814
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1715,
+   "news": 0,
+   "pace": 8.066,
+   "price": 17.125,
+   "r20": -0.20713,
+   "r5": -0.03546,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADEA",
+   "z": -5.147
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.16148,
+   "news": 0,
+   "pace": 4.392,
+   "price": 18.305,
+   "r20": -0.06856,
+   "r5": 0.12251,
+   "short": true,
+   "src": "iex",
+   "symbol": "CMCO",
+   "z": 4.698
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0859,
+   "news": 0,
+   "pace": 4.335,
+   "price": 232.86,
+   "r20": -0.09151,
+   "r5": 0.04249,
+   "short": true,
+   "src": "iex",
+   "symbol": "JAZZ",
+   "z": 4.033
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09111,
+   "news": 0,
+   "pace": 3.75,
+   "price": 14.49,
+   "r20": 0.0624,
+   "r5": 0.0,
+   "short": true,
+   "src": "iex",
+   "symbol": "HLF",
+   "z": 3.771
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09486,
+   "news": 0,
+   "pace": 3.45,
+   "price": 31.725,
+   "r20": 0.10848,
+   "r5": 0.0778,
+   "short": true,
+   "src": "iex",
+   "symbol": "PAY",
+   "z": -3.66
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.25296,
+   "news": 0,
+   "pace": 11.072,
+   "price": 64.49,
+   "r20": -0.50699,
+   "r5": -0.09064,
+   "short": true,
+   "src": "iex",
+   "symbol": "AEHR",
+   "z": 3.447
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.03855,
+   "news": 0,
+   "pace": 3.432,
+   "price": 2.12,
+   "r20": -0.4569,
+   "r5": -0.13189,
+   "short": true,
+   "src": "iex",
+   "symbol": "FRMI",
+   "z": -0.479
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.01244,
+   "news": 0,
+   "pace": 4.145,
+   "price": 2.035,
+   "r20": -0.00495,
+   "r5": -0.06944,
+   "short": false,
+   "src": "iex",
+   "symbol": "AISP",
+   "z": 0.249
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.0176,
+   "news": 0,
+   "pace": 3.58,
+   "price": 3.47,
+   "r20": -0.49705,
+   "r5": -0.11886,
+   "short": false,
+   "src": "iex",
+   "symbol": "DFNS",
+   "z": 0.22
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5136.4627,
+  "PICK-MAIN-coin": 5014.1133,
+  "PICK-PENNY": 488.5347,
+  "PICK-PENNY-coin": 490.3747
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 58,
+  "news": 11,
+  "volume": 229
+ },
+ "flagged": 252,
+ "headline_counts": {
+  "ACB": 2,
+  "ADEA": 3,
+  "AEHR": 3,
+  "CMCO": 3,
+  "FRMI": 3,
+  "HLF": 3,
+  "JAZZ": 3,
+  "PAY": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "db8e7b3c4398af4925f8b04306437468a20edc6efe41a59cc24826189ecfa254",
+ "price_sources": {
+  "delayed_sip": 263,
+  "iex": 3138
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ADEA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CMCO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "JAZZ"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HLF"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PAY"
+  }
+ ],
+ "slot": "2026-11-03T10:25",
+ "t": "2026-11-03T15:25:20.650873+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T15:25:47.088041Z"
+}
