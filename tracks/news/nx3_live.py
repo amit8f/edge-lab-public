@@ -404,6 +404,7 @@ def close_day(root, day, d, api=None):
         print(f"[nx3all] day not logged: {type(ex).__name__}: {ex}")
     try:    # the NX3-HI book (research/prereg/NX3HI.md); it never stops NX3
         HI.close_day(root, day.decisions, d, day_seed(d), day.ctx["cut"])
+        HI.close_day_all(root, day.decisions, d, day_seed(d), day.ctx["cut"])
     except Exception as ex:
         print(f"[nx3hi] day not logged: {type(ex).__name__}: {ex}")
     try:    # the Gemini exit agent's log (research/prereg/NXE.md, EXL); it never stops NX3
@@ -455,6 +456,7 @@ def settle(root, api, cal, today):
         print(f"[nx3all] settle failed: {type(ex).__name__}: {ex}")
     try:
         HI.settle(root, api, cal, today)
+        HI.settle_all(root, api, cal, today)
     except Exception as ex:
         print(f"[nx3hi] settle failed: {type(ex).__name__}: {ex}")
     return out

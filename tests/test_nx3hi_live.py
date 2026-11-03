@@ -32,3 +32,13 @@ def test_a_day_logs_from_the_first_day_once():
     assert H.close_day(root, d, pd.Timestamp("2026-11-04"), 1, 0.01) is None
     rec = json.loads((root / Ledger(root).entry("nx3hi_day", "2026-11-04")["file"]).read_text())
     assert [p["symbol"] for p in rec["picks"]] == ["A"] and rec["hi"] == 1.5
+
+
+def test_uncapped_high_bar_book_sizes_by_confidence_and_has_no_cap():
+    cut = 0.01
+    d = [dec("LOW", 31, 0.012), dec("B", 33, -0.02, etb=False)] + [dec(f"X{i}", 40 + i, 0.02) for i in range(5)] \
+        + [dec("S", 50, -0.03)]
+    picks, ctrl = H.book_all(d, cut, 3)
+    assert [p["symbol"] for p in picks] == [f"X{i}" for i in range(5)] + ["S"]     # 5 longs, no cap; LOW and B out
+    assert sum(p["w"] for p in picks) <= 1.0 + 1e-9
+    assert [c["w"] for c in ctrl] == [p["w"] for p in picks]

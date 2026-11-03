@@ -558,10 +558,12 @@ def stage_uncapped(cache, out):
     print(json.dumps({"pooled": pooled, "verdict": rep["verdict"]}, indent=1, default=float))
 
 
-def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0)):
+def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0), uncapped=False):
     """NX3-HI (research/prereg/NX3HI.md): NX3's walk-forward with only fired events of confidence |e|/cut >= bar
     taking the 3+3 slots. Registered variant: 1.5; 1.25 and 2.0 are exploratory; 1.0 is NX3 itself. Same models and
-    seeds per year (controls are drawn per variant, so they differ a little between variants)."""
+    seeds per year (controls are drawn per variant, so they differ a little between variants).
+    uncapped=True is NX3-ALL-HI (research/prereg/NX3ALLHI.md): no 3+3 cap, trades sized by confidence as in NX3-ALL
+    (the confidence-sized pick-minus-control book is the tested series); written to NX3ALLHI_walkforward.json."""
     d3 = nx3dir(cache)
     ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
     ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
@@ -576,7 +578,9 @@ def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0)):
             continue
         model = Model(tr)
         for b in bars:
-            n, pk, _, _ = evaluate(te, model, SEED + yr, PICKS, hi=b)
+            n, pk, _, _ = evaluate(te, model, SEED + yr, None if uncapped else PICKS, hi=b)
+            if uncapped and len(n):
+                n = n.assign(pick_minus_control=n["sized_pick_minus_control"])      # the sized book is the series
             if len(n):
                 days[b].append(n.assign(year=yr, picks=len(pk)))
     empty = pd.DataFrame(columns=["d", "pick_minus_control", "year"])
@@ -596,13 +600,13 @@ def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0)):
     rep["verdict"] = "passed" if pm["mean"] > 0 and pm["t_nw"] >= ALL_PASS_T else "failed"
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    (out / "NX3HI_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    (out / ("NX3ALLHI_walkforward.json" if uncapped else "NX3HI_walkforward.json")).write_text(json.dumps(rep, indent=1, default=float))
     print(json.dumps(rep, indent=1, default=float))
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -616,6 +620,9 @@ def main():
         return
     if a.stage == "highbar":
         stage_highbar(a.cache, a.out)
+        return
+    if a.stage == "highbar_all":
+        stage_highbar(a.cache, a.out, uncapped=True)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
