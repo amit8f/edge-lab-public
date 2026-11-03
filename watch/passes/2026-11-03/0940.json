@@ -1,0 +1,426 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "8d57758427ee0b44747f7e70b4df7597ac2db2efebbdb734bb60b0daa2c78844",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "27509d62d406ce560d5e82d91a1c69b832cf4030aff2fca1e54bb28572e9773d",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BALL",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SRAD",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "MDGL",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "MZTI",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "STVN",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "BRCC",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "IT",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "LDOS",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "RVTY",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "CBT",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4f39ef1ee0785046146faf5dba2b8616c3176be0379c1a0f5fe907a0c84c49f6",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large negative move, negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "BALL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong positive move, positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "solid upside, positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "MDGL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant drop, negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "MZTI"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "extreme price decline, neutral tone suggests continuation",
+     "stop_pct": 15.0,
+     "symbol": "STVN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "a2483a4cade5f689ea0cab9d19bc0de80a5115e574d35682f9ce6edbbbfaebc7"
+  },
+  "reviewer": {
+   "answer_sha256": "d092d69d0295595febea27b02d675fb13dd322018b8f88d23316468296bbffe1",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "13101568d6a2c680746e50c5e33701caf351ae536a435988025f04c9078c5bc1",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selling pressure today with negative earnings tone justifies short proposal.",
+     "symbol": "BALL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive price momentum today following earnings tone.",
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant positive daily move supported by favorable earnings tone.",
+     "symbol": "MDGL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp drop today paired with negative earnings tone aligns with short proposal.",
+     "symbol": "MZTI"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive collapse today warrants following the downside momentum.",
+     "symbol": "STVN"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.06038,
+   "news": 1,
+   "pace": null,
+   "price": 63.96,
+   "r20": 0.19191,
+   "r5": 0.05617,
+   "short": true,
+   "src": "iex",
+   "symbol": "BALL",
+   "z": -4.424
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.13326,
+   "news": 1,
+   "pace": null,
+   "price": 14.585,
+   "r20": 0.0654,
+   "r5": 0.02143,
+   "short": true,
+   "src": "iex",
+   "symbol": "SRAD",
+   "z": 4.119
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.06832,
+   "news": 1,
+   "pace": null,
+   "price": 460.61,
+   "r20": -0.12654,
+   "r5": -0.01504,
+   "short": true,
+   "src": "iex",
+   "symbol": "MDGL",
+   "z": 3.442
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.06157,
+   "news": 1,
+   "pace": null,
+   "price": 104.1,
+   "r20": 0.11499,
+   "r5": 0.01743,
+   "short": true,
+   "src": "iex",
+   "symbol": "MZTI",
+   "z": -3.312
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.28926,
+   "news": 0,
+   "pace": null,
+   "price": 14.03,
+   "r20": -0.01546,
+   "r5": -0.00704,
+   "short": true,
+   "src": "iex",
+   "symbol": "STVN",
+   "z": -17.607
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.30545,
+   "news": 0,
+   "pace": null,
+   "price": 8.8,
+   "r20": 0.34074,
+   "r5": 0.08755,
+   "short": true,
+   "src": "iex",
+   "symbol": "BRCC",
+   "z": -13.069
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.19366,
+   "news": 0,
+   "pace": null,
+   "price": 189.7,
+   "r20": 0.25298,
+   "r5": 0.01831,
+   "short": true,
+   "src": "iex",
+   "symbol": "IT",
+   "z": -7.349
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.1028,
+   "news": 0,
+   "pace": null,
+   "price": 129.34,
+   "r20": 0.20686,
+   "r5": 0.03075,
+   "short": true,
+   "src": "iex",
+   "symbol": "LDOS",
+   "z": -5.737
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12375,
+   "news": 0,
+   "pace": null,
+   "price": 170.36,
+   "r20": -0.03618,
+   "r5": -0.0548,
+   "short": true,
+   "src": "iex",
+   "symbol": "RVTY",
+   "z": 5.689
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.05837,
+   "news": 0,
+   "pace": null,
+   "price": 71.3,
+   "r20": -0.02145,
+   "r5": 0.03897,
+   "short": true,
+   "src": "iex",
+   "symbol": "CBT",
+   "z": -5.572
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5099.4705,
+  "PICK-MAIN-coin": 5015.0126,
+  "PICK-PENNY": 489.1137,
+  "PICK-PENNY-coin": 489.0813
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.1757,
+   "price": 14.585,
+   "qty": 1,
+   "side": 1,
+   "stop": 12.8348,
+   "symbol": "SRAD"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.1763,
+   "price": 14.585,
+   "qty": 1,
+   "side": -1,
+   "stop": 16.3352,
+   "symbol": "SRAD"
+  }
+ ],
+ "flag_counts": {
+  "move": 44,
+  "news": 165,
+  "volume": 0
+ },
+ "flagged": 200,
+ "headline_counts": {
+  "BALL": 3,
+  "BRCC": 3,
+  "CBT": 3,
+  "IT": 3,
+  "LDOS": 3,
+  "MDGL": 3,
+  "MZTI": 3,
+  "RVTY": 3,
+  "SRAD": 3,
+  "STVN": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "69a2c7aa82f8154de2f05d382098afa90f67b7ccea49d5447ee12d778a3867fa",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2521
+ },
+ "priced": 2521,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BALL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "SRAD"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MDGL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MZTI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "STVN"
+  }
+ ],
+ "slot": "2026-11-03T09:40",
+ "t": "2026-11-03T14:40:20.428206+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T14:40:48.563373Z"
+}
