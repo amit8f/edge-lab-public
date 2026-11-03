@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8432.65 | -15.67% | 121 | 28 | long ETN, long FN, long HWM, long REGN, long TEM |
-| Coin flip on C's picks | $9520.54 | -4.79% | 120 | 59 | long ETN, long FN, short HWM, long REGN, long TEM |
-| C's prompt on Groq (K7) | $7912.70 | -20.87% | 296 | 69 | short DT, long FN, long HWM, long MPWR, short SHOP |
-| Coin flip on C-groq's picks | $9221.75 | -7.78% | 296 | 147 | long DT, long FN, short HWM, short MPWR, short SHOP |
-| C-groq's answers, acted on once a day (K8) | $10275.58 | +2.76% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
-| Coin flip on C-groq-slow's picks | $10045.98 | +0.46% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
-| C's answers, acted on once a day (K8) | $10309.84 | +3.10% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
-| Coin flip on C-slow's picks | $10264.04 | +2.64% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
-| Just hold SPY | $9847.54 | -1.52% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8397.56 | -16.02% | 121 | 28 | long ETN, long FN, long HWM, long REGN, long TEM |
+| Coin flip on C's picks | $9482.74 | -5.17% | 120 | 59 | long ETN, long FN, short HWM, long REGN, long TEM |
+| C's prompt on Groq (K7) | $7830.43 | -21.70% | 296 | 69 | short DT, long FN, long HWM, long MPWR, short SHOP |
+| Coin flip on C-groq's picks | $9232.13 | -7.68% | 296 | 147 | long DT, long FN, short HWM, short MPWR, short SHOP |
+| C-groq's answers, acted on once a day (K8) | $10286.85 | +2.87% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
+| Coin flip on C-groq-slow's picks | $10046.44 | +0.46% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
+| C's answers, acted on once a day (K8) | $10311.66 | +3.12% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
+| Coin flip on C-slow's picks | $10261.88 | +2.62% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
+| Just hold SPY | $9840.25 | -1.60% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-03 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 10:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 11:1
 | 2026-10-30 14:57 | short FTNT, short GOOGL, long LNG, short NOW, long REGN | none | Maintaining all existing profitable positions (FTNT, GOOGL, LNG, NOW) and holding REGN due to strong daily and weekly performance, expecting continued upward momentum. |
 | 2026-10-30 14:47 | short FTNT, short GOOGL, long LNG, short NOW, long REGN | none | Maintaining all existing positions due to continued alignment with their respective trends and news catalysts. All short positions are profitable and trending down, while long positions are either profitable and trending up or showing signs of reversal. |
 | 2026-10-30 14:36 | short FTNT, short GOOGL, long LNG, short NOW, long REGN | none | Maintaining all existing profitable positions (FTNT, GOOGL, LNG, NOW) and the REGN long position due to strong underlying trends and news, as no new compelling opportunities were identified to replace them. |
-| 2026-10-30 10:17 | no answer, nothing changed | none | unreadable answer |
