@@ -1,0 +1,594 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "71c9bfbe16ccd281d81ba91b5f030ec52c37292f17516c15e4b54ecb41f2baf2",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "7689368a4b93bdfcce977a10dc46ea4f3137116bfe5c71d17e79a144278216f4",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "KDP",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "BETA",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "TRI",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "RRX",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "deal",
+     "symbol": "PTCT",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "SHC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CERS",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "INO",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "EVGO",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "deal",
+     "symbol": "XMAX",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "f581b6dc58c1f095cbe5d1a09158abfbcefe9624b18e28e4a0e3b99971337f56",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down sharply, high volume, analyst confidence high, shortable",
+     "stop_pct": 12.0,
+     "symbol": "KDP"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up strongly, high volume, positive analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "BETA"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down but analyst positive, buying dip",
+     "stop_pct": 12.0,
+     "symbol": "TRI"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up, high volume, positive analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "RRX"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up, positive analyst tone, deal news",
+     "stop_pct": 12.0,
+     "symbol": "PTCT"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, analyst positive, buying opportunity",
+     "stop_pct": 12.0,
+     "symbol": "SHC"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, shortable, analyst neutral, penny stock",
+     "stop_pct": 20.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up, not shortable, analyst neutral, penny stock",
+     "stop_pct": 20.0,
+     "symbol": "INO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, negative analyst tone, shortable penny stock",
+     "stop_pct": 20.0,
+     "symbol": "EVGO"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, analyst positive, not shortable penny stock",
+     "stop_pct": 20.0,
+     "symbol": "XMAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "held position",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "held position",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "held position",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "held position",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "held position",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "held position",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "held position",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f70ec19c92128a0171b878816b373c426a03611045b399ec1ff15532a0279bf3"
+  },
+  "reviewer": {
+   "answer_sha256": "6f2a71b7ba2cbf6b4da0ea0cf4270ea4737754624c23e34b1d8b1e01371b73b1",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "a1860c54cbf7bbe0da312356df3ffe10aab6bf1fd44ad7ae1de52f0e1b531b0a",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy volume drop with neutral tone supports the short proposal.",
+     "symbol": "KDP"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and high volume align with the long proposal.",
+     "symbol": "BETA"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp sell-off despite positive tone makes long risky.",
+     "symbol": "TRI"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid volume and positive momentum support the long trade.",
+     "symbol": "RRX"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive deal news with strong volume supports going long.",
+     "symbol": "PTCT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Despite the drop, positive tone on earnings offers a reversal opportunity.",
+     "symbol": "SHC"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Downward price action with neutral tone justifies the short.",
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and has already rallied immensely, making chasing risky.",
+     "symbol": "INO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative analyst tone after a huge run supports fading the move.",
+     "symbol": "EVGO"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive multi-day losses make long proposal too risky despite deal news.",
+     "symbol": "XMAX"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.06029,
+   "news": 0,
+   "pace": 4.709,
+   "price": 34.6,
+   "r20": 0.19197,
+   "r5": 0.0523,
+   "short": true,
+   "src": "iex",
+   "symbol": "KDP",
+   "z": -4.366
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.15211,
+   "news": 0,
+   "pace": 5.853,
+   "price": 23.48,
+   "r20": -0.01546,
+   "r5": 0.02825,
+   "short": true,
+   "src": "iex",
+   "symbol": "BETA",
+   "z": 3.633
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07563,
+   "news": 0,
+   "pace": 3.687,
+   "price": 112.995,
+   "r20": 0.25917,
+   "r5": 0.00131,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRI",
+   "z": -3.488
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.10181,
+   "news": 0,
+   "pace": 5.08,
+   "price": 177.315,
+   "r20": -0.00205,
+   "r5": 0.06944,
+   "short": true,
+   "src": "iex",
+   "symbol": "RRX",
+   "z": 3.412
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.0979,
+   "news": 0,
+   "pace": 4.99,
+   "price": 66.84,
+   "r20": -0.04352,
+   "r5": -0.00311,
+   "short": true,
+   "src": "iex",
+   "symbol": "PTCT",
+   "z": 3.239
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.04679,
+   "news": 0,
+   "pace": 3.459,
+   "price": 16.91,
+   "r20": -0.04367,
+   "r5": -0.03535,
+   "short": true,
+   "src": "iex",
+   "symbol": "SHC",
+   "z": -3.061
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06568,
+   "news": 0,
+   "pace": 3.066,
+   "price": 2.205,
+   "r20": 0.00855,
+   "r5": -0.00422,
+   "short": true,
+   "src": "iex",
+   "symbol": "CERS",
+   "z": -2.597
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.05556,
+   "news": 0,
+   "pace": 38.716,
+   "price": 1.995,
+   "r20": 0.64348,
+   "r5": 1.17291,
+   "short": false,
+   "src": "iex",
+   "symbol": "INO",
+   "z": 0.194
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.01081,
+   "news": 0,
+   "pace": 6.024,
+   "price": 1.83,
+   "r20": 0.37037,
+   "r5": 0.74528,
+   "short": true,
+   "src": "iex",
+   "symbol": "EVGO",
+   "z": -0.112
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.01122,
+   "news": 0,
+   "pace": 8.075,
+   "price": 3.965,
+   "r20": -0.53961,
+   "r5": -0.52148,
+   "short": false,
+   "src": "iex",
+   "symbol": "XMAX",
+   "z": -0.098
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5128.7777,
+  "PICK-MAIN-coin": 5017.3183,
+  "PICK-PENNY": 490.0915,
+  "PICK-PENNY-coin": 490.8742
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.0294,
+   "price": 2.205,
+   "qty": 1,
+   "side": -1,
+   "stop": 2.646,
+   "symbol": "CERS"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.0292,
+   "price": 2.205,
+   "qty": 1,
+   "side": 1,
+   "stop": 1.764,
+   "symbol": "CERS"
+  }
+ ],
+ "flag_counts": {
+  "move": 56,
+  "news": 15,
+  "volume": 209
+ },
+ "flagged": 232,
+ "headline_counts": {
+  "BETA": 3,
+  "CERS": 3,
+  "EVGO": 3,
+  "INO": 3,
+  "KDP": 3,
+  "PTCT": 3,
+  "RRX": 3,
+  "SHC": 3,
+  "TRI": 3,
+  "XMAX": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "8c7a000889fb14ffdcb08a3cade8d76415f189d6442ee3f9798d95cbd123e588",
+ "price_sources": {
+  "delayed_sip": 255,
+  "iex": 3146
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KDP"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BETA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TRI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RRX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PTCT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SHC"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "CERS"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "INO"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EVGO"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "XMAX"
+  }
+ ],
+ "slot": "2026-11-03T10:30",
+ "t": "2026-11-03T15:30:20.780912+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T15:30:44.496652Z"
+}
