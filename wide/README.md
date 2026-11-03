@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 13:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 13:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8440.67 | -15.59% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
-| Coin flip on C's picks | $9412.25 | -5.88% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
-| C's prompt on Groq (K7) | $7762.23 | -22.38% | 300 | 69 | long CIFR, long FN, long HWM, long VRT, long WULF |
-| Coin flip on C-groq's picks | $9251.23 | -7.49% | 300 | 149 | short CIFR, long FN, short HWM, long VRT, long WULF |
-| C-groq's answers, acted on once a day (K8) | $10248.69 | +2.49% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
-| Coin flip on C-groq-slow's picks | $10027.24 | +0.27% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
-| C's answers, acted on once a day (K8) | $10302.08 | +3.02% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
-| Coin flip on C-slow's picks | $10192.28 | +1.92% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
-| Just hold SPY | $9847.15 | -1.53% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8465.12 | -15.35% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
+| Coin flip on C's picks | $9405.98 | -5.94% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
+| C's prompt on Groq (K7) | $7781.73 | -22.18% | 300 | 69 | long CIFR, long FN, long HWM, long VRT, long WULF |
+| Coin flip on C-groq's picks | $9252.62 | -7.47% | 300 | 149 | short CIFR, long FN, short HWM, long VRT, long WULF |
+| C-groq's answers, acted on once a day (K8) | $10258.02 | +2.58% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
+| Coin flip on C-groq-slow's picks | $10029.04 | +0.29% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
+| C's answers, acted on once a day (K8) | $10308.37 | +3.08% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
+| Coin flip on C-slow's picks | $10203.46 | +2.03% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
+| Just hold SPY | $9853.47 | -1.47% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-03 13:37 | long BE, long CIFR, long HWM, long REGN, long WULF | none | All existing profitable positions are maintained due to strong daily performance and positive momentum, with no new positions added at this time. |
 | 2026-11-03 13:27 | long BE, long CIFR, long HWM, long REGN, long WULF | none | Maintaining all current long positions as they are profitable and show continued positive momentum or strong relative strength. No new opportunities warrant closing existing profitable trades at this time. |
 | 2026-11-03 13:17 | long BE, long CIFR, long HWM, long REGN, long WULF | none | Maintaining all existing long positions as they are profitable and show continued positive momentum or strong underlying trends. No new positions are opened as the account is at its maximum of 5 positions. |
 | 2026-11-03 13:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 13:2
 | 2026-11-02 10:37 | long MPWR, long REGN, long RKT, long TEM, long UAL | none | Maintaining all existing long positions (MPWR, REGN, RKT, TEM, UAL) due to continued strong positive momentum and favorable news where applicable, with all positions showing upward trends in hourly closes. |
 | 2026-11-02 10:27 | long MPWR, long REGN, long RKT, long TEM, long UAL | bought CBRS @ $100.89; bought CIFR @ $7.25; bought MRVL @ $187.58; bought NOW @ $107.78; bought MPWR @ $1,304.34; bought RKT @ $13.73; bought TEM @ $78.33; bought UAL @ $111.87 | Exited underperforming short positions in CBRS, CIFR, MRVL, and NOW. Initiated new long positions in TEM, MPWR, UAL, and RKT based on strong daily gains, positive momentum, and favorable news/technical trends, while maintaining the profitable REGN long position. |
 | 2026-11-02 10:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 10:07 | short CBRS, short CIFR, short MRVL, short NOW, long REGN | none | Maintaining current positions in CBRS, CIFR, MRVL, NOW (short) and REGN (long) due to continued strong trends and supporting news/technical analysis for each. |
