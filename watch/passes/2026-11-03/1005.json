@@ -1,0 +1,465 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "0466902d4de9101abacf23a2f7ff832da2a09b2f5542039040c3d21cb9fa14e7",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ea727821cc787c9c5bff126ad6a962b14651075ac5055acf2e89050318e6a8dc",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VFF",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SIBN",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "BMRN",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "TEVA",
+     "tone": 1
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "WMB",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "HNGE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "XPRO",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SNDL",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "TLRY",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ARRY",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "5bfdec35f7ac9efeb5093d5d2e56241045858fc947d4055a559f6e412bb1b026",
+   "decisions": [
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong breakout with high volume and positive momentum",
+     "stop_pct": 10.0,
+     "symbol": "VFF"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings-driven surge, high volume",
+     "stop_pct": 12.0,
+     "symbol": "SIBN"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant downside move, negative tone",
+     "stop_pct": 12.0,
+     "symbol": "BMRN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Product news and volume support upside",
+     "stop_pct": 10.0,
+     "symbol": "TEVA"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings lift with strong volume",
+     "stop_pct": 12.0,
+     "symbol": "WMB"
+    },
+    {
+     "confidence": 90,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Modest move, insufficient signal",
+     "stop_pct": 0.0,
+     "symbol": "HNGE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline, negative earnings",
+     "stop_pct": 12.0,
+     "symbol": "XPRO"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Mixed signals, negative tone despite price rise",
+     "stop_pct": 0.0,
+     "symbol": "SNDL"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Bullish move, cannot short, solid volume",
+     "stop_pct": 12.0,
+     "symbol": "TLRY"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "45d7848ce6a756a6cb8f8be3242d5fd8ab8afd673d8ab1c929f396aeaf5bc02c"
+  },
+  "reviewer": {
+   "answer_sha256": "1f6fcda49d819cdf3a8ba48da6a1e0f742307c469a4dfe418cac9230066b869a",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "680fbd903d18d98dba023416c83170e3884ea191d47ce098e21df4f6c7b6911f",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong volume and positive momentum support the long proposal.",
+     "symbol": "VFF"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid volume and earnings catalyst justify the long trade.",
+     "symbol": "SIBN"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative price action and analyst downgrade support shorting.",
+     "symbol": "BMRN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive product news and strong volume align with the long view.",
+     "symbol": "TEVA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Decent earnings tone and volume pace favor going long.",
+     "symbol": "WMB"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp sell-off on earnings supports the short proposal.",
+     "symbol": "XPRO"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and long-term trend is very weak despite a minor bounce.",
+     "symbol": "TLRY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09004,
+   "news": 0,
+   "pace": 4.343,
+   "price": 2.845,
+   "r20": -0.04044,
+   "r5": 0.02756,
+   "short": true,
+   "src": "iex",
+   "symbol": "VFF",
+   "z": 3.131
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.08482,
+   "news": 0,
+   "pace": 4.613,
+   "price": 21.935,
+   "r20": 0.0207,
+   "r5": -0.05115,
+   "short": true,
+   "src": "iex",
+   "symbol": "SIBN",
+   "z": 3.012
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.04048,
+   "news": 1,
+   "pace": 3.892,
+   "price": 55.115,
+   "r20": -0.00174,
+   "r5": 0.03031,
+   "short": true,
+   "src": "iex",
+   "symbol": "BMRN",
+   "z": -2.275
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.03735,
+   "news": 1,
+   "pace": 4.675,
+   "price": 42.22,
+   "r20": 0.02622,
+   "r5": 0.01877,
+   "short": true,
+   "src": "iex",
+   "symbol": "TEVA",
+   "z": 1.993
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.02079,
+   "news": 1,
+   "pace": 4.717,
+   "price": 72.67,
+   "r20": 0.00537,
+   "r5": -0.0078,
+   "short": true,
+   "src": "iex",
+   "symbol": "WMB",
+   "z": 0.864
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.01117,
+   "news": 1,
+   "pace": 3.491,
+   "price": 116.77,
+   "r20": 0.17417,
+   "r5": 0.03375,
+   "short": true,
+   "src": "iex",
+   "symbol": "HNGE",
+   "z": 0.449
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.11563,
+   "news": 0,
+   "pace": 2.433,
+   "price": 14.035,
+   "r20": -0.05367,
+   "r5": -0.06592,
+   "short": true,
+   "src": "iex",
+   "symbol": "XPRO",
+   "z": -3.261
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06299,
+   "news": 0,
+   "pace": 20.701,
+   "price": 1.35,
+   "r20": 0.016,
+   "r5": 0.0,
+   "short": true,
+   "src": "iex",
+   "symbol": "SNDL",
+   "z": 2.56
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.05294,
+   "news": 0,
+   "pace": 4.596,
+   "price": 2.685,
+   "r20": -0.31452,
+   "r5": -0.0625,
+   "short": false,
+   "src": "iex",
+   "symbol": "TLRY",
+   "z": 2.148
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.09211,
+   "news": 0,
+   "pace": 3.759,
+   "price": 4.15,
+   "r20": -0.02564,
+   "r5": 0.20635,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARRY",
+   "z": 1.845
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5115.6162,
+  "PICK-MAIN-coin": 5024.3018,
+  "PICK-PENNY": 488.5045,
+  "PICK-PENNY-coin": 488.9581
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 53,
+  "news": 22,
+  "volume": 284
+ },
+ "flagged": 312,
+ "headline_counts": {
+  "BMRN": 3,
+  "HNGE": 3,
+  "SIBN": 3,
+  "SNDL": 1,
+  "TEVA": 3,
+  "TLRY": 2,
+  "WMB": 3,
+  "XPRO": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "869bf1f0864bfff9a5e9001801b5f40c6586ae8a4c651bcc0274cae9b48fc163",
+ "price_sources": {
+  "delayed_sip": 425,
+  "iex": 2973
+ },
+ "priced": 3398,
+ "risk": [
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "VFF"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SIBN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BMRN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TEVA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "WMB"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "XPRO"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TLRY"
+  }
+ ],
+ "slot": "2026-11-03T10:05",
+ "t": "2026-11-03T15:05:20.619671+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T15:05:53.417870Z"
+}
