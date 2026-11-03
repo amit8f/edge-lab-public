@@ -46,7 +46,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX2", "SP1", "CHR-P", "DAY1"}
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX3-HI", "NX2", "SP1", "CHR-P", "DAY1"}
 
 
 def _json(p):
@@ -113,6 +113,12 @@ def nx3_books(st):
     out.append(_book("NX3-ALL", "NX3-ALL", 30, len(tr), len((alast or {}).get("picks", [])),
                      realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in tr), size=5000.0,
                      first_day="2026-11-02"))
+    hsettled = [_json(f) for f in sorted((root / "nx3hi" / "settled").glob("*.json"))]
+    hdays = sorted((root / "nx3hi" / "days").glob("*.json"))
+    htr = [t for x in hsettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
+    hlast = _json(hdays[-1]) if hdays and hdays[-1].stem > max((x["day"] for x in hsettled if x), default="") else None
+    out.append(_book("NX3-HI", "NX3-HI", 100, len(htr), len((hlast or {}).get("picks", [])),
+                     realized=sum(500 * (t.get("net") or 0) for t in htr), size=5000.0, first_day="2026-11-04"))
     return out
 
 

@@ -41,6 +41,7 @@ from tracks.news import nx3_study as S
 from tracks.news import nx3_orders as O
 from tracks.news import nx3all_orders as OA
 from tracks.news import nx3all_live as A
+from tracks.news import nx3hi_live as HI
 from tracks.news import nxe_live as XL
 from tracks.news import nxm_live as M
 from tracks.news import w1_data as W
@@ -401,6 +402,10 @@ def close_day(root, day, d, api=None):
         A.close_day(root, day.decisions, d, day_seed(d), day.ctx["cut"])
     except Exception as ex:
         print(f"[nx3all] day not logged: {type(ex).__name__}: {ex}")
+    try:    # the NX3-HI book (research/prereg/NX3HI.md); it never stops NX3
+        HI.close_day(root, day.decisions, d, day_seed(d), day.ctx["cut"])
+    except Exception as ex:
+        print(f"[nx3hi] day not logged: {type(ex).__name__}: {ex}")
     try:    # the Gemini exit agent's log (research/prereg/NXE.md, EXL); it never stops NX3
         if api is not None:
             XL.close_day(root, api, day.decisions, d, day.ctx["cut"])
@@ -448,6 +453,10 @@ def settle(root, api, cal, today):
         A.settle(root, api, cal, today)
     except Exception as ex:
         print(f"[nx3all] settle failed: {type(ex).__name__}: {ex}")
+    try:
+        HI.settle(root, api, cal, today)
+    except Exception as ex:
+        print(f"[nx3hi] settle failed: {type(ex).__name__}: {ex}")
     return out
 
 
