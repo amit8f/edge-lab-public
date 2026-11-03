@@ -134,3 +134,20 @@ def test_nxt_arms_size_k_by_confidence():
     assert tc["why"].iloc[0] == "time" and abs(tc["ret"].iloc[0] + 0.01) < 1e-9
     nan_c = E.arm_trades(t.assign(e=np.nan), "NXT-TC")   # no score: c = 1, same as TR
     assert nan_c["why"].iloc[0] == "stop"
+
+
+def test_hard_percent_stop_on_the_h1_hold():
+    r = {"symbol": "AAA", "d": D, "entry": 100.0, "side": 1, "atr": 2.0, "price": 100.0, "role": "pick",
+         "post_h": 101.0, "post_l": 99.5, "post_c": 100.5, "_i": 0}
+    for n_ in range(1, E.FRAME + 1):
+        r |= {f"o{n_}": 100.0, f"h{n_}": 101.0, f"l{n_}": 99.0, f"c{n_}": 100.2, f"date{n_}": D + pd.Timedelta(days=n_)}
+    t = pd.DataFrame([r])
+    calm = E.arm_trades(t, "STOP8")                                   # never reaches 92: the H1 close, 100.2
+    assert calm["why"].iloc[0] == "time" and abs(calm["ret"].iloc[0] - 0.002) < 1e-9 and calm["days"].iloc[0] == 2
+    hit = E.arm_trades(t.assign(l1=90.0), "STOP8")                    # session 1 low 90 reaches 92: stop at 92
+    assert hit["why"].iloc[0] == "stop" and abs(hit["ret"].iloc[0] + 0.08) < 1e-9
+    gap = E.arm_trades(t.assign(o1=88.0, l1=87.0), "STOP8")           # opens past the stop: fills at the open
+    assert abs(gap["ret"].iloc[0] + 0.12) < 1e-9
+    short = E.arm_trades(t.assign(side=-1, h1=110.0), "STOP8")        # short: high 110 reaches 108
+    assert short["why"].iloc[0] == "stop" and abs(short["ret"].iloc[0] - 0.08) < 1e-9
+    assert E.arm_trades(t.assign(l1=90.0), "STOP12")["why"].iloc[0] == "time"      # 90 is above the 88 stop

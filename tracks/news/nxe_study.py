@@ -32,6 +32,7 @@ from tracks.news import w1_data as W
 ET = X3.ET
 ATR_N = 14
 HOLDS = {"H2": 2, "H3": 3, "H5": 5, "H20": 20}
+STOP_PCT = {"STOP8": 0.08, "STOP5": 0.05, "STOP12": 0.12}     # STOP8 (research/prereg/STOP8.md); 5 and 12 exploratory
 HOLD_STOP = 3.0                       # H5, H20: close-checked stop in ATRs
 DAY_STOP, DAY_TARGET = 1.5, 3.0       # DAY and EXA1
 FRAME = 5                             # EXA1 / EXQ: sessions after d
@@ -476,6 +477,10 @@ def arm_trades(t, arm, levels=None):
                 continue
             p, w = path_exit(e, s, sp, tp, ph, r["path_l"], r["path_c"])
             px.append(p), dates.append(r["d"]), why.append(w)
+        elif arm in STOP_PCT:      # NX3's own H1 hold with a hard stop at entry -/+ pct, watched on sessions d and d + 1
+            sess = frame_sessions(r)[:2]
+            p, dt, w = frame_exit(e, s, e * (1 - s * STOP_PCT[arm]), e * (1 + s * 1e6), sess)
+            px.append(p), dates.append(dt), why.append(w)
         elif arm in ("NXT-TR", "NXT-TC"):
             if not a > 0:
                 px.append(np.nan), dates.append(pd.NaT), why.append("none")
@@ -552,7 +557,7 @@ def measure_nxe(t, state):
     rep = {"H1 (NX3 itself)": summary(h1, 1)}
     arms = {}
     for arm, lags in [("H2", 2), ("H3", 3), ("H5", 5), ("H20", 20), ("DAY", 1), ("EXA1", FRAME),
-                      ("NXT-TR", FRAME), ("NXT-TC", FRAME)]:
+                      ("NXT-TR", FRAME), ("NXT-TC", FRAME), ("STOP8", 2), ("STOP5", 2), ("STOP12", 2)]:
         arms[arm] = (arm_trades(pc, arm), lags)
     # EXQ: per test year, models fitted on that year's model's fired training events
     exq, ins, outs = [], [], []
