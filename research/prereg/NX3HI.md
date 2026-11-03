@@ -41,3 +41,12 @@ NW t >= 2).
 Fewer, stronger picks will have a higher mean per trade but fewer days and a noisier t; the paired difference with
 NX3 will not be significant (the NXE exit tests also found no rule that clearly beat NX3's own). Probability the
 primary test passes: about 0.5; probability NX3-HI beats NX3 with paired t >= 2: about 0.15.
+
+## Clarification 2026-11-03: live shadow book
+
+Amit said yes (2026-11-03) to a live shadow book next to the history test. `tracks/news/nx3hi_live.py` logs NX3's
+decided events after the close and picks NX3's 3 long + 3 short slots in time order among fired events with
+|e| / cut >= 1.5 (shorts only where easy to borrow), $500 per trade, next-close exit, same-day random control
+(seed offset 200). Ledger kinds nx3hi_day and nx3hi_settle on state-nx3, no orders. First day 2026-11-04.
+Forward rule: book minus control, NW t >= 1.5 at 100 trades (near-miss bar); an Alpaca account only per rule 20.
+Written before any NX3-HI number exists.
