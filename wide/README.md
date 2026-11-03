@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 14:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8420.05 | -15.80% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
-| Coin flip on C's picks | $9416.92 | -5.83% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
-| C's prompt on Groq (K7) | $7745.73 | -22.54% | 301 | 69 | long CIFR, short DT, long FN, long HWM, long WULF |
-| Coin flip on C-groq's picks | $9235.95 | -7.64% | 301 | 149 | short CIFR, short DT, long FN, short HWM, long WULF |
-| C-groq's answers, acted on once a day (K8) | $10289.14 | +2.89% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
-| Coin flip on C-groq-slow's picks | $10049.93 | +0.50% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
-| C's answers, acted on once a day (K8) | $10304.92 | +3.05% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
-| Coin flip on C-slow's picks | $10254.00 | +2.54% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
-| Just hold SPY | $9839.08 | -1.61% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8429.65 | -15.70% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
+| Coin flip on C's picks | $9401.55 | -5.98% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
+| C's prompt on Groq (K7) | $7761.60 | -22.38% | 301 | 69 | long CIFR, short DT, long FN, long HWM, long WULF |
+| Coin flip on C-groq's picks | $9237.19 | -7.63% | 301 | 149 | short CIFR, short DT, long FN, short HWM, long WULF |
+| C-groq's answers, acted on once a day (K8) | $10270.93 | +2.71% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
+| Coin flip on C-groq-slow's picks | $10056.79 | +0.57% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
+| C's answers, acted on once a day (K8) | $10296.55 | +2.97% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
+| Coin flip on C-slow's picks | $10231.70 | +2.32% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
+| Just hold SPY | $9839.60 | -1.60% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-03 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 14:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 13:58 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 14:1
 | 2026-11-02 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 11:17 | long MPWR, long REGN, long RKT, long TEM, long UAL | none | Maintaining all existing long positions (MPWR, REGN, RKT, TEM, UAL) due to continued strong daily performance and positive momentum, with several showing significant breakouts in the last hour. |
 | 2026-11-02 11:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 10:57 | no answer, nothing changed | none | unreadable answer |
