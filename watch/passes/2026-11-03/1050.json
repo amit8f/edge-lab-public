@@ -1,0 +1,284 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "83d351bc3c751cee6431a74578d53b07d69e7b6ca54835dafbc0a15302eacbd4",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "a4ed945b88daa871ff723db0940735fdd187af29f73d43f4cdd7b7edb320d058",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "IBTA",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GPK",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "DT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "BVS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TNC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "MRBK",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "NVA",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "CYPH",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "AMPY",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "CRBP",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "b8db10e31d9f9b544d6897dac1d562df7df2a5c7120977f9ca2df040105fae0a",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.26583,
+   "news": 0,
+   "pace": 11.289,
+   "price": 63.38,
+   "r20": 0.21088,
+   "r5": 0.02855,
+   "short": true,
+   "src": "iex",
+   "symbol": "IBTA",
+   "z": 8.935
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.17631,
+   "news": 0,
+   "pace": 3.017,
+   "price": 10.975,
+   "r20": 0.08362,
+   "r5": 0.06507,
+   "short": true,
+   "src": "iex",
+   "symbol": "GPK",
+   "z": 6.099
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.13586,
+   "news": 0,
+   "pace": 4.57,
+   "price": 47.64,
+   "r20": -0.08437,
+   "r5": -0.14101,
+   "short": true,
+   "src": "iex",
+   "symbol": "DT",
+   "z": -5.505
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.17643,
+   "news": 0,
+   "pace": 9.367,
+   "price": 10.83,
+   "r20": -0.02737,
+   "r5": -0.10666,
+   "short": true,
+   "src": "iex",
+   "symbol": "BVS",
+   "z": -5.483
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.08206,
+   "news": 1,
+   "pace": 2.621,
+   "price": 74.37,
+   "r20": 0.0097,
+   "r5": 0.04771,
+   "short": true,
+   "src": "iex",
+   "symbol": "TNC",
+   "z": 5.449
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.03877,
+   "news": 0,
+   "pace": 7.418,
+   "price": 17.85,
+   "r20": -0.01642,
+   "r5": -0.00482,
+   "short": true,
+   "src": "iex",
+   "symbol": "MRBK",
+   "z": -4.925
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07725,
+   "news": 0,
+   "pace": 6.082,
+   "price": 5.02,
+   "r20": -0.23102,
+   "r5": 0.56376,
+   "short": true,
+   "src": "iex",
+   "symbol": "NVA",
+   "z": 0.908
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.08263,
+   "news": 0,
+   "pace": 3.286,
+   "price": 2.555,
+   "r20": -0.25552,
+   "r5": -0.16608,
+   "short": true,
+   "src": "iex",
+   "symbol": "CYPH",
+   "z": 0.782
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.01562,
+   "news": 0,
+   "pace": 3.001,
+   "price": 3.9,
+   "r20": -0.13318,
+   "r5": -0.13708,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMPY",
+   "z": 0.468
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.01277,
+   "news": 0,
+   "pace": 12.001,
+   "price": 3.965,
+   "r20": -0.33077,
+   "r5": -0.0188,
+   "short": true,
+   "src": "iex",
+   "symbol": "CRBP",
+   "z": 0.34
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5122.7827,
+  "PICK-MAIN-coin": 5018.1133,
+  "PICK-PENNY": 489.1267,
+  "PICK-PENNY-coin": 490.6506
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 62,
+  "news": 14,
+  "volume": 161
+ },
+ "flagged": 194,
+ "headline_counts": {
+  "BVS": 3,
+  "DT": 3,
+  "GPK": 3,
+  "IBTA": 3,
+  "MRBK": 1,
+  "TNC": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "1e5b0c03f2285147ea19a7e8f3d7bd620c58f255d487cfdbc7d93fdda2c1c1e6",
+ "price_sources": {
+  "delayed_sip": 202,
+  "iex": 3199
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-03T10:50",
+ "t": "2026-11-03T15:50:20.975420+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T15:50:32.878499Z"
+}
