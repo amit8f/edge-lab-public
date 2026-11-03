@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 14:38 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 14:48 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8450.18 | -15.50% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
-| Coin flip on C's picks | $9377.93 | -6.22% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
-| C's prompt on Groq (K7) | $7771.02 | -22.29% | 301 | 69 | long CIFR, short DT, long FN, long HWM, long WULF |
-| Coin flip on C-groq's picks | $9214.56 | -7.85% | 301 | 149 | short CIFR, short DT, long FN, short HWM, long WULF |
-| C-groq's answers, acted on once a day (K8) | $10267.94 | +2.68% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
-| Coin flip on C-groq-slow's picks | $10064.81 | +0.65% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
-| C's answers, acted on once a day (K8) | $10286.92 | +2.87% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
-| Coin flip on C-slow's picks | $10238.46 | +2.38% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
-| Just hold SPY | $9831.79 | -1.68% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8453.70 | -15.46% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
+| Coin flip on C's picks | $9377.69 | -6.22% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
+| C's prompt on Groq (K7) | $7781.04 | -22.19% | 301 | 69 | long CIFR, short DT, long FN, long HWM, long WULF |
+| Coin flip on C-groq's picks | $9222.62 | -7.77% | 301 | 149 | short CIFR, short DT, long FN, short HWM, long WULF |
+| C-groq's answers, acted on once a day (K8) | $10276.96 | +2.77% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
+| Coin flip on C-groq-slow's picks | $10067.49 | +0.67% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
+| C's answers, acted on once a day (K8) | $10298.76 | +2.99% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
+| Coin flip on C-slow's picks | $10239.14 | +2.39% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
+| Just hold SPY | $9831.53 | -1.68% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-03 14:48 | long BE, long CIFR, long HWM, long REGN, long WULF | none | Maintaining all current profitable long positions due to continued positive momentum and favorable news where applicable. |
 | 2026-11-03 14:38 | long BE, long CIFR, long HWM, long REGN, long WULF | none | Maintaining all existing long positions as they are profitable or near breakeven, showing strong daily momentum, and/or have positive analyst sentiment. |
 | 2026-11-03 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 14:17 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 14:3
 | 2026-11-02 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 11:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 11:17 | long MPWR, long REGN, long RKT, long TEM, long UAL | none | Maintaining all existing long positions (MPWR, REGN, RKT, TEM, UAL) due to continued strong daily performance and positive momentum, with several showing significant breakouts in the last hour. |
