@@ -1,0 +1,288 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "ea96225dfbfba5aadc05d82f4c260a1927c2be0f04d9330121514eff60ceb8ec",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "f2ab72f27a4fc46a7dacff3e45230d89f335832f51b3cdf92962ba4074495676",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "RYTM",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "RVTY",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "SYY",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "FISV",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "RZAI",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "MSA",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "PHG",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "TE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IAUX",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PROK",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "e383c0dff6e928f282bd7a1727c7d90421783e1e9063c88e3cae52ff68327ed5",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.11152,
+   "news": 0,
+   "pace": 26.378,
+   "price": 83.02,
+   "r20": 0.01071,
+   "r5": 0.04437,
+   "short": true,
+   "src": "iex",
+   "symbol": "RYTM",
+   "z": -6.203
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.1219,
+   "news": 0,
+   "pace": 4.266,
+   "price": 170.08,
+   "r20": -0.03618,
+   "r5": -0.0548,
+   "short": true,
+   "src": "iex",
+   "symbol": "RVTY",
+   "z": 5.609
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.06545,
+   "news": 0,
+   "pace": 5.57,
+   "price": 76.39,
+   "r20": 0.07018,
+   "r5": -0.00511,
+   "short": true,
+   "src": "iex",
+   "symbol": "SYY",
+   "z": -4.985
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.10245,
+   "news": 0,
+   "pace": 5.316,
+   "price": 57.25,
+   "r20": 0.12549,
+   "r5": 0.07449,
+   "short": true,
+   "src": "iex",
+   "symbol": "FISV",
+   "z": 4.722
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.3316,
+   "news": 0,
+   "pace": 7.984,
+   "price": 3.85,
+   "r20": -0.55383,
+   "r5": -0.45351,
+   "short": false,
+   "src": "iex",
+   "symbol": "RZAI",
+   "z": -4.284
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.0531,
+   "news": 1,
+   "pace": 1.897,
+   "price": 176.54,
+   "r20": 0.01807,
+   "r5": 0.0212,
+   "short": true,
+   "src": "iex",
+   "symbol": "MSA",
+   "z": -3.802
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.04513,
+   "news": 0,
+   "pace": 3.424,
+   "price": 28.835,
+   "r20": 0.15391,
+   "r5": 0.03839,
+   "short": true,
+   "src": "iex",
+   "symbol": "PHG",
+   "z": 3.693
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11133,
+   "news": 0,
+   "pace": 3.091,
+   "price": 2.845,
+   "r20": -0.30811,
+   "r5": 0.20755,
+   "short": true,
+   "src": "iex",
+   "symbol": "TE",
+   "z": 1.691
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.03261,
+   "news": 0,
+   "pace": 4.717,
+   "price": 1.335,
+   "r20": -0.15337,
+   "r5": -0.06122,
+   "short": true,
+   "src": "iex",
+   "symbol": "IAUX",
+   "z": -0.946
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.04464,
+   "news": 0,
+   "pace": 3.36,
+   "price": 1.07,
+   "r20": -0.29114,
+   "r5": -0.17647,
+   "short": false,
+   "src": "iex",
+   "symbol": "PROK",
+   "z": -0.738
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5122.3927,
+  "PICK-MAIN-coin": 5017.3633,
+  "PICK-PENNY": 489.8697,
+  "PICK-PENNY-coin": 490.0112
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 60,
+  "news": 16,
+  "volume": 166
+ },
+ "flagged": 199,
+ "headline_counts": {
+  "FISV": 3,
+  "IAUX": 1,
+  "MSA": 3,
+  "PHG": 3,
+  "RVTY": 3,
+  "RYTM": 3,
+  "RZAI": 1,
+  "SYY": 3,
+  "TE": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "0c9d053192eca75fb70c1faa698b121f3da449f4e6d271e8b6259968cd5804ff",
+ "price_sources": {
+  "delayed_sip": 228,
+  "iex": 3173
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-03T10:45",
+ "t": "2026-11-03T15:45:20.968820+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T15:45:33.300765Z"
+}
