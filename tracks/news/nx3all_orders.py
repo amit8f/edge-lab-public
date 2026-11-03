@@ -6,7 +6,8 @@ Entry: a market day order at the decision, in whole shares at the IEX price the 
 decision time: 5% of the $5,000 book at confidence |e|/cut = 1 rising to 10% at 2 or more. The ledger book scales
 the day's sizes down together after the close; an order can't wait for that, so orders are instead skipped once
 the day's sent sizes would pass 100% of the book. Shorts only where the stock was easy to borrow. Exit: a
-market-on-close order on the next session for every position held before that session's own entries.
+market order on the next session, sent 5 minutes before the close (market-on-close orders expired unfilled in Alpaca
+paper on 2026-11-02), for every position held before that session's own entries.
 Nothing is sent without the ALPACA_NX3ALL_* secrets, and only to the paper API (core.alpaca.post).
 """
 import json
@@ -70,7 +71,8 @@ def send_entries(day, d, br):
 
 
 def send_exits(day, d, br):
-    """Once per session: market-on-close orders closing what the account held before today's entries."""
+    """Once per session, sent 5 minutes before the close: market day orders closing what the account held before today's
+    entries (market-on-close orders expired unfilled in Alpaca paper on 2026-11-02, so they are not used)."""
     if "all_exits" in day.ctx:
         return
     today = {}
@@ -84,7 +86,7 @@ def send_exits(day, d, br):
         if q == 0:
             continue
         body = {"symbol": sym, "qty": str(abs(q)), "side": "sell" if q > 0 else "buy", "type": "market",
-                "time_in_force": "cls", "client_order_id": f"nx3all-{pd.Timestamp(d):%Y%m%d}-{sym}-out"}
+                "time_in_force": "day", "client_order_id": f"nx3all-{pd.Timestamp(d):%Y%m%d}-{sym}-out"}
         code, js = br.order(body)
         out.append({"symbol": sym, "body": body, "http": code, "status": js.get("status"),
                     "message": None if code < 300 else js.get("message")})

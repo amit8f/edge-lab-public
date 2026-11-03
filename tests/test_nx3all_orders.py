@@ -63,7 +63,7 @@ def test_exits_close_only_what_was_held_before_today_and_fills_log_once(tmp_path
     A.send_exits(day, D, br)
     A.send_exits(day, D, br)
     assert [(b["symbol"], b["side"], b["qty"], b["time_in_force"]) for b in br.sent] == [
-        ("AAA", "sell", "4", "cls"), ("OLD", "buy", "3", "cls")]
+        ("AAA", "sell", "4", "day"), ("OLD", "buy", "3", "day")]
     assert A.log_day(tmp_path, day, D, br) is not None and A.log_day(tmp_path, day, D, br) is None
     rec = json.loads((tmp_path / Ledger(tmp_path).entry("nx3all_orders", "2026-11-02")["file"]).read_text())
     assert rec["account"] == "EL-NX3ALL" and len(rec["orders"]) == 3

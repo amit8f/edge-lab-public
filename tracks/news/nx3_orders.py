@@ -5,7 +5,8 @@ unchanged (the ledger book minus its control); the account shows real fills, cos
 Entry: a market day order at the decision (training enters at the first minute bar after t + 1 minute), $500
 a trade (nx1_study.NOTIONAL) in whole shares at the IEX price the scorer read. Exit: a market-on-close order
 on the next session (training exits at the next close), sent once each session for every position the
-account held before that session's own entries. Nothing is sent without the ALPACA_NX3_* secrets, and only to
+account held before that session's own entries. Market-on-close orders expired unfilled in Alpaca paper on
+2026-11-02, so the exit is a market day order sent 5 minutes before the close. Nothing is sent without the ALPACA_NX3_* secrets, and only to
 the paper API (core.alpaca.post).
 """
 import json
@@ -69,7 +70,8 @@ def send_entries(day, d, br):
 
 
 def send_exits(day, d, br):
-    """Once per session: market-on-close orders closing what the account held before today's entries."""
+    """Once per session, sent 5 minutes before the close: market day orders closing what the account held before today's
+    entries (market-on-close orders expired unfilled in Alpaca paper on 2026-11-02, so they are not used)."""
     if "exits" in day.ctx:
         return
     today = {}
@@ -83,7 +85,7 @@ def send_exits(day, d, br):
         if q == 0:
             continue
         body = {"symbol": sym, "qty": str(abs(q)), "side": "sell" if q > 0 else "buy", "type": "market",
-                "time_in_force": "cls", "client_order_id": f"nx3-{pd.Timestamp(d):%Y%m%d}-{sym}-out"}
+                "time_in_force": "day", "client_order_id": f"nx3-{pd.Timestamp(d):%Y%m%d}-{sym}-out"}
         code, js = br.order(body)
         out.append({"symbol": sym, "body": body, "http": code, "status": js.get("status"),
                     "message": None if code < 300 else js.get("message")})

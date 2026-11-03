@@ -54,7 +54,7 @@ def test_exits_close_only_what_was_held_before_today():
     O.send_exits(day, D, br)
     O.send_exits(day, D, br)
     assert [(b["symbol"], b["side"], b["qty"], b["time_in_force"]) for b in br.sent] == [
-        ("AAA", "sell", "30", "cls"), ("OLD", "buy", "12", "cls")]
+        ("AAA", "sell", "30", "day"), ("OLD", "buy", "12", "day")]
 
 
 def test_log_day_writes_fills_once(tmp_path):
