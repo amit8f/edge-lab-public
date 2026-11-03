@@ -1,0 +1,285 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "3651bd5a20a80cdc77a3134092aa1b80391ff26217c5f856aae50e3ae8ef61a9",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "812df4064d431a3642084ba89655b70627c906981a90d1b31f4c0a530fadc6df",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "IBTA",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "MRBK",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "other",
+     "symbol": "DT",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "GPK",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BVS",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "EVER",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "XTND",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CYPH",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NVA",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "NANO",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "4d7c7a7d624d9352585a3863c92e452dc417691bf5d1d0665743af190b94c791",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.30837,
+   "news": 0,
+   "pace": 11.269,
+   "price": 65.51,
+   "r20": 0.21088,
+   "r5": 0.02855,
+   "short": true,
+   "src": "iex",
+   "symbol": "IBTA",
+   "z": 10.188
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.0517,
+   "news": 0,
+   "pace": 12.444,
+   "price": 17.61,
+   "r20": -0.01642,
+   "r5": -0.00482,
+   "short": true,
+   "src": "iex",
+   "symbol": "MRBK",
+   "z": -6.611
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14167,
+   "news": 0,
+   "pace": 6.547,
+   "price": 47.32,
+   "r20": -0.08437,
+   "r5": -0.14101,
+   "short": true,
+   "src": "iex",
+   "symbol": "DT",
+   "z": -5.759
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.15702,
+   "news": 0,
+   "pace": 3.183,
+   "price": 10.795,
+   "r20": 0.08362,
+   "r5": 0.06507,
+   "short": true,
+   "src": "iex",
+   "symbol": "GPK",
+   "z": 5.478
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.15741,
+   "news": 0,
+   "pace": 13.914,
+   "price": 11.08,
+   "r20": -0.02737,
+   "r5": -0.10666,
+   "short": true,
+   "src": "iex",
+   "symbol": "BVS",
+   "z": -4.839
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.13453,
+   "news": 0,
+   "pace": 3.199,
+   "price": 27.535,
+   "r20": 0.25039,
+   "r5": 0.08542,
+   "short": true,
+   "src": "iex",
+   "symbol": "EVER",
+   "z": 3.722
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06923,
+   "news": 0,
+   "pace": 4.046,
+   "price": 1.39,
+   "r20": -0.55782,
+   "r5": -0.40367,
+   "short": false,
+   "src": "iex",
+   "symbol": "XTND",
+   "z": 0.805
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07415,
+   "news": 0,
+   "pace": 5.409,
+   "price": 2.535,
+   "r20": -0.25552,
+   "r5": -0.16608,
+   "short": true,
+   "src": "iex",
+   "symbol": "CYPH",
+   "z": 0.704
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.05901,
+   "news": 0,
+   "pace": 6.374,
+   "price": 4.935,
+   "r20": -0.23102,
+   "r5": 0.56376,
+   "short": true,
+   "src": "iex",
+   "symbol": "NVA",
+   "z": 0.699
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06792,
+   "news": 0,
+   "pace": 3.321,
+   "price": 3.225,
+   "r20": -0.67664,
+   "r5": -0.308,
+   "short": false,
+   "src": "iex",
+   "symbol": "NANO",
+   "z": -0.466
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5131.8927,
+  "PICK-MAIN-coin": 5018.5133,
+  "PICK-PENNY": 489.1673,
+  "PICK-PENNY-coin": 490.4069
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 58,
+  "news": 11,
+  "volume": 256
+ },
+ "flagged": 277,
+ "headline_counts": {
+  "BVS": 3,
+  "DT": 3,
+  "EVER": 3,
+  "GPK": 3,
+  "IBTA": 3,
+  "MRBK": 1,
+  "NANO": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "5c32e2dc92e4ea6c9504b6375f24ba46f164e1151f09b6584c6366faf8a71d2b",
+ "price_sources": {
+  "delayed_sip": 308,
+  "iex": 3093
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-03T10:20",
+ "t": "2026-11-03T15:20:20.863493+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T15:20:30.924307Z"
+}
