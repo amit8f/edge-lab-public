@@ -1,0 +1,303 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "cd977e70519250ccff0174177c22f1fa99cf271b36766e14bebf7d080ea662fc",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "da5dae783dd006195346eb55af0648e7b85bda823bb58b780cf9571d6693f7e5",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "ACB",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ADEA",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CMCO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "JAZZ",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "AEHR",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "APTV",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "OFRM",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "INFU",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "EVER",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "ALSN",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "QuotaExhausted: groq: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kgtcdj5pemts138hkmtzder9` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 1967",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "e94dc37af0a1f62ac387deb2e4768253b1d679c3b68a3b005f9e28ef7d7fe8a7",
+   "quota": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.20498,
+   "news": 0,
+   "pace": 28.72,
+   "price": 5.085,
+   "r20": -0.05381,
+   "r5": 0.08205,
+   "short": false,
+   "src": "iex",
+   "symbol": "ACB",
+   "z": 7.732
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16352,
+   "news": 0,
+   "pace": 6.149,
+   "price": 17.29,
+   "r20": -0.20713,
+   "r5": -0.03546,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADEA",
+   "z": -4.885
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.15324,
+   "news": 0,
+   "pace": 3.752,
+   "price": 18.175,
+   "r20": -0.06856,
+   "r5": 0.12251,
+   "short": true,
+   "src": "iex",
+   "symbol": "CMCO",
+   "z": 4.474
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.08613,
+   "news": 0,
+   "pace": 3.077,
+   "price": 232.91,
+   "r20": -0.09151,
+   "r5": 0.04249,
+   "short": true,
+   "src": "iex",
+   "symbol": "JAZZ",
+   "z": 4.044
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.25005,
+   "news": 0,
+   "pace": 7.991,
+   "price": 64.34,
+   "r20": -0.50699,
+   "r5": -0.09064,
+   "short": true,
+   "src": "iex",
+   "symbol": "AEHR",
+   "z": 3.411
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.04409,
+   "news": 0,
+   "pace": 3.699,
+   "price": 42.28,
+   "r20": 0.00775,
+   "r5": 0.01422,
+   "short": true,
+   "src": "iex",
+   "symbol": "APTV",
+   "z": -3.091
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.02278,
+   "news": 1,
+   "pace": 12.373,
+   "price": 9.225,
+   "r20": -0.42121,
+   "r5": -0.40666,
+   "short": true,
+   "src": "iex",
+   "symbol": "OFRM",
+   "z": -0.216
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.0802,
+   "news": 0,
+   "pace": 2.256,
+   "price": 12.73,
+   "r20": 0.02595,
+   "r5": 0.00217,
+   "short": true,
+   "src": "iex",
+   "symbol": "INFU",
+   "z": -4.464
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.16255,
+   "news": 0,
+   "pace": 2.758,
+   "price": 28.215,
+   "r20": 0.25039,
+   "r5": 0.08542,
+   "short": true,
+   "src": "iex",
+   "symbol": "EVER",
+   "z": 4.441
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08316,
+   "news": 0,
+   "pace": 2.36,
+   "price": 122.495,
+   "r20": -0.02298,
+   "r5": 0.05504,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALSN",
+   "z": 4.387
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5120.2777,
+  "PICK-MAIN-coin": 5014.1283,
+  "PICK-PENNY": 490.0823,
+  "PICK-PENNY-coin": 489.0724
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-03T16:00:20.416873+00:00",
+   "entry": 2.875,
+   "exit": 3.505,
+   "net": -0.7164,
+   "opened": "2026-11-02T16:05:21.119884+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "LENZ",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 66,
+  "news": 18,
+  "volume": 144
+ },
+ "flagged": 184,
+ "headline_counts": {
+  "ACB": 2,
+  "ADEA": 3,
+  "AEHR": 3,
+  "ALSN": 3,
+  "APTV": 3,
+  "CMCO": 3,
+  "EVER": 3,
+  "INFU": 1,
+  "JAZZ": 3,
+  "OFRM": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "66cd0f96e65d1a8edfa70c346620e3124774ef3b74727601fa6b2601fc176b05",
+ "price_sources": {
+  "delayed_sip": 207,
+  "iex": 3194
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-03T11:00",
+ "t": "2026-11-03T16:00:20.416873+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T16:00:23.675918Z"
+}
