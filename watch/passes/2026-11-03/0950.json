@@ -1,0 +1,283 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "b4de4addf24d1a1631735d4f0530cea9b7dffa5daccd6089b5fd6de403a7e409",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "53f3b5d720a6eef929df26c7c756505fb776a3f03131ceb04560eb06215871a7",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "INSP",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "JAZZ",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "ACB",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "HLF",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "OTTR",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ADEA",
+     "tone": -1
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "GLRE",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "CMCO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "MTUS",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "FMAO",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "bf26ce98e9756efa882a1d7b187ac1c6ad32638393c48b1c2f90107933f8922e",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.09686,
+   "news": 1,
+   "pace": null,
+   "price": 60.7,
+   "r20": -0.05004,
+   "r5": -0.05351,
+   "short": true,
+   "src": "iex",
+   "symbol": "INSP",
+   "z": -4.336
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.07592,
+   "news": 1,
+   "pace": null,
+   "price": 230.72,
+   "r20": -0.09151,
+   "r5": 0.04249,
+   "short": true,
+   "src": "iex",
+   "symbol": "JAZZ",
+   "z": 3.581
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.16351,
+   "news": 0,
+   "pace": null,
+   "price": 4.91,
+   "r20": -0.05381,
+   "r5": 0.08205,
+   "short": false,
+   "src": "iex",
+   "symbol": "ACB",
+   "z": 6.28
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11483,
+   "news": 0,
+   "pace": null,
+   "price": 14.805,
+   "r20": 0.0624,
+   "r5": 0.0,
+   "short": true,
+   "src": "iex",
+   "symbol": "HLF",
+   "z": 4.701
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.03825,
+   "news": 0,
+   "pace": null,
+   "price": 88.01,
+   "r20": 0.03495,
+   "r5": 0.01599,
+   "short": true,
+   "src": "iex",
+   "symbol": "OTTR",
+   "z": -4.676
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15385,
+   "news": 0,
+   "pace": null,
+   "price": 17.49,
+   "r20": -0.20713,
+   "r5": -0.03546,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADEA",
+   "z": -4.57
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.06296,
+   "news": 0,
+   "pace": null,
+   "price": 16.04,
+   "r20": 0.02374,
+   "r5": 0.00466,
+   "short": false,
+   "src": "iex",
+   "symbol": "GLRE",
+   "z": 4.539
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.14721,
+   "news": 0,
+   "pace": null,
+   "price": 18.08,
+   "r20": -0.06856,
+   "r5": 0.12251,
+   "short": true,
+   "src": "iex",
+   "symbol": "CMCO",
+   "z": 4.31
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07505,
+   "news": 0,
+   "pace": null,
+   "price": 19.72,
+   "r20": 0.01331,
+   "r5": 0.04612,
+   "short": true,
+   "src": "iex",
+   "symbol": "MTUS",
+   "z": -4.251
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.04881,
+   "news": 0,
+   "pace": null,
+   "price": 35.08,
+   "r20": 0.05011,
+   "r5": 0.0019,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "FMAO",
+   "z": -4.044
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5113.9155,
+  "PICK-MAIN-coin": 5022.6799,
+  "PICK-PENNY": 490.7967,
+  "PICK-PENNY-coin": 491.8507
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 49,
+  "news": 22,
+  "volume": 0
+ },
+ "flagged": 67,
+ "headline_counts": {
+  "ACB": 2,
+  "ADEA": 3,
+  "CMCO": 3,
+  "GLRE": 3,
+  "HLF": 3,
+  "INSP": 3,
+  "JAZZ": 3,
+  "MTUS": 3,
+  "OTTR": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "ec2953a16868bef543f4b03a473b2ab3964c07f3ffe4e00446cdcbd62d55cce1",
+ "price_sources": {
+  "delayed_sip": 594,
+  "iex": 2801
+ },
+ "priced": 3395,
+ "risk": [],
+ "slot": "2026-11-03T09:50",
+ "t": "2026-11-03T14:50:21.349270+00:00",
+ "universe": 3398,
+ "written_utc": "2026-11-03T14:50:32.258446Z"
+}
