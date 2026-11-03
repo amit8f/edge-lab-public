@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 13:58 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 14:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8468.32 | -15.32% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
-| Coin flip on C's picks | $9377.28 | -6.23% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
-| C's prompt on Groq (K7) | $7807.43 | -21.93% | 300 | 69 | long CIFR, long FN, long HWM, long VRT, long WULF |
-| Coin flip on C-groq's picks | $9263.52 | -7.36% | 300 | 149 | short CIFR, long FN, short HWM, long VRT, long WULF |
-| C-groq's answers, acted on once a day (K8) | $10280.35 | +2.80% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
-| Coin flip on C-groq-slow's picks | $10040.81 | +0.41% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
-| C's answers, acted on once a day (K8) | $10320.64 | +3.21% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
-| Coin flip on C-slow's picks | $10214.94 | +2.15% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
-| Just hold SPY | $9849.37 | -1.51% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8448.85 | -15.51% | 125 | 30 | long BE, long CIFR, long HWM, long REGN, long WULF |
+| Coin flip on C's picks | $9384.27 | -6.16% | 124 | 61 | long BE, short CIFR, short HWM, long REGN, short WULF |
+| C's prompt on Groq (K7) | $7789.66 | -22.10% | 300 | 69 | long CIFR, long FN, long HWM, long VRT, long WULF |
+| Coin flip on C-groq's picks | $9249.56 | -7.50% | 300 | 149 | short CIFR, long FN, short HWM, long VRT, long WULF |
+| C-groq's answers, acted on once a day (K8) | $10283.17 | +2.83% | 7 | 5 | long CRH, long HWM, short LITE, long REGN, long RKT |
+| Coin flip on C-groq-slow's picks | $10051.01 | +0.51% | 7 | 5 | short CRH, short HWM, short LITE, short REGN, short RKT |
+| C's answers, acted on once a day (K8) | $10313.77 | +3.14% | 5 | 3 | long CRH, long HWM, short LITE, long REGN, long TEM |
+| Coin flip on C-slow's picks | $10235.02 | +2.35% | 5 | 4 | long CRH, short HWM, short LITE, long REGN, short TEM |
+| Just hold SPY | $9844.35 | -1.56% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-03 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 13:58 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 13:37 | long BE, long CIFR, long HWM, long REGN, long WULF | none | All existing profitable positions are maintained due to strong daily performance and positive momentum, with no new positions added at this time. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 13:5
 | 2026-11-02 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 10:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 10:37 | long MPWR, long REGN, long RKT, long TEM, long UAL | none | Maintaining all existing long positions (MPWR, REGN, RKT, TEM, UAL) due to continued strong positive momentum and favorable news where applicable, with all positions showing upward trends in hourly closes. |
