@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8034.13 | -19.66% | 139 | 37 | short CIFR, short DDOG, short IREN, long MRNA, long XYZ |
-| Coin flip on C's picks | $9733.88 | -2.66% | 138 | 69 | long CIFR, long DDOG, long IREN, long MRNA, short XYZ |
-| C's prompt on Groq (K7) | $7222.94 | -27.77% | 318 | 70 | long BKNG, short CIFR, long HCA, long MRNA, long XYZ |
-| Coin flip on C-groq's picks | $9498.02 | -5.02% | 318 | 159 | short BKNG, long CIFR, long HCA, long MRNA, long XYZ |
-| C-groq's answers, acted on once a day (K8) | $9358.00 | -6.42% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
-| Coin flip on C-groq-slow's picks | $10358.11 | +3.58% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
-| C's answers, acted on once a day (K8) | $9486.00 | -5.14% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
-| Coin flip on C-slow's picks | $10654.15 | +6.54% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
-| Just hold SPY | $9983.37 | -0.17% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8044.31 | -19.56% | 140 | 37 | short CIFR, short DDOG, long HCA, short IREN, long MRNA |
+| Coin flip on C's picks | $9735.25 | -2.65% | 139 | 70 | long CIFR, long DDOG, short HCA, long IREN, long MRNA |
+| C's prompt on Groq (K7) | $7232.02 | -27.68% | 318 | 70 | long BKNG, short CIFR, long HCA, long MRNA, long XYZ |
+| Coin flip on C-groq's picks | $9514.09 | -4.86% | 318 | 159 | short BKNG, long CIFR, long HCA, long MRNA, long XYZ |
+| C-groq's answers, acted on once a day (K8) | $9357.16 | -6.43% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
+| Coin flip on C-groq-slow's picks | $10358.73 | +3.59% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
+| C's answers, acted on once a day (K8) | $9511.50 | -4.89% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
+| Coin flip on C-slow's picks | $10657.11 | +6.57% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
+| Just hold SPY | $9984.15 | -0.16% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-04 15:59 | short CIFR, short DDOG, long HCA, short IREN, long MRNA | sold XYZ @ $87.60; bought HCA @ $510.94 | Maintained shorts on CIFR, DDOG, and IREN due to continued bearish trends and negative news. Kept MRNA long on strong positive news and momentum. Sold XYZ due to weakening momentum and initiated a new long position in HCA based on strong daily performance and positive trend. |
 | 2026-11-04 15:57 | short CIFR, short DDOG, short IREN, long MRNA, long XYZ | sold HCA @ $509.90; sold CIFR @ $6.49 | Maintaining short positions in DDOG and IREN due to continued downtrends and negative news. Keeping long MRNA and XYZ for strong positive momentum and favorable news. Initiating a new short position in CIFR due to significant price drop and negative analyst sentiment. |
 | 2026-11-04 15:47 | short DDOG, long HCA, short IREN, long MRNA, long XYZ | none | Maintaining all existing positions due to strong trends and supporting news, with profitable positions being kept and slightly underwater positions showing strong underlying momentum. |
 | 2026-11-04 15:37 | short DDOG, long HCA, short IREN, long MRNA, long XYZ | bought CVS @ $80.94; bought DT @ $47.03; sold IREN @ $21.87; bought XYZ @ $88.34 | Closed CVS and DT shorts due to weakening momentum or positive news, and opened a new short on IREN due to strong negative news and price action. Maintained profitable long positions in HCA and MRNA, and added a new long in XYZ based on strong positive momentum and analyst sentiment. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 15:5
 | 2026-11-02 15:17 | long CRH, long HWM, long LITE, long REGN, long TEM | bought LITE @ $695.19; bought LITE @ $695.19 | Closed the LITE short position due to acquisition news at a much higher price, reversing to a long position to capture the arbitrage opportunity. Maintained all other strong performing long positions. |
 | 2026-11-02 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 14:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 14:47 | long CRH, long HWM, short LITE, long REGN, long TEM | sold FSLR @ $181.73; sold RKT @ $13.73; bought HWM @ $212.38; sold LITE @ $685.29 | Maintaining profitable long positions in CRH, REGN, and TEM due to strong momentum and positive news. Initiating a new long in HWM based on strong daily and short-term performance. Initiating a short in LITE due to significant negative momentum and the confirmed acquisition by MRVL at a higher impli |
