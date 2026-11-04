@@ -1,0 +1,864 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "95877e110bfeb66822d4d23e94af03d179fa8db84add3cea8ecc6e985492b9b1",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "bbb9e0998290b1b7b96067717edbbe1393e01b283e537f09d5652fc8b8877f57",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "CAR",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "guidance",
+     "symbol": "IFF",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "W",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "PFGC",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "TRNS",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "ANDE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "TPL",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "KAI",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "UFPT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "SABR",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "52adcf88d86c4ccc2a25a82217d03fbc587864e03f19bebdf67457f5b6e86287",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp intraday gain, likely pullback",
+     "stop_pct": 12.0,
+     "symbol": "CAR"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Oversold on negative move with positive guidance",
+     "stop_pct": 10.0,
+     "symbol": "IFF"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings news supports momentum",
+     "stop_pct": 10.0,
+     "symbol": "W"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat and momentum",
+     "stop_pct": 10.0,
+     "symbol": "PFGC"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Extreme upside move suggests continuation",
+     "stop_pct": 12.0,
+     "symbol": "TRNS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Acquisition deal creates upside despite price drop",
+     "stop_pct": 10.0,
+     "symbol": "ANDE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large decline with no catalyst, likely further weakness",
+     "stop_pct": 12.0,
+     "symbol": "TPL"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Guidance upgrade fuels momentum",
+     "stop_pct": 10.0,
+     "symbol": "KAI"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat drives strong upside",
+     "stop_pct": 10.0,
+     "symbol": "UFPT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Momentum in penny stock with solid daily gain",
+     "stop_pct": 20.0,
+     "symbol": "SABR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "WEN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ABOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CHRS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CYH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DNUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "GERN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "GRAB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "HLLY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "IMSR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "KDK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "KOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "LUMN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "MDXG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "MPT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NAUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NXH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "PACK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "PRME"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "RCAT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "STLA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TOYO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "UNCY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "UNIT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "VNDA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "VRRM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "XRX"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "cad781b152219bcacedd38f1ddd4e1478afe059c4ceb3a4b30de86291475d876"
+  },
+  "reviewer": {
+   "answer_sha256": "f72c7bc3e4d4605d3c7091318fb1d76d9662d8623c3f3ebe41bab1d9a4900c9b",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "6adc2de5cf1177b221b4be9ddce77ae093111f80a68c5745102ee8839c2d1144",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Exhaustion gap up with +14.9% move and pending news supports fading.",
+     "symbol": "CAR"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp -6.5% decline with positive tone analyst guidance presents contrarian long risk, fading the drop.",
+     "symbol": "IFF"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong earnings momentum with +9.8% gain and positive analyst tone.",
+     "symbol": "W"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid earnings breakout of +11.7% with strong positive sentiment.",
+     "symbol": "PFGC"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong earnings move up +18.7% with high confidence.",
+     "symbol": "TRNS"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant dip on deal news offers potential oversold bounce.",
+     "symbol": "ANDE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy -10.0% drop supports continuing downward momentum.",
+     "symbol": "TPL"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive guidance and +11.5% strength confirm strong uptrend.",
+     "symbol": "KAI"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid earnings report backing the +11.0% price surge.",
+     "symbol": "UFPT"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock volatility makes the setup too uncertain despite positive day.",
+     "symbol": "SABR"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.14949,
+   "news": 1,
+   "pace": null,
+   "price": 125.685,
+   "r20": -0.02938,
+   "r5": 0.06976,
+   "short": true,
+   "src": "iex",
+   "symbol": "CAR",
+   "z": 4.884
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.06455,
+   "news": 1,
+   "pace": null,
+   "price": 86.23,
+   "r20": 0.09843,
+   "r5": -0.01105,
+   "short": true,
+   "src": "iex",
+   "symbol": "IFF",
+   "z": -4.247
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.09783,
+   "news": 1,
+   "pace": null,
+   "price": 122.21,
+   "r20": 0.05567,
+   "r5": -0.01443,
+   "short": true,
+   "src": "iex",
+   "symbol": "W",
+   "z": 3.382
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11657,
+   "news": 0,
+   "pace": null,
+   "price": 107.76,
+   "r20": 0.02911,
+   "r5": 0.0026,
+   "short": true,
+   "src": "iex",
+   "symbol": "PFGC",
+   "z": 6.329
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.18711,
+   "news": 0,
+   "pace": null,
+   "price": 106.27,
+   "r20": -0.00312,
+   "r5": 0.02519,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRNS",
+   "z": 5.899
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10364,
+   "news": 0,
+   "pace": null,
+   "price": 56.175,
+   "r20": -0.05908,
+   "r5": -0.02078,
+   "short": true,
+   "src": "iex",
+   "symbol": "ANDE",
+   "z": -5.823
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09979,
+   "news": 0,
+   "pace": null,
+   "price": 298.87,
+   "r20": -0.06521,
+   "r5": 0.00475,
+   "short": true,
+   "src": "iex",
+   "symbol": "TPL",
+   "z": -5.674
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11542,
+   "news": 0,
+   "pace": null,
+   "price": 315.43,
+   "r20": 0.07406,
+   "r5": 0.05357,
+   "short": true,
+   "src": "iex",
+   "symbol": "KAI",
+   "z": 5.642
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.10998,
+   "news": 0,
+   "pace": null,
+   "price": 311.15,
+   "r20": -0.07445,
+   "r5": -0.04925,
+   "short": true,
+   "src": "iex",
+   "symbol": "UFPT",
+   "z": 5.593
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.10479,
+   "news": 0,
+   "pace": null,
+   "price": 1.845,
+   "r20": -0.13021,
+   "r5": 0.07051,
+   "short": true,
+   "src": "iex",
+   "symbol": "SABR",
+   "z": 3.05
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5119.1356,
+  "PICK-MAIN-coin": 5078.1317,
+  "PICK-PENNY": 483.9908,
+  "PICK-PENNY-coin": 486.0178
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 171,
+  "news": 19,
+  "volume": 0
+ },
+ "flagged": 186,
+ "headline_counts": {
+  "ANDE": 3,
+  "CAR": 3,
+  "IFF": 3,
+  "KAI": 3,
+  "PFGC": 3,
+  "TRNS": 3,
+  "UFPT": 3,
+  "W": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "34d71d42e580a15849f22cc6b7dfd7dc296464168af8a3c1374fd49f594ab287",
+ "price_sources": {
+  "delayed_sip": 369,
+  "iex": 3030
+ },
+ "priced": 3399,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CAR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IFF"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "W"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PFGC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TRNS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ANDE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TPL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KAI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "UFPT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 13,
+   "skip": "reviewer said none",
+   "symbol": "SABR"
+  }
+ ],
+ "slot": "2026-11-04T10:00",
+ "t": "2026-11-04T15:00:21.017824+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T15:00:44.740852Z"
+}
