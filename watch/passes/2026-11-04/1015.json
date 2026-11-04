@@ -1,0 +1,649 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "8a6aa17bb47ceb5c6dd6c93f850ff3e1868b3cb30c240d56859d7ad08afd37d0",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "19a5662723428e315e627bc8bd91fc8a523175cc6ee574e411c8b733ca338175",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "MDLN",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "AAPL",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "MCY",
+     "tone": 0
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "CPNG",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "SPB",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "LIME",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "STIM",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LCID",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "RWT",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "WOOF",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4d4b6d0f77ef48b419adf51508a2740345387017c37c2d08409e61373da0f9d0",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside, high confidence and volume",
+     "stop_pct": 12.0,
+     "symbol": "MDLN"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone despite price rise",
+     "stop_pct": 0.0,
+     "symbol": "AAPL"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp drop, neutral tone, shortable",
+     "stop_pct": 12.0,
+     "symbol": "MCY"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large gain, positive tone, high volume",
+     "stop_pct": 13.0,
+     "symbol": "CPNG"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive price but negative tone, hold",
+     "stop_pct": 0.0,
+     "symbol": "SPB"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop but not shortable",
+     "stop_pct": 0.0,
+     "symbol": "LIME"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Penny stock surge, positive earnings, shortable",
+     "stop_pct": 20.0,
+     "symbol": "STIM"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong move, neutral tone, shortable not required",
+     "stop_pct": 20.0,
+     "symbol": "LCID"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price decline, negative tone, shortable",
+     "stop_pct": 20.0,
+     "symbol": "RWT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive momentum, shortable, good volume",
+     "stop_pct": 20.0,
+     "symbol": "WOOF"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "WEN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ABOS"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "3d7abfc7db1f39acc908e0654d2d11b1bfd159e87437021c305d2a14f4a9d585"
+  },
+  "reviewer": {
+   "answer_sha256": "a4ae4adbd0b0432717d1ec2201612879bdc8d72397726252dd589fdc134ff863",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "6e6e808a5d468798213459aea42a1672c2c9c40b31e0c1173359da5c91a0ae6d",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum, high volume, and positive earnings tone support the long proposal.",
+     "symbol": "MDLN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant drop today on heavy volume aligns with the short proposal.",
+     "symbol": "MCY"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong breakout with high volume and positive earnings tone justifies going long.",
+     "symbol": "CPNG"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive volume spike and solid intraday gains back the long trade.",
+     "symbol": "STIM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Not shortable and poor medium-term trend makes the long proposal risky despite the spike.",
+     "symbol": "LCID"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weak price action and negative analyst tone support the short proposal.",
+     "symbol": "RWT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive trend continuation and favorable product news support the long trade.",
+     "symbol": "WOOF"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.10942,
+   "news": 0,
+   "pace": 4.011,
+   "price": 37.82,
+   "r20": -0.04107,
+   "r5": 0.05281,
+   "short": true,
+   "src": "iex",
+   "symbol": "MDLN",
+   "z": 5.658
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.06097,
+   "news": 0,
+   "pace": 5.331,
+   "price": 352.135,
+   "r20": -0.00519,
+   "r5": -0.04379,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "AAPL",
+   "z": 5.329
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07263,
+   "news": 0,
+   "pace": 6.192,
+   "price": 95.25,
+   "r20": -0.00282,
+   "r5": 0.00127,
+   "short": true,
+   "src": "iex",
+   "symbol": "MCY",
+   "z": -5.242
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.14281,
+   "news": 0,
+   "pace": 7.245,
+   "price": 17.405,
+   "r20": 0.05617,
+   "r5": 0.0949,
+   "short": true,
+   "src": "iex",
+   "symbol": "CPNG",
+   "z": 5.078
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09811,
+   "news": 0,
+   "pace": 5.397,
+   "price": 93.35,
+   "r20": 0.10806,
+   "r5": 0.05354,
+   "short": true,
+   "src": "iex",
+   "symbol": "SPB",
+   "z": 5.006
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.24686,
+   "news": 0,
+   "pace": 12.457,
+   "price": 19.19,
+   "r20": -0.06803,
+   "r5": 0.06034,
+   "short": false,
+   "src": "iex",
+   "symbol": "LIME",
+   "z": -4.923
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.17478,
+   "news": 0,
+   "pace": 25.47,
+   "price": 2.655,
+   "r20": 0.02262,
+   "r5": 0.03196,
+   "short": true,
+   "src": "iex",
+   "symbol": "STIM",
+   "z": 3.479
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.16225,
+   "news": 0,
+   "pace": 4.619,
+   "price": 3.51,
+   "r20": -0.27404,
+   "r5": -0.08761,
+   "short": false,
+   "src": "iex",
+   "symbol": "LCID",
+   "z": 3.043
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07395,
+   "news": 0,
+   "pace": 8.225,
+   "price": 2.88,
+   "r20": -0.09593,
+   "r5": -0.04012,
+   "short": true,
+   "src": "iex",
+   "symbol": "RWT",
+   "z": -2.559
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07435,
+   "news": 0,
+   "pace": 3.726,
+   "price": 2.89,
+   "r20": 0.21171,
+   "r5": 0.08468,
+   "short": true,
+   "src": "iex",
+   "symbol": "WOOF",
+   "z": 2.489
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5133.5656,
+  "PICK-MAIN-coin": 5076.5067,
+  "PICK-PENNY": 485.9095,
+  "PICK-PENNY-coin": 484.5272
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.0352,
+   "price": 2.655,
+   "qty": 1,
+   "side": 1,
+   "stop": 2.124,
+   "symbol": "STIM"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.0354,
+   "price": 2.655,
+   "qty": 1,
+   "side": -1,
+   "stop": 3.186,
+   "symbol": "STIM"
+  }
+ ],
+ "flag_counts": {
+  "move": 180,
+  "news": 7,
+  "volume": 611
+ },
+ "flagged": 676,
+ "headline_counts": {
+  "AAPL": 3,
+  "CPNG": 3,
+  "LIME": 3,
+  "MCY": 3,
+  "MDLN": 3,
+  "RWT": 3,
+  "SPB": 2,
+  "STIM": 3,
+  "WOOF": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "39231c47e54e9c5a2a407f26db67619d5c510166fdb3d0b8ad55083f3afbf2aa",
+ "price_sources": {
+  "delayed_sip": 323,
+  "iex": 3078
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MDLN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MCY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CPNG"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "STIM"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LCID"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RWT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "WOOF"
+  }
+ ],
+ "slot": "2026-11-04T10:15",
+ "t": "2026-11-04T15:15:21.244260+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T15:16:00.033129Z"
+}
