@@ -1,0 +1,287 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "1c814af71310ca69d8dba2e8f271460922e76f80c622c13f059b612def78adfb",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "66af400efca8e8938f7cf0b7367f8a8b31d3716a95bc586645dc19ef76cd6d2b",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "XYZ",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AUDC",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "HELE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CVS",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ALIT",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "IA",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "SOC",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "RZAI",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "DFDV",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "XMAX",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "754f62f2d13b6e4b0f6cf859a35b08664ca74b647513eba006099d3c17adee82",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.14,
+   "news": 1,
+   "pace": 6.57,
+   "price": 86.64,
+   "r20": -0.00706,
+   "r5": 0.01509,
+   "short": true,
+   "src": "iex",
+   "symbol": "XYZ",
+   "z": 6.743
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.17101,
+   "news": 0,
+   "pace": 7.619,
+   "price": 8.58,
+   "r20": -0.04959,
+   "r5": -0.11538,
+   "short": false,
+   "src": "iex",
+   "symbol": "AUDC",
+   "z": -9.462
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.24661,
+   "news": 0,
+   "pace": 4.965,
+   "price": 36.825,
+   "r20": 0.16667,
+   "r5": 0.01164,
+   "short": true,
+   "src": "iex",
+   "symbol": "HELE",
+   "z": 7.612
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.11902,
+   "news": 0,
+   "pace": 7.924,
+   "price": 80.53,
+   "r20": 0.06526,
+   "r5": 0.00307,
+   "short": true,
+   "src": "iex",
+   "symbol": "CVS",
+   "z": -7.469
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.53063,
+   "news": 0,
+   "pace": 40.895,
+   "price": 15.49,
+   "r20": 0.117,
+   "r5": 0.19622,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALIT",
+   "z": 7.196
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.11821,
+   "news": 0,
+   "pace": 3.09,
+   "price": 18.835,
+   "r20": 0.08042,
+   "r5": 0.04246,
+   "short": true,
+   "src": "iex",
+   "symbol": "IA",
+   "z": -5.981
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13306,
+   "news": 0,
+   "pace": 1.757,
+   "price": 2.15,
+   "r20": -0.30532,
+   "r5": -0.19481,
+   "short": true,
+   "src": "iex",
+   "symbol": "SOC",
+   "z": -3.415
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.29457,
+   "news": 0,
+   "pace": 11.004,
+   "price": 2.73,
+   "r20": -0.67176,
+   "r5": -0.62096,
+   "short": false,
+   "src": "iex",
+   "symbol": "RZAI",
+   "z": -2.832
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.15644,
+   "news": 0,
+   "pace": 4.372,
+   "price": 3.77,
+   "r20": -0.34538,
+   "r5": -0.13067,
+   "short": false,
+   "src": "iex",
+   "symbol": "DFDV",
+   "z": 1.941
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.19428,
+   "news": 0,
+   "pace": 4.403,
+   "price": 5.01,
+   "r20": -0.52112,
+   "r5": -0.50355,
+   "short": false,
+   "src": "iex",
+   "symbol": "XMAX",
+   "z": 1.527
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5184.7356,
+  "PICK-MAIN-coin": 5064.5267,
+  "PICK-PENNY": 483.5496,
+  "PICK-PENNY-coin": 483.2322
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 290,
+  "news": 12,
+  "volume": 338
+ },
+ "flagged": 522,
+ "headline_counts": {
+  "ALIT": 3,
+  "AUDC": 3,
+  "CVS": 3,
+  "DFDV": 1,
+  "HELE": 3,
+  "RZAI": 1,
+  "XMAX": 3,
+  "XYZ": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "96179bcc777c28ceea2cdbeba3ab991047e0cffe9b7936ff122e8d8daa554162",
+ "price_sources": {
+  "delayed_sip": 165,
+  "iex": 3236
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-04T11:00",
+ "t": "2026-11-04T16:00:20.919027+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T16:00:33.953790Z"
+}
