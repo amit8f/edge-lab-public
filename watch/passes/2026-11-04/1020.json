@@ -1,0 +1,393 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "ec6c93f9f986e3fa2744a610bc10dcd074b888c34f25ca433f62c4d1fac62149",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "8314e89ff0715747b661ae0db91b3f2d41f1d038823d6bb6e255cd16688a4354",
+   "views": [
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "HRMY",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "NRIX",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "GIC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "LIVN",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "DUOL",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "TREE",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "VIVO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "VGZ",
+     "tone": 0
+    },
+    {
+     "confidence": 60,
+     "event": "other",
+     "symbol": "PLUG",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "OPEN",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "994363107499fe7204254663779a72f18f8c2080de426594bf58d86b54510330",
+   "decisions": [
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive analyst tone despite sharp drop, confidence meets threshold",
+     "stop_pct": 10.0,
+     "symbol": "HRMY"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Extreme drop with neutral tone, risk too high",
+     "stop_pct": 0.0,
+     "symbol": "NRIX"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside move, neutral tone, confidence sufficient",
+     "stop_pct": 12.0,
+     "symbol": "GIC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "High momentum and strong positive tone",
+     "stop_pct": 12.0,
+     "symbol": "LIVN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large rally with bullish analyst tone",
+     "stop_pct": 13.0,
+     "symbol": "DUOL"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "6a300b8f52d43a3ddd09ff4628b161d8b2609496822e4fb8459ef423a18c27e0"
+  },
+  "reviewer": {
+   "answer_sha256": "6199725ad9dad0d543c60b95c60e903737a46b982f421fac7e4209c2c2677b21",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "a5330e76d5ff2222714f64eaceafe1d8a2e8d3ec6f34b1abea400750f4d84e9f",
+   "reviews": [
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy pre-earnings drop with extreme volume suggests high downside risk.",
+     "symbol": "HRMY"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong earnings momentum with high volume pace supports continuation.",
+     "symbol": "GIC"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone and massive volume expansion validate the breakout.",
+     "symbol": "LIVN"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive earnings surge on huge volume overcomes recent weakness.",
+     "symbol": "DUOL"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.10454,
+   "news": 1,
+   "pace": 5.982,
+   "price": 33.15,
+   "r20": -0.05945,
+   "r5": -0.02451,
+   "short": true,
+   "src": "iex",
+   "symbol": "HRMY",
+   "z": -4.393
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.41731,
+   "news": 0,
+   "pace": 14.012,
+   "price": 15.045,
+   "r20": 0.14248,
+   "r5": -0.03296,
+   "short": true,
+   "src": "iex",
+   "symbol": "NRIX",
+   "z": -19.277
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.14276,
+   "news": 0,
+   "pace": 3.788,
+   "price": 50.43,
+   "r20": 0.01588,
+   "r5": -0.01054,
+   "short": true,
+   "src": "iex",
+   "symbol": "GIC",
+   "z": 12.774
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.16971,
+   "news": 0,
+   "pace": 10.143,
+   "price": 93.46,
+   "r20": 0.06633,
+   "r5": -0.00597,
+   "short": true,
+   "src": "iex",
+   "symbol": "LIVN",
+   "z": 10.132
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.35406,
+   "news": 0,
+   "pace": 19.133,
+   "price": 173.32,
+   "r20": -0.13589,
+   "r5": -0.09419,
+   "short": true,
+   "src": "iex",
+   "symbol": "DUOL",
+   "z": 9.534
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.31451,
+   "news": 0,
+   "pace": 25.746,
+   "price": 37.95,
+   "r20": 0.16883,
+   "r5": 0.10149,
+   "short": true,
+   "src": "iex",
+   "symbol": "TREE",
+   "z": 8.606
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.03125,
+   "news": 1,
+   "pace": 5.935,
+   "price": 1.55,
+   "r20": -0.51368,
+   "r5": -0.39163,
+   "short": false,
+   "src": "iex",
+   "symbol": "VIVO",
+   "z": -0.323
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09959,
+   "news": 0,
+   "pace": 1.937,
+   "price": 2.65,
+   "r20": -0.10075,
+   "r5": -0.07308,
+   "short": true,
+   "src": "iex",
+   "symbol": "VGZ",
+   "z": 3.695
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.10993,
+   "news": 0,
+   "pace": 6.956,
+   "price": 1.565,
+   "r20": -0.24194,
+   "r5": 0.00714,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLUG",
+   "z": 2.921
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.15517,
+   "news": 0,
+   "pace": 5.055,
+   "price": 2.01,
+   "r20": -0.23348,
+   "r5": -0.08901,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPEN",
+   "z": 2.892
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5143.0706,
+  "PICK-MAIN-coin": 5076.5217,
+  "PICK-PENNY": 485.3765,
+  "PICK-PENNY-coin": 484.8704
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 185,
+  "news": 10,
+  "volume": 576
+ },
+ "flagged": 652,
+ "headline_counts": {
+  "DUOL": 3,
+  "GIC": 3,
+  "HRMY": 3,
+  "LIVN": 3,
+  "NRIX": 3,
+  "PLUG": 3,
+  "TREE": 3,
+  "VIVO": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "5331ab0f0f86f0b549602e233e8a112b0c9f483893e744e436cd0d953d49c422",
+ "price_sources": {
+  "delayed_sip": 238,
+  "iex": 3163
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HRMY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GIC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LIVN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DUOL"
+  }
+ ],
+ "slot": "2026-11-04T10:20",
+ "t": "2026-11-04T15:20:20.788478+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T15:20:49.628628Z"
+}
