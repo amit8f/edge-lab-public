@@ -1,0 +1,887 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "32915218f2f8998f0373de43043c541a4a748c0e0d60a9f8e966d695670ae104",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "f96dcf86bb20561c03b96cfe3461c74afcdfbf74a61beac2c425747b24380604",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IOSP",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PCOR",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "SWKS",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "BTU",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BRKR",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "LMB",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TLRY",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ARDX",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "ARRY",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BRBS",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "bde3ab8bf7df1b0fe100a9e785f7937b1ffb44ab7c40882956b8114218f034d3",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst bullish, deep dip",
+     "stop_pct": 10.0,
+     "symbol": "IOSP"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst bullish, strong upside",
+     "stop_pct": 10.0,
+     "symbol": "PCOR"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst bearish, sharp drop",
+     "stop_pct": 10.0,
+     "symbol": "SWKS"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral tone, no clear edge",
+     "stop_pct": 0.0,
+     "symbol": "BTU"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst bullish, large rally",
+     "stop_pct": 10.0,
+     "symbol": "BRKR"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst bullish, strong gain",
+     "stop_pct": 10.0,
+     "symbol": "LMB"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "High confidence, momentum despite no shortability",
+     "stop_pct": 20.0,
+     "symbol": "TLRY"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst bullish, solid upside",
+     "stop_pct": 20.0,
+     "symbol": "ARDX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst bullish, big price surge",
+     "stop_pct": 20.0,
+     "symbol": "ARRY"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal",
+     "stop_pct": 0.0,
+     "symbol": "BRBS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "NPKI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "STNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "UGP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "WEN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "ABEV"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "ABOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "CATX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "CHRS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "CIG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "CYH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "DNUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "GRAB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "IMSR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "KDK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "KOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "LUMN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "MDXG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "MPT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "NAUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "NXH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "PACK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "PRME"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "RCAT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "SID"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "STLA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "TOYO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "UNCY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing long",
+     "stop_pct": 0.0,
+     "symbol": "UNIT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "VNDA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "VRRM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold existing short",
+     "stop_pct": 0.0,
+     "symbol": "XRX"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "53cf2695bc6f19968a5fcf8cc59265147c251fa618c0e8d43f448d0ed87395be"
+  },
+  "reviewer": {
+   "answer_sha256": "06d37f4db0292edddddff2655ff60d5cd06b234edfa2f10d76daed18cc2d490c",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "a163643e5e082c9d73d922efc48569d94efc5764bb6883cd056198bbb9f8b6e3",
+   "reviews": [
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "sharp drop of 8.6% despite positive earnings tone creates high near-term volatility risk.",
+     "symbol": "IOSP"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "strong positive momentum with earnings support and high z-score confirms bullish continuation.",
+     "symbol": "PCOR"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "significant intraday drop with negative analyst tone justifies short proposal.",
+     "symbol": "SWKS"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "massive 17% surge on earnings outweighs prior short-term weakness.",
+     "symbol": "BRKR"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "strong earnings reaction and high z-score support going long.",
+     "symbol": "LMB"
+    },
+    {
+     "confidence": 40,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "penny stock with poor multi-week trend and no shortable shares makes long risky.",
+     "symbol": "TLRY"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "positive earnings tone and good intraday momentum support long position.",
+     "symbol": "ARDX"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "powerful 25% surge on deal news with strong trend continuity.",
+     "symbol": "ARRY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.08606,
+   "news": 1,
+   "pace": null,
+   "price": 90.69,
+   "r20": 0.0069,
+   "r5": -0.00691,
+   "short": true,
+   "src": "iex",
+   "symbol": "IOSP",
+   "z": -9.209
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.12371,
+   "news": 1,
+   "pace": null,
+   "price": 70.985,
+   "r20": 0.16143,
+   "r5": 0.02333,
+   "short": true,
+   "src": "iex",
+   "symbol": "PCOR",
+   "z": 6.26
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.11639,
+   "news": 1,
+   "pace": null,
+   "price": 75.46,
+   "r20": 0.03153,
+   "r5": -0.00094,
+   "short": true,
+   "src": "iex",
+   "symbol": "SWKS",
+   "z": -5.51
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.1365,
+   "news": 2,
+   "pace": null,
+   "price": 17.84,
+   "r20": -0.18757,
+   "r5": -0.11407,
+   "short": true,
+   "src": "iex",
+   "symbol": "BTU",
+   "z": -5.427
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.16965,
+   "news": 1,
+   "pace": null,
+   "price": 66.085,
+   "r20": -0.06612,
+   "r5": -0.06981,
+   "short": true,
+   "src": "iex",
+   "symbol": "BRKR",
+   "z": 4.989
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.15164,
+   "news": 1,
+   "pace": null,
+   "price": 57.49,
+   "r20": -0.02785,
+   "r5": 0.01402,
+   "short": true,
+   "src": "iex",
+   "symbol": "LMB",
+   "z": 4.813
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.1,
+   "news": 0,
+   "pace": null,
+   "price": 2.915,
+   "r20": -0.29894,
+   "r5": -0.04332,
+   "short": false,
+   "src": "iex",
+   "symbol": "TLRY",
+   "z": 3.642
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09406,
+   "news": 0,
+   "pace": null,
+   "price": 3.315,
+   "r20": -0.08459,
+   "r5": 0.01,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARDX",
+   "z": 3.587
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.25216,
+   "news": 0,
+   "pace": null,
+   "price": 5.81,
+   "r20": 0.14286,
+   "r5": 0.36873,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARRY",
+   "z": 3.45
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.0402,
+   "news": 0,
+   "pace": null,
+   "price": 4.14,
+   "r20": 0.01531,
+   "r5": 0.0,
+   "short": true,
+   "src": "iex",
+   "symbol": "BRBS",
+   "z": 3.052
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5126.0527,
+  "PICK-MAIN-coin": 5102.9933,
+  "PICK-PENNY": 487.9629,
+  "PICK-PENNY-coin": 489.0056
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 134,
+  "news": 157,
+  "volume": 0
+ },
+ "flagged": 273,
+ "headline_counts": {
+  "ARDX": 3,
+  "ARRY": 3,
+  "BRKR": 3,
+  "BTU": 3,
+  "IOSP": 3,
+  "LMB": 3,
+  "PCOR": 3,
+  "SWKS": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "47adeae3334af01dbea4f04a1d9710285900ba7844821c7331d9bcc821b6a526",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2769
+ },
+ "priced": 2769,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IOSP"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PCOR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SWKS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BRKR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LMB"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TLRY"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ARDX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ARRY"
+  }
+ ],
+ "slot": "2026-11-04T09:40",
+ "t": "2026-11-04T14:40:20.829092+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T14:41:48.441007Z"
+}
