@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-04T12:40 ET: 510 flagged of 3399, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-04T12:45 ET: 506 flagged of 3399, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $5,196.90 | +3.94% | 21 | 9 | short ADTN, long AXSM, long BKNG, long CRCT, long DMLP, short DRVN, long FLYW, long III, long KRYS, long NWL, long NXT, long OPRT, long SRAD, long TATT, short TRMB, long WEN, long YOU, long ZBH | ok |
-| PICK-MAIN-coin | $5,085.95 | +1.72% | 20 | 6 | long ADTN, long AGBK, short BKNG, long CRCT, long DMLP, long DRVN, short FLYW, long III, long KRYS, long NWL, long NXT, short OPRT, short SRAD, long TATT, long TRMB, long WEN, long XP, short YOU, short ZBH | ok |
-| PICK-PENNY | $485.48 | -2.90% | 15 | 3 | short ABOS, short CERS, short CHRS, short CYH, long DNUT, short GERN, long GRAB, long HLLY, short KOS, long LUMN, short MDXG, short MPT, long NAUT, long NXH, short PACK, short PRME, long RCAT, long SLDP, long STIM, long STLA, short TBLA, long TOYO, short UNCY, long UNIT, short VNDA, short VRRM, short XRX, long ZIP | ok |
-| PICK-PENNY-coin | $489.54 | -2.09% | 14 | 3 | long CERS, short CHRS, long CYH, short DNUT, short GERN, long GRAB, short HLLY, long JBLU, short KOS, long LENZ, short LUMN, long MDXG, short MPT, long NAUT, short NXH, short PACK, long PRME, long RCAT, short SLDP, short STIM, short STLA, short TBLA, long TOYO, long UNCY, short UNIT, long VNDA, long VRRM, short XRX, short ZIP | ok |
+| PICK-MAIN | $5,203.77 | +4.08% | 21 | 9 | short ADTN, long AXSM, long BKNG, long CRCT, long DMLP, short DRVN, long FLYW, long III, long KRYS, long NWL, long NXT, long OPRT, long SRAD, long TATT, short TRMB, long WEN, long YOU, long ZBH | ok |
+| PICK-MAIN-coin | $5,084.34 | +1.69% | 20 | 6 | long ADTN, long AGBK, short BKNG, long CRCT, long DMLP, long DRVN, short FLYW, long III, long KRYS, long NWL, long NXT, short OPRT, short SRAD, long TATT, long TRMB, long WEN, long XP, short YOU, short ZBH | ok |
+| PICK-PENNY | $485.86 | -2.83% | 15 | 3 | short ABOS, short CERS, short CHRS, short CYH, long DNUT, short GERN, long GRAB, long HLLY, short KOS, long LUMN, short MDXG, short MPT, long NAUT, long NXH, short PACK, short PRME, long RCAT, long SLDP, long STIM, long STLA, short TBLA, long TOYO, short UNCY, long UNIT, short VNDA, short VRRM, short XRX, long ZIP | ok |
+| PICK-PENNY-coin | $489.44 | -2.11% | 14 | 3 | long CERS, short CHRS, long CYH, short DNUT, short GERN, long GRAB, short HLLY, long JBLU, short KOS, long LENZ, short LUMN, long MDXG, short MPT, long NAUT, short NXH, short PACK, long PRME, long RCAT, short SLDP, short STIM, short STLA, short TBLA, long TOYO, long UNCY, short UNIT, long VNDA, long VRRM, short XRX, short ZIP | ok |
