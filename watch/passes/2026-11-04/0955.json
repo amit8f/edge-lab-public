@@ -1,0 +1,282 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "43f63d1ed108deb788c065548bc0ecfa1f4535c52ce5cf6c245ce6ad1d6cb34a",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "03efa3c1a82546f591aab24022f79ee46cb66e4570220343f7cde3dcc373fbd1",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GXO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ACEL",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SWK",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "HELE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ALIT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "FSTR",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "MOD",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "CVS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "URGN",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GDRX",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "84e7f14d30e4113be9bc94702a8d9ed5986712fa26884a33d52001337238827d",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.06054,
+   "news": 1,
+   "pace": null,
+   "price": 55.18,
+   "r20": 0.12134,
+   "r5": 0.03977,
+   "short": true,
+   "src": "iex",
+   "symbol": "GXO",
+   "z": 4.903
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11762,
+   "news": 0,
+   "pace": null,
+   "price": 13.255,
+   "r20": 0.0841,
+   "r5": 0.05987,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACEL",
+   "z": 7.124
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.13258,
+   "news": 0,
+   "pace": null,
+   "price": 118.49,
+   "r20": 0.16257,
+   "r5": 0.05336,
+   "short": true,
+   "src": "iex",
+   "symbol": "SWK",
+   "z": 7.105
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.22546,
+   "news": 0,
+   "pace": null,
+   "price": 36.2,
+   "r20": 0.16667,
+   "r5": 0.01164,
+   "short": true,
+   "src": "iex",
+   "symbol": "HELE",
+   "z": 7.021
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.47875,
+   "news": 0,
+   "pace": null,
+   "price": 14.965,
+   "r20": 0.117,
+   "r5": 0.19622,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALIT",
+   "z": 6.614
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09202,
+   "news": 0,
+   "pace": null,
+   "price": 39.815,
+   "r20": 0.00997,
+   "r5": 0.01872,
+   "short": true,
+   "src": "iex",
+   "symbol": "FSTR",
+   "z": 6.545
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.2224,
+   "news": 0,
+   "pace": null,
+   "price": 97.55,
+   "r20": -0.33942,
+   "r5": -0.08102,
+   "short": true,
+   "src": "iex",
+   "symbol": "MOD",
+   "z": -6.247
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09982,
+   "news": 0,
+   "pace": null,
+   "price": 82.285,
+   "r20": 0.06526,
+   "r5": 0.00307,
+   "short": true,
+   "src": "iex",
+   "symbol": "CVS",
+   "z": -6.198
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.17645,
+   "news": 0,
+   "pace": null,
+   "price": 28.33,
+   "r20": -0.16968,
+   "r5": 0.01445,
+   "short": true,
+   "src": "iex",
+   "symbol": "URGN",
+   "z": -6.107
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.0702,
+   "news": 0,
+   "pace": null,
+   "price": 3.735,
+   "r20": 0.06728,
+   "r5": 0.00287,
+   "short": true,
+   "src": "iex",
+   "symbol": "GDRX",
+   "z": 3.002
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5112.3056,
+  "PICK-MAIN-coin": 5054.0467,
+  "PICK-PENNY": 484.9244,
+  "PICK-PENNY-coin": 486.804
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 171,
+  "news": 21,
+  "volume": 0
+ },
+ "flagged": 188,
+ "headline_counts": {
+  "ACEL": 3,
+  "ALIT": 3,
+  "CVS": 3,
+  "FSTR": 3,
+  "GXO": 3,
+  "HELE": 3,
+  "MOD": 3,
+  "SWK": 3,
+  "URGN": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "3edce78f816df9413ec99ee4c4108bcdc771d0083e66f59eeadf183bfe5d3a4a",
+ "price_sources": {
+  "delayed_sip": 416,
+  "iex": 2981
+ },
+ "priced": 3397,
+ "risk": [],
+ "slot": "2026-11-04T09:55",
+ "t": "2026-11-04T14:55:20.655966+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T14:55:30.287351Z"
+}
