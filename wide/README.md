@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 09:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 10:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8156.64 | -18.43% | 130 | 33 | long AMZN, short DT, long FSLR, long MRNA, long REGN |
-| Coin flip on C's picks | $9766.69 | -2.33% | 129 | 63 | short AMZN, short DT, long FSLR, short MRNA, long REGN |
-| C's prompt on Groq (K7) | $7364.87 | -26.35% | 307 | 69 | long BKNG, short DT, long FSLR, long HWM, long MRNA |
-| Coin flip on C-groq's picks | $9454.82 | -5.45% | 307 | 151 | short BKNG, short DT, long FSLR, short HWM, short MRNA |
-| C-groq's answers, acted on once a day (K8) | $9660.43 | -3.40% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
-| Coin flip on C-groq-slow's picks | $10341.90 | +3.42% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
-| C's answers, acted on once a day (K8) | $9752.67 | -2.47% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
-| Coin flip on C-slow's picks | $10665.25 | +6.65% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
-| Just hold SPY | $9977.51 | -0.22% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8110.98 | -18.89% | 130 | 33 | long AMZN, short DT, long FSLR, long MRNA, long REGN |
+| Coin flip on C's picks | $9749.59 | -2.50% | 129 | 63 | short AMZN, short DT, long FSLR, short MRNA, long REGN |
+| C's prompt on Groq (K7) | $7321.71 | -26.78% | 308 | 69 | long BKNG, short CIFR, short DT, long FSLR, long HWM |
+| Coin flip on C-groq's picks | $9482.26 | -5.18% | 308 | 152 | short BKNG, long CIFR, short DT, long FSLR, short HWM |
+| C-groq's answers, acted on once a day (K8) | $9654.58 | -3.45% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
+| Coin flip on C-groq-slow's picks | $10345.14 | +3.45% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
+| C's answers, acted on once a day (K8) | $9723.85 | -2.76% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
+| Coin flip on C-slow's picks | $10645.19 | +6.45% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
+| Just hold SPY | $9994.50 | -0.05% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-04 10:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-04 09:57 | long AMZN, short DT, long FSLR, long MRNA, long REGN | none | Maintaining existing profitable positions in AMZN, DT (short), FSLR, and REGN due to continued strong trends. Re-establishing MRNA long position based on strong positive momentum today and overall positive trends. |
 | 2026-11-04 09:50 | long AMZN, short DT, long FSLR, long MRNA, long REGN | sold CIFR @ $6.89; sold HWM @ $217.26; sold WULF @ $12.30; bought AMZN @ $268.33; bought FSLR @ $207.83; bought MRNA @ $251.99 | Sold CIFR and WULF to cut losses and HWM for better opportunities. Maintained profitable REGN and DT (short). Opened new long positions in FSLR, MRNA, and AMZN, all showing strong positive momentum and favorable news. |
 | 2026-11-03 15:59 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 09:5
 | 2026-11-02 13:37 | long CRH, long MPWR, long REGN, long RKT, long TEM | none | Maintaining all five current long positions due to strong positive momentum today and favorable news for most holdings, indicating continued upward potential. |
 | 2026-11-02 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 13:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 13:07 | no answer, nothing changed | none | unreadable answer |
