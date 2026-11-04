@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 09:50 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8496.51 | -15.03% | 127 | 31 | long CIFR, short DT, long HWM, long REGN, long WULF |
-| Coin flip on C's picks | $9347.54 | -6.52% | 126 | 62 | short CIFR, short DT, short HWM, long REGN, short WULF |
-| C's prompt on Groq (K7) | $7780.72 | -22.19% | 303 | 69 | long BE, long CIFR, short DT, long FN, long HWM |
-| Coin flip on C-groq's picks | $9223.33 | -7.77% | 303 | 150 | long BE, short CIFR, short DT, long FN, short HWM |
-| C-groq's answers, acted on once a day (K8) | $10228.48 | +2.28% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
-| Coin flip on C-groq-slow's picks | $10060.70 | +0.61% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
-| C's answers, acted on once a day (K8) | $10213.57 | +2.14% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
-| Coin flip on C-slow's picks | $10270.81 | +2.71% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
-| Just hold SPY | $9823.97 | -1.76% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8137.89 | -18.62% | 130 | 33 | long AMZN, short DT, long FSLR, long MRNA, long REGN |
+| Coin flip on C's picks | $9729.68 | -2.70% | 129 | 63 | short AMZN, short DT, long FSLR, short MRNA, long REGN |
+| C's prompt on Groq (K7) | $7389.60 | -26.10% | 306 | 69 | short DT, long FSLR, long HWM, long MRNA, long XYZ |
+| Coin flip on C-groq's picks | $9437.70 | -5.62% | 306 | 151 | short DT, long FSLR, short HWM, short MRNA, long XYZ |
+| C-groq's answers, acted on once a day (K8) | $9734.77 | -2.65% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
+| Coin flip on C-groq-slow's picks | $10302.62 | +3.03% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
+| C's answers, acted on once a day (K8) | $9805.83 | -1.94% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
+| Coin flip on C-slow's picks | $10603.77 | +6.04% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
+| Just hold SPY | $9985.97 | -0.14% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-04 09:50 | long AMZN, short DT, long FSLR, long MRNA, long REGN | sold CIFR @ $6.89; sold HWM @ $217.26; sold WULF @ $12.30; bought AMZN @ $268.33; bought FSLR @ $207.83; bought MRNA @ $251.99 | Sold CIFR and WULF to cut losses and HWM for better opportunities. Maintained profitable REGN and DT (short). Opened new long positions in FSLR, MRNA, and AMZN, all showing strong positive momentum and favorable news. |
 | 2026-11-03 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 15:57 | long CIFR, short DT, long HWM, long REGN, long WULF | sold FN @ $361.44; sold DT @ $47.30 | Maintained long positions in CIFR, HWM, REGN, and WULF due to strong momentum and positive trends. Sold FN to reallocate capital. Opened a new short position in DT, capitalizing on its sharp daily decline and negative analyst sentiment. |
 | 2026-11-03 15:48 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-03 15:5
 | 2026-11-02 13:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 12:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 12:47 | long CRH, long MPWR, long REGN, long RKT, long TEM | sold DASH @ $189.21; bought CRH @ $96.05 | Maintaining long positions in TEM, REGN, RKT, and MPWR due to strong positive momentum and favorable news. Selling DASH due to recent weakness and adding CRH long based on strong earnings and positive price action. |
