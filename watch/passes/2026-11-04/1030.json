@@ -1,0 +1,640 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f6320ad1f17181285f6f2abb4a744e30a1b159571a3999245a2e8a74b515f002",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "771046be05d091b073be4e16ecdca41d5261908bb7134d1b9052481989586c2a",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "UFPT",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "PFGC",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "SWK",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "FSTR",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "URGN",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "MOD",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "management",
+     "symbol": "ZIP",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GDRX",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ITRG",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "EOSE",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "ea2cb97971f55dccc8abedc2f00aee059456f514e61dca1ce93fdc88e35fdc71",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong earnings beat, high volume and analyst confidence",
+     "stop_pct": 10.0,
+     "symbol": "UFPT"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, high volume, positive tone",
+     "stop_pct": 10.0,
+     "symbol": "PFGC"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "solid earnings, high volume despite neutral tone",
+     "stop_pct": 10.0,
+     "symbol": "SWK"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, strong volume and analyst confidence",
+     "stop_pct": 10.0,
+     "symbol": "FSTR"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop, negative earnings, shortable",
+     "stop_pct": 12.0,
+     "symbol": "URGN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant decline, high volume, shortable",
+     "stop_pct": 12.0,
+     "symbol": "MOD"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive management news, strong volume",
+     "stop_pct": 20.0,
+     "symbol": "ZIP"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "high confidence, notable volume surge",
+     "stop_pct": 20.0,
+     "symbol": "GDRX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price rally despite weak recent performance, shortable",
+     "stop_pct": 20.0,
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large move, high volume, cannot short",
+     "stop_pct": 20.0,
+     "symbol": "EOSE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "90873b8a95a5572959d786c29925142ffd4a1f5ebce7ba3dc5e5ef0c836e4c2a"
+  },
+  "reviewer": {
+   "answer_sha256": "4991b4c46767666d8f1018c717cce4310f61a02cc15dc68a55ee8e1d09474eb7",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "a0e3023995648d2e1621a68d190fce5053614feb8afdf9bf20e8677d1b5eec3c",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong volume surge and positive earnings tone support the momentum.",
+     "symbol": "UFPT"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive volume and positive earnings reaction justify following the trend.",
+     "symbol": "PFGC"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid breakout on high volume backed by positive intermediate trend.",
+     "symbol": "SWK"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High relative volume and positive earnings tone validate the long proposal.",
+     "symbol": "FSTR"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant downward gap on strong volume with negative earnings tone.",
+     "symbol": "URGN"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe sell-off with extreme volume pace indicates continuing downside pressure.",
+     "symbol": "MOD"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Decent volume and positive management tone favor a long position.",
+     "symbol": "ZIP"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Moderate volume and positive price action support the long setup.",
+     "symbol": "GDRX"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weak multi-week trend despite minor intraday bounce makes short viable.",
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and long proposal carries high volatility risks.",
+     "symbol": "EOSE"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.14639,
+   "news": 0,
+   "pace": 9.654,
+   "price": 321.355,
+   "r20": -0.07445,
+   "r5": -0.04925,
+   "short": true,
+   "src": "iex",
+   "symbol": "UFPT",
+   "z": 7.323
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.13563,
+   "news": 0,
+   "pace": 6.114,
+   "price": 109.6,
+   "r20": 0.02911,
+   "r5": 0.0026,
+   "short": true,
+   "src": "iex",
+   "symbol": "PFGC",
+   "z": 7.301
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.1223,
+   "news": 0,
+   "pace": 7.43,
+   "price": 117.415,
+   "r20": 0.16257,
+   "r5": 0.05336,
+   "short": true,
+   "src": "iex",
+   "symbol": "SWK",
+   "z": 6.585
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09202,
+   "news": 0,
+   "pace": 8.781,
+   "price": 39.815,
+   "r20": 0.00997,
+   "r5": 0.01872,
+   "short": true,
+   "src": "iex",
+   "symbol": "FSTR",
+   "z": 6.545
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.18285,
+   "news": 0,
+   "pace": 5.028,
+   "price": 28.11,
+   "r20": -0.16968,
+   "r5": 0.01445,
+   "short": true,
+   "src": "iex",
+   "symbol": "URGN",
+   "z": -6.352
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.22344,
+   "news": 0,
+   "pace": 14.347,
+   "price": 97.42,
+   "r20": -0.33942,
+   "r5": -0.08102,
+   "short": true,
+   "src": "iex",
+   "symbol": "MOD",
+   "z": -6.28
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.14524,
+   "news": 0,
+   "pace": 1.669,
+   "price": 4.81,
+   "r20": 0.1413,
+   "r5": -0.0583,
+   "short": true,
+   "src": "iex",
+   "symbol": "ZIP",
+   "z": 3.139
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.05301,
+   "news": 0,
+   "pace": 3.448,
+   "price": 3.675,
+   "r20": 0.06728,
+   "r5": 0.00287,
+   "short": true,
+   "src": "iex",
+   "symbol": "GDRX",
+   "z": 2.286
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.0725,
+   "news": 0,
+   "pace": 3.248,
+   "price": 2.145,
+   "r20": -0.24812,
+   "r5": -0.13043,
+   "short": true,
+   "src": "iex",
+   "symbol": "ITRG",
+   "z": 2.084
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.18421,
+   "news": 0,
+   "pace": 4.753,
+   "price": 2.25,
+   "r20": -0.41718,
+   "r5": 0.04396,
+   "short": false,
+   "src": "iex",
+   "symbol": "EOSE",
+   "z": 2.082
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5140.1406,
+  "PICK-MAIN-coin": 5074.4617,
+  "PICK-PENNY": 484.5069,
+  "PICK-PENNY-coin": 482.5745
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.0637,
+   "price": 4.81,
+   "qty": 1,
+   "side": 1,
+   "stop": 3.848,
+   "symbol": "ZIP"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.064,
+   "price": 4.81,
+   "qty": 1,
+   "side": -1,
+   "stop": 5.772,
+   "symbol": "ZIP"
+  }
+ ],
+ "flag_counts": {
+  "move": 194,
+  "news": 9,
+  "volume": 498
+ },
+ "flagged": 589,
+ "headline_counts": {
+  "FSTR": 3,
+  "ITRG": 1,
+  "MOD": 3,
+  "PFGC": 3,
+  "SWK": 3,
+  "UFPT": 3,
+  "URGN": 3,
+  "ZIP": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "4f23bc841527342f4674eee9b6938164bd691a36a5ff240a0ec04d612e8dd21b",
+ "price_sources": {
+  "delayed_sip": 258,
+  "iex": 3143
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "UFPT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PFGC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SWK"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FSTR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "URGN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MOD"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "ZIP"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GDRX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ITRG"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EOSE"
+  }
+ ],
+ "slot": "2026-11-04T10:30",
+ "t": "2026-11-04T15:30:21.081277+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T15:30:52.212693Z"
+}
