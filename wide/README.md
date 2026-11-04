@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 10:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8115.05 | -18.85% | 130 | 33 | long AMZN, short DT, long FSLR, long MRNA, long REGN |
-| Coin flip on C's picks | $9719.35 | -2.81% | 129 | 63 | short AMZN, short DT, long FSLR, short MRNA, long REGN |
-| C's prompt on Groq (K7) | $7318.94 | -26.81% | 309 | 69 | long BKNG, short CIFR, short DT, long FSLR, long MRNA |
-| Coin flip on C-groq's picks | $9472.92 | -5.27% | 309 | 153 | short BKNG, long CIFR, short DT, long FSLR, short MRNA |
-| C-groq's answers, acted on once a day (K8) | $9554.91 | -4.45% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
-| Coin flip on C-groq-slow's picks | $10370.79 | +3.71% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
-| C's answers, acted on once a day (K8) | $9659.18 | -3.41% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
-| Coin flip on C-slow's picks | $10706.62 | +7.07% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
-| Just hold SPY | $10006.29 | +0.06% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8016.28 | -19.84% | 130 | 33 | long AMZN, short DT, long FSLR, long MRNA, long REGN |
+| Coin flip on C's picks | $9700.43 | -3.00% | 129 | 63 | short AMZN, short DT, long FSLR, short MRNA, long REGN |
+| C's prompt on Groq (K7) | $7256.16 | -27.44% | 310 | 69 | long BKNG, short CIFR, short DT, long MRNA, long XYZ |
+| Coin flip on C-groq's picks | $9455.38 | -5.45% | 310 | 153 | short BKNG, long CIFR, short DT, short MRNA, long XYZ |
+| C-groq's answers, acted on once a day (K8) | $9515.94 | -4.84% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
+| Coin flip on C-groq-slow's picks | $10397.97 | +3.98% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
+| C's answers, acted on once a day (K8) | $9597.13 | -4.03% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
+| Coin flip on C-slow's picks | $10710.86 | +7.11% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
+| Just hold SPY | $9976.86 | -0.23% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-04 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-04 10:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-04 10:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-04 09:57 | long AMZN, short DT, long FSLR, long MRNA, long REGN | none | Maintaining existing profitable positions in AMZN, DT (short), FSLR, and REGN due to continued strong trends. Re-establishing MRNA long position based on strong positive momentum today and overall positive trends. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 10:1
 | 2026-11-02 13:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 13:37 | long CRH, long MPWR, long REGN, long RKT, long TEM | none | Maintaining all five current long positions due to strong positive momentum today and favorable news for most holdings, indicating continued upward potential. |
-| 2026-11-02 13:27 | no answer, nothing changed | none | unreadable answer |
