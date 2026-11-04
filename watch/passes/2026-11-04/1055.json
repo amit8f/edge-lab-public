@@ -1,0 +1,370 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "229b00762acc54e874d0903387acda3403810ebea4d45b9b1a4cff1dc3269acc",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "f1fe317db156c623639cb137ca622377f6363c54896216a8726d32280d9c39dc",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "GIC",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "MDLN",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "SNDX",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TPL",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LIME",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "MCY",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LCID",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PLUG",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "IAUX",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "product",
+     "symbol": "ARDX",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "2653c1f43bfbde2ee8bdb175d2c5dad59e11de33a547f093d57cc71d16a82bde",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat, high z-score and volume",
+     "stop_pct": 10.0,
+     "symbol": "GIC"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat, strong momentum",
+     "stop_pct": 10.0,
+     "symbol": "MDLN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Short not allowed for MAIN",
+     "stop_pct": 0.0,
+     "symbol": "SNDX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative move, short not allowed",
+     "stop_pct": 0.0,
+     "symbol": "TPL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative move, not shortable",
+     "stop_pct": 0.0,
+     "symbol": "LIME"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings, short not allowed",
+     "stop_pct": 0.0,
+     "symbol": "MCY"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "ee4d774b9629f7f8465031c158052abfb6e4f4b9b88c1f580f193e2c8d48dcb5"
+  },
+  "reviewer": {
+   "answer_sha256": "361131e3b4c973787aaf8cb5a18f4b76d76fe48e8e1e952facf495fd2cb45248",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "831550de0b9f4c9875860d8c53680426a3de8be321ec725cddc2844c88923c6c",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum, high volume, and positive earnings tone support the long proposal.",
+     "symbol": "GIC"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant daily gain, heavy volume, and positive earnings catalyst align with the long trade.",
+     "symbol": "MDLN"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.08475,
+   "news": 0,
+   "pace": 3.519,
+   "price": 47.87,
+   "r20": 0.01588,
+   "r5": -0.01054,
+   "short": true,
+   "src": "iex",
+   "symbol": "GIC",
+   "z": 7.787
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.14403,
+   "news": 1,
+   "pace": 2.72,
+   "price": 39.0,
+   "r20": -0.04107,
+   "r5": 0.05281,
+   "short": true,
+   "src": "iex",
+   "symbol": "MDLN",
+   "z": 7.332
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.26102,
+   "news": 0,
+   "pace": 5.305,
+   "price": 10.56,
+   "r20": -0.17732,
+   "r5": 0.04383,
+   "short": true,
+   "src": "iex",
+   "symbol": "SNDX",
+   "z": -5.996
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09883,
+   "news": 0,
+   "pace": 3.81,
+   "price": 299.19,
+   "r20": -0.06521,
+   "r5": 0.00475,
+   "short": true,
+   "src": "iex",
+   "symbol": "TPL",
+   "z": -5.616
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.26648,
+   "news": 0,
+   "pace": 9.345,
+   "price": 18.69,
+   "r20": -0.06803,
+   "r5": 0.06034,
+   "short": false,
+   "src": "iex",
+   "symbol": "LIME",
+   "z": -5.381
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.0737,
+   "news": 0,
+   "pace": 3.67,
+   "price": 95.14,
+   "r20": -0.00282,
+   "r5": 0.00127,
+   "short": true,
+   "src": "iex",
+   "symbol": "MCY",
+   "z": -5.322
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.12583,
+   "news": 0,
+   "pace": 3.507,
+   "price": 3.4,
+   "r20": -0.27404,
+   "r5": -0.08761,
+   "short": false,
+   "src": "delayed_sip",
+   "symbol": "LCID",
+   "z": 2.398
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07801,
+   "news": 0,
+   "pace": 5.095,
+   "price": 1.52,
+   "r20": -0.24194,
+   "r5": 0.00714,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLUG",
+   "z": 2.104
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06154,
+   "news": 0,
+   "pace": 3.001,
+   "price": 1.38,
+   "r20": -0.19255,
+   "r5": -0.15033,
+   "short": true,
+   "src": "iex",
+   "symbol": "IAUX",
+   "z": 1.619
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.04125,
+   "news": 0,
+   "pace": 3.016,
+   "price": 3.155,
+   "r20": -0.08459,
+   "r5": 0.01,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARDX",
+   "z": 1.613
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5188.1756,
+  "PICK-MAIN-coin": 5085.2767,
+  "PICK-PENNY": 483.128,
+  "PICK-PENNY-coin": 483.4972
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 266,
+  "news": 9,
+  "volume": 361
+ },
+ "flagged": 519,
+ "headline_counts": {
+  "ARDX": 3,
+  "GIC": 3,
+  "LIME": 3,
+  "MCY": 3,
+  "MDLN": 3,
+  "PLUG": 3,
+  "SNDX": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "80c11951ea9b43dc8cb60d808df9cc6bd4fd920e61121da56c276fb343f98df9",
+ "price_sources": {
+  "delayed_sip": 185,
+  "iex": 3216
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GIC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MDLN"
+  }
+ ],
+ "slot": "2026-11-04T10:55",
+ "t": "2026-11-04T15:55:20.766916+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T15:55:44.383136Z"
+}
