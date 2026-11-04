@@ -1,0 +1,316 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f6e811080a24023e17ba4831606f46ff6b827724aee388cdec4341c30f9efdaf",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "b36cafff5b75a465983aca7194172df75f291b7e79ea0763a7e508a5da5eb23f",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "AAPL",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "SM",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "NRIX",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "LIVN",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "earnings",
+     "symbol": "TREE",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "DUOL",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "WOOF",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "VGZ",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "OPEN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "RWT",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "04ed3a6b257465893c1a990032fabca1b6034be8ba21c16a6d3a8efe7f6b8ad4",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.06375,
+   "news": 1,
+   "pace": 3.948,
+   "price": 353.06,
+   "r20": -0.00519,
+   "r5": -0.04379,
+   "short": true,
+   "src": "iex",
+   "symbol": "AAPL",
+   "z": 5.565
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.09381,
+   "news": 1,
+   "pace": 3.233,
+   "price": 33.23,
+   "r20": 0.04473,
+   "r5": -0.06143,
+   "short": true,
+   "src": "iex",
+   "symbol": "SM",
+   "z": -3.396
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.41905,
+   "news": 0,
+   "pace": 17.488,
+   "price": 15.0,
+   "r20": 0.14248,
+   "r5": -0.03296,
+   "short": true,
+   "src": "iex",
+   "symbol": "NRIX",
+   "z": -19.384
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.1761,
+   "news": 0,
+   "pace": 9.968,
+   "price": 93.97,
+   "r20": 0.06633,
+   "r5": -0.00597,
+   "short": true,
+   "src": "iex",
+   "symbol": "LIVN",
+   "z": 10.484
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.34777,
+   "news": 0,
+   "pace": 17.955,
+   "price": 38.91,
+   "r20": 0.16883,
+   "r5": 0.10149,
+   "short": true,
+   "src": "iex",
+   "symbol": "TREE",
+   "z": 9.392
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.31406,
+   "news": 0,
+   "pace": 19.401,
+   "price": 168.2,
+   "r20": -0.13589,
+   "r5": -0.09419,
+   "short": true,
+   "src": "iex",
+   "symbol": "DUOL",
+   "z": 8.591
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09294,
+   "news": 0,
+   "pace": 3.363,
+   "price": 2.94,
+   "r20": 0.21171,
+   "r5": 0.08468,
+   "short": true,
+   "src": "iex",
+   "symbol": "WOOF",
+   "z": 3.084
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09336,
+   "news": 0,
+   "pace": 1.64,
+   "price": 2.635,
+   "r20": -0.10075,
+   "r5": -0.07308,
+   "short": true,
+   "src": "iex",
+   "symbol": "VGZ",
+   "z": 3.474
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.12356,
+   "news": 0,
+   "pace": 3.676,
+   "price": 1.955,
+   "r20": -0.23348,
+   "r5": -0.08901,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPEN",
+   "z": 2.335
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06431,
+   "news": 0,
+   "pace": 5.64,
+   "price": 2.91,
+   "r20": -0.09593,
+   "r5": -0.04012,
+   "short": true,
+   "src": "iex",
+   "symbol": "RWT",
+   "z": -2.214
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5189.0656,
+  "PICK-MAIN-coin": 5086.3467,
+  "PICK-PENNY": 481.8088,
+  "PICK-PENNY-coin": 483.2918
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-04T15:50:20.824090+00:00",
+   "entry": 3.47,
+   "exit": 2.75,
+   "net": -5.6186,
+   "opened": "2026-10-27T13:40:20.744333+00:00",
+   "qty": 7,
+   "side": 1,
+   "symbol": "IMSR",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-04T15:50:20.824090+00:00",
+   "entry": 3.47,
+   "exit": 2.75,
+   "net": -5.6186,
+   "opened": "2026-10-27T13:40:20.744333+00:00",
+   "qty": 7,
+   "side": 1,
+   "symbol": "IMSR",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 265,
+  "news": 15,
+  "volume": 375
+ },
+ "flagged": 528,
+ "headline_counts": {
+  "AAPL": 3,
+  "DUOL": 3,
+  "LIVN": 3,
+  "NRIX": 3,
+  "RWT": 3,
+  "SM": 3,
+  "TREE": 3,
+  "WOOF": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "e52a6152e2bc808757deacf4b81a93206c9b9e85d644afe3df0f109477155c6e",
+ "price_sources": {
+  "delayed_sip": 153,
+  "iex": 3248
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-04T10:50",
+ "t": "2026-11-04T15:50:20.824090+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T15:50:31.082405Z"
+}
