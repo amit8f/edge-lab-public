@@ -1,0 +1,1115 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "24e9e6ab702bfdf9c47f1ae258a1e031c676bc1e585b6c5233acde1d9b419c10",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "4da1a6f2d563cfd975069f970e301afae87a33158fe963b580ae0b8cf2e5b552",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ZBH",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "BKNG",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NRIX",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CRCT",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "YOU",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TRMB",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "OPEN",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "AMTX",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "HLLY",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "other",
+     "symbol": "PLUG",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "47307a8d8fed106cdafb5fa7f568f65e7341a9a2ca2b7682fa3d63dc73f2258a",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings move, high confidence",
+     "stop_pct": 10.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings surprise, solid confidence",
+     "stop_pct": 12.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Unclear direction despite extreme drop",
+     "stop_pct": 0.0,
+     "symbol": "NRIX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large upside move, bullish earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant price jump with positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline and negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong price surge, high confidence",
+     "stop_pct": 20.0,
+     "symbol": "OPEN"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "High momentum, full confidence",
+     "stop_pct": 20.0,
+     "symbol": "AMTX"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive product news and price gain",
+     "stop_pct": 20.0,
+     "symbol": "HLLY"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Moderate confidence with notable price increase",
+     "stop_pct": 20.0,
+     "symbol": "PLUG"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "AFYA"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "BCAX"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "INTR"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "NPKI"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "NU"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "PAGS"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "PAX"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "RRC"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "SGRY"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "STNE"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "UGP"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "ABEV"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "CATX"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "CIG"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding limit",
+     "stop_pct": 0.0,
+     "symbol": "SID"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "50607245ce8f1e4d84e93ed2fbe2ccedc189cc612a46815c562c8070f28aa822"
+  },
+  "reviewer": {
+   "answer_sha256": "175ddc0928720351581c54266adc1f19baefbd1a4fbfd19ab26f90cbf472b710",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "be9b297edcecc91c1e232c3fc50215e4703f0617fb47e4d96111bfe9ef5f4c70",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum on earnings with high z-score.",
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid upward momentum supported by positive analyst tone.",
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive price surge today following earnings release.",
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong earnings momentum and continuation of 20-day trend.",
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant intraday drop offers short momentum opportunity.",
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock with weak longer-term trends despite today's bounce.",
+     "symbol": "OPEN"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Poor multi-week trend makes chasing the bounce risky.",
+     "symbol": "AMTX"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Steady upward trajectory with positive product news tone.",
+     "symbol": "HLLY"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock volatility with poor 20-day performance.",
+     "symbol": "PLUG"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.12703,
+   "news": 1,
+   "pace": null,
+   "price": 109.39,
+   "r20": 0.08229,
+   "r5": 0.01041,
+   "short": true,
+   "src": "iex",
+   "symbol": "ZBH",
+   "z": 6.691
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.08907,
+   "news": 1,
+   "pace": null,
+   "price": 169.535,
+   "r20": -0.01243,
+   "r5": 0.03683,
+   "short": true,
+   "src": "iex",
+   "symbol": "BKNG",
+   "z": 4.107
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.37452,
+   "news": 0,
+   "pace": null,
+   "price": 16.15,
+   "r20": 0.14248,
+   "r5": -0.03296,
+   "short": true,
+   "src": "iex",
+   "symbol": "NRIX",
+   "z": -16.747
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.32663,
+   "news": 0,
+   "pace": null,
+   "price": 7.92,
+   "r20": -0.06426,
+   "r5": -0.02927,
+   "short": true,
+   "src": "iex",
+   "symbol": "CRCT",
+   "z": 15.426
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.24581,
+   "news": 0,
+   "pace": null,
+   "price": 59.5,
+   "r20": 0.15084,
+   "r5": 0.04898,
+   "short": true,
+   "src": "iex",
+   "symbol": "YOU",
+   "z": 12.836
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15988,
+   "news": 0,
+   "pace": null,
+   "price": 55.12,
+   "r20": 0.07646,
+   "r5": 0.03879,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRMB",
+   "z": -10.983
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.18966,
+   "news": 0,
+   "pace": null,
+   "price": 2.07,
+   "r20": -0.23348,
+   "r5": -0.08901,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPEN",
+   "z": 3.481
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.13913,
+   "news": 0,
+   "pace": null,
+   "price": 1.31,
+   "r20": -0.35754,
+   "r5": -0.12214,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMTX",
+   "z": 3.159
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09259,
+   "news": 0,
+   "pace": null,
+   "price": 2.95,
+   "r20": 0.16379,
+   "r5": 0.04651,
+   "short": true,
+   "src": "iex",
+   "symbol": "HLLY",
+   "z": 3.138
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11702,
+   "news": 0,
+   "pace": null,
+   "price": 1.575,
+   "r20": -0.24194,
+   "r5": 0.00714,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLUG",
+   "z": 3.099
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5094.5441,
+  "PICK-MAIN-coin": 5079.4387,
+  "PICK-PENNY": 486.4508,
+  "PICK-PENNY-coin": 488.5984
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 11.17,
+   "exit": 10.75,
+   "net": 7.3591,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 22,
+   "side": -1,
+   "symbol": "AFYA",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 9.56,
+   "exit": 9.08,
+   "net": 4.0959,
+   "opened": "2026-10-28T18:52:50.487069+00:00",
+   "qty": 11,
+   "side": -1,
+   "symbol": "BCAX",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 4.465,
+   "exit": 4.035,
+   "net": 21.794,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 55,
+   "side": -1,
+   "symbol": "INTR",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 9.36,
+   "exit": 9.25,
+   "net": -0.3557,
+   "opened": "2026-10-30T13:40:20.609133+00:00",
+   "qty": 3,
+   "side": -1,
+   "symbol": "NPKI",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 12.15,
+   "exit": 12.085,
+   "net": -0.5835,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 20,
+   "side": -1,
+   "symbol": "NU",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 8.385,
+   "exit": 7.93,
+   "net": 0.5036,
+   "opened": "2026-10-26T14:50:20.546929+00:00",
+   "qty": 2,
+   "side": -1,
+   "symbol": "PAGS",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 9.5,
+   "exit": 9.755,
+   "net": -8.5502,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 26,
+   "side": -1,
+   "symbol": "PAX",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 52.69,
+   "exit": 52.71,
+   "net": -2.4793,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 9,
+   "side": 1,
+   "symbol": "RRC",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 23.03,
+   "exit": 23.21,
+   "net": -3.6264,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 10,
+   "side": -1,
+   "symbol": "SGRY",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 8.14,
+   "exit": 7.74,
+   "net": 0.2022,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "STNE",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 6.31,
+   "exit": 5.68,
+   "net": 22.716,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 39,
+   "side": -1,
+   "symbol": "UGP",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 2.795,
+   "exit": 2.71,
+   "net": -0.0158,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 8,
+   "side": -1,
+   "symbol": "ABEV",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 1.21,
+   "exit": 0.9567,
+   "net": 4.3685,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 20,
+   "side": -1,
+   "symbol": "CATX",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 1.86,
+   "exit": 1.83,
+   "net": -0.3677,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 13,
+   "side": -1,
+   "symbol": "CIG",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 0.9247,
+   "exit": 0.7398,
+   "net": 4.1104,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 26,
+   "side": -1,
+   "symbol": "SID",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 23.03,
+   "exit": 23.21,
+   "net": -3.6264,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 10,
+   "side": -1,
+   "symbol": "SGRY",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 4.465,
+   "exit": 4.035,
+   "net": 21.794,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 55,
+   "side": -1,
+   "symbol": "INTR",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 9.56,
+   "exit": 9.08,
+   "net": 4.0959,
+   "opened": "2026-10-28T18:52:50.487069+00:00",
+   "qty": 11,
+   "side": -1,
+   "symbol": "BCAX",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 2.795,
+   "exit": 2.71,
+   "net": -0.0158,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 8,
+   "side": -1,
+   "symbol": "ABEV",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 1.86,
+   "exit": 1.83,
+   "net": -1.0284,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 13,
+   "side": 1,
+   "symbol": "CIG",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 6.31,
+   "exit": 5.68,
+   "net": 22.716,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 39,
+   "side": -1,
+   "symbol": "UGP",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 12.15,
+   "exit": 12.085,
+   "net": -0.5835,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 20,
+   "side": -1,
+   "symbol": "NU",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 1.21,
+   "exit": 0.9567,
+   "net": 4.3685,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 20,
+   "side": -1,
+   "symbol": "CATX",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 9.36,
+   "exit": 9.25,
+   "net": -1.004,
+   "opened": "2026-10-30T13:40:20.609133+00:00",
+   "qty": 3,
+   "side": 1,
+   "symbol": "NPKI",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 9.5,
+   "exit": 9.755,
+   "net": -8.5502,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 26,
+   "side": -1,
+   "symbol": "PAX",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 8.385,
+   "exit": 7.93,
+   "net": -1.304,
+   "opened": "2026-10-26T14:50:20.546929+00:00",
+   "qty": 2,
+   "side": 1,
+   "symbol": "PAGS",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 0.9247,
+   "exit": 0.7398,
+   "net": 4.1104,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 26,
+   "side": -1,
+   "symbol": "SID",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 52.69,
+   "exit": 52.71,
+   "net": -3.1901,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 9,
+   "side": -1,
+   "symbol": "RRC",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-04T14:45:21.303518+00:00",
+   "entry": 8.14,
+   "exit": 7.74,
+   "net": 0.2022,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "STNE",
+   "why": "picker exit"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.247,
+   "price": 109.39,
+   "qty": 4,
+   "side": 1,
+   "stop": 98.451,
+   "symbol": "ZBH"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.2598,
+   "price": 109.39,
+   "qty": 4,
+   "side": -1,
+   "stop": 120.329,
+   "symbol": "ZBH"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.0451,
+   "price": 169.535,
+   "qty": 2,
+   "side": 1,
+   "stop": 149.1908,
+   "symbol": "BKNG"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.0549,
+   "price": 169.535,
+   "qty": 2,
+   "side": -1,
+   "stop": 189.8792,
+   "symbol": "BKNG"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.2105,
+   "price": 7.92,
+   "qty": 53,
+   "side": 1,
+   "stop": 6.9696,
+   "symbol": "CRCT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.2105,
+   "price": 7.92,
+   "qty": 53,
+   "side": 1,
+   "stop": 6.9696,
+   "symbol": "CRCT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.2038,
+   "price": 59.5,
+   "qty": 7,
+   "side": 1,
+   "stop": 52.36,
+   "symbol": "YOU"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.2166,
+   "price": 59.5,
+   "qty": 7,
+   "side": -1,
+   "stop": 66.64,
+   "symbol": "YOU"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.8088,
+   "price": 55.12,
+   "qty": 4,
+   "side": -1,
+   "stop": 61.7344,
+   "symbol": "TRMB"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.802,
+   "price": 55.12,
+   "qty": 4,
+   "side": 1,
+   "stop": 48.5056,
+   "symbol": "TRMB"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3127,
+   "price": 2.95,
+   "qty": 8,
+   "side": 1,
+   "stop": 2.36,
+   "symbol": "HLLY"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3147,
+   "price": 2.95,
+   "qty": 8,
+   "side": -1,
+   "stop": 3.54,
+   "symbol": "HLLY"
+  }
+ ],
+ "flag_counts": {
+  "move": 151,
+  "news": 26,
+  "volume": 0
+ },
+ "flagged": 170,
+ "headline_counts": {
+  "BKNG": 3,
+  "CRCT": 3,
+  "HLLY": 1,
+  "NRIX": 3,
+  "PLUG": 3,
+  "TRMB": 3,
+  "YOU": 3,
+  "ZBH": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "02262ad22ec1074656b4dd9fe2cd3435ef87a146343e46bb0e17678322c906d4",
+ "price_sources": {
+  "delayed_sip": 537,
+  "iex": 2853
+ },
+ "priced": 3390,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 4,
+   "skip": null,
+   "symbol": "ZBH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 2,
+   "skip": null,
+   "symbol": "BKNG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 53,
+   "skip": null,
+   "symbol": "CRCT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 7,
+   "skip": null,
+   "symbol": "YOU"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 4,
+   "skip": null,
+   "symbol": "TRMB"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 11,
+   "skip": "reviewer said none",
+   "symbol": "OPEN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 18,
+   "skip": "reviewer said none",
+   "symbol": "AMTX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 8,
+   "skip": null,
+   "symbol": "HLLY"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 15,
+   "skip": "reviewer said none",
+   "symbol": "PLUG"
+  }
+ ],
+ "slot": "2026-11-04T09:45",
+ "t": "2026-11-04T14:45:21.303518+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T14:45:42.021162Z"
+}
