@@ -1,0 +1,861 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "ada43a85454a309395206107fc8dc56c6110cea886a62e2302faae2752ef5dcb",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "0aa7ce1350f6d9151161dff66f1fab3000c885c358f9d969794cdca8e5ede3a9",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "DUOL",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "FLYW",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GIC",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "LIVN",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "OPRT",
+     "tone": 0
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "AUDC",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "TREE",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "XYZ",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VGZ",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "YMAT",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "398a6cb1221b97fbd01a3679e7998357c04267f88d3f0470c2243b877da442ac",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong price jump, high analyst confidence",
+     "stop_pct": 12.0,
+     "symbol": "DUOL"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive momentum and analyst support",
+     "stop_pct": 12.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large move with solid confidence",
+     "stop_pct": 13.0,
+     "symbol": "GIC"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "high upside and strong analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "LIVN"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant gain and acceptable confidence",
+     "stop_pct": 13.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "down move and not shortable",
+     "stop_pct": 0.0,
+     "symbol": "AUDC"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong rally and high confidence",
+     "stop_pct": 12.0,
+     "symbol": "TREE"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "robust price rise with positive analyst view",
+     "stop_pct": 12.0,
+     "symbol": "XYZ"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "high confidence in penny stock upside",
+     "stop_pct": 20.0,
+     "symbol": "VGZ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "shortable=no and recent poor performance",
+     "stop_pct": 0.0,
+     "symbol": "YMAT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "WEN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "ABOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "CHRS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "CYH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "DNUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "GERN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "GRAB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "HLLY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "IMSR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "KDK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "KOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "LUMN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "MDXG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "MPT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "NAUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "NXH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "PACK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "PRME"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "RCAT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "STLA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "TOYO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "UNCY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing long position",
+     "stop_pct": 0.0,
+     "symbol": "UNIT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "VNDA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "VRRM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "retain existing short position",
+     "stop_pct": 0.0,
+     "symbol": "XRX"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "3cf39cc9eeaa875127734026723be9de861cfce342aff97f538d5f6686b04379"
+  },
+  "reviewer": {
+   "answer_sha256": "d5ff6247202ec8fb7e9ffb4feadeb169993a01df1ce9c6a7ecfb22cb4243f874",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "96e1c765ea895f6bc5e278ffb79c20b62065ac2851ad87f905c254887d9f6e9e",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong earnings momentum with massive +26.7% daily gain.",
+     "symbol": "DUOL"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive analyst tone and solid upward price movement.",
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant earnings-driven gap up and strong momentum.",
+     "symbol": "GIC"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong earnings beat supported by high volume and positive tone.",
+     "symbol": "LIVN"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid earnings pop continuing a 20-day trend.",
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Exceptional earnings reaction with strong multi-day momentum.",
+     "symbol": "TREE"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive momentum and supportive analyst outlook.",
+     "symbol": "XYZ"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock with weak multi-day performance despite a small daily bounce.",
+     "symbol": "VGZ"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.26703,
+   "news": 1,
+   "pace": null,
+   "price": 162.18,
+   "r20": -0.13589,
+   "r5": -0.09419,
+   "short": true,
+   "src": "iex",
+   "symbol": "DUOL",
+   "z": 7.444
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.09843,
+   "news": 1,
+   "pace": null,
+   "price": 21.035,
+   "r20": 0.05133,
+   "r5": 0.01645,
+   "short": true,
+   "src": "iex",
+   "symbol": "FLYW",
+   "z": 3.835
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.13506,
+   "news": 0,
+   "pace": null,
+   "price": 50.09,
+   "r20": 0.01588,
+   "r5": -0.01054,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "GIC",
+   "z": 12.127
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.16677,
+   "news": 0,
+   "pace": null,
+   "price": 93.225,
+   "r20": 0.06633,
+   "r5": -0.00597,
+   "short": true,
+   "src": "iex",
+   "symbol": "LIVN",
+   "z": 9.969
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.20717,
+   "news": 0,
+   "pace": null,
+   "price": 12.12,
+   "r20": 0.20673,
+   "r5": 0.05021,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPRT",
+   "z": 8.201
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13961,
+   "news": 0,
+   "pace": null,
+   "price": 8.905,
+   "r20": -0.04959,
+   "r5": -0.11538,
+   "short": false,
+   "src": "iex",
+   "symbol": "AUDC",
+   "z": -7.586
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.27191,
+   "news": 0,
+   "pace": null,
+   "price": 36.72,
+   "r20": 0.16883,
+   "r5": 0.10149,
+   "short": true,
+   "src": "iex",
+   "symbol": "TREE",
+   "z": 7.569
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.15211,
+   "news": 0,
+   "pace": null,
+   "price": 87.56,
+   "r20": -0.00706,
+   "r5": 0.01509,
+   "short": true,
+   "src": "iex",
+   "symbol": "XYZ",
+   "z": 7.286
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08299,
+   "news": 0,
+   "pace": null,
+   "price": 2.61,
+   "r20": -0.10075,
+   "r5": -0.07308,
+   "short": true,
+   "src": "iex",
+   "symbol": "VGZ",
+   "z": 3.103
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02439,
+   "news": 1,
+   "pace": null,
+   "price": 1.26,
+   "r20": -0.09559,
+   "r5": -0.41981,
+   "short": false,
+   "src": "iex",
+   "symbol": "YMAT",
+   "z": 0.094
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5090.4956,
+  "PICK-MAIN-coin": 5055.1367,
+  "PICK-PENNY": 485.6718,
+  "PICK-PENNY-coin": 488.859
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.5225,
+   "price": 21.035,
+   "qty": 4,
+   "side": 1,
+   "stop": 18.5108,
+   "symbol": "FLYW"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.5255,
+   "price": 21.035,
+   "qty": 4,
+   "side": -1,
+   "stop": 23.5592,
+   "symbol": "FLYW"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.146,
+   "price": 12.12,
+   "qty": 1,
+   "side": 1,
+   "stop": 10.5444,
+   "symbol": "OPRT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.1465,
+   "price": 12.12,
+   "qty": 1,
+   "side": -1,
+   "stop": 13.6956,
+   "symbol": "OPRT"
+  }
+ ],
+ "flag_counts": {
+  "move": 157,
+  "news": 16,
+  "volume": 0
+ },
+ "flagged": 168,
+ "headline_counts": {
+  "AUDC": 3,
+  "DUOL": 3,
+  "FLYW": 3,
+  "GIC": 3,
+  "LIVN": 3,
+  "OPRT": 3,
+  "TREE": 3,
+  "XYZ": 3,
+  "YMAT": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "cbc0bc16a12a0846e8be200bca94c67ae304b1e11d060c6d2ee4225b3a732353",
+ "price_sources": {
+  "delayed_sip": 454,
+  "iex": 2941
+ },
+ "priced": 3395,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DUOL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 4,
+   "skip": null,
+   "symbol": "FLYW"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GIC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LIVN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "OPRT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TREE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "XYZ"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 9,
+   "skip": "reviewer said none",
+   "symbol": "VGZ"
+  }
+ ],
+ "slot": "2026-11-04T09:50",
+ "t": "2026-11-04T14:50:20.665101+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T14:50:40.119874Z"
+}
