@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 10:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8086.17 | -19.14% | 134 | 34 | short CVS, short DDOG, short DT, long FSLR, long MMM |
-| Coin flip on C's picks | $9678.96 | -3.21% | 133 | 66 | long CVS, long DDOG, short DT, short FSLR, short MMM |
-| C's prompt on Groq (K7) | $7359.44 | -26.41% | 311 | 69 | long BKNG, short CIFR, short DT, long FSLR, long XYZ |
-| Coin flip on C-groq's picks | $9382.91 | -6.17% | 311 | 154 | short BKNG, long CIFR, short DT, short FSLR, long XYZ |
-| C-groq's answers, acted on once a day (K8) | $9335.57 | -6.64% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
-| Coin flip on C-groq-slow's picks | $10346.59 | +3.47% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
-| C's answers, acted on once a day (K8) | $9512.63 | -4.87% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
-| Coin flip on C-slow's picks | $10754.88 | +7.55% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
-| Just hold SPY | $9969.04 | -0.31% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8109.11 | -18.91% | 134 | 34 | short CVS, short DDOG, short DT, long FSLR, long MMM |
+| Coin flip on C's picks | $9668.70 | -3.31% | 133 | 66 | long CVS, long DDOG, short DT, short FSLR, short MMM |
+| C's prompt on Groq (K7) | $7358.25 | -26.42% | 312 | 69 | long BKNG, short CIFR, short DT, long FSLR, long ISRG |
+| Coin flip on C-groq's picks | $9387.08 | -6.13% | 312 | 154 | short BKNG, long CIFR, short DT, short FSLR, short ISRG |
+| C-groq's answers, acted on once a day (K8) | $9373.80 | -6.26% | 11 | 8 | long BE, long CIFR, short DT, long FN, long HWM |
+| Coin flip on C-groq-slow's picks | $10327.36 | +3.27% | 11 | 7 | long BE, short CIFR, short DT, long FN, short HWM |
+| C's answers, acted on once a day (K8) | $9532.12 | -4.68% | 8 | 4 | long CIFR, short DT, long HWM, long REGN, long WULF |
+| Coin flip on C-slow's picks | $10716.50 | +7.16% | 8 | 6 | short CIFR, short DT, short HWM, long REGN, long WULF |
+| Just hold SPY | $9978.68 | -0.21% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-04 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-04 10:47 | short CVS, short DDOG, short DT, long FSLR, long MMM | sold AMZN @ $267.66; sold REGN @ $953.12; bought FSLR @ $203.42; bought MMM @ $191.51 | Maintained short positions in DDOG and DT due to continued weakness and negative news. Closed AMZN and REGN due to underperformance. Initiated a new short in CVS following a significant drop on earnings. Opened new long positions in FSLR and MMM, both showing strong positive momentum and favorable n |
 | 2026-11-04 10:37 | long AMZN, short CVS, short DDOG, short DT, long REGN | sold FSLR @ $202.90; sold MRNA @ $246.82; sold CVS @ $81.08; sold DDOG @ $194.82 | Maintaining profitable long positions in AMZN and REGN, and a profitable short in DT. Initiating new short positions in DDOG and CVS due to significant negative news and strong downward price action, while closing underperforming long positions in FSLR and MRNA. |
 | 2026-11-04 10:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-04 10:4
 | 2026-11-02 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 14:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 14:07 | long CRH, long FSLR, long REGN, long RKT, long TEM | sold MPWR @ $1,266.23; bought FSLR @ $184.12 | Maintaining long positions in CRH, REGN, and TEM due to strong positive momentum and supportive news. Selling MPWR due to continued underperformance. Adding FSLR and RKT long positions based on strong daily and short-term momentum. |
-| 2026-11-02 13:57 | no answer, nothing changed | none | unreadable answer |
