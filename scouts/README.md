@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-04T11:45 ET: 1051 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-04T11:50 ET: 1026 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,967.70 | -0.65% | 31 | 13 | long ACB, long AHRT, long BA, long BAM, short DRVN, long ETR, long FELE, short INGM, long LSTR, long ROL, long RSI, long SN, long UPS, long VECO | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,869.07 | -2.62% | 30 | 9 | long ACB, long AHRT, long BA, short BAM, short DRVN, short ETR, long FELE, long INGM, short LSTR, long ROL, short RSI, short SN, short ULCC, long UPS, long VECO | ok |
-| SCOUT-PENNY | $506.90 | +1.38% | 7 | 1 | long ARRY, short NUAI, long NVA, short OPEN, long RXRX, long TE, long TLRY | 1 unreadable agent answers |
-| SCOUT-PENNY-coin | $502.28 | +0.46% | 8 | 2 | short ARRY, short NUAI, long NVA, short OPEN, long RXRX, long TLRY | ok |
+| SCOUT-MAIN | $4,968.09 | -0.64% | 31 | 13 | long ACB, long AHRT, long BA, long BAM, short DRVN, long ETR, long FELE, short INGM, long LSTR, long ROL, long RSI, long SN, long UPS, long VECO | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,870.92 | -2.58% | 30 | 9 | long ACB, long AHRT, long BA, short BAM, short DRVN, short ETR, long FELE, long INGM, short LSTR, long ROL, short RSI, short SN, short ULCC, long UPS, long VECO | ok |
+| SCOUT-PENNY | $506.97 | +1.39% | 7 | 1 | long ARRY, short NUAI, long NVA, short OPEN, long RXRX, long TE, long TLRY | 1 unreadable agent answers |
+| SCOUT-PENNY-coin | $501.73 | +0.35% | 8 | 2 | short ARRY, short NUAI, long NVA, short OPEN, long RXRX, long TLRY | ok |
