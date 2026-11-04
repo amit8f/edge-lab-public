@@ -1,0 +1,290 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "6b10fd40f7deaf876366c399abdd549fdee557d441999a50fb86f05106e57f9e",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "d823bb51d778898b6b37ffcdef3a3ef17d33e7e278619eb177dc75ef5398a4f2",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "guidance",
+     "symbol": "NVO",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "METC",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "PXED",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "TRNS",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "CHCT",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "GXO",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "GROY",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "XTND",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "UWMC",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "CLVT",
+     "tone": 2
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "68bbb2bb071c005b9b8ad1aaa12099982c983db08f7dc59b9745b93996b408b3",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.05499,
+   "news": 1,
+   "pace": 8.372,
+   "price": 42.4,
+   "r20": 0.07088,
+   "r5": 0.03931,
+   "short": true,
+   "src": "iex",
+   "symbol": "NVO",
+   "z": 3.853
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.13798,
+   "news": 1,
+   "pace": 4.679,
+   "price": 5.81,
+   "r20": -0.18005,
+   "r5": -0.12125,
+   "short": true,
+   "src": "iex",
+   "symbol": "METC",
+   "z": -3.485
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.07097,
+   "news": 1,
+   "pace": 4.322,
+   "price": 21.73,
+   "r20": -0.0733,
+   "r5": -0.04453,
+   "short": true,
+   "src": "iex",
+   "symbol": "PXED",
+   "z": -3.28
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.20526,
+   "news": 0,
+   "pace": 6.476,
+   "price": 107.895,
+   "r20": -0.00312,
+   "r5": 0.02519,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRNS",
+   "z": 6.421
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.09648,
+   "news": 1,
+   "pace": 2.595,
+   "price": 14.32,
+   "r20": -0.04182,
+   "r5": 0.02191,
+   "short": true,
+   "src": "iex",
+   "symbol": "CHCT",
+   "z": 5.314
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.06439,
+   "news": 0,
+   "pace": 3.038,
+   "price": 55.38,
+   "r20": 0.12134,
+   "r5": 0.03977,
+   "short": true,
+   "src": "iex",
+   "symbol": "GXO",
+   "z": 5.205
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.07197,
+   "news": 0,
+   "pace": 5.058,
+   "price": 2.83,
+   "r20": -0.11111,
+   "r5": -0.08966,
+   "short": true,
+   "src": "iex",
+   "symbol": "GROY",
+   "z": 2.042
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.16327,
+   "news": 0,
+   "pace": 4.674,
+   "price": 1.23,
+   "r20": -0.45149,
+   "r5": -0.18785,
+   "short": false,
+   "src": "iex",
+   "symbol": "XTND",
+   "z": -1.986
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.15094,
+   "news": 0,
+   "pace": 3.193,
+   "price": 1.83,
+   "r20": 0.325,
+   "r5": 0.01923,
+   "short": true,
+   "src": "iex",
+   "symbol": "UWMC",
+   "z": 1.919
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11722,
+   "news": 0,
+   "pace": 3.325,
+   "price": 2.335,
+   "r20": 0.42177,
+   "r5": 0.14835,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLVT",
+   "z": 1.812
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5143.0756,
+  "PICK-MAIN-coin": 5069.3067,
+  "PICK-PENNY": 483.1993,
+  "PICK-PENNY-coin": 482.4245
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 195,
+  "news": 18,
+  "volume": 464
+ },
+ "flagged": 559,
+ "headline_counts": {
+  "CHCT": 3,
+  "CLVT": 1,
+  "GXO": 3,
+  "METC": 3,
+  "NVO": 3,
+  "PXED": 3,
+  "TRNS": 3,
+  "UWMC": 2,
+  "XTND": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "51d70ae7bdcf22ae0c91c25a50d94c189643e9d79332243c443afa03ac1b0255",
+ "price_sources": {
+  "delayed_sip": 195,
+  "iex": 3206
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-04T10:35",
+ "t": "2026-11-04T15:35:21.082197+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-04T15:35:30.762932Z"
+}
