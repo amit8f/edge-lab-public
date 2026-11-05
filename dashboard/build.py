@@ -33,6 +33,7 @@ from paper import fwd_eval as F
 DATA = "https://data.alpaca.markets/v2"
 ET = ZoneInfo("America/New_York")
 NX3_DAYS, STALE_DAYS = 7, 7
+NX3HI_FIRST_DAY = "2026-11-04"          # NX3-HI and NX3-ALL-HI have no picks before this day
 NX3ALL_FIRST_DAY = "2026-11-02"      # the NX3-ALL book has no picks before this day
 NX3_COST = 0.002          # NX3's round trip (config/risk.yaml news track), for the skipped stocks' moves
 SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs"]
@@ -139,8 +140,8 @@ def nx3_books(st):
 def mark_open_nx3(books, days):
     """NX3 and NX3-ALL ledger books show settled results only; add the trades still open (days not settled yet) marked
     at the latest price against the IEX price at decision, before costs, so the card is the overall P&L."""
-    un = {"NX3": 0.0, "NX3-ALL": 0.0}
-    n = {"NX3": 0, "NX3-ALL": 0}
+    un = {"NX3": 0.0, "NX3-ALL": 0.0, "NX3-HI": 0.0, "NX3-ALL-HI": 0.0}
+    n = {"NX3": 0, "NX3-ALL": 0, "NX3-HI": 0, "NX3-ALL-HI": 0}
     for d in days:
         if d.get("settled") or d.get("excluded"):
             continue
@@ -156,6 +157,14 @@ def mark_open_nx3(books, days):
             if a and a.get("side") and a.get("w"):
                 un["NX3-ALL"] += 5000 * a["w"] * a["side"] * mv
                 n["NX3-ALL"] += 1
+            h = (e.get("arms") or {}).get("HI")
+            if h and h.get("side"):
+                un["NX3-HI"] += 500 * h["side"] * mv
+                n["NX3-HI"] += 1
+            g = (e.get("arms") or {}).get("ALLHI")
+            if g and g.get("side") and g.get("w"):
+                un["NX3-ALL-HI"] += 5000 * g["w"] * g["side"] * mv
+                n["NX3-ALL-HI"] += 1
     for b in books:
         if b["name"] in un and b.get("size") and n[b["name"]]:
             b["open"] = n[b["name"]]
@@ -517,7 +526,24 @@ def arm_picks(root, day, rows=()):
         net = {t["symbol"]: t.get("net") for t in stl.get("trades", []) if t.get("role") == "picks"}
         if rec.get("picks"):
             out[arm] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w")} for p in rec["picks"]}
+        elif rows and day >= NX3HI_FIRST_DAY:      # today, before the close writes the book: the picks so far
+            live = _hi_so_far(rows, arm)
+            if live:
+                out[arm] = live
     return out
+
+
+def _hi_so_far(rows, arm):
+    """NX3-HI's (3+3 slots) or NX3-ALL-HI's (uncapped, sized) picks from the decisions logged so far, by the same rule as
+    tracks/news/nx3hi_live.book / book_all. Sizes are provisional."""
+    from tracks.news import nx3hi_live as H
+    try:
+        cut = float(json.loads(Path("research/results/NX3/nx3_v1_meta.json").read_text())["fire_cut"])
+    except (OSError, KeyError, ValueError):
+        return {}
+    dec = [r for r in rows if r.get("t")]
+    picks = (H.book(dec, cut, 0) if arm == "HI" else H.book_all(dec, cut, 0))[0]
+    return {p["symbol"]: {"side": p["side"], "net": None, "w": p.get("w"), "live": True} for p in picks}
 
 
 def _nx3all_so_far(rows):
