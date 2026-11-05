@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 10:28 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8615.86 | -13.84% | 142 | 39 | short AXTI, short BE, short CIFR, short DDOG, short IREN |
-| Coin flip on C's picks | $8946.46 | -10.54% | 141 | 71 | long AXTI, long BE, long CIFR, long DDOG, long IREN |
-| C's prompt on Groq (K7) | $7328.75 | -26.71% | 322 | 70 | long APP, short BE, short CIFR, long EXPE, long HCA |
-| Coin flip on C-groq's picks | $9165.49 | -8.35% | 322 | 160 | short APP, short BE, long CIFR, short EXPE, long HCA |
-| C-groq's answers, acted on once a day (K8) | $9598.90 | -4.01% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
-| Coin flip on C-groq-slow's picks | $10074.37 | +0.74% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
-| C's answers, acted on once a day (K8) | $9838.46 | -1.62% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
-| Coin flip on C-slow's picks | $10469.52 | +4.70% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
-| Just hold SPY | $9770.97 | -2.29% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8791.95 | -12.08% | 142 | 39 | short AXTI, short BE, short CIFR, short DDOG, short IREN |
+| Coin flip on C's picks | $8749.70 | -12.50% | 141 | 71 | long AXTI, long BE, long CIFR, long DDOG, long IREN |
+| C's prompt on Groq (K7) | $7396.66 | -26.03% | 322 | 70 | long APP, short BE, short CIFR, long EXPE, long HCA |
+| Coin flip on C-groq's picks | $9205.29 | -7.95% | 322 | 160 | short APP, short BE, long CIFR, short EXPE, long HCA |
+| C-groq's answers, acted on once a day (K8) | $9650.30 | -3.50% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
+| Coin flip on C-groq-slow's picks | $10020.46 | +0.20% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
+| C's answers, acted on once a day (K8) | $9821.04 | -1.79% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
+| Coin flip on C-slow's picks | $10436.26 | +4.36% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
+| Just hold SPY | $9708.33 | -2.92% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-05 10:28 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 10:17 | short AXTI, short BE, short CIFR, short DDOG, short IREN | none | All existing short positions are performing well with strong downward momentum today, so I am maintaining them to capitalize on the continued declines. No new positions are added at this time. |
 | 2026-11-05 10:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 09:57 | short AXTI, short BE, short CIFR, short DDOG, short IREN | sold HCA @ $519.68; sold MRNA @ $253.16; sold AXTI @ $39.72; sold BE @ $165.28 | Maintaining short positions in CIFR, DDOG, and IREN due to continued downtrends and negative sentiment. Initiating new short positions in BE and AXTI, which show significant daily drops and strong negative momentum despite some positive news, suggesting underlying weakness. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 10:1
 | 2026-11-02 15:59 | long CRH, long HWM, short LITE, long REGN, long TEM | sold LITE @ $683.63; sold LITE @ $683.63 | Maintaining long positions in CRH, HWM, REGN, and TEM due to strong positive momentum and favorable news. Selling LITE long and initiating a short position due to a significant price drop and negative news regarding an acquisition at a much lower valuation. |
 | 2026-11-02 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-02 15:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-02 15:37 | no answer, nothing changed | none | unreadable answer |
