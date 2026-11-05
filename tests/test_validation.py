@@ -176,6 +176,12 @@ def test_v1_reconciliation_with_fake_sources():
                           "accn": ["a1", "a1", "a2"], "q": "2020Q1"})
     r = v1.reconcile_sec(fixed, lambda q, a: num)
     assert [x["ok"] for x in r["rows"]] == [True, True, False] and not r["pass"]
+    # bug fix 2026-11-05: 52/53-week year ends match SEC's month-end dates, and quarterly net income is not sampled
+    assert {"20210930", "20211001"} <= v1.sec_ddates("2021-10-01") and "20190331" in v1.sec_ddates("2019-03-30")
+    fq = pd.DataFrame({"cik": [1, 1], "concept": ["NetIncomeLoss", "NetIncomeLoss"], "form": "10-K",
+                       "start": pd.to_datetime(["2019-01-01", "2019-10-01"]), "end": pd.to_datetime(["2019-12-31", "2019-12-31"]),
+                       "val": [10.0, 3.0], "filed": pd.to_datetime(["2020-02-20", "2020-02-20"]), "accn": ["a1", "a1b"]})
+    assert list(v1.sample_sec(fq, np.random.default_rng(0))["accn"]).count("a1b") == 0
 
 
 def test_v1_end_to_end_with_fakes(tmp_path, monkeypatch):

@@ -265,6 +265,9 @@ def quarters(first="2017Q1", last="2025Q2"):
 def sample_sec(facts, rng):
     """4 quarters, then 5 first-filed 10-K values of the screened concepts per quarter."""
     r = facts[facts["concept"].isin(list(SEC_CONCEPTS)) & (facts["form"] == "10-K")].copy()
+    if "start" in r:      # bug fix 2026-11-05: net income counts only as a full-year flow, as the screens read it
+        days = (r["end"] - r["start"]).dt.days
+        r = r[(r["concept"] != "NetIncomeLoss") | ((days >= 330) & (days <= 400))]
     r = r.sort_values("filed").drop_duplicates(["cik", "concept", "end"], keep="first")
     r["q"] = r["filed"].dt.to_period("Q").astype(str)
     picks = []
@@ -292,13 +295,20 @@ def fs_values(q, adshs, cache, get=requests.get):
     return num
 
 
+def sec_ddates(end):
+    """The dates SEC's data sets may use for a period end: the date itself, or the month end it is rounded to (a
+    52/53-week year ending 2021-10-01 or 2019-03-30 is filed under 20210930 or 20190331). Bug fix 2026-11-05."""
+    end = pd.Timestamp(end)
+    return {f"{end:%Y%m%d}", f"{end + pd.offsets.MonthEnd(0):%Y%m%d}", f"{end - pd.Timedelta(days=3) + pd.offsets.MonthEnd(0):%Y%m%d}"}
+
+
 def reconcile_sec(sample, fetch_q, tol=0.005):
     rows = []
     for q, g in sample.groupby("q"):
         num = fetch_q(q, g["accn"].unique())
         for _, f in g.iterrows():
             m = num[(num["adsh"] == f["accn"]) & (num["tag"] == f["concept"])
-                    & (num["ddate"] == f"{f['end']:%Y%m%d}") & (num["qtrs"] == str(SEC_CONCEPTS[f["concept"]]))
+                    & (num["ddate"].isin(sec_ddates(f["end"]))) & (num["qtrs"] == str(SEC_CONCEPTS[f["concept"]]))
                     & (num["uom"] == "USD") & (num.get("coreg", "") == "")]
             if "segments" in num:
                 m = m[m["segments"] == ""]
