@@ -46,7 +46,8 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1"}
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1",
+              "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
 def _json(p):
