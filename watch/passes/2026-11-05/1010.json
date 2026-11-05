@@ -1,0 +1,368 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "027152ac68595f2d9f18f8e77e8669980d6ce44929aeabd31c16b9a57a157bf0",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ad663e2fe95c9703a9804eda492e6d1dd574704f4769824f43085c4751b90f11",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "HMH",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "RDW",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "VCYT",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ECC",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "guidance",
+     "symbol": "PBH",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "PCT",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "SLF",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "RDVT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "TDUP",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SSTK",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "72a41f25a930d9520c3f78742c37a399f52af3a44b82e76f6e31d9e4d34d0323",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop, high volume, negative earnings, analyst negative",
+     "stop_pct": 14.0,
+     "symbol": "HMH"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down with positive deal news and analyst upbeat",
+     "stop_pct": 12.0,
+     "symbol": "RDW"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "extreme drop, massive volume, analyst negative, shortable",
+     "stop_pct": 15.0,
+     "symbol": "VCYT"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "7b200a7d0c9fdc301bd7876fc927ba17a23fb3ba12c7b3dafe36b235f1f8d15d"
+  },
+  "reviewer": {
+   "answer_sha256": "4a1a20cb92aac1a9637a1abb0b1f0dfeb496b2bb4b2b63fd5e5722503145fb4b",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "6f52742a3238bdc1eda49091245d5b27bed531b95843132852d80f8189b546f2",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe intraday collapse on massive volume following negative earnings news.",
+     "symbol": "HMH"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive deal news despite sharp intraday dip offers a buy-the-dip opportunity.",
+     "symbol": "RDW"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme 54% drop on massive volume with negative analyst sentiment favors continued downside.",
+     "symbol": "VCYT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.20714,
+   "news": 1,
+   "pace": 9.521,
+   "price": 12.21,
+   "r20": -0.14729,
+   "r5": -0.18776,
+   "short": true,
+   "src": "iex",
+   "symbol": "HMH",
+   "z": -6.178
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.1535,
+   "news": 1,
+   "pace": 6.732,
+   "price": 6.535,
+   "r20": -0.24609,
+   "r5": -0.14317,
+   "short": true,
+   "src": "iex",
+   "symbol": "RDW",
+   "z": -3.915
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.54855,
+   "news": 0,
+   "pace": 42.875,
+   "price": 23.71,
+   "r20": 0.21687,
+   "r5": 0.04393,
+   "short": true,
+   "src": "iex",
+   "symbol": "VCYT",
+   "z": -30.074
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1597,
+   "news": 0,
+   "pace": 13.415,
+   "price": 2.21,
+   "r20": -0.13201,
+   "r5": 0.00382,
+   "short": false,
+   "src": "iex",
+   "symbol": "ECC",
+   "z": -8.861
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.15991,
+   "news": 0,
+   "pace": 3.015,
+   "price": 44.76,
+   "r20": 0.12003,
+   "r5": 0.11488,
+   "short": true,
+   "src": "iex",
+   "symbol": "PBH",
+   "z": -7.707
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.32079,
+   "news": 0,
+   "pace": 15.588,
+   "price": 1.895,
+   "r20": -0.26579,
+   "r5": -0.11987,
+   "short": false,
+   "src": "iex",
+   "symbol": "PCT",
+   "z": -7.364
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.06624,
+   "news": 0,
+   "pace": 8.565,
+   "price": 76.55,
+   "r20": 0.08125,
+   "r5": 0.01398,
+   "short": true,
+   "src": "iex",
+   "symbol": "SLF",
+   "z": -7.226
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14594,
+   "news": 0,
+   "pace": 10.756,
+   "price": 68.325,
+   "r20": 0.02762,
+   "r5": -0.02913,
+   "short": true,
+   "src": "iex",
+   "symbol": "RDVT",
+   "z": -7.113
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.28995,
+   "news": 0,
+   "pace": 11.116,
+   "price": 1.555,
+   "r20": -0.01351,
+   "r5": -0.00455,
+   "short": true,
+   "src": "iex",
+   "symbol": "TDUP",
+   "z": -5.528
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.20413,
+   "news": 0,
+   "pace": 9.172,
+   "price": 3.47,
+   "r20": -0.02461,
+   "r5": -0.01134,
+   "short": true,
+   "src": "iex",
+   "symbol": "SSTK",
+   "z": -5.274
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5108.0484,
+  "PICK-MAIN-coin": 5086.0877,
+  "PICK-PENNY": 476.1979,
+  "PICK-PENNY-coin": 492.7537
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 160,
+  "news": 22,
+  "volume": 752
+ },
+ "flagged": 789,
+ "headline_counts": {
+  "HMH": 3,
+  "PBH": 3,
+  "PCT": 3,
+  "RDVT": 3,
+  "RDW": 3,
+  "SLF": 3,
+  "SSTK": 1,
+  "TDUP": 3,
+  "VCYT": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "b3a390746cf78d70f080a64f835a816c0f1baba09ad5f2eae696c950bf6618a4",
+ "price_sources": {
+  "delayed_sip": 347,
+  "iex": 3052
+ },
+ "priced": 3399,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HMH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RDW"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "VCYT"
+  }
+ ],
+ "slot": "2026-11-05T10:10",
+ "t": "2026-11-05T15:10:21.196531+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T15:10:59.414416Z"
+}
