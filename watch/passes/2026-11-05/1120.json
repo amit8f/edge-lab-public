@@ -1,0 +1,292 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "6914b63826e70bd3003a40676b2746d61845ea018c2c34a7cfb8d54b0d0ffc86",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "c531e70dee5ebecac36b3b13c73c6e161ab143fec2f366fb9359af4176718527",
+   "views": [
+    {
+     "confidence": 60,
+     "event": "other",
+     "symbol": "SNDK",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "VCYT",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "MNTN",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OXLC",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "GIL",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "SLF",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "PCT",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ECC",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "SSTK",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "TDUP",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "error": "QuotaExhausted: groq: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kgtcdj5pemts138hkmtzder9` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 1996",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "46851be2b4dabf7542a3dc80b8cd918fbcca789c02583790928e1e8048537ba8",
+   "quota": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.20472,
+   "news": 1,
+   "pace": 6.185,
+   "price": 825.0201,
+   "r20": -0.38703,
+   "r5": -0.26152,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "SNDK",
+   "z": -4.123
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.5396,
+   "news": 0,
+   "pace": 24.065,
+   "price": 24.18,
+   "r20": 0.21687,
+   "r5": 0.04393,
+   "short": true,
+   "src": "iex",
+   "symbol": "VCYT",
+   "z": -29.332
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.54433,
+   "news": 0,
+   "pace": 37.194,
+   "price": 4.7253,
+   "r20": 0.03184,
+   "r5": 0.07128,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "MNTN",
+   "z": -18.704
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.25844,
+   "news": 0,
+   "pace": 25.969,
+   "price": 4.835,
+   "r20": -0.21046,
+   "r5": -0.00912,
+   "short": false,
+   "src": "iex",
+   "symbol": "OXLC",
+   "z": -16.074
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.237,
+   "news": 0,
+   "pace": 9.448,
+   "price": 33.015,
+   "r20": 0.04872,
+   "r5": 0.08446,
+   "short": true,
+   "src": "iex",
+   "symbol": "GIL",
+   "z": -12.928
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.08112,
+   "news": 0,
+   "pace": 4.005,
+   "price": 75.33,
+   "r20": 0.08125,
+   "r5": 0.01398,
+   "short": true,
+   "src": "iex",
+   "symbol": "SLF",
+   "z": -8.92
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.35484,
+   "news": 0,
+   "pace": 8.045,
+   "price": 1.8,
+   "r20": -0.26579,
+   "r5": -0.11987,
+   "short": false,
+   "src": "iex",
+   "symbol": "PCT",
+   "z": -8.344
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14068,
+   "news": 0,
+   "pace": 8.457,
+   "price": 2.26,
+   "r20": -0.13201,
+   "r5": 0.00382,
+   "short": false,
+   "src": "iex",
+   "symbol": "ECC",
+   "z": -7.721
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.25688,
+   "news": 0,
+   "pace": 3.988,
+   "price": 3.24,
+   "r20": -0.02461,
+   "r5": -0.01134,
+   "short": true,
+   "src": "iex",
+   "symbol": "SSTK",
+   "z": -6.858
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.31963,
+   "news": 0,
+   "pace": 6.003,
+   "price": 1.49,
+   "r20": -0.01351,
+   "r5": -0.00455,
+   "short": true,
+   "src": "iex",
+   "symbol": "TDUP",
+   "z": -6.218
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5070.0784,
+  "PICK-MAIN-coin": 5065.643,
+  "PICK-PENNY": 473.5324,
+  "PICK-PENNY-coin": 496.542
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 263,
+  "news": 14,
+  "volume": 443
+ },
+ "flagged": 575,
+ "headline_counts": {
+  "GIL": 3,
+  "MNTN": 3,
+  "OXLC": 1,
+  "PCT": 3,
+  "SLF": 3,
+  "SNDK": 3,
+  "SSTK": 1,
+  "TDUP": 3,
+  "VCYT": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "743ca59132b73841b3754e4435546e084c3ca4b5f46c2afb0cfe43a4b7a4e7d0",
+ "price_sources": {
+  "delayed_sip": 229,
+  "iex": 3172
+ },
+ "priced": 3401,
+ "risk": [],
+ "slot": "2026-11-05T11:20",
+ "t": "2026-11-05T16:20:20.930703+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T16:20:28.138045Z"
+}
