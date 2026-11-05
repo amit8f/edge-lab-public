@@ -1,0 +1,290 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "e5bbf3b053017d50eeb855a7b5eac3d33f13eb24793522e12f7c037cb48a0236",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "144ebe5416eb099fcbf61cfc0191c39997eb3a771a1ae38e6105e41e8d1aca9a",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "MLR",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "guidance",
+     "symbol": "ONT",
+     "tone": -1
+    },
+    {
+     "confidence": 60,
+     "event": "earnings",
+     "symbol": "NWS",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "OEC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CYTK",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "DAVE",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ACDC",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "NAGE",
+     "tone": 2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ALTO",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "KEEL",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "cd6e283fa018b36e1edb615e7f95d8eeb3e2bff8d5da6f6c3be7aa6499029484",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.08604,
+   "news": 0,
+   "pace": 4.795,
+   "price": 47.59,
+   "r20": -0.01847,
+   "r5": 0.00638,
+   "short": true,
+   "src": "iex",
+   "symbol": "MLR",
+   "z": -7.328
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.20149,
+   "news": 0,
+   "pace": 3.498,
+   "price": 19.38,
+   "r20": 0.13432,
+   "r5": 0.10859,
+   "short": true,
+   "src": "iex",
+   "symbol": "ONT",
+   "z": 6.956
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.10302,
+   "news": 0,
+   "pace": 3.821,
+   "price": 29.95,
+   "r20": 0.05933,
+   "r5": 0.04295,
+   "short": true,
+   "src": "iex",
+   "symbol": "NWS",
+   "z": -6.819
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14225,
+   "news": 0,
+   "pace": 3.316,
+   "price": 5.035,
+   "r20": 0.02622,
+   "r5": 0.07313,
+   "short": false,
+   "src": "iex",
+   "symbol": "OEC",
+   "z": -6.594
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.10778,
+   "news": 0,
+   "pace": 11.282,
+   "price": 56.745,
+   "r20": 0.04058,
+   "r5": 0.03786,
+   "short": true,
+   "src": "iex",
+   "symbol": "CYTK",
+   "z": -6.517
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.22546,
+   "news": 0,
+   "pace": 10.301,
+   "price": 260.415,
+   "r20": -0.02494,
+   "r5": 0.04193,
+   "short": true,
+   "src": "iex",
+   "symbol": "DAVE",
+   "z": -6.347
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19395,
+   "news": 0,
+   "pace": 3.788,
+   "price": 3.2,
+   "r20": -0.16771,
+   "r5": -0.20441,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACDC",
+   "z": -4.295
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.08929,
+   "news": 0,
+   "pace": 4.063,
+   "price": 2.295,
+   "r20": -0.07353,
+   "r5": -0.00787,
+   "short": true,
+   "src": "iex",
+   "symbol": "NAGE",
+   "z": -3.147
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06429,
+   "news": 0,
+   "pace": 4.409,
+   "price": 3.725,
+   "r20": -0.03978,
+   "r5": -0.04372,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALTO",
+   "z": 2.844
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.16429,
+   "news": 0,
+   "pace": 3.754,
+   "price": 1.755,
+   "r20": -0.36937,
+   "r5": -0.1358,
+   "short": true,
+   "src": "iex",
+   "symbol": "KEEL",
+   "z": -2.745
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5101.3041,
+  "PICK-MAIN-coin": 5076.5966,
+  "PICK-PENNY": 475.7811,
+  "PICK-PENNY-coin": 493.1291
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 170,
+  "news": 16,
+  "volume": 683
+ },
+ "flagged": 724,
+ "headline_counts": {
+  "ACDC": 3,
+  "ALTO": 3,
+  "CYTK": 3,
+  "DAVE": 3,
+  "KEEL": 3,
+  "MLR": 3,
+  "NAGE": 3,
+  "NWS": 3,
+  "OEC": 2,
+  "ONT": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "4c2a6770c6a08ed571833f67fea792a337b3c42927663a19fb1c33777e5deb89",
+ "price_sources": {
+  "delayed_sip": 454,
+  "iex": 2946
+ },
+ "priced": 3400,
+ "risk": [],
+ "slot": "2026-11-05T10:20",
+ "t": "2026-11-05T15:20:20.396281+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T15:20:37.826007Z"
+}
