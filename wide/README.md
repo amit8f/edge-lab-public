@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 14:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8705.00 | -12.95% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C's picks | $9030.62 | -9.69% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
-| C's prompt on Groq (K7) | $7256.66 | -27.43% | 326 | 71 | long APP, short CIFR, long EXPE, long HCA, short SNDK |
-| Coin flip on C-groq's picks | $9083.64 | -9.16% | 326 | 161 | long APP, long CIFR, short EXPE, long HCA, long SNDK |
-| C-groq's answers, acted on once a day (K8) | $9561.61 | -4.38% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
-| Coin flip on C-groq-slow's picks | $9963.25 | -0.37% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
-| C's answers, acted on once a day (K8) | $9707.14 | -2.93% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
-| Coin flip on C-slow's picks | $10392.68 | +3.93% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
-| Just hold SPY | $9591.26 | -4.09% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8741.78 | -12.58% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C's picks | $9007.26 | -9.93% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
+| C's prompt on Groq (K7) | $7258.86 | -27.41% | 326 | 71 | long APP, short CIFR, long EXPE, long HCA, short SNDK |
+| Coin flip on C-groq's picks | $9054.95 | -9.45% | 326 | 161 | long APP, long CIFR, short EXPE, long HCA, long SNDK |
+| C-groq's answers, acted on once a day (K8) | $9555.81 | -4.44% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
+| Coin flip on C-groq-slow's picks | $9966.10 | -0.34% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
+| C's answers, acted on once a day (K8) | $9696.33 | -3.04% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
+| Coin flip on C-slow's picks | $10381.15 | +3.81% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
+| Just hold SPY | $9576.15 | -4.24% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-05 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 13:57 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show strong bearish momentum amidst a broader tech/AI sector sell-off. |
 | 2026-11-05 13:47 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as the AI/tech sector continues its significant downturn, with all current holdings showing strong bearish momentum and negative news catalysts. |
 | 2026-11-05 13:37 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as the market continues to show strong bearish momentum, particularly in the AI/tech sector, with many stocks experiencing significant daily and weekly declines supported by negative news and technical breakdowns. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:5
 | 2026-11-03 13:17 | long BE, long CIFR, long HWM, long REGN, long WULF | none | Maintaining all existing long positions as they are profitable and show continued positive momentum or strong underlying trends. No new positions are opened as the account is at its maximum of 5 positions. |
 | 2026-11-03 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 12:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-03 12:47 | no answer, nothing changed | none | unreadable answer |
