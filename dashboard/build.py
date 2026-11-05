@@ -530,6 +530,19 @@ def arm_picks(root, day, rows=()):
             live = _hi_so_far(rows, arm)
             if live:
                 out[arm] = live
+    ag = _json(root / "nx3agent" / "days" / f"{day}.json") or {}      # NX3-AGENT: Gemini's TAKE / SKIP / FLIP on each fired event
+    if ag.get("events"):
+        ast2 = _json(root / "nx3agent" / "settled" / f"{day}.json") or {}
+        tnet = {(t["symbol"], t.get("role")): t.get("net") for t in ast2.get("trades", [])}
+        picks = {}
+        for p in ag["events"]:
+            act = p.get("action") or "TAKE"
+            if act == "SKIP" or p.get("side") is None:
+                continue
+            flip = act == "FLIP"
+            picks[p["symbol"]] = {"side": -p["side"] if flip else p["side"], "w": p.get("w"), "action": act,
+                                  "net": tnet.get((p["symbol"], "flip" if flip else "tree"))}
+        out["AGENT"] = picks
     return out
 
 

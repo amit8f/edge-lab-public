@@ -177,3 +177,17 @@ def test_hi_books_live_picks_and_open_marks():
     B.mark_open_nx3(books, [day])
     assert books[0]["open"] == 1 and abs(books[0]["pnl_pct"] - 1.0) < 1e-9      # 500 * 10% = 50 on 5,000
     assert books[1]["open"] == 1 and abs(books[1]["pnl_pct"] - 1.0) < 1e-9      # 5000 * 0.1 * 10% = 50
+
+
+def test_agent_arm_picks_take_skip_flip(tmp_path):
+    (tmp_path / "nx3agent" / "days").mkdir(parents=True)
+    (tmp_path / "nx3agent" / "settled").mkdir(parents=True)
+    ev = [{"symbol": "AAA", "side": 1, "w": 0.01, "action": "TAKE"}, {"symbol": "BBB", "side": 1, "w": 0.01, "action": "SKIP"},
+          {"symbol": "CCC", "side": -1, "w": 0.01, "action": "FLIP"}]
+    (tmp_path / "nx3agent" / "days" / "2026-11-05.json").write_text(json.dumps({"events": ev}))
+    (tmp_path / "nx3agent" / "settled" / "2026-11-05.json").write_text(json.dumps({"trades": [
+        {"symbol": "AAA", "role": "tree", "net": 0.02}, {"symbol": "CCC", "role": "flip", "net": -0.01}]}))
+    out = B.arm_picks(tmp_path, "2026-11-05")["AGENT"]
+    assert list(out) == ["AAA", "CCC"]
+    assert out["AAA"]["side"] == 1 and out["AAA"]["net"] == 0.02
+    assert out["CCC"]["side"] == 1 and out["CCC"]["net"] == -0.01          # flipped short becomes a long
