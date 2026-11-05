@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8639.68 | -13.60% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C's picks | $9024.87 | -9.75% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
-| C's prompt on Groq (K7) | $7198.88 | -28.01% | 325 | 71 | long APP, short AXTI, short CIFR, long EXPE, long HCA |
-| Coin flip on C-groq's picks | $9089.06 | -9.11% | 325 | 161 | long APP, short AXTI, long CIFR, short EXPE, long HCA |
-| C-groq's answers, acted on once a day (K8) | $9546.96 | -4.53% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
-| Coin flip on C-groq-slow's picks | $10008.86 | +0.09% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
-| C's answers, acted on once a day (K8) | $9705.50 | -2.95% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
-| Coin flip on C-slow's picks | $10382.11 | +3.82% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
-| Just hold SPY | $9632.15 | -3.68% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8685.62 | -13.14% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C's picks | $9002.59 | -9.97% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
+| C's prompt on Groq (K7) | $7217.53 | -27.82% | 326 | 71 | long APP, short CIFR, long EXPE, long HCA, short SNDK |
+| Coin flip on C-groq's picks | $9074.83 | -9.25% | 326 | 161 | long APP, long CIFR, short EXPE, long HCA, long SNDK |
+| C-groq's answers, acted on once a day (K8) | $9576.17 | -4.24% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
+| Coin flip on C-groq-slow's picks | $9976.73 | -0.23% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
+| C's answers, acted on once a day (K8) | $9710.33 | -2.90% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
+| Coin flip on C-slow's picks | $10391.81 | +3.92% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
+| Just hold SPY | $9621.60 | -3.78% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-05 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 12:07 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show strong negative momentum, driven by sector-wide sell-offs and specific negative news for some. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 12:2
 | 2026-11-03 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 11:37 | long ETN, long FN, long HWM, long MPWR, long REGN | sold TEM @ $79.06; bought MPWR @ $1,339.75 | Maintained existing long positions in ETN, FN, HWM, and REGN due to continued positive momentum and news. Sold TEM due to recent price drop and replaced it with a new long position in MPWR, which shows strong daily and weekly gains. |
 | 2026-11-03 11:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-03 11:17 | no answer, nothing changed | none | unreadable answer |
