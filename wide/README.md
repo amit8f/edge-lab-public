@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8726.29 | -12.74% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C's picks | $9020.20 | -9.80% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
-| C's prompt on Groq (K7) | $7244.54 | -27.55% | 326 | 71 | long APP, short CIFR, long EXPE, long HCA, short SNDK |
-| Coin flip on C-groq's picks | $9063.72 | -9.36% | 326 | 161 | long APP, long CIFR, short EXPE, long HCA, long SNDK |
-| C-groq's answers, acted on once a day (K8) | $9580.55 | -4.19% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
-| Coin flip on C-groq-slow's picks | $9948.33 | -0.52% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
-| C's answers, acted on once a day (K8) | $9696.78 | -3.03% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
-| Coin flip on C-slow's picks | $10375.15 | +3.75% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
-| Just hold SPY | $9584.03 | -4.16% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8738.27 | -12.62% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C's picks | $9021.30 | -9.79% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
+| C's prompt on Groq (K7) | $7271.23 | -27.29% | 326 | 71 | long APP, short CIFR, long EXPE, long HCA, short SNDK |
+| Coin flip on C-groq's picks | $9066.83 | -9.33% | 326 | 161 | long APP, long CIFR, short EXPE, long HCA, long SNDK |
+| C-groq's answers, acted on once a day (K8) | $9590.09 | -4.10% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
+| Coin flip on C-groq-slow's picks | $9934.18 | -0.66% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
+| C's answers, acted on once a day (K8) | $9709.95 | -2.90% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
+| Coin flip on C-slow's picks | $10392.29 | +3.92% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
+| Just hold SPY | $9592.43 | -4.08% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-05 13:47 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as the AI/tech sector continues its significant downturn, with all current holdings showing strong bearish momentum and negative news catalysts. |
 | 2026-11-05 13:37 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as the market continues to show strong bearish momentum, particularly in the AI/tech sector, with many stocks experiencing significant daily and weekly declines supported by negative news and technical breakdowns. |
 | 2026-11-05 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 13:17 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:3
 | 2026-11-03 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 12:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 12:38 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-03 12:27 | no answer, nothing changed | none | unreadable answer |
