@@ -225,3 +225,29 @@ def test_highbar_stage_writes_the_report(tmp_path, monkeypatch):
     rep = json.loads((tmp_path / "out" / "NX3HI_walkforward.json").read_text())
     assert set(rep["bars"]) == {"1.0", "1.5"} and rep["verdict"] in ("passed", "failed")
     assert "minus_nx3_shared_days" in rep["bars"]["1.5"] and "minus_nx3_shared_days" not in rep["bars"]["1.0"]
+
+
+def test_a_bar_per_side_filters_and_only_keeps_one_side():
+    day = pd.DataFrame({"t": pd.date_range("2024-03-04 09:31", periods=6, freq="min"),
+                        "e": [0.012, 0.03, -0.012, -0.03, 0.02, -0.02], "fired": True, "ret": 0.0})
+    rng = np.random.default_rng(1)
+    p, _ = X.picks(day, rng, hi=(1.0, 2.0), cut=0.01)          # longs from the line, shorts need 2.0x
+    assert sorted(p["e"].tolist()) == [-0.03, -0.02, 0.012, 0.02, 0.03]
+    p, _ = X.picks(day, rng, hi=(2.0, 1.0), cut=0.01, only=-1)
+    assert (p["side"] == -1).all() and len(p) == 3
+
+
+def test_bars_stage_writes_the_trade_table_and_the_report(tmp_path, monkeypatch):
+    ev = events(1.5, seed=3).assign(next=pd.Timestamp("2019-01-01"), symbol="AAA")
+    d3 = X.nx3dir(str(tmp_path))
+    (d3 / X.TRADES).mkdir(parents=True)
+    ev.to_parquet(d3 / X.TRADES / "t_0.parquet")
+    monkeypatch.setattr(X, "calendar", lambda cache: CAL)
+    monkeypatch.setattr(pd, "read_parquet", lambda f: ev.copy())
+    monkeypatch.setattr(N, "TEST_YEARS", [2019])
+    X.stage_bars(str(tmp_path), tmp_path / "out", grid=(1.0, 1.5))
+    rep = json.loads((tmp_path / "out" / "NX3BARS_walkforward.json").read_text())
+    assert rep["chosen_bars_by_year"]["2019"] == {"long_bar": 1.0, "short_bar": 1.0}      # no earlier year: default
+    assert set(rep["result_by_confidence_bucket"]) == {"long", "short"} and rep["verdict"] in ("passed", "failed")
+    tab = pd.read_csv(tmp_path / "out" / "NX3_fired_trades.csv")
+    assert list(tab.columns) == ["d", "symbol", "side", "conf", "net", "year"] and set(tab["side"]) <= {"long", "short"}

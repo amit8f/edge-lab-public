@@ -171,13 +171,22 @@ class Model:
         return (np.abs(e) >= self.cut) & (np.abs(e) > 0)
 
 
-def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None):
+def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None, only=None):
     """Fired events in time order: the first `cap` with e > 0 go long, the first `cap` with e < 0 short
-    (cap None: all of them, NX3-ALL). Control: as many of the day's real events at random, same sides."""
+    (cap None: all of them, NX3-ALL). Control: as many of the day's real events at random, same sides.
+    hi: NX3-HI bar (research/prereg/NX3HI.md): only confidence |e|/cut >= hi takes a slot; a pair (long bar,
+    short bar) sets a bar per side (NX3-BARS, research/prereg/NX3BARS.md). only: 1 or -1 keeps one side."""
     f = day[day["fired"]].sort_values("t", kind="stable")
-    if hi > 1.0:      # NX3-HI (research/prereg/NX3HI.md): only confidence |e|/cut >= hi takes a slot
-        f = f[f[col].abs() >= hi * cut]
+    hl, hs = hi if isinstance(hi, tuple) else (hi, hi)
     lo, sh = f[f[col] > 0], f[f[col] < 0]
+    if hl > 1.0:
+        lo = lo[lo[col].abs() >= hl * cut]
+    if hs > 1.0:
+        sh = sh[sh[col].abs() >= hs * cut]
+    if only == 1:
+        sh = sh.iloc[0:0]
+    if only == -1:
+        lo = lo.iloc[0:0]
     if cap is not None:
         lo, sh = lo.head(cap), sh.head(cap)
     p = pd.concat([lo.assign(side=1), sh.assign(side=-1)])
@@ -213,7 +222,7 @@ def importance(model):
     return {g: float(sum(by.get(k, 0.0) for k in ks)) for g, ks in GROUPS.items()}
 
 
-def evaluate(te, model, seed, cap=PICKS, hi=1.0):
+def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None):
     real = te[te["kind"] == "real"]
     e = model.effect(real[INPUTS].to_numpy(float))
     real = real.assign(e=e, fired=model.fires(e))
@@ -222,10 +231,10 @@ def evaluate(te, model, seed, cap=PICKS, hi=1.0):
     rng = np.random.default_rng(seed)
     rows, pk = [], []
     for d, day in real.groupby("d", sort=True):
-        p, c = picks(day, rng, cap=cap, hi=hi, cut=model.cut)
+        p, c = picks(day, rng, cap=cap, hi=hi, cut=model.cut, only=only)
         if p.empty or c.empty:
             continue
-        s, _ = picks(shuffled(day, model, rng), rng, cap=cap, hi=hi, cut=model.cut)
+        s, _ = picks(shuffled(day, model, rng), rng, cap=cap, hi=hi, cut=model.cut, only=only)
         pn = N.net(p).mean()
         row = {"d": d, "pick_minus_control": pn - N.net(c).mean(),
                "pick_minus_shuffled": pn - N.net(s).mean() if len(s) else np.nan}
@@ -604,9 +613,88 @@ def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0), uncapped=False):
     print(json.dumps(rep, indent=1, default=float))
 
 
+BAR_GRID = (1.0, 1.25, 1.5, 2.0, 2.5)
+BUCKETS = [(1.0, 1.25), (1.25, 1.5), (1.5, 2.0), (2.0, 2.5), (2.5, 99.0)]
+MIN_PICK_DAYS = 30
+
+
+def stage_bars(cache, out, grid=BAR_GRID):
+    """NX3-BARS (research/prereg/NX3BARS.md): (1) NX3_fired_trades.csv, every event the walk-forward models fire in the
+    test years with side, confidence |e|/cut and the net result until the exit (no headlines); (2) result by confidence
+    bucket and side (descriptive); (3) the registered test: for each test year the long bar and the short bar are the
+    grid values with the best mean daily pick-minus-control over EARLIER test years only (default 1.0 until a bar has
+    MIN_PICK_DAYS pick days), then that year is scored with them. Pooled series vs NX3 (1.0, 1.0) on shared days."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    table, hist, years = [], {}, []
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        model = Model(tr)
+        years.append((yr, te, model))
+        real = te[te["kind"] == "real"]
+        e = model.effect(real[INPUTS].to_numpy(float))
+        fired = real.assign(e=e, fired=model.fires(e))
+        fired = fired[fired["fired"]]
+        side = np.where(fired["e"] > 0, 1, -1)
+        t = fired.assign(side=side, conf=np.abs(fired["e"]) / model.cut)
+        t["net"] = N.net(t)
+        table.append(t[["d", "symbol", "side", "conf", "net"]].assign(year=yr))
+        for s_ in (1, -1):
+            for b in grid:
+                n, _, _, _ = evaluate(te, model, SEED + yr, PICKS, hi=b, only=s_)
+                hist[(yr, s_, b)] = n["pick_minus_control"].to_numpy(float) if len(n) else np.zeros(0)
+    tab = pd.concat(table, ignore_index=True) if table else pd.DataFrame(columns=["d", "symbol", "side", "conf", "net", "year"])
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    tab.assign(side=tab["side"].map({1: "long", -1: "short"})).round(6).to_csv(out / "NX3_fired_trades.csv", index=False)
+    buckets = {}
+    for s_, name in ((1, "long"), (-1, "short")):
+        g = tab[tab["side"] == s_]
+        buckets[name] = {f"{lo}-{hi}": {"n": int(len(x)), "mean_net": float(x["net"].mean()) if len(x) else None}
+                         for lo, hi in BUCKETS for x in [g[(g["conf"] >= lo) & (g["conf"] < hi)]]}
+    chosen, daily, base = {}, [], []
+    for yr, te, model in years:
+        bl, bs = 1.0, 1.0
+        for s_ in (1, -1):
+            best, best_m = 1.0, -np.inf
+            for b in grid:
+                past = np.concatenate([hist[(y, s_, b)] for y, _, _ in years if y < yr] or [np.zeros(0)])
+                if len(past) >= MIN_PICK_DAYS and past.mean() > best_m:
+                    best, best_m = b, float(past.mean())
+            if s_ == 1:
+                bl = best
+            else:
+                bs = best
+        chosen[str(yr)] = {"long_bar": bl, "short_bar": bs}
+        n, _, _, _ = evaluate(te, model, SEED + yr, PICKS, hi=(bl, bs))
+        b0, _, _, _ = evaluate(te, model, SEED + yr, PICKS, hi=1.0)
+        if len(n):
+            daily.append(n[["d", "pick_minus_control"]].assign(year=yr))
+        if len(b0):
+            base.append(b0[["d", "pick_minus_control"]].assign(year=yr))
+    cat = lambda fr: pd.concat(fr, ignore_index=True) if fr else pd.DataFrame(columns=["d", "pick_minus_control", "year"])  # noqa: E731
+    a, b0 = cat(daily), cat(base)
+    m = a.merge(b0, on="d", suffixes=("", "_nx3"))
+    rep = {"chosen_bars_by_year": chosen, "pooled_pick_minus_control": tstat(a["pick_minus_control"].to_numpy(float)),
+           "pick_days": int(len(a)), "nx3_same_rule_pick_minus_control": tstat(b0["pick_minus_control"].to_numpy(float)),
+           "minus_nx3_shared_days": tstat((m["pick_minus_control"] - m["pick_minus_control_nx3"]).to_numpy(float))
+           if len(m) else None, "result_by_confidence_bucket": buckets, "pass_t": ALL_PASS_T}
+    pm = rep["pooled_pick_minus_control"]
+    rep["verdict"] = "passed" if pm["mean"] > 0 and pm["t_nw"] >= ALL_PASS_T else "failed"
+    (out / "NX3BARS_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -623,6 +711,9 @@ def main():
         return
     if a.stage == "highbar_all":
         stage_highbar(a.cache, a.out, uncapped=True)
+        return
+    if a.stage == "bars":
+        stage_bars(a.cache, a.out)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
