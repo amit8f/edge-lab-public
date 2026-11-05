@@ -1,0 +1,689 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "38631a07a1116827d53e01ee0998096469705d6deeeba790f40b7507eddc05dc",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "d162297dc638501582a8fe665f420eb7cc92bf75448cee3dc0edf4b0e4bb93e2",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "MLR",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "STRA",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "RDVT",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "NTGR",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "PGNY",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CAI",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DGXX",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "EARN",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GSIT",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "TROX",
+     "tone": -2
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "5b34398b46790c06ee8bee938507b0554806cc7de241903b453cf3cccc19feba",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong negative move, earnings miss, high volume, shortable",
+     "stop_pct": 12.0,
+     "symbol": "MLR"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop, earnings miss, high volume, shortable",
+     "stop_pct": 12.0,
+     "symbol": "STRA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst positive tone despite price fall, potential rebound",
+     "stop_pct": 13.0,
+     "symbol": "RDVT"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings surprise, high volume, shortable",
+     "stop_pct": 12.0,
+     "symbol": "NTGR"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong positive move, analyst upbeat, momentum",
+     "stop_pct": 12.0,
+     "symbol": "PGNY"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Huge decline, earnings miss, shortable",
+     "stop_pct": 12.0,
+     "symbol": "CAI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal, neutral tone",
+     "stop_pct": 0.0,
+     "symbol": "DGXX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable and no positive signal",
+     "stop_pct": 0.0,
+     "symbol": "EARN"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Heavy decline, shortable, neutral tone",
+     "stop_pct": 12.0,
+     "symbol": "GSIT"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop, negative tone, shortable",
+     "stop_pct": 12.0,
+     "symbol": "TROX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "WEN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ABOS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AMC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AMTX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ARKO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CHRS"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "c0f073e20d392d6f902a80e1769ab87876105cdea175295eaabbbd2ff97d0447"
+  },
+  "reviewer": {
+   "answer_sha256": "930b7dd28e45868aca119b4b2370991cb743e82e75fdf748a4c204e0c1089cea",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "0ad51fad5febcd1b7c61dea96abaa8469e403bc376b145705c8e37f640298749",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive drop on high volume with negative earnings tone supports short proposal.",
+     "symbol": "MLR"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selloff on high volume and negative earnings sentiment aligns with short proposal.",
+     "symbol": "STRA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Deep oversold bounce opportunity despite earnings/analyst pullback.",
+     "symbol": "RDVT"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant gap down with strong volume pace and negative earnings catalyst.",
+     "symbol": "NTGR"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and volume support continuation of long trend.",
+     "symbol": "PGNY"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe drop of 20% on high volume following negative earnings.",
+     "symbol": "CAI"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continued sharp downtrend with high volume pacing.",
+     "symbol": "GSIT"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weak price action and negative earnings sentiment justify short side.",
+     "symbol": "TROX"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09257,
+   "news": 0,
+   "pace": 3.155,
+   "price": 47.25,
+   "r20": -0.01847,
+   "r5": 0.00638,
+   "short": true,
+   "src": "iex",
+   "symbol": "MLR",
+   "z": -7.913
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1355,
+   "news": 0,
+   "pace": 4.165,
+   "price": 64.25,
+   "r20": -0.07883,
+   "r5": -0.04165,
+   "short": true,
+   "src": "iex",
+   "symbol": "STRA",
+   "z": -7.37
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.13987,
+   "news": 0,
+   "pace": 5.448,
+   "price": 68.81,
+   "r20": 0.02762,
+   "r5": -0.02913,
+   "short": true,
+   "src": "iex",
+   "symbol": "RDVT",
+   "z": -6.794
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1362,
+   "news": 0,
+   "pace": 3.573,
+   "price": 19.28,
+   "r20": -0.03377,
+   "r5": -0.04981,
+   "short": true,
+   "src": "iex",
+   "symbol": "NTGR",
+   "z": -6.721
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.13887,
+   "news": 0,
+   "pace": 3.585,
+   "price": 34.28,
+   "r20": 0.09256,
+   "r5": 0.08001,
+   "short": true,
+   "src": "iex",
+   "symbol": "PGNY",
+   "z": 6.569
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.20229,
+   "news": 0,
+   "pace": 3.132,
+   "price": 26.5,
+   "r20": 0.22583,
+   "r5": -0.06291,
+   "short": true,
+   "src": "iex",
+   "symbol": "CAI",
+   "z": -6.48
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.15187,
+   "news": 0,
+   "pace": 3.155,
+   "price": 1.815,
+   "r20": -0.35928,
+   "r5": -0.1371,
+   "short": true,
+   "src": "iex",
+   "symbol": "DGXX",
+   "z": -3.386
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.0758,
+   "news": 0,
+   "pace": 3.497,
+   "price": 3.17,
+   "r20": 0.00764,
+   "r5": -0.05717,
+   "short": false,
+   "src": "iex",
+   "symbol": "EARN",
+   "z": -3.262
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14011,
+   "news": 0,
+   "pace": 3.509,
+   "price": 3.13,
+   "r20": -0.32405,
+   "r5": -0.19111,
+   "short": true,
+   "src": "iex",
+   "symbol": "GSIT",
+   "z": -3.18
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.14507,
+   "news": 0,
+   "pace": 2.119,
+   "price": 3.035,
+   "r20": -0.04313,
+   "r5": -0.0457,
+   "short": true,
+   "src": "iex",
+   "symbol": "TROX",
+   "z": -4.869
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5090.4234,
+  "PICK-MAIN-coin": 5067.6527,
+  "PICK-PENNY": 473.1506,
+  "PICK-PENNY-coin": 495.9272
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 324,
+  "news": 51,
+  "volume": 480
+ },
+ "flagged": 672,
+ "headline_counts": {
+  "CAI": 3,
+  "MLR": 3,
+  "NTGR": 3,
+  "PGNY": 3,
+  "RDVT": 3,
+  "STRA": 2,
+  "TROX": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "c7775b8d34ffc8315c4fb5f2c169535be1c411d2edb3b7699100c3b6e15438d0",
+ "price_sources": {
+  "delayed_sip": 197,
+  "iex": 3204
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MLR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "STRA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RDVT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NTGR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PGNY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CAI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GSIT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TROX"
+  }
+ ],
+ "slot": "2026-11-05T11:10",
+ "t": "2026-11-05T16:10:20.288793+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T16:11:00.669089Z"
+}
