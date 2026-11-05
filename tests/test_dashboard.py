@@ -162,3 +162,18 @@ def test_nx3all_has_no_provisional_picks_before_its_first_day(tmp_path):
     rows = [{"symbol": "A", "t": "2026-10-30T09:31", "e": 9.9, "fired": True, "etb": True}]
     assert "ALL" not in B.arm_picks(tmp_path, "2026-10-30", rows)
     assert "ALL" in B.arm_picks(tmp_path, "2026-11-02", rows)
+
+
+def test_hi_books_live_picks_and_open_marks():
+    cut = float(json.loads(Path("research/results/NX3/nx3_v1_meta.json").read_text())["fire_cut"])
+    rows = [{"symbol": "AAA", "t": "2026-11-05T09:30:00", "fired": True, "e": 2.0 * cut, "etb": True},
+            {"symbol": "BBB", "t": "2026-11-05T09:31:00", "fired": True, "e": 1.2 * cut, "etb": True},   # fires but below 1.5
+            {"symbol": "CCC", "t": "2026-11-05T09:32:00", "fired": True, "e": -1.8 * cut, "etb": False}]  # hard to borrow
+    hi = B._hi_so_far(rows, "HI")
+    assert list(hi) == ["AAA"] and hi["AAA"]["side"] == 1
+    assert list(B._hi_so_far(rows, "ALLHI")) == ["AAA"]
+    day = {"settled": False, "events": [{"entry_iex": 10.0, "last_price": 11.0, "arms": {"HI": {"side": 1}, "ALLHI": {"side": 1, "w": 0.1}}}]}
+    books = [{"name": "NX3-HI", "size": 5000.0, "realized": 0.0}, {"name": "NX3-ALL-HI", "size": 5000.0, "realized": 0.0}]
+    B.mark_open_nx3(books, [day])
+    assert books[0]["open"] == 1 and abs(books[0]["pnl_pct"] - 1.0) < 1e-9      # 500 * 10% = 50 on 5,000
+    assert books[1]["open"] == 1 and abs(books[1]["pnl_pct"] - 1.0) < 1e-9      # 5000 * 0.1 * 10% = 50
