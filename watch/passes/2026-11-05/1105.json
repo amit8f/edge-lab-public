@@ -1,0 +1,597 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "2262658084e7fb146094f5d7e58b82f01b16685d79ffb7d789e31b9bc2c606da",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "be7e6cfd22b96c19bc646e28625e4fd4857c241baa10311dd4582a1beda73417",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "WMS",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ARDT",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "MU",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "AMD",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "OEC",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "XERS",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "AMC",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "KOPN",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ASG",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "HYLN",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4fb6c220a88f1e132ff90ead14764e8aa56ad1b52f25d58e39390fd1542b0aa1",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp 12% drop, negative analyst tone, shortable",
+     "stop_pct": 1.0,
+     "symbol": "WMS"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong 19% rally, positive analyst tone, bullish outlook",
+     "stop_pct": 1.0,
+     "symbol": "ARDT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "15% decline, negative tone, shortable",
+     "stop_pct": 1.0,
+     "symbol": "MU"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "16% fall, negative tone, shortable",
+     "stop_pct": 1.0,
+     "symbol": "AMD"
+    },
+    {
+     "confidence": 90,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop but not shortable and negative tone",
+     "stop_pct": 0.0,
+     "symbol": "OEC"
+    },
+    {
+     "confidence": 90,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Huge 27% rise, positive tone but reversal risk",
+     "stop_pct": 0.0,
+     "symbol": "XERS"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10% drop, negative tone, shortable",
+     "stop_pct": 1.0,
+     "symbol": "AMC"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "20% plunge, shortable",
+     "stop_pct": 1.0,
+     "symbol": "KOPN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Modest decline, not shortable",
+     "stop_pct": 0.0,
+     "symbol": "ASG"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "13% fall, shortable",
+     "stop_pct": 1.0,
+     "symbol": "HYLN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "79c1320403a4d64f023684ea3fb6d2ec160f998f34740acbff94fa3e34a64fc6"
+  },
+  "reviewer": {
+   "answer_sha256": "4f3034575abebdf63d61d695179590ea5830ae0ae5851521a059fa2301cd4855",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "47aca1d7de025bc56df3b1c9b677c9a824a2fb9f5344c41bd3993dc5d77edf96",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selling on earnings miss with high volume pace.",
+     "symbol": "WMS"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive earnings reaction with heavy volume.",
+     "symbol": "ARDT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continuing downward momentum on heavy volume.",
+     "symbol": "MU"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp drop on negative product news and heavy volume.",
+     "symbol": "AMD"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Pulling back sharply on negative earnings tone.",
+     "symbol": "AMC"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe downward price action with elevated volume.",
+     "symbol": "KOPN"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong selling pressure and high volume pace.",
+     "symbol": "HYLN"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.1239,
+   "news": 1,
+   "pace": 4.226,
+   "price": 126.22,
+   "r20": 0.14269,
+   "r5": 0.10729,
+   "short": true,
+   "src": "iex",
+   "symbol": "WMS",
+   "z": -6.727
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.19053,
+   "news": 1,
+   "pace": 6.842,
+   "price": 15.465,
+   "r20": 0.19393,
+   "r5": 0.08885,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARDT",
+   "z": 5.769
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.15402,
+   "news": 1,
+   "pace": 4.698,
+   "price": 672.745,
+   "r20": -0.26898,
+   "r5": -0.19121,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "MU",
+   "z": -4.081
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.16333,
+   "news": 1,
+   "pace": 5.906,
+   "price": 408.95,
+   "r20": -0.24321,
+   "r5": -0.155,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMD",
+   "z": -3.831
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.17376,
+   "news": 0,
+   "pace": 3.193,
+   "price": 4.85,
+   "r20": 0.02622,
+   "r5": 0.07313,
+   "short": false,
+   "src": "iex",
+   "symbol": "OEC",
+   "z": -8.203
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.2696,
+   "news": 0,
+   "pace": 9.628,
+   "price": 13.28,
+   "r20": 0.03462,
+   "r5": -0.01692,
+   "short": true,
+   "src": "iex",
+   "symbol": "XERS",
+   "z": 7.821
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.10653,
+   "news": 0,
+   "pace": 3.812,
+   "price": 3.145,
+   "r20": 0.22222,
+   "r5": 0.17726,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMC",
+   "z": -3.558
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.20149,
+   "news": 0,
+   "pace": 3.878,
+   "price": 2.675,
+   "r20": -0.26696,
+   "r5": -0.14103,
+   "short": true,
+   "src": "iex",
+   "symbol": "KOPN",
+   "z": -3.311
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.03614,
+   "news": 0,
+   "pace": 3.375,
+   "price": 4.8,
+   "r20": -0.02734,
+   "r5": -0.0119,
+   "short": false,
+   "src": "iex",
+   "symbol": "ASG",
+   "z": -3.189
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.13167,
+   "news": 0,
+   "pace": 7.509,
+   "price": 2.605,
+   "r20": -0.22078,
+   "r5": -0.10979,
+   "short": true,
+   "src": "iex",
+   "symbol": "HYLN",
+   "z": -3.115
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5091.7384,
+  "PICK-MAIN-coin": 5069.8927,
+  "PICK-PENNY": 474.2686,
+  "PICK-PENNY-coin": 494.3722
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.1677,
+   "price": 3.145,
+   "qty": 4,
+   "side": -1,
+   "stop": 3.17645,
+   "symbol": "AMC"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.1667,
+   "price": 3.145,
+   "qty": 4,
+   "side": 1,
+   "stop": 3.11355,
+   "symbol": "AMC"
+  }
+ ],
+ "flag_counts": {
+  "move": 353,
+  "news": 57,
+  "volume": 478
+ },
+ "flagged": 688,
+ "headline_counts": {
+  "AMC": 3,
+  "AMD": 3,
+  "ARDT": 3,
+  "MU": 3,
+  "OEC": 2,
+  "WMS": 3,
+  "XERS": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "da98f48591b32f046139da38b9ce2a4b07100e41cbc9bafe0a82c9759cae9b3d",
+ "price_sources": {
+  "delayed_sip": 293,
+  "iex": 3108
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "WMS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ARDT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MU"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AMD"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 4,
+   "skip": null,
+   "symbol": "AMC"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KOPN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HYLN"
+  }
+ ],
+ "slot": "2026-11-05T11:05",
+ "t": "2026-11-05T16:05:20.268822+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T16:08:19.211346Z"
+}
