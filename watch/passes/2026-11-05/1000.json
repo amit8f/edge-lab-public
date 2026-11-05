@@ -1,0 +1,446 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "cefc89ed6aec77bb85fab4b62eafddda6cf10155b2a1cfa3f88ce94d741d4231",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "51d10f691256a524661ec62f50f12f5bc847b03768772dc647d4e0e9e31d6794",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CSV",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "NGVT",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TBI",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "RELY",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "XERS",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "CPAY",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "XTND",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MNTS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "offering",
+     "symbol": "FISN",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "LAES",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "e7465b074518c7ec29c506dc8243fef27edff0f406ffe1f60c233a7a910f95f9",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop, negative tone",
+     "stop_pct": 10.0,
+     "symbol": "CSV"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop, negative tone",
+     "stop_pct": 10.0,
+     "symbol": "NGVT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong rally, positive tone",
+     "stop_pct": 10.0,
+     "symbol": "TBI"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp decline, negative tone",
+     "stop_pct": 10.0,
+     "symbol": "RELY"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong rally, positive tone",
+     "stop_pct": 10.0,
+     "symbol": "XERS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "solid upside, positive tone",
+     "stop_pct": 10.0,
+     "symbol": "CPAY"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and negative trend",
+     "stop_pct": 0.0,
+     "symbol": "XTND"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and negative trend",
+     "stop_pct": 0.0,
+     "symbol": "MNTS"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and negative trend",
+     "stop_pct": 0.0,
+     "symbol": "FISN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "d28f66fe61ffd3db1db70e1e4bfffcdb781241448d59d0d3995949ad50cb2718"
+  },
+  "reviewer": {
+   "answer_sha256": "81a6443cf069d4cc120e39990d1c5c46228996a892ed40cf6e5cef723771787f",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "178e934e1095c8eb2991288887786d28a3658457bdfbd80e67f2fbffb51f1545",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe negative price drop on earnings with bearish analyst tone aligns with proposed short.",
+     "symbol": "CSV"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive negative intraday momentum on earnings supports the proposed short trade.",
+     "symbol": "NGVT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive price reaction to earnings with bullish tone supports the proposed long.",
+     "symbol": "TBI"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp earnings drop of 20% today overrides prior strength, supporting the short trade.",
+     "symbol": "RELY"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and bullish analyst tone on earnings justify the long trade.",
+     "symbol": "XERS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive price extension and bullish analyst tone support the long trade.",
+     "symbol": "CPAY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.17399,
+   "news": 1,
+   "pace": null,
+   "price": 29.72,
+   "r20": 0.06797,
+   "r5": -0.00936,
+   "short": true,
+   "src": "iex",
+   "symbol": "CSV",
+   "z": -7.789
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.12342,
+   "news": 0,
+   "pace": null,
+   "price": 64.63,
+   "r20": 0.03962,
+   "r5": -0.00593,
+   "short": true,
+   "src": "iex",
+   "symbol": "NGVT",
+   "z": -9.08
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.26016,
+   "news": 0,
+   "pace": null,
+   "price": 12.4,
+   "r20": 0.09455,
+   "r5": 0.01235,
+   "short": true,
+   "src": "iex",
+   "symbol": "TBI",
+   "z": 8.619
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.19959,
+   "news": 0,
+   "pace": null,
+   "price": 21.675,
+   "r20": 0.18099,
+   "r5": 0.11578,
+   "short": true,
+   "src": "iex",
+   "symbol": "RELY",
+   "z": -8.584
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.27486,
+   "news": 0,
+   "pace": null,
+   "price": 13.335,
+   "r20": 0.03462,
+   "r5": -0.01692,
+   "short": true,
+   "src": "iex",
+   "symbol": "XERS",
+   "z": 7.956
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12451,
+   "news": 0,
+   "pace": null,
+   "price": 470.72,
+   "r20": 0.04018,
+   "r5": 0.05744,
+   "short": true,
+   "src": "iex",
+   "symbol": "CPAY",
+   "z": 7.732
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.2913,
+   "news": 0,
+   "pace": null,
+   "price": 0.815,
+   "r20": -0.55769,
+   "r5": -0.33526,
+   "short": false,
+   "src": "iex",
+   "symbol": "XTND",
+   "z": -3.38
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.12366,
+   "news": 0,
+   "pace": null,
+   "price": 1.63,
+   "r20": -0.46857,
+   "r5": -0.12264,
+   "short": false,
+   "src": "iex",
+   "symbol": "MNTS",
+   "z": -3.122
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.29186,
+   "news": 0,
+   "pace": null,
+   "price": 1.565,
+   "r20": -0.56496,
+   "r5": -0.33233,
+   "short": false,
+   "src": "iex",
+   "symbol": "FISN",
+   "z": -3.103
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.12238,
+   "news": 0,
+   "pace": null,
+   "price": 1.255,
+   "r20": -0.38889,
+   "r5": -0.11728,
+   "short": false,
+   "src": "iex",
+   "symbol": "LAES",
+   "z": -3.064
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5117.5384,
+  "PICK-MAIN-coin": 5090.8877,
+  "PICK-PENNY": 473.8174,
+  "PICK-PENNY-coin": 494.2312
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 151,
+  "news": 16,
+  "volume": 0
+ },
+ "flagged": 164,
+ "headline_counts": {
+  "CPAY": 3,
+  "CSV": 3,
+  "FISN": 2,
+  "LAES": 1,
+  "NGVT": 3,
+  "RELY": 3,
+  "TBI": 3,
+  "XERS": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "5f8fcb9978ded5f4a5b90695c0a7091b06b742a49bfa00a9ba7ebd4f06b50e5a",
+ "price_sources": {
+  "delayed_sip": 405,
+  "iex": 2993
+ },
+ "priced": 3398,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CSV"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NGVT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TBI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RELY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "XERS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CPAY"
+  }
+ ],
+ "slot": "2026-11-05T10:00",
+ "t": "2026-11-05T15:00:20.809932+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T15:04:27.438772Z"
+}
