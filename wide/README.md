@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8703.35 | -12.97% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C's picks | $9052.83 | -9.47% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
-| C's prompt on Groq (K7) | $7227.35 | -27.73% | 326 | 71 | long APP, short CIFR, long EXPE, long HCA, short SNDK |
-| Coin flip on C-groq's picks | $9044.47 | -9.56% | 326 | 161 | long APP, long CIFR, short EXPE, long HCA, long SNDK |
-| C-groq's answers, acted on once a day (K8) | $9568.72 | -4.31% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
-| Coin flip on C-groq-slow's picks | $9962.98 | -0.37% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
-| C's answers, acted on once a day (K8) | $9674.37 | -3.26% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
-| Coin flip on C-slow's picks | $10388.51 | +3.89% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
-| Just hold SPY | $9591.39 | -4.09% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8679.56 | -13.20% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C's picks | $9048.98 | -9.51% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
+| C's prompt on Groq (K7) | $7222.50 | -27.77% | 326 | 71 | long APP, short CIFR, long EXPE, long HCA, short SNDK |
+| Coin flip on C-groq's picks | $9074.62 | -9.25% | 326 | 161 | long APP, long CIFR, short EXPE, long HCA, long SNDK |
+| C-groq's answers, acted on once a day (K8) | $9570.37 | -4.30% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
+| Coin flip on C-groq-slow's picks | $9958.45 | -0.42% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
+| C's answers, acted on once a day (K8) | $9695.34 | -3.05% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
+| Coin flip on C-slow's picks | $10397.73 | +3.98% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
+| Just hold SPY | $9602.59 | -3.97% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-05 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 13:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 12:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 13:1
 | 2026-11-03 12:38 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 12:17 | long BE, long CIFR, long HWM, long REGN, long WULF | none | Maintaining all five existing long positions (BE, CIFR, HWM, REGN, WULF) due to continued positive momentum and favorable news for most, with no clear reason to sell or initiate new positions. |
-| 2026-11-03 12:07 | long BE, long CIFR, long HWM, long REGN, long WULF | sold FN @ $359.49; sold MPWR @ $1,339.12; bought CIFR @ $7.73; bought WULF @ $12.28 | Sold FN and MPWR due to recent hourly pullbacks after large daily gains. Initiated new long positions in CIFR and WULF, both showing strong daily momentum and positive news, to capitalize on potential continued upward movement. Maintaining existing long positions in BE, HWM, and REGN due to strong p |
