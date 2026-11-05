@@ -1,0 +1,553 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "e479886b9106e8ab4a9f586e2307d6ff2c4b4fae59b1f0317c2431afd20de59d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "b3bd063d308ff930f514b112681f06149e1448faf8ca96176d5149262cf9d165",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PTLO",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "ADMA",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "TRIP",
+     "tone": -1
+    },
+    {
+     "confidence": 75,
+     "event": "guidance",
+     "symbol": "NOA",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "KELYA",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "TBI",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "HTZ",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "AIRJ",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "RZLV",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "eef8d664ff159f05ba43259b3424d2da96d2965b510d5a517d6cb35bdc094c00",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings tone after sharp price rise, shortable",
+     "stop_pct": 10.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive product news and tone, price up strongly",
+     "stop_pct": 12.0,
+     "symbol": "ADMA"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings tone, price falling sharply, shortable",
+     "stop_pct": 12.0,
+     "symbol": "TRIP"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive guidance tone despite drop, potential rebound",
+     "stop_pct": 12.0,
+     "symbol": "NOA"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings tone, price down, shortable",
+     "stop_pct": 12.0,
+     "symbol": "KELYA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings tone and strong price gain",
+     "stop_pct": 12.0,
+     "symbol": "TBI"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable and negative tone",
+     "stop_pct": 0.0,
+     "symbol": "HTZ"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Heavy price drop, shortable, high confidence",
+     "stop_pct": 20.0,
+     "symbol": "TE"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant decline, shortable, high confidence",
+     "stop_pct": 20.0,
+     "symbol": "AIRJ"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable",
+     "stop_pct": 0.0,
+     "symbol": "RZLV"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Hold",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "66f2700caea6645be6a71e675b7f54d830b4b591508f2c46ce10bfd9c8c268e0"
+  },
+  "reviewer": {
+   "answer_sha256": "e03a97809307642d0b4b6a76662ea15bbf251224281bc7e286e45f211fcbbbf4",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "b10f128f6375bf02f69ed99bd5e77e074d26144cf40e02fa011dceff95180846",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Exhaustion rally with high volume and negative analyst tone.",
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum and positive product news catalyst.",
+     "symbol": "ADMA"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp selloff on heavy volume with negative earnings tone.",
+     "symbol": "TRIP"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant dip on high volume with positive guidance tone.",
+     "symbol": "NOA"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weakness following negative earnings tone.",
+     "symbol": "KELYA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong breakout on massive volume and positive earnings tone.",
+     "symbol": "TBI"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Following strong downward momentum.",
+     "symbol": "TE"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continuing multi-day downtrend on high volume pace.",
+     "symbol": "AIRJ"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.21284,
+   "news": 1,
+   "pace": 6.777,
+   "price": 6.61,
+   "r20": 0.43799,
+   "r5": 0.21924,
+   "short": true,
+   "src": "iex",
+   "symbol": "PTLO",
+   "z": 4.578
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.26336,
+   "news": 0,
+   "pace": 8.307,
+   "price": 13.24,
+   "r20": 0.03353,
+   "r5": -0.07092,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADMA",
+   "z": 8.913
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.21324,
+   "news": 0,
+   "pace": 7.783,
+   "price": 8.025,
+   "r20": 0.18192,
+   "r5": 0.14094,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRIP",
+   "z": -8.576
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16623,
+   "news": 0,
+   "pace": 11.921,
+   "price": 9.53,
+   "r20": -0.03788,
+   "r5": -0.09716,
+   "short": true,
+   "src": "iex",
+   "symbol": "NOA",
+   "z": -8.177
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.15139,
+   "news": 0,
+   "pace": 3.534,
+   "price": 14.35,
+   "r20": 0.06352,
+   "r5": 0.02672,
+   "short": true,
+   "src": "iex",
+   "symbol": "KELYA",
+   "z": -7.513
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.20833,
+   "news": 0,
+   "pace": 13.863,
+   "price": 11.89,
+   "r20": 0.09455,
+   "r5": 0.01235,
+   "short": true,
+   "src": "iex",
+   "symbol": "TBI",
+   "z": 7.054
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.24115,
+   "news": 0,
+   "pace": 6.545,
+   "price": 1.715,
+   "r20": 0.09179,
+   "r5": 0.18947,
+   "short": false,
+   "src": "iex",
+   "symbol": "HTZ",
+   "z": -5.598
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.2033,
+   "news": 0,
+   "pace": 4.646,
+   "price": 2.175,
+   "r20": -0.2681,
+   "r5": 0.03802,
+   "short": true,
+   "src": "iex",
+   "symbol": "TE",
+   "z": -3.373
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1046,
+   "news": 0,
+   "pace": 3.378,
+   "price": 2.14,
+   "r20": -0.35054,
+   "r5": -0.19257,
+   "short": true,
+   "src": "iex",
+   "symbol": "AIRJ",
+   "z": -3.23
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14234,
+   "news": 0,
+   "pace": 4.549,
+   "price": 1.175,
+   "r20": -0.34135,
+   "r5": -0.10458,
+   "short": false,
+   "src": "delayed_sip",
+   "symbol": "RZLV",
+   "z": -3.046
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5080.3493,
+  "PICK-MAIN-coin": 5064.8239,
+  "PICK-PENNY": 473.4938,
+  "PICK-PENNY-coin": 496.0326
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-05T16:15:20.957303+00:00",
+   "entry": 3.145,
+   "exit": 3.185,
+   "net": -0.4966,
+   "opened": "2026-11-05T16:05:20.268822+00:00",
+   "qty": 4,
+   "side": -1,
+   "symbol": "AMC",
+   "why": "stop"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.08,
+   "price": 6.61,
+   "qty": 1,
+   "side": -1,
+   "stop": 7.271,
+   "symbol": "PTLO"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.0797,
+   "price": 6.61,
+   "qty": 1,
+   "side": 1,
+   "stop": 5.949,
+   "symbol": "PTLO"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.1162,
+   "price": 2.175,
+   "qty": 4,
+   "side": -1,
+   "stop": 2.61,
+   "symbol": "TE"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.1162,
+   "price": 2.175,
+   "qty": 4,
+   "side": -1,
+   "stop": 2.61,
+   "symbol": "TE"
+  }
+ ],
+ "flag_counts": {
+  "move": 274,
+  "news": 18,
+  "volume": 471
+ },
+ "flagged": 613,
+ "headline_counts": {
+  "ADMA": 3,
+  "HTZ": 3,
+  "KELYA": 3,
+  "NOA": 3,
+  "PTLO": 3,
+  "TBI": 3,
+  "TRIP": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "c9b4f88624008200ed1b99584c815bffc8f4bfb0294f0f6cbdd10e4b16b4111e",
+ "price_sources": {
+  "delayed_sip": 231,
+  "iex": 3170
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "PTLO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ADMA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TRIP"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NOA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KELYA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TBI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 4,
+   "skip": null,
+   "symbol": "TE"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AIRJ"
+  }
+ ],
+ "slot": "2026-11-05T11:15",
+ "t": "2026-11-05T16:15:20.957303+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T16:15:36.069408Z"
+}
