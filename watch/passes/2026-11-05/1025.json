@@ -1,0 +1,548 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "fa63dfaaa0177ad4bc61f5f3875d9f6b9f632e2a6a1fb231b163a9b90fe14191",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "567bef090f4b6de08590b4e82af6384c48cf164485c28cbc70eedf898f4a016b",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "SCSC",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "NWSA",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "ROAD",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "DLX",
+     "tone": 1
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "CAI",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "APP",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NNBR",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "POET",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "KOPN",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BTCS",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "764f228e2d3e606379fc412494e04818f01b21dbb62cce0422921bd51d9b5d35",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive guidance despite sharp drop",
+     "stop_pct": 10.0,
+     "symbol": "SCSC"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings tone and big decline",
+     "stop_pct": 12.0,
+     "symbol": "NWSA"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Guidance upbeat after large fall",
+     "stop_pct": 12.0,
+     "symbol": "ROAD"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat and price momentum",
+     "stop_pct": 13.0,
+     "symbol": "DLX"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings tone and steep decline",
+     "stop_pct": 12.0,
+     "symbol": "CAI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst upbeat and large upside move",
+     "stop_pct": 14.0,
+     "symbol": "APP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal",
+     "stop_pct": 0.0,
+     "symbol": "NNBR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal",
+     "stop_pct": 0.0,
+     "symbol": "POET"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal",
+     "stop_pct": 0.0,
+     "symbol": "KOPN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal",
+     "stop_pct": 0.0,
+     "symbol": "BTCS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "202d4301611aab06c735edb85aa123fd85acdfa7929dfd3435e7e60c33f921f8"
+  },
+  "reviewer": {
+   "answer_sha256": "71a6ff6a85d93078a83b2cea17ba9f59e66ffb85aa4d4d482aa86826c72c00d2",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "5319ce3bfa31a93c7405bb2191fc4e24b01f2275bd0cb4b8f9af5a7c5dc582f5",
+   "reviews": [
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Deep oversold bounce setup with positive analyst tone on guidance.",
+     "symbol": "SCSC"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp selloff on heavy volume with negative earnings tone aligns with short proposal.",
+     "symbol": "NWSA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe drop after strong multi-day gains offers a buy-the-dip opportunity on positive guidance.",
+     "symbol": "ROAD"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum backed by positive guidance and high volume pace.",
+     "symbol": "DLX"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant gap down with negative earnings tone justifies the short position.",
+     "symbol": "CAI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive volume and strong positive price action validate the long proposal.",
+     "symbol": "APP"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.12057,
+   "news": 0,
+   "pace": 3.389,
+   "price": 50.11,
+   "r20": -0.04524,
+   "r5": -0.04139,
+   "short": true,
+   "src": "iex",
+   "symbol": "SCSC",
+   "z": -7.868
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.10438,
+   "news": 0,
+   "pace": 3.851,
+   "price": 27.37,
+   "r20": 0.06816,
+   "r5": 0.04265,
+   "short": true,
+   "src": "iex",
+   "symbol": "NWSA",
+   "z": -7.149
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19095,
+   "news": 0,
+   "pace": 5.57,
+   "price": 80.29,
+   "r20": 0.1187,
+   "r5": 0.17639,
+   "short": true,
+   "src": "iex",
+   "symbol": "ROAD",
+   "z": -6.599
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.17165,
+   "news": 0,
+   "pace": 4.506,
+   "price": 27.44,
+   "r20": 0.04694,
+   "r5": 0.02182,
+   "short": true,
+   "src": "iex",
+   "symbol": "DLX",
+   "z": 6.505
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19747,
+   "news": 0,
+   "pace": 4.555,
+   "price": 26.66,
+   "r20": 0.22583,
+   "r5": -0.06291,
+   "short": true,
+   "src": "iex",
+   "symbol": "CAI",
+   "z": -6.308
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.32007,
+   "news": 0,
+   "pace": 22.368,
+   "price": 358.73,
+   "r20": -0.03392,
+   "r5": 0.04531,
+   "short": true,
+   "src": "iex",
+   "symbol": "APP",
+   "z": 6.282
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.17028,
+   "news": 0,
+   "pace": 7.502,
+   "price": 2.68,
+   "r20": -0.19652,
+   "r5": -0.15,
+   "short": true,
+   "src": "iex",
+   "symbol": "NNBR",
+   "z": -3.385
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14344,
+   "news": 0,
+   "pace": 4.61,
+   "price": 4.18,
+   "r20": -0.34187,
+   "r5": -0.16438,
+   "short": true,
+   "src": "iex",
+   "symbol": "POET",
+   "z": -3.077
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.18657,
+   "news": 0,
+   "pace": 4.807,
+   "price": 2.725,
+   "r20": -0.26696,
+   "r5": -0.14103,
+   "short": true,
+   "src": "iex",
+   "symbol": "KOPN",
+   "z": -3.038
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13163,
+   "news": 0,
+   "pace": 1.986,
+   "price": 0.9031,
+   "r20": -0.22388,
+   "r5": -0.07965,
+   "short": true,
+   "src": "iex",
+   "symbol": "BTCS",
+   "z": -3.432
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5106.6984,
+  "PICK-MAIN-coin": 5073.7327,
+  "PICK-PENNY": 474.1184,
+  "PICK-PENNY-coin": 493.5856
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 209,
+  "news": 11,
+  "volume": 649
+ },
+ "flagged": 713,
+ "headline_counts": {
+  "APP": 3,
+  "CAI": 3,
+  "DLX": 3,
+  "NWSA": 3,
+  "ROAD": 3,
+  "SCSC": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "d693c9b1ca8dcb522275fb7eded64b49ac16db019fb5b2c1885ca1ee108c666d",
+ "price_sources": {
+  "delayed_sip": 271,
+  "iex": 3130
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SCSC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NWSA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ROAD"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DLX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CAI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "APP"
+  }
+ ],
+ "slot": "2026-11-05T10:25",
+ "t": "2026-11-05T15:25:20.846447+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-05T15:25:58.819575Z"
+}
