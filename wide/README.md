@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 11:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8490.17 | -15.10% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C's picks | $9081.54 | -9.18% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
-| C's prompt on Groq (K7) | $7325.85 | -26.74% | 324 | 70 | long AMD, long APP, short CIFR, long EXPE, long HCA |
-| Coin flip on C-groq's picks | $9082.37 | -9.18% | 324 | 161 | short AMD, long APP, long CIFR, short EXPE, long HCA |
-| C-groq's answers, acted on once a day (K8) | $9559.00 | -4.41% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
-| Coin flip on C-groq-slow's picks | $10026.10 | +0.26% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
-| C's answers, acted on once a day (K8) | $9707.98 | -2.92% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
-| Coin flip on C-slow's picks | $10471.54 | +4.72% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
-| Just hold SPY | $9712.37 | -2.88% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8553.22 | -14.47% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C's picks | $9038.89 | -9.61% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
+| C's prompt on Groq (K7) | $7303.85 | -26.96% | 324 | 70 | long AMD, long APP, short CIFR, long EXPE, long HCA |
+| Coin flip on C-groq's picks | $9097.00 | -9.03% | 324 | 161 | short AMD, long APP, long CIFR, short EXPE, long HCA |
+| C-groq's answers, acted on once a day (K8) | $9578.07 | -4.22% | 16 | 9 | long BKNG, short CIFR, long ISRG, short VST, long XYZ |
+| Coin flip on C-groq-slow's picks | $10000.55 | +0.01% | 16 | 10 | short BKNG, long CIFR, long ISRG, long VST, short XYZ |
+| C's answers, acted on once a day (K8) | $9705.65 | -2.94% | 13 | 6 | short DDOG, long HCA, short IREN, long MRNA, long XYZ |
+| Coin flip on C-slow's picks | $10454.74 | +4.55% | 13 | 10 | short DDOG, short HCA, long IREN, long MRNA, short XYZ |
+| Just hold SPY | $9679.68 | -3.20% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-05 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 11:37 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | bought BE @ $172.48; sold SNDK @ $883.17 | Closed BE short due to bounce from lows and existing loss. Maintained profitable shorts in AXTI, CIFR, DDOG, and IREN due to continued strong downtrends. Initiated a new short in SNDK, which experienced a significant daily and hourly crash, indicating strong bearish momentum. |
 | 2026-11-05 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 11:17 | short AXTI, short BE, short CIFR, short DDOG, short IREN | none | Maintaining all existing short positions as the market continues to show strong downward momentum across many stocks, validating the current short bias. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-05 11:3
 | 2026-11-03 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 10:47 | long ETN, long FN, long HWM, long REGN, long TEM | none | Maintaining all existing long positions due to continued positive momentum, strong news catalysts, and overall profitability, as they align with our strategy of holding strong performers. |
 | 2026-11-03 10:37 | long ETN, long FN, long HWM, long REGN, long TEM | none | Maintaining all current long positions due to strong positive momentum, favorable news, and analyst upgrades across the board. No new positions are added as all current holdings are performing well. |
-| 2026-11-03 10:27 | no answer, nothing changed | none | unreadable answer |
