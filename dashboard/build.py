@@ -511,6 +511,12 @@ def arm_picks(root, day, rows=()):
         live = _nx3all_so_far(rows)
         if live:
             out["ALL"] = live
+    for arm, folder in (("HI", "nx3hi"), ("ALLHI", "nx3allhi")):       # NX3-HI and NX3-ALL-HI (confidence >= 1.5)
+        rec = _json(root / folder / "days" / f"{day}.json") or {}
+        stl = _json(root / folder / "settled" / f"{day}.json") or {}
+        net = {t["symbol"]: t.get("net") for t in stl.get("trades", []) if t.get("role") == "picks"}
+        if rec.get("picks"):
+            out[arm] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w")} for p in rec["picks"]}
     return out
 
 
