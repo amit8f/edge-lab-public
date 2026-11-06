@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8401.42 | -15.99% | 155 | 46 | long ABNB, long COHR, long IONQ, long RKLB, long VST |
-| Coin flip on C's picks | $9512.49 | -4.88% | 154 | 77 | long ABNB, long COHR, long IONQ, long RKLB, short VST |
-| C's prompt on Groq (K7) | $6907.90 | -30.92% | 348 | 77 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq's picks | $8620.74 | -13.79% | 348 | 167 | short ABNB, long IONQ, short IREN, short NTRA, short TEAM |
-| C-groq's answers, acted on once a day (K8) | $9123.13 | -8.77% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10419.20 | +4.19% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9098.41 | -9.02% | 16 | 6 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C-slow's picks | $10837.09 | +8.37% | 16 | 12 | short AXTI, long CIFR, short DDOG, long IREN, long SNDK |
-| Just hold SPY | $9602.91 | -3.97% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8354.20 | -16.46% | 156 | 46 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C's picks | $9480.63 | -5.19% | 155 | 77 | long ABNB, long IONQ, long MRNA, long RKLB, short VST |
+| C's prompt on Groq (K7) | $6891.45 | -31.09% | 348 | 77 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq's picks | $8606.05 | -13.94% | 348 | 167 | short ABNB, long IONQ, short IREN, short NTRA, short TEAM |
+| C-groq's answers, acted on once a day (K8) | $9103.37 | -8.97% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10397.77 | +3.98% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9114.80 | -8.85% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10836.67 | +8.37% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9600.50 | -3.99% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-06 15:47 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | sold COHR @ $193.19; bought MRNA @ $259.32 | Maintaining long positions in ABNB, IONQ, RKLB, and VST due to continued positive momentum and news, and adding MRNA long after strong earnings and outlook, while selling COHR due to its longer-term downtrend despite today's bounce. |
 | 2026-11-06 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 15:17 | long ABNB, long COHR, long IONQ, long RKLB, long VST | none | Maintaining all current long positions due to strong positive momentum today and supportive news catalysts for each stock. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 15:3
 | 2026-11-05 12:47 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as the market continues a strong downtrend, with all current holdings showing significant daily declines and negative news catalysts. |
 | 2026-11-05 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 12:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-05 12:17 | no answer, nothing changed | none | unreadable answer |
