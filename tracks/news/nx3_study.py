@@ -618,7 +618,7 @@ BUCKETS = [(1.0, 1.25), (1.25, 1.5), (1.5, 2.0), (2.0, 2.5), (2.5, 99.0)]
 MIN_PICK_DAYS = 30
 
 
-def stage_bars(cache, out, grid=BAR_GRID):
+def stage_bars(cache, out, grid=BAR_GRID, learner=None, tag=""):
     """NX3-BARS (research/prereg/NX3BARS.md): (1) NX3_fired_trades.csv, every event the walk-forward models fire in the
     test years with side, confidence |e|/cut and the net result until the exit (no headlines); (2) result by confidence
     bucket and side (descriptive); (3) the registered test: for each test year the long bar and the short bar are the
@@ -636,7 +636,7 @@ def stage_bars(cache, out, grid=BAR_GRID):
         te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
         if tr.empty or te.empty:
             continue
-        model = Model(tr)
+        model = Model(tr) if learner is None else Model(tr, learner)
         years.append((yr, te, model))
         real = te[te["kind"] == "real"]
         e = model.effect(real[INPUTS].to_numpy(float))
@@ -653,7 +653,7 @@ def stage_bars(cache, out, grid=BAR_GRID):
     tab = pd.concat(table, ignore_index=True) if table else pd.DataFrame(columns=["d", "symbol", "side", "conf", "net", "year"])
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    tab.assign(side=tab["side"].map({1: "long", -1: "short"})).round(6).to_csv(out / "NX3_fired_trades.csv", index=False)
+    tab.assign(side=tab["side"].map({1: "long", -1: "short"})).round(6).to_csv(out / f"NX3_fired_trades{tag}.csv", index=False)
     buckets = {}
     for s_, name in ((1, "long"), (-1, "short")):
         g = tab[tab["side"] == s_]
@@ -688,7 +688,7 @@ def stage_bars(cache, out, grid=BAR_GRID):
            if len(m) else None, "result_by_confidence_bucket": buckets, "pass_t": ALL_PASS_T}
     pm = rep["pooled_pick_minus_control"]
     rep["verdict"] = "passed" if pm["mean"] > 0 and pm["t_nw"] >= ALL_PASS_T else "failed"
-    (out / "NX3BARS_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    (out / f"NX3BARS{tag}_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
     print(json.dumps(rep, indent=1, default=float))
 
 
@@ -1005,7 +1005,7 @@ def stage_nxk(cache, out, arms=None, learner=None, name="NXK"):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1040,6 +1040,12 @@ def main():
         return
     if a.stage == "nxk":
         stage_nxk(a.cache, a.out)
+        return
+    if a.stage == "bars_cat":       # descriptive: NX3-BARS table and bar walk for NXK2-CAT (not a registered test)
+        stage_bars(a.cache, a.out, learner=nxk2_learner("CAT"), tag="_CAT")
+        return
+    if a.stage == "bars_krr":       # descriptive: the same for NXK-KRR
+        stage_bars(a.cache, a.out, learner=nxk_learner("KRR"), tag="_KRR")
         return
     if a.stage == "nxk2":
         stage_nxk(a.cache, a.out, NXK2_ARMS, nxk2_learner, "NXK2")
