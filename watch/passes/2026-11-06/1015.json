@@ -1,0 +1,499 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "e4fe3dcfb912c0b08d893ea4e5dcb757933378bf368e660ddf9a8f26b84f0d45",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "1fd5160d25d50aad89bb7ee4ccdf984127e30978c471e6d59d3c6fa242eceb82",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "ABNB",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "KRT",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PRAA",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BDSX",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "KOP",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AGM",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ACRE",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "INDI",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "TTGT",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "BLND",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "35c24ec36113fbaa5cfdee38f3d5654c8498f8bfaed4fa538579c1e9853cc4ff",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong positive move with high analyst confidence",
+     "stop_pct": 12.0,
+     "symbol": "ABNB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop, short not allowed for new position",
+     "stop_pct": 0.0,
+     "symbol": "KRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant decline, short not allowed for new position",
+     "stop_pct": 0.0,
+     "symbol": "PRAA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp fall but not shortable",
+     "stop_pct": 0.0,
+     "symbol": "BDSX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Down move, short not allowed for new position",
+     "stop_pct": 0.0,
+     "symbol": "KOP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Down move, short not allowed for new position",
+     "stop_pct": 0.0,
+     "symbol": "AGM"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive price jump with bullish analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "ACRE"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large spike with negative analyst tone, shortable",
+     "stop_pct": 22.0,
+     "symbol": "INDI"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop, neutral tone, shortable",
+     "stop_pct": 22.0,
+     "symbol": "TTGT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price decline with negative tone, shortable",
+     "stop_pct": 22.0,
+     "symbol": "BLND"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position, not due for closure",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position, not due for closure",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position, not due for closure",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position, not due for closure",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position, not due for closure",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position, not due for closure",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "753245951e2f41a3be188ebbf3c363be31b8abcf89ffd8a88b9caf163c5e4a07"
+  },
+  "reviewer": {
+   "answer_sha256": "427dc9fcf7c848de1646be6b8c1a95c7b8edf593744f0d6c8f934b3be002371c",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "020025c9a60d8c6a6924835f4097e9ecb0e4dae9544461443b702463c7bc908e",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum with high volume and positive analyst tone preceding news.",
+     "symbol": "ABNB"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant positive price surge on elevated volume with supportive earnings context.",
+     "symbol": "ACRE"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Intraday bounce on a deeply distressed multi-week downtrend with negative analyst tone.",
+     "symbol": "INDI"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp earnings-related selloff with heavy volume confirming continuation lower.",
+     "symbol": "TTGT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Substantial breakdown in price on increased volume amid negative earnings tone.",
+     "symbol": "BLND"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": 0.09455,
+   "news": 1,
+   "pace": 10.244,
+   "price": 186.215,
+   "r20": 0.04227,
+   "r5": 0.02211,
+   "short": true,
+   "src": "iex",
+   "symbol": "ABNB",
+   "z": 3.808
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.2605,
+   "news": 0,
+   "pace": 5.6,
+   "price": 38.04,
+   "r20": -0.04387,
+   "r5": -0.05424,
+   "short": true,
+   "src": "iex",
+   "symbol": "KRT",
+   "z": -17.198
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.29922,
+   "news": 0,
+   "pace": 5.634,
+   "price": 14.31,
+   "r20": 0.00492,
+   "r5": 0.01896,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRAA",
+   "z": -15.789
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.44506,
+   "news": 0,
+   "pace": 36.423,
+   "price": 11.01,
+   "r20": -0.22591,
+   "r5": -0.19741,
+   "short": false,
+   "src": "iex",
+   "symbol": "BDSX",
+   "z": -12.429
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19425,
+   "news": 0,
+   "pace": 4.602,
+   "price": 31.94,
+   "r20": -0.10398,
+   "r5": -0.05303,
+   "short": true,
+   "src": "iex",
+   "symbol": "KOP",
+   "z": -8.845
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.06855,
+   "news": 0,
+   "pace": 3.834,
+   "price": 184.4,
+   "r20": -0.04565,
+   "r5": -0.02932,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "AGM",
+   "z": -4.732
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.12647,
+   "news": 0,
+   "pace": 3.108,
+   "price": 3.83,
+   "r20": -0.07104,
+   "r5": -0.00585,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACRE",
+   "z": 4.722
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.31734,
+   "news": 0,
+   "pace": 5.116,
+   "price": 1.785,
+   "r20": -0.47985,
+   "r5": -0.23876,
+   "short": true,
+   "src": "iex",
+   "symbol": "INDI",
+   "z": 4.5
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14577,
+   "news": 0,
+   "pace": 6.405,
+   "price": 2.93,
+   "r20": -0.16341,
+   "r5": -0.11825,
+   "short": true,
+   "src": "iex",
+   "symbol": "TTGT",
+   "z": -4.46
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.15184,
+   "news": 0,
+   "pace": 4.439,
+   "price": 0.9669,
+   "r20": 0.08571,
+   "r5": -0.01724,
+   "short": true,
+   "src": "iex",
+   "symbol": "BLND",
+   "z": -2.673
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5054.056,
+  "PICK-MAIN-coin": 5117.7668,
+  "PICK-PENNY": 476.3539,
+  "PICK-PENNY-coin": 502.5959
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 74,
+  "news": 9,
+  "volume": 405
+ },
+ "flagged": 421,
+ "headline_counts": {
+  "ABNB": 3,
+  "ACRE": 2,
+  "AGM": 3,
+  "BDSX": 3,
+  "BLND": 3,
+  "INDI": 3,
+  "KOP": 3,
+  "KRT": 3,
+  "PRAA": 2,
+  "TTGT": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "4988a08e4977afcc82fd99cc2401a4da7dc2c44edffb0d5048b7065ae748c9c1",
+ "price_sources": {
+  "delayed_sip": 372,
+  "iex": 3022
+ },
+ "priced": 3394,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ABNB"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ACRE"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "INDI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TTGT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BLND"
+  }
+ ],
+ "slot": "2026-11-06T10:15",
+ "t": "2026-11-06T15:15:21.160715+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T15:15:35.237935Z"
+}
