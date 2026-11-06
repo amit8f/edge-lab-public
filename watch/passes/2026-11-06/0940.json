@@ -1,0 +1,372 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "cd2927293db2ac05d0ae2302c57da8adb30231702e8c0e09a4e2d9ce13676829",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "a4b466ecb3d9eeb95fdfbf8727b5d6f90be481359838807e44f6223ac070c9be",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "ABNB",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "product",
+     "symbol": "FROG",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "CALY",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BKD",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "STEP",
+     "tone": 2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "DKNG",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "CLNE",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GOGO",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ACRE",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "PSEC",
+     "tone": -2
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "171eba551a4b85e4f96d68b063957ae18ec8c9c1dfd3bb517d4a0d64ef282565",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside move, high confidence and positive tone",
+     "stop_pct": 12.0,
+     "symbol": "ABNB"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large breakout, bullish analyst, high confidence",
+     "stop_pct": 12.0,
+     "symbol": "FROG"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive momentum and analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "CALY"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "3127b0bdcfba6aa8043edb9e432a65ec4d5542ed36d2120f3d53c9fc9b161d53"
+  },
+  "reviewer": {
+   "answer_sha256": "617c0ca6f07270911d99f0ff387a1fa1422624196d3a7b06cfac8492660ae75f",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "bdfde8b6f9f84e776ee5c2a64a86b5d620eaccc23efcf16417318c456b2179b1",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum and positive analyst alignment support the long proposal.",
+     "symbol": "ABNB"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive single-day surge overcomes prior weakness, aligning with the long proposal.",
+     "symbol": "FROG"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive trend continuation and favorable analyst tone justify the long trade.",
+     "symbol": "CALY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.11136,
+   "news": 1,
+   "pace": null,
+   "price": 189.075,
+   "r20": 0.04227,
+   "r5": 0.02211,
+   "short": true,
+   "src": "iex",
+   "symbol": "ABNB",
+   "z": 4.451
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.25295,
+   "news": 1,
+   "pace": null,
+   "price": 93.495,
+   "r20": -0.2327,
+   "r5": -0.24497,
+   "short": true,
+   "src": "iex",
+   "symbol": "FROG",
+   "z": 3.724
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.08731,
+   "news": 1,
+   "pace": null,
+   "price": 17.31,
+   "r20": 0.1478,
+   "r5": 0.04806,
+   "short": true,
+   "src": "iex",
+   "symbol": "CALY",
+   "z": 3.333
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.09158,
+   "news": 1,
+   "pace": null,
+   "price": 9.82,
+   "r20": -0.00735,
+   "r5": 0.05258,
+   "short": true,
+   "src": "iex",
+   "symbol": "BKD",
+   "z": -3.068
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.09822,
+   "news": 1,
+   "pace": null,
+   "price": 47.015,
+   "r20": -0.02505,
+   "r5": -0.03733,
+   "short": true,
+   "src": "iex",
+   "symbol": "STEP",
+   "z": 3.005
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.28274,
+   "news": 0,
+   "pace": null,
+   "price": 16.87,
+   "r20": 0.18369,
+   "r5": 0.13514,
+   "short": true,
+   "src": "iex",
+   "symbol": "DKNG",
+   "z": -13.346
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.25497,
+   "news": 0,
+   "pace": null,
+   "price": 1.895,
+   "r20": -0.00658,
+   "r5": 0.01342,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLNE",
+   "z": 5.072
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.21634,
+   "news": 0,
+   "pace": null,
+   "price": 2.755,
+   "r20": 0.00221,
+   "r5": -0.10474,
+   "short": true,
+   "src": "iex",
+   "symbol": "GOGO",
+   "z": 3.478
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08382,
+   "news": 0,
+   "pace": null,
+   "price": 3.685,
+   "r20": -0.07104,
+   "r5": -0.00585,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACRE",
+   "z": 3.191
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.05415,
+   "news": 1,
+   "pace": null,
+   "price": 1.31,
+   "r20": -0.22147,
+   "r5": -0.14506,
+   "short": true,
+   "src": "iex",
+   "symbol": "PSEC",
+   "z": -1.62
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5054.9184,
+  "PICK-MAIN-coin": 5113.4357,
+  "PICK-PENNY": 476.5731,
+  "PICK-PENNY-coin": 501.5891
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 56,
+  "news": 128,
+  "volume": 0
+ },
+ "flagged": 175,
+ "flip_test": {
+  "after": -1,
+  "answer_sha256": "df4ba4660d7373a7045cf6274a67474251cfb4c348b2039b45879910466af6cb",
+  "before": 2,
+  "model": "openai/gpt-oss-20b",
+  "moved": true,
+  "prompt_sha256": "2b0e2e7ed476f5215737723b5e54787140463f94dc054232aa6509d909de090b",
+  "swaps": 4,
+  "symbol": "ABNB"
+ },
+ "headline_counts": {
+  "ABNB": 3,
+  "ACRE": 2,
+  "BKD": 3,
+  "CALY": 3,
+  "CLNE": 2,
+  "DKNG": 3,
+  "FROG": 3,
+  "GOGO": 3,
+  "PSEC": 1,
+  "STEP": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "683e562b27858e972b952c41870c6c3e59d016ecf74234a33a18d868d0ffa44e",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2557
+ },
+ "priced": 2557,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ABNB"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FROG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CALY"
+  }
+ ],
+ "slot": "2026-11-06T09:40",
+ "t": "2026-11-06T14:40:20.257473+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T14:41:05.943538Z"
+}
