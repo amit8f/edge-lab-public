@@ -251,3 +251,28 @@ def test_bars_stage_writes_the_trade_table_and_the_report(tmp_path, monkeypatch)
     assert set(rep["result_by_confidence_bucket"]) == {"long", "short"} and rep["verdict"] in ("passed", "failed")
     tab = pd.read_csv(tmp_path / "out" / "NX3_fired_trades.csv")
     assert list(tab.columns) == ["d", "symbol", "side", "conf", "net", "year"] and set(tab["side"]) <= {"long", "short"}
+
+
+def test_shortml_stage_runs_on_synthetic_events(tmp_path, monkeypatch):
+    import json
+    rng = np.random.default_rng(1)
+    days = pd.bdate_range("2019-01-02", "2021-12-30")
+    rows = []
+    for d in days:
+        for i in range(12):
+            r = {k: rng.normal() for k in X.INPUTS}
+            r.update(fb_neg=abs(rng.normal()) + 0.5, fb_pos=abs(rng.normal()) * 0.3, spy_r1=rng.normal() * 0.01,
+                     vol20=0.02, d=d, t=d + pd.Timedelta(hours=9, minutes=i), kind="real", mret=rng.normal() * 0.02,
+                     next=d + pd.Timedelta(days=1), price=20.0, days=1, ret=rng.normal() * 0.02)
+            rows.append(r)
+    d3 = tmp_path / "nx3" / X.TRADES
+    d3.mkdir(parents=True)
+    pd.DataFrame(rows).to_parquet(d3 / "t_0.parquet")
+    monkeypatch.setattr(X, "nx3dir", lambda cache: tmp_path / "nx3")
+    monkeypatch.setattr(X, "calendar", lambda cache: pd.DataFrame({"date": days}))
+    monkeypatch.setattr(N, "TEST_YEARS", range(2020, 2022))
+    monkeypatch.setattr(N, "LAST_EXIT", pd.Timestamp("2030-01-01"))
+    X.stage_shortml("x", tmp_path / "out")
+    rep = json.loads((tmp_path / "out" / "SHORTML_walkforward.json").read_text())
+    assert rep["verdict"] in ("passed", "failed", "too thin")
+    assert rep["primary"]["pick_days"] > 0
