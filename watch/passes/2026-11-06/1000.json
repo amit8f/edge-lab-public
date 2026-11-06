@@ -1,0 +1,483 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "aaeea567618e41e55844336d3c45fb0772700c669f3c7fbaef31ab1ccf6663a3",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "da7e76006e6911527317e6e13d3f0a40e0ed3ae43482371ad339831f6372c5c9",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "NTRA",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "FLGT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "CYRX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "PLUS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CCSI",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "none",
+     "symbol": "LASR",
+     "tone": 0
+    },
+    {
+     "confidence": 75,
+     "event": "analyst",
+     "symbol": "RIGL",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "none",
+     "symbol": "TEAM",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "other",
+     "symbol": "FG",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "offering",
+     "symbol": "FATE",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4cf43af3f357008cd19bdc975276ca5ffb22a7daf7c5b6f5bc251d862294abf7",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down 12% with negative analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "NTRA"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 18.8% with positive analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "FLGT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 16.9% with positive analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "CYRX"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up but neutral analyst tone",
+     "stop_pct": 0.0,
+     "symbol": "PLUS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 12.8% with positive analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "CCSI"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large price jump but neutral analyst tone",
+     "stop_pct": 0.0,
+     "symbol": "LASR"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down 13.8% but analyst tone positive",
+     "stop_pct": 12.0,
+     "symbol": "RIGL"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down with neutral analyst tone",
+     "stop_pct": 0.0,
+     "symbol": "TEAM"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up 8.6% with strong positive analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "FG"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "small price rise with neutral analyst tone",
+     "stop_pct": 0.0,
+     "symbol": "FATE"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "5113196e7b15da24350416f161476aabd628ad2fc610f1895586f4c6afd7e314"
+  },
+  "reviewer": {
+   "answer_sha256": "4262f02d28e6c46968c63d0cbc5cba08984c15290fef29b6a78b2e8662d7fafe",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "974ae70f9114e53338e7355e2868c4d3d8fb4c2a64c0b4bbb7b61af7d480f548",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong downward momentum with negative news imminent and negative analyst tone.",
+     "symbol": "NTRA"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant positive intraday surge following earnings with positive analyst tone.",
+     "symbol": "FLGT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive price action and supportive analyst tone.",
+     "symbol": "CYRX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid earnings-driven momentum with positive analyst sentiment.",
+     "symbol": "CCSI"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop contradicts positive analyst tone, making direction risky.",
+     "symbol": "RIGL"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Consistent upward trend and strong positive tone supporting continuation.",
+     "symbol": "FG"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.11997,
+   "news": 1,
+   "pace": null,
+   "price": 320.12,
+   "r20": -0.06917,
+   "r5": -0.16569,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NTRA",
+   "z": -3.746
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.1881,
+   "news": 0,
+   "pace": null,
+   "price": 22.17,
+   "r20": -0.10375,
+   "r5": -0.1393,
+   "short": true,
+   "src": "iex",
+   "symbol": "FLGT",
+   "z": 5.272
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.16916,
+   "news": 0,
+   "pace": null,
+   "price": 18.765,
+   "r20": -0.0503,
+   "r5": -0.12247,
+   "short": true,
+   "src": "iex",
+   "symbol": "CYRX",
+   "z": 4.863
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.14115,
+   "news": 0,
+   "pace": null,
+   "price": 94.065,
+   "r20": -0.10011,
+   "r5": -0.13677,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLUS",
+   "z": 4.791
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12791,
+   "news": 0,
+   "pace": null,
+   "price": 41.135,
+   "r20": -0.0041,
+   "r5": -0.03237,
+   "short": true,
+   "src": "iex",
+   "symbol": "CCSI",
+   "z": 4.507
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.22597,
+   "news": 0,
+   "pace": null,
+   "price": 35.97,
+   "r20": -0.23414,
+   "r5": -0.24789,
+   "short": true,
+   "src": "iex",
+   "symbol": "LASR",
+   "z": 4.507
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13761,
+   "news": 0,
+   "pace": null,
+   "price": 39.42,
+   "r20": -0.06178,
+   "r5": -0.11156,
+   "short": true,
+   "src": "iex",
+   "symbol": "RIGL",
+   "z": -4.325
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.12911,
+   "news": 0,
+   "pace": null,
+   "price": 159.625,
+   "r20": -0.09962,
+   "r5": -0.10196,
+   "short": true,
+   "src": "iex",
+   "symbol": "TEAM",
+   "z": -4.173
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08579,
+   "news": 0,
+   "pace": null,
+   "price": 23.54,
+   "r20": 0.11009,
+   "r5": 0.02993,
+   "short": true,
+   "src": "iex",
+   "symbol": "FG",
+   "z": 4.11
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02162,
+   "news": 1,
+   "pace": null,
+   "price": 1.89,
+   "r20": -0.13146,
+   "r5": -0.14747,
+   "short": true,
+   "src": "iex",
+   "symbol": "FATE",
+   "z": 0.444
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5048.011,
+  "PICK-MAIN-coin": 5117.1468,
+  "PICK-PENNY": 475.23,
+  "PICK-PENNY-coin": 500.5398
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-06T15:00:21.027253+00:00",
+   "entry": 5.035,
+   "exit": 5.135,
+   "net": -0.2229,
+   "opened": "2026-11-06T14:50:21.188109+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "STLN",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-06T15:00:21.027253+00:00",
+   "entry": 4.85,
+   "exit": 4.9,
+   "net": -0.5385,
+   "opened": "2026-11-06T14:50:21.188109+00:00",
+   "qty": 3,
+   "side": -1,
+   "symbol": "HNST",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 66,
+  "news": 11,
+  "volume": 0
+ },
+ "flagged": 75,
+ "headline_counts": {
+  "CCSI": 3,
+  "CYRX": 3,
+  "FATE": 2,
+  "FG": 3,
+  "FLGT": 3,
+  "LASR": 3,
+  "NTRA": 3,
+  "PLUS": 3,
+  "RIGL": 3,
+  "TEAM": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "429a35399c8e5b68aa5b2298ab514163073c37cb0110d655013b57b070b1f9b9",
+ "price_sources": {
+  "delayed_sip": 454,
+  "iex": 2937
+ },
+ "priced": 3391,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NTRA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FLGT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CYRX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CCSI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RIGL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FG"
+  }
+ ],
+ "slot": "2026-11-06T10:00",
+ "t": "2026-11-06T15:00:21.027253+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T15:00:37.872315Z"
+}
