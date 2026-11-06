@@ -374,7 +374,7 @@ function renderDays() {
 let feedFilter = "all";   // all, buy, short or skip
 let selModel = "NX3";     // whose decisions the day list shows: NX3 or one of the NXM / NXR books
 const MODELS = [["NX3", "NX3"], ["LGBM", "NXM LightGBM"], ["LIN", "NXM linear"], ["MLP", "NXM neural net"],
-  ["ENS", "NXM blend"], ["XGBR", "NXR XGBoost"], ["RFR", "NXR forest"], ["ALL", "NX3-ALL (no cap)"],
+  ["ENS", "NXM blend"], ["XGBR", "NXR XGBoost"], ["RFR", "NXR forest"], ["KRR", "NXK kernel model"], ["CAT", "NXK2 CatBoost"], ["ALL", "NX3-ALL (no cap)"],
   ["HI", "NX3-HI"], ["ALLHI", "NX3-ALL-HI (no cap)"], ["AGENT", "NX3-AGENT (Gemini)"]];
 // an event as the chosen model saw it: NX3's own decision, or that book's pick (side and result) or a skip
 function asModel(ev) {

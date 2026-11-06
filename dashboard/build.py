@@ -39,7 +39,9 @@ NX3_COST = 0.002          # NX3's round trip (config/risk.yaml news track), for 
 SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs"]
 
 # Forward books: where each one's record lives and what it is judged at (PROTOCOL / the idea's prereg).
-NX3_ARMS = ["LGBM", "LIN", "MLP", "ENS", "XGBR", "RFR"]   # the arms with live books (NXM-RF failed)
+NX3_ARMS = ["LGBM", "LIN", "MLP", "ENS", "XGBR", "RFR", "KRR", "CAT"]   # the arms with live books (NXM-RF failed)
+ARM_IDEA = {"XGBR": "NXR", "RFR": "NXR", "KRR": "NXK", "CAT": "NXK2"}
+ARM_FIRST = {"NXM": "2026-10-29", "NXR": "2026-10-30", "NXK": "2026-11-09", "NXK2": "2026-11-09"}
 WATCH = [("PICK-MAIN", "SYS2", "state-watch", "watch/books.json", 30), ("PICK-PENNY", "SYS2", "state-watch",
          "watch/books.json", 30), ("SCOUT-MAIN", "SYS2B", "state-scouts", "scouts/books.json", 30),
          ("SCOUT-PENNY", "SYS2B", "state-scouts", "scouts/books.json", 30)]
@@ -47,7 +49,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -104,10 +106,10 @@ def nx3_books(st):
     last = _json(mdays[-1]) if mdays and mdays[-1].stem > max((s["day"] for s in msettled if s), default="") else None
     for a in NX3_ARMS:
         tr = [t for s in msettled if s for t in s.get("arms", {}).get(a, {}).get("trades", []) if t.get("role") == "picks"]
-        idea = "NXR" if a in ("XGBR", "RFR") else "NXM"
+        idea = ARM_IDEA.get(a, "NXM")
         open_a = len((last or {}).get("arms", {}).get(a, {}).get("picks", [])) if last else 0
         out.append(_book(f"{idea}-{a}", idea, 100, len(tr), open_a, realized=sum(500 * (t["net"] or 0) for t in tr),
-                         size=5000.0, first_day="2026-10-30" if idea == "NXR" else "2026-10-29"))
+                         size=5000.0, first_day=ARM_FIRST[idea]))
     asettled = [_json(f) for f in sorted((root / "nx3all" / "settled").glob("*.json"))]
     adays = sorted((root / "nx3all" / "days").glob("*.json"))
     tr = [t for x in asettled if x for t in x.get("trades", []) if t.get("role") == "picks"]

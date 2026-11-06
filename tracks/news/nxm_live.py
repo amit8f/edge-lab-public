@@ -1,6 +1,6 @@
 """NXM shadow books (research/prereg/NXM.md "What happens next"): one $5,000 ledger book per arm that passed
 (LGBM, LIN, MLP, ENS), on NX3's live events, plus NXR's passing arms (XGBR, RFR; research/prereg/NXR.md) from
-2026-10-30. Ledger only: no orders, no extra API calls.
+2026-10-30, and NXK-KRR / NXK2-CAT (research/prereg/NXK.md, NXK2.md) from 2026-11-09. Ledger only: no orders, no extra API calls.
 
 Each arm reads the inputs NX3's scorer logged for every decided event at its decision time (nx3_live.decide),
 so its effect is the one it would have had live. After the close, per arm: e = N(x) - N(x0) with the arm's
@@ -23,9 +23,10 @@ from tracks.news import nx3_study as S
 
 RES = Path("research/results/NXM")
 RES_R = Path("research/results/NXR")
-NXM_ARMS, NXR_ARMS = ("LGBM", "LIN", "MLP", "ENS"), ("XGBR", "RFR")
-ARMS = NXM_ARMS + NXR_ARMS              # an arm's control seed adds its number here (1-6)
-FIRST = {a: "2026-10-29" for a in NXM_ARMS} | {a: "2026-10-30" for a in NXR_ARMS}
+RES_K = Path("research/results/NX3")     # NXK-KRR and NXK2-CAT version 1 (research/prereg/NXK.md, NXK2.md)
+NXM_ARMS, NXR_ARMS, NXK_ARMS = ("LGBM", "LIN", "MLP", "ENS"), ("XGBR", "RFR"), ("KRR", "CAT")
+ARMS = NXM_ARMS + NXR_ARMS + NXK_ARMS   # an arm's control seed adds its number here (1-8)
+FIRST = {a: "2026-10-29" for a in NXM_ARMS} | {a: "2026-10-30" for a in NXR_ARMS} | {a: "2026-11-09" for a in NXK_ARMS}
 FIRST_DAY = min(FIRST.values())         # 2026-10-29: the first session whose decisions log easy-to-borrow
 SLIM = ["symbol", "t", "side", "e", "prev_c", "dv20"]
 
@@ -58,7 +59,7 @@ def _reader(res, meta_name):
     return read, meta
 
 
-def load(res=RES, res_r=RES_R):
+def load(res=RES, res_r=RES_R, res_k=RES_K):
     """{arm: model with .effect and .cut} from the version 1 files, each checked against its sha256."""
     read, _ = _reader(res, "nxm_v1_meta.json")
     out = {}
@@ -71,11 +72,17 @@ def load(res=RES, res_r=RES_R):
     read_r, _ = _reader(res_r, "nxr_v1_meta.json")
     for a in NXR_ARMS:
         out[a] = Arm(**read_r(a))
+    if (res_k / "nxk_v1_meta.json").exists():          # absent until the nx3-study nxk_v1 stage has run
+        read_k, _ = _reader(res_k, "nxk_v1_meta.json")
+        for a in NXK_ARMS:
+            out[a] = Arm(**read_k(a))
     return out
 
 
 def shas():
     m = json.loads((RES / "nxm_v1_meta.json").read_text()) | json.loads((RES_R / "nxr_v1_meta.json").read_text())
+    if (RES_K / "nxk_v1_meta.json").exists():
+        m |= json.loads((RES_K / "nxk_v1_meta.json").read_text())
     return {a: m[a]["sha256"] for a in ARMS if a in m}
 
 
