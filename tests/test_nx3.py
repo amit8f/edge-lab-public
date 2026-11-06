@@ -287,3 +287,14 @@ def test_fast_exit_returns_from_the_entry_price():
     assert abs(x["60"] - (9.4 / 10.0 - 1)) < 1e-9
     assert abs(x["close"] - (bars["c"].iloc[-1] / 10.0 - 1)) < 1e-9
     assert X.fast_exit(None, t0, 10.0) is None
+
+
+def test_nxk_learners_fit_and_predict_with_missing_values():
+    rng = np.random.default_rng(2)
+    Xt = rng.normal(size=(600, len(X.INPUTS)))
+    Xt[::7, 3] = np.nan
+    y = Xt[:, 0] * 0.1 + rng.normal(size=600) * 0.1
+    for arm in ("KNN", "KRR"):
+        m = X.nxk_learner(arm)(Xt, y)
+        p = m.predict(Xt[:5])
+        assert p.shape == (5,) and np.isfinite(p).all()
