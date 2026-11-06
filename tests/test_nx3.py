@@ -276,3 +276,14 @@ def test_shortml_stage_runs_on_synthetic_events(tmp_path, monkeypatch):
     rep = json.loads((tmp_path / "out" / "SHORTML_walkforward.json").read_text())
     assert rep["verdict"] in ("passed", "failed", "too thin")
     assert rep["primary"]["pick_days"] > 0
+
+
+def test_fast_exit_returns_from_the_entry_price():
+    t0 = pd.Timestamp("2024-03-04 09:31")
+    bars = pd.DataFrame({"t": [t0 + pd.Timedelta(minutes=m) for m in range(0, 200)],
+                         "o": [10.0 - 0.01 * m for m in range(200)], "c": [10.0 - 0.01 * m for m in range(200)],
+                         "v": 100})
+    x = X.fast_exit(bars, t0, 10.0)
+    assert abs(x["60"] - (9.4 / 10.0 - 1)) < 1e-9
+    assert abs(x["close"] - (bars["c"].iloc[-1] / 10.0 - 1)) < 1e-9
+    assert X.fast_exit(None, t0, 10.0) is None
