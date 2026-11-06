@@ -28,7 +28,7 @@ Newey-West (5 lags) t >= 1.5 (the near-miss bar), AND at least 300 short trades 
 
 ## Reported, no rule
 
-Exploratory arms: bar 1.75 alone, weak market alone, liquid alone; per-year results; trades and days counted.
+Exploratory arms: bar 1.75 alone, weak market alone, liquid alone, both filters at NX3's own short bar 1.0; per-year results; trades and days counted.
 
 ## Forward book
 

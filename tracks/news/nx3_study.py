@@ -707,7 +707,8 @@ def stage_shortfix(cache, out):
     caldates = pd.DatetimeIndex(calendar(cache)["date"])
     weak = ev["spy_r5"] < 0
     liquid = (ev["log_dv"] >= np.log(SF_MIN_DV)) & (ev["log_px"] >= np.log(SF_MIN_PX))
-    arms = {"shortfix": weak & liquid, "bar_only": pd.Series(True, index=ev.index), "weak_only": weak, "liquid_only": liquid}
+    arms = {"shortfix": weak & liquid, "bar_only": pd.Series(True, index=ev.index), "weak_only": weak, "liquid_only": liquid,
+            "filters_bar1": weak & liquid}
     days, npick = {a: [] for a in arms}, {a: 0 for a in arms}
     for yr in N.TEST_YEARS:
         start = pd.Timestamp(f"{yr}-01-01")
@@ -718,7 +719,7 @@ def stage_shortfix(cache, out):
             continue
         model = Model(tr)
         for a, mask in arms.items():
-            n, pk, _, _ = evaluate(te[mask.loc[te.index]], model, SEED + yr, PICKS, hi=SF_BAR, only=-1)
+            n, pk, _, _ = evaluate(te[mask.loc[te.index]], model, SEED + yr, PICKS, hi=1.0 if a == "filters_bar1" else SF_BAR, only=-1)
             if len(n):
                 days[a].append(n.assign(year=yr))
                 npick[a] += len(pk)
