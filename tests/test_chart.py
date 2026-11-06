@@ -111,3 +111,38 @@ def N_dir(cache):
     p = cache / "nx1"
     p.mkdir(parents=True, exist_ok=True)
     return p
+
+
+def test_boom1_run_end_to_end(tmp_path, monkeypatch):
+    from tracks.main import boom1_study as B
+    cache = tmp_path / "nx1"
+    d = X.nx3dir(cache) / X.CHART
+    d.mkdir(parents=True)
+    (X.nx3dir(cache) / X.TRADES).mkdir()
+    days = pd.bdate_range("2016-01-04", "2020-12-31")
+    pd.DataFrame({"date": days, "open": "09:30", "close": "16:00"}).to_parquet(N_dir(cache) / "cal.parquet")
+    cal = pd.DatetimeIndex(days)
+    spy = bars(len(days), 99, "2016-01-04").assign(seg=0)
+    X.chart_next(C.market_features(spy).merge(spy, on="date"), cal).to_parquet(d / "spy.parquet")
+    parts = []
+    for i in range(120):
+        b = bars(len(days), i, "2016-01-04")
+        b["o"] = b["c"] * (1 + np.random.default_rng(i).normal(0, 0.04, len(b)))
+        b["h"], b["l"] = np.maximum(b["o"], b["c"]) * 1.01, np.minimum(b["o"], b["c"]) * 0.99
+        b[["ao", "ah", "al"]] = b[["o", "h", "l"]].to_numpy()
+        b[["c", "o"]] *= 5
+        b["v"] *= 10
+        x = C.chart_features(b).merge(b[["date", "o", "ao", "ac"]], on="date")
+        parts.append(X.chart_next(x, cal).assign(symbol=f"S{i}"))
+    pd.concat(parts, ignore_index=True).to_parquet(d / "c_0000.parquet")
+    pd.DataFrame({"symbol": ["S1", "S2"], "d": [days[900], days[901]], "kind": "real", "mins_open": [-30.0, 5.0],
+                  "n_articles": 2.0, "fb_neg": 0.9, "fb_pos": 0.1, "lm_net": -0.5, "fb_max_neg": 0.9,
+                  "fb_max_pos": 0.1}).to_parquet(X.nx3dir(cache) / X.TRADES / "t_0.parquet")
+    monkeypatch.setattr(B.N, "TEST_YEARS", range(2019, 2021))
+    monkeypatch.setattr(B, "TRAIN_ROWS", 20_000)
+    monkeypatch.setattr(B, "classifier", lambda: __import__("catboost").CatBoostClassifier(
+        iterations=20, verbose=0, allow_writing_files=False))
+    news = B.pre_open_news(cache)
+    assert list(news["symbol"]) == ["S1"]                    # news after the open is not pre-open news
+    rep = B.run(cache, tmp_path / "out")
+    assert rep["verdict"] in ("passed", "failed") and rep["arms"]["MODEL"]["hit_rate"]["days"] > 300

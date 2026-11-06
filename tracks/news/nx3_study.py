@@ -1179,9 +1179,74 @@ def stage_nx3ta(cache, out):
     print(json.dumps(rep, indent=1, default=float))
 
 
+SHORTALL_ARMS = ("XGB", "CAT", "ET", "KRR", "LGBM")
+SHORTALL_VARIANTS = ("plain", "lessons")   # lessons: confidence >= 2.0 and SPY down over 5 days (primary)
+SHORTALL_HI = 2.0
+
+
+def shortall_learner(arm):
+    """SHORT-ALL (research/prereg/SHORTALL.md): every learner family that passed NX3's gate, plus LightGBM."""
+    if arm in ("CAT", "ET", "XGB"):
+        return nxk2_learner(arm)
+    if arm == "KRR":
+        return nxk_learner(arm)
+
+    def f(X, y):
+        from lightgbm import LGBMRegressor
+        return LGBMRegressor(n_estimators=400, num_leaves=15, max_depth=4, learning_rate=0.05, subsample=0.8,
+                             subsample_freq=1, colsample_bytree=0.8, min_child_samples=50, objective="huber", alpha=1.0,
+                             random_state=SEED, verbose=-1).fit(X, y)
+    return f
+
+
+def stage_shortall(cache, out):
+    """SHORT-ALL: NX3's walk-forward and models, shorts only (the first 3 fired events with e < 0 each day), per
+    learner. Judged on the shorts' own net after costs, not only against random shorts."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    days = {(a, v): [] for a in SHORTALL_ARMS for v in SHORTALL_VARIANTS}
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut_d]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        for a in SHORTALL_ARMS:
+            m = Model(tr, shortall_learner(a))
+            for v in SHORTALL_VARIANTS:
+                tv, hi = (te, 1.0) if v == "plain" else (te[te["spy_r5"] < 0], SHORTALL_HI)
+                if tv.empty:
+                    continue
+                n, pk, _, _ = evaluate(tv, m, SEED + yr, hi=hi, only=-1)
+                if len(n):
+                    net = pk.assign(net=N.net(pk)).groupby("d")["net"].agg(["mean", "size"]).reset_index()
+                    days[(a, v)].append(n[["d", "pick_minus_control"]].merge(net, on="d").assign(year=yr))
+    rep = {"rule": "per learner, the lessons arm: pick-minus-control NW t >= 2 and own net per day > 0 with NW t >= 1.5",
+           "arms": {}}
+    for a, v in days:
+        x = (pd.concat(days[(a, v)], ignore_index=True) if days[(a, v)]
+             else pd.DataFrame(columns=["d", "pick_minus_control", "mean", "size", "year"]))
+        r = {"pick_minus_control": tstat(x["pick_minus_control"].to_numpy(float)),
+             "net_per_day": tstat(x["mean"].to_numpy(float)), "trades": int(x["size"].sum()),
+             "net_per_trade": float((x["mean"] * x["size"]).sum() / x["size"].sum()) if len(x) else None,
+             "per_year_net_per_day": {int(y): float(g["mean"].mean()) for y, g in x.groupby("year")}}
+        pmc, nd = r["pick_minus_control"], r["net_per_day"]
+        r["passed"] = bool(pmc["mean"] > 0 and pmc["t_nw"] >= GATE_T and nd["mean"] > 0 and nd["t_nw"] >= ALL_PASS_T)
+        rep["arms"][f"{a}_{v}"] = r
+    rep["verdict"] = ("passed" if any(rep["arms"][f"{a}_lessons"]["passed"] for a in SHORTALL_ARMS
+                                      if f"{a}_lessons" in rep["arms"]) else "failed")
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "SHORTALL_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1229,6 +1294,13 @@ def main():
     if a.stage == "chart_bars":
         if not stage_chart_bars(a.cache, deadline):
             print("[chart bars] time budget used; rerun to continue")
+        return
+    if a.stage == "boom1":
+        from tracks.main import boom1_study
+        boom1_study.run(a.cache, "research/results/BOOM1")
+        return
+    if a.stage == "shortall":
+        stage_shortall(a.cache, a.out)
         return
     if a.stage == "chart1":
         from tracks.main import chart1_study

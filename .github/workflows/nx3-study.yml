@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) nxe (NXE, NXF and NXT, research/prereg/NXE.md, NXF.md, NXT.md), uncapped (NX3-ALL, research/prereg/NX3ALL.md) sizer (NXS-ML, research/prereg/NXS.md) highbar (NX3-HI, research/prereg/NX3HI.md) highbar_all (NX3-ALL-HI, research/prereg/NX3ALLHI.md) shortfix (SHORT-FIX, research/prereg/SHORTFIX.md) shortfix2 (SHORT-FIX2, research/prereg/SHORTFIX2.md) shortml (SHORT-ML, research/prereg/SHORTML.md) shortfast (SHORT-FAST, research/prereg/SHORTFAST.md) nxk (NXK-KNN and NXK-KRR, research/prereg/NXK.md) nxk2 (NXK2-CAT and NXK2-ET, research/prereg/NXK2.md) bars_cat / bars_krr (NX3-BARS table for CatBoost / KRR, descriptive) nxk_v1 (version 1 KRR and CatBoost models for their shadow books) chart_bars (daily chart inputs for NX3TA and CHART1) nx3ta (NX3TA, research/prereg/NX3TA.md) chart1 (CHART1, research/prereg/CHART1.md) or bars (NX3-BARS, research/prereg/NX3BARS.md; also writes NX3_fired_trades.csv)"
+        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) nxe (NXE, NXF and NXT, research/prereg/NXE.md, NXF.md, NXT.md), uncapped (NX3-ALL, research/prereg/NX3ALL.md) sizer (NXS-ML, research/prereg/NXS.md) highbar (NX3-HI, research/prereg/NX3HI.md) highbar_all (NX3-ALL-HI, research/prereg/NX3ALLHI.md) shortfix (SHORT-FIX, research/prereg/SHORTFIX.md) shortfix2 (SHORT-FIX2, research/prereg/SHORTFIX2.md) shortml (SHORT-ML, research/prereg/SHORTML.md) shortfast (SHORT-FAST, research/prereg/SHORTFAST.md) nxk (NXK-KNN and NXK-KRR, research/prereg/NXK.md) nxk2 (NXK2-CAT and NXK2-ET, research/prereg/NXK2.md) bars_cat / bars_krr (NX3-BARS table for CatBoost / KRR, descriptive) nxk_v1 (version 1 KRR and CatBoost models for their shadow books) chart_bars (daily chart inputs for NX3TA and CHART1) nx3ta (NX3TA, research/prereg/NX3TA.md) chart1 (CHART1, research/prereg/CHART1.md) shortall (SHORT-ALL, research/prereg/SHORTALL.md) boom1 (BOOM1, research/prereg/BOOM1.md) or bars (NX3-BARS, research/prereg/NX3BARS.md; also writes NX3_fired_trades.csv)"
         required: false
         default: all
 
@@ -117,7 +117,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3
@@ -150,8 +150,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1
-          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1
+          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1
+          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "NX3/NXM/NXR/NXE ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
