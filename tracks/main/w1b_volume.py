@@ -547,10 +547,10 @@ def stage_footprints(cache, budget_min):
                 rec["days"].append({"day": str(d), "status": "no trades" if not tr else "too dense"})
                 continue
             t = pd.DataFrame(tr)[["t", "x", "p", "s"]]
-            t["t"] = pd.to_datetime(t["t"], utc=True)
+            t["t"] = pd.to_datetime(t["t"], utc=True, format="ISO8601")
             q = pd.DataFrame(qu)
             q = q[["t", "bp", "ap"]] if len(q) else pd.DataFrame(columns=["t", "bp", "ap"])
-            q["t"] = pd.to_datetime(q["t"], utc=True)
+            q["t"] = pd.to_datetime(q["t"], utc=True, format="ISO8601")
             fpd = footprint_day(t, q)
             rec["days"].append({"day": str(d), **(fpd or {})})
         tmp = f.with_suffix(".tmp")

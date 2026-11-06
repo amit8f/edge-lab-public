@@ -618,7 +618,7 @@ BUCKETS = [(1.0, 1.25), (1.25, 1.5), (1.5, 2.0), (2.0, 2.5), (2.5, 99.0)]
 MIN_PICK_DAYS = 30
 
 
-def stage_bars(cache, out, grid=BAR_GRID):
+def stage_bars(cache, out, grid=BAR_GRID, learner=None, tag=""):
     """NX3-BARS (research/prereg/NX3BARS.md): (1) NX3_fired_trades.csv, every event the walk-forward models fire in the
     test years with side, confidence |e|/cut and the net result until the exit (no headlines); (2) result by confidence
     bucket and side (descriptive); (3) the registered test: for each test year the long bar and the short bar are the
@@ -636,7 +636,7 @@ def stage_bars(cache, out, grid=BAR_GRID):
         te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
         if tr.empty or te.empty:
             continue
-        model = Model(tr)
+        model = Model(tr) if learner is None else Model(tr, learner)
         years.append((yr, te, model))
         real = te[te["kind"] == "real"]
         e = model.effect(real[INPUTS].to_numpy(float))
@@ -653,7 +653,7 @@ def stage_bars(cache, out, grid=BAR_GRID):
     tab = pd.concat(table, ignore_index=True) if table else pd.DataFrame(columns=["d", "symbol", "side", "conf", "net", "year"])
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    tab.assign(side=tab["side"].map({1: "long", -1: "short"})).round(6).to_csv(out / "NX3_fired_trades.csv", index=False)
+    tab.assign(side=tab["side"].map({1: "long", -1: "short"})).round(6).to_csv(out / f"NX3_fired_trades{tag}.csv", index=False)
     buckets = {}
     for s_, name in ((1, "long"), (-1, "short")):
         g = tab[tab["side"] == s_]
@@ -688,7 +688,7 @@ def stage_bars(cache, out, grid=BAR_GRID):
            if len(m) else None, "result_by_confidence_bucket": buckets, "pass_t": ALL_PASS_T}
     pm = rep["pooled_pick_minus_control"]
     rep["verdict"] = "passed" if pm["mean"] > 0 and pm["t_nw"] >= ALL_PASS_T else "failed"
-    (out / "NX3BARS_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    (out / f"NX3BARS{tag}_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
     print(json.dumps(rep, indent=1, default=float))
 
 
@@ -1003,9 +1003,185 @@ def stage_nxk(cache, out, arms=None, learner=None, name="NXK"):
     print(json.dumps(rep, indent=1, default=float))
 
 
+def stage_nxk_v1(cache, out):
+    """Version 1 of the NXK/NXK2 arms that passed NX3's gate and get a shadow book (KRR, CAT; NXK.md, NXK2.md):
+    trained on all events as NX3's v1 was, pickled with sha256 in nxk_v1_meta.json for tracks/news/nxm_live.py."""
+    import hashlib
+    import pickle
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    meta = {}
+    for a, lr in (("KRR", nxk_learner("KRR")), ("CAT", nxk2_learner("CAT"))):
+        m = Model(ev, lr)
+        f = out / f"nxk_v1_{a}.pkl"
+        f.write_bytes(pickle.dumps({"base": m.base, "news": m.news, "cut": m.cut}))
+        meta[a] = {"file": f.name, "sha256": hashlib.sha256(f.read_bytes()).hexdigest(), "cut": m.cut}
+    import catboost
+    import sklearn
+    meta |= {"version": 1, "inputs": INPUTS, "base_inputs": BASE_INPUTS, "train_first": str(ev["d"].min().date()),
+             "train_last": str(ev["d"].max().date()), "catboost": catboost.__version__, "sklearn": sklearn.__version__}
+    (out / "nxk_v1_meta.json").write_text(json.dumps(meta, indent=1, default=str))
+    print(json.dumps(meta, indent=1, default=str))
+
+
+# ---------- NX3TA and CHART1 data (research/prereg/NX3TA.md, CHART1.md) ----------
+
+CHART = "chart"
+CHART_FIRST = pd.Timestamp("2015-01-01")
+CHART_SYMS = 200
+
+
+def daily_ohlcv(symbols, first, last, headers):
+    """Daily SIP bars, raw and all-adjusted, one row per (symbol, date ET): o h l c v (raw), ao ah al ac av (all)."""
+    parts = {}
+    for adj in ("raw", "all"):
+        rows = []
+        tok = None
+        while True:
+            p = {"symbols": ",".join(symbols), "timeframe": "1Day", "start": str(first.date()), "end": alpaca.sip_end(last),
+                 "feed": "sip", "adjustment": adj, "limit": 10000}
+            if tok:
+                p["page_token"] = tok
+            j = alpaca.get(BARS_URL, p, headers=headers)
+            for sym, bs in (j.get("bars") or {}).items():
+                rows.extend((sym, b["t"], b["o"], b["h"], b["l"], b["c"], b["v"]) for b in bs)
+            tok = j.get("next_page_token")
+            if not tok:
+                break
+        cols = ["o", "h", "l", "c", "v"] if adj == "raw" else ["ao", "ah", "al", "ac", "av"]
+        d = pd.DataFrame(rows, columns=["symbol", "t", *cols])
+        d["date"] = pd.to_datetime(d["t"], utc=True).dt.tz_convert(ET).dt.tz_localize(None).dt.normalize()
+        parts[adj] = d.drop(columns="t").drop_duplicates(["symbol", "date"])
+    return parts["raw"].merge(parts["all"], on=["symbol", "date"], how="inner")
+
+
+def chart_next(f, caldates):
+    """Adds the next session's trade (CHART1): nxt date, raw open o1, all-adjusted open/close ao1/ac1. Only when
+    the next row of the same segment is the next market session."""
+    f = f.sort_values("date").reset_index(drop=True)
+    pos = caldates.searchsorted(f["date"])
+    nxt = pd.DatetimeIndex([caldates[i + 1] if i + 1 < len(caldates) else pd.NaT for i in pos])
+    same = (f["seg"].shift(-1) == f["seg"]).to_numpy() & (f["date"].shift(-1).to_numpy() == nxt.to_numpy())
+    for k in ("o", "ao", "ac"):
+        f[f"{k}1"] = np.where(same, f[k].shift(-1).to_numpy(), np.nan).astype("float32")
+    f["nxt"] = np.where(same, nxt.to_numpy(), np.datetime64("NaT", "ns"))
+    return f
+
+
+def stage_chart_bars(cache, deadline):
+    """Daily bars 2015..2025-09-30 for every symbol NX3 ever traded and SPY -> chart inputs per (symbol, date)
+    and the next session's open-to-close trade, ~200 symbols per file."""
+    from core import chart_features as C
+    d3 = nx3dir(cache)
+    out = d3 / CHART
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    syms = sorted(set().union(*(set(pd.read_parquet(f, columns=["symbol"])["symbol"])
+                                for f in sorted((d3 / TRADES).glob("t_*.parquet")))) - {"SPY"})
+    h = alpaca_headers()
+    if not (out / "spy.parquet").exists():
+        spy = daily_ohlcv(["SPY"], CHART_FIRST, N.LAST_EXIT, h)
+        f = chart_next(C.market_features(spy).merge(spy, on="date").assign(seg=0), caldates)
+        N.atomic_parquet(f, out / "spy.parquet")
+    for b in range(0, len(syms), CHART_SYMS):
+        f = out / f"c_{b // CHART_SYMS:04d}.parquet"
+        if f.exists():
+            continue
+        if time.monotonic() > deadline:
+            return False
+        raw = daily_ohlcv(syms[b:b + CHART_SYMS], CHART_FIRST, N.LAST_EXIT, h)
+        parts = []
+        for s, g in raw.groupby("symbol"):
+            x = C.chart_features(g)
+            if len(x):
+                x = x.merge(g[["date", "o", "ao", "ac"]], on="date", how="left")
+                parts.append(chart_next(x, caldates).assign(symbol=s))
+        res = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame()
+        N.atomic_parquet(res, f)
+        print(f"[chart bars] {b // CHART_SYMS + 1}/{-(-len(syms) // CHART_SYMS)}: {len(res)} rows")
+    return True
+
+
+NX3TA_ARMS = ("CAT", "CAT_TA")
+
+
+def ta_inputs():
+    """NX3TA's added inputs: the classic chart set minus what NX3 already has."""
+    from core import chart_features as C
+    have = set(N.STOCK_INPUTS)
+    return [k for k in C.CLASSIC if k not in have] + ["spy_d200", "spy_vol20"]
+
+
+def with_ta(ev, cache):
+    """NX3 events with the chart inputs at the previous session's close (point in time for any news time on d)."""
+    d3 = nx3dir(cache)
+    ses = sessions(calendar(cache))[["date", "prev"]].rename(columns={"date": "d"})
+    ev = ev.merge(ses, on="d", how="left")
+    ta = [k for k in ta_inputs() if not k.startswith("spy_")]
+    syms = set(ev["symbol"])
+    parts = []
+    for f in sorted((d3 / CHART).glob("c_*.parquet")):
+        x = pd.read_parquet(f, columns=["symbol", "date", *ta])
+        parts.append(x[x["symbol"].isin(syms)])
+    x = pd.concat(parts, ignore_index=True).rename(columns={"date": "prev"})
+    spy = pd.read_parquet(d3 / CHART / "spy.parquet", columns=["date", "spy_d200", "spy_vol20"]).rename(columns={"date": "prev"})
+    return ev.merge(x, on=["symbol", "prev"], how="left").merge(spy, on="prev", how="left")
+
+
+def stage_nx3ta(cache, out):
+    """NX3TA: CatBoost on NX3's 37 inputs against CatBoost on those plus the chart inputs (added to both the
+    baseline and the news model), same walk-forward, seeds, picks and control."""
+    global INPUTS, BASE_INPUTS
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    ev = with_ta(ev, cache)
+    ta = ta_inputs()
+    cover = float(ev[ta].notna().all(axis=1).mean())
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    base_in, base_b = list(INPUTS), list(BASE_INPUTS)
+    days = {a: [] for a in NX3TA_ARMS}
+    try:
+        for yr in N.TEST_YEARS:
+            start = pd.Timestamp(f"{yr}-01-01")
+            cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+            tr = ev[ev["d"] <= cut_d]
+            te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+            if tr.empty or te.empty:
+                continue
+            for a in NX3TA_ARMS:
+                INPUTS, BASE_INPUTS = (base_in + ta, base_b + ta) if a == "CAT_TA" else (base_in, base_b)
+                n, _, _, _ = evaluate(te, Model(tr, nxk2_learner("CAT")), SEED + yr)
+                if len(n):
+                    days[a].append(n.assign(year=yr))
+    finally:
+        INPUTS, BASE_INPUTS = base_in, base_b
+    cat = {a: pd.concat(days[a], ignore_index=True) for a in NX3TA_ARMS}
+    rep = {"gate_t": GATE_T, "ta_inputs": ta, "rows_with_all_ta": cover, "arms": {}}
+    for a in NX3TA_ARMS:
+        x = cat[a]
+        r = {"pick_minus_control": tstat(x["pick_minus_control"].to_numpy(float)),
+             "pick_minus_shuffled": tstat(x["pick_minus_shuffled"].to_numpy(float)), "pick_days": int(len(x)),
+             "per_year": {int(y): tstat(g["pick_minus_control"].to_numpy(float)) for y, g in x.groupby("year")}}
+        r["gate"] = bool(r["pick_minus_control"]["mean"] > 0 and r["pick_minus_control"]["t_nw"] >= GATE_T
+                         and r["pick_minus_shuffled"]["mean"] > 0 and r["pick_minus_shuffled"]["t_nw"] >= GATE_T)
+        rep["arms"][a] = r
+    m = cat["CAT_TA"].merge(cat["CAT"], on="d", suffixes=("", "_cat"))
+    rep["ta_minus_cat_shared_days"] = tstat((m["pick_minus_control"] - m["pick_minus_control_cat"]).to_numpy(float))
+    g = rep["ta_minus_cat_shared_days"]
+    rep["verdict"] = ("passed" if rep["arms"]["CAT_TA"]["gate"] and g["mean"] > 0 and g["t_nw"] >= ALL_PASS_T
+                      else "failed")
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "NX3TA_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1040,6 +1216,26 @@ def main():
         return
     if a.stage == "nxk":
         stage_nxk(a.cache, a.out)
+        return
+    if a.stage == "nxk_v1":
+        stage_nxk_v1(a.cache, a.out)
+        return
+    if a.stage == "bars_cat":       # descriptive: NX3-BARS table and bar walk for NXK2-CAT (not a registered test)
+        stage_bars(a.cache, a.out, learner=nxk2_learner("CAT"), tag="_CAT")
+        return
+    if a.stage == "bars_krr":       # descriptive: the same for NXK-KRR
+        stage_bars(a.cache, a.out, learner=nxk_learner("KRR"), tag="_KRR")
+        return
+    if a.stage == "chart_bars":
+        if not stage_chart_bars(a.cache, deadline):
+            print("[chart bars] time budget used; rerun to continue")
+        return
+    if a.stage == "chart1":
+        from tracks.main import chart1_study
+        chart1_study.run(a.cache, "research/results/CHART1")
+        return
+    if a.stage == "nx3ta":
+        stage_nx3ta(a.cache, a.out)
         return
     if a.stage == "nxk2":
         stage_nxk(a.cache, a.out, NXK2_ARMS, nxk2_learner, "NXK2")

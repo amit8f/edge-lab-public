@@ -30,7 +30,8 @@ def dec(symbol, minute, lm_net, etb=True):
 
 def test_committed_models_load_and_score_zero_without_news():
     models = M.load()
-    assert set(models) == set(M.ARMS)
+    has_k = (M.RES_K / "nxk_v1_meta.json").exists()     # NXK/NXK2 version 1 lands after the nxk_v1 stage runs
+    assert set(models) == set(M.ARMS if has_k else M.NXM_ARMS + M.NXR_ARMS)
     X = np.array([[0.0 if k in N.NEWS_INPUTS else 0.3 for k in S.INPUTS]])
     for a, m in models.items():
         assert np.allclose(m.effect(X), 0), a
@@ -89,5 +90,8 @@ def test_nxr_arms_start_on_their_own_first_day(tmp_path):
     led = Ledger(root)
     r29 = json.loads((root / led.entry("nxm_day", "2026-10-29")["file"]).read_text())
     r30 = json.loads((root / led.entry("nxm_day", "2026-10-30")["file"]).read_text())
-    assert set(r29["arms"]) == set(M.NXM_ARMS) and set(r30["arms"]) == set(M.ARMS)
-    assert set(r30["models_sha256"]) == set(M.ARMS)
+    assert set(r29["arms"]) == set(M.NXM_ARMS) and set(r30["arms"]) == set(M.NXM_ARMS + M.NXR_ARMS)
+    assert set(r30["models_sha256"]) == set(M.NXM_ARMS + M.NXR_ARMS)
+    M.close_day(root, d, pd.Timestamp("2026-11-09"), 1, models)       # NXK-KRR and NXK2-CAT start 2026-11-09
+    r9 = json.loads((root / led.entry("nxm_day", "2026-11-09")["file"]).read_text())
+    assert set(r9["arms"]) == set(M.ARMS)

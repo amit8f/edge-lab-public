@@ -308,3 +308,35 @@ def test_nxk2_learners_fit_and_predict_with_missing_values():
     for arm in ("CAT", "ET"):
         p = X.nxk2_learner(arm)(Xt, y).predict(Xt[:5])
         assert p.shape == (5,) and np.isfinite(p).all()
+
+
+def test_nx3ta_stage_runs_on_synthetic_events(tmp_path, monkeypatch):
+    import json
+    rng = np.random.default_rng(2)
+    days = pd.bdate_range("2019-01-02", "2021-12-30")
+    rows = []
+    for d in days:
+        for i in range(10):
+            r = {k: rng.normal() for k in X.INPUTS}
+            r.update(symbol=f"S{i}", vol20=0.02, d=d, t=d + pd.Timedelta(hours=9, minutes=i),
+                     kind="real" if i < 7 else "placebo", mret=rng.normal() * 0.02, next=d + pd.Timedelta(days=1),
+                     price=20.0, days=1, ret=rng.normal() * 0.02)
+            rows.append(r)
+    d3 = tmp_path / "nx3"
+    (d3 / X.TRADES).mkdir(parents=True)
+    (d3 / X.CHART).mkdir()
+    pd.DataFrame(rows).to_parquet(d3 / X.TRADES / "t_0.parquet")
+    ta = [k for k in X.ta_inputs() if not k.startswith("spy_")]
+    ch = pd.DataFrame([{"symbol": f"S{i}", "date": d, **{k: rng.normal() for k in ta}} for d in days for i in range(10)])
+    ch.to_parquet(d3 / X.CHART / "c_0000.parquet")
+    pd.DataFrame({"date": days, "spy_d200": 0.01, "spy_vol20": 0.01}).to_parquet(d3 / X.CHART / "spy.parquet")
+    monkeypatch.setattr(X, "nx3dir", lambda cache: d3)
+    monkeypatch.setattr(X, "calendar", lambda cache: pd.DataFrame({"date": days, "open": "09:30", "close": "16:00"}))
+    monkeypatch.setattr(N, "TEST_YEARS", range(2020, 2022))
+    monkeypatch.setattr(N, "LAST_EXIT", pd.Timestamp("2030-01-01"))
+    inputs_before = list(X.INPUTS)
+    X.stage_nx3ta("x", tmp_path / "out")
+    rep = json.loads((tmp_path / "out" / "NX3TA_walkforward.json").read_text())
+    assert rep["verdict"] in ("passed", "failed") and rep["rows_with_all_ta"] > 0.9
+    assert set(rep["arms"]) == {"CAT", "CAT_TA"}
+    assert X.INPUTS == inputs_before                     # the global input list is restored
