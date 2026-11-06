@@ -298,3 +298,13 @@ def test_nxk_learners_fit_and_predict_with_missing_values():
         m = X.nxk_learner(arm)(Xt, y)
         p = m.predict(Xt[:5])
         assert p.shape == (5,) and np.isfinite(p).all()
+
+
+def test_nxk2_learners_fit_and_predict_with_missing_values():
+    rng = np.random.default_rng(3)
+    Xt = rng.normal(size=(600, len(X.INPUTS)))
+    Xt[::7, 3] = np.nan
+    y = Xt[:, 0] * 0.1 + rng.normal(size=600) * 0.1
+    for arm in ("CAT", "ET"):
+        p = X.nxk2_learner(arm)(Xt, y).predict(Xt[:5])
+        assert p.shape == (5,) and np.isfinite(p).all()
