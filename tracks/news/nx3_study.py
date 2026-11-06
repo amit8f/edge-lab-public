@@ -914,9 +914,77 @@ def stage_shortfast(cache, out):
     print(json.dumps(rep, indent=1, default=float))
 
 
+NXK_ARMS = ("XGB", "KNN", "KRR")
+NXK_KNN_ROWS = 100_000
+
+
+def nxk_learner(arm):
+    """New model families on NX3's design (research/prereg/NXK.md): KNN = average over the 100 most similar past
+    events (analogs); KRR = RBF kernel ridge (Nystroem, 300 components). Median-filled, standardised, like NXM."""
+    if arm == "XGB":
+        return fit
+
+    def f(X, y):
+        from sklearn.impute import SimpleImputer
+        from sklearn.pipeline import make_pipeline
+        from sklearn.preprocessing import StandardScaler
+        if arm == "KNN":
+            from sklearn.neighbors import KNeighborsRegressor
+            if len(X) > NXK_KNN_ROWS:
+                i = np.random.default_rng(SEED).choice(len(X), NXK_KNN_ROWS, replace=False)
+                X, y = X[i], y[i]
+            est = KNeighborsRegressor(n_neighbors=100, weights="distance", n_jobs=-1)
+        else:
+            from sklearn.kernel_approximation import Nystroem
+            from sklearn.linear_model import Ridge
+            est = make_pipeline(Nystroem(kernel="rbf", gamma=1.0 / len(INPUTS), n_components=300, random_state=SEED),
+                                Ridge(alpha=10.0))
+        return make_pipeline(SimpleImputer(strategy="median", add_indicator=True), StandardScaler(), est).fit(X, y)
+    return f
+
+
+def stage_nxk(cache, out):
+    """NXK: NX3's walk-forward, picks, control, shuffled-news test and gate with other model families in place of
+    XGBoost. XGBoost is rerun as the pairing baseline (same seeds)."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    days = {a: [] for a in NXK_ARMS}
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut_d]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        for a in NXK_ARMS:
+            n, _, _, _ = evaluate(te, Model(tr, nxk_learner(a)), SEED + yr)
+            if len(n):
+                days[a].append(n.assign(year=yr))
+    rep = {"gate_t": GATE_T, "arms": {}}
+    cat = {a: (pd.concat(days[a], ignore_index=True) if days[a] else
+               pd.DataFrame(columns=["d", "pick_minus_control", "pick_minus_shuffled", "year"])) for a in NXK_ARMS}
+    for a in NXK_ARMS:
+        x = cat[a]
+        r = {"pick_minus_control": tstat(x["pick_minus_control"].to_numpy(float)),
+             "pick_minus_shuffled": tstat(x["pick_minus_shuffled"].to_numpy(float)), "pick_days": int(len(x)),
+             "per_year": {int(y): tstat(g["pick_minus_control"].to_numpy(float)) for y, g in x.groupby("year")}}
+        if a != "XGB":
+            m = x.merge(cat["XGB"], on="d", suffixes=("", "_xgb"))
+            r["minus_xgb_shared_days"] = tstat((m["pick_minus_control"] - m["pick_minus_control_xgb"]).to_numpy(float)) if len(m) else None
+        r["gate"] = bool(r["pick_minus_control"]["mean"] > 0 and r["pick_minus_control"]["t_nw"] >= GATE_T
+                         and r["pick_minus_shuffled"]["mean"] > 0 and r["pick_minus_shuffled"]["t_nw"] >= GATE_T)
+        rep["arms"][a] = r
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "NXK_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -948,6 +1016,9 @@ def main():
         return
     if a.stage == "shortfast":
         stage_shortfast(a.cache, a.out)
+        return
+    if a.stage == "nxk":
+        stage_nxk(a.cache, a.out)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
