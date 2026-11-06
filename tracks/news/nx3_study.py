@@ -738,9 +738,53 @@ def stage_shortfix(cache, out):
     print(json.dumps(rep, indent=1, default=float))
 
 
+def stage_shortfix2(cache, out):
+    """SHORT-FIX2 (research/prereg/SHORTFIX2.md): NX3 shorts only (3 a day) when SPY's 5-day return before the event is
+    below 0, confidence bar 1.75. Primary: pick-minus-control NW t >= 1.5 AND mean absolute net per short trade > 0
+    with its day-level NW t >= 1.5, at least 300 trades. Exploratory: the same at bar 1.0."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    weak = ev["spy_r5"] < 0
+    arms = {"weak_bar175": SF_BAR, "weak_bar1": 1.0}
+    days, picks_, ab = {a: [] for a in arms}, {a: [] for a in arms}, {a: [] for a in arms}
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        model = Model(tr)
+        for a, bar in arms.items():
+            n, pk, _, _ = evaluate(te[weak.loc[te.index]], model, SEED + yr, PICKS, hi=bar, only=-1)
+            if len(n):
+                days[a].append(n.assign(year=yr))
+                ab[a].append(pk.assign(net=N.net(pk).to_numpy(float), year=yr))
+    rep = {"bar": SF_BAR, "min_trades": SF_MIN_TRADES, "pass_t": ALL_PASS_T, "arms": {}}
+    for a in arms:
+        x = pd.concat(days[a], ignore_index=True) if days[a] else pd.DataFrame(columns=["pick_minus_control", "year"])
+        k = pd.concat(ab[a], ignore_index=True) if ab[a] else pd.DataFrame(columns=["d", "net", "year"])
+        dm = k.groupby("d")["net"].mean() if len(k) else pd.Series(dtype=float)
+        rep["arms"][a] = {"pick_minus_control": tstat(x["pick_minus_control"].to_numpy(float)), "pick_days": int(len(x)),
+                          "short_trades": int(len(k)), "absolute_net_per_day": tstat(dm.to_numpy(float)),
+                          "absolute_net_per_trade": float(k["net"].mean()) if len(k) else None,
+                          "per_year_vs_control": {int(y): tstat(g["pick_minus_control"].to_numpy(float)) for y, g in x.groupby("year")},
+                          "per_year_absolute": {int(y): float(g["net"].mean()) for y, g in k.groupby("year")}}
+    r = rep["arms"]["weak_bar175"]
+    ok = (r["pick_minus_control"]["mean"] > 0 and r["pick_minus_control"]["t_nw"] >= ALL_PASS_T
+          and r["absolute_net_per_day"]["mean"] > 0 and r["absolute_net_per_day"]["t_nw"] >= ALL_PASS_T)
+    rep["verdict"] = "passed" if ok and r["short_trades"] >= SF_MIN_TRADES else "too thin" if ok else "failed"
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "SHORTFIX2_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -763,6 +807,9 @@ def main():
         return
     if a.stage == "shortfix":
         stage_shortfix(a.cache, a.out)
+        return
+    if a.stage == "shortfix2":
+        stage_shortfix2(a.cache, a.out)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
