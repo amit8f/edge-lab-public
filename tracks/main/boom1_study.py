@@ -1,7 +1,7 @@
-"""BOOM1 step 1: narrow each day's market to the 20 stocks most likely to move 5%+ (research/prereg/BOOM1.md).
+"""BOOM1 step 1: narrow each day's market to the 20 stocks most likely to move 8%+ during the day (research/prereg/BOOM1.md).
 
 Filter only, no trades. At the close of day d, score every $5+ liquid stock on its chance that the next session's
-open-to-close move is at least 5% either way, using chart and volume inputs at d's close and the news that came
+high or low reaches 8% away from its open, using chart and volume inputs at d's close and the news that came
 out before the next session's open. Reads the nx3-study `chart_bars` files and NX3's trade files (news scores
 only, never headline text). Writes research/results/BOOM1/BOOM1_walkforward.json.
 """
@@ -20,7 +20,7 @@ MIN_PX, MIN_DV = 5.0, 1e6
 FIRST = pd.Timestamp("2016-01-01")
 TRAIN_ROWS = 600_000
 TOP = 20
-BOOM, BIG = 0.05, 0.10
+BOOM, BIG = 0.08, 0.15
 NEWS = ["pre_news", "pre_articles", "pre_fb_neg", "pre_fb_pos", "pre_lm_net", "pre_fb_max_neg", "pre_fb_max_pos"]
 INPUTS = C.FEATURES + C.MARKET + NEWS
 
@@ -43,20 +43,34 @@ def pre_open_news(cache):
 def load(cache):
     d = X.nx3dir(cache) / X.CHART
     spy = pd.read_parquet(d / "spy.parquet")[["date", *C.MARKET]]
-    cols = ["symbol", "date", "c", "dv20", "ao1", "ac1", "nxt", *C.FEATURES]
+    cols = ["symbol", "date", "c", "dv20", "ao1", "ac1", "nxt", "ac", *C.FEATURES]
     parts = []
     for f in sorted(d.glob("c_*.parquet")):
-        x = pd.read_parquet(f, columns=cols)
+        x = next_range(pd.read_parquet(f, columns=cols))
         parts.append(x[(x["date"] >= FIRST) & (x["c"] >= MIN_PX) & (x["dv20"] >= MIN_DV) & x["vol20"].notna()
                        & x["nxt"].notna() & (x["nxt"] <= N.LAST_EXIT)])
     df = pd.concat(parts, ignore_index=True).merge(spy, on="date", how="inner")
     df["move"] = df["ac1"] / df["ao1"] - 1
-    df = df[np.isfinite(df["move"])]
+    df["up_move"], df["down_move"] = df["ah1"] / df["ao1"] - 1, 1 - df["al1"] / df["ao1"]
+    df = df[np.isfinite(df["move"]) & np.isfinite(df["up_move"]) & np.isfinite(df["down_move"])]
     news = pre_open_news(cache).rename(columns={"d": "nxt"})
     df = df.merge(news, on=["symbol", "nxt"], how="left")
     df[["pre_news", "pre_articles"]] = df[["pre_news", "pre_articles"]].fillna(0.0)
-    df["boom"] = (df["move"].abs() >= BOOM).astype(np.int8)
+    df["boom"] = ((df["up_move"] >= BOOM) | (df["down_move"] >= BOOM)).astype(np.int8)
     return df.rename(columns={"date": "d"}).reset_index(drop=True)
+
+
+def next_range(x):
+    """The next session's all-adjusted high and low (ah1, al1), recovered from that row's range / close (rg_0) and
+    close location (clv), only where the next row is the next session (nxt)."""
+    x = x.sort_values(["symbol", "date"]).reset_index(drop=True)
+    rng = x["rg_0"] * x["ac"]
+    al = x["ac"] - x["clv"] * rng
+    ah = al + rng
+    same = (x["symbol"].shift(-1) == x["symbol"]) & (x["date"].shift(-1) == x["nxt"])
+    x["ah1"] = np.where(same, ah.shift(-1), np.nan)
+    x["al1"] = np.where(same, al.shift(-1), np.nan)
+    return x
 
 
 def classifier():
@@ -66,17 +80,19 @@ def classifier():
 
 
 def day_rates(te, score, top=TOP):
-    """Per day: share of the top `top` by score that moved >= 5% (and >= 10%), up and down counts."""
+    """Per day: share of the top `top` by score that reached 8% (and 15%) from the open, up and down counts."""
     te = te.assign(s=score)
     rows = []
     for d, g in te.groupby("d", sort=True):
         if len(g) < top * 5:
             continue
         t = g.nlargest(top, "s")
-        rows.append({"d": d, "hit": float(t["boom"].mean()), "big": float((t["move"].abs() >= BIG).mean()),
-                     "up": int((t["move"] >= BOOM).sum()), "down": int((t["move"] <= -BOOM).sum()),
+        rows.append({"d": d, "hit": float(t["boom"].mean()),
+                     "big": float(((t["up_move"] >= BIG) | (t["down_move"] >= BIG)).mean()),
+                     "up": int((t["up_move"] >= BOOM).sum()), "down": int((t["down_move"] >= BOOM).sum()),
+                     "close_hit": float((t["move"].abs() >= BOOM).mean()),
                      "base": float(g["boom"].mean()), "n": len(g)})
-    return pd.DataFrame(rows, columns=["d", "hit", "big", "up", "down", "base", "n"])
+    return pd.DataFrame(rows, columns=["d", "hit", "big", "up", "down", "close_hit", "base", "n"])
 
 
 def run(cache, out):
@@ -110,6 +126,7 @@ def run(cache, out):
            "top": TOP, "boom": BOOM, "arms": {}}
     for k, x in cat.items():
         rep["arms"][k] = {"hit_rate": t(x["hit"].to_numpy(float)), "big_rate": float(x["big"].mean()),
+                          "close_hit_rate": float(x["close_hit"].mean()),
                           "lift_vs_base": float(x["hit"].mean() / x["base"].mean()),
                           "up_share_of_booms": float(x["up"].sum() / max((x["up"] + x["down"]).sum(), 1)),
                           "per_year_hit": {int(y): float(g["hit"].mean()) for y, g in x.groupby("year")}}
