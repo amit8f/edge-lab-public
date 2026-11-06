@@ -928,7 +928,7 @@ def nxk2_learner(arm):
         if arm == "CAT":
             from catboost import CatBoostRegressor
             return CatBoostRegressor(iterations=400, depth=4, learning_rate=0.05, l2_leaf_reg=10.0, loss_function="Huber:delta=1.0",
-                                     random_seed=SEED, verbose=0, thread_count=-1).fit(X, y)
+                                     random_seed=SEED, verbose=0, thread_count=-1, allow_writing_files=False).fit(X, y)
         from sklearn.ensemble import ExtraTreesRegressor
         m = ExtraTreesRegressor(n_estimators=200, max_features=0.33, min_samples_leaf=200, max_samples=0.3, bootstrap=True,
                                 n_jobs=-1, random_state=SEED)
