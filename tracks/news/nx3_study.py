@@ -1246,7 +1246,7 @@ def stage_shortall(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1294,6 +1294,10 @@ def main():
     if a.stage == "chart_bars":
         if not stage_chart_bars(a.cache, deadline):
             print("[chart bars] time budget used; rerun to continue")
+        return
+    if a.stage == "boom1":
+        from tracks.main import boom1_study
+        boom1_study.run(a.cache, "research/results/BOOM1")
         return
     if a.stage == "shortall":
         stage_shortall(a.cache, a.out)
