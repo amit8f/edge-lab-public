@@ -1,0 +1,546 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "db5be4128a194f4d8fbbc7a24a3b01b2ea9a61acc0401d514c93acc35ecbd1a0",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "7c393afd38294ef743517fa0afb84c1035efe4bc7fe2e61424f09d192609815b",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "HLIO",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SITC",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "IRTC",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "guidance",
+     "symbol": "DKNG",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AIRS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "TILE",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CLNE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "FIVN",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "FROG",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GOGO",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "265d1d3fecf4297929453eecc8385811419c23c52d0f90997cc6ac4d3289b6d1",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong negative move, high analyst confidence, shortable",
+     "stop_pct": 12.0,
+     "symbol": "HLIO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Oversold huge drop, potential rebound",
+     "stop_pct": 20.0,
+     "symbol": "SITC"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop, negative tone, shortable",
+     "stop_pct": 13.0,
+     "symbol": "IRTC"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline, negative analyst, shortable",
+     "stop_pct": 13.0,
+     "symbol": "DKNG"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Heavy sell-off, volume surge, shortable",
+     "stop_pct": 20.0,
+     "symbol": "AIRS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop, negative tone, shortable",
+     "stop_pct": 12.0,
+     "symbol": "TILE"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Rapid rise, overbought, shortable",
+     "stop_pct": 20.0,
+     "symbol": "CLNE"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive analyst tone despite drop, possible rebound",
+     "stop_pct": 12.0,
+     "symbol": "FIVN"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large upside move, overbought, shortable",
+     "stop_pct": 13.0,
+     "symbol": "FROG"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong rally, volume high, shortable",
+     "stop_pct": 20.0,
+     "symbol": "GOGO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "9126fd9577757044186186fa7369254f2d261d177fb6c7d6493d69a2ec9ac25f"
+  },
+  "reviewer": {
+   "answer_sha256": "d6909a551bcd555ecd577a3cee67549f12a79a22a6cd2cb04b2477cf506ea587",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "b5c0a2e5cecafd2f821943c787b980c335f45c23ca77c368833c59064ba17234",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong downward momentum, high volume, negative tone, and upcoming news.",
+     "symbol": "HLIO"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme drop of 80% on massive volume indicates high risk of complete collapse or volatile bounce.",
+     "symbol": "SITC"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe gap down with massive volume expansion favors continuation of the short.",
+     "symbol": "IRTC"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Guidance cut/negative tone combined with heavy volume selloff supports short proposal.",
+     "symbol": "DKNG"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock down over 50% with heavy volume supports short continuation.",
+     "symbol": "AIRS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative guidance tone and steep drop justify short trade.",
+     "symbol": "TILE"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sudden +26.8% spike makes shorting risky without clearer exhaustion signals.",
+     "symbol": "CLNE"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Deep intraday drop on heavy volume with positive analyst tone offers potential mean reversion.",
+     "symbol": "FIVN"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive gap up against multi-day downtrend provides a good short fade setup.",
+     "symbol": "FROG"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday spike on high volume against a weak multi-day trend offers a fading opportunity.",
+     "symbol": "GOGO"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.09735,
+   "news": 1,
+   "pace": 5.606,
+   "price": 54.24,
+   "r20": -0.11411,
+   "r5": -0.11969,
+   "short": true,
+   "src": "iex",
+   "symbol": "HLIO",
+   "z": -3.45
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.80765,
+   "news": 0,
+   "pace": 40.691,
+   "price": 0.6867,
+   "r20": 0.12626,
+   "r5": -0.06542,
+   "short": true,
+   "src": "iex",
+   "symbol": "SITC",
+   "z": -48.046
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.29008,
+   "news": 0,
+   "pace": 29.367,
+   "price": 92.425,
+   "r20": 0.26891,
+   "r5": 0.0187,
+   "short": true,
+   "src": "iex",
+   "symbol": "IRTC",
+   "z": -13.841
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.26573,
+   "news": 0,
+   "pace": 18.377,
+   "price": 17.2701,
+   "r20": 0.18369,
+   "r5": 0.13514,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "DKNG",
+   "z": -12.404
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.54472,
+   "news": 0,
+   "pace": 29.525,
+   "price": 0.6556,
+   "r20": -0.12991,
+   "r5": -0.13772,
+   "short": true,
+   "src": "iex",
+   "symbol": "AIRS",
+   "z": -10.366
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14966,
+   "news": 0,
+   "pace": 5.603,
+   "price": 32.16,
+   "r20": 0.08585,
+   "r5": 0.02577,
+   "short": true,
+   "src": "iex",
+   "symbol": "TILE",
+   "z": -6.211
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.26821,
+   "news": 0,
+   "pace": 17.188,
+   "price": 1.915,
+   "r20": -0.00658,
+   "r5": 0.01342,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLNE",
+   "z": 5.307
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.18307,
+   "news": 0,
+   "pace": 17.2,
+   "price": 27.89,
+   "r20": -0.02873,
+   "r5": -0.08741,
+   "short": true,
+   "src": "iex",
+   "symbol": "FIVN",
+   "z": -5.055
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.32645,
+   "news": 0,
+   "pace": 10.46,
+   "price": 98.98,
+   "r20": -0.2327,
+   "r5": -0.24497,
+   "short": true,
+   "src": "iex",
+   "symbol": "FROG",
+   "z": 4.666
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.2936,
+   "news": 0,
+   "pace": 12.365,
+   "price": 2.93,
+   "r20": 0.00221,
+   "r5": -0.10474,
+   "short": true,
+   "src": "iex",
+   "symbol": "GOGO",
+   "z": 4.571
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5052.556,
+  "PICK-MAIN-coin": 5116.7818,
+  "PICK-PENNY": 476.6533,
+  "PICK-PENNY-coin": 501.9031
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 68,
+  "news": 7,
+  "volume": 451
+ },
+ "flagged": 466,
+ "headline_counts": {
+  "AIRS": 3,
+  "CLNE": 2,
+  "DKNG": 3,
+  "FIVN": 3,
+  "FROG": 3,
+  "GOGO": 3,
+  "HLIO": 3,
+  "IRTC": 3,
+  "SITC": 1,
+  "TILE": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "bafa3ee75644b9636db66c776cd060b5b5a2d0363e3643b6045314cd4169e4b7",
+ "price_sources": {
+  "delayed_sip": 400,
+  "iex": 2992
+ },
+ "priced": 3392,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HLIO"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SITC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IRTC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DKNG"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AIRS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TILE"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CLNE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FIVN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FROG"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GOGO"
+  }
+ ],
+ "slot": "2026-11-06T10:10",
+ "t": "2026-11-06T15:10:20.565856+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T15:10:39.408127Z"
+}
