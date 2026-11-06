@@ -1003,9 +1003,33 @@ def stage_nxk(cache, out, arms=None, learner=None, name="NXK"):
     print(json.dumps(rep, indent=1, default=float))
 
 
+def stage_nxk_v1(cache, out):
+    """Version 1 of the NXK/NXK2 arms that passed NX3's gate and get a shadow book (KRR, CAT; NXK.md, NXK2.md):
+    trained on all events as NX3's v1 was, pickled with sha256 in nxk_v1_meta.json for tracks/news/nxm_live.py."""
+    import hashlib
+    import pickle
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    meta = {}
+    for a, lr in (("KRR", nxk_learner("KRR")), ("CAT", nxk2_learner("CAT"))):
+        m = Model(ev, lr)
+        f = out / f"nxk_v1_{a}.pkl"
+        f.write_bytes(pickle.dumps({"base": m.base, "news": m.news, "cut": m.cut}))
+        meta[a] = {"file": f.name, "sha256": hashlib.sha256(f.read_bytes()).hexdigest(), "cut": m.cut}
+    import catboost
+    import sklearn
+    meta |= {"version": 1, "inputs": INPUTS, "base_inputs": BASE_INPUTS, "train_first": str(ev["d"].min().date()),
+             "train_last": str(ev["d"].max().date()), "catboost": catboost.__version__, "sklearn": sklearn.__version__}
+    (out / "nxk_v1_meta.json").write_text(json.dumps(meta, indent=1, default=str))
+    print(json.dumps(meta, indent=1, default=str))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1040,6 +1064,9 @@ def main():
         return
     if a.stage == "nxk":
         stage_nxk(a.cache, a.out)
+        return
+    if a.stage == "nxk_v1":
+        stage_nxk_v1(a.cache, a.out)
         return
     if a.stage == "bars_cat":       # descriptive: NX3-BARS table and bar walk for NXK2-CAT (not a registered test)
         stage_bars(a.cache, a.out, learner=nxk2_learner("CAT"), tag="_CAT")
