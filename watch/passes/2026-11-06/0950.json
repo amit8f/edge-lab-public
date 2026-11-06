@@ -1,0 +1,561 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "986a308ee9b9010a3d12bc80fb51b081f9162b0ad462670edbb26fae959b1d70",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "5b1219149c1a2480420cf815a5fd652475ce9555f581b6e5453f5604509206cc",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "OKLO",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "NRDS",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "KRUS",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "WK",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "BL",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "STLN",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "OUT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "ETON",
+     "tone": 1
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "NMIH",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "HNST",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "95a8e773958d2b909c5efbf5821f91fccab3bb3e7f59a83530c2b0b6f6e166f8",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst confidence high, positive tone and strong upside move",
+     "stop_pct": 1.0,
+     "symbol": "OKLO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst confidence high, negative tone, large drop, shortable",
+     "stop_pct": 1.0,
+     "symbol": "NRDS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone and big decline, shortable",
+     "stop_pct": 1.0,
+     "symbol": "KRUS"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone, price down, shortable",
+     "stop_pct": 1.0,
+     "symbol": "WK"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone, price down, shortable",
+     "stop_pct": 1.0,
+     "symbol": "BL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive tone despite drop, analyst confidence high",
+     "stop_pct": 1.0,
+     "symbol": "STLN"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive tone, moderate drop, confidence high",
+     "stop_pct": 1.0,
+     "symbol": "OUT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive tone, strong upside move, confidence high",
+     "stop_pct": 1.0,
+     "symbol": "ETON"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone, price down, shortable",
+     "stop_pct": 1.0,
+     "symbol": "NMIH"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral tone, price up, confidence sufficient",
+     "stop_pct": 1.0,
+     "symbol": "HNST"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "762f27846cc35fa263023ab23d0ecc3de7d062941bdf62d44d39b0330c92de62"
+  },
+  "reviewer": {
+   "answer_sha256": "57f4175937e69291464bb60df6c7f7c7b842ac546be5eb7e045d0aabe3ac501d",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "202af57e06e4612e30d8c26fbeeffcb090078bad33c267cad4dea4a43221eee8",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and earnings tone align with long proposal.",
+     "symbol": "OKLO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe drop today and negative earnings tone support short trade.",
+     "symbol": "NRDS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive downward price pressure today justifies short position.",
+     "symbol": "KRUS"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Steep decline today and negative earnings tone support short.",
+     "symbol": "WK"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative price movement today makes short viable.",
+     "symbol": "BL"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Oversold on massive drop despite positive earnings tone, long play.",
+     "symbol": "STLN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Pullback presents a dip-buying opportunity given positive tone.",
+     "symbol": "OUT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum and product catalyst support long proposal.",
+     "symbol": "ETON"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative price action and earnings tone support short trade.",
+     "symbol": "NMIH"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Upward momentum today supports long proposal despite flat tone.",
+     "symbol": "HNST"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.15677,
+   "news": 1,
+   "pace": null,
+   "price": 22.21,
+   "r20": -0.44461,
+   "r5": -0.28385,
+   "short": true,
+   "src": "iex",
+   "symbol": "OKLO",
+   "z": 3.165
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.25503,
+   "news": 0,
+   "pace": null,
+   "price": 8.515,
+   "r20": 0.16752,
+   "r5": 0.00705,
+   "short": true,
+   "src": "iex",
+   "symbol": "NRDS",
+   "z": -8.646
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.24926,
+   "news": 0,
+   "pace": null,
+   "price": 27.83,
+   "r20": -0.07163,
+   "r5": 0.06127,
+   "short": true,
+   "src": "iex",
+   "symbol": "KRUS",
+   "z": -7.31
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.14281,
+   "news": 0,
+   "pace": null,
+   "price": 73.29,
+   "r20": 0.16027,
+   "r5": 0.03461,
+   "short": true,
+   "src": "iex",
+   "symbol": "WK",
+   "z": -6.747
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15563,
+   "news": 0,
+   "pace": null,
+   "price": 28.43,
+   "r20": 0.15111,
+   "r5": -0.00119,
+   "short": true,
+   "src": "iex",
+   "symbol": "BL",
+   "z": -6.423
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.24851,
+   "news": 0,
+   "pace": null,
+   "price": 5.035,
+   "r20": 0.08414,
+   "r5": 0.00752,
+   "short": true,
+   "src": "iex",
+   "symbol": "STLN",
+   "z": -6.395
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08625,
+   "news": 0,
+   "pace": null,
+   "price": 29.24,
+   "r20": 0.08181,
+   "r5": -0.01569,
+   "short": true,
+   "src": "iex",
+   "symbol": "OUT",
+   "z": -6.222
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.15843,
+   "news": 0,
+   "pace": null,
+   "price": 54.62,
+   "r20": -0.13881,
+   "r5": -0.12148,
+   "short": true,
+   "src": "iex",
+   "symbol": "ETON",
+   "z": 5.948
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07838,
+   "news": 0,
+   "pace": null,
+   "price": 40.8,
+   "r20": 0.09013,
+   "r5": 0.02524,
+   "short": true,
+   "src": "iex",
+   "symbol": "NMIH",
+   "z": -5.865
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09234,
+   "news": 0,
+   "pace": null,
+   "price": 4.85,
+   "r20": -0.10664,
+   "r5": -0.03268,
+   "short": true,
+   "src": "iex",
+   "symbol": "HNST",
+   "z": 3.104
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5041.9927,
+  "PICK-MAIN-coin": 5095.6998,
+  "PICK-PENNY": 475.5889,
+  "PICK-PENNY-coin": 500.2722
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.0607,
+   "price": 5.035,
+   "qty": 1,
+   "side": 1,
+   "stop": 4.98465,
+   "symbol": "STLN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.061,
+   "price": 5.035,
+   "qty": 1,
+   "side": -1,
+   "stop": 5.08535,
+   "symbol": "STLN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.1928,
+   "price": 4.85,
+   "qty": 3,
+   "side": 1,
+   "stop": 4.8015,
+   "symbol": "HNST"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.1937,
+   "price": 4.85,
+   "qty": 3,
+   "side": -1,
+   "stop": 4.8985,
+   "symbol": "HNST"
+  }
+ ],
+ "flag_counts": {
+  "move": 67,
+  "news": 15,
+  "volume": 0
+ },
+ "flagged": 81,
+ "headline_counts": {
+  "BL": 3,
+  "ETON": 3,
+  "HNST": 3,
+  "KRUS": 3,
+  "NMIH": 3,
+  "NRDS": 3,
+  "OKLO": 3,
+  "OUT": 3,
+  "STLN": 3,
+  "WK": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "3bc8acb5e6a81d13cadab1e49ecb3d2783f1acf226c2938ddab2b854a294d0d2",
+ "price_sources": {
+  "delayed_sip": 585,
+  "iex": 2797
+ },
+ "priced": 3382,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OKLO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NRDS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KRUS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "WK"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "STLN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OUT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ETON"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NMIH"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 3,
+   "skip": null,
+   "symbol": "HNST"
+  }
+ ],
+ "slot": "2026-11-06T09:50",
+ "t": "2026-11-06T14:50:21.188109+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T14:50:36.569560Z"
+}
