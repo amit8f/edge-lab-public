@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 11:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8314.85 | -16.85% | 149 | 44 | long ABNB, long COHR, long IONQ, long LRCX, long NET |
-| Coin flip on C's picks | $9373.54 | -6.26% | 148 | 73 | long ABNB, short COHR, long IONQ, long LRCX, short NET |
-| C's prompt on Groq (K7) | $6875.36 | -31.25% | 344 | 76 | long ABNB, long COHR, short INTC, long IONQ, long IREN |
-| Coin flip on C-groq's picks | $8573.41 | -14.27% | 344 | 165 | short ABNB, long COHR, long INTC, long IONQ, short IREN |
-| C-groq's answers, acted on once a day (K8) | $9203.22 | -7.97% | 20 | 10 | short AMD, long APP, short CIFR, short MU, short SNDK |
-| Coin flip on C-groq-slow's picks | $10304.25 | +3.04% | 20 | 12 | short AMD, long APP, long CIFR, long MU, long SNDK |
-| C's answers, acted on once a day (K8) | $9274.58 | -7.25% | 16 | 6 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C-slow's picks | $10765.06 | +7.65% | 16 | 12 | short AXTI, long CIFR, short DDOG, long IREN, long SNDK |
-| Just hold SPY | $9635.54 | -3.64% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8295.71 | -17.04% | 150 | 44 | long ABNB, long COHR, long IONQ, long LRCX, long MRNA |
+| Coin flip on C's picks | $9394.25 | -6.06% | 149 | 74 | long ABNB, short COHR, long IONQ, long LRCX, long MRNA |
+| C's prompt on Groq (K7) | $6877.20 | -31.23% | 344 | 76 | long ABNB, long COHR, short INTC, long IONQ, long IREN |
+| Coin flip on C-groq's picks | $8527.00 | -14.73% | 344 | 165 | short ABNB, long COHR, long INTC, long IONQ, short IREN |
+| C-groq's answers, acted on once a day (K8) | $9177.72 | -8.22% | 20 | 10 | short AMD, long APP, short CIFR, short MU, short SNDK |
+| Coin flip on C-groq-slow's picks | $10313.68 | +3.14% | 20 | 12 | short AMD, long APP, long CIFR, long MU, long SNDK |
+| C's answers, acted on once a day (K8) | $9235.85 | -7.64% | 16 | 6 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C-slow's picks | $10800.05 | +8.00% | 16 | 12 | short AXTI, long CIFR, short DDOG, long IREN, long SNDK |
+| Just hold SPY | $9635.27 | -3.65% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-06 11:47 | long ABNB, long COHR, long IONQ, long LRCX, long MRNA | sold NET @ $272.85; bought MRNA @ $264.60 | Maintaining long positions in ABNB, IONQ, COHR, and LRCX due to strong earnings/news and positive momentum. Selling NET due to underperformance and initiating a new long position in MRNA based on strong earnings and outlook. |
 | 2026-11-06 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 11:17 | long ABNB, long COHR, long IONQ, long LRCX, long NET | none | Maintaining all existing long positions as they are showing strong positive momentum today with significant daily gains and positive news, indicating a potential rebound from recent losses. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 11:3
 | 2026-11-04 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-04 10:47 | short CVS, short DDOG, short DT, long FSLR, long MMM | sold AMZN @ $267.66; sold REGN @ $953.12; bought FSLR @ $203.42; bought MMM @ $191.51 | Maintained short positions in DDOG and DT due to continued weakness and negative news. Closed AMZN and REGN due to underperformance. Initiated a new short in CVS following a significant drop on earnings. Opened new long positions in FSLR and MMM, both showing strong positive momentum and favorable n |
 | 2026-11-04 10:37 | long AMZN, short CVS, short DDOG, short DT, long REGN | sold FSLR @ $202.90; sold MRNA @ $246.82; sold CVS @ $81.08; sold DDOG @ $194.82 | Maintaining profitable long positions in AMZN and REGN, and a profitable short in DT. Initiating new short positions in DDOG and CVS due to significant negative news and strong downward price action, while closing underperforming long positions in FSLR and MRNA. |
-| 2026-11-04 10:27 | no answer, nothing changed | none | unreadable answer |
