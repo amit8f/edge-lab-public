@@ -1,0 +1,294 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "d576780a992acda1b56a1dd778db4c6d8a5eb53d3a4ad2ec6504bf575ebbc80e",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "8dd52d4cbfbd806eb10587ed6a6d5a0f9d816b3157f6914891e6d9b8f0701684",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "OMDA",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "MTD",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "TNDM",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "KRT",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "KOP",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BDSX",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PRAA",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "guidance",
+     "symbol": "ICFI",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AGM",
+     "tone": -1
+    },
+    {
+     "confidence": 75,
+     "event": "earnings",
+     "symbol": "INDI",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "c78246aeddc3cd3527b7d5c7285dd06f2d0613c458b2be5a74262e5b597c68eb",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Short not allowed due to size limits",
+     "stop_pct": 0.0,
+     "symbol": "OMDA"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f1d680f200fea93eca042ff152626b4553c09bc7ba9cf8df00470a27948c1d5b"
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.18364,
+   "news": 1,
+   "pace": null,
+   "price": 15.47,
+   "r20": -0.08982,
+   "r5": -0.03562,
+   "short": true,
+   "src": "iex",
+   "symbol": "OMDA",
+   "z": -3.831
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.04582,
+   "news": 1,
+   "pace": null,
+   "price": 1756.01,
+   "r20": 0.09783,
+   "r5": -0.023,
+   "short": true,
+   "src": "iex",
+   "symbol": "MTD",
+   "z": 3.253
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.10867,
+   "news": 1,
+   "pace": null,
+   "price": 16.035,
+   "r20": 0.14769,
+   "r5": -0.09096,
+   "short": true,
+   "src": "iex",
+   "symbol": "TNDM",
+   "z": -3.027
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.23192,
+   "news": 0,
+   "pace": null,
+   "price": 39.51,
+   "r20": -0.04387,
+   "r5": -0.05424,
+   "short": true,
+   "src": "iex",
+   "symbol": "KRT",
+   "z": -15.037
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.26842,
+   "news": 0,
+   "pace": null,
+   "price": 29.0,
+   "r20": -0.10398,
+   "r5": -0.05303,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "KOP",
+   "z": -12.799
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.44985,
+   "news": 0,
+   "pace": null,
+   "price": 10.915,
+   "r20": -0.22591,
+   "r5": -0.19741,
+   "short": false,
+   "src": "iex",
+   "symbol": "BDSX",
+   "z": -12.612
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.23457,
+   "news": 0,
+   "pace": null,
+   "price": 15.63,
+   "r20": 0.00492,
+   "r5": 0.01896,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRAA",
+   "z": -11.871
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15202,
+   "news": 0,
+   "pace": null,
+   "price": 80.88,
+   "r20": 0.09859,
+   "r5": -0.0048,
+   "short": true,
+   "src": "iex",
+   "symbol": "ICFI",
+   "z": -11.47
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13068,
+   "news": 0,
+   "pace": null,
+   "price": 172.1001,
+   "r20": -0.04565,
+   "r5": -0.02932,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "AGM",
+   "z": -9.333
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.22509,
+   "news": 0,
+   "pace": null,
+   "price": 1.66,
+   "r20": -0.47985,
+   "r5": -0.23876,
+   "short": true,
+   "src": "iex",
+   "symbol": "INDI",
+   "z": 3.315
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5041.9384,
+  "PICK-MAIN-coin": 5106.8407,
+  "PICK-PENNY": 476.4915,
+  "PICK-PENNY-coin": 500.1625
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 64,
+  "news": 22,
+  "volume": 0
+ },
+ "flagged": 82,
+ "headline_counts": {
+  "AGM": 3,
+  "BDSX": 3,
+  "ICFI": 3,
+  "INDI": 3,
+  "KOP": 3,
+  "KRT": 3,
+  "MTD": 3,
+  "OMDA": 3,
+  "PRAA": 2,
+  "TNDM": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "840e0e48c7749d4051ad3afb539bb6956a792b3597eb46c42d253211cfb29d51",
+ "price_sources": {
+  "delayed_sip": 696,
+  "iex": 2671
+ },
+ "priced": 3367,
+ "risk": [],
+ "slot": "2026-11-06T09:45",
+ "t": "2026-11-06T14:45:20.608528+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T14:45:34.446451Z"
+}
