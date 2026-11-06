@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 09:53 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 09:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8060.11 | -19.40% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C's picks | $9519.40 | -4.81% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
-| C's prompt on Groq (K7) | $6835.81 | -31.64% | 333 | 72 | long AMD, long APP, short CIFR, long IREN, short LRCX |
-| Coin flip on C-groq's picks | $8872.38 | -11.28% | 333 | 163 | long AMD, short APP, long CIFR, long IREN, long LRCX |
-| C-groq's answers, acted on once a day (K8) | $8859.67 | -11.40% | 20 | 10 | short AMD, long APP, short CIFR, short MU, short SNDK |
-| Coin flip on C-groq-slow's picks | $10379.61 | +3.80% | 20 | 12 | short AMD, long APP, long CIFR, long MU, long SNDK |
-| C's answers, acted on once a day (K8) | $8967.41 | -10.33% | 16 | 6 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C-slow's picks | $10852.73 | +8.53% | 16 | 12 | short AXTI, long CIFR, short DDOG, long IREN, long SNDK |
-| Just hold SPY | $9657.80 | -3.42% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8185.63 | -18.14% | 143 | 39 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C's picks | $9461.39 | -5.39% | 142 | 72 | long AXTI, long CIFR, long DDOG, long IREN, short SNDK |
+| C's prompt on Groq (K7) | $6801.89 | -31.98% | 333 | 72 | long AMD, long APP, short CIFR, long IREN, short LRCX |
+| Coin flip on C-groq's picks | $8796.42 | -12.04% | 333 | 163 | long AMD, short APP, long CIFR, long IREN, long LRCX |
+| C-groq's answers, acted on once a day (K8) | $8937.77 | -10.62% | 20 | 10 | short AMD, long APP, short CIFR, short MU, short SNDK |
+| Coin flip on C-groq-slow's picks | $10301.57 | +3.02% | 20 | 12 | short AMD, long APP, long CIFR, long MU, long SNDK |
+| C's answers, acted on once a day (K8) | $9120.27 | -8.80% | 16 | 6 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C-slow's picks | $10762.51 | +7.63% | 16 | 12 | short AXTI, long CIFR, short DDOG, long IREN, long SNDK |
+| Just hold SPY | $9635.01 | -3.65% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-06 09:57 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | All existing short positions are maintained due to continued underlying weakness over multiple timeframes, despite some short-term bounces today. No new positions are opened as current holdings are at the maximum of five. |
 | 2026-11-06 09:53 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 15:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 09:5
 | 2026-11-03 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-03 15:18 | long CIFR, long FN, long HWM, long REGN, long WULF | sold BE @ $213.35; bought FN @ $360.05 | Maintaining existing profitable positions in HWM, REGN, WULF, and CIFR due to continued momentum. Selling BE due to underperformance and replacing it with FN, which shows strong short-term momentum and positive analyst sentiment. |
-| 2026-11-03 15:08 | no answer, nothing changed | none | unreadable answer |
