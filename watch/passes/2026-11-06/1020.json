@@ -1,0 +1,506 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "c3b678e7547ef83886b6592dc8d5ca472969bfc82474f8966263c1f7b51e5261",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "780da05b992529409cafe933a417e32508644f357e730d2d2dcfea4b064d025c",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BKD",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "OMDA",
+     "tone": -1
+    },
+    {
+     "confidence": 75,
+     "event": "deal",
+     "symbol": "EVC",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "regulatory",
+     "symbol": "WLDN",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "KINS",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "earnings",
+     "symbol": "LOCO",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "IFRX",
+     "tone": 1
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "PNNT",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "GAU",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "QSI",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "855e1417ff6b0dfbc3e9adc311da131a74626610052a9b4f281c3043f801c744",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong down move, negative analyst tone, high volume, shortable",
+     "stop_pct": 0.12,
+     "symbol": "BKD"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop, negative tone, high volume, shortable",
+     "stop_pct": 0.12,
+     "symbol": "OMDA"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Big upside move, positive tone, high volume",
+     "stop_pct": 0.1,
+     "symbol": "EVC"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price down despite positive tone, unclear direction",
+     "stop_pct": 0.0,
+     "symbol": "WLDN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Up move with positive tone and high volume",
+     "stop_pct": 0.1,
+     "symbol": "KINS"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral tone and price decline, insufficient conviction",
+     "stop_pct": 0.0,
+     "symbol": "LOCO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Down move but positive product news, long bias",
+     "stop_pct": 0.2,
+     "symbol": "IFRX"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "PNNT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Up move with negative earnings tone, shortable",
+     "stop_pct": 0.15,
+     "symbol": "GAU"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp rise with negative earnings tone, shortable",
+     "stop_pct": 0.15,
+     "symbol": "QSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "aacdb590b54caf5f754dcbfc3873a9248a2013dccdbe7e5bce45ed1121568368"
+  },
+  "reviewer": {
+   "answer_sha256": "f1213dbaa38ec464f48e14b5564a6cdbd67c1b409131a58f8316aa0593ce6590",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "7e4571c6af8bfa38980e0cc8fbf3cddb43bb430c576b1e76a2bc5a5e648cd031",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe intraday drop with high volume and negative earnings tone supports the short proposal.",
+     "symbol": "BKD"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selling pressure and high volume align with the proposed short direction.",
+     "symbol": "OMDA"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum and positive deal news validate the long proposal.",
+     "symbol": "EVC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone and strong volume breakout support the long trade.",
+     "symbol": "KINS"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Despite the drop, positive product tone offers a contrarian long setup.",
+     "symbol": "IFRX"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative earnings tone on surging volume justifies the short proposal.",
+     "symbol": "GAU"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Spike on negative earnings tone provides a good fade opportunity.",
+     "symbol": "QSI"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1346,
+   "news": 0,
+   "pace": 3.822,
+   "price": 9.355,
+   "r20": -0.00735,
+   "r5": 0.05258,
+   "short": true,
+   "src": "iex",
+   "symbol": "BKD",
+   "z": -4.618
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.18681,
+   "news": 0,
+   "pace": 8.149,
+   "price": 15.41,
+   "r20": -0.08982,
+   "r5": -0.03562,
+   "short": true,
+   "src": "iex",
+   "symbol": "OMDA",
+   "z": -3.905
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.13667,
+   "news": 0,
+   "pace": 5.648,
+   "price": 8.525,
+   "r20": 0.10619,
+   "r5": 0.19617,
+   "short": true,
+   "src": "iex",
+   "symbol": "EVC",
+   "z": 3.821
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07481,
+   "news": 0,
+   "pace": 3.234,
+   "price": 65.55,
+   "r20": -0.05167,
+   "r5": -0.08309,
+   "short": true,
+   "src": "iex",
+   "symbol": "WLDN",
+   "z": -3.376
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.07595,
+   "news": 0,
+   "pace": 8.095,
+   "price": 20.4,
+   "r20": -0.0042,
+   "r5": -0.05389,
+   "short": true,
+   "src": "iex",
+   "symbol": "KINS",
+   "z": 3.366
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07959,
+   "news": 0,
+   "pace": 4.722,
+   "price": 15.15,
+   "r20": 0.10174,
+   "r5": 0.07092,
+   "short": true,
+   "src": "iex",
+   "symbol": "LOCO",
+   "z": -3.349
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.12915,
+   "news": 0,
+   "pace": 4.07,
+   "price": 1.18,
+   "r20": -0.11438,
+   "r5": -0.20991,
+   "short": true,
+   "src": "iex",
+   "symbol": "IFRX",
+   "z": -2.498
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.04601,
+   "news": 0,
+   "pace": 3.769,
+   "price": 3.41,
+   "r20": 0.04187,
+   "r5": 0.08306,
+   "short": true,
+   "src": "iex",
+   "symbol": "PNNT",
+   "z": 2.143
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.08962,
+   "news": 0,
+   "pace": 5.723,
+   "price": 2.31,
+   "r20": 0.00952,
+   "r5": 0.02913,
+   "short": true,
+   "src": "iex",
+   "symbol": "GAU",
+   "z": 1.839
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.22222,
+   "news": 0,
+   "pace": 3.334,
+   "price": 1.43,
+   "r20": -0.04098,
+   "r5": -0.33143,
+   "short": true,
+   "src": "iex",
+   "symbol": "QSI",
+   "z": 1.825
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5067.446,
+  "PICK-MAIN-coin": 5129.8068,
+  "PICK-PENNY": 476.3781,
+  "PICK-PENNY-coin": 503.7151
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 73,
+  "news": 7,
+  "volume": 376
+ },
+ "flagged": 396,
+ "headline_counts": {
+  "BKD": 3,
+  "EVC": 3,
+  "GAU": 2,
+  "IFRX": 1,
+  "KINS": 3,
+  "LOCO": 3,
+  "OMDA": 3,
+  "QSI": 3,
+  "WLDN": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "a1d4acfecbfd06722adb900ad67c72f598ced9d129a4c09988203b78d43d74af",
+ "price_sources": {
+  "delayed_sip": 323,
+  "iex": 3073
+ },
+ "priced": 3396,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "BKD"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "OMDA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "EVC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "KINS"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "IFRX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "GAU"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "QSI"
+  }
+ ],
+ "slot": "2026-11-06T10:20",
+ "t": "2026-11-06T15:20:20.864759+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T15:20:36.512210Z"
+}
