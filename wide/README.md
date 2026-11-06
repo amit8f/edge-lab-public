@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8385.71 | -16.14% | 155 | 46 | long ABNB, long COHR, long IONQ, long RKLB, long VST |
-| Coin flip on C's picks | $9485.13 | -5.15% | 154 | 77 | long ABNB, long COHR, long IONQ, long RKLB, short VST |
-| C's prompt on Groq (K7) | $6930.55 | -30.69% | 347 | 76 | long ABNB, long APP, long IONQ, long IREN, short NTRA |
-| Coin flip on C-groq's picks | $8639.14 | -13.61% | 347 | 166 | short ABNB, long APP, long IONQ, short IREN, short NTRA |
-| C-groq's answers, acted on once a day (K8) | $9120.60 | -8.79% | 20 | 10 | short AMD, long APP, short CIFR, short MU, short SNDK |
-| Coin flip on C-groq-slow's picks | $10460.56 | +4.61% | 20 | 12 | short AMD, long APP, long CIFR, long MU, long SNDK |
-| C's answers, acted on once a day (K8) | $9082.67 | -9.17% | 16 | 6 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
-| Coin flip on C-slow's picks | $10874.40 | +8.74% | 16 | 12 | short AXTI, long CIFR, short DDOG, long IREN, long SNDK |
-| Just hold SPY | $9605.19 | -3.95% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8401.42 | -15.99% | 155 | 46 | long ABNB, long COHR, long IONQ, long RKLB, long VST |
+| Coin flip on C's picks | $9512.49 | -4.88% | 154 | 77 | long ABNB, long COHR, long IONQ, long RKLB, short VST |
+| C's prompt on Groq (K7) | $6907.90 | -30.92% | 348 | 77 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq's picks | $8620.74 | -13.79% | 348 | 167 | short ABNB, long IONQ, short IREN, short NTRA, short TEAM |
+| C-groq's answers, acted on once a day (K8) | $9123.13 | -8.77% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10419.20 | +4.19% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9098.41 | -9.02% | 16 | 6 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK |
+| Coin flip on C-slow's picks | $10837.09 | +8.37% | 16 | 12 | short AXTI, long CIFR, short DDOG, long IREN, long SNDK |
+| Just hold SPY | $9602.91 | -3.97% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-06 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 15:17 | long ABNB, long COHR, long IONQ, long RKLB, long VST | none | Maintaining all current long positions due to strong positive momentum today and supportive news catalysts for each stock. |
 | 2026-11-06 15:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-06 15:2
 | 2026-11-05 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 12:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-05 12:07 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show strong negative momentum, driven by sector-wide sell-offs and specific negative news for some. |
