@@ -836,9 +836,87 @@ def stage_shortml(cache, out):
     print(json.dumps(rep, indent=1, default=float))
 
 
+FAST_HOURS = (15, 30, 60, 120)          # minutes after the entry; "close" = the same session's last bar
+FAST_PRIMARY = 60
+
+
+def fast_exit(bars, entry_t, entry):
+    """{horizon: return from the entry price} for one stock-day of raw 1-minute bars, or None without bars."""
+    if bars is None or bars.empty or not entry > 0:
+        return None
+    out = {}
+    for h in FAST_HOURS:
+        b = bars[bars["t"] >= entry_t + pd.Timedelta(minutes=h)]
+        out[str(h)] = float(b["o"].iloc[0]) / entry - 1 if len(b) else np.nan
+    out["close"] = float(bars["c"].iloc[-1]) / entry - 1
+    return out
+
+
+def stage_shortfast(cache, out):
+    """SHORT-FAST (research/prereg/SHORTFAST.md): NX3's fired events (first 3 per side per day, bar 1.0) exited
+    FAST_HOURS minutes after the entry or at the same session's close instead of the next close; the control is the
+    day's random real events with the same sides and the same exit. Needs raw 1-minute bars of the picked and control
+    stocks (one request per day). Primary: shorts, exit after FAST_PRIMARY minutes."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    ses = sessions(calendar(cache)).set_index("date")
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    headers = alpaca_headers()
+    rows = []
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut_d]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        model = Model(tr)
+        real = te[te["kind"] == "real"]
+        e = model.effect(real[INPUTS].to_numpy(float))
+        real = real.assign(e=e, fired=model.fires(e))
+        rng = np.random.default_rng(SEED + yr)
+        for d, day in real.groupby("d", sort=True):
+            p, c = picks(day, rng, cap=PICKS, hi=1.0, cut=model.cut)
+            if p.empty or c.empty or d not in ses.index:
+                continue
+            bars = day_bars(sorted(set(p["symbol"]) | set(c["symbol"])), d, ses.loc[d, "open_t"], ses.loc[d, "close_t"], headers)
+            for grp, fr in (("pick", p), ("control", c)):
+                for r in fr.itertuples(index=False):
+                    x = fast_exit(bars.get(r.symbol), r.entry_t, r.entry)
+                    if x is None:
+                        continue
+                    rows.append({"d": d, "year": yr, "grp": grp, "side": int(r.side), "price": r.price, **x})
+    t = pd.DataFrame(rows)
+    rep = {"primary": {"side": "short", "exit_minutes": FAST_PRIMARY}, "min_trades": SF_MIN_TRADES, "pass_t": ALL_PASS_T, "arms": {}}
+    if len(t):
+        for h in [str(x) for x in FAST_HOURS] + ["close"]:
+            for sd, name in ((-1, "short"), (1, "long")):
+                u = t[(t["side"] == sd) & np.isfinite(t[h])].copy()
+                u["ret"], u["days"] = u[h], 1
+                u["net"] = N.net(u.assign(side=u["side"])).to_numpy(float)
+                pk = u[u["grp"] == "pick"].groupby("d")["net"].mean()
+                ct = u[u["grp"] == "control"].groupby("d")["net"].mean()
+                m = pd.concat([pk, ct], axis=1, keys=["p", "c"]).dropna()
+                rep["arms"][f"{name}_{h}"] = {
+                    "pick_days": int(len(pk)), "trades": int((u["grp"] == "pick").sum()),
+                    "net_per_trade": float(u[u["grp"] == "pick"]["net"].mean()) if len(pk) else None,
+                    "net_per_day": tstat(pk.to_numpy(float)),
+                    "pick_minus_control": tstat((m["p"] - m["c"]).to_numpy(float)),
+                    "per_year_net_per_trade": {int(y): float(g["net"].mean()) for y, g in u[u["grp"] == "pick"].groupby("year")}}
+    a = rep["arms"].get(f"short_{FAST_PRIMARY}")
+    ok = bool(a and a["net_per_day"]["mean"] > 0 and a["net_per_day"]["t_nw"] >= ALL_PASS_T
+              and a["pick_minus_control"]["mean"] > 0 and a["pick_minus_control"]["t_nw"] >= ALL_PASS_T)
+    rep["verdict"] = "passed" if ok and a["trades"] >= SF_MIN_TRADES else "too thin" if ok else "failed"
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "SHORTFAST_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -867,6 +945,9 @@ def main():
         return
     if a.stage == "shortml":
         stage_shortml(a.cache, a.out)
+        return
+    if a.stage == "shortfast":
+        stage_shortfast(a.cache, a.out)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
