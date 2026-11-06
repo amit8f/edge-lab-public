@@ -1,0 +1,299 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "2fbea12b0897559ef2c1f10cc9dfd0a558e7da2a6c4e42f50e83ff488ac4396c",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "52bdaac3cbd5b86cb9921dfd8a439e9d2daaafa2e45cd6f593fdfb1fbe193a17",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SITC",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "IRTC",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "DKNG",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "AIRS",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ASTH",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TILE",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "FIVN",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "HLIO",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CLNE",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "GOGO",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "e43056338c1d6e4e1e483cd28a94771ecb287aa0635b123ae1f5b3acdd99b8eb",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "73b3dc96849243bfd0451f1f325796a18c58299bf3713128fb5cefe1eeab456c",
+   "quota": false,
+   "retry": {
+    "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+    "model": "openai/gpt-oss-120b",
+    "prompt_sha256": "7a7b83092dac5ff44df3930b25e221f2ad35eb77aad24cc4cb07551ee28b4746",
+    "quota": false
+   },
+   "unreadable": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": "1 unreadable agent answers",
+  "PICK-PENNY": "1 unreadable agent answers"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.80647,
+   "news": 0,
+   "pace": 22.226,
+   "price": 0.6909,
+   "r20": 0.12626,
+   "r5": -0.06542,
+   "short": true,
+   "src": "iex",
+   "symbol": "SITC",
+   "z": -47.868
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.31062,
+   "news": 0,
+   "pace": 22.948,
+   "price": 89.75,
+   "r20": 0.26891,
+   "r5": 0.0187,
+   "short": true,
+   "src": "iex",
+   "symbol": "IRTC",
+   "z": -15.027
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.28274,
+   "news": 0,
+   "pace": 11.974,
+   "price": 16.87,
+   "r20": 0.18369,
+   "r5": 0.13514,
+   "short": true,
+   "src": "iex",
+   "symbol": "DKNG",
+   "z": -13.346
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.53292,
+   "news": 0,
+   "pace": 20.78,
+   "price": 0.6726,
+   "r20": -0.12991,
+   "r5": -0.13772,
+   "short": true,
+   "src": "iex",
+   "symbol": "AIRS",
+   "z": -10.029
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16791,
+   "news": 0,
+   "pace": 3.332,
+   "price": 32.46,
+   "r20": 0.08754,
+   "r5": 0.06526,
+   "short": true,
+   "src": "iex",
+   "symbol": "ASTH",
+   "z": -6.864
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14278,
+   "news": 0,
+   "pace": 5.007,
+   "price": 32.42,
+   "r20": 0.08585,
+   "r5": 0.02577,
+   "short": true,
+   "src": "iex",
+   "symbol": "TILE",
+   "z": -5.903
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19918,
+   "news": 0,
+   "pace": 13.106,
+   "price": 27.34,
+   "r20": -0.02873,
+   "r5": -0.08741,
+   "short": true,
+   "src": "iex",
+   "symbol": "FIVN",
+   "z": -5.553
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.15069,
+   "news": 0,
+   "pace": 4.325,
+   "price": 51.035,
+   "r20": -0.11411,
+   "r5": -0.11969,
+   "short": true,
+   "src": "iex",
+   "symbol": "HLIO",
+   "z": -5.501
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.27815,
+   "news": 0,
+   "pace": 11.238,
+   "price": 1.93,
+   "r20": -0.00658,
+   "r5": 0.01342,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLNE",
+   "z": 5.481
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.34437,
+   "news": 0,
+   "pace": 18.895,
+   "price": 3.045,
+   "r20": 0.00221,
+   "r5": -0.10474,
+   "short": true,
+   "src": "iex",
+   "symbol": "GOGO",
+   "z": 5.255
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5063.1533,
+  "PICK-MAIN-coin": 5123.7991,
+  "PICK-PENNY": 474.7621,
+  "PICK-PENNY-coin": 504.9348
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 78,
+  "news": 22,
+  "volume": 299
+ },
+ "flagged": 336,
+ "headline_counts": {
+  "AIRS": 3,
+  "ASTH": 3,
+  "CLNE": 2,
+  "DKNG": 3,
+  "FIVN": 3,
+  "GOGO": 3,
+  "HLIO": 3,
+  "IRTC": 3,
+  "SITC": 1,
+  "TILE": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "d6445694beef2721d59f1fa0368aba7479110852c55981c310963484402f264d",
+ "price_sources": {
+  "delayed_sip": 274,
+  "iex": 3123
+ },
+ "priced": 3397,
+ "risk": [],
+ "slot": "2026-11-06T10:40",
+ "t": "2026-11-06T15:40:21.151359+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T15:41:13.991544Z"
+}
