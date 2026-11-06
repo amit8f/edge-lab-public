@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-06T12:35 ET: 733 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-06T12:40 ET: 736 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,860.06 | -2.80% | 35 | 15 | long AHRT, long APP, short ARQT, long ATO, long BA, long BAM, short DTIL, long ETR, long FELE, short INGM, long LSTR, short OBIO, long PGEN, long ROL, long RSI, long SN | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,819.10 | -3.62% | 34 | 11 | long AHRT, long APP, short ARQT, long ATO, long BA, short BAM, short DTIL, short ETR, long FELE, long INGM, short LSTR, short OBIO, long PGEN, long ROL, short RSI, short SN, short ULCC | ok |
-| SCOUT-PENNY | $490.29 | -1.94% | 13 | 2 | short NUAI, long PSQL, short RZLT, short TCPC, long TLRY | 1 unreadable agent answers |
-| SCOUT-PENNY-coin | $495.42 | -0.92% | 13 | 4 | short NUAI, long PSQL, long RZLT, short TCPC, long TLRY | ok |
+| SCOUT-MAIN | $4,853.91 | -2.92% | 35 | 15 | long AHRT, long APP, short ARQT, long ATO, long BA, long BAM, short DTIL, long ETR, long FELE, short INGM, long LSTR, short OBIO, long PGEN, long ROL, long RSI, long SN | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,819.69 | -3.61% | 34 | 11 | long AHRT, long APP, short ARQT, long ATO, long BA, short BAM, short DTIL, short ETR, long FELE, long INGM, short LSTR, short OBIO, long PGEN, long ROL, short RSI, short SN, short ULCC | ok |
+| SCOUT-PENNY | $490.71 | -1.86% | 13 | 2 | short NUAI, long PSQL, short RZLT, short TCPC, long TLRY | 1 unreadable agent answers |
+| SCOUT-PENNY-coin | $495.90 | -0.82% | 13 | 4 | short NUAI, long PSQL, long RZLT, short TCPC, long TLRY | ok |
