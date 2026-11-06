@@ -1,0 +1,549 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "d52c3cc8d0a4875c0f32be478702ccea7405c94bd43dd84f01ef8078d86104a9",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "e69b223975205097ecc5df498d03f4518bcfaa794ec61cfec38008f4ab0d6dbd",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "HALO",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "SLVM",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "INGN",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "AXON",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "TMDX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "PBYI",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "INSE",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "VTEX",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LODE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "THM",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "b12a2a7319399881616a22e11899eff97aa2973e3fd3706f2eb016d44811d6fa",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "oversold with high volume and positive analyst outlook",
+     "stop_pct": 12.0,
+     "symbol": "HALO"
+    },
+    {
+     "confidence": 78,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "extreme rally with negative analyst tone suggests pullback",
+     "stop_pct": 12.0,
+     "symbol": "SLVM"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp drop and negative earnings outlook may continue down",
+     "stop_pct": 13.0,
+     "symbol": "INGN"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large decline with very negative analyst tone indicates further downside",
+     "stop_pct": 14.0,
+     "symbol": "AXON"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong rally, high volume and positive guidance support continuation",
+     "stop_pct": 12.0,
+     "symbol": "TMDX"
+    },
+    {
+     "confidence": 68,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant drop with neutral tone suggests further weakness",
+     "stop_pct": 13.0,
+     "symbol": "PBYI"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "high volume despite modest gain and negative analyst tone",
+     "stop_pct": 20.0,
+     "symbol": "INSE"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price decline with negative tone and elevated volume",
+     "stop_pct": 20.0,
+     "symbol": "VTEX"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price surge with strong volume and neutral analyst view",
+     "stop_pct": 20.0,
+     "symbol": "LODE"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large gain with high volume and neutral analyst view",
+     "stop_pct": 20.0,
+     "symbol": "THM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "ea1b335520c5c1eaf3743dcd34dfa7b4508ed236ce84d60c37904d7f8fd2dd01"
+  },
+  "reviewer": {
+   "answer_sha256": "d411886af8b7dd368324436ea42a006dd4ab04d10eb47fe79bb0a4eb8e669ffc",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "ab154ea7ea92fb5eac74c5ae90b5b456206e636a06a70369b3e1134107bc2eac",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive tone and heavy volume despite an intraday drop ahead of news.",
+     "symbol": "HALO"
+    },
+    {
+     "confidence": 78,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive momentum spike with negative analyst tone suggests fading opportunity.",
+     "symbol": "SLVM"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe earnings drop with high volume pace favors continuation of downside.",
+     "symbol": "INGN"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive earnings-related selloff with high volume and negative tone supports shorting.",
+     "symbol": "AXON"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive reaction on high volume with constructive guidance.",
+     "symbol": "TMDX"
+    },
+    {
+     "confidence": 68,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop following earnings with weak technicals.",
+     "symbol": "PBYI"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume pace and negative analyst tone on a penny stock suggest downward pressure.",
+     "symbol": "INSE"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Earnings-related decline with negative tone favors short side.",
+     "symbol": "VTEX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive momentum and volume pace support continuation.",
+     "symbol": "LODE"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong volume pace and intraday bounce despite weak longer-term trend.",
+     "symbol": "THM"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume",
+    "news"
+   ],
+   "move": -0.14273,
+   "news": 1,
+   "pace": 6.968,
+   "price": 105.41,
+   "r20": 0.11945,
+   "r5": -0.06266,
+   "short": true,
+   "src": "iex",
+   "symbol": "HALO",
+   "z": -6.728
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.22226,
+   "news": 0,
+   "pace": 5.56,
+   "price": 40.42,
+   "r20": 0.01286,
+   "r5": 0.02321,
+   "short": true,
+   "src": "iex",
+   "symbol": "SLVM",
+   "z": 7.439
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19129,
+   "news": 0,
+   "pace": 11.799,
+   "price": 5.475,
+   "r20": 0.13973,
+   "r5": -0.06749,
+   "short": true,
+   "src": "iex",
+   "symbol": "INGN",
+   "z": -6.749
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1937,
+   "news": 0,
+   "pace": 13.227,
+   "price": 308.46,
+   "r20": -0.08327,
+   "r5": -0.12668,
+   "short": true,
+   "src": "iex",
+   "symbol": "AXON",
+   "z": -6.435
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.21847,
+   "news": 0,
+   "pace": 7.086,
+   "price": 84.05,
+   "r20": -0.12684,
+   "r5": 0.02771,
+   "short": true,
+   "src": "iex",
+   "symbol": "TMDX",
+   "z": 5.746
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.18628,
+   "news": 0,
+   "pace": 5.768,
+   "price": 7.95,
+   "r20": -0.02006,
+   "r5": -0.07306,
+   "short": true,
+   "src": "iex",
+   "symbol": "PBYI",
+   "z": -5.714
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.00857,
+   "news": 1,
+   "pace": 8.089,
+   "price": 3.53,
+   "r20": -0.00568,
+   "r5": -0.02778,
+   "short": true,
+   "src": "iex",
+   "symbol": "INSE",
+   "z": 0.224
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0397,
+   "news": 0,
+   "pace": 3.186,
+   "price": 3.87,
+   "r20": 0.02025,
+   "r5": 0.0,
+   "short": true,
+   "src": "iex",
+   "symbol": "VTEX",
+   "z": -1.47
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.0843,
+   "news": 0,
+   "pace": 3.03,
+   "price": 1.865,
+   "r20": -0.22172,
+   "r5": 0.06832,
+   "short": true,
+   "src": "iex",
+   "symbol": "LODE",
+   "z": 1.281
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11983,
+   "news": 0,
+   "pace": 6.731,
+   "price": 1.355,
+   "r20": -0.48069,
+   "r5": -0.40686,
+   "short": true,
+   "src": "iex",
+   "symbol": "THM",
+   "z": 1.229
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5062.971,
+  "PICK-MAIN-coin": 5118.5968,
+  "PICK-PENNY": 476.1013,
+  "PICK-PENNY-coin": 506.5817
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 77,
+  "news": 10,
+  "volume": 336
+ },
+ "flagged": 365,
+ "headline_counts": {
+  "AXON": 3,
+  "HALO": 3,
+  "INGN": 3,
+  "INSE": 3,
+  "PBYI": 3,
+  "SLVM": 3,
+  "TMDX": 3,
+  "VTEX": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "c8441340a3054c1f7862d7aac8ef48e83319473a18f26f3753a73d83383449b6",
+ "price_sources": {
+  "delayed_sip": 387,
+  "iex": 3010
+ },
+ "priced": 3397,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HALO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SLVM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "INGN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AXON"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TMDX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PBYI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "INSE"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "VTEX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LODE"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "THM"
+  }
+ ],
+ "slot": "2026-11-06T10:30",
+ "t": "2026-11-06T15:30:20.746713+00:00",
+ "universe": 3399,
+ "written_utc": "2026-11-06T15:30:53.067513Z"
+}
