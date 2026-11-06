@@ -782,9 +782,63 @@ def stage_shortfix2(cache, out):
     print(json.dumps(rep, indent=1, default=float))
 
 
+SML_FIRE_Q, SML_STRESS = 0.90, -0.01
+
+
+def stage_shortml(cache, out):
+    """SHORT-ML (research/prereg/SHORTML.md): a model trained only to find shorts. Per test year (NX3's purged
+    walk-forward): real events with negative tone (fb_neg > fb_pos), target = -z (the market-adjusted next-close
+    return, flipped, scaled by the stock's vol), the same 37 inputs (SPY returns and the SPY move at the entry are
+    the market-stress inputs). Fires the top 10% of training predictions; first 3 per day in time order are shorted;
+    control = as many of the day's negative-tone events at random, also shorted."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    ev = ev[(ev["kind"] == "real") & (ev["fb_neg"] > ev["fb_pos"])].assign(side=-1)
+    ev["z"] = -zlabel(ev)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    rows, picks_all = [], []
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[(ev["d"] <= cut_d) & np.isfinite(ev["z"])]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if len(tr) < 500 or te.empty:
+            continue
+        m = fit(tr[INPUTS].to_numpy(float), tr["z"].to_numpy(float))
+        cut = max(float(np.quantile(m.predict(tr[INPUTS].to_numpy(float)), SML_FIRE_Q)), 0.0)
+        te = te.assign(p=m.predict(te[INPUTS].to_numpy(float)))
+        rng = np.random.default_rng(SEED + yr)
+        for d, day in te.groupby("d", sort=True):
+            f = day[day["p"] > cut].sort_values("t", kind="stable").head(PICKS)
+            if f.empty or len(day) < len(f):
+                continue
+            c = day.iloc[rng.choice(len(day), size=len(f), replace=False)]
+            pn, cn = N.net(f).to_numpy(float), N.net(c).to_numpy(float)
+            rows.append({"d": d, "year": yr, "pick_minus_control": pn.mean() - cn.mean(), "net": pn.mean(),
+                         "stress": bool(day["spy_r1"].iloc[0] < SML_STRESS), "n": len(f)})
+    r = pd.DataFrame(rows, columns=["d", "year", "pick_minus_control", "net", "stress", "n"])
+
+    def arm(x):
+        return {"pick_minus_control": tstat(x["pick_minus_control"].to_numpy(float)), "net_per_day": tstat(x["net"].to_numpy(float)),
+                "pick_days": int(len(x)), "short_trades": int(x["n"].sum()),
+                "net_per_trade": float((x["net"] * x["n"]).sum() / x["n"].sum()) if len(x) else None,
+                "per_year_net_per_day": {int(y): float(g["net"].mean()) for y, g in x.groupby("year")}}
+    rep = {"min_trades": SF_MIN_TRADES, "pass_t": ALL_PASS_T, "primary": arm(r),
+           "stress_days_spy_r1_below_-1pct": arm(r[r["stress"]]), "calm_days": arm(r[~r["stress"]])}
+    p_ = rep["primary"]
+    ok = (p_["pick_minus_control"]["mean"] > 0 and p_["pick_minus_control"]["t_nw"] >= ALL_PASS_T
+          and p_["net_per_day"]["mean"] > 0 and p_["net_per_day"]["t_nw"] >= ALL_PASS_T)
+    rep["verdict"] = "passed" if ok and p_["short_trades"] >= SF_MIN_TRADES else "too thin" if ok else "failed"
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "SHORTML_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -810,6 +864,9 @@ def main():
         return
     if a.stage == "shortfix2":
         stage_shortfix2(a.cache, a.out)
+        return
+    if a.stage == "shortml":
+        stage_shortml(a.cache, a.out)
         return
     for s in (["events", "minutes", "train"] if a.stage == "all" else [a.stage]):
         if s == "events" and not stage_events(a.cache, deadline):
