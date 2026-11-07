@@ -200,3 +200,16 @@ def test_workflow_timeouts(tmp_path):
     (w / "a.yml").write_text("jobs:\n  x:\n    timeout-minutes: 15\n  y:\n    timeout-minutes: 350\n")
     (w / "b.yml").write_text("jobs:\n  x:\n    runs-on: ubuntu\n")
     assert B.workflow_timeouts(tmp_path) == {".github/workflows/a.yml": 350}
+
+
+def test_boomshort_book(tmp_path):
+    import json as _j
+    from dashboard import build as DB
+    led = tmp_path / "state-boomshort" / "boomshort" / "ledger"
+    (led / "settle").mkdir(parents=True)
+    (led / "days").mkdir()
+    (led / "days" / "2026-11-09.json").write_text("{}")
+    (led / "settle" / "2026-11-09.json").write_text(_j.dumps({"trades": {"A": {"status": "settled", "net": 0.01},
+                                                                         "B": {"status": "no bars"}}, "pnl_usd": 5.0}))
+    b = DB.boomshort_book(tmp_path)[0]
+    assert b["name"] == "BOOM-SHORT" and b["closed"] == 1 and b["realized"] == 5.0 and abs(b["pnl_pct"] - 0.1) < 1e-9

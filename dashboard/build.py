@@ -49,7 +49,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -182,6 +182,15 @@ def chrp_book(st):
     op = [x for x in (_json(w / "open.json") or []) if x.get("role") == "pick"]
     return [_book("CHR-P", "CHR-P", 30, len(tr), len(op), realized=sum(1000 * (t.get("size") or 0) * (t.get("net") or 0)
                                                                      for t in tr), size=1000.0)]
+
+
+def boomshort_book(st):
+    """BOOM-SHORT $5,000 ledger book (research/prereg/BOOMSHORT.md): $500 shorts settled the same day."""
+    led = st / "state-boomshort" / "boomshort" / "ledger"
+    st_ = [_json(f) for f in sorted((led / "settle").glob("*.json"))]
+    closed = sum(1 for x in st_ if x for v in x.get("trades", {}).values() if v.get("status") == "settled")
+    return [_book("BOOM-SHORT", "BOOM-SHORT", 100, closed, 0, realized=sum((x or {}).get("pnl_usd") or 0.0 for x in st_),
+                  size=5000.0, days=len(list((led / "days").glob("*.json"))))]
 
 
 def day1_book(st):
@@ -655,7 +664,7 @@ def last_change(repo_root, names):
 
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     nx3 = nx3_days(st, Path(out) / "cache")
     mark_open_nx3(books, nx3)
