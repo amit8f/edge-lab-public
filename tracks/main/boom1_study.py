@@ -100,7 +100,7 @@ def run(cache, out):
     caldates = pd.DatetimeIndex(X.calendar(cache)["date"])
     print(f"[boom1] {len(df)} stock-days, base boom rate {df['boom'].mean():.4f}, "
           f"pre-open news on {df['pre_news'].mean():.4f}")
-    res = {"MODEL": [], "VOL": [], "VOL_NEWS": []}
+    res = {"MODEL": [], "VOL": [], "VOL_NEWS": [], "MAX": [], "RANDOM": []}
     imp = {}
     for yr in N.TEST_YEARS:
         start = pd.Timestamp(f"{yr}-01-01")
@@ -118,6 +118,8 @@ def run(cache, out):
         res["MODEL"].append(day_rates(te, p).assign(year=yr))
         res["VOL"].append(day_rates(te, vol).assign(year=yr))
         res["VOL_NEWS"].append(day_rates(te, vol * (1 + te["pre_news"].to_numpy(float))).assign(year=yr))
+        res["MAX"].append(day_rates(te, te["maxret20"].abs().to_numpy(float)).assign(year=yr))
+        res["RANDOM"].append(day_rates(te, np.random.default_rng(SEED + yr).random(len(te))).assign(year=yr))
         print(f"[boom1] {yr}: model hit {res['MODEL'][-1]['hit'].mean():.3f}, vol rule {res['VOL'][-1]['hit'].mean():.3f}, "
               f"base {res['MODEL'][-1]['base'].mean():.3f}")
     cat = {k: pd.concat(v, ignore_index=True) for k, v in res.items()}

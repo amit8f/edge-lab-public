@@ -37,8 +37,10 @@ Each day: the 20 highest-scored stocks. Hit rate = share of the 20 that boomed.
 Not run until Amit's boom research is done (Amit, 2026-11-06); any change from that research is made here before
 the first run.
 
-Baselines: VOL (the 20 most volatile stocks by vol20, the obvious simple rule) and VOL_NEWS (vol20 doubled when
-there is pre-open news).
+Baselines: VOL (the 20 most volatile stocks by vol20, the obvious simple rule), VOL_NEWS (vol20 doubled when
+there is pre-open news), MAX (the 20 with the largest daily move in the last 20 days; recent big movers repeat, Bali,
+Cakici and Whitelaw 2011) and RANDOM (20 at random), added 2026-11-07 from the boom research report
+(/mnt/project-files/reports/Predicting big intraday stock moves.md) before any BOOM1 number exists.
 
 ## Primary test
 

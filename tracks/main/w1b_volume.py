@@ -105,7 +105,9 @@ def net_return(side, r, r_spy, group, days_held):
 def sign_mid(trades, quotes):
     """+1 buy / -1 sell / 0 unsigned per trade by the prevailing NBBO midpoint (the quote at or before the
     trade, within 1 second); tick test (price vs the previous different price) only where no quote is near."""
-    t = trades.sort_values("t").reset_index(drop=True)
+    t = trades.sort_values("t").reset_index(drop=True).astype({"p": float, "s": float})
+    quotes = quotes.astype({"bp": float, "ap": float})        # an empty quote frame comes in as object columns
+    t["t"], quotes["t"] = t["t"].astype("datetime64[ns, UTC]"), quotes["t"].astype("datetime64[ns, UTC]")
     q = quotes[(quotes["bp"] > 0) & (quotes["ap"] > quotes["bp"])].sort_values("t")
     m = pd.merge_asof(t, q[["t", "bp", "ap"]], on="t", direction="backward", tolerance=pd.Timedelta(seconds=1))
     mid = (m["bp"] + m["ap"]) / 2
