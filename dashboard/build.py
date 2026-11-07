@@ -334,6 +334,16 @@ def job_rows(repo, token, get=requests.get):
     return sorted(out, key=lambda x: x["name"])
 
 
+def workflow_timeouts(repo_root):
+    """Each workflow file's longest job time limit in minutes, keyed by its path (the Progress tab's 100%)."""
+    out = {}
+    for f in sorted(Path(repo_root, ".github", "workflows").glob("*.yml")):
+        m = [int(x) for x in re.findall(r"^\s*timeout-minutes:\s*(\d+)", f.read_text(), re.M)]
+        if m:
+            out[f".github/workflows/{f.name}"] = max(m)
+    return out
+
+
 # ---------- NX3 days ----------
 
 def alpaca_get(path, params):
@@ -651,6 +661,7 @@ def build(states, out, repo_root=".", repo=None, token=None):
     mark_open_nx3(books, nx3)
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),
+           "timeouts": workflow_timeouts(repo_root),
            "nx3": nx3, "ideas": ideas(repo_root, books)}
     Path(out).mkdir(parents=True, exist_ok=True)
     tmp = Path(out) / "summary.json.tmp"
