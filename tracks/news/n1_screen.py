@@ -7,7 +7,10 @@ Three stages, each resumable, run by .github/workflows/n1-screen.yml:
   returns  only after research/results/N1/label_check.md is committed (the hand check): trades, primary
            test, control and exploratory tables -> research/results/N1/N1_screen.json
 
-Usage: python -m tracks.news.n1_screen --stage data|labels|returns --cache <dir> --out <dir>
+Usage: python -m tracks.news.n1_screen --stage data|labels|returns --cache <dir> --out <dir> [--idea n1|n1b]
+
+N1B (research/prereg/N1B.md) reuses this code with its own models file, a fixed random sample of 15,000
+in-universe headlines, its own label caches and a cap on Gemini requests per run.
 """
 import argparse
 import json
@@ -39,6 +42,11 @@ SEED = 20261015
 MIN_TRADES = 200
 SAMPLE_N = 100
 MODELS_FILE = Path("research/results/N1/models.json")
+IDEAS = {
+    "n1": {"name": "N1", "models": MODELS_FILE, "prefix": "labels_", "sample": None, "seed": SEED, "max_req": {}},
+    "n1b": {"name": "N1B", "models": Path("research/results/N1B/models.json"), "prefix": "labels_n1b_",
+            "sample": 15_000, "seed": 20261107, "max_req": {"gemini": 100}},
+}
 GAPS = {"gemini": 6.5, "groq": 2.5}                   # seconds between requests (free-tier per-minute limits)
 
 
@@ -194,7 +202,7 @@ def stage_data(cache):
     print(f"universe: {len(uni)} stock-days, {uni['symbol'].nunique()} stocks, {uni['date'].nunique()} days")
 
 
-def items_in_universe(cache, models):
+def items_in_universe(cache, models, cfg=IDEAS["n1"]):
     news = news_history.load_range(NEWS_FIRST, NEWS_LAST, cache / "news")
     rows = headline_rows(news, window_start(models), LAST_HEADLINE_DAY)
     cal = pd.read_parquet(cache / "spy.parquet").index
@@ -204,20 +212,24 @@ def items_in_universe(cache, models):
     ok = set(zip(uni["date"], uni["symbol"]))
     inu = rows[[(p, s) in ok for p, s in zip(rows["prev"], rows["symbol"])]].reset_index(drop=True)
     funnel = {"single_symbol_headlines_in_window": int(len(rows)), "in_universe": int(len(inu))}
+    if cfg["sample"] and len(inu) > cfg["sample"]:
+        inu = inu.sample(cfg["sample"], random_state=cfg["seed"]).sort_index().reset_index(drop=True)
+        funnel["sampled"] = int(len(inu))
     return inu, funnel
 
 
-def stage_labels(cache, out, models, budget_min):
-    inu, funnel = items_in_universe(cache, models)
+def stage_labels(cache, out, models, budget_min, cfg=IDEAS["n1"]):
+    inu, funnel = items_in_universe(cache, models, cfg)
     print(f"funnel: {funnel}")
     deadline = time.monotonic() + budget_min * 60
     items = list(zip(inu["key"], inu["symbol"], inu["headline"]))
-    done = all([llm.label_all(items, p, models[p]["model"], cache / f"labels_{p}.jsonl", GAPS[p], deadline)
-                for p in ("gemini", "groq")])
+    pre = cfg["prefix"]
+    done = all([llm.label_all(items, p, models[p]["model"], cache / f"{pre}{p}.jsonl", GAPS[p], deadline,
+                              max_requests=cfg["max_req"].get(p)) for p in ("gemini", "groq")])
     if not done:
         print("LABELS INCOMPLETE: rerun on the next day (cached labels are kept)")
         return
-    la, lb = llm.load_cache(cache / "labels_gemini.jsonl"), llm.load_cache(cache / "labels_groq.jsonl")
+    la, lb = llm.load_cache(cache / f"{pre}gemini.jsonl"), llm.load_cache(cache / f"{pre}groq.jsonl")
     inu["gemini"], inu["groq"] = inu["key"].map(la), inu["key"].map(lb)
     s = inu.sample(min(SAMPLE_N, len(inu)), random_state=SEED)
     out.mkdir(parents=True, exist_ok=True)
@@ -232,11 +244,12 @@ def stage_labels(cache, out, models, budget_min):
     print(f"labels complete; sample written to {out / 'label_sample.json'} for the hand check")
 
 
-def stage_returns(cache, out, models):
+def stage_returns(cache, out, models, cfg=IDEAS["n1"]):
     if not (out / "label_check.md").exists():
-        raise SystemExit("hand check missing: commit research/results/N1/label_check.md first")
-    inu, funnel = items_in_universe(cache, models)
-    la, lb = llm.load_cache(cache / "labels_gemini.jsonl"), llm.load_cache(cache / "labels_groq.jsonl")
+        raise SystemExit(f"hand check missing: commit {out / 'label_check.md'} first")
+    inu, funnel = items_in_universe(cache, models, cfg)
+    pre = cfg["prefix"]
+    la, lb = llm.load_cache(cache / f"{pre}gemini.jsonl"), llm.load_cache(cache / f"{pre}groq.jsonl")
     inu["gemini"], inu["groq"] = inu["key"].map(la), inu["key"].map(lb)
     assert inu["gemini"].notna().all() and inu["groq"].notna().all(), "labels incomplete"
     inu["lm"] = inu["headline"].map(lm.label)
@@ -297,7 +310,7 @@ def stage_returns(cache, out, models):
     prim["factor_alpha"] = alpha
     prim["deflated_sharpe"] = stats.deflated_sharpe(per_day.to_numpy(), both)
     prim["passes"] = bool(prim["n_trades"] >= MIN_TRADES) and stats.screen_pass(prim, alpha)
-    res = {"idea": "N1", "prereg": "research/prereg/N1.md", "phase2_count": p2, "phase1_plus_phase2": both,
+    res = {"idea": cfg["name"], "prereg": f"research/prereg/{cfg['name']}.md", "phase2_count": p2, "phase1_plus_phase2": both,
            "ff5_daily_sha256": sha5, "umd_daily_sha256": shau, "models": models, "window_start": f"{window_start(models):%Y-%m-%d}",
            "funnel": {**funnel, "stock_days_with_signal": int(sig["side"].notna().sum()),
                       "short_trades": int(len(shorts)), "skipped_conflicting": int(sig["side"].isna().sum())},
@@ -315,8 +328,8 @@ def stage_returns(cache, out, models):
         "per_month": shorts.groupby("month")[f"short{HOLD}"].agg(["mean", "count"]).reset_index().to_dict("records")}
     res["dictionary_baseline"] = dictionary_baseline(sig, f"short{HOLD}")
     out.mkdir(parents=True, exist_ok=True)
-    (out / "N1_screen.json").write_text(json.dumps(res, indent=1, default=str))
-    shorts.sort_values(f"short{HOLD}").to_csv(out / "N1_trades.csv", index=False)
+    (out / f"{cfg['name']}_screen.json").write_text(json.dumps(res, indent=1, default=str))
+    shorts.sort_values(f"short{HOLD}").to_csv(out / f"{cfg['name']}_trades.csv", index=False)
     print("PRIMARY", json.dumps(prim, indent=1))
     print("CONTROL", json.dumps(res["control"], indent=1))
 
@@ -327,16 +340,18 @@ def main():
     ap.add_argument("--cache", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--budget-min", type=float, default=50)
+    ap.add_argument("--idea", choices=sorted(IDEAS), default="n1")
     a = ap.parse_args()
     cache, out = Path(a.cache), Path(a.out)
     cache.mkdir(parents=True, exist_ok=True)
-    models = json.loads(MODELS_FILE.read_text())["models"]
+    cfg = IDEAS[a.idea]
+    models = json.loads(cfg["models"].read_text())["models"]
     if a.stage == "data":
         stage_data(cache)
     elif a.stage == "labels":
-        stage_labels(cache, out, models, a.budget_min)
+        stage_labels(cache, out, models, a.budget_min, cfg)
     else:
-        stage_returns(cache, out, models)
+        stage_returns(cache, out, models, cfg)
 
 
 if __name__ == "__main__":

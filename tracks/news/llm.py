@@ -90,9 +90,10 @@ def load_cache(path):
     return {d["key"]: d["label"] for d in map(json.loads, p.read_text(encoding="utf-8").splitlines()) if d}
 
 
-def label_all(items, provider, model, cache_path, min_gap_sec, deadline=None, call=None):
+def label_all(items, provider, model, cache_path, min_gap_sec, deadline=None, call=None, max_requests=None):
     """items: [(key, symbol, headline)]. Labels every uncached item in batches of 50, appending to the cache.
-    Returns True when every item is labelled, False when stopped by a quota or the deadline."""
+    Returns True when every item is labelled, False when stopped by a quota, the deadline or max_requests
+    (a per-run cap that leaves shared free-tier quota to other jobs)."""
     call = call or CALLERS[provider]
     done = load_cache(cache_path)
     todo = [x for x in items if x[0] not in done]
@@ -101,6 +102,9 @@ def label_all(items, provider, model, cache_path, min_gap_sec, deadline=None, ca
     last = 0.0
     for b in range(0, len(todo), BATCH):
         if deadline is not None and time.monotonic() > deadline:
+            return False
+        if max_requests is not None and b // BATCH >= max_requests:
+            print(f"[{provider}] per-run cap of {max_requests} requests reached")
             return False
         chunk = todo[b:b + BATCH]
         time.sleep(max(0.0, min_gap_sec - (time.monotonic() - last)))

@@ -1,0 +1,12 @@
+{
+ "fixed": "2026-11-07, before any N1B headline was labelled (research/prereg/N1B.md, Models)",
+ "models": {
+  "gemini": {"model": "gemini-2.5-flash", "provider": "Google AI Studio, free tier", "cutoff": "2025-01-31",
+             "cutoff_source": "Google's Gemini 2.5 Flash model card: knowledge cutoff January 2025"},
+  "groq": {"model": "llama-3.3-70b-versatile", "provider": "Groq, free tier", "cutoff": "2023-12-31",
+           "cutoff_source": "Meta's Llama 3.3 model card: knowledge cutoff December 2023; listed as a Groq production model on 2026-11-07"}
+ },
+ "screen_window": "headlines 2025-02-01 .. 2025-09-24 (first day of the month after the later cutoff)",
+ "sample": "15,000 in-universe headlines, pandas sample(random_state=20261107), drawn before any label",
+ "settings": "temperature 0; Gemini thinking budget 0; 50 headlines per request; at most 100 Gemini requests per run"
+}

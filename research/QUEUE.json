@@ -1,6 +1,6 @@
 {
  "note": "Research tasks in the agreed order. Claude updates this file as steps finish; the dashboard's Progress tab draws it.",
- "updated": "2026-11-07T19:25:00Z",
+ "updated": "2026-11-07T21:10:00Z",
  "tasks": [
   {
    "id": "SHORT-ALL",
@@ -79,11 +79,11 @@
    ]
   },
   {
-   "id": "N1",
-   "what": "Two AI readers agree a headline is bad",
+   "id": "N1B",
+   "what": "Two AI readers agree a headline is bad (15,000-headline sample)",
    "steps": [
     {
-     "name": "Register",
+     "name": "Register N1B",
      "state": "done"
     },
     {
@@ -91,7 +91,12 @@
      "state": "done"
     },
     {
-     "name": "AI labels (stopped: AI limits, waiting on Amit)",
+     "name": "AI labels (after the close and weekends)",
+     "state": "todo",
+     "workflow": ".github/workflows/n1-screen.yml"
+    },
+    {
+     "name": "Hand check of 100 labels",
      "state": "todo"
     },
     {
@@ -173,7 +178,12 @@
      "state": "done"
     },
     {
-     "name": "Diagnose and register fixes",
+     "name": "Diagnose shorts vs longs",
+     "state": "running",
+     "workflow": ".github/workflows/nx3-study.yml"
+    },
+    {
+     "name": "Register fixes for a forward test",
      "state": "todo"
     }
    ]
