@@ -94,3 +94,20 @@ def test_lm_labels_and_dictionary_baseline():
     r = dictionary_baseline(sig, "short3")
     assert r["overlap_trades"] == 20 and r["llm_only"]["n_trades"] == 20 and r["dictionary_only"]["n_trades"] == 40
     assert r["llm_minus_dictionary_per_day"]["mean"] > 0
+
+
+def test_label_all_per_run_cap(tmp_path):
+    items = [(f"k{i}", "AAA", "h") for i in range(120)]
+    assert llm.label_all(items, "gemini", "m", tmp_path / "c.jsonl", 0, call=lambda m, t: "", max_requests=2) is False
+    assert len(llm.load_cache(tmp_path / "c.jsonl")) == 100
+    assert llm.label_all(items, "gemini", "m", tmp_path / "c.jsonl", 0, call=lambda m, t: "", max_requests=2) is True
+
+
+def test_n1b_config_and_models_file():
+    import json
+    from tracks.news import n1_screen as S
+    cfg = S.IDEAS["n1b"]
+    m = json.loads(cfg["models"].read_text())["models"]
+    assert m["groq"]["model"] == "llama-3.3-70b-versatile" and m["gemini"]["model"] == "gemini-2.5-flash"
+    assert S.window_start(m) == S.window_start(json.loads(S.MODELS_FILE.read_text())["models"])
+    assert cfg["sample"] == 15_000 and cfg["prefix"] != S.IDEAS["n1"]["prefix"]

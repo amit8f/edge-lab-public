@@ -2,6 +2,8 @@
 #   stage=data once; stage=labels once a day until it reports "labels complete" (free-tier daily quotas;
 #   the daily schedule does this when the repository variable N1_LABELS is true); then, after the hand
 #   check is committed as research/results/N1/label_check.md, stage=returns.
+# N1B (research/prereg/N1B.md) replaces N1: the schedule labels N1B's 15,000 headlines after the US close
+# on weekdays and at weekends; dispatch with idea=n1b and stage=returns once the hand check is committed.
 # Results are committed back to the branch that ran it.
 name: n1-screen
 
@@ -12,14 +14,22 @@ on:
         description: "data, labels or returns"
         required: true
         default: labels
+      idea:
+        description: "n1 or n1b"
+        required: true
+        default: n1b
   schedule:
-    - cron: "15 8 * * *"     # daily labels run (quotas reset at midnight Pacific)
+    - cron: "30 21 * * 1-5"  # N1B labels after the US close (live bots done with the Gemini quota)
+    - cron: "0 12 * * 0,6"   # and at weekends
+
+concurrency:
+  group: n1-screen
+  cancel-in-progress: false
 
 permissions: {}
 
 jobs:
   screen:
-    if: github.event_name == 'workflow_dispatch' || vars.N1_LABELS == 'true'
     permissions:
       contents: write
     runs-on: ubuntu-24.04
@@ -53,12 +63,13 @@ jobs:
       - name: Run the stage
         env:
           STAGE: ${{ github.event.inputs.stage || 'labels' }}
+          IDEA: ${{ github.event.inputs.idea || 'n1b' }}
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: .venv/bin/python -m tracks.news.n1_screen --stage "$STAGE" --cache cache/n1 --out research/results/N1 --budget-min 90
+        run: .venv/bin/python -m tracks.news.n1_screen --stage "$STAGE" --idea "$IDEA" --cache cache/n1 --out "research/results/${IDEA^^}" --budget-min 90
 
       - name: Save the data cache (also after a failure)
         if: always()
@@ -70,12 +81,13 @@ jobs:
       - name: Commit the results to this branch
         env:
           GH_TOKEN: ${{ github.token }}
+          IDEA: ${{ github.event.inputs.idea || 'n1b' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add research/results/N1
+          git add research/results/N1 research/results/N1B
           if git diff --cached --quiet; then echo "no new results"; exit 0; fi
-          git commit -q -m "N1 screen output (run ${{ github.run_id }})"
+          git commit -q -m "${IDEA^^} screen output (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
           git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
