@@ -1,6 +1,6 @@
 {
  "note": "Research tasks in the agreed order. Claude updates this file as steps finish; the dashboard's Progress tab draws it.",
- "updated": "2026-11-07T21:10:00Z",
+ "updated": "2026-11-07T21:45:00Z",
  "tasks": [
   {
    "id": "SHORT-ALL",
@@ -178,12 +178,39 @@
      "state": "done"
     },
     {
-     "name": "Diagnose shorts vs longs",
+     "name": "Diagnose shorts vs longs (picks drift down)",
+     "state": "done"
+    },
+    {
+     "name": "Register BOOM-SHORT forward test",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "BOOM-SHORT",
+   "what": "Short BOOM1's most bearish picks, forward paper book",
+   "steps": [
+    {
+     "name": "Register",
+     "state": "done"
+    },
+    {
+     "name": "Build morning and settle code",
+     "state": "done"
+    },
+    {
+     "name": "Freeze the two models",
      "state": "running",
      "workflow": ".github/workflows/nx3-study.yml"
     },
     {
-     "name": "Register fixes for a forward test",
+     "name": "First live day (Mon Nov 9)",
+     "state": "todo",
+     "workflow": ".github/workflows/boom-short.yml"
+    },
+    {
+     "name": "100 closed trades",
      "state": "todo"
     }
    ]
