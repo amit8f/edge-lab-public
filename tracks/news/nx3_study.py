@@ -1246,7 +1246,7 @@ def stage_shortall(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1294,6 +1294,10 @@ def main():
     if a.stage == "chart_bars":
         if not stage_chart_bars(a.cache, deadline):
             print("[chart bars] time budget used; rerun to continue")
+        return
+    if a.stage == "boom_freeze":
+        from tracks.main import boom_short as BS
+        BS.freeze(a.cache)
         return
     if a.stage in ("boom2_picks", "boom2_minutes", "boom2", "boom2_diag"):
         from tracks.main import boom2_study as B2

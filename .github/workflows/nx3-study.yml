@@ -117,7 +117,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag' && inputs.stage != 'boom_freeze'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3
@@ -150,8 +150,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2
-          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2
+          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 models/boom_short
+          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 models/boom_short
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "NX3/NXM/NXR/NXE ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
