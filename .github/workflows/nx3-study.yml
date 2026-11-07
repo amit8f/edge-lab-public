@@ -117,7 +117,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3

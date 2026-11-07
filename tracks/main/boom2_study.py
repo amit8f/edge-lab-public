@@ -322,3 +322,46 @@ def verdict(a, r, rep):
     hm = r.get("hit_minus_best_rule") or {}
     need = 0.03 if a == "D3" else 0.04
     return "passed" if econ and hm.get("mean", np.nan) >= need and hm.get("t_nw", np.nan) >= X.GATE_T else "failed"
+
+
+def diagnose(cache, out):
+    """POST HOC, not pre-registered (BOOM2.md): why D6's shorts make money and its longs don't. Re-fits D6 with
+    the same seed and walk-forward, then reports the picks' open-to-close drift, always-long / always-short net,
+    and D6's score deciles. Writes research/results/BOOM2/BOOM2_diagnosis.json."""
+    df = load_all(cache)
+    df = df[df["lab"] != 2].reset_index(drop=True)
+    price = df["open"].to_numpy(float)
+    df["oc"] = df["close"] / df["open"] - 1
+    test = sorted(y for y in df["year"].unique() if y >= min(df["year"]) + 1)
+    s6, sc = np.zeros(len(df)), np.full(len(df), np.nan)
+    for y in test:
+        ix = np.flatnonzero(df["year"] == y)
+        side, score, _ = side_d6(df[df["year"] < y], df.iloc[ix])
+        s6[ix], sc[ix] = side, score
+    tm = df["year"].isin(test).to_numpy()
+    x = df[tm].assign(score=sc[tm], side=s6[tm])
+    lab = x["lab"].to_numpy(int)
+    nl = net(np.ones(len(x)), x["open"], x["exit"], x["open"])
+    ns = net(-np.ones(len(x)), x["open"], x["exit"], x["open"])
+    x = x.assign(net_long=nl, net_short=ns, dec=pd.qcut(x["score"], 10, labels=False, duplicates="drop"))
+    touched = lab != 0
+    rep = {"note": "POST HOC, not pre-registered; hypotheses only, decided by a forward test",
+           "picks": int(len(x)),
+           "open_to_close_mean": float(x["oc"].mean()), "open_to_close_median": float(x["oc"].median()),
+           "open_to_close_by_year": {int(k): float(v) for k, v in x.groupby("year")["oc"].mean().items()},
+           "none_exit_close_mean": float(x.loc[lab == 0, "oc"].mean()),
+           "always_long_net": float(np.nanmean(nl)), "always_short_net": float(np.nanmean(ns)),
+           "always_short_net_by_year": {int(k): float(v) for k, v in x.groupby("year")["net_short"].mean().items()},
+           "cost_mean": float(np.nanmean(N.cost_frac(price[tm], np.zeros(tm.sum(), bool), np.ones(tm.sum())))),
+           "d6_touched_accuracy": {
+               "long": float((lab[(x["side"] > 0).to_numpy() & touched] == 1).mean()),
+               "short": float((lab[(x["side"] < 0).to_numpy() & touched] == -1).mean())},
+           "deciles": {int(k): {"n": len(g), "score": float(g["score"].mean()), "up_first": float((g["lab"] == 1).mean()),
+                                "down_first": float((g["lab"] == -1).mean()), "oc": float(g["oc"].mean()),
+                                "net_long": float(g["net_long"].mean()), "net_short": float(g["net_short"].mean())}
+                       for k, g in x.groupby("dec")}}
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "BOOM2_diagnosis.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+    return rep

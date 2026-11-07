@@ -55,8 +55,14 @@ def test_boom2_run_end_to_end(tmp_path, monkeypatch):
     m = pd.DataFrame(mins)
     for p, g in m.groupby(m["nxt"].dt.to_period("M")):
         X.N.atomic_parquet(g, d / "minutes" / f"m_{p}.parquet")
-    monkeypatch.setattr(B2, "side_d6", lambda tr, te: (np.sign(te["pm_gap"].to_numpy(float)), None, {"gap": 1.0}))
+    monkeypatch.setattr(B2, "side_d6", lambda tr, te: (np.sign(te["pm_gap"].to_numpy(float)), te["pm_gap"].to_numpy(float), {"gap": 1.0}))
     rep = B2.run(cache, tmp_path / "out")
     assert set(rep["arms"]) == {"D1-NEWS", "D1-NONEWS", "D2", "D3", "D4", "D6"}
     assert rep["arms"]["D3"]["calls"] > 5000 and rep["verdicts"]["D2"] == "too few, not judged"
     assert 0 <= rep["d0"]["all"]["up_first"] <= 1 and (tmp_path / "out" / "BOOM2_walkforward.json").exists()
+
+
+def test_boom2_diagnose(tmp_path, monkeypatch):
+    test_boom2_run_end_to_end(tmp_path, monkeypatch)
+    rep = B2.diagnose(tmp_path / "nx1", tmp_path / "out")
+    assert rep["picks"] > 5000 and len(rep["deciles"]) == 10 and "always_short_net" in rep
