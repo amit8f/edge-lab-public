@@ -6,6 +6,8 @@ const CFG = {
   summary: Q.get("summary") || `${RAW}/state-dash/dash/summary.json`,
   live: d => `${RAW}/state-nx3/nx3/days/${d}/decisions.jsonl`,
   trees: "nx3_trees.json",
+  queue: [`${RAW}/claude/project-thread-s2jzh2/research/QUEUE.json`, `${RAW}/main/research/QUEUE.json`],
+  runs: "https://api.github.com/repos/amit8f/edge-lab-public/actions/runs?per_page=30",
   logo: s => `https://financialmodelingprep.com/image-stock/${encodeURIComponent(s)}.png`,
 };
 const LABEL = {
@@ -327,7 +329,7 @@ async function loadSummary() {
     replayDay = withEvents.day;
     replayList = traded(withEvents).sort((a, b) => (a.t < b.t ? -1 : 1)); replayIx = 0;
   }
-  renderDays(); renderBooks(); renderIdeas();
+  renderDays(); renderBooks(); renderIdeas(); renderProgress();
 }
 async function pollLive() {
   const day = etDate();
@@ -526,8 +528,63 @@ function renderIdeas() {
     i.outcome ? el("details", {}, el("summary", { text: "outcome" }), el("div", { text: i.outcome })) : null)));
 }
 
+// ---------- progress ----------
+// Tasks come from research/QUEUE.json (the working branch first, else main, whichever is newer). Running jobs come
+// straight from GitHub's public API; their bar is time used against the job's time limit, not work done.
+let QUEUE = null, RUNS = [];
+async function loadProgress() {
+  if (document.hidden) return;
+  const qs = await Promise.all(CFG.queue.map(u => getJSON(u).catch(() => null)));
+  QUEUE = qs.filter(Boolean).sort((a, b) => (a.updated < b.updated ? 1 : -1))[0] || QUEUE;
+  try {
+    const r = await getJSON(CFG.runs);
+    RUNS = (r.workflow_runs || []).filter(x => x.status === "in_progress" || x.status === "queued");
+  } catch { /* GitHub allows 60 calls an hour without a key; keep the last list */ }
+  renderProgress();
+}
+function progressBar(frac, cls = "") {
+  const w = Math.max(0, Math.min(1, frac));
+  return el("div", { class: `pbar ${cls}`, role: "progressbar", "aria-valuemin": "0", "aria-valuemax": "100",
+    "aria-valuenow": String(Math.round(100 * w)) }, el("div", { class: "pfill", style: `width:${(100 * w).toFixed(1)}%` }));
+}
+function runTime(run) {
+  const limit = (SUMMARY && SUMMARY.timeouts && SUMMARY.timeouts[run.path]) || 360;
+  const mins = run.status === "queued" ? 0 : Math.max(0, (Date.now() - Date.parse(run.run_started_at || run.created_at)) / 60000);
+  return { mins, limit, frac: mins / limit };
+}
+function runRow(run) {
+  const t = runTime(run);
+  return el("div", { class: "run" },
+    el("div", { class: "kv small" }, el("a", { href: run.html_url, target: "_blank", rel: "noopener", text: run.name }),
+      el("span", { class: "muted", text: run.status === "queued" ? "waiting to start" : `${Math.round(t.mins)} of ${t.limit} min` })),
+    progressBar(t.frac, "time"));
+}
+function renderProgress() {
+  if (!$("running")) return;
+  $("running").replaceChildren(...(RUNS.length ? RUNS.map(runRow) : [el("div", { class: "muted small", text: "nothing running right now" })]));
+  if (!QUEUE) { $("tasks").replaceChildren(el("div", { class: "muted small", text: "task list not available yet" })); return; }
+  $("qupdated").textContent = `updated ${ilStamp(new Date(QUEUE.updated))} Israel`;
+  $("tasks").replaceChildren(...QUEUE.tasks.map(t => {
+    const done = t.steps.filter(x => x.state === "done").length, run = t.steps.filter(x => x.state === "running").length;
+    const frac = (done + 0.5 * run) / t.steps.length;
+    const finished = done === t.steps.length;
+    return el("div", { class: `card task ${finished ? "finished" : ""}` },
+      el("div", { class: "top2" }, el("span", { class: "name", text: t.id }),
+        el("span", { class: finished ? "up" : "muted", text: finished ? "done" : `${Math.round(100 * frac)}%` })),
+      el("div", { class: "muted small", text: t.what }),
+      progressBar(frac, finished ? "full" : ""),
+      el("ol", { class: "steps" }, ...t.steps.map(x => {
+        const live = x.state === "running" && x.workflow ? RUNS.find(r => r.path === x.workflow) : null;
+        return el("li", { class: x.state },
+          el("span", { text: `${x.state === "done" ? "✓" : x.state === "running" ? "●" : "○"} ${x.name}` +
+            (x.passes ? ` (pass ${x.passes})` : "") }),
+          live ? runRow(live) : null);
+      })));
+  }));
+}
+
 // ---------- tabs and start ----------
-const TABS = ["live", "books", "ideas"];
+const TABS = ["live", "progress", "books", "ideas"];
 function showTab(name) {
   for (const x of document.querySelectorAll(".tabs button")) x.setAttribute("aria-selected", String(x.dataset.tab === name));
   for (const t of TABS) $(`tab-${t}`).hidden = t !== name;
@@ -541,5 +598,8 @@ for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("c
   await pollLive();
   setInterval(loadSummary, 5 * 60000);
   setInterval(pollLive, 60000);
+  loadProgress();
+  setInterval(loadProgress, 3 * 60000);
+  document.addEventListener("visibilitychange", loadProgress);
   loop();
 })();

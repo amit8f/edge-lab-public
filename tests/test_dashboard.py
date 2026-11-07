@@ -191,3 +191,12 @@ def test_agent_arm_picks_take_skip_flip(tmp_path):
     assert list(out) == ["AAA", "CCC"]
     assert out["AAA"]["side"] == 1 and out["AAA"]["net"] == 0.02
     assert out["CCC"]["side"] == 1 and out["CCC"]["net"] == -0.01          # flipped short becomes a long
+
+
+def test_workflow_timeouts(tmp_path):
+    from dashboard import build as B
+    w = tmp_path / ".github" / "workflows"
+    w.mkdir(parents=True)
+    (w / "a.yml").write_text("jobs:\n  x:\n    timeout-minutes: 15\n  y:\n    timeout-minutes: 350\n")
+    (w / "b.yml").write_text("jobs:\n  x:\n    runs-on: ubuntu\n")
+    assert B.workflow_timeouts(tmp_path) == {".github/workflows/a.yml": 350}
