@@ -1,27 +1,157 @@
 {
  "note": "Research tasks in the agreed order. Claude updates this file as steps finish; the dashboard's Progress tab draws it.",
- "updated": "2026-11-07T10:40:00Z",
+ "updated": "2026-11-07T11:00:00Z",
  "tasks": [
-  {"id": "SHORT-ALL", "what": "Five models on shorts only", "steps": [
-   {"name": "Register", "state": "done"}, {"name": "Run", "state": "done"}, {"name": "Record result (all failed)", "state": "done"}]},
-  {"id": "STOP8", "what": "Exit NX3 trades early once they move 8%", "steps": [
-   {"name": "Register", "state": "done"},
-   {"name": "Build minute-by-minute exit data (several passes)", "state": "running", "workflow": ".github/workflows/nx3-study.yml", "passes": 3},
-   {"name": "Score STOP8", "state": "todo"}, {"name": "Report and record in Ideas", "state": "todo"}]},
-  {"id": "W1b", "what": "Unusual heavy trading before big news", "steps": [
-   {"name": "Fix the crash", "state": "done"},
-   {"name": "Footprints", "state": "running", "workflow": ".github/workflows/w1-study.yml"},
-   {"name": "FINRA short volume", "state": "todo"}, {"name": "SEC case list", "state": "todo"},
-   {"name": "Run-up test", "state": "todo"}, {"name": "Report", "state": "todo"}]},
-  {"id": "N1", "what": "Two AI readers agree a headline is bad", "steps": [
-   {"name": "Register", "state": "done"}, {"name": "Run", "state": "todo"}, {"name": "Report", "state": "todo"}]},
-  {"id": "BOOM research", "what": "What finds an 8% mover, and its direction", "steps": [
-   {"name": "Who will move", "state": "done"}, {"name": "Which direction", "state": "done"}]},
-  {"id": "BOOM1", "what": "Night-before short-list of 20 likely 8% movers", "steps": [
-   {"name": "Register", "state": "done"}, {"name": "Build", "state": "done"}, {"name": "Run", "state": "todo"},
-   {"name": "Report", "state": "todo"}]},
-  {"id": "BOOM2", "what": "Direction model for the short-list (arms D0-D8)", "steps": [
-   {"name": "Register", "state": "todo"}, {"name": "Build", "state": "todo"}, {"name": "Run", "state": "todo"},
-   {"name": "Report", "state": "todo"}]}
+  {
+   "id": "SHORT-ALL",
+   "what": "Five models on shorts only",
+   "steps": [
+    {
+     "name": "Register",
+     "state": "done"
+    },
+    {
+     "name": "Run",
+     "state": "done"
+    },
+    {
+     "name": "Record result (all failed)",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "STOP8",
+   "what": "Exit NX3 trades early once they move 8%",
+   "steps": [
+    {
+     "name": "Register",
+     "state": "done"
+    },
+    {
+     "name": "Build minute-by-minute exit data (3 passes)",
+     "state": "done"
+    },
+    {
+     "name": "Score STOP8 (passed vs random, not better than holding)",
+     "state": "done"
+    },
+    {
+     "name": "Record in Ideas",
+     "state": "done"
+    },
+    {
+     "name": "Shadow book beside NX3",
+     "state": "todo"
+    }
+   ]
+  },
+  {
+   "id": "W1b",
+   "what": "Unusual heavy trading before big news",
+   "steps": [
+    {
+     "name": "Fix the crash",
+     "state": "done"
+    },
+    {
+     "name": "Footprints",
+     "state": "running",
+     "workflow": ".github/workflows/w1-study.yml"
+    },
+    {
+     "name": "FINRA short volume",
+     "state": "todo"
+    },
+    {
+     "name": "SEC case list",
+     "state": "todo"
+    },
+    {
+     "name": "Run-up test",
+     "state": "todo"
+    },
+    {
+     "name": "Report",
+     "state": "todo"
+    }
+   ]
+  },
+  {
+   "id": "N1",
+   "what": "Two AI readers agree a headline is bad",
+   "steps": [
+    {
+     "name": "Register",
+     "state": "done"
+    },
+    {
+     "name": "Run",
+     "state": "todo"
+    },
+    {
+     "name": "Report",
+     "state": "todo"
+    }
+   ]
+  },
+  {
+   "id": "BOOM research",
+   "what": "What finds an 8% mover, and its direction",
+   "steps": [
+    {
+     "name": "Who will move",
+     "state": "done"
+    },
+    {
+     "name": "Which direction",
+     "state": "done"
+    }
+   ]
+  },
+  {
+   "id": "BOOM1",
+   "what": "Night-before short-list of 20 likely 8% movers",
+   "steps": [
+    {
+     "name": "Register",
+     "state": "done"
+    },
+    {
+     "name": "Build",
+     "state": "done"
+    },
+    {
+     "name": "Run",
+     "state": "todo"
+    },
+    {
+     "name": "Report",
+     "state": "todo"
+    }
+   ]
+  },
+  {
+   "id": "BOOM2",
+   "what": "Direction model for the short-list (arms D0-D8)",
+   "steps": [
+    {
+     "name": "Register",
+     "state": "todo"
+    },
+    {
+     "name": "Build",
+     "state": "todo"
+    },
+    {
+     "name": "Run",
+     "state": "todo"
+    },
+    {
+     "name": "Report",
+     "state": "todo"
+    }
+   ]
+  }
  ]
 }
