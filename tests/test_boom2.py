@@ -64,5 +64,13 @@ def test_boom2_run_end_to_end(tmp_path, monkeypatch):
 
 def test_boom2_diagnose(tmp_path, monkeypatch):
     test_boom2_run_end_to_end(tmp_path, monkeypatch)
+    loaded = B2.load_all(tmp_path / "nx1")
+    seen = []
+    real = B2.side_d6
+    monkeypatch.setattr(B2, "side_d6", lambda tr, te: (seen.append(tr.copy()), real(tr, te))[1])
     rep = B2.diagnose(tmp_path / "nx1", tmp_path / "out")
+    for tr in seen:  # D6's inputs reach the model exactly as loaded (no same-session column leaks in)
+        ref = loaded.set_index(["symbol", "nxt"]).loc[list(zip(tr["symbol"], tr["nxt"]))]
+        for c in B2.B.INPUTS:
+            assert np.allclose(tr[c].to_numpy(float), ref[c].to_numpy(float), equal_nan=True), c
     assert rep["picks"] > 5000 and len(rep["deciles"]) == 10 and "always_short_net" in rep
