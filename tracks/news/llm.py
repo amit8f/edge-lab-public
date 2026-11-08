@@ -74,7 +74,7 @@ def gemini(model, text):
 
 def groq(model, text):
     key = os.environ["GROQ_API_KEY"].strip()
-    body = {"model": model, "temperature": 0,
+    body = {"model": model, "temperature": 0, **({"reasoning_effort": "low"} if "gpt-oss" in model else {}),
             "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": text}]}
     j = _post("https://api.groq.com/openai/v1/chat/completions", {"Authorization": f"Bearer {key}"}, body, "groq")
     return j["choices"][0]["message"]["content"]

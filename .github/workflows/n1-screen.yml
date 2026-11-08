@@ -2,8 +2,7 @@
 #   stage=data once; stage=labels once a day until it reports "labels complete" (free-tier daily quotas;
 #   the daily schedule does this when the repository variable N1_LABELS is true); then, after the hand
 #   check is committed as research/results/N1/label_check.md, stage=returns.
-# N1B (research/prereg/N1B.md) replaces N1: the schedule labels N1B's 15,000 headlines after the US close
-# on weekdays and at weekends; dispatch with idea=n1b and stage=returns once the hand check is committed.
+# N1B (research/prereg/N1B.md) replaces N1: the schedule labels N1B's 15,000 headlines daily at 08:15 UTC; dispatch with idea=n1b and stage=returns once the hand check is committed.
 # Results are committed back to the branch that ran it.
 name: n1-screen
 
@@ -19,8 +18,7 @@ on:
         required: true
         default: n1b
   schedule:
-    - cron: "30 21 * * 1-5"  # N1B labels after the US close (live bots done with the Gemini quota)
-    - cron: "0 12 * * 0,6"   # and at weekends
+    - cron: "15 8 * * *"     # N1B labels right after Gemini's daily quota resets (midnight Pacific)
 
 concurrency:
   group: n1-screen

@@ -45,7 +45,7 @@ MODELS_FILE = Path("research/results/N1/models.json")
 IDEAS = {
     "n1": {"name": "N1", "models": MODELS_FILE, "prefix": "labels_", "sample": None, "seed": SEED, "max_req": {}},
     "n1b": {"name": "N1B", "models": Path("research/results/N1B/models.json"), "prefix": "labels_n1b_",
-            "sample": 15_000, "seed": 20261107, "max_req": {"gemini": 100}},
+            "sample": 15_000, "seed": 20261107, "max_req": {"gemini": 20}},
 }
 GAPS = {"gemini": 6.5, "groq": 2.5}                   # seconds between requests (free-tier per-minute limits)
 
