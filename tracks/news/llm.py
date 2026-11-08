@@ -56,6 +56,14 @@ def _post(url, headers, body, provider):
         if r.status_code >= 500:
             time.sleep(15 * (attempt + 1))
             continue
+        if r.status_code >= 400:
+            print(f"[{provider}] HTTP {r.status_code}: {r.text[:300]}")
+            if provider == "groq" and r.status_code == 404:     # say which models this key can use
+                try:
+                    ms = requests.get("https://api.groq.com/openai/v1/models", headers=headers, timeout=30).json()
+                    print("[groq] models served:", sorted(m["id"] for m in ms.get("data", [])))
+                except Exception as e:
+                    print(f"[groq] model list failed: {e}")
         r.raise_for_status()
         return r.json()
     raise RuntimeError(f"{provider}: no answer after retries")
