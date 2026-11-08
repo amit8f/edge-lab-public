@@ -127,3 +127,9 @@ def label_all(items, provider, model, cache_path, min_gap_sec, deadline=None, ca
             for (k, _, _), lab in zip(chunk, labels):
                 f.write(json.dumps({"key": k, "label": lab}) + "\n")
     return True
+
+
+def label_counts(cache_path):
+    """{label: n} over a label cache, printed after each run so a parsing problem (all NEU) shows at once."""
+    from collections import Counter
+    return dict(Counter(load_cache(cache_path).values()))

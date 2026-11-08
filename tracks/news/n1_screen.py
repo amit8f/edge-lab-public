@@ -226,6 +226,7 @@ def stage_labels(cache, out, models, budget_min, cfg=IDEAS["n1"]):
     pre = cfg["prefix"]
     done = all([llm.label_all(items, p, models[p]["model"], cache / f"{pre}{p}.jsonl", GAPS[p], deadline,
                               max_requests=cfg["max_req"].get(p)) for p in ("gemini", "groq")])
+    print("label counts:", {p: llm.label_counts(cache / f"{pre}{p}.jsonl") for p in ("gemini", "groq")})
     if not done:
         print("LABELS INCOMPLETE: rerun on the next day (cached labels are kept)")
         return
