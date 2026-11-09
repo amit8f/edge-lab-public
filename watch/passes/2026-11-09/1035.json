@@ -1,0 +1,284 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f0009035df79e88f21114fcb1d5bb320ae2531e31c91c5defe22bf80c18b984d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "df54621c238fd6cf489c5f37228a24609a280df995cda02c8eb355d32c981ff4",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "TGTX",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "WRBY",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "NRG",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "AUDC",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "DKNG",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "PERI",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "SND",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "ASPN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "PSEC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "COTY",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "db2d16781eed2d7103227e16db32fe60bcffd944f8c379ab573fc46a0bdabaa1",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07965,
+   "news": 0,
+   "pace": 3.856,
+   "price": 55.06,
+   "r20": 0.08046,
+   "r5": -0.02215,
+   "short": true,
+   "src": "iex",
+   "symbol": "TGTX",
+   "z": -3.113
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.19604,
+   "news": 0,
+   "pace": 5.521,
+   "price": 30.475,
+   "r20": 0.00711,
+   "r5": 0.03535,
+   "short": true,
+   "src": "iex",
+   "symbol": "WRBY",
+   "z": 3.054
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.08925,
+   "news": 1,
+   "pace": 3.562,
+   "price": 96.17,
+   "r20": -0.17824,
+   "r5": -0.07637,
+   "short": true,
+   "src": "iex",
+   "symbol": "NRG",
+   "z": 1.847
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.03185,
+   "news": 1,
+   "pace": 4.039,
+   "price": 8.1,
+   "r20": -0.3108,
+   "r5": -0.29533,
+   "short": false,
+   "src": "iex",
+   "symbol": "AUDC",
+   "z": 0.541
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.0027,
+   "news": 1,
+   "pace": 3.298,
+   "price": 18.46,
+   "r20": -0.05465,
+   "r5": -0.11478,
+   "short": true,
+   "src": "iex",
+   "symbol": "DKNG",
+   "z": -0.044
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.00088,
+   "news": 1,
+   "pace": 5.272,
+   "price": 11.4,
+   "r20": 0.28555,
+   "r5": 0.3092,
+   "short": true,
+   "src": "iex",
+   "symbol": "PERI",
+   "z": 0.014
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11034,
+   "news": 0,
+   "pace": 4.227,
+   "price": 3.975,
+   "r20": -0.32197,
+   "r5": -0.26033,
+   "short": true,
+   "src": "iex",
+   "symbol": "SND",
+   "z": 2.456
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.09572,
+   "news": 0,
+   "pace": 3.015,
+   "price": 5.38,
+   "r20": -0.13097,
+   "r5": -0.02772,
+   "short": true,
+   "src": "iex",
+   "symbol": "ASPN",
+   "z": 2.131
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.04965,
+   "news": 0,
+   "pace": 4.132,
+   "price": 1.48,
+   "r20": -0.16121,
+   "r5": -0.12422,
+   "short": true,
+   "src": "iex",
+   "symbol": "PSEC",
+   "z": 1.453
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.05679,
+   "news": 1,
+   "pace": 1.812,
+   "price": 4.28,
+   "r20": 0.42105,
+   "r5": 0.19118,
+   "short": true,
+   "src": "iex",
+   "symbol": "COTY",
+   "z": 1.394
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5057.7713,
+  "PICK-MAIN-coin": 5177.1156,
+  "PICK-PENNY": 468.6144,
+  "PICK-PENNY-coin": 507.3988
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 31,
+  "news": 17,
+  "volume": 216
+ },
+ "flagged": 233,
+ "headline_counts": {
+  "AUDC": 1,
+  "COTY": 1,
+  "DKNG": 3,
+  "NRG": 3,
+  "PERI": 1,
+  "TGTX": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "e00dc25284c1e6ecba9978486faa6a31bf007b707ade8fff6f5b963dd752df72",
+ "price_sources": {
+  "delayed_sip": 217,
+  "iex": 3180
+ },
+ "priced": 3397,
+ "risk": [],
+ "slot": "2026-11-09T10:35",
+ "t": "2026-11-09T15:35:20.879810+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T15:35:31.057638Z"
+}
