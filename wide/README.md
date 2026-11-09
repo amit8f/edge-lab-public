@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 10:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8803.82 | -11.96% | 156 | 46 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C's picks | $9763.40 | -2.37% | 155 | 77 | long ABNB, long IONQ, long MRNA, long RKLB, short VST |
-| C's prompt on Groq (K7) | $6991.11 | -30.09% | 353 | 80 | long ABNB, long AMD, long COHR, short TEAM, long UAL |
-| Coin flip on C-groq's picks | $8694.29 | -13.06% | 353 | 169 | short ABNB, short AMD, long COHR, short TEAM, short UAL |
-| C-groq's answers, acted on once a day (K8) | $9300.05 | -7.00% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10550.81 | +5.51% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9597.27 | -4.03% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10725.66 | +7.26% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9752.09 | -2.48% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8879.17 | -11.21% | 156 | 46 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C's picks | $9827.12 | -1.73% | 155 | 77 | long ABNB, long IONQ, long MRNA, long RKLB, short VST |
+| C's prompt on Groq (K7) | $7027.54 | -29.72% | 353 | 80 | long ABNB, long AMD, long COHR, short TEAM, long UAL |
+| Coin flip on C-groq's picks | $8713.80 | -12.86% | 353 | 169 | short ABNB, short AMD, long COHR, short TEAM, short UAL |
+| C-groq's answers, acted on once a day (K8) | $9317.17 | -6.83% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10632.28 | +6.32% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9677.09 | -3.23% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10757.23 | +7.57% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9759.12 | -2.41% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-09 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 09:57 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | none | Maintaining all 5 existing long positions due to continued strong positive momentum and profitability. No new positions are opened as the portfolio is at its maximum capacity. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 10:1
 | 2026-11-05 13:57 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show strong bearish momentum amidst a broader tech/AI sector sell-off. |
 | 2026-11-05 13:47 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as the AI/tech sector continues its significant downturn, with all current holdings showing strong bearish momentum and negative news catalysts. |
 | 2026-11-05 13:37 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all existing short positions as the market continues to show strong bearish momentum, particularly in the AI/tech sector, with many stocks experiencing significant daily and weekly declines supported by negative news and technical breakdowns. |
-| 2026-11-05 13:27 | no answer, nothing changed | none | unreadable answer |
