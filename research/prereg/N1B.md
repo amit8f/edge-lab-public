@@ -34,3 +34,12 @@ About a fifth of N1's data, so fewer trades and wider error bars: likely 400-900
 literature puts most of the LLM edge in the first minutes after the news, and our entry is the next
 open at least 30 minutes later (arXiv 2611.03985 finds the AI news signal near zero after the open).
 Pass: 0.15. Most likely: a small positive mean that doesn't reach t 3 and doesn't beat the dictionary.
+
+## Amendment 1 (2026-11-08, before any Groq label of N1B existed)
+
+Groq's API returns 404 (`model_not_found`) for `llama-3.3-70b-versatile`; its model list now holds gpt-oss-120b,
+gpt-oss-20b, gpt-oss-safeguard-20b and qwen3.8-27b. Amit chose `openai/gpt-oss-120b` (decision card, 2026-11-08).
+Its cutoff (June 2024) is earlier than Gemini's, so the screen window is unchanged. Everything else stands. The
+Gemini labels made so far (1,150) used the unchanged model and prompt and are kept. Labelling now runs daily at
+08:15 UTC, right after Gemini's quota resets, with at most 20 Gemini requests (1,000 labels) a run: after the US close
+the live bots leave about 150 labels of quota, which would take 100 days. Count unchanged (no result, no Groq label).

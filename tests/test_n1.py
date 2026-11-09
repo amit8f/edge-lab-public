@@ -108,6 +108,6 @@ def test_n1b_config_and_models_file():
     from tracks.news import n1_screen as S
     cfg = S.IDEAS["n1b"]
     m = json.loads(cfg["models"].read_text())["models"]
-    assert m["groq"]["model"] == "llama-3.3-70b-versatile" and m["gemini"]["model"] == "gemini-2.5-flash"
+    assert m["groq"]["model"] == "openai/gpt-oss-120b" and m["gemini"]["model"] == "gemini-2.5-flash"
     assert S.window_start(m) == S.window_start(json.loads(S.MODELS_FILE.read_text())["models"])
     assert cfg["sample"] == 15_000 and cfg["prefix"] != S.IDEAS["n1"]["prefix"]
