@@ -1,0 +1,77 @@
+# PICK-MAIN and PICK-PENNY: a few very confident same-day longs
+
+Registered 2026-11-09, before any data for it is downloaded or any number computed. Source: Amit's grill-me answers,
+2026-11-09 17:27-18:27 UTC (thread "Full rethink and deep research"; Q1-Q19, every recommendation accepted or changed
+by him as written here). Two ideas: PICK-MAIN (main track) and PICK-PENNY (penny track), with separate data,
+models and settings. Phase-2 count 136 -> 138 (phase 1 + phase 2 = 153).
+
+## Question
+
+Can a model that watches every liquid stock through the day, and buys only when it is very sure, pick longs that
+end the day +3% or better more often than random buys at the same minutes, and make money after costs?
+
+## Universe (point in time, rebuilt each day from the prior session)
+
+- PICK-MAIN: prior close >= $5 and median dollar volume over the prior 20 sessions >= $5M (about 2,500 names).
+- PICK-PENNY: prior close $1 to $5 and median dollar volume over the prior 20 sessions >= $1M (about 800 names).
+- Delisted stocks kept. A >15-calendar-day gap ends a series. Zero-volume bars dropped.
+
+## Data
+
+5-minute SIP bars (`feed=sip`): `adjustment=raw` for prices, fills, dollar volume; `adjustment=all` for return
+inputs. News: the Benzinga headlines and the scores NX3 already computes (time-stamped, first tradable after
+publication). Daily bars and SPY 5-minute bars for market inputs. Only bars complete at the decision time are used.
+
+## Trading rule
+
+- Decision times: every 5 minutes from 9:35 to 14:00 ET. A stock clearing the bar is bought at the next bar's open
+  (one buy per stock per day). Long only.
+- Exit: take profit +8% (main) or +15% (penny) above the fill; else the stop; else the 15:55 bar's close.
+- Stops by tier (Amit Q10, Q17): each stock's tier comes from its usual 30-minute swing over the prior 20 sessions
+  (main: calm / normal / jumpy terciles; penny: one tier). Candidate stop widths: 1x, 1.5x, 2x the 30-minute swing
+  (penny 1.5x, 2x, 3x), plus any rule found in the published research on stops before the 2019-2023 fit, added to
+  the candidates and listed in an amendment before any result. The width per tier is chosen on 2019-2023 only.
+- Size (Amit Q7, Q15): 10% to 40% of a $5,000 ledger book, rising linearly with confidence from the bar to the
+  top 1% of training scores above the bar; highest confidence first until the book is fully used. No fixed
+  number of picks. This overrides `config/risk.yaml` `max_name` (0.20) and `risk_per_trade` for this ledger
+  book only; no orders, and real money needs its own size decision under PROTOCOL rule 20.
+- Costs: `config/risk.yaml` round trip, main 0.2%, penny 2%.
+
+## Model
+
+- Target: does the trade (rule above) end at +3% or better after costs (1/0).
+- Three versions per idea (Amit Q2, Q14): NEWS (news inputs since the open and the prior close, plus the stock's
+  price level and time of day), CHART (price and volume shape over 5-minute and daily bars), COMBINED (both, plus
+  the market inputs). COMBINED is the primary test; NEWS and CHART show where any edge comes from.
+- Learners tried in each version (Amit Q3): XGBoost, CatBoost, LightGBM, Extra Trees, logistic regression, KRR.
+  Chosen by validation log-loss.
+- Bad days (Amit Q4): a market score from SPY's gap, its move since the open, the last 5 sessions and the prior
+  20-day volatility. On days in the worst fifth of training days by that score, the bar is raised; never a skip.
+- The bar: from candidates {top 0.10%, 0.05%, 0.02%} of training decision scores (normal days), and for bad
+  days {same, twice as strict, four times as strict}; the pair with the best validation share of +3% trades with
+  at least 100 validation trades.
+
+## Periods
+
+Train 2019-01 to 2022-12, validate 2023 (learner, stop width, bar). Then refit on 2019-2023 and test once on
+2024-01-02 to 2025-09-30 (5-session purge). Label dates from 2025-10-01 stay untouched (phase-2 holdout).
+
+## Primary test (per idea, COMBINED version, test period)
+
+All three must hold, with at least 30 test trades (fewer: "too few", not a pass):
+1. The share of trades ending +3% or better beats random buys (one random universe stock bought at the same
+   minute with the same exit rules for each pick): day-clustered bootstrap, 95% interval of the difference > 0.
+2. Mean net per trade after costs > 0, Newey-West t >= 2 on daily book returns.
+3. Mean net minus the random buys > 0, Newey-West t >= 2.
+Pass: a 60-day forward ledger book per idea (Amit Q8), then PROTOCOL rule 20 for any real money.
+
+## Reported, no rule
+
+NEWS and CHART versions; share of days with a pick; the share of trades reaching +3%, +8%/+15%, and the stop;
+per year; bad days vs other days; per stop tier; the book's daily % (Amit's 3% goal is reported, not a pass bar).
+
+## Prediction (written first)
+
+Most days have no pick. The share ending +3% or better is well above random (picks are jumpy stocks), but after
+costs the mean net is near zero for main and negative for penny. Probability PICK-MAIN passes: about 0.15;
+PICK-PENNY: about 0.05.
