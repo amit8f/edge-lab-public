@@ -224,3 +224,22 @@ def test_history_sim_sizes_by_confidence_and_fits_the_book(tmp_path):
     assert s["trades"] == 3 and s["days"] == 2 and len(s["curve"]) == 2
     assert abs(s["end"] - (5000 + 5000 * (0.05 * 0.02 - 0.10 * 0.01 + 0.075 * 0.01))) < 1e-6
     assert B.history_sim(tmp_path, "NXK2-CAT") is None
+
+
+def test_krr_export_matches_the_pipeline():
+    from sklearn.impute import SimpleImputer
+    from sklearn.kernel_approximation import Nystroem
+    from sklearn.linear_model import Ridge
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
+    from dashboard import export_krr as K
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(300, 5))
+    X[rng.random(X.shape) < 0.1] = np.nan
+    y = np.nan_to_num(X[:, 0]) + rng.normal(scale=0.1, size=300)
+    p = make_pipeline(SimpleImputer(strategy="median", add_indicator=True), StandardScaler(),
+                      make_pipeline(Nystroem(gamma=0.2, n_components=40, random_state=0), Ridge(alpha=1.0))).fit(X, y)
+    m = K.compact(p, ["a", "b", "c", "d", "e"], 0.1)
+    got = np.array([K.score(m, list(x))[0] for x in X[:50]])
+    assert np.allclose(got, p.predict(X[:50]), atol=1e-5)
+    assert len(m["w"]) == 40 and len(m["L"]) == 40
