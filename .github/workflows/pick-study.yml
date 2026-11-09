@@ -1,0 +1,78 @@
+# PICK-MAIN and PICK-PENNY (research/prereg/PICK.md). Manual runs only, one at a time (own cache cache/w1/pick,
+# beside W1's daily cache, which it only reads). stage=rows builds the sampled decision rows from 5-minute SIP
+# bars month by month (2018-12 warm-up .. 2025-09); rerun until the log says "done".
+name: pick-study
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "rows"
+        required: true
+        default: rows
+
+permissions: {}
+
+concurrency:
+  group: pick-study
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Check secrets are present
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+        run: |
+          [[ -n "$ALPACA_API_KEY_ID" ]] || { echo "::error::secret ALPACA_API_KEY_ID is missing"; exit 1; }
+
+      - name: Restore W1's daily cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/w1
+          key: w1-v1-none
+          restore-keys: w1-v1-
+
+      - name: Restore PICK's cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/w1/pick
+          key: pick-v1-${{ github.run_id }}
+          restore-keys: pick-v1-
+
+      - name: Run the stage
+        env:
+          STAGE: ${{ github.event.inputs.stage }}
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: |
+          [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick_data --stage "$STAGE" --cache cache/w1 --budget-min 320
+          ls cache/w1/pick/rows | wc -l
+
+      - name: Save PICK's cache (also after a failure, so a rerun resumes)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/w1/pick
+          key: pick-v1-${{ github.run_id }}
