@@ -22,11 +22,14 @@ JOBS = {"listen.yml": (dtime(3, 55), dtime(19, 30)),
         "chr-live.yml": (dtime(9, 15), dtime(15, 30)),
         "day1-live.yml": (dtime(9, 15), dtime(15, 30)),
         "watch.yml": (dtime(9, 20), dtime(15, 30)),
-        "scouts.yml": (dtime(9, 20), dtime(15, 30))}
+        "scouts.yml": (dtime(9, 20), dtime(15, 30)),
+        "boom-short.yml": (dtime(8, 40), dtime(9, 25))}     # decides by 9:28 ET; none of its crons fired on 2026-11-09
 # workflow -> [(first ET time, last ET time, minutes between starts)]: short jobs started again and again.
 # The dashboard's own */10 cron never fired on its first day (2026-10-29), so the kick starts it instead: in
 # market hours until the NX3 settle has landed, and early each morning (weekends too) for the nightly logs.
-EVERY = {"dashboard.yml": [(dtime(9, 25), dtime(16, 45), 10), (dtime(5, 0), dtime(5, 30), 60)]}
+EVERY = {"dashboard.yml": [(dtime(9, 25), dtime(16, 45), 10), (dtime(5, 0), dtime(5, 30), 60)],
+         "boom-short.yml": [(dtime(16, 45), dtime(18, 0), 300)],      # the evening settle, after the close
+         "n1-screen.yml": [(dtime(3, 15), dtime(3, 45), 300)]}        # N1B labels, every day (its cron skipped 2026-11-09)
 
 
 def holidays(path=HOLIDAYS):
