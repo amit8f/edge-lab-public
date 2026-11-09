@@ -1,0 +1,642 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "9cede6ea520078eca8fd3d6a8274666853b573a2b805451a39f761c336dec350",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "455a3f3c35c2dab368f7e69619329595e8b1a10ff4b05584dd056c15ae2ec8a4",
+   "views": [
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "CRTO",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "VRTS",
+     "tone": 1
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "HHH",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AURA",
+     "tone": 1
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "DSGR",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "GLP",
+     "tone": 0
+    },
+    {
+     "confidence": 50,
+     "event": "none",
+     "symbol": "KXIN",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "STLN",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "ACDC",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "VFF",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "bc2df623ed64b0f829e0117943ddc0a1efc8a08f3dac5b4dee2e2dc70ce69931",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "CRTO"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, strong price move, bullish tone",
+     "stop_pct": 12.0,
+     "symbol": "VRTS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "HHH"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, price surge, bullish tone",
+     "stop_pct": 12.0,
+     "symbol": "AURA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "DSGR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "GLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "confidence below threshold",
+     "stop_pct": 0.0,
+     "symbol": "KXIN"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "high momentum, volume surge, positive analyst view",
+     "stop_pct": 20.0,
+     "symbol": "STLN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative analyst tone despite price rise, shortable",
+     "stop_pct": 20.0,
+     "symbol": "ACDC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, volume spike, bullish tone",
+     "stop_pct": 20.0,
+     "symbol": "VFF"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "b3238455bdfaf0a7082c30a1b3cb4dee781557e311003189fd85ca2b6ea0c76e"
+  },
+  "reviewer": {
+   "answer_sha256": "30c4258576432bb4499ea4bafa7280db24be7b0ce11b60be18e1724aea9c296c",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "6660ab3c185dfb27803b863378b2db510464714b12787d32e8ff3966bc319ec5",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and earnings catalyst support the long proposal.",
+     "symbol": "VRTS"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone and solid upward movement align with the proposal.",
+     "symbol": "AURA"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume pace and positive tone offer a potential bounce despite recent losses.",
+     "symbol": "STLN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative news tone and downtrend support the short proposal.",
+     "symbol": "ACDC"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume pace and positive earnings tone favor continuation.",
+     "symbol": "VFF"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.07588,
+   "news": 0,
+   "pace": 3.473,
+   "price": 16.59,
+   "r20": -0.01971,
+   "r5": 0.05256,
+   "short": false,
+   "src": "iex",
+   "symbol": "CRTO",
+   "z": 3.075
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09301,
+   "news": 0,
+   "pace": 1.028,
+   "price": 139.195,
+   "r20": -0.0101,
+   "r5": 0.07714,
+   "short": true,
+   "src": "iex",
+   "symbol": "VRTS",
+   "z": 3.195
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08285,
+   "news": 0,
+   "pace": 1.212,
+   "price": 84.17,
+   "r20": 0.05425,
+   "r5": 0.01968,
+   "short": true,
+   "src": "iex",
+   "symbol": "HHH",
+   "z": 3.16
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.1029,
+   "news": 0,
+   "pace": 0.757,
+   "price": 7.235,
+   "r20": 0.00306,
+   "r5": 0.0684,
+   "short": true,
+   "src": "iex",
+   "symbol": "AURA",
+   "z": 3.121
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.00258,
+   "news": 0,
+   "pace": 1.593,
+   "price": 35.02,
+   "r20": -0.00285,
+   "r5": -0.00143,
+   "short": true,
+   "src": "iex",
+   "symbol": "DSGR",
+   "z": 3.096
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07221,
+   "news": 0,
+   "pace": 3.791,
+   "price": 41.76,
+   "r20": -0.08823,
+   "r5": -0.05106,
+   "short": false,
+   "src": "iex",
+   "symbol": "GLP",
+   "z": -2.827
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06641,
+   "news": 0,
+   "pace": 13.847,
+   "price": 2.73,
+   "r20": 0.8963,
+   "r5": 0.29293,
+   "short": false,
+   "src": "iex",
+   "symbol": "KXIN",
+   "z": 1.103
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.14641,
+   "news": 0,
+   "pace": 12.403,
+   "price": 4.15,
+   "r20": -0.454,
+   "r5": -0.44564,
+   "short": true,
+   "src": "iex",
+   "symbol": "STLN",
+   "z": 0.949
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.09983,
+   "news": 1,
+   "pace": 1.478,
+   "price": 3.305,
+   "r20": -0.35167,
+   "r5": -0.38422,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACDC",
+   "z": 0.936
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.03299,
+   "news": 0,
+   "pace": 7.865,
+   "price": 2.975,
+   "r20": 0.07463,
+   "r5": 0.152,
+   "short": false,
+   "src": "iex",
+   "symbol": "VFF",
+   "z": 0.914
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5048.0813,
+  "PICK-MAIN-coin": 5165.1206,
+  "PICK-PENNY": 469.2455,
+  "PICK-PENNY-coin": 505.4667
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2749,
+   "price": 4.15,
+   "qty": 5,
+   "side": 1,
+   "stop": 3.32,
+   "symbol": "STLN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2763,
+   "price": 4.15,
+   "qty": 5,
+   "side": -1,
+   "stop": 4.98,
+   "symbol": "STLN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3083,
+   "price": 3.305,
+   "qty": 7,
+   "side": -1,
+   "stop": 3.966,
+   "symbol": "ACDC"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3083,
+   "price": 3.305,
+   "qty": 7,
+   "side": -1,
+   "stop": 3.966,
+   "symbol": "ACDC"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2759,
+   "price": 2.975,
+   "qty": 7,
+   "side": 1,
+   "stop": 2.38,
+   "symbol": "VFF"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2759,
+   "price": 2.975,
+   "qty": 7,
+   "side": 1,
+   "stop": 2.38,
+   "symbol": "VFF"
+  }
+ ],
+ "flag_counts": {
+  "move": 40,
+  "news": 6,
+  "volume": 130
+ },
+ "flagged": 150,
+ "headline_counts": {
+  "ACDC": 2,
+  "AURA": 2,
+  "STLN": 1,
+  "VFF": 3,
+  "VRTS": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "8a80d3aabbdf93d51a84f25f1504afa5c96e1a77ab9f14b3f38e9e0bedffba89",
+ "price_sources": {
+  "delayed_sip": 171,
+  "iex": 3228
+ },
+ "priced": 3399,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "VRTS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AURA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 5,
+   "skip": null,
+   "symbol": "STLN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 7,
+   "skip": null,
+   "symbol": "ACDC"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 7,
+   "skip": null,
+   "symbol": "VFF"
+  }
+ ],
+ "slot": "2026-11-09T11:15",
+ "t": "2026-11-09T16:15:20.597742+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T16:15:31.423746Z"
+}
