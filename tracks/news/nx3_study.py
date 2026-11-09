@@ -171,7 +171,23 @@ class Model:
         return (np.abs(e) >= self.cut) & (np.abs(e) > 0)
 
 
-def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None, only=None):
+def green(f):
+    """True where the market is up when the event is traded: SPY at the entry time above the prior close
+    (spy_open); where that is missing, the prior session's SPY return (spy_r1). Both known before the entry."""
+    o = f["spy_open"].to_numpy(float)
+    return np.where(np.isfinite(o), o, f["spy_r1"].to_numpy(float)) > 0
+
+
+def against_day(lo, sh, bar, cut):
+    """Shorts on a green day and longs on a red day need confidence |e|/cut >= bar; the other side keeps its bar."""
+    if len(sh):
+        sh = sh[~green(sh) | (sh["e"].abs() >= bar * cut)]
+    if len(lo):
+        lo = lo[green(lo) | (lo["e"].abs() >= bar * cut)]
+    return lo, sh
+
+
+def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None, only=None, against=1.0):
     """Fired events in time order: the first `cap` with e > 0 go long, the first `cap` with e < 0 short
     (cap None: all of them, NX3-ALL). Control: as many of the day's real events at random, same sides.
     hi: NX3-HI bar (research/prereg/NX3HI.md): only confidence |e|/cut >= hi takes a slot; a pair (long bar,
@@ -183,6 +199,8 @@ def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None, only=None):
         lo = lo[lo[col].abs() >= hl * cut]
     if hs > 1.0:
         sh = sh[sh[col].abs() >= hs * cut]
+    if against > 1.0:      # DAYFILTER (research/prereg/DAYFILTER.md): the bar rises against the market's colour
+        lo, sh = against_day(lo, sh, against, cut)
     if only == 1:
         sh = sh.iloc[0:0]
     if only == -1:
@@ -222,7 +240,7 @@ def importance(model):
     return {g: float(sum(by.get(k, 0.0) for k in ks)) for g, ks in GROUPS.items()}
 
 
-def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None):
+def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None, against=1.0):
     real = te[te["kind"] == "real"]
     e = model.effect(real[INPUTS].to_numpy(float))
     real = real.assign(e=e, fired=model.fires(e))
@@ -231,7 +249,7 @@ def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None):
     rng = np.random.default_rng(seed)
     rows, pk = [], []
     for d, day in real.groupby("d", sort=True):
-        p, c = picks(day, rng, cap=cap, hi=hi, cut=model.cut, only=only)
+        p, c = picks(day, rng, cap=cap, hi=hi, cut=model.cut, only=only, against=against)
         if p.empty or c.empty:
             continue
         s, _ = picks(shuffled(day, model, rng), rng, cap=cap, hi=hi, cut=model.cut, only=only)
@@ -242,6 +260,7 @@ def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None):
             w = conf_sizes(np.abs(p["e"].to_numpy(float)) / model.cut)
             row["sized_pick_minus_control"] = float(w @ (N.net(p).to_numpy(float) - N.net(c).to_numpy(float)))
             row["invested"] = float(w.sum())
+            row["sized_net"] = float(w @ N.net(p).to_numpy(float))
         rows.append(row)
         pk.append(p.assign(vpct=day["vol20"].rank(pct=True).loc[p.index]))
     return pd.DataFrame(rows), (pd.concat(pk) if pk else pd.DataFrame(columns=["vpct", "mins_open"])), real, pe
@@ -610,6 +629,50 @@ def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0), uncapped=False):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     (out / ("NX3ALLHI_walkforward.json" if uncapped else "NX3HI_walkforward.json")).write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
+DAYFILTER_BARS = (1.0, 1.5, 2.0)      # 1.0 is NX3-ALL itself; 1.5 is registered, 2.0 exploratory
+
+
+def stage_dayfilter(cache, out):
+    """DAYFILTER (research/prereg/DAYFILTER.md): NX3-ALL's walk-forward (every fired event, sized by confidence) with
+    the confidence bar raised on trades against the market's colour at entry. Same models and seeds as NX3-ALL."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    days = {b: [] for b in DAYFILTER_BARS}
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut_d]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        model = Model(tr)
+        for b in DAYFILTER_BARS:
+            n, pk, _, _ = evaluate(te, model, SEED + yr, None, against=b)
+            if len(n):
+                days[b].append(n.assign(year=yr))
+    base = pd.concat(days[1.0], ignore_index=True)
+    rep = {"rule": "bar 1.5 against the day: sized pick-minus-control NW t >= 1.5 AND paired gain over NX3-ALL "
+                   "(bar 1.0) with NW t >= 1.5 for a shadow book", "bars": {}}
+    for b in DAYFILTER_BARS:
+        a = pd.concat(days[b], ignore_index=True)
+        row = {"sized_pick_minus_control": tstat(a["sized_pick_minus_control"].to_numpy(float)),
+               "own_net_per_day": tstat(a["sized_net"].to_numpy(float)), "days": int(len(a)),
+               "per_year": {int(y): tstat(g["sized_pick_minus_control"].to_numpy(float)) for y, g in a.groupby("year")}}
+        if b != 1.0:
+            m = a.merge(base, on="d", suffixes=("", "_all"))
+            row["gain_over_nx3all"] = tstat((m["sized_pick_minus_control"] - m["sized_pick_minus_control_all"]).to_numpy(float))
+        rep["bars"][str(b)] = row
+    r = rep["bars"]["1.5"]
+    rep["verdict"] = ("passed" if r["sized_pick_minus_control"]["mean"] > 0 and r["sized_pick_minus_control"]["t_nw"] >= ALL_PASS_T
+                      and r["gain_over_nx3all"]["mean"] > 0 and r["gain_over_nx3all"]["t_nw"] >= ALL_PASS_T else "failed")
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "DAYFILTER_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
     print(json.dumps(rep, indent=1, default=float))
 
 
@@ -1246,7 +1309,7 @@ def stage_shortall(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze", "dayfilter"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1254,6 +1317,9 @@ def main():
     deadline = time.monotonic() + a.budget_min * 60
     if a.stage == "extremes":
         stage_extremes(a.cache, a.out)
+        return
+    if a.stage == "dayfilter":
+        stage_dayfilter(a.cache, a.out)
         return
     if a.stage == "uncapped":
         stage_uncapped(a.cache, a.out)
