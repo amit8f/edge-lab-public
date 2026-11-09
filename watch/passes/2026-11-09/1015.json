@@ -1,0 +1,289 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "5c8f3b5b641f2fc776fc17d80e843e7fc02212c92354cd768fa02b0885b97017",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "1bc16579abb338a0fabcd53559e911275963af7a9638cf3e14247b06b3ec4677",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "product",
+     "symbol": "JANX",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "FERG",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "regulatory",
+     "symbol": "IBRX",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TLS",
+     "tone": 2
+    },
+    {
+     "confidence": 60,
+     "event": "earnings",
+     "symbol": "LFMD",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "deal",
+     "symbol": "NVDA",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "KSPI",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "RGTI",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GTN",
+     "tone": 0
+    },
+    {
+     "confidence": 60,
+     "event": "earnings",
+     "symbol": "UAMY",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "886a98ee9bab2bfe2e1413cd53a73b567d654c3d449fe4aeeed7df4f0b4cb4fd",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.23426,
+   "news": 0,
+   "pace": 12.688,
+   "price": 13.5,
+   "r20": -0.04133,
+   "r5": 0.00916,
+   "short": true,
+   "src": "iex",
+   "symbol": "JANX",
+   "z": -6.139
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.11626,
+   "news": 0,
+   "pace": 4.872,
+   "price": 260.87,
+   "r20": 0.06208,
+   "r5": -0.02086,
+   "short": true,
+   "src": "iex",
+   "symbol": "FERG",
+   "z": 5.709
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.21251,
+   "news": 0,
+   "pace": 17.694,
+   "price": 6.8,
+   "r20": -0.1784,
+   "r5": 0.04162,
+   "short": true,
+   "src": "iex",
+   "symbol": "IBRX",
+   "z": -4.202
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.21162,
+   "news": 0,
+   "pace": 9.672,
+   "price": 5.84,
+   "r20": 0.04104,
+   "r5": -0.1107,
+   "short": true,
+   "src": "iex",
+   "symbol": "TLS",
+   "z": 4.078
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14346,
+   "news": 0,
+   "pace": 13.503,
+   "price": 2.03,
+   "r20": -0.09886,
+   "r5": 0.03493,
+   "short": true,
+   "src": "iex",
+   "symbol": "LFMD",
+   "z": -3.399
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.04418,
+   "news": 1,
+   "pace": 18.91,
+   "price": 178.395,
+   "r20": -0.18597,
+   "r5": -0.08796,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NVDA",
+   "z": -1.501
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.01811,
+   "news": 1,
+   "pace": 4.726,
+   "price": 90.02,
+   "r20": -0.01409,
+   "r5": 0.00449,
+   "short": true,
+   "src": "iex",
+   "symbol": "KSPI",
+   "z": -0.785
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.04681,
+   "news": 1,
+   "pace": 3.493,
+   "price": 12.3,
+   "r20": -0.16251,
+   "r5": 0.04444,
+   "short": true,
+   "src": "iex",
+   "symbol": "RGTI",
+   "z": 0.664
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.08232,
+   "news": 0,
+   "pace": 8.651,
+   "price": 5.325,
+   "r20": 0.0837,
+   "r5": 0.09577,
+   "short": true,
+   "src": "iex",
+   "symbol": "GTN",
+   "z": 2.785
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.17553,
+   "news": 0,
+   "pace": 5.09,
+   "price": 3.315,
+   "r20": -0.2337,
+   "r5": -0.05369,
+   "short": false,
+   "src": "iex",
+   "symbol": "UAMY",
+   "z": 2.24
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5060.9563,
+  "PICK-MAIN-coin": 5160.7506,
+  "PICK-PENNY": 469.8937,
+  "PICK-PENNY-coin": 507.7645
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 31,
+  "news": 19,
+  "volume": 316
+ },
+ "flagged": 341,
+ "headline_counts": {
+  "FERG": 3,
+  "IBRX": 3,
+  "JANX": 2,
+  "KSPI": 3,
+  "LFMD": 1,
+  "NVDA": 3,
+  "RGTI": 2,
+  "TLS": 3,
+  "UAMY": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "a4ddd8486bc25a3fa9ec8c0326685926d923eca2ace058ffaab9e0de98b61795",
+ "price_sources": {
+  "delayed_sip": 283,
+  "iex": 3113
+ },
+ "priced": 3396,
+ "risk": [],
+ "slot": "2026-11-09T10:15",
+ "t": "2026-11-09T15:15:20.599415+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T15:15:36.870580Z"
+}
