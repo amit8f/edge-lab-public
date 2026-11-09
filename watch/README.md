@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-09T11:35 ET: 155 flagged of 3400, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-09T11:40 ET: 153 flagged of 3400, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $5,048.83 | +0.98% | 23 | 10 | short ADTN, long AXSM, long BBSI, long BKNG, short CCOI, long CRCT, long DMLP, short DRVN, long FLYW, long III, long KRYS, long NWL, long NXT, long OPRT, short PTLO, long SENEA, long SRAD, long TATT, short TG, short TRMB, long YOU, long ZBH | ok |
-| PICK-MAIN-coin | $5,153.80 | +3.08% | 26 | 9 | short BBSI, short BKNG, long CRCT, long DMLP, long DRVN, short FLYW, long III, long KRYS, long NWL, long NXT, short OPRT, long PTLO, long SENEA, short SRAD, long TATT, long TG, long TRMB, short YOU, short ZBH | ok |
-| PICK-PENNY | $469.82 | -6.04% | 38 | 12 | short ACDC, long AMTX, long ARKO, short CERS, short CYH, long DDD, long DNUT, short GOGO, long GRAB, short KOS, long LAES, short MPT, long NKTX, long SERV, long SHMD, long SLDP, long STLN, short TBLA, short TE, short TLS, short UNCY, long VFF, short ZURA | ok |
-| PICK-PENNY-coin | $501.57 | +0.31% | 33 | 9 | short ACDC, short AMTX, short ARKO, long CERS, long CYH, short DDD, short GOGO, long GRAB, short HLLY, short KOS, long LAES, long LENZ, short MPT, short NKTX, short NXH, long SERV, long SHMD, short SLDP, long SSP, short STIM, short STLN, short TBLA, short TE, long TLS, long UNCY, long VFF, short ZIP, long ZURA | ok |
+| PICK-MAIN | $5,047.86 | +0.96% | 23 | 10 | short ADTN, long AXSM, long BBSI, long BKNG, short CCOI, long CRCT, long DMLP, short DRVN, long FLYW, long III, long KRYS, long NWL, long NXT, long OPRT, short PTLO, long SENEA, long SRAD, long TATT, short TG, short TRMB, long YOU, long ZBH | ok |
+| PICK-MAIN-coin | $5,153.55 | +3.07% | 26 | 9 | short BBSI, short BKNG, long CRCT, long DMLP, long DRVN, short FLYW, long III, long KRYS, long NWL, long NXT, short OPRT, long PTLO, long SENEA, short SRAD, long TATT, long TG, long TRMB, short YOU, short ZBH | ok |
+| PICK-PENNY | $468.36 | -6.33% | 38 | 12 | short ACDC, long AMTX, long ARKO, short CERS, short CYH, long DDD, long DNUT, short GOGO, long GRAB, short KOS, long LAES, short MPT, long NKTX, long SERV, long SHMD, long SLDP, long STLN, short TBLA, short TE, short TLS, short UNCY, long VFF, short ZURA | ok |
+| PICK-PENNY-coin | $502.98 | +0.60% | 33 | 9 | short ACDC, short AMTX, short ARKO, long CERS, long CYH, short DDD, short GOGO, long GRAB, short HLLY, short KOS, long LAES, long LENZ, short MPT, short NKTX, short NXH, long SERV, long SHMD, short SLDP, long SSP, short STIM, short STLN, short TBLA, short TE, long TLS, long UNCY, long VFF, short ZIP, long ZURA | ok |
