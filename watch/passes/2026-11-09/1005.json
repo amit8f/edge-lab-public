@@ -1,0 +1,283 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "e3b91ba9c6ba59305fad93f44ce62380a6f78976c0444ea09e627938001c2eae",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "428540c032499cb6622e638bdcf3f1acb046aaf694df9dd856e85b76ac60b0db",
+   "views": [
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "TIC",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "AVGO",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "MRVL",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MU",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "MSTR",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "UTI",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "CABA",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SND",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GCTS",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CLOV",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "6bbc9a0f447189f3c60a9da5e4e383e7a357e85b2deb454a28aea263fe0f69aa",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.12729,
+   "news": 0,
+   "pace": 3.233,
+   "price": 11.69,
+   "r20": 0.16386,
+   "r5": 0.03184,
+   "short": true,
+   "src": "iex",
+   "symbol": "TIC",
+   "z": 3.12
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.06391,
+   "news": 1,
+   "pace": 5.044,
+   "price": 312.46,
+   "r20": -0.18767,
+   "r5": -0.09933,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "AVGO",
+   "z": 1.749
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.0704,
+   "news": 1,
+   "pace": 4.436,
+   "price": 151.14,
+   "r20": -0.48707,
+   "r5": -0.28106,
+   "short": true,
+   "src": "iex",
+   "symbol": "MRVL",
+   "z": 0.959
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.03846,
+   "news": 1,
+   "pace": 3.792,
+   "price": 716.54,
+   "r20": -0.32934,
+   "r5": -0.22011,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "MU",
+   "z": 0.642
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.02719,
+   "news": 1,
+   "pace": 3.569,
+   "price": 125.425,
+   "r20": -0.16464,
+   "r5": -0.01211,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "MSTR",
+   "z": -0.544
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12017,
+   "news": 0,
+   "pace": 1.829,
+   "price": 22.325,
+   "r20": -0.0344,
+   "r5": -0.1197,
+   "short": true,
+   "src": "iex",
+   "symbol": "UTI",
+   "z": 3.034
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.15385,
+   "news": 0,
+   "pace": 3.244,
+   "price": 1.5,
+   "r20": -0.32642,
+   "r5": -0.13907,
+   "short": true,
+   "src": "iex",
+   "symbol": "CABA",
+   "z": 2.558
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.10335,
+   "news": 0,
+   "pace": 5.906,
+   "price": 3.95,
+   "r20": -0.32197,
+   "r5": -0.26033,
+   "short": true,
+   "src": "iex",
+   "symbol": "SND",
+   "z": 2.308
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.14224,
+   "news": 0,
+   "pace": 3.97,
+   "price": 1.325,
+   "r20": -0.42574,
+   "r5": 0.03571,
+   "short": false,
+   "src": "iex",
+   "symbol": "GCTS",
+   "z": 2.189
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.08506,
+   "news": 0,
+   "pace": 8.148,
+   "price": 5.23,
+   "r20": 0.00626,
+   "r5": 0.08072,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLOV",
+   "z": 2.043
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5082.4613,
+  "PICK-MAIN-coin": 5165.1706,
+  "PICK-PENNY": 468.4274,
+  "PICK-PENNY-coin": 510.4528
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 30,
+  "news": 18,
+  "volume": 335
+ },
+ "flagged": 354,
+ "headline_counts": {
+  "AVGO": 3,
+  "CABA": 2,
+  "MRVL": 3,
+  "MSTR": 3,
+  "MU": 3,
+  "TIC": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "77167053acaf9ad2479c530fae09c1e6c8dfc83853eac836a02a41c9a9edfe67",
+ "price_sources": {
+  "delayed_sip": 339,
+  "iex": 3055
+ },
+ "priced": 3394,
+ "risk": [],
+ "slot": "2026-11-09T10:05",
+ "t": "2026-11-09T15:05:20.599997+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T15:05:30.369948Z"
+}
