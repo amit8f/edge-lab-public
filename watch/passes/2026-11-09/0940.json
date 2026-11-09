@@ -1,0 +1,341 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "016f7efd4770d027e2719faa884f794e196ac1db6bf37c0a3935650d3258b6e9",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "2bb4ca7c1c2a036e0176d9f2db9455d7fba52fda78522597e491edc7fe975dda",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "32a6b5669766380deb6dab6daa8a8e2df6d6bbf6b2ee341770385978149b8ffc",
+    "model": "openai/gpt-oss-20b",
+    "prompt_sha256": "5e0d618ee2879edaaf78d26f65c354cbb9ebdb97fc9daa0144661be83f061e60"
+   },
+   "views": [
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "SYF",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IONS",
+     "tone": 1
+    },
+    {
+     "confidence": 75,
+     "event": "guidance",
+     "symbol": "FERG",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "JANX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "ARWR",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "earnings",
+     "symbol": "LFMD",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "TLS",
+     "tone": 1
+    },
+    {
+     "confidence": 60,
+     "event": "analyst",
+     "symbol": "HE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GTN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AIOT",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "8e268b14d17e341a6e87c25df2d754d18ecd971a83fba723b518b90c0491ebb2",
+   "decisions": [
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down 5% with strong negative z, analyst confidence 70",
+     "stop_pct": 12.0,
+     "symbol": "SYF"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "mixed signals, hold",
+     "stop_pct": 0.0,
+     "symbol": "IONS"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "e465b4712bda1df5956ba797f49fafc41b254994d42f80b365f24632a6a1315f"
+  },
+  "reviewer": {
+   "answer_sha256": "1061f8a5001815ff15fb53d4a3e7531d4e8911d811e1e2ad3e771f3ec0db64b0",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "7410087c81d639ae2e72e0fc42dd8bec087b78faa4a043faf121595db56892f2",
+   "reviews": [
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "sharp recent drop with news imminent suggests waiting for volatility to settle",
+     "symbol": "SYF"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.04977,
+   "news": 1,
+   "pace": null,
+   "price": 70.07,
+   "r20": 0.01752,
+   "r5": -0.01693,
+   "short": true,
+   "src": "iex",
+   "symbol": "SYF",
+   "z": -3.219
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.25025,
+   "news": 0,
+   "pace": null,
+   "price": 29.555,
+   "r20": -0.12942,
+   "r5": -0.09421,
+   "short": true,
+   "src": "iex",
+   "symbol": "IONS",
+   "z": -11.488
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11476,
+   "news": 0,
+   "pace": null,
+   "price": 260.52,
+   "r20": 0.06208,
+   "r5": -0.02086,
+   "short": true,
+   "src": "iex",
+   "symbol": "FERG",
+   "z": 5.64
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.21724,
+   "news": 0,
+   "pace": null,
+   "price": 13.8,
+   "r20": -0.04133,
+   "r5": 0.00916,
+   "short": true,
+   "src": "iex",
+   "symbol": "JANX",
+   "z": -5.634
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13394,
+   "news": 0,
+   "pace": null,
+   "price": 50.37,
+   "r20": -0.07315,
+   "r5": -0.02905,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARWR",
+   "z": -5.41
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.18143,
+   "news": 0,
+   "pace": null,
+   "price": 1.94,
+   "r20": -0.09886,
+   "r5": 0.03493,
+   "short": true,
+   "src": "iex",
+   "symbol": "LFMD",
+   "z": -4.395
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.22822,
+   "news": 0,
+   "pace": null,
+   "price": 5.92,
+   "r20": 0.04104,
+   "r5": -0.1107,
+   "short": true,
+   "src": "iex",
+   "symbol": "TLS",
+   "z": 4.367
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09264,
+   "news": 0,
+   "pace": null,
+   "price": 9.2,
+   "r20": -0.03881,
+   "r5": -0.03218,
+   "short": true,
+   "src": "iex",
+   "symbol": "HE",
+   "z": 4.178
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.10163,
+   "news": 0,
+   "pace": null,
+   "price": 5.42,
+   "r20": 0.0837,
+   "r5": 0.09577,
+   "short": true,
+   "src": "iex",
+   "symbol": "GTN",
+   "z": 3.408
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.06877,
+   "news": 1,
+   "pace": null,
+   "price": 2.875,
+   "r20": -0.0037,
+   "r5": -0.0692,
+   "short": true,
+   "src": "iex",
+   "symbol": "AIOT",
+   "z": 1.641
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5080.931,
+  "PICK-MAIN-coin": 5139.7395,
+  "PICK-PENNY": 474.536,
+  "PICK-PENNY-coin": 514.7168
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-09T14:40:20.726795+00:00",
+   "entry": 2.725,
+   "exit": 3.37,
+   "net": -5.8434,
+   "opened": "2026-11-06T15:35:20.703361+00:00",
+   "qty": 8,
+   "side": -1,
+   "symbol": "SSP",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 24,
+  "news": 167,
+  "volume": 0
+ },
+ "flagged": 189,
+ "headline_counts": {
+  "AIOT": 3,
+  "ARWR": 1,
+  "FERG": 3,
+  "HE": 1,
+  "IONS": 3,
+  "JANX": 2,
+  "LFMD": 1,
+  "SYF": 1,
+  "TLS": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "afd9768496b293fa37c347f92a10c8b3eeffdd935ba09c15b4ea1846dbe96087",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2710
+ },
+ "priced": 2710,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SYF"
+  }
+ ],
+ "slot": "2026-11-09T09:40",
+ "t": "2026-11-09T14:40:20.726795+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T14:40:49.598795Z"
+}
