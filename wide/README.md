@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8992.33 | -10.08% | 157 | 47 | long ABNB, long IONQ, long MPWR, long MRNA, long RKLB |
-| Coin flip on C's picks | $9939.19 | -0.61% | 156 | 77 | long ABNB, long IONQ, long MPWR, long MRNA, long RKLB |
-| C's prompt on Groq (K7) | $7085.85 | -29.14% | 354 | 81 | long ABNB, long COHR, long FN, short TEAM, long UAL |
-| Coin flip on C-groq's picks | $8715.93 | -12.84% | 354 | 169 | short ABNB, long COHR, short FN, short TEAM, short UAL |
-| C-groq's answers, acted on once a day (K8) | $9397.50 | -6.02% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10593.14 | +5.93% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9778.83 | -2.21% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10708.55 | +7.09% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9787.64 | -2.12% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8992.65 | -10.07% | 157 | 47 | long ABNB, long IONQ, long MPWR, long MRNA, long RKLB |
+| Coin flip on C's picks | $9939.58 | -0.60% | 156 | 77 | long ABNB, long IONQ, long MPWR, long MRNA, long RKLB |
+| C's prompt on Groq (K7) | $7096.19 | -29.04% | 354 | 81 | long ABNB, long COHR, long FN, short TEAM, long UAL |
+| Coin flip on C-groq's picks | $8720.57 | -12.79% | 354 | 169 | short ABNB, long COHR, short FN, short TEAM, short UAL |
+| C-groq's answers, acted on once a day (K8) | $9400.63 | -5.99% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10597.19 | +5.97% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9769.43 | -2.31% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10743.79 | +7.44% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9774.23 | -2.26% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-09 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:47 | long ABNB, long IONQ, long MPWR, long MRNA, long RKLB | sold VST @ $133.05; bought MPWR @ $1,321.45 | Maintaining existing profitable long positions in ABNB, IONQ, MRNA, and RKLB due to strong momentum, and initiating a new long position in MPWR, which shows strong daily and hourly gains with positive recent performance. |
 | 2026-11-09 10:37 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 10:5
 | 2026-11-05 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 14:27 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all five profitable short positions as the AI/tech sector continues its significant downturn, with many stocks experiencing double-digit percentage drops today. |
 | 2026-11-05 14:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-05 14:07 | no answer, nothing changed | none | unreadable answer |
