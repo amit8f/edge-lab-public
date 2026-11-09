@@ -649,6 +649,29 @@ def ideas(repo_root, books):
     return out
 
 
+SIM_FILES = {"NXK-KRR": "NX3_fired_trades_KRR.csv", "NXK2-CAT": "NX3_fired_trades_CAT.csv"}   # walk-forward test years, 2019-2025
+
+
+def history_sim(repo_root, name, book=5000.0, step=5):
+    """A switchable history simulation for a shadow book: the model's walk-forward fired trades (net of costs),
+    every one taken, sized 5% to 10% of the book by confidence as in NX3-ALL. A picture of the past, not a forecast."""
+    f = Path(repo_root) / "research" / "results" / "NX3" / SIM_FILES[name]
+    if not f.exists():
+        return None
+    t = pd.read_csv(f)
+    t["net"] = t["net"].clip(-0.5, 0.5)         # one bad price print (-1274%) would swamp the curve
+    w = 0.05 + 0.05 * (t["conf"].clip(1.0, 2.0) - 1.0)
+    t["w"] = w * w.groupby(t["d"]).transform(lambda x: min(1.0, 1.0 / x.sum()))     # the day's sizes fit the book
+    t["pnl"] = book * t["w"] * t["net"]
+    day = t.groupby("d")["pnl"].sum().sort_index()
+    eq = book + day.cumsum()
+    yr = day.groupby(day.index.str[:4]).sum() / book
+    return {"label": "History simulation 2019-2025 (walk-forward, after costs, every fired trade, sized by confidence, single trades capped at +-50%)",
+            "start": book, "end": float(eq.iloc[-1]), "days": int(len(day)), "trades": int(len(t)),
+            "mean_net_per_trade": float(t["net"].mean()), "per_year_pct": {k: float(100 * v) for k, v in yr.items()},
+            "curve": [[d, round(float(v), 2)] for d, v in list(eq.items())[::step]]}
+
+
 def last_change(repo_root, names):
     paths = []
     for n in names:
@@ -666,6 +689,9 @@ def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
+    for b in books:
+        if b["name"] in SIM_FILES:
+            b["sim"] = _safe(history_sim, repo_root, b["name"])
     nx3 = nx3_days(st, Path(out) / "cache")
     mark_open_nx3(books, nx3)
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,

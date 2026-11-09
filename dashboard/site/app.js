@@ -462,6 +462,26 @@ function evCard(ev, today) {
   return card;
 }
 
+function simPanel(sim) {
+  const box = el("div", { class: "sim" }), cb = el("input", { type: "checkbox" });
+  const body = el("div", { class: "simbody" });
+  body.hidden = true;
+  const xs = sim.curve.map(c => c[1]), lo = Math.min(...xs), hi = Math.max(...xs), n = xs.length;
+  const pts = xs.map((v, i) => `${(300 * i / Math.max(1, n - 1)).toFixed(1)},${(70 - 66 * (v - lo) / Math.max(1e-9, hi - lo)).toFixed(1)}`).join(" ");
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 300 74"); svg.setAttribute("class", "simchart");
+  const pl = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  pl.setAttribute("points", pts); pl.setAttribute("fill", "none"); pl.setAttribute("stroke", "currentColor"); pl.setAttribute("stroke-width", "1.5");
+  svg.append(pl);
+  const yrs = Object.entries(sim.per_year_pct).map(([y, v]) => `${y} ${v >= 0 ? "+" : ""}${v.toFixed(0)}%`).join(" · ");
+  body.append(svg, el("div", { class: "kv small" }, el("span", { text: `${money(sim.start)} → ${money(sim.end)}` }),
+    el("span", { text: `${sim.trades} trades, ${(100 * sim.mean_net_per_trade).toFixed(2)}% each` })),
+    el("div", { class: "muted small", text: yrs }), el("div", { class: "muted small", text: sim.label + ". A picture of the past, not a forecast." }));
+  cb.addEventListener("change", () => { body.hidden = !cb.checked; });
+  box.append(el("label", { class: "small" }, cb, " show history simulation"), body);
+  return box;
+}
+
 function renderBooks() {
   const S = SUMMARY;
   const twins = Object.fromEntries(S.books.filter(b => b.control).map(b => [b.name.replace(/-coin$/, ""), b]));
@@ -483,7 +503,8 @@ function renderBooks() {
       b.excluded_days && b.excluded_days.length ? el("div", { class: "muted small", text: `left out: ${b.excluded_days.join(", ")}` }) : null,
       tw ? el("div", { class: "kv muted small" }, el("span", { text: `coin-flip twin: ${tw.closed} trades` }),
         el("span", { text: tw.pnl_pct == null ? "" : `${tw.pnl_pct >= 0 ? "+" : ""}${tw.pnl_pct.toFixed(2)}%` })) : null,
-      b.note ? el("div", { class: "muted small", text: b.note }) : null);
+      b.note ? el("div", { class: "muted small", text: b.note }) : null,
+      b.sim ? simPanel(b.sim) : null);
   }));
   const ad = S.adaptive;
   $("accounts").replaceChildren(...S.accounts.map(a => el("div", { class: "card book" },

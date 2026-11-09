@@ -367,3 +367,33 @@ def test_shortall_stage_runs_on_synthetic_events(tmp_path, monkeypatch):
     rep = json.loads((tmp_path / "out" / "SHORTALL_walkforward.json").read_text())
     assert rep["verdict"] in ("passed", "failed")
     assert rep["arms"]["XGB_plain"]["trades"] > 0 and "LGBM_lessons" in rep["arms"]
+
+
+def test_dayfilter_raises_the_bar_only_against_the_market_colour():
+    day = pd.DataFrame({"t": pd.date_range("2024-03-04 09:31", periods=4, freq="min"),
+                        "e": [0.012, 0.02, -0.012, -0.02], "fired": True, "ret": 0.0,
+                        "spy_open": [0.01, np.nan, 0.01, np.nan], "spy_r1": [0.0, -0.01, 0.0, -0.01]})
+    # row 0 long on green keeps its bar; row 1 long on red (spy_open missing -> spy_r1 < 0) needs 1.5x: 2.0 passes;
+    # row 2 short on green needs 1.5x: 1.2 fails; row 3 short on red keeps its bar
+    p, _ = X.picks(day, np.random.default_rng(0), cut=0.01, against=1.5)
+    assert p["e"].tolist() == [0.012, 0.02, -0.02]
+    p, _ = X.picks(day, np.random.default_rng(0), cut=0.01, against=3.0)
+    assert p["e"].tolist() == [0.012, -0.02]
+    p, _ = X.picks(day, np.random.default_rng(0), cut=0.01)
+    assert len(p) == 4
+
+
+def test_dayfilter_stage_writes_the_report(tmp_path, monkeypatch):
+    ev = events(1.5, seed=3).assign(next=pd.Timestamp("2019-01-01"))
+    ev["spy_open"] = np.random.default_rng(5).normal(0, 0.01, len(ev))
+    ev["spy_r1"] = 0.0
+    d3 = X.nx3dir(str(tmp_path))
+    (d3 / X.TRADES).mkdir(parents=True)
+    ev.to_parquet(d3 / X.TRADES / "t_0.parquet")
+    monkeypatch.setattr(X, "calendar", lambda cache: CAL)
+    monkeypatch.setattr(pd, "read_parquet", lambda f: ev.copy())
+    monkeypatch.setattr(N, "TEST_YEARS", [2019])
+    X.stage_dayfilter(str(tmp_path), tmp_path / "out")
+    rep = json.loads((tmp_path / "out" / "DAYFILTER_walkforward.json").read_text())
+    assert set(rep["bars"]) == {"1.0", "1.5", "2.0"} and rep["verdict"] in ("passed", "failed")
+    assert "gain_over_nx3all" in rep["bars"]["1.5"] and "gain_over_nx3all" not in rep["bars"]["1.0"]

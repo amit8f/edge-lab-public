@@ -213,3 +213,14 @@ def test_boomshort_book(tmp_path):
                                                                          "B": {"status": "no bars"}}, "pnl_usd": 5.0}))
     b = DB.boomshort_book(tmp_path)[0]
     assert b["name"] == "BOOM-SHORT" and b["closed"] == 1 and b["realized"] == 5.0 and abs(b["pnl_pct"] - 0.1) < 1e-9
+
+
+def test_history_sim_sizes_by_confidence_and_fits_the_book(tmp_path):
+    d = tmp_path / "research" / "results" / "NX3"
+    d.mkdir(parents=True)
+    (d / "NX3_fired_trades_KRR.csv").write_text(
+        "d,symbol,side,conf,net,year\n2019-01-02,A,long,1.0,0.02,2019\n2019-01-02,B,short,2.0,-0.01,2019\n2019-01-03,C,long,1.5,0.01,2019\n")
+    s = B.history_sim(tmp_path, "NXK-KRR", step=1)
+    assert s["trades"] == 3 and s["days"] == 2 and len(s["curve"]) == 2
+    assert abs(s["end"] - (5000 + 5000 * (0.05 * 0.02 - 0.10 * 0.01 + 0.075 * 0.01))) < 1e-6
+    assert B.history_sim(tmp_path, "NXK2-CAT") is None
