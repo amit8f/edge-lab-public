@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 09:49 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 09:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8617.00 | -13.83% | 156 | 46 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C's picks | $9618.65 | -3.81% | 155 | 77 | long ABNB, long IONQ, long MRNA, long RKLB, short VST |
-| C's prompt on Groq (K7) | $6988.29 | -30.12% | 351 | 79 | long ABNB, long AMD, short CRDO, short TEAM, long UAL |
-| Coin flip on C-groq's picks | $8631.74 | -13.68% | 351 | 168 | short ABNB, short AMD, long CRDO, short TEAM, short UAL |
-| C-groq's answers, acted on once a day (K8) | $9237.28 | -7.63% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10395.50 | +3.96% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9397.59 | -6.02% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10665.72 | +6.66% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9727.02 | -2.73% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8708.57 | -12.91% | 156 | 46 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C's picks | $9724.64 | -2.75% | 155 | 77 | long ABNB, long IONQ, long MRNA, long RKLB, short VST |
+| C's prompt on Groq (K7) | $6968.20 | -30.32% | 352 | 79 | long ABNB, long AMD, long BE, short TEAM, long UAL |
+| Coin flip on C-groq's picks | $8653.12 | -13.47% | 352 | 169 | short ABNB, short AMD, short BE, short TEAM, short UAL |
+| C-groq's answers, acted on once a day (K8) | $9249.35 | -7.51% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10513.48 | +5.13% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9494.06 | -5.06% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10719.37 | +7.19% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9739.20 | -2.61% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-09 09:57 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | none | Maintaining all 5 existing long positions due to continued strong positive momentum and profitability. No new positions are opened as the portfolio is at its maximum capacity. |
 | 2026-11-09 09:49 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | none | Maintaining all current long positions (ABNB, IONQ, MRNA, RKLB, VST) due to their continued positive momentum and recent price appreciation. |
 | 2026-11-06 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 15:57 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | none | Maintaining all current long positions (ABNB, IONQ, MRNA, RKLB, VST) due to strong positive momentum today and favorable news for each, expecting continued upward movement. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 09:4
 | 2026-11-05 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 13:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 13:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-05 12:57 | no answer, nothing changed | none | unreadable answer |
