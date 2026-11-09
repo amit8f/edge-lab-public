@@ -1,0 +1,275 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "348d740ec5511206dbb8a8062dfaefdd636853c1a31d14b3281810aab0da47cb",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ad70bf5733f5e85e47f7a4e00f69fd90bf285370b25e43598a59c378e70fa835",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DSGR",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "QNST",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "UTI",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "deal",
+     "symbol": "VBNK",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "regulatory",
+     "symbol": "GSAT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "BEN",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BMM",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "OPTX",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CLOV",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MITT",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "46ea68b713acf321abe129153742e70f43da80d378be33145109bbe45828019d",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.00258,
+   "news": 0,
+   "pace": 1.749,
+   "price": 35.02,
+   "r20": -0.00285,
+   "r5": -0.00143,
+   "short": true,
+   "src": "iex",
+   "symbol": "DSGR",
+   "z": 3.096
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07478,
+   "news": 0,
+   "pace": 1.451,
+   "price": 19.115,
+   "r20": 0.31341,
+   "r5": 0.18736,
+   "short": true,
+   "src": "iex",
+   "symbol": "QNST",
+   "z": -3.079
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11892,
+   "news": 0,
+   "pace": 1.316,
+   "price": 22.3,
+   "r20": -0.0344,
+   "r5": -0.1197,
+   "short": true,
+   "src": "iex",
+   "symbol": "UTI",
+   "z": 3.004
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06209,
+   "news": 0,
+   "pace": 3.253,
+   "price": 24.375,
+   "r20": 0.04129,
+   "r5": 0.04508,
+   "short": true,
+   "src": "iex",
+   "symbol": "VBNK",
+   "z": 2.69
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.02313,
+   "news": 0,
+   "pace": 7.223,
+   "price": 86.27,
+   "r20": 0.00597,
+   "r5": 0.02454,
+   "short": true,
+   "src": "iex",
+   "symbol": "GSAT",
+   "z": 2.643
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.0627,
+   "news": 1,
+   "pace": 1.057,
+   "price": 35.845,
+   "r20": 0.05406,
+   "r5": 0.06606,
+   "short": true,
+   "src": "iex",
+   "symbol": "BEN",
+   "z": 2.573
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.08889,
+   "news": 0,
+   "pace": 4.09,
+   "price": 3.43,
+   "r20": -0.35318,
+   "r5": -0.15775,
+   "short": false,
+   "src": "iex",
+   "symbol": "BMM",
+   "z": 1.443
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11704,
+   "news": 0,
+   "pace": 5.241,
+   "price": 5.44,
+   "r20": -0.39802,
+   "r5": -0.22576,
+   "short": false,
+   "src": "iex",
+   "symbol": "OPTX",
+   "z": 1.119
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.03838,
+   "news": 0,
+   "pace": 6.171,
+   "price": 5.005,
+   "r20": 0.00626,
+   "r5": 0.08072,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLOV",
+   "z": 0.943
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.03371,
+   "news": 0,
+   "pace": 3.34,
+   "price": 4.6,
+   "r20": -0.20959,
+   "r5": -0.20536,
+   "short": true,
+   "src": "iex",
+   "symbol": "MITT",
+   "z": 0.847
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5057.8263,
+  "PICK-MAIN-coin": 5174.4706,
+  "PICK-PENNY": 469.9058,
+  "PICK-PENNY-coin": 508.5824
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 31,
+  "news": 19,
+  "volume": 201
+ },
+ "flagged": 220,
+ "headline_counts": {
+  "BEN": 2,
+  "GSAT": 2,
+  "VBNK": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "08f95a1aa359292a7868db95cdf27175f76747751469423debaa8226c129ecac",
+ "price_sources": {
+  "delayed_sip": 234,
+  "iex": 3163
+ },
+ "priced": 3397,
+ "risk": [],
+ "slot": "2026-11-09T10:40",
+ "t": "2026-11-09T15:40:20.835375+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T15:40:30.189045Z"
+}
