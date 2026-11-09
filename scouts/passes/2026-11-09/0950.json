@@ -1,0 +1,5803 @@
+{
+ "agents": {
+  "checker": {
+   "answer_sha256": "f5819bce6e02f33dd41d6d4c489d71c4cff4101721bb6048b1090a1efea83a65",
+   "checks": {
+    "AIR": {
+     "final": "disagree",
+     "verdict_no_web": "disagree",
+     "verdict_web": "disagree"
+    },
+    "AMAT": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    },
+    "GMRS": {
+     "final": "unclear",
+     "verdict_no_web": "unclear",
+     "verdict_web": "unclear"
+    },
+    "IONS": {
+     "final": "unclear",
+     "verdict_no_web": "unclear",
+     "verdict_web": "unclear"
+    },
+    "MNDY": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    },
+    "MTDR": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    },
+    "SOC": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    },
+    "SPRB": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    },
+    "SWK": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    },
+    "TSM": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    },
+    "VRDN": {
+     "final": "agree",
+     "verdict_no_web": "agree",
+     "verdict_web": "agree"
+    }
+   },
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "96f6874d6b5a40bb7fa127b0a3fd95d9d5f313fe02874038f1fa88dd24d73e27"
+  },
+  "picker": {
+   "answer_sha256": "a2cf8eb901f2f4c4a2c9ea450ea9910ae79c9f615568930c765e4422ea075cc7",
+   "decisions": [
+    {
+     "confidence": 65,
+     "direction": "long",
+     "horizon": 1,
+     "stop_pct": 10.0,
+     "symbol": "MNDY"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "horizon": 5,
+     "stop_pct": 10.0,
+     "symbol": "MTDR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "TSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "AMAT"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "horizon": 5,
+     "stop_pct": 12.0,
+     "symbol": "VRDN"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "horizon": 5,
+     "stop_pct": 12.0,
+     "symbol": "IONS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "GMRS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "SPRB"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "horizon": 5,
+     "stop_pct": 20.0,
+     "symbol": "SOC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "SWK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "AHRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "APP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "ARQT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "ATO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "BA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "CMPS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "FELE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "FWDI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "INGM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "LOW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "LSTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "PGEN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "ROL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "RSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "XYZ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "NUAI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "PSQL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "RZLT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "SOC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "TCPC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "TLRY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "horizon": 0,
+     "stop_pct": 0.0,
+     "symbol": "ZURA"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "5c2cd8a4a1d34773ec27f68f12f1ae43376efea73cb6c8de49e1b168fd2ee828"
+  }
+ },
+ "alerts": {
+  "1": 14,
+  "10": 0,
+  "11": 2,
+  "12": 156,
+  "13": 46,
+  "14": 9,
+  "15": 0,
+  "16": 0,
+  "17a": 4,
+  "17b": 31,
+  "18": 16,
+  "19": 0,
+  "2": 0,
+  "20": 0,
+  "21": 1,
+  "22": 0,
+  "23": 0,
+  "3": 8,
+  "4": 1,
+  "5": 0,
+  "6": 18,
+  "7": 7,
+  "8": 0,
+  "9": 0
+ },
+ "blocked": {
+  "SCOUT-MAIN": null,
+  "SCOUT-PENNY": null
+ },
+ "calls": {
+  "gemini-2.5-flash": 22,
+  "gemini-3-flash-preview": 1,
+  "gemini-3.5-flash-lite": 2,
+  "openai/gpt-oss-120b": 2,
+  "openai/gpt-oss-20b": 16,
+  "qwen/qwen3.8-27b": 14,
+  "tavily": 10
+ },
+ "counts": {
+  "feed_errors": 5,
+  "filings": 46,
+  "headlines": 37,
+  "social_errors": 0
+ },
+ "equity": {
+  "SCOUT-MAIN": 4929.1467,
+  "SCOUT-MAIN-coin": 4795.965,
+  "SCOUT-PENNY": 488.2169,
+  "SCOUT-PENNY-coin": 493.0427
+ },
+ "events": [
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 18.29,
+   "id": "BANC-202611091450-23094",
+   "items": [
+    "news:117314292"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T14:33:57Z",
+   "symbol": "BANC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 165.87,
+   "id": "HURN-202611091450-23095",
+   "items": [
+    "news:117315295"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T14:34:10Z",
+   "symbol": "HURN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-06T14:35:40.273215+00:00",
+   "first_price": 118.38,
+   "id": "CHTR-202611061435-19470",
+   "items": [
+    "sec:0001091667-26-000072",
+    "sec:0001091667-26-000073",
+    "news:62994808",
+    "news:117247808",
+    "news:117247810",
+    "news:63033015"
+   ],
+   "lanes": [
+    "1",
+    "3",
+    "10",
+    "6"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-06T12:00:54+00:00",
+   "symbol": "CHTR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 47.495,
+   "id": "CE-202611091435-22451",
+   "items": [
+    "news:63029150",
+    "news:117315296"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T13:01:47Z",
+   "symbol": "CE"
+  },
+  {
+   "check": "spread 2.1%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 8.755,
+   "id": "BCAX-202611091435-22436",
+   "items": [
+    "news:63028019",
+    "earn:BCAX:2026-11-09",
+    "news:63033031"
+   ],
+   "lanes": [
+    "1"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09",
+   "symbol": "BCAX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 2.92,
+   "id": "QTRX-202611091435-22450",
+   "items": [
+    "news:63029129",
+    "sec:0001503274-26-000042",
+    "sec:0001503274-26-000043",
+    "news:63033059"
+   ],
+   "lanes": [
+    "1",
+    "2",
+    "3"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09T13:01:40Z",
+   "symbol": "QTRX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 2.91,
+   "id": "AIOT-202611091435-22375",
+   "items": [
+    "news:63026715",
+    "news:63026907",
+    "sec:0001493152-26-050619",
+    "earn:AIOT:2026-11-09",
+    "news:63033101"
+   ],
+   "lanes": [
+    "1",
+    "2"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09",
+   "symbol": "AIOT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-05T14:35:41.094092+00:00",
+   "first_price": 12.19,
+   "id": "CORZ-202611051435-15853",
+   "items": [
+    "sec:0001839341-26-000030",
+    "news:115910280",
+    "news:117316301"
+   ],
+   "lanes": [
+    "3",
+    "21",
+    "6"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-05",
+   "symbol": "CORZ"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-06T14:35:40.273215+00:00",
+   "first_price": 43.94,
+   "id": "BKU-202611061435-19361",
+   "items": [
+    "sec:0001504008-26-000091",
+    "news:63033244"
+   ],
+   "lanes": [
+    "3",
+    "6"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-05T21:39:12+00:00",
+   "symbol": "BKU"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 2.99,
+   "id": "VFF-202611091435-22371",
+   "items": [
+    "news:63026572",
+    "sec:0001193125-26-452614",
+    "sec:0001193125-26-452618",
+    "news:63034302"
+   ],
+   "lanes": [
+    "1",
+    "3"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09T12:00:49+00:00",
+   "symbol": "VFF"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 4.34,
+   "id": "TNXP-202611091435-22382",
+   "items": [
+    "news:63026885",
+    "sec:0001493152-26-050621",
+    "sec:0001999371-26-024873",
+    "news:63034336"
+   ],
+   "lanes": [
+    "1",
+    "3",
+    "21"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09",
+   "symbol": "TNXP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 55.355,
+   "id": "CBSH-202611091450-23096",
+   "items": [
+    "news:63034389"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T14:42:13Z",
+   "symbol": "CBSH"
+  },
+  {
+   "check": "spread 3.8%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 61.49,
+   "id": "TPB-202611091435-22415",
+   "items": [
+    "news:63027913",
+    "sec:0001437749-26-035713",
+    "news:63034408"
+   ],
+   "lanes": [
+    "1",
+    "2"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09T12:32:04Z",
+   "symbol": "TPB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 359.045,
+   "id": "AMAT-202611091435-22453",
+   "items": [
+    "news:117259189",
+    "news:63034601"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T13:01:54Z",
+   "symbol": "AMAT"
+  },
+  {
+   "check": "spread 5.3%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 12.95,
+   "id": "GCMG-202611091435-22469",
+   "items": [
+    "news:63029557",
+    "news:63034602"
+   ],
+   "lanes": [
+    "1"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09T13:10:16Z",
+   "symbol": "GCMG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 130.8,
+   "id": "EWBC-202611091450-23097",
+   "items": [
+    "news:63034612"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T14:43:04Z",
+   "symbol": "EWBC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 0.586,
+   "id": "SOC-202611091435-22339",
+   "items": [
+    "news:63025328",
+    "news:63025350",
+    "news:63025392",
+    "news:63025420",
+    "sec:0001831481-26-000120",
+    "sec:0001831481-26-000121",
+    "news:63034697"
+   ],
+   "lanes": [
+    "21",
+    "2",
+    "1",
+    "3"
+   ],
+   "owner": "21",
+   "src_t": "2026-11-09",
+   "symbol": "SOC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-06T16:35:40.886381+00:00",
+   "first_price": 25.975,
+   "id": "FBP-202611061635-21947",
+   "items": [
+    "sec:0001057706-26-000031",
+    "news:63034728"
+   ],
+   "lanes": [
+    "3",
+    "6"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-06T16:31:17+00:00",
+   "symbol": "FBP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-06T14:35:40.273215+00:00",
+   "first_price": 22.97,
+   "id": "FHN-202611061435-19324",
+   "items": [
+    "sec:0000036966-26-000199",
+    "news:63034822"
+   ],
+   "lanes": [
+    "3",
+    "6"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-05T21:17:27+00:00",
+   "symbol": "FHN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 34.42,
+   "id": "AMKR-202611091450-23098",
+   "items": [
+    "news:63034823"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T14:44:24Z",
+   "symbol": "AMKR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 38.23,
+   "id": "FIBK-202611091450-23099",
+   "items": [
+    "news:63034988"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T14:45:38Z",
+   "symbol": "FIBK"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-06T14:35:40.273215+00:00",
+   "first_price": 4.83,
+   "id": "ASLE-202611061435-19143",
+   "items": [
+    "news:62951401",
+    "news:62957985",
+    "sec:0001104659-26-123350",
+    "news:63034990"
+   ],
+   "lanes": [
+    "1",
+    "6"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-05T21:14:08Z",
+   "symbol": "ASLE"
+  },
+  {
+   "check": "spread 6.7%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 19.83,
+   "id": "FRBT-202611091450-23100",
+   "items": [
+    "news:63035167"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-09T14:46:43Z",
+   "symbol": "FRBT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-06T14:35:40.273215+00:00",
+   "first_price": 20.44,
+   "id": "ASST-202611061435-19489",
+   "items": [
+    "sec:0001628280-26-071332",
+    "sec:0001628280-26-071888",
+    "news:63035189"
+   ],
+   "lanes": [
+    "3",
+    "6"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-06T13:01:28+00:00",
+   "symbol": "ASST"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-05T16:05:40.349136+00:00",
+   "first_price": 89.53,
+   "id": "CAMT-202611051605-18238",
+   "items": [
+    "news:114135553",
+    "news:63035302"
+   ],
+   "lanes": [
+    "6"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-05T16:02:08Z",
+   "symbol": "CAMT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 40.455,
+   "id": "COHU-202611091435-22486",
+   "items": [
+    "sec:0001437749-26-035662",
+    "news:63035450"
+   ],
+   "lanes": [
+    "3",
+    "6"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-09T11:05:42+00:00",
+   "symbol": "COHU"
+  },
+  {
+   "check": "spread 2.4%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 180.82,
+   "id": "FRHC-202611091435-22491",
+   "items": [
+    "sec:0000924805-26-000058"
+   ],
+   "lanes": [
+    "21"
+   ],
+   "owner": "21",
+   "src_t": "2026-11-09T11:15:55+00:00",
+   "symbol": "FRHC"
+  },
+  {
+   "check": "spread 7.2%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 134.915,
+   "id": "VRTS-202611091435-22370",
+   "items": [
+    "news:63026544",
+    "sec:0000883237-26-000064",
+    "sec:0000883237-26-000065"
+   ],
+   "lanes": [
+    "1",
+    "3"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09T12:01:14Z",
+   "symbol": "VRTS"
+  },
+  {
+   "check": "spread 2.0%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 157.79,
+   "id": "BPOP-202611091435-22507",
+   "items": [
+    "sec:0000763901-26-000025",
+    "sec:0001193125-26-452671"
+   ],
+   "lanes": [
+    "3"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-09T12:31:56+00:00",
+   "symbol": "BPOP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 20.3,
+   "id": "LKQ-202611091435-22518",
+   "items": [
+    "sec:0001065696-26-000058"
+   ],
+   "lanes": [
+    "3"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-09T13:05:49+00:00",
+   "symbol": "LKQ"
+  },
+  {
+   "check": "spread 3.6%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 18.81,
+   "id": "DGICA-202611091435-22523",
+   "items": [
+    "sec:0000935596-26-000028"
+   ],
+   "lanes": [
+    "4"
+   ],
+   "owner": "4",
+   "src_t": "2026-11-09T13:18:33+00:00",
+   "symbol": "DGICA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 28.24,
+   "id": "IONS-202611091435-22374",
+   "items": [
+    "news:63026696",
+    "news:63026918",
+    "news:117247828",
+    "sec:0001140361-26-042598",
+    "sec:0000874015-26-000271"
+   ],
+   "lanes": [
+    "1",
+    "2",
+    "3"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09T12:00:30+00:00",
+   "symbol": "IONS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 5.68,
+   "id": "NWL-202611091435-22526",
+   "items": [
+    "sec:0000814453-26-000043"
+   ],
+   "lanes": [
+    "3"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-09T13:35:02+00:00",
+   "symbol": "NWL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 50.354,
+   "id": "SON-202611091435-22528",
+   "items": [
+    "sec:0000091767-26-000054"
+   ],
+   "lanes": [
+    "3"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-09T13:38:05+00:00",
+   "symbol": "SON"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 29.34,
+   "id": "SM-202611091435-22535",
+   "items": [
+    "sec:0000893538-26-000149"
+   ],
+   "lanes": [
+    "3"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-09T13:55:11+00:00",
+   "symbol": "SM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 6.04,
+   "id": "TLS-202611091435-22540",
+   "items": [
+    "sec:0000320121-26-000041"
+   ],
+   "lanes": [
+    "1"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09T14:00:46+00:00",
+   "symbol": "TLS"
+  },
+  {
+   "check": "spread 7.6%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 37.4,
+   "id": "COFS-202611091450-23101",
+   "items": [
+    "sec:0001193125-26-452801"
+   ],
+   "lanes": [
+    "3"
+   ],
+   "owner": "3",
+   "src_t": "2026-11-09T14:40:35+00:00",
+   "symbol": "COFS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 36.295,
+   "id": "DB-202611091450-23102",
+   "items": [
+    "sec:0000950103-26-017132"
+   ],
+   "lanes": [
+    "7"
+   ],
+   "owner": "7",
+   "src_t": "2026-11-09T14:41:26+00:00",
+   "symbol": "DB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 120.01,
+   "id": "C-202611091450-23103",
+   "items": [
+    "sec:0001918704-26-034968"
+   ],
+   "lanes": [
+    "7"
+   ],
+   "owner": "7",
+   "src_t": "2026-11-09T14:42:38+00:00",
+   "symbol": "C"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 120.01,
+   "id": "C-202611091450-23104",
+   "items": [
+    "sec:0001918704-26-034969"
+   ],
+   "lanes": [
+    "7"
+   ],
+   "owner": "7",
+   "src_t": "2026-11-09T14:43:55+00:00",
+   "symbol": "C"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 36.295,
+   "id": "DB-202611091450-23105",
+   "items": [
+    "sec:0000950103-26-017133"
+   ],
+   "lanes": [
+    "7"
+   ],
+   "owner": "7",
+   "src_t": "2026-11-09T14:45:42+00:00",
+   "symbol": "DB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 120.01,
+   "id": "C-202611091450-23106",
+   "items": [
+    "sec:0001918704-26-034970"
+   ],
+   "lanes": [
+    "7"
+   ],
+   "owner": "7",
+   "src_t": "2026-11-09T14:49:19+00:00",
+   "symbol": "C"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 123.43,
+   "id": "TD-202611091450-23107",
+   "items": [
+    "sec:0001140361-26-042638"
+   ],
+   "lanes": [
+    "7"
+   ],
+   "owner": "7",
+   "src_t": "2026-11-09T14:49:23+00:00",
+   "symbol": "TD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 337.14,
+   "id": "JPM-202611091450-23108",
+   "items": [
+    "sec:0001213900-26-117314"
+   ],
+   "lanes": [
+    "7"
+   ],
+   "owner": "7",
+   "src_t": "2026-11-09T14:49:39+00:00",
+   "symbol": "JPM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 23.92,
+   "id": "CEVA-202611091435-22373",
+   "items": [
+    "news:63026656",
+    "earn:CEVA:2026-11-09"
+   ],
+   "lanes": [
+    "1"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09",
+   "symbol": "CEVA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-05T16:05:40.349136+00:00",
+   "first_price": 233.1,
+   "id": "CEG-202611051605-18235",
+   "items": [
+    "news:114135544",
+    "news:63026081",
+    "news:63026118",
+    "news:117259209",
+    "earn:CEG:2026-11-09"
+   ],
+   "lanes": [
+    "6",
+    "1",
+    "2"
+   ],
+   "owner": "6",
+   "src_t": "2026-11-05T16:01:52Z",
+   "symbol": "CEG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 365.91,
+   "id": "AMG-202611091435-22372",
+   "items": [
+    "news:63026579",
+    "news:117247805",
+    "sec:0001628280-26-071872",
+    "earn:AMG:2026-11-09"
+   ],
+   "lanes": [
+    "1",
+    "3"
+   ],
+   "owner": "1",
+   "src_t": "2026-11-09",
+   "symbol": "AMG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 13.92,
+   "id": "AAL-202611091450-23109",
+   "items": [
+    "12:AAL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:35.556329685+00:00",
+   "symbol": "AAL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.985,
+   "id": "ABEO-202611091450-23110",
+   "items": [
+    "13:ABEO:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:22.293760276+00:00",
+   "symbol": "ABEO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 3.07,
+   "id": "ABEO-202611091435-22557",
+   "items": [
+    "14:ABEO:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:35:33.782588098+00:00",
+   "symbol": "ABEO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.985,
+   "id": "ABEO-202611091450-23111",
+   "items": [
+    "12:ABEO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:22.293760276+00:00",
+   "symbol": "ABEO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.6,
+   "id": "ABR-202611091435-22558",
+   "items": [
+    "17b:ABR:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:32:15.788569055+00:00",
+   "symbol": "ABR"
+  },
+  {
+   "check": "spread 4.3%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 10.065,
+   "id": "ACCV-202611091435-22560",
+   "items": [
+    "17b:ACCV:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:32:57.146032903+00:00",
+   "symbol": "ACCV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 10.075,
+   "id": "ACIC-202611091450-23112",
+   "items": [
+    "12:ACIC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:07.582198966+00:00",
+   "symbol": "ACIC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.405,
+   "id": "ADCT-202611091450-23113",
+   "items": [
+    "12:ADCT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:30.819479468+00:00",
+   "symbol": "ADCT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 13.51,
+   "id": "AEHL-202611091450-23114",
+   "items": [
+    "12:AEHL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:37:49.150366244+00:00",
+   "symbol": "AEHL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 15.82,
+   "id": "AG-202611091450-23115",
+   "items": [
+    "12:AG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:38.540425547+00:00",
+   "symbol": "AG"
+  },
+  {
+   "check": "ticker change 2026-11-05",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 9.215,
+   "id": "AGLT-202611091435-22571",
+   "items": [
+    "17b:AGLT:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:35:06.209055190+00:00",
+   "symbol": "AGLT"
+  },
+  {
+   "check": "spread 2.1%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 9.45,
+   "id": "AIOK-202611091450-23116",
+   "items": [
+    "17b:AIOK:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:41:16.281985784+00:00",
+   "symbol": "AIOK"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 3.0,
+   "id": "AIOT-202611091450-23117",
+   "items": [
+    "13:AIOT:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:35.094409407+00:00",
+   "symbol": "AIOT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 3.0,
+   "id": "AIOT-202611091450-23118",
+   "items": [
+    "12:AIOT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:35.094409407+00:00",
+   "symbol": "AIOT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 80.18,
+   "id": "AKAM-202611091450-23119",
+   "items": [
+    "12:AKAM:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:38.016592422+00:00",
+   "symbol": "AKAM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 206.275,
+   "id": "ALAB-202611091450-23120",
+   "items": [
+    "12:ALAB:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:18.447302988+00:00",
+   "symbol": "ALAB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.69,
+   "id": "ALIT-202611091450-23121",
+   "items": [
+    "12:ALIT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:44:01.773199079+00:00",
+   "symbol": "ALIT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.01,
+   "id": "ALLO-202611091435-22579",
+   "items": [
+    "12:ALLO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:36.479886800+00:00",
+   "symbol": "ALLO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 8.58,
+   "id": "ALM-202611091450-23122",
+   "items": [
+    "12:ALM:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:17.822337965+00:00",
+   "symbol": "ALM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 6.29,
+   "id": "ALTG-202611091450-23123",
+   "items": [
+    "12:ALTG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:16.547129263+00:00",
+   "symbol": "ALTG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 473.2425,
+   "id": "AMD-202611091450-23124",
+   "items": [
+    "12:AMD:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:42.595079614+00:00",
+   "symbol": "AMD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 22.55,
+   "id": "AMRC-202611091450-23125",
+   "items": [
+    "12:AMRC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:17.506030340+00:00",
+   "symbol": "AMRC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 400.935,
+   "id": "APP-202611091450-23126",
+   "items": [
+    "13:APP:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:31.579467318+00:00",
+   "symbol": "APP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 16.245,
+   "id": "ARIS-202611091450-23127",
+   "items": [
+    "12:ARIS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:46:10.324057591+00:00",
+   "symbol": "ARIS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 24.09,
+   "id": "ARLP-202611091450-23128",
+   "items": [
+    "11:ARLP:2026-11-09"
+   ],
+   "lanes": [
+    "11"
+   ],
+   "owner": "11",
+   "src_t": "2026-11-09T14:50:02.924775727+00:00",
+   "symbol": "ARLP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 49.67,
+   "id": "ARWR-202611091450-23129",
+   "items": [
+    "13:ARWR:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:37.722828710+00:00",
+   "symbol": "ARWR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 50.08,
+   "id": "ARWR-202611091435-22607",
+   "items": [
+    "14:ARWR:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:35:37.095593828+00:00",
+   "symbol": "ARWR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 49.67,
+   "id": "ARWR-202611091450-23130",
+   "items": [
+    "12:ARWR:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:37.722828710+00:00",
+   "symbol": "ARWR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 16.46,
+   "id": "ASIX-202611091450-23131",
+   "items": [
+    "12:ASIX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:45:43.848573116+00:00",
+   "symbol": "ASIX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 4.86,
+   "id": "ASM-202611091450-23132",
+   "items": [
+    "12:ASM:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:48:44.068500637+00:00",
+   "symbol": "ASM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 33.87,
+   "id": "ASX-202611091450-23133",
+   "items": [
+    "12:ASX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:35.226910350+00:00",
+   "symbol": "ASX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 186.18,
+   "id": "ATI-202611091450-23134",
+   "items": [
+    "12:ATI:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:18.322535750+00:00",
+   "symbol": "ATI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 97.75,
+   "id": "AU-202611091435-22615",
+   "items": [
+    "12:AU:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:33:36.635105556+00:00",
+   "symbol": "AU"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 8.07,
+   "id": "AUDC-202611091450-23135",
+   "items": [
+    "12:AUDC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:37:06.612802160+00:00",
+   "symbol": "AUDC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 83.095,
+   "id": "AUGO-202611091450-23136",
+   "items": [
+    "12:AUGO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.540297037+00:00",
+   "symbol": "AUGO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 26.465,
+   "id": "AYA-202611091450-23137",
+   "items": [
+    "12:AYA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:12.052375365+00:00",
+   "symbol": "AYA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 42.035,
+   "id": "B-202611091450-23138",
+   "items": [
+    "13:B:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:37.757926924+00:00",
+   "symbol": "B"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 42.035,
+   "id": "B-202611091450-23139",
+   "items": [
+    "12:B:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:37.757926924+00:00",
+   "symbol": "B"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 26.045,
+   "id": "BBVA-202611091450-23140",
+   "items": [
+    "12:BBVA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:30.044906593+00:00",
+   "symbol": "BBVA"
+  },
+  {
+   "check": "spread 2.4%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 7.92,
+   "id": "BDSX-202611091450-23141",
+   "items": [
+    "17b:BDSX:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:47:11.924061513+00:00",
+   "symbol": "BDSX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 188.76,
+   "id": "BE-202611091435-22624",
+   "items": [
+    "12:BE:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:31.309489553+00:00",
+   "symbol": "BE"
+  },
+  {
+   "check": "spread 2.2%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 388.24,
+   "id": "BIO-202611091450-23142",
+   "items": [
+    "13:BIO:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:38.417826703+00:00",
+   "symbol": "BIO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 3.33,
+   "id": "BMM-202611091450-23143",
+   "items": [
+    "12:BMM:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:48:36.905451321+00:00",
+   "symbol": "BMM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 18.69,
+   "id": "BMNR-202611091450-23144",
+   "items": [
+    "13:BMNR:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:40.074566179+00:00",
+   "symbol": "BMNR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 4.85,
+   "id": "BSBR-202611091450-23145",
+   "items": [
+    "12:BSBR:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:15.231932287+00:00",
+   "symbol": "BSBR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 6.075,
+   "id": "BYND-202611091450-23146",
+   "items": [
+    "17b:BYND:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:37:03.823048547+00:00",
+   "symbol": "BYND"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.45,
+   "id": "CABA-202611091450-23147",
+   "items": [
+    "12:CABA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:10.483852646+00:00",
+   "symbol": "CABA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 251.81,
+   "id": "CEG-202611091450-23148",
+   "items": [
+    "12:CEG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:40.030181783+00:00",
+   "symbol": "CEG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 23.92,
+   "id": "CEVA-202611091435-22650",
+   "items": [
+    "12:CEVA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:33:58.298616766+00:00",
+   "symbol": "CEVA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 266.5,
+   "id": "CIEN-202611091450-23149",
+   "items": [
+    "12:CIEN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:21.633330430+00:00",
+   "symbol": "CIEN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 5.16,
+   "id": "CLOV-202611091450-23150",
+   "items": [
+    "13:CLOV:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:25.877925797+00:00",
+   "symbol": "CLOV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 4.595,
+   "id": "CLRO-202611091435-22657",
+   "items": [
+    "12:CLRO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:01.351359353+00:00",
+   "symbol": "CLRO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.415,
+   "id": "CNH-202611091450-23151",
+   "items": [
+    "12:CNH:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:40.226722592+00:00",
+   "symbol": "CNH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 3.93,
+   "id": "COUR-202611091435-22670",
+   "items": [
+    "12:COUR:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:01.645134017+00:00",
+   "symbol": "COUR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 67.2,
+   "id": "CRCL-202611091450-23152",
+   "items": [
+    "13:CRCL:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:22.513496284+00:00",
+   "symbol": "CRCL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 10.35,
+   "id": "CSIQ-202611091450-23153",
+   "items": [
+    "17b:CSIQ:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:49:11.489635756+00:00",
+   "symbol": "CSIQ"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 27.0,
+   "id": "CTEV-202611091450-23154",
+   "items": [
+    "12:CTEV:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:28.191863089+00:00",
+   "symbol": "CTEV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 4.9,
+   "id": "CWH-202611091435-22678",
+   "items": [
+    "12:CWH:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:00.830923155+00:00",
+   "symbol": "CWH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.665,
+   "id": "CYPH-202611091450-23155",
+   "items": [
+    "12:CYPH:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:09.851237365+00:00",
+   "symbol": "CYPH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 36.295,
+   "id": "DB-202611091450-23156",
+   "items": [
+    "12:DB:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:11.049477898+00:00",
+   "symbol": "DB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 6.44,
+   "id": "DC-202611091435-22680",
+   "items": [
+    "12:DC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:05.659317932+00:00",
+   "symbol": "DC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 138.74,
+   "id": "DCO-202611091450-23157",
+   "items": [
+    "12:DCO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:36.656096703+00:00",
+   "symbol": "DCO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 18.61,
+   "id": "DCTH-202611091450-23158",
+   "items": [
+    "13:DCTH:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:05.109177549+00:00",
+   "symbol": "DCTH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 18.61,
+   "id": "DCTH-202611091450-23159",
+   "items": [
+    "12:DCTH:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:05.109177549+00:00",
+   "symbol": "DCTH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 15.63,
+   "id": "DDI-202611091450-23160",
+   "items": [
+    "12:DDI:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:47:34.751588060+00:00",
+   "symbol": "DDI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 3.16,
+   "id": "DFDV-202611091435-22681",
+   "items": [
+    "17b:DFDV:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:33:17.307932294+00:00",
+   "symbol": "DFDV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 3.16,
+   "id": "DFDV-202611091435-22682",
+   "items": [
+    "12:DFDV:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:33:17.307932294+00:00",
+   "symbol": "DFDV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.88,
+   "id": "DFH-202611091450-23161",
+   "items": [
+    "12:DFH:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:46:17.514792715+00:00",
+   "symbol": "DFH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.82,
+   "id": "DFNS-202611091450-23162",
+   "items": [
+    "13:DFNS:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:37.909146141+00:00",
+   "symbol": "DFNS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.82,
+   "id": "DFNS-202611091450-23163",
+   "items": [
+    "17b:DFNS:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:50:37.909146141+00:00",
+   "symbol": "DFNS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 18.33,
+   "id": "DKNG-202611091450-23164",
+   "items": [
+    "13:DKNG:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:37.914206624+00:00",
+   "symbol": "DKNG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 3.95,
+   "id": "DNUT-202611091450-23165",
+   "items": [
+    "17b:DNUT:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:49:46.149084850+00:00",
+   "symbol": "DNUT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 31.2,
+   "id": "DPC-202611091450-23166",
+   "items": [
+    "12:DPC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:25.085477104+00:00",
+   "symbol": "DPC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 26.38,
+   "id": "DRD-202611091450-23167",
+   "items": [
+    "13:DRD:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:17.579525214+00:00",
+   "symbol": "DRD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 26.7,
+   "id": "DRD-202611091435-22689",
+   "items": [
+    "12:DRD:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:17.021853058+00:00",
+   "symbol": "DRD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 7.11,
+   "id": "EPRX-202611091435-22709",
+   "items": [
+    "12:EPRX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:28.926570237+00:00",
+   "symbol": "EPRX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 30.62,
+   "id": "ERO-202611091450-23168",
+   "items": [
+    "12:ERO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:14.166386996+00:00",
+   "symbol": "ERO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 8.18,
+   "id": "EXK-202611091450-23169",
+   "items": [
+    "12:EXK:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:37.922328602+00:00",
+   "symbol": "EXK"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 62.35,
+   "id": "FCX-202611091450-23170",
+   "items": [
+    "12:FCX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:32.656155687+00:00",
+   "symbol": "FCX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 257.625,
+   "id": "FERG-202611091450-23171",
+   "items": [
+    "12:FERG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:48:53.970904653+00:00",
+   "symbol": "FERG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.91,
+   "id": "FHTX-202611091450-23172",
+   "items": [
+    "12:FHTX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:44:48.702960794+00:00",
+   "symbol": "FHTX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 75.85,
+   "id": "FLEX-202611091450-23173",
+   "items": [
+    "12:FLEX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:01.035693804+00:00",
+   "symbol": "FLEX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 22.04,
+   "id": "FLY-202611091450-23174",
+   "items": [
+    "13:FLY:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:00.830506347+00:00",
+   "symbol": "FLY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 21.04,
+   "id": "FPS-202611091450-23175",
+   "items": [
+    "12:FPS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:35.113489139+00:00",
+   "symbol": "FPS"
+  },
+  {
+   "check": "spread 2.4%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 180.82,
+   "id": "FRHC-202611091450-23176",
+   "items": [
+    "17b:FRHC:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:31:00.012960012+00:00",
+   "symbol": "FRHC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 188.765,
+   "id": "FTAI-202611091435-22737",
+   "items": [
+    "12:FTAI:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:59.112543132+00:00",
+   "symbol": "FTAI"
+  },
+  {
+   "check": "spread 4.3%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 12.46,
+   "id": "FTH-202611091435-22738",
+   "items": [
+    "14:FTH:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:35:32.510362235+00:00",
+   "symbol": "FTH"
+  },
+  {
+   "check": "spread 4.3%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 12.46,
+   "id": "FTH-202611091435-22739",
+   "items": [
+    "17b:FTH:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:35:32.510362235+00:00",
+   "symbol": "FTH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 12.46,
+   "id": "FTH-202611091435-22740",
+   "items": [
+    "12:FTH:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:32.510362235+00:00",
+   "symbol": "FTH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 5.55,
+   "id": "FWDI-202611091450-23177",
+   "items": [
+    "13:FWDI:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:20.058226054+00:00",
+   "symbol": "FWDI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 5.55,
+   "id": "FWDI-202611091450-23178",
+   "items": [
+    "12:FWDI:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:20.058226054+00:00",
+   "symbol": "FWDI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 7.755,
+   "id": "GFR-202611091450-23179",
+   "items": [
+    "12:GFR:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:48:20.568059159+00:00",
+   "symbol": "GFR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 167.35,
+   "id": "GIBO-202611091450-23180",
+   "items": [
+    "12:GIBO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:31:17.503424294+00:00",
+   "symbol": "GIBO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 26.42,
+   "id": "GLIBA-202611091450-23181",
+   "items": [
+    "12:GLIBA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:45:00.699333232+00:00",
+   "symbol": "GLIBA"
+  },
+  {
+   "check": "delisting notice (8-K 3.01)",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 2.2,
+   "id": "GLND-202611091435-22751",
+   "items": [
+    "17b:GLND:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:35:13.125309029+00:00",
+   "symbol": "GLND"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 11.68,
+   "id": "GMRS-202611091435-22756",
+   "items": [
+    "17b:GMRS:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:35:31.943255234+00:00",
+   "symbol": "GMRS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 11.5,
+   "id": "GMRS-202611091450-23182",
+   "items": [
+    "12:GMRS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:47:03.262288066+00:00",
+   "symbol": "GMRS"
+  },
+  {
+   "check": "spread 4.6%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 18.7,
+   "id": "GNE-202611091450-23183",
+   "items": [
+    "13:GNE:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:27.832269674+00:00",
+   "symbol": "GNE"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 10.13,
+   "id": "GOOD-202611091450-23184",
+   "items": [
+    "13:GOOD:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:38.366833318+00:00",
+   "symbol": "GOOD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 40.5,
+   "id": "GSL-202611091450-23185",
+   "items": [
+    "12:GSL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:35.014178521+00:00",
+   "symbol": "GSL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 4.255,
+   "id": "GT-202611091450-23186",
+   "items": [
+    "12:GT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:40.266106880+00:00",
+   "symbol": "GT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 5.27,
+   "id": "GTN-202611091435-22762",
+   "items": [
+    "12:GTN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:33:30.381501423+00:00",
+   "symbol": "GTN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 22.14,
+   "id": "HBM-202611091450-23187",
+   "items": [
+    "12:HBM:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:35.663084725+00:00",
+   "symbol": "HBM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 9.36,
+   "id": "HE-202611091450-23188",
+   "items": [
+    "12:HE:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:38.356002285+00:00",
+   "symbol": "HE"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 15.47,
+   "id": "HL-202611091450-23189",
+   "items": [
+    "12:HL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:38.260510595+00:00",
+   "symbol": "HL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.285,
+   "id": "HLLY-202611091450-23190",
+   "items": [
+    "17a:HLLY:2026-11-09"
+   ],
+   "lanes": [
+    "17a"
+   ],
+   "owner": "17a",
+   "src_t": "2026-11-09T14:49:36.328508600+00:00",
+   "symbol": "HLLY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 2.27,
+   "id": "HLLY-202611091435-22767",
+   "items": [
+    "17b:HLLY:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:34:15.500136279+00:00",
+   "symbol": "HLLY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 4.68,
+   "id": "HSLV-202611091435-22771",
+   "items": [
+    "12:HSLV:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:33:27.166912140+00:00",
+   "symbol": "HSLV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.635,
+   "id": "HTZ-202611091450-23191",
+   "items": [
+    "13:HTZ:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:57.305073993+00:00",
+   "symbol": "HTZ"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 20.25,
+   "id": "HYMC-202611091435-22775",
+   "items": [
+    "12:HYMC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:22.688259643+00:00",
+   "symbol": "HYMC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 6.505,
+   "id": "IBRX-202611091450-23192",
+   "items": [
+    "13:IBRX:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:40.113228230+00:00",
+   "symbol": "IBRX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 6.505,
+   "id": "IBRX-202611091450-23193",
+   "items": [
+    "12:IBRX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:40.113228230+00:00",
+   "symbol": "IBRX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 8.01,
+   "id": "IE-202611091435-22780",
+   "items": [
+    "12:IE:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:40.589133916+00:00",
+   "symbol": "IE"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.875,
+   "id": "IHRT-202611091435-22782",
+   "items": [
+    "12:IHRT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:00.131198271+00:00",
+   "symbol": "IHRT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 34.56,
+   "id": "IMVT-202611091435-22786",
+   "items": [
+    "12:IMVT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:12.713791403+00:00",
+   "symbol": "IMVT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 9.205,
+   "id": "INNV-202611091450-23194",
+   "items": [
+    "12:INNV:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:43:11.632152445+00:00",
+   "symbol": "INNV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.355,
+   "id": "INO-202611091450-23195",
+   "items": [
+    "17a:INO:2026-11-09"
+   ],
+   "lanes": [
+    "17a"
+   ],
+   "owner": "17a",
+   "src_t": "2026-11-09T14:50:36.341615494+00:00",
+   "symbol": "INO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.275,
+   "id": "INO-202611091435-22789",
+   "items": [
+    "17b:INO:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:34:11.815340343+00:00",
+   "symbol": "INO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.275,
+   "id": "INO-202611091435-22790",
+   "items": [
+    "12:INO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:11.815340343+00:00",
+   "symbol": "INO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 28.24,
+   "id": "IONS-202611091450-23196",
+   "items": [
+    "13:IONS:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:27.619761356+00:00",
+   "symbol": "IONS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 28.24,
+   "id": "IONS-202611091450-23197",
+   "items": [
+    "14:IONS:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:50:27.619761356+00:00",
+   "symbol": "IONS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 28.24,
+   "id": "IONS-202611091450-23198",
+   "items": [
+    "12:IONS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:27.619761356+00:00",
+   "symbol": "IONS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 29.5,
+   "id": "IRLA-202611091450-23199",
+   "items": [
+    "12:IRLA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:39.127900318+00:00",
+   "symbol": "IRLA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.97,
+   "id": "JANX-202611091450-23200",
+   "items": [
+    "13:JANX:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:32.538482451+00:00",
+   "symbol": "JANX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.97,
+   "id": "JANX-202611091450-23201",
+   "items": [
+    "14:JANX:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:50:32.538482451+00:00",
+   "symbol": "JANX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 3.89,
+   "id": "JBLU-202611091450-23202",
+   "items": [
+    "12:JBLU:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:33.488374462+00:00",
+   "symbol": "JBLU"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 29.37,
+   "id": "JHX-202611091450-23203",
+   "items": [
+    "12:JHX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:38.669270650+00:00",
+   "symbol": "JHX"
+  },
+  {
+   "check": "spread 6.2%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 13.255,
+   "id": "KELYA-202611091450-23204",
+   "items": [
+    "13:KELYA:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:30.198264981+00:00",
+   "symbol": "KELYA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 45.19,
+   "id": "KGS-202611091450-23205",
+   "items": [
+    "12:KGS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:01.670496670+00:00",
+   "symbol": "KGS"
+  },
+  {
+   "check": "spread 15.0%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 30.895,
+   "id": "KRSA-202611091435-22811",
+   "items": [
+    "17b:KRSA:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:30:05.517865487+00:00",
+   "symbol": "KRSA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 7.0,
+   "id": "LAND-202611091450-23206",
+   "items": [
+    "13:LAND:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:49.297911287+00:00",
+   "symbol": "LAND"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.95,
+   "id": "LFMD-202611091450-23207",
+   "items": [
+    "12:LFMD:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:12.966608062+00:00",
+   "symbol": "LFMD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 28.375,
+   "id": "LGN-202611091435-22822",
+   "items": [
+    "12:LGN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:32:27.239139114+00:00",
+   "symbol": "LGN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 20.68,
+   "id": "LINC-202611091450-23208",
+   "items": [
+    "12:LINC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:10.886436940+00:00",
+   "symbol": "LINC"
+  },
+  {
+   "check": "spread 6.7%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 13.28,
+   "id": "LTGO-202611091450-23209",
+   "items": [
+    "17b:LTGO:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:45:59.737371975+00:00",
+   "symbol": "LTGO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.86,
+   "id": "LXRX-202611091450-23210",
+   "items": [
+    "13:LXRX:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:54.838108208+00:00",
+   "symbol": "LXRX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.835,
+   "id": "LXRX-202611091435-22830",
+   "items": [
+    "12:LXRX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:35.948945998+00:00",
+   "symbol": "LXRX"
+  },
+  {
+   "check": "spread 2.2%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 15.225,
+   "id": "LYNX-202611091435-22832",
+   "items": [
+    "17b:LYNX:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:35:32.910457760+00:00",
+   "symbol": "LYNX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 28.715,
+   "id": "MGNI-202611091450-23211",
+   "items": [
+    "13:MGNI:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:19.424533801+00:00",
+   "symbol": "MGNI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 84.31,
+   "id": "MNDY-202611091450-23212",
+   "items": [
+    "13:MNDY:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:10.778317908+00:00",
+   "symbol": "MNDY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 81.69,
+   "id": "MNDY-202611091435-22846",
+   "items": [
+    "12:MNDY:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:02.326918058+00:00",
+   "symbol": "MNDY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.88,
+   "id": "MNTS-202611091435-22848",
+   "items": [
+    "17b:MNTS:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:34:14.526116210+00:00",
+   "symbol": "MNTS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 63.89,
+   "id": "MT-202611091450-23213",
+   "items": [
+    "12:MT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:20.063241330+00:00",
+   "symbol": "MT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 196.82,
+   "id": "MTRN-202611091450-23214",
+   "items": [
+    "12:MTRN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:45:30.650787013+00:00",
+   "symbol": "MTRN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 16.1,
+   "id": "MUX-202611091435-22856",
+   "items": [
+    "12:MUX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:14.616808098+00:00",
+   "symbol": "MUX"
+  },
+  {
+   "check": "delisting notice (8-K 3.01)",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.48,
+   "id": "NCPL-202611091435-22860",
+   "items": [
+    "17b:NCPL:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:34:34.726532460+00:00",
+   "symbol": "NCPL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.51,
+   "id": "NCPL-202611091450-23215",
+   "items": [
+    "12:NCPL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:48:20.048068822+00:00",
+   "symbol": "NCPL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.785,
+   "id": "NEOV-202611091450-23216",
+   "items": [
+    "13:NEOV:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:05.694949623+00:00",
+   "symbol": "NEOV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.785,
+   "id": "NEOV-202611091450-23217",
+   "items": [
+    "17a:NEOV:2026-11-09"
+   ],
+   "lanes": [
+    "17a"
+   ],
+   "owner": "17a",
+   "src_t": "2026-11-09T14:50:05.694949623+00:00",
+   "symbol": "NEOV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.105,
+   "id": "NEXA-202611091450-23218",
+   "items": [
+    "12:NEXA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:47:01.365045832+00:00",
+   "symbol": "NEXA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 6.78,
+   "id": "NG-202611091435-22864",
+   "items": [
+    "12:NG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:26.367129420+00:00",
+   "symbol": "NG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.15,
+   "id": "NKTX-202611091450-23219",
+   "items": [
+    "13:NKTX:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:35.110837150+00:00",
+   "symbol": "NKTX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.325,
+   "id": "NKTX-202611091435-22866",
+   "items": [
+    "14:NKTX:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:35:01.115467572+00:00",
+   "symbol": "NKTX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.325,
+   "id": "NKTX-202611091435-22867",
+   "items": [
+    "12:NKTX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:01.115467572+00:00",
+   "symbol": "NKTX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.9,
+   "id": "NNBR-202611091450-23220",
+   "items": [
+    "12:NNBR:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:46:16.493992252+00:00",
+   "symbol": "NNBR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 92.4,
+   "id": "NRG-202611091435-22869",
+   "items": [
+    "12:NRG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:28.588486562+00:00",
+   "symbol": "NRG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 173.9868,
+   "id": "NVDA-202611091450-23221",
+   "items": [
+    "12:NVDA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:43.484721001+00:00",
+   "symbol": "NVDA"
+  },
+  {
+   "check": "spread 4.7%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 37.3701,
+   "id": "OBT-202611091450-23222",
+   "items": [
+    "14:OBT:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:31:25.613591829+00:00",
+   "symbol": "OBT"
+  },
+  {
+   "check": "spread 4.7%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 37.3701,
+   "id": "OBT-202611091450-23223",
+   "items": [
+    "17b:OBT:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:31:25.613591829+00:00",
+   "symbol": "OBT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 6.21,
+   "id": "OCUL-202611091450-23224",
+   "items": [
+    "13:OCUL:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:51.745237114+00:00",
+   "symbol": "OCUL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 6.21,
+   "id": "OCUL-202611091450-23225",
+   "items": [
+    "12:OCUL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:51.745237114+00:00",
+   "symbol": "OCUL"
+  },
+  {
+   "check": "spread 6.0%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 19.53,
+   "id": "ODTX-202611091435-22884",
+   "items": [
+    "17b:ODTX:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:30:01.854141485+00:00",
+   "symbol": "ODTX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 6.74,
+   "id": "OFIX-202611091450-23226",
+   "items": [
+    "13:OFIX:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:39.471717143+00:00",
+   "symbol": "OFIX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 6.85,
+   "id": "OFIX-202611091435-22886",
+   "items": [
+    "12:OFIX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:24.201162197+00:00",
+   "symbol": "OFIX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.35,
+   "id": "OPEN-202611091450-23227",
+   "items": [
+    "13:OPEN:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:26.588523593+00:00",
+   "symbol": "OPEN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 8.065,
+   "id": "PANL-202611091435-22907",
+   "items": [
+    "12:PANL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:00.770461162+00:00",
+   "symbol": "PANL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.885,
+   "id": "PCT-202611091435-22910",
+   "items": [
+    "12:PCT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:39.032346233+00:00",
+   "symbol": "PCT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.07,
+   "id": "PDSB-202611091450-23228",
+   "items": [
+    "17b:PDSB:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:44:28.140032989+00:00",
+   "symbol": "PDSB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.07,
+   "id": "PDSB-202611091450-23229",
+   "items": [
+    "12:PDSB:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:44:28.140032989+00:00",
+   "symbol": "PDSB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 274.0,
+   "id": "PLPC-202611091450-23230",
+   "items": [
+    "12:PLPC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:35.405451671+00:00",
+   "symbol": "PLPC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.48,
+   "id": "PLUG-202611091450-23231",
+   "items": [
+    "12:PLUG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:36.227513704+00:00",
+   "symbol": "PLUG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 20.35,
+   "id": "PPTA-202611091450-23232",
+   "items": [
+    "13:PPTA:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:22.730238988+00:00",
+   "symbol": "PPTA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 20.46,
+   "id": "PPTA-202611091435-22921",
+   "items": [
+    "12:PPTA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:32:40.074434520+00:00",
+   "symbol": "PPTA"
+  },
+  {
+   "check": "spread 3.0%",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 34.79,
+   "id": "PSIX-202611091450-23233",
+   "items": [
+    "13:PSIX:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:34.799195358+00:00",
+   "symbol": "PSIX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 36.74,
+   "id": "PSUS-202611091450-23234",
+   "items": [
+    "11:PSUS:2026-11-09"
+   ],
+   "lanes": [
+    "11"
+   ],
+   "owner": "11",
+   "src_t": "2026-11-09T14:49:58.827242759+00:00",
+   "symbol": "PSUS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 36.74,
+   "id": "PSUS-202611091450-23235",
+   "items": [
+    "13:PSUS:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:58.827242759+00:00",
+   "symbol": "PSUS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.44,
+   "id": "PUSA-202611091450-23236",
+   "items": [
+    "17b:PUSA:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:46:05.453173364+00:00",
+   "symbol": "PUSA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.81,
+   "id": "QXO-202611091450-23237",
+   "items": [
+    "12:QXO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:42.642114703+00:00",
+   "symbol": "QXO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 277.18,
+   "id": "RGLD-202611091450-23238",
+   "items": [
+    "13:RGLD:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:09.131510437+00:00",
+   "symbol": "RGLD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 81.82,
+   "id": "ROAD-202611091450-23239",
+   "items": [
+    "12:ROAD:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:25.326259595+00:00",
+   "symbol": "ROAD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.62,
+   "id": "RZAI-202611091450-23240",
+   "items": [
+    "17b:RZAI:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:34:52.159096871+00:00",
+   "symbol": "RZAI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 27.585,
+   "id": "SA-202611091435-22955",
+   "items": [
+    "12:SA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:04.519328587+00:00",
+   "symbol": "SA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 12.3,
+   "id": "SAN-202611091450-23241",
+   "items": [
+    "12:SAN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:24.854458415+00:00",
+   "symbol": "SAN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 176.435,
+   "id": "SCCO-202611091450-23242",
+   "items": [
+    "12:SCCO:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:48:35.601992597+00:00",
+   "symbol": "SCCO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 7.875,
+   "id": "SCZM-202611091435-22960",
+   "items": [
+    "12:SCZM:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:31:32.397640314+00:00",
+   "symbol": "SCZM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 3.45,
+   "id": "SERV-202611091435-22965",
+   "items": [
+    "12:SERV:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:32.886107642+00:00",
+   "symbol": "SERV"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 26.0,
+   "id": "SGRY-202611091450-23243",
+   "items": [
+    "13:SGRY:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:34.596016912+00:00",
+   "symbol": "SGRY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 26.0,
+   "id": "SGRY-202611091450-23244",
+   "items": [
+    "12:SGRY:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:34.596016912+00:00",
+   "symbol": "SGRY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 76.035,
+   "id": "SHAK-202611091435-22972",
+   "items": [
+    "12:SHAK:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:09.105130845+00:00",
+   "symbol": "SHAK"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.57,
+   "id": "SHMD-202611091450-23245",
+   "items": [
+    "17a:SHMD:2026-11-09"
+   ],
+   "lanes": [
+    "17a"
+   ],
+   "owner": "17a",
+   "src_t": "2026-11-09T14:50:25.433495415+00:00",
+   "symbol": "SHMD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 2.5,
+   "id": "SHMD-202611091435-22973",
+   "items": [
+    "12:SHMD:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:33:52.826606419+00:00",
+   "symbol": "SHMD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 6.745,
+   "id": "SLDB-202611091435-22976",
+   "items": [
+    "12:SLDB:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:06.273187861+00:00",
+   "symbol": "SLDB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.895,
+   "id": "SLDP-202611091450-23246",
+   "items": [
+    "13:SLDP:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:22.053627823+00:00",
+   "symbol": "SLDP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 0.6034,
+   "id": "SOC-202611091450-23247",
+   "items": [
+    "13:SOC:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:40.233524885+00:00",
+   "symbol": "SOC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 0.6034,
+   "id": "SOC-202611091450-23248",
+   "items": [
+    "12:SOC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:40.233524885+00:00",
+   "symbol": "SOC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 4.01,
+   "id": "SOUN-202611091450-23249",
+   "items": [
+    "13:SOUN:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:30.857168903+00:00",
+   "symbol": "SOUN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 42.205,
+   "id": "SPRB-202611091450-23250",
+   "items": [
+    "17b:SPRB:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:48:40.777465615+00:00",
+   "symbol": "SPRB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 42.205,
+   "id": "SPRB-202611091450-23251",
+   "items": [
+    "12:SPRB:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:48:40.777465615+00:00",
+   "symbol": "SPRB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 13.84,
+   "id": "SSL-202611091450-23252",
+   "items": [
+    "12:SSL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:29.500727028+00:00",
+   "symbol": "SSL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 14.055,
+   "id": "SSMR-202611091435-22987",
+   "items": [
+    "12:SSMR:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:12.674841205+00:00",
+   "symbol": "SSMR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 3.55,
+   "id": "STLN-202611091450-23253",
+   "items": [
+    "13:STLN:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:16.833514568+00:00",
+   "symbol": "STLN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 3.73,
+   "id": "STLN-202611091435-22990",
+   "items": [
+    "12:STLN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:20.345374593+00:00",
+   "symbol": "STLN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 265.07,
+   "id": "STRL-202611091435-22992",
+   "items": [
+    "12:STRL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:00.016048442+00:00",
+   "symbol": "STRL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 9.27,
+   "id": "SVM-202611091435-22996",
+   "items": [
+    "12:SVM:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:33:05.805614966+00:00",
+   "symbol": "SVM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 15.19,
+   "id": "SVRN-202611091450-23254",
+   "items": [
+    "12:SVRN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:13.238903625+00:00",
+   "symbol": "SVRN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 63.77,
+   "id": "TECK-202611091450-23255",
+   "items": [
+    "12:TECK:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:28.500756584+00:00",
+   "symbol": "TECK"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 7.335,
+   "id": "TGB-202611091450-23256",
+   "items": [
+    "12:TGB:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:43.208419726+00:00",
+   "symbol": "TGB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 10.87,
+   "id": "TH-202611091450-23257",
+   "items": [
+    "12:TH:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:39.963018720+00:00",
+   "symbol": "TH"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 10.775,
+   "id": "TIC-202611091435-23008",
+   "items": [
+    "12:TIC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:39.805976921+00:00",
+   "symbol": "TIC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 5.61,
+   "id": "TLS-202611091450-23258",
+   "items": [
+    "12:TLS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:32.103488496+00:00",
+   "symbol": "TLS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 2.35,
+   "id": "TMC-202611091435-23009",
+   "items": [
+    "12:TMC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:34:59.669927724+00:00",
+   "symbol": "TMC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 4.325,
+   "id": "TNXP-202611091450-23259",
+   "items": [
+    "13:TNXP:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:36.350583405+00:00",
+   "symbol": "TNXP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 4.34,
+   "id": "TNXP-202611091435-23013",
+   "items": [
+    "17b:TNXP:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:34:40.403341201+00:00",
+   "symbol": "TNXP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 4.325,
+   "id": "TNXP-202611091450-23260",
+   "items": [
+    "12:TNXP:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:36.350583405+00:00",
+   "symbol": "TNXP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 14.175,
+   "id": "TOP-202611091450-23261",
+   "items": [
+    "12:TOP:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:38:06.709840162+00:00",
+   "symbol": "TOP"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 63.4,
+   "id": "TPB-202611091450-23262",
+   "items": [
+    "12:TPB:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:37.172720057+00:00",
+   "symbol": "TPB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 108.0,
+   "id": "TRNS-202611091450-23263",
+   "items": [
+    "12:TRNS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:37:16.110042525+00:00",
+   "symbol": "TRNS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.595,
+   "id": "TROX-202611091450-23264",
+   "items": [
+    "12:TROX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:36.434280619+00:00",
+   "symbol": "TROX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 14.0148,
+   "id": "TTD-202611091450-23265",
+   "items": [
+    "12:TTD:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:43.317634395+00:00",
+   "symbol": "TTD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 119.35,
+   "id": "UAL-202611091450-23266",
+   "items": [
+    "13:UAL:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:12.108041133+00:00",
+   "symbol": "UAL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 119.35,
+   "id": "UAL-202611091450-23267",
+   "items": [
+    "12:UAL:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:12.108041133+00:00",
+   "symbol": "UAL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.98,
+   "id": "UAMY-202611091450-23268",
+   "items": [
+    "12:UAMY:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:43.818241754+00:00",
+   "symbol": "UAMY"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 8.07,
+   "id": "ULCC-202611091450-23269",
+   "items": [
+    "12:ULCC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:07.985307019+00:00",
+   "symbol": "ULCC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 14.49,
+   "id": "UMC-202611091450-23270",
+   "items": [
+    "12:UMC:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:42.011639198+00:00",
+   "symbol": "UMC"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 9.87,
+   "id": "UNG-202611091450-23271",
+   "items": [
+    "12:UNG:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:41.056347401+00:00",
+   "symbol": "UNG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 5.07,
+   "id": "UNIT-202611091450-23272",
+   "items": [
+    "12:UNIT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:51.869199804+00:00",
+   "symbol": "UNIT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 3.25,
+   "id": "USAS-202611091435-23029",
+   "items": [
+    "12:USAS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:22.556691365+00:00",
+   "symbol": "USAS"
+  },
+  {
+   "check": "spread 2.7%",
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 5.96,
+   "id": "USDE-202611091435-23031",
+   "items": [
+    "17b:USDE:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:35:21.310047735+00:00",
+   "symbol": "USDE"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 21.745,
+   "id": "UTI-202611091450-23273",
+   "items": [
+    "12:UTI:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:39.951802274+00:00",
+   "symbol": "UTI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 2.86,
+   "id": "VFF-202611091450-23274",
+   "items": [
+    "12:VFF:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:41.886641944+00:00",
+   "symbol": "VFF"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 38.45,
+   "id": "VIA-202611091450-23275",
+   "items": [
+    "12:VIA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:10.711533468+00:00",
+   "symbol": "VIA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 14.045,
+   "id": "VIR-202611091435-23038",
+   "items": [
+    "12:VIR:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:36.603414686+00:00",
+   "symbol": "VIR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 4.16,
+   "id": "VISN-202611091435-23039",
+   "items": [
+    "14:VISN:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:34:57.142516369+00:00",
+   "symbol": "VISN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 4.185,
+   "id": "VISN-202611091450-23276",
+   "items": [
+    "12:VISN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:32.285569998+00:00",
+   "symbol": "VISN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 9.465,
+   "id": "VMET-202611091450-23277",
+   "items": [
+    "13:VMET:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:31.888151761+00:00",
+   "symbol": "VMET"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 18.36,
+   "id": "VOGX-202611091435-23044",
+   "items": [
+    "12:VOGX:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:06.901923306+00:00",
+   "symbol": "VOGX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 134.915,
+   "id": "VRTS-202611091450-23278",
+   "items": [
+    "12:VRTS:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:42:26.261877979+00:00",
+   "symbol": "VRTS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 3.43,
+   "id": "VZLA-202611091450-23279",
+   "items": [
+    "12:VZLA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:04.315125543+00:00",
+   "symbol": "VZLA"
+  },
+  {
+   "check": "reverse split 2026-10-30",
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.105,
+   "id": "WFF-202611091450-23280",
+   "items": [
+    "17b:WFF:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:43:35.390473331+00:00",
+   "symbol": "WFF"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 142.67,
+   "id": "WPM-202611091450-23281",
+   "items": [
+    "13:WPM:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:12.923956458+00:00",
+   "symbol": "WPM"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 15.45,
+   "id": "XERS-202611091450-23282",
+   "items": [
+    "13:XERS:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:49:52.818156024+00:00",
+   "symbol": "XERS"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.365,
+   "id": "XLAB-202611091435-23062",
+   "items": [
+    "17b:XLAB:2026-11-09"
+   ],
+   "lanes": [
+    "17b"
+   ],
+   "owner": "17b",
+   "src_t": "2026-11-09T14:34:48.292167069+00:00",
+   "symbol": "XLAB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 10.275,
+   "id": "XRPN-202611091450-23283",
+   "items": [
+    "12:XRPN:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:30:02.066254166+00:00",
+   "symbol": "XRPN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.7,
+   "id": "XXII-202611091450-23284",
+   "items": [
+    "12:XXII:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:49:42.233200188+00:00",
+   "symbol": "XXII"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.275,
+   "id": "YMAT-202611091435-23070",
+   "items": [
+    "12:YMAT:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:29.315292226+00:00",
+   "symbol": "YMAT"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 1.08,
+   "id": "ZURA-202611091450-23285",
+   "items": [
+    "13:ZURA:2026-11-09"
+   ],
+   "lanes": [
+    "13"
+   ],
+   "owner": "13",
+   "src_t": "2026-11-09T14:50:28.222676434+00:00",
+   "symbol": "ZURA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.14,
+   "id": "ZURA-202611091435-23074",
+   "items": [
+    "14:ZURA:2026-11-09"
+   ],
+   "lanes": [
+    "14"
+   ],
+   "owner": "14",
+   "src_t": "2026-11-09T14:35:39.105329708+00:00",
+   "symbol": "ZURA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 1.14,
+   "id": "ZURA-202611091435-23075",
+   "items": [
+    "12:ZURA:2026-11-09"
+   ],
+   "lanes": [
+    "12"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:39.105329708+00:00",
+   "symbol": "ZURA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 173.9868,
+   "id": "NVDA-202611091435-23079",
+   "items": [
+    "18:NVDA:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "NVDA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 473.2425,
+   "id": "AMD-202611091435-23080",
+   "items": [
+    "18:AMD:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "AMD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 294.155,
+   "id": "GOOGL-202611091435-23081",
+   "items": [
+    "18:GOOGL:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "GOOGL"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 54.1,
+   "id": "RKLB-202611091435-23083",
+   "items": [
+    "18:RKLB:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "RKLB"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 27.7,
+   "id": "SMCI-202611091435-23084",
+   "items": [
+    "18:SMCI:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "SMCI"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 273.335,
+   "id": "AMZN-202611091435-23085",
+   "items": [
+    "18:AMZN:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "AMZN"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 369.17,
+   "id": "TSLA-202611091435-23086",
+   "items": [
+    "18:TSLA:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "TSLA"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 137.7,
+   "id": "SPCX-202611091450-23286",
+   "items": [
+    "18:SPCX:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:40.409263+00:00",
+   "symbol": "SPCX"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 49.67,
+   "id": "ARWR-202611091450-23287",
+   "items": [
+    "18:ARWR:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:40.409263+00:00",
+   "symbol": "ARWR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:50:40.409263+00:00",
+   "first_price": 312.36,
+   "id": "AVGO-202611091450-23288",
+   "items": [
+    "18:AVGO:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:50:40.409263+00:00",
+   "symbol": "AVGO"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 42.67,
+   "id": "B-202611091435-23087",
+   "items": [
+    "18:B:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "B"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 18.395,
+   "id": "BMNR-202611091435-23088",
+   "items": [
+    "18:BMNR:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "BMNR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 8.725,
+   "id": "CAPR-202611091435-23089",
+   "items": [
+    "18:CAPR:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "CAPR"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 251.81,
+   "id": "CEG-202611091435-23090",
+   "items": [
+    "18:CEG:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "CEG"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 5.285,
+   "id": "CRMD-202611091435-23091",
+   "items": [
+    "18:CRMD:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "CRMD"
+  },
+  {
+   "check": null,
+   "detected": "2026-11-09T14:35:41.106160+00:00",
+   "first_price": 50.08,
+   "id": "CRSP-202611091435-23092",
+   "items": [
+    "18:CRSP:2026-11-09"
+   ],
+   "lanes": [
+    "18"
+   ],
+   "owner": null,
+   "src_t": "2026-11-09T14:35:41.106160+00:00",
+   "symbol": "CRSP"
+  }
+ ],
+ "fills": [
+  {
+   "action": "close",
+   "book": "SCOUT-MAIN",
+   "closed": "2026-11-09T14:50:40.409263+00:00",
+   "entry": 98.79,
+   "exit": 96.46,
+   "horizon": 5,
+   "net": -11.6324,
+   "opened": "2026-11-02T14:50:40.360126+00:00",
+   "qty": 4,
+   "side": 1,
+   "symbol": "FELE",
+   "why": "horizon"
+  },
+  {
+   "action": "close",
+   "book": "SCOUT-MAIN",
+   "closed": "2026-11-09T14:50:40.409263+00:00",
+   "entry": 147.03,
+   "exit": 144.75,
+   "horizon": 5,
+   "net": -9.347,
+   "opened": "2026-11-02T14:50:40.360126+00:00",
+   "qty": 3,
+   "side": 1,
+   "symbol": "LSTR",
+   "why": "horizon"
+  },
+  {
+   "action": "close",
+   "book": "SCOUT-MAIN-coin",
+   "closed": "2026-11-09T14:50:40.409263+00:00",
+   "entry": 98.79,
+   "exit": 96.46,
+   "horizon": 5,
+   "net": -11.6324,
+   "opened": "2026-11-02T14:50:40.360126+00:00",
+   "qty": 4,
+   "side": 1,
+   "symbol": "FELE",
+   "why": "horizon"
+  },
+  {
+   "action": "close",
+   "book": "SCOUT-MAIN-coin",
+   "closed": "2026-11-09T14:50:40.409263+00:00",
+   "entry": 147.03,
+   "exit": 144.75,
+   "horizon": 5,
+   "net": 4.079,
+   "opened": "2026-11-02T14:50:40.360126+00:00",
+   "qty": 3,
+   "side": -1,
+   "symbol": "LSTR",
+   "why": "horizon"
+  },
+  {
+   "action": "close",
+   "book": "SCOUT-PENNY",
+   "closed": "2026-11-09T14:50:40.409263+00:00",
+   "entry": 4.4,
+   "exit": 4.35,
+   "horizon": 1,
+   "net": -1.4085,
+   "opened": "2026-11-06T14:55:40.641767+00:00",
+   "qty": 9,
+   "side": 1,
+   "symbol": "PSQL",
+   "why": "horizon"
+  },
+  {
+   "action": "close",
+   "book": "SCOUT-PENNY-coin",
+   "closed": "2026-11-09T14:50:40.409263+00:00",
+   "entry": 4.4,
+   "exit": 4.35,
+   "horizon": 1,
+   "net": -1.4085,
+   "opened": "2026-11-06T14:55:40.641767+00:00",
+   "qty": 9,
+   "side": 1,
+   "symbol": "PSQL",
+   "why": "horizon"
+  },
+  {
+   "action": "close",
+   "book": "SCOUT-PENNY-coin",
+   "closed": "2026-11-09T14:50:40.409263+00:00",
+   "entry": 1.14,
+   "exit": 1.08,
+   "horizon": 1,
+   "net": -1.8818,
+   "opened": "2026-11-09T14:35:41.106160+00:00",
+   "qty": 21,
+   "side": 1,
+   "symbol": "ZURA",
+   "why": "stop"
+  },
+  {
+   "action": "open",
+   "book": "SCOUT-MAIN",
+   "cost": 1.2142,
+   "horizon": 1,
+   "price": 84.31,
+   "qty": 5,
+   "side": 1,
+   "stop": 75.879,
+   "symbol": "MNDY"
+  },
+  {
+   "action": "open",
+   "book": "SCOUT-MAIN-coin",
+   "cost": 1.2142,
+   "horizon": 1,
+   "price": 84.31,
+   "qty": 5,
+   "side": 1,
+   "stop": 75.879,
+   "symbol": "MNDY"
+  },
+  {
+   "action": "open",
+   "book": "SCOUT-MAIN",
+   "cost": 1.0694,
+   "horizon": 5,
+   "price": 50.13,
+   "qty": 7,
+   "side": 1,
+   "stop": 45.117,
+   "symbol": "MTDR"
+  },
+  {
+   "action": "open",
+   "book": "SCOUT-MAIN-coin",
+   "cost": 1.0803,
+   "horizon": 5,
+   "price": 50.13,
+   "qty": 7,
+   "side": -1,
+   "stop": 55.143,
+   "symbol": "MTDR"
+  },
+  {
+   "action": "open",
+   "book": "SCOUT-MAIN",
+   "cost": 0.3516,
+   "horizon": 5,
+   "price": 29.175,
+   "qty": 1,
+   "side": 1,
+   "stop": 25.674,
+   "symbol": "VRDN"
+  },
+  {
+   "action": "open",
+   "book": "SCOUT-MAIN-coin",
+   "cost": 0.3516,
+   "horizon": 5,
+   "price": 29.175,
+   "qty": 1,
+   "side": 1,
+   "stop": 25.674,
+   "symbol": "VRDN"
+  }
+ ],
+ "finalists": {
+  "AIR": {
+   "confidence": 65,
+   "event": "AIR-202611091435-22454",
+   "horizon": 5,
+   "lane": "22",
+   "side": "long",
+   "verdict": "disagree"
+  },
+  "AMAT": {
+   "confidence": 45,
+   "event": "AMAT-202611091435-22453",
+   "horizon": 5,
+   "lane": "6",
+   "side": "long",
+   "verdict": "agree"
+  },
+  "GMRS": {
+   "confidence": 45,
+   "event": "GMRS-202611091435-22756",
+   "horizon": 5,
+   "lane": "17b",
+   "side": "short",
+   "verdict": "unclear"
+  },
+  "IONS": {
+   "confidence": 65,
+   "event": "IONS-202611091450-23196",
+   "horizon": 5,
+   "lane": "13",
+   "side": "short",
+   "verdict": "unclear"
+  },
+  "MNDY": {
+   "confidence": 65,
+   "event": "MNDY-202611091435-22314",
+   "horizon": 1,
+   "lane": "2",
+   "side": "long",
+   "verdict": "agree"
+  },
+  "MTDR": {
+   "confidence": 65,
+   "event": "MTDR-202611091435-22509",
+   "horizon": 5,
+   "lane": "4",
+   "side": "long",
+   "verdict": "agree"
+  },
+  "SOC": {
+   "confidence": 70,
+   "event": "SOC-202611091435-22339",
+   "horizon": 5,
+   "lane": "21",
+   "side": "short",
+   "verdict": "agree"
+  },
+  "SPRB": {
+   "confidence": 40,
+   "event": "SPRB-202611091450-23250",
+   "horizon": 5,
+   "lane": "17b",
+   "side": "short",
+   "verdict": "agree"
+  },
+  "SWK": {
+   "confidence": 55,
+   "event": "SWK-202611091435-22409",
+   "horizon": 5,
+   "lane": "22",
+   "side": "short",
+   "verdict": "agree"
+  },
+  "TSM": {
+   "confidence": 55,
+   "event": "TSM-202611091435-22490",
+   "horizon": 5,
+   "lane": "4",
+   "side": "long",
+   "verdict": "agree"
+  },
+  "VRDN": {
+   "confidence": 65,
+   "event": "VRDN-202611091435-22391",
+   "horizon": 5,
+   "lane": "8",
+   "side": "long",
+   "verdict": "agree"
+  }
+ },
+ "kind": "pass",
+ "lane_calls": {
+  "1": 2,
+  "10": 2,
+  "11": 1,
+  "13": 1,
+  "14": 2,
+  "17a": 1,
+  "17b": 2,
+  "2": 1,
+  "21": 2,
+  "22": 2,
+  "3": 2,
+  "4": 2,
+  "5": 2,
+  "6": 2,
+  "7": 2,
+  "8": 2,
+  "9": 2
+ },
+ "leak_flags": [],
+ "prev_sha256": "b926997d333daf4cb4ed7557177c4991589bc5453b6c23e9eac5db7accf9eab4",
+ "priced": 3403,
+ "risk": [
+  {
+   "book": "SCOUT-MAIN",
+   "direction": "long",
+   "qty": 5,
+   "skip": null,
+   "symbol": "MNDY"
+  },
+  {
+   "book": "SCOUT-MAIN",
+   "direction": "long",
+   "qty": 7,
+   "skip": null,
+   "symbol": "MTDR"
+  },
+  {
+   "book": "SCOUT-MAIN",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "VRDN"
+  },
+  {
+   "book": "SCOUT-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IONS"
+  },
+  {
+   "book": "SCOUT-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "already held",
+   "symbol": "SOC"
+  }
+ ],
+ "scouts": [
+  {
+   "answer_sha256": "3cdb4476e2f68586710bd353aec4d9524640289211a1c6e1582cb0c9d9e798d8",
+   "events": [
+    "SPRB-202611091435-22517",
+    "CNH-202611091435-22338",
+    "IONS-202611091435-22374",
+    "DCTH-202611091435-22447",
+    "OFIX-202611091435-22369"
+   ],
+   "lane": "1",
+   "model": "openai/gpt-oss-20b",
+   "picks": [],
+   "prompt_sha256": "f22184a7556f2c6821c1c162ac33f84346fa3c46d6d6981cd0e16fc3717f9d71",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "db9bfb41946cf39fe3bd04a1af0e3f44862bf4ac250c987e01bdfa1cf3909dbc",
+   "events": [
+    "MNDY-202611091435-22314",
+    "KIDS-202611091435-22392"
+   ],
+   "lane": "2",
+   "model": "openai/gpt-oss-20b",
+   "picks": [
+    {
+     "confidence": 65,
+     "horizon": 1,
+     "side": "long",
+     "symbol": "MNDY"
+    }
+   ],
+   "prompt_sha256": "83f3d2db79be4bbfc9a666fafb472df0fb43ed283ad0b9845e3e2d34f2c44a53",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "a0356c221cb69c6b50d8e6931681cfb7abad6a1882163fabf9e3db6e98ae5547",
+   "events": [
+    "RBA-202611091435-22515",
+    "COHU-202611091435-22486",
+    "WMG-202611091435-22531",
+    "BRK.A-202611091435-22482",
+    "SSNC-202611091435-22529"
+   ],
+   "lane": "3",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "dba7ba837d7678f0c6b0a9830f17a3cfa836514c4be9a0b268cca6305aaecc21",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "337511c0b2d78af8c00bf58cf4518032a183e20ef98c2e61d6ba45910773c3bb",
+   "events": [
+    "AUDC-202611091435-22511",
+    "TSM-202611091435-22490",
+    "SRTA-202611091435-22536",
+    "MTDR-202611091435-22508",
+    "MTDR-202611091435-22509"
+   ],
+   "lane": "4",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [
+    {
+     "confidence": 65,
+     "horizon": 5,
+     "side": "long",
+     "symbol": "MTDR"
+    },
+    {
+     "confidence": 55,
+     "horizon": 5,
+     "side": "long",
+     "symbol": "TSM"
+    }
+   ],
+   "prompt_sha256": "4a8ec0f6681dbb67ceefb50bb17c89aff66c256e4a519f5946d8a6677153589b",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "ca4bc1cbc79ba23883bbcd4f5b00a9145e62f5b2b4f715321557c11a73c6bae2",
+   "events": [
+    "ENGS-202611091435-22492"
+   ],
+   "lane": "5",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "f6a75cb4494238b6b797b5266d28fa3647b2f9575bf70feb0ccdf1e957e3d051",
+   "turn": "hourly"
+  },
+  {
+   "answer_sha256": "f9cded7ee8420a457b9288abba28d8a37bfecdfdb17f9bb0cf365d40eab3c86d",
+   "events": [
+    "ETN-202611091435-22347",
+    "ASH-202611091435-22426",
+    "AMAT-202611091435-22453",
+    "GNRC-202611091435-22430",
+    "NVDA-202611091435-22330"
+   ],
+   "lane": "6",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [
+    {
+     "confidence": 45,
+     "horizon": 5,
+     "side": "long",
+     "symbol": "AMAT"
+    }
+   ],
+   "prompt_sha256": "b2e4ff86d748709a911515936643d662dc8cc0dd08ac5a842dbe8c295ad3eb2a",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "119c1d57178ef9dd8818b5b5cf0804b170f444ebdadc790791c0890719cf702e",
+   "events": [
+    "DB-202611091450-23102",
+    "DB-202611091450-23105",
+    "JEF-202611091435-22484",
+    "APO-202611091435-22534",
+    "QCOM-202611091435-22530"
+   ],
+   "lane": "7",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "7915293bd4681bcb764ed26cab38f0d65c421b82449ef9e6e4a305f5874f4850",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "a13b52ebd725f7d87cff203fbc9dc6e99e76f36d50e80a3eac459ef18daa1fa0",
+   "events": [
+    "IBRX-202611091435-22353",
+    "VRDN-202611091435-22391",
+    "BIIB-202611091435-22312",
+    "PLX-202611091435-22362"
+   ],
+   "lane": "8",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [
+    {
+     "confidence": 65,
+     "horizon": 5,
+     "side": "long",
+     "symbol": "VRDN"
+    }
+   ],
+   "prompt_sha256": "c0d805c5454b6a0571c8c0838e55603e6d4bed0dcab3e5f749bae130e7ef4478",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "ea48b0365fe7c312cd47f59b8705bf599ffdfdd097a679705e446438a8f81127",
+   "events": [
+    "AMZN-202611091435-22404"
+   ],
+   "lane": "9",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "6effe008038f040165fdd30904a6b46348ece3a291dc3f7eaf181a8bbb0e6040",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "d5ea3157d972b763ccd50c5422171ae0983a3c1ac5c7d056ae95d92b365705fb",
+   "events": [
+    "SGRY-202611091435-22478",
+    "DLR-202611091435-22308",
+    "UPS-202611091435-22341",
+    "RY-202611091435-22468",
+    "D-202611091435-22309"
+   ],
+   "lane": "10",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "1ffe51d41cabc1cf52b57bb4a27b61de7ade1bcc12cc2f3e495809e49cb9ab24",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "a0356c221cb69c6b50d8e6931681cfb7abad6a1882163fabf9e3db6e98ae5547",
+   "events": [
+    "ARLP-202611091450-23128",
+    "PSUS-202611091450-23234"
+   ],
+   "lane": "11",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "8d13549833a12f955b4b1c4203ec5e0503a7268f8c9de14bad93354542335760",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "3466fa2b13e0b6de587f5130e07a56510f9c9e0c1284a01dc4ba0bb07a5d90db",
+   "events": [
+    "ZURA-202611091450-23285",
+    "SOC-202611091450-23247",
+    "NKTX-202611091450-23219",
+    "ABEO-202611091450-23110",
+    "IONS-202611091450-23196"
+   ],
+   "lane": "13",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [
+    {
+     "confidence": 65,
+     "horizon": 5,
+     "side": "short",
+     "symbol": "IONS"
+    }
+   ],
+   "prompt_sha256": "331beb7106fb74486aa89bbe041b817f82cd42ca36cf0231e47a278abd76d9f1",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "86a16efc6e072b29dc5324053932c1b21b707bf0434b189dbfbf8e7f997b2676",
+   "events": [
+    "IONS-202611091450-23197",
+    "JANX-202611091450-23201",
+    "VISN-202611091435-23039"
+   ],
+   "lane": "14",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "1c1968149748dd0917360576debd9835e146ce4311f9c364bb8e40eeee967539",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "a0356c221cb69c6b50d8e6931681cfb7abad6a1882163fabf9e3db6e98ae5547",
+   "events": [
+    "SHMD-202611091450-23245",
+    "INO-202611091450-23195",
+    "HLLY-202611091450-23190",
+    "NEOV-202611091450-23217"
+   ],
+   "lane": "17a",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [],
+   "prompt_sha256": "78b7e33b4ce67bbc64c80ce27443a49c8dbd579cb2ec6def259bfa7be846deb9",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "1f5ed4aee927a211ccf37c1f8e85b7278f96cdba49d72f516a2c1307be0e2938",
+   "events": [
+    "PDSB-202611091450-23228",
+    "DFNS-202611091450-23163",
+    "SPRB-202611091450-23250",
+    "HLLY-202611091435-22767",
+    "GMRS-202611091435-22756"
+   ],
+   "lane": "17b",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [
+    {
+     "confidence": 45,
+     "horizon": 5,
+     "side": "short",
+     "symbol": "GMRS"
+    },
+    {
+     "confidence": 40,
+     "horizon": 5,
+     "side": "short",
+     "symbol": "SPRB"
+    }
+   ],
+   "prompt_sha256": "e276528135a9035eb064627734c9c7445630a5fc0158c948570671e30adacf93",
+   "turn": "new"
+  },
+  {
+   "answer_sha256": "8556029c4ddcba9f79778e6d34faa53e104905b3ccf3804b023dde91a7f61663",
+   "events": [
+    "SOC-202611091435-22339",
+    "CPNG-202611091435-22433",
+    "IBM-202611091435-22313"
+   ],
+   "lane": "21",
+   "model": "gemini-3-flash-preview",
+   "picks": [
+    {
+     "confidence": 70,
+     "horizon": 5,
+     "side": "short",
+     "symbol": "SOC"
+    }
+   ],
+   "prompt_sha256": "6770a52a5227c03dc9db1113222c9deb38b2218d653f2f4783a8c6eca1b094f9",
+   "turn": "hourly"
+  },
+  {
+   "answer_sha256": "db908243d2bd79e76090985f075e053d9aef8668b15a514ccf86577e02da1099",
+   "events": [
+    "AIR-202611091435-22454",
+    "SWK-202611091435-22409",
+    "PRGO-202611091435-22401"
+   ],
+   "lane": "22",
+   "model": "qwen/qwen3.8-27b",
+   "picks": [
+    {
+     "confidence": 65,
+     "horizon": 5,
+     "side": "long",
+     "symbol": "AIR"
+    },
+    {
+     "confidence": 55,
+     "horizon": 5,
+     "side": "short",
+     "symbol": "SWK"
+    }
+   ],
+   "prompt_sha256": "d2b36de735677e4094b9ab95a73b46b3a6e9e0e3632d3ce1895e118ed49290f6",
+   "turn": "new"
+  }
+ ],
+ "search": [
+  {
+   "answer_sha256": "94571a05d30ba6c88991e7fc842c77640c76275cd8d1769560b5e852e8590593",
+   "model": "gemini-2.5-flash",
+   "sources": 7,
+   "symbol": "MNDY"
+  },
+  {
+   "error": "QuotaExhausted: gemini: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.googl",
+   "model": "gemini-2.5-flash",
+   "quota": true,
+   "symbol": "MTDR"
+  },
+  {
+   "answer_sha256": "e10817ddf5691bef9bf0187e3464622b0b97ce8b59a181e9e11d5d097c3372df",
+   "model": "tavily",
+   "sources": 5,
+   "symbol": "MTDR"
+  },
+  {
+   "answer_sha256": "95d58be4a4e453ac5c257580f949fdd48a5c1939ccfac8672ae9f2d57f23c08f",
+   "model": "tavily",
+   "sources": 5,
+   "symbol": "TSM"
+  },
+  {
+   "answer_sha256": "290a1d1542a278486a2c66d8994f1b373aec6d51c21e1e3ba96e6468e68d004d",
+   "model": "tavily",
+   "sources": 4,
+   "symbol": "AMAT"
+  },
+  {
+   "answer_sha256": "4fa178603690017e2bfca3b5662f0e69380ea71496ec73f69d17773dbf3fd1ac",
+   "model": "tavily",
+   "sources": 5,
+   "symbol": "VRDN"
+  },
+  {
+   "answer_sha256": "29ba98d865d8c8cc43f40414386b3c4c64150383039198867a52eacadaa9a9c8",
+   "model": "tavily",
+   "sources": 4,
+   "symbol": "IONS"
+  },
+  {
+   "answer_sha256": "bd81ac29969cae457089798411238e848df4a77c249cdd023b06aed5a50f5d73",
+   "model": "tavily",
+   "sources": 5,
+   "symbol": "GMRS"
+  },
+  {
+   "answer_sha256": "e09a0d06a535bb0c3e4690f6e5c0906d80a661067912f0864593c3c3812b1186",
+   "model": "tavily",
+   "sources": 1,
+   "symbol": "SPRB"
+  },
+  {
+   "answer_sha256": "44d982cf2529fbf8c9f3aa30ff4bcb5a14cccc62fcd37488206c784fbbd757fa",
+   "model": "tavily",
+   "sources": 5,
+   "symbol": "SOC"
+  },
+  {
+   "answer_sha256": "f7849dc40373f9f3a96666873cdaffc0f0add2f9aec45b186bcc7844e5277cea",
+   "model": "tavily",
+   "sources": 4,
+   "symbol": "AIR"
+  },
+  {
+   "answer_sha256": "110b8d9144cca5f2e1f8deb4196482c90cabc5d138e0c131a539f6ca064c3478",
+   "model": "tavily",
+   "sources": 2,
+   "symbol": "SWK"
+  }
+ ],
+ "slot": "2026-11-09T09:50",
+ "t": "2026-11-09T14:50:40.409263+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T14:58:07.396232Z"
+}
