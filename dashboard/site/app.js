@@ -213,8 +213,8 @@ function placeCuts(cut = MODEL.cut) {
 let KRR = null, VIEW = "XGB";
 const VIEW_NOTE = {
   XGB: "XGBoost: 400 small yes/no trees, each adds a little to the score. The live NX3 account trades on this one.",
-  KRR: "KRR: compares the event with 300 reference events from 2016-2025. The closer it is to one, the more that " +
-    "event's weight counts (green pulls up, red pulls down). Ledger-only shadow book since 2026-11-09.",
+  KRR: "KRR: a smooth curve fitted through 300 reference events from 2016-2025 (the ticks under the curve, darker = " +
+    "more like this event). Shown against the news input that moves this event's score most. Ledger-only shadow book since 2026-11-09.",
 };
 function krrScore(x) {
   const m = KRR, full = m.inputs.map((_, i) => (x[i] == null || Number.isNaN(x[i]) ? m.median[i] : x[i]));
@@ -224,16 +224,42 @@ function krrScore(x) {
   const c = sim.map((k, j) => m.w[j] * k);
   return { score: m.b + c.reduce((a, v) => a + v, 0), sim, c };
 }
-const KCOLS = 25, KROWS = 12;
-function drawRefs(sim, lit) {
-  const svg = $("tree"); svg.replaceChildren(); svg.setAttribute("viewBox", "0 0 640 300");
-  const mx = Math.max(1e-9, ...sim);
-  for (let j = 0; j < KRR.w.length; j++) {
-    const X = 20 + (j % KCOLS) * 24.4, Y = 18 + Math.floor(j / KCOLS) * 23.5;
-    const a = 0.12 + 0.88 * Math.sqrt(sim[j] / mx), up = KRR.w[j] >= 0;
-    svg.append(s("circle", { cx: X, cy: Y, r: lit.has(j) ? 9.5 : 6.5, fill: up ? "var(--buy)" : "var(--short)",
-      "fill-opacity": a.toFixed(3), stroke: lit.has(j) ? "var(--text)" : "none", "stroke-width": 1.5 }));
+// The view: KRR's score drawn as a smooth curve against the news input that moves it most for this event, all
+// other inputs held at the event's values. The rug at the bottom is the 300 reference events (darker = more alike).
+function krrAxis(x) {
+  let best = null;
+  for (let i = 0; i < KRR.inputs.length; i++) {
+    const k = KRR.inputs[i];
+    if (!(k in KRR.no_news)) continue;
+    const col = KRR.L.map(row => row[i] * KRR.scale[i] + KRR.mean[i]);
+    const lo = Math.min(...col), hi = Math.max(...col);
+    if (!(hi > lo)) continue;
+    const xs = Array.from({ length: 49 }, (_, n) => lo + (hi - lo) * n / 48);
+    const ys = xs.map(v => { const y = x.slice(); y[i] = v; return krrScore(y).score; });
+    const span = Math.max(...ys) - Math.min(...ys);
+    if (!best || span > best.span) best = { i, k, lo, hi, xs, ys, span, col };
   }
+  return best;
+}
+function drawCurve(ax, upto, at, ghost, sim) {
+  const svg = $("tree"); svg.replaceChildren(); svg.setAttribute("viewBox", "0 0 640 300");
+  const L = 56, R = 620, T = 18, B = 250;
+  const yv = [...ax.ys, ghost, at ? at.y : ghost];
+  const ylo = Math.min(...yv), yhi = Math.max(...yv), pad = (yhi - ylo) * 0.12 || 0.01;
+  const X = v => L + (R - L) * (v - ax.lo) / (ax.hi - ax.lo), Y = v => B - (B - T) * (v - ylo + pad) / (yhi - ylo + 2 * pad);
+  svg.append(s("line", { x1: L, y1: B, x2: R, y2: B, stroke: "var(--line)" }), s("line", { x1: L, y1: T, x2: L, y2: B, stroke: "var(--line)" }));
+  const lab = (x, y, t, a = "middle") => { const e = s("text", { x, y, "text-anchor": a, "font-size": 12, fill: "var(--muted)" }); e.textContent = t; return e; };
+  svg.append(lab((L + R) / 2, 292, LABEL[ax.k] || ax.k), lab(L - 6, T + 4, num(yhi + pad, 2), "end"), lab(L - 6, B, num(ylo - pad, 2), "end"),
+    lab(L, 268, num(ax.lo, 2)), lab(R, 268, num(ax.hi, 2)));
+  const mx = Math.max(1e-9, ...sim);
+  ax.col.forEach((v, j) => svg.append(s("line", { x1: X(v), y1: B - 2, x2: X(v), y2: B - 12, stroke: "var(--accent)",
+    "stroke-opacity": (0.08 + 0.9 * Math.sqrt(sim[j] / mx)).toFixed(3) })));
+  svg.append(s("line", { x1: L, y1: Y(ghost), x2: R, y2: Y(ghost), stroke: "var(--ghost)", "stroke-dasharray": "5 4" }),
+    lab(R, Y(ghost) - 5, "news blanked", "end"));
+  const n = Math.max(2, Math.round(upto * ax.xs.length));
+  svg.append(s("polyline", { points: ax.xs.slice(0, n).map((v, m) => `${X(v).toFixed(1)},${Y(ax.ys[m]).toFixed(1)}`).join(" "),
+    fill: "none", stroke: "var(--text)", "stroke-width": 2.2, "stroke-linejoin": "round" }));
+  if (at) svg.append(s("circle", { cx: X(at.x), cy: Y(at.y), r: 7, fill: at.y >= ghost ? "var(--buy)" : "var(--short)", stroke: "var(--text)", "stroke-width": 1.5 }));
 }
 async function playKRR(ev) {
   playing = true;
@@ -242,28 +268,26 @@ async function playKRR(ev) {
   const inp = ev.inputs || {}, x = KRR.inputs.map(k => (inp[k] != null ? inp[k] : null));
   const g = KRR.inputs.map((k, i) => (k in KRR.no_news ? KRR.no_news[k] : x[i]));
   const r = krrScore(x), q = krrScore(g);
-  placeCuts(KRR.cut);
-  let real = KRR.b, ghost = KRR.b; setMeters(real, ghost);
-  const order = r.c.map((v, j) => j).sort((a, b) => Math.abs(r.c[b] - q.c[b]) - Math.abs(r.c[a] - q.c[a]));
-  const lit = new Set(), TOP = 10;
-  $("phase").textContent = "how alike it is to each reference event";
-  drawRefs(r.sim, lit); await sleep(900);
-  for (let i = 0; i < order.length; i++) {
+  placeCuts(KRR.cut); setMeters(q.score, q.score);
+  const ax = krrAxis(x.map((v, i) => (v == null ? NaN : v)));
+  const xv = x[ax.i] == null ? KRR.median[ax.i] : Math.min(ax.hi, Math.max(ax.lo, x[ax.i]));
+  $("treeno").textContent = `KRR score vs ${LABEL[ax.k] || ax.k}`;
+  $("phase").textContent = "drawing the curve, other inputs at this event's values";
+  for (let f = 0; f <= 1.0001; f += 0.04) {
     if (VIEW !== "KRR") { placeCuts(MODEL.cut); playing = false; return; }
-    const j = order[i];
-    real += r.c[j]; ghost += q.c[j];
-    if (i < TOP) {
-      lit.add(j); drawRefs(r.sim, lit);
-      $("treeno").textContent = `reference event ${i + 1} / ${order.length}`;
-      $("phase").textContent = `similarity ${num(r.sim[j], 2)} × weight ${num(KRR.w[j], 3)}`;
-      setMeters(real, ghost); await sleep(650);
-    } else if (i % 10 === 0 || i === order.length - 1) {
-      $("treeno").textContent = `reference event ${i + 1} / ${order.length}`;
-      $("phase").textContent = "the rest, fast";
-      setMeters(real, ghost); await sleep(30);
-    }
+    drawCurve(ax, f, null, q.score, r.sim); await sleep(45);
   }
-  setMeters(r.score, q.score);
+  $("phase").textContent = "where this event sits on it";
+  const steps = 30, x0 = ax.lo;
+  for (let n = 0; n <= steps; n++) {
+    if (VIEW !== "KRR") { placeCuts(MODEL.cut); playing = false; return; }
+    const v = x0 + (xv - x0) * n / steps, y = x.slice(); y[ax.i] = v;
+    const sc = krrScore(y.map(t => (t == null ? NaN : t))).score;
+    drawCurve(ax, 1, { x: v, y: sc }, q.score, r.sim); setMeters(sc, q.score); await sleep(40);
+  }
+  drawCurve(ax, 1, { x: xv, y: r.score }, q.score, r.sim); setMeters(r.score, q.score);
+  $("phase").textContent = `the gap to the dashed line is the news effect (${num(r.score - q.score, 3)})`;
+  await sleep(1600);
   const eff = r.score - q.score, side = Math.abs(eff) >= KRR.cut && Math.abs(eff) > 0 ? Math.sign(eff) : 0;
   await finale({ ...ev, side, skip: side ? null : "not fired", e: eff, result: side === ev.side ? ev.result : null }, eff, KRR.cut, "KRR");
   placeCuts(MODEL.cut);
