@@ -1,0 +1,281 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "57310a3fe8f07738bfeefcd7e5cbb164de05f9d4a91622160b4a57a0172392df",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ed90c6669f03d6812941b4272824326497066c265643e566cc0baab99d4cc049",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GMRS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OFIX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "VBNK",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "MNDY",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "KLIC",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "WAL",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "ICHR",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "FORM",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PLUG",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "EVGO",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "71acfeac334d2de62ddb17483ac9d58315d7c6a097d7aa6e9cdea1cb1db87539",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08561,
+   "news": 0,
+   "pace": null,
+   "price": 11.375,
+   "r20": 0.19846,
+   "r5": 0.11171,
+   "short": true,
+   "src": "iex",
+   "symbol": "GMRS",
+   "z": -3.064
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.14994,
+   "news": 0,
+   "pace": null,
+   "price": 6.69,
+   "r20": -0.14177,
+   "r5": -0.1323,
+   "short": true,
+   "src": "iex",
+   "symbol": "OFIX",
+   "z": -3.032
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.07015,
+   "news": 0,
+   "pace": null,
+   "price": 24.56,
+   "r20": 0.04129,
+   "r5": 0.04508,
+   "short": true,
+   "src": "iex",
+   "symbol": "VBNK",
+   "z": 3.027
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.04481,
+   "news": 1,
+   "pace": null,
+   "price": 83.99,
+   "r20": -0.01158,
+   "r5": -0.08023,
+   "short": true,
+   "src": "iex",
+   "symbol": "MNDY",
+   "z": -1.108
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.05374,
+   "news": 1,
+   "pace": null,
+   "price": 67.45,
+   "r20": -0.30431,
+   "r5": -0.13745,
+   "short": true,
+   "src": "iex",
+   "symbol": "KLIC",
+   "z": 1.044
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02105,
+   "news": 1,
+   "pace": null,
+   "price": 77.14,
+   "r20": 0.01723,
+   "r5": -0.0097,
+   "short": true,
+   "src": "iex",
+   "symbol": "WAL",
+   "z": 1.011
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.07218,
+   "news": 1,
+   "pace": null,
+   "price": 33.2,
+   "r20": -0.48314,
+   "r5": -0.20398,
+   "short": true,
+   "src": "iex",
+   "symbol": "ICHR",
+   "z": 0.969
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.0551,
+   "news": 1,
+   "pace": null,
+   "price": 85.59,
+   "r20": -0.4192,
+   "r5": -0.07323,
+   "short": true,
+   "src": "iex",
+   "symbol": "FORM",
+   "z": 0.625
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02069,
+   "news": 1,
+   "pace": null,
+   "price": 1.48,
+   "r20": -0.1369,
+   "r5": 0.06227,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLUG",
+   "z": 0.472
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.03279,
+   "news": 1,
+   "pace": null,
+   "price": 1.89,
+   "r20": 0.5,
+   "r5": 0.45238,
+   "short": true,
+   "src": "iex",
+   "symbol": "EVGO",
+   "z": 0.336
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5084.5763,
+  "PICK-MAIN-coin": 5175.2106,
+  "PICK-PENNY": 469.9524,
+  "PICK-PENNY-coin": 511.0078
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 30,
+  "news": 15,
+  "volume": 0
+ },
+ "flagged": 45,
+ "headline_counts": {
+  "EVGO": 3,
+  "FORM": 2,
+  "ICHR": 2,
+  "KLIC": 1,
+  "MNDY": 3,
+  "OFIX": 3,
+  "PLUG": 1,
+  "VBNK": 1,
+  "WAL": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "774d0b2f49b3c9a70c73d5a10c8f2c1102dd7176539eefb570d78bf0c187aa19",
+ "price_sources": {
+  "delayed_sip": 375,
+  "iex": 3018
+ },
+ "priced": 3393,
+ "risk": [],
+ "slot": "2026-11-09T10:00",
+ "t": "2026-11-09T15:00:20.418977+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T15:00:31.282655Z"
+}
