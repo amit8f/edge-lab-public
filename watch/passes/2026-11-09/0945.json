@@ -1,0 +1,405 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "43c5f431f5cc3977a7d1512e402f238106e7013a902c42b91a9f6f9e23269747",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "379b498a42a901e2db4f60b89e12ca70f0c9a9acf203d433eb839b3ba6f2e3bb",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "offering",
+     "symbol": "IMVT",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "LINC",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PANL",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "CE",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "GSL",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CTEV",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TTD",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TNXP",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "CYPH",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "VFF",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "b4da013bc45433cb53c2b7f5e869ded684ee1e986c4f8a28b5d870b348113965",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst negative, offering dilutes price",
+     "stop_pct": 12.0,
+     "symbol": "IMVT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, analyst positive, momentum",
+     "stop_pct": 10.0,
+     "symbol": "LINC"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong price move, analyst neutral",
+     "stop_pct": 10.0,
+     "symbol": "PANL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst positive, price rally",
+     "stop_pct": 10.0,
+     "symbol": "CE"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "14053b9c98f575c3ba65e16e259cb4b0897ec56933e92fb502dce4e359361ea9"
+  },
+  "reviewer": {
+   "answer_sha256": "3dca20b98665f7ce3277ff9ff0f5538d268b3be6a714dd250feb3d8a87e270c9",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "2dcefc00800174dd457a8c93cd38d1c4e56c29e57a8189a89083d2f67eb4df35",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative news tone regarding an offering combined with strong intraday spike makes shorting viable.",
+     "symbol": "IMVT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings catalyst supports the proposed long position despite prior weakness.",
+     "symbol": "LINC"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Mixed momentum signals with no clear news catalyst suggest staying on the sidelines.",
+     "symbol": "PANL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive analyst tone and solid upward movement align well with the long proposal.",
+     "symbol": "CE"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.14543,
+   "news": 0,
+   "pace": null,
+   "price": 34.97,
+   "r20": 0.00197,
+   "r5": 0.04662,
+   "short": true,
+   "src": "iex",
+   "symbol": "IMVT",
+   "z": 4.351
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.15119,
+   "news": 0,
+   "pace": null,
+   "price": 20.33,
+   "r20": -0.24819,
+   "r5": -0.14603,
+   "short": true,
+   "src": "iex",
+   "symbol": "LINC",
+   "z": 3.798
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08322,
+   "news": 0,
+   "pace": null,
+   "price": 8.2,
+   "r20": -0.09014,
+   "r5": -0.04899,
+   "short": true,
+   "src": "iex",
+   "symbol": "PANL",
+   "z": 3.612
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.07045,
+   "news": 0,
+   "pace": null,
+   "price": 49.765,
+   "r20": 0.03334,
+   "r5": -0.057,
+   "short": true,
+   "src": "iex",
+   "symbol": "CE",
+   "z": 3.309
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.05867,
+   "news": 0,
+   "pace": null,
+   "price": 41.32,
+   "r20": -0.1245,
+   "r5": -0.06493,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "GSL",
+   "z": 3.151
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.17129,
+   "news": 0,
+   "pace": null,
+   "price": 26.6,
+   "r20": -0.07908,
+   "r5": -0.05375,
+   "short": true,
+   "src": "iex",
+   "symbol": "CTEV",
+   "z": 3.109
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.09745,
+   "news": 1,
+   "pace": null,
+   "price": 14.19,
+   "r20": 0.07036,
+   "r5": 0.05207,
+   "short": true,
+   "src": "iex",
+   "symbol": "TTD",
+   "z": 2.755
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.09599,
+   "news": 1,
+   "pace": null,
+   "price": 4.285,
+   "r20": -0.35068,
+   "r5": -0.07059,
+   "short": true,
+   "src": "iex",
+   "symbol": "TNXP",
+   "z": -2.305
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.09375,
+   "news": 1,
+   "pace": null,
+   "price": 2.61,
+   "r20": -0.02041,
+   "r5": -0.03356,
+   "short": true,
+   "src": "iex",
+   "symbol": "CYPH",
+   "z": -0.856
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01389,
+   "news": 1,
+   "pace": null,
+   "price": 2.92,
+   "r20": 0.07463,
+   "r5": 0.152,
+   "short": false,
+   "src": "iex",
+   "symbol": "VFF",
+   "z": 0.389
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5098.436,
+  "PICK-MAIN-coin": 5147.9147,
+  "PICK-PENNY": 473.1838,
+  "PICK-PENNY-coin": 513.768
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-09T14:45:21.290769+00:00",
+   "entry": 4.53,
+   "exit": 4.91,
+   "net": 18.7587,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 54,
+   "side": 1,
+   "symbol": "AGBK",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-09T14:45:21.290769+00:00",
+   "entry": 2.655,
+   "exit": 2.12,
+   "net": -0.5985,
+   "opened": "2026-11-04T15:15:21.244260+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "STIM",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 24,
+  "news": 13,
+  "volume": 0
+ },
+ "flagged": 36,
+ "headline_counts": {
+  "CE": 2,
+  "CTEV": 3,
+  "CYPH": 3,
+  "GSL": 1,
+  "IMVT": 3,
+  "LINC": 3,
+  "TNXP": 3,
+  "TTD": 3,
+  "VFF": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "2a298cd96b86ff5c50923eaf7cecf753890f8d4bf37548f8e840977c9f1c6cd4",
+ "price_sources": {
+  "delayed_sip": 561,
+  "iex": 2825
+ },
+ "priced": 3386,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IMVT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LINC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PANL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CE"
+  }
+ ],
+ "slot": "2026-11-09T09:45",
+ "t": "2026-11-09T14:45:21.290769+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T14:45:33.761773Z"
+}
