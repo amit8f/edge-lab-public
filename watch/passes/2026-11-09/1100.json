@@ -1,0 +1,310 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "21ec27089898a9a7e1da5e43bbed25315dc574365b589a30c6a97d9e63d6a702",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "9541a33df4cdb033b7048edc7f68e7fb7b92db2ba6929cf2cd3308308c7b0d94",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "OFIX",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "SHMD",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LIF",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "product",
+     "symbol": "VIR",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VISN",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CNH",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "HE",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TNXP",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PROK",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NEOV",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "c904ccaf865840353eea0a760a2237f68382ae0252d223ab724d1165f6f59524",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.15248,
+   "news": 0,
+   "pace": 7.238,
+   "price": 6.67,
+   "r20": -0.14177,
+   "r5": -0.1323,
+   "short": true,
+   "src": "iex",
+   "symbol": "OFIX",
+   "z": -3.088
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.23721,
+   "news": 0,
+   "pace": 6.002,
+   "price": 2.66,
+   "r20": -0.43717,
+   "r5": -0.20956,
+   "short": false,
+   "src": "iex",
+   "symbol": "SHMD",
+   "z": 3.074
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.08212,
+   "news": 0,
+   "pace": 3.306,
+   "price": 43.48,
+   "r20": 0.08349,
+   "r5": 0.06593,
+   "short": true,
+   "src": "iex",
+   "symbol": "LIF",
+   "z": -3.07
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.14169,
+   "news": 0,
+   "pace": 12.51,
+   "price": 13.94,
+   "r20": 0.04359,
+   "r5": 0.08053,
+   "short": true,
+   "src": "iex",
+   "symbol": "VIR",
+   "z": 3.011
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.2475,
+   "news": 0,
+   "pace": 1.583,
+   "price": 4.135,
+   "r20": -0.09163,
+   "r5": -0.15983,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "VISN",
+   "z": -6.435
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12067,
+   "news": 0,
+   "pace": 1.892,
+   "price": 12.955,
+   "r20": 0.01493,
+   "r5": -0.01701,
+   "short": true,
+   "src": "iex",
+   "symbol": "CNH",
+   "z": 4.737
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08848,
+   "news": 0,
+   "pace": 2.699,
+   "price": 9.165,
+   "r20": -0.03881,
+   "r5": -0.03218,
+   "short": true,
+   "src": "iex",
+   "symbol": "HE",
+   "z": 3.999
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06751,
+   "news": 0,
+   "pace": 3.099,
+   "price": 4.42,
+   "r20": -0.35068,
+   "r5": -0.07059,
+   "short": true,
+   "src": "iex",
+   "symbol": "TNXP",
+   "z": -1.596
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.10526,
+   "news": 0,
+   "pace": 3.031,
+   "price": 1.26,
+   "r20": -0.34483,
+   "r5": -0.11969,
+   "short": false,
+   "src": "iex",
+   "symbol": "PROK",
+   "z": 1.591
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.12476,
+   "news": 0,
+   "pace": 3.497,
+   "price": 2.93,
+   "r20": -0.00192,
+   "r5": 0.20602,
+   "short": false,
+   "src": "iex",
+   "symbol": "NEOV",
+   "z": 1.544
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5056.0813,
+  "PICK-MAIN-coin": 5169.7156,
+  "PICK-PENNY": 469.0748,
+  "PICK-PENNY-coin": 509.3373
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-09T16:00:21.062308+00:00",
+   "entry": 2.015,
+   "exit": 2.465,
+   "net": -1.0281,
+   "opened": "2026-11-05T14:55:21.019174+00:00",
+   "qty": 2,
+   "side": -1,
+   "symbol": "MX",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-09T16:00:21.062308+00:00",
+   "entry": 2.015,
+   "exit": 2.465,
+   "net": -1.0281,
+   "opened": "2026-11-05T14:55:21.019174+00:00",
+   "qty": 2,
+   "side": -1,
+   "symbol": "MX",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 36,
+  "news": 15,
+  "volume": 156
+ },
+ "flagged": 184,
+ "headline_counts": {
+  "CNH": 3,
+  "HE": 1,
+  "OFIX": 3,
+  "SHMD": 2,
+  "TNXP": 3,
+  "VIR": 3,
+  "VISN": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "c4bce465cdc771459ce16e68f86c6927ba7e732fdf93b6770184e916ec65e77e",
+ "price_sources": {
+  "delayed_sip": 203,
+  "iex": 3196
+ },
+ "priced": 3399,
+ "risk": [],
+ "slot": "2026-11-09T11:00",
+ "t": "2026-11-09T16:00:21.062308+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T16:00:32.683245Z"
+}
