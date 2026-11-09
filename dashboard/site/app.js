@@ -6,6 +6,7 @@ const CFG = {
   summary: Q.get("summary") || `${RAW}/state-dash/dash/summary.json`,
   live: d => `${RAW}/state-nx3/nx3/days/${d}/decisions.jsonl`,
   trees: "nx3_trees.json",
+  krr: "nxk_krr.json",
   queue: [`${RAW}/claude/project-thread-s2jzh2/research/QUEUE.json`, `${RAW}/main/research/QUEUE.json`],
   runs: "https://api.github.com/repos/amit8f/edge-lab-public/actions/runs?per_page=30",
   logo: s => `https://financialmodelingprep.com/image-stock/${encodeURIComponent(s)}.png`,
@@ -202,11 +203,82 @@ function setMeters(real, ghost) {
   const x = 50 + Math.max(-50, Math.min(50, eff / SCALE.eff * 50));
   $("m-eff").style.left = `calc(${x}% - 6px)`;
 }
-function placeCuts() {
-  const c = MODEL.cut / SCALE.eff * 50;
+function placeCuts(cut = MODEL.cut) {
+  const c = cut / SCALE.eff * 50;
   document.querySelector(".cut.lo").style.left = `${50 - c}%`;
   document.querySelector(".cut.hi").style.left = `${50 + c}%`;
 }
+
+// ---------- KRR: score = b + sum over 300 reference events of weight x similarity ----------
+let KRR = null, VIEW = "XGB";
+const VIEW_NOTE = {
+  XGB: "XGBoost: 400 small yes/no trees, each adds a little to the score. The live NX3 account trades on this one.",
+  KRR: "KRR: compares the event with 300 reference events from 2016-2025. The closer it is to one, the more that " +
+    "event's weight counts (green pulls up, red pulls down). Ledger-only shadow book since 2026-11-09.",
+};
+function krrScore(x) {
+  const m = KRR, full = m.inputs.map((_, i) => (x[i] == null || Number.isNaN(x[i]) ? m.median[i] : x[i]));
+  for (const i of m.missing_cols) full.push(x[i] == null || Number.isNaN(x[i]) ? 1 : 0);
+  const z = full.map((v, i) => (v - m.mean[i]) / m.scale[i]);
+  const sim = m.L.map(row => Math.exp(-m.gamma * row.reduce((a, v, i) => a + (v - z[i]) ** 2, 0)));
+  const c = sim.map((k, j) => m.w[j] * k);
+  return { score: m.b + c.reduce((a, v) => a + v, 0), sim, c };
+}
+const KCOLS = 25, KROWS = 12;
+function drawRefs(sim, lit) {
+  const svg = $("tree"); svg.replaceChildren(); svg.setAttribute("viewBox", "0 0 640 300");
+  const mx = Math.max(1e-9, ...sim);
+  for (let j = 0; j < KRR.w.length; j++) {
+    const X = 20 + (j % KCOLS) * 24.4, Y = 18 + Math.floor(j / KCOLS) * 23.5;
+    const a = 0.12 + 0.88 * Math.sqrt(sim[j] / mx), up = KRR.w[j] >= 0;
+    svg.append(s("circle", { cx: X, cy: Y, r: lit.has(j) ? 9.5 : 6.5, fill: up ? "var(--buy)" : "var(--short)",
+      "fill-opacity": a.toFixed(3), stroke: lit.has(j) ? "var(--text)" : "none", "stroke-width": 1.5 }));
+  }
+}
+async function playKRR(ev) {
+  playing = true;
+  $("verdict").hidden = true;
+  showWho(ev);
+  const inp = ev.inputs || {}, x = KRR.inputs.map(k => (inp[k] != null ? inp[k] : null));
+  const g = KRR.inputs.map((k, i) => (k in KRR.no_news ? KRR.no_news[k] : x[i]));
+  const r = krrScore(x), q = krrScore(g);
+  placeCuts(KRR.cut);
+  let real = KRR.b, ghost = KRR.b; setMeters(real, ghost);
+  const order = r.c.map((v, j) => j).sort((a, b) => Math.abs(r.c[b] - q.c[b]) - Math.abs(r.c[a] - q.c[a]));
+  const lit = new Set(), TOP = 10;
+  $("phase").textContent = "how alike it is to each reference event";
+  drawRefs(r.sim, lit); await sleep(900);
+  for (let i = 0; i < order.length; i++) {
+    if (VIEW !== "KRR") { placeCuts(MODEL.cut); playing = false; return; }
+    const j = order[i];
+    real += r.c[j]; ghost += q.c[j];
+    if (i < TOP) {
+      lit.add(j); drawRefs(r.sim, lit);
+      $("treeno").textContent = `reference event ${i + 1} / ${order.length}`;
+      $("phase").textContent = `similarity ${num(r.sim[j], 2)} × weight ${num(KRR.w[j], 3)}`;
+      setMeters(real, ghost); await sleep(650);
+    } else if (i % 10 === 0 || i === order.length - 1) {
+      $("treeno").textContent = `reference event ${i + 1} / ${order.length}`;
+      $("phase").textContent = "the rest, fast";
+      setMeters(real, ghost); await sleep(30);
+    }
+  }
+  setMeters(r.score, q.score);
+  const eff = r.score - q.score, side = Math.abs(eff) >= KRR.cut && Math.abs(eff) > 0 ? Math.sign(eff) : 0;
+  await finale({ ...ev, side, skip: side ? null : "not fired", e: eff, result: side === ev.side ? ev.result : null }, eff, KRR.cut, "KRR");
+  placeCuts(MODEL.cut);
+  playing = false;
+}
+async function setView(v) {
+  if (v === "KRR" && !KRR) {
+    try { KRR = await getJSON(CFG.krr); } catch { $("viewnote").textContent = "KRR model file missing"; return; }
+  }
+  VIEW = v;
+  try { localStorage.setItem("view", v); } catch { /* storage blocked: the choice lasts this visit */ }
+  for (const b of document.querySelectorAll("#viewswitch button")) b.setAttribute("aria-pressed", String(b.dataset.view === v));
+  $("viewnote").textContent = VIEW_NOTE[v];
+}
+for (const b of document.querySelectorAll("#viewswitch button")) b.addEventListener("click", () => setView(b.dataset.view));
 
 // ---------- the stage ----------
 let playing = false; const queue = []; const shown = new Set();
@@ -231,6 +303,7 @@ function showWho(ev) {
 }
 const SLOW = 3, LAST = 1;   // first trees step by step, the middle ones flash past, the last one step by step again
 async function play(ev) {
+  if (VIEW === "KRR" && KRR) return playKRR(ev);
   playing = true; let lastBall = null;
   $("verdict").hidden = true;
   showWho(ev);
@@ -238,6 +311,7 @@ async function play(ev) {
   let real = MODEL.base_score, ghost = MODEL.base_score; setMeters(real, ghost);
   const N = MODEL.trees.length;
   for (let i = 0; i < N; i++) {
+    if (VIEW !== "XGB") { playing = false; return; }     // switched model: the next event plays in the new view
     const t = MODEL.trees[i]; currentTree = t;
     const w = walk(t, x), wg = walk(t, g);
     const slow = i < SLOW || i >= N - LAST;
@@ -274,11 +348,11 @@ function outcomeLine(ev, d) {
   return `in at ${money(ev.entry_iex)} · result after the exit`;
 }
 // the finish: the screen turns the decision's color with the logo, the score and the result
-async function finale(ev, eff) {
+async function finale(ev, eff, cut = MODEL.cut, who = "") {
   const d = decisionOf(ev), e = ev.e != null ? ev.e : eff;
   await sleep(400);
   const v = $("verdict"); v.className = `verdict full ${d.cls}`;
-  const why = d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") : `news effect past the cut (${num(MODEL.cut, 3)})`;
+  const why = d.cls === "skip" ? (SKIP_WHY[ev.skip] || ev.skip || "no trade") : `${who ? who + ": " : ""}news effect past the cut (${num(cut, 3)})`;
   v.replaceChildren(el("div", { class: "screen" },
     logo(ev.symbol, "logo lg"),
     el("div", { class: "ssym", text: ev.symbol }),
@@ -615,6 +689,9 @@ for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("c
 (async function start() {
   try { MODEL = await getJSON(CFG.trees); } catch { $("updated").textContent = "tree file missing"; return; }
   placeCuts(); setMeters(MODEL.base_score, MODEL.base_score);
+  let v0 = "XGB";
+  try { v0 = localStorage.getItem("view") || "XGB"; } catch { /* no storage */ }
+  await setView(v0 === "KRR" ? "KRR" : "XGB");
   await loadSummary();
   await pollLive();
   setInterval(loadSummary, 5 * 60000);
