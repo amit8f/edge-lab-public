@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9019.80 | -9.80% | 159 | 49 | long ASTS, long BE, long IONQ, long MRNA, long RKLB |
-| Coin flip on C's picks | $9982.47 | -0.18% | 158 | 79 | short ASTS, short BE, long IONQ, long MRNA, long RKLB |
-| C's prompt on Groq (K7) | $7060.24 | -29.40% | 358 | 85 | long COHR, long FN, long MPWR, long MRNA, long TEM |
-| Coin flip on C-groq's picks | $8713.68 | -12.86% | 358 | 170 | long COHR, short FN, short MPWR, long MRNA, long TEM |
-| C-groq's answers, acted on once a day (K8) | $9358.00 | -6.42% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10553.89 | +5.54% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9800.87 | -1.99% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10818.19 | +8.18% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9796.04 | -2.04% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8990.56 | -10.09% | 159 | 49 | long ASTS, long BE, long IONQ, long MRNA, long RKLB |
+| Coin flip on C's picks | $9984.54 | -0.15% | 158 | 79 | short ASTS, short BE, long IONQ, long MRNA, long RKLB |
+| C's prompt on Groq (K7) | $7044.46 | -29.56% | 358 | 85 | long COHR, long FN, long MPWR, long MRNA, long TEM |
+| Coin flip on C-groq's picks | $8686.23 | -13.14% | 358 | 170 | long COHR, short FN, short MPWR, long MRNA, long TEM |
+| C-groq's answers, acted on once a day (K8) | $9361.75 | -6.38% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10546.16 | +5.46% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9782.36 | -2.18% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10822.79 | +8.23% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9798.45 | -2.02% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-09 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 12:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-09 12:2
 | 2026-11-05 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-05 15:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-05 15:37 | short AXTI, short CIFR, short DDOG, short IREN, short SNDK | none | Maintaining all five profitable short positions as the broad market sell-off in AI and tech stocks continues, with many names showing significant daily, weekly, and monthly declines and negative news flow. |
