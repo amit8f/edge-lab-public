@@ -1,0 +1,684 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f6fe88a1dad77e5771c2063cfc4faaff39a19884d46070f63df01f6c288a3ce3",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "e12a224ecbbf9dc49a8acbbb55cf3591eb663597e35349c65cfd6ec878f6a71a",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "SOC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IONS",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "DDI",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "ABEO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "DCTH",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "FTH",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "GFR",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "ARWR",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "NKTX",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "TLS",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "73f22679417144f50e3ca5d677866e1bbce458fdfa613018491c3a8db8161b87",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "oversold rebound with high volume and strong analyst confidence",
+     "stop_pct": 15.0,
+     "symbol": "SOC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, price sharply down, positive tone",
+     "stop_pct": 12.0,
+     "symbol": "IONS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "rapid price rise on deal news, likely profit taking",
+     "stop_pct": 10.0,
+     "symbol": "DDI"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "deal announcement, price depressed, high volume",
+     "stop_pct": 15.0,
+     "symbol": "ABEO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large intraday gain, possible reversal after guidance",
+     "stop_pct": 12.0,
+     "symbol": "DCTH"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "product news positive, cannot short, price heavily discounted",
+     "stop_pct": 15.0,
+     "symbol": "FTH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "cannot short and price overbought",
+     "stop_pct": 0.0,
+     "symbol": "GFR"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive product data, price down, shortable but bullish outlook",
+     "stop_pct": 12.0,
+     "symbol": "ARWR"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive clinical data, price down, high volume",
+     "stop_pct": 15.0,
+     "symbol": "NKTX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong price rally on guidance, likely short\u2011term pullback",
+     "stop_pct": 12.0,
+     "symbol": "TLS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding period <10 days",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "bf869341e0301b83aa296f3bdbd3915a12da52a793b71572db63bd95a09ca0c9"
+  },
+  "reviewer": {
+   "answer_sha256": "13977854c7d600359c3863c47fbe62cecbccaf55f99fdb5984cf118e4c208bb7",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "6f30a4987424140729e2177e4c8e1eafa76929fd3f1cad5fdff74d78587520fe",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme downward momentum and penny stock status make the long proposal too risky.",
+     "symbol": "SOC"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Oversold on earnings with high volume and positive tone supports bounce potential.",
+     "symbol": "IONS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Overextended on high volume pace, making the short proposal viable.",
+     "symbol": "DDI"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selloff in penny stock makes catching the falling knife dangerous.",
+     "symbol": "ABEO"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong intraday spike on guidance offers a good short-fade opportunity.",
+     "symbol": "DCTH"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive drop and not shortable, but long proposal is too risky given the severe selloff.",
+     "symbol": "FTH"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant pullback with positive product tone offers a solid risk-reward long.",
+     "symbol": "ARWR"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp dip on moderate volume pace with positive product catalyst supports long.",
+     "symbol": "NKTX"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong gap up on guidance provides a clear fading opportunity.",
+     "symbol": "TLS"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.62036,
+   "news": 0,
+   "pace": 86.734,
+   "price": 0.7327,
+   "r20": -0.48118,
+   "r5": -0.29818,
+   "short": true,
+   "src": "iex",
+   "symbol": "SOC",
+   "z": -15.427
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.27245,
+   "news": 0,
+   "pace": 12.581,
+   "price": 28.68,
+   "r20": -0.12942,
+   "r5": -0.09421,
+   "short": true,
+   "src": "iex",
+   "symbol": "IONS",
+   "z": -12.686
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.15243,
+   "news": 0,
+   "pace": 51.515,
+   "price": 15.65,
+   "r20": -0.00513,
+   "r5": 0.00742,
+   "short": true,
+   "src": "iex",
+   "symbol": "DDI",
+   "z": 10.418
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.33453,
+   "news": 0,
+   "pace": 22.864,
+   "price": 2.775,
+   "r20": -0.15587,
+   "r5": -0.04138,
+   "short": true,
+   "src": "iex",
+   "symbol": "ABEO",
+   "z": -10.217
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.27729,
+   "news": 0,
+   "pace": 19.469,
+   "price": 19.07,
+   "r20": -0.02799,
+   "r5": 0.06339,
+   "short": true,
+   "src": "iex",
+   "symbol": "DCTH",
+   "z": 9.877
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.48957,
+   "news": 0,
+   "pace": 17.836,
+   "price": 11.255,
+   "r20": -0.1529,
+   "r5": 0.17978,
+   "short": false,
+   "src": "iex",
+   "symbol": "FTH",
+   "z": -9.581
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.38036,
+   "news": 0,
+   "pace": 32.276,
+   "price": 7.73,
+   "r20": -0.11811,
+   "r5": -0.16418,
+   "short": false,
+   "src": "iex",
+   "symbol": "GFR",
+   "z": 8.377
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1912,
+   "news": 0,
+   "pace": 9.619,
+   "price": 47.04,
+   "r20": -0.07315,
+   "r5": -0.02905,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARWR",
+   "z": -7.983
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.2659,
+   "news": 0,
+   "pace": 20.578,
+   "price": 1.27,
+   "r20": -0.23111,
+   "r5": 0.10897,
+   "short": true,
+   "src": "iex",
+   "symbol": "NKTX",
+   "z": -5.744
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.22407,
+   "news": 0,
+   "pace": 6.19,
+   "price": 5.9,
+   "r20": 0.04104,
+   "r5": -0.1107,
+   "short": true,
+   "src": "iex",
+   "symbol": "TLS",
+   "z": 4.295
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5055.3113,
+  "PICK-MAIN-coin": 5172.3256,
+  "PICK-PENNY": 468.6954,
+  "PICK-PENNY-coin": 509.3252
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.4039,
+   "price": 1.27,
+   "qty": 24,
+   "side": 1,
+   "stop": 1.0795,
+   "symbol": "NKTX"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.4087,
+   "price": 1.27,
+   "qty": 24,
+   "side": -1,
+   "stop": 1.4605,
+   "symbol": "NKTX"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2355,
+   "price": 5.9,
+   "qty": 3,
+   "side": -1,
+   "stop": 6.608,
+   "symbol": "TLS"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2345,
+   "price": 5.9,
+   "qty": 3,
+   "side": 1,
+   "stop": 5.192,
+   "symbol": "TLS"
+  }
+ ],
+ "flag_counts": {
+  "move": 37,
+  "news": 13,
+  "volume": 180
+ },
+ "flagged": 204,
+ "headline_counts": {
+  "ABEO": 3,
+  "ARWR": 1,
+  "DCTH": 3,
+  "DDI": 1,
+  "FTH": 3,
+  "GFR": 3,
+  "IONS": 3,
+  "NKTX": 2,
+  "SOC": 3,
+  "TLS": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "35d25c293a9be034cf6a04d1f5f630b4f3654f45c2da8019a51f9ac738ed1b97",
+ "price_sources": {
+  "delayed_sip": 211,
+  "iex": 3187
+ },
+ "priced": 3398,
+ "risk": [
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 42,
+   "skip": "reviewer said none",
+   "symbol": "SOC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IONS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DDI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 11,
+   "skip": "reviewer said none",
+   "symbol": "ABEO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DCTH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FTH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ARWR"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 24,
+   "skip": null,
+   "symbol": "NKTX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 3,
+   "skip": null,
+   "symbol": "TLS"
+  }
+ ],
+ "slot": "2026-11-09T10:45",
+ "t": "2026-11-09T15:45:20.815560+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T15:45:35.551355Z"
+}
