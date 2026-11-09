@@ -1,0 +1,581 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "051ae9f9f6782bd6be566367de54ed16675a69bde8da568066cbd4eacfcabc17",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "9420ed41c32c73621a41449c751213206be52ea8de98143ed8116d37861fb700",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VISN",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CNH",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "HE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VRA",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "FG",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BZ",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "SHMD",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LAES",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GOGO",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DFNS",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "e1103e3185e37ee8753cfeb398aa1fd140b0814bef2445e79c3aa2c6b659849b",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price below $5 minimum for MAIN",
+     "stop_pct": 0.0,
+     "symbol": "VISN"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat drives strong upside",
+     "stop_pct": 10.0,
+     "symbol": "CNH"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "high volume rally up 10% intraday",
+     "stop_pct": 10.0,
+     "symbol": "HE"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "breakout with strong volume and 20\u2011day uptrend",
+     "stop_pct": 12.0,
+     "symbol": "VRA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative analyst tone despite price rise",
+     "stop_pct": 0.0,
+     "symbol": "FG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "modest decline, low volume, no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "BZ"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "order news fuels 22% gain, shortable no",
+     "stop_pct": 15.0,
+     "symbol": "SHMD"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "news\u2011driven 7% rise in penny stock",
+     "stop_pct": 20.0,
+     "symbol": "LAES"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "heavy selling pressure, volume 7x, price down",
+     "stop_pct": 20.0,
+     "symbol": "GOGO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down but not shortable, no bullish signal",
+     "stop_pct": 0.0,
+     "symbol": "DFNS"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position held 10 days, time to close",
+     "stop_pct": 0.0,
+     "symbol": "VRRM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "9f1ab13f70bdd314a59ae9f17672aaeb1ee496ff17c8712df5a80fd083e8bfca"
+  },
+  "reviewer": {
+   "answer_sha256": "c81ba80b945c8453df7ae228ea89495c82120b1809f8a55e66ffacc17a178f3d",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "c038f92885b5d0b449957f64ae78038985e418a085b619ab48c4551884a1bad0",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and earnings catalyst support the long proposal.",
+     "symbol": "CNH"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume and sharp price surge align with the long proposal despite recent underperformance.",
+     "symbol": "HE"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid ongoing trend, high volume, and strong multi-week gains validate the long trade.",
+     "symbol": "VRA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume spike on a deal catalyst supports a speculative long despite poor past performance.",
+     "symbol": "SHMD"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Moderate volume and positive day-over-day price action support the long proposal.",
+     "symbol": "LAES"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy volume with a sharp intraday drop after massive gains suggests a reversal short.",
+     "symbol": "GOGO"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.23476,
+   "news": 0,
+   "pace": 1.788,
+   "price": 4.205,
+   "r20": -0.09163,
+   "r5": -0.15983,
+   "short": true,
+   "src": "iex",
+   "symbol": "VISN",
+   "z": -6.055
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.13711,
+   "news": 0,
+   "pace": 1.694,
+   "price": 13.145,
+   "r20": 0.01493,
+   "r5": -0.01701,
+   "short": true,
+   "src": "iex",
+   "symbol": "CNH",
+   "z": 5.343
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.10748,
+   "news": 0,
+   "pace": 2.325,
+   "price": 9.325,
+   "r20": -0.03881,
+   "r5": -0.03218,
+   "short": true,
+   "src": "iex",
+   "symbol": "HE",
+   "z": 4.815
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.13475,
+   "news": 0,
+   "pace": 2.479,
+   "price": 8.0,
+   "r20": 0.3716,
+   "r5": 0.06818,
+   "short": true,
+   "src": "iex",
+   "symbol": "VRA",
+   "z": 3.33
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08127,
+   "news": 0,
+   "pace": 0.933,
+   "price": 25.28,
+   "r20": 0.21391,
+   "r5": 0.10648,
+   "short": true,
+   "src": "iex",
+   "symbol": "FG",
+   "z": 3.136
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.04646,
+   "news": 0,
+   "pace": 0.83,
+   "price": 16.83,
+   "r20": 0.12206,
+   "r5": 0.06711,
+   "short": true,
+   "src": "iex",
+   "symbol": "BZ",
+   "z": -3.027
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.22326,
+   "news": 0,
+   "pace": 4.599,
+   "price": 2.63,
+   "r20": -0.43717,
+   "r5": -0.20956,
+   "short": false,
+   "src": "iex",
+   "symbol": "SHMD",
+   "z": 2.91
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.06818,
+   "news": 2,
+   "pace": 1.785,
+   "price": 1.41,
+   "r20": -0.37441,
+   "r5": -0.10204,
+   "short": false,
+   "src": "iex",
+   "symbol": "LAES",
+   "z": 1.198
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07979,
+   "news": 0,
+   "pace": 7.02,
+   "price": 3.575,
+   "r20": 0.67457,
+   "r5": 0.64619,
+   "short": true,
+   "src": "iex",
+   "symbol": "GOGO",
+   "z": -0.624
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.04478,
+   "news": 0,
+   "pace": 4.323,
+   "price": 1.92,
+   "r20": -0.66556,
+   "r5": -0.44011,
+   "short": false,
+   "src": "iex",
+   "symbol": "DFNS",
+   "z": -0.464
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5048.8263,
+  "PICK-MAIN-coin": 5153.7956,
+  "PICK-PENNY": 469.8223,
+  "PICK-PENNY-coin": 501.5702
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-09T16:35:21.213097+00:00",
+   "entry": 2.915,
+   "exit": 2.075,
+   "net": 0.7575,
+   "opened": "2026-10-30T13:40:20.609133+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "VRRM",
+   "why": "picker"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.3833,
+   "price": 2.63,
+   "qty": 11,
+   "side": 1,
+   "stop": 2.2355,
+   "symbol": "SHMD"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.3833,
+   "price": 2.63,
+   "qty": 11,
+   "side": 1,
+   "stop": 2.2355,
+   "symbol": "SHMD"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2989,
+   "price": 1.41,
+   "qty": 16,
+   "side": 1,
+   "stop": 1.128,
+   "symbol": "LAES"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2989,
+   "price": 1.41,
+   "qty": 16,
+   "side": 1,
+   "stop": 1.128,
+   "symbol": "LAES"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2858,
+   "price": 3.575,
+   "qty": 6,
+   "side": -1,
+   "stop": 4.29,
+   "symbol": "GOGO"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2858,
+   "price": 3.575,
+   "qty": 6,
+   "side": -1,
+   "stop": 4.29,
+   "symbol": "GOGO"
+  }
+ ],
+ "flag_counts": {
+  "move": 44,
+  "news": 26,
+  "volume": 110
+ },
+ "flagged": 155,
+ "headline_counts": {
+  "CNH": 3,
+  "FG": 1,
+  "HE": 1,
+  "LAES": 2,
+  "SHMD": 2,
+  "VISN": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "e4ef360d78376484cd9bd55c4696d6c90491843d328e44e1d63010e1d3916e43",
+ "price_sources": {
+  "delayed_sip": 143,
+  "iex": 3256
+ },
+ "priced": 3399,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CNH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "VRA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 11,
+   "skip": null,
+   "symbol": "SHMD"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 16,
+   "skip": null,
+   "symbol": "LAES"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 6,
+   "skip": null,
+   "symbol": "GOGO"
+  }
+ ],
+ "slot": "2026-11-09T11:35",
+ "t": "2026-11-09T16:35:21.213097+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T16:35:32.201123Z"
+}
