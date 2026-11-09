@@ -1,0 +1,284 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "720d5892b851d0e54e61540c4f164631758c509e3fd4d39667c3fac0f9fe9afd",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "196bd9a194aca2c9de4bb53639d2c589e57fb87c89afab2c7f62445b03f21947",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "LINC",
+     "tone": 2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PANL",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "offering",
+     "symbol": "IMVT",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "TTD",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CEG",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "OKLO",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "FISN",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PCT",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "LXRX",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "JELD",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "3f12e2319568188a26ab2cb1ba2b989af13d0b9bb26e41c75c40041c6a5786d6",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.25028,
+   "news": 0,
+   "pace": 3.33,
+   "price": 22.08,
+   "r20": -0.24819,
+   "r5": -0.14603,
+   "short": true,
+   "src": "iex",
+   "symbol": "LINC",
+   "z": 6.025
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09181,
+   "news": 0,
+   "pace": 5.623,
+   "price": 8.265,
+   "r20": -0.09014,
+   "r5": -0.04899,
+   "short": true,
+   "src": "iex",
+   "symbol": "PANL",
+   "z": 3.969
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.12217,
+   "news": 0,
+   "pace": 5.957,
+   "price": 34.26,
+   "r20": 0.00197,
+   "r5": 0.04662,
+   "short": true,
+   "src": "iex",
+   "symbol": "IMVT",
+   "z": 3.694
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.13148,
+   "news": 0,
+   "pace": 6.906,
+   "price": 14.63,
+   "r20": 0.07036,
+   "r5": 0.05207,
+   "short": true,
+   "src": "iex",
+   "symbol": "TTD",
+   "z": 3.66
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.05239,
+   "news": 1,
+   "pace": 3.771,
+   "price": 263.045,
+   "r20": -0.16144,
+   "r5": -0.04737,
+   "short": true,
+   "src": "iex",
+   "symbol": "CEG",
+   "z": 1.631
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.06645,
+   "news": 1,
+   "pace": 3.022,
+   "price": 25.115,
+   "r20": -0.32133,
+   "r5": -0.06733,
+   "short": true,
+   "src": "iex",
+   "symbol": "OKLO",
+   "z": 0.926
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.33514,
+   "news": 0,
+   "pace": 7.85,
+   "price": 2.47,
+   "r20": -0.58427,
+   "r5": -0.30712,
+   "short": false,
+   "src": "iex",
+   "symbol": "FISN",
+   "z": 1.954
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.21021,
+   "news": 0,
+   "pace": 4.054,
+   "price": 2.015,
+   "r20": -0.57526,
+   "r5": -0.50446,
+   "short": false,
+   "src": "iex",
+   "symbol": "PCT",
+   "z": 1.908
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06461,
+   "news": 0,
+   "pace": 3.226,
+   "price": 1.895,
+   "r20": 0.05952,
+   "r5": 0.25352,
+   "short": true,
+   "src": "iex",
+   "symbol": "LXRX",
+   "z": 1.477
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.11275,
+   "news": 0,
+   "pace": 3.688,
+   "price": 1.135,
+   "r20": -0.33766,
+   "r5": -0.19048,
+   "short": true,
+   "src": "iex",
+   "symbol": "JELD",
+   "z": 1.433
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5054.8963,
+  "PICK-MAIN-coin": 5162.4006,
+  "PICK-PENNY": 470.4289,
+  "PICK-PENNY-coin": 507.9743
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 28,
+  "news": 13,
+  "volume": 288
+ },
+ "flagged": 304,
+ "headline_counts": {
+  "CEG": 3,
+  "IMVT": 3,
+  "LINC": 3,
+  "LXRX": 2,
+  "OKLO": 2,
+  "TTD": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "dead6f9bc82fc8cb70245d9507ede18b73cb00ee43a9f69adde2580f4cb71cb8",
+ "price_sources": {
+  "delayed_sip": 270,
+  "iex": 3126
+ },
+ "priced": 3396,
+ "risk": [],
+ "slot": "2026-11-09T10:20",
+ "t": "2026-11-09T15:20:20.560568+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T15:20:31.231567Z"
+}
