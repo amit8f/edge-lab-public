@@ -1,0 +1,453 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "60778535c30ee22798a3c0321a1d164935c28a116df8e67546a93ab19f86e3e1",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "45d19b0f0dad14144f78f4cb4a23193b22ec54ebfd59fedcd2628f3930d2451e",
+   "views": [
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "IBRX",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SOC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "ZURA",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "DDI",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "guidance",
+     "symbol": "DCTH",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GFR",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "FTH",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "ABEO",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VISN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "NKTX",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "28391da351b93f743c81c829eb75701a76caa1cfa4c5b23593085967bbdf5263",
+   "decisions": [
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large 24% drop, negative analyst tone, shortable",
+     "stop_pct": 12.0,
+     "symbol": "IBRX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal",
+     "stop_pct": 0.0,
+     "symbol": "SOC"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "72% drop, negative trial result, shortable",
+     "stop_pct": 20.0,
+     "symbol": "ZURA"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "15% rise, positive deal news",
+     "stop_pct": 10.0,
+     "symbol": "DDI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "25% rise, positive guidance",
+     "stop_pct": 12.0,
+     "symbol": "DCTH"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "38% rise, strong momentum, not shortable",
+     "stop_pct": 13.0,
+     "symbol": "GFR"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "4d7cbfdde220403bf05cb00a9912612f7bd7be74bdb3404af36c62e1209d4373"
+  },
+  "reviewer": {
+   "answer_sha256": "453ae73b9dcbc297691c12766e9dfc37a159f71c36b27d38c947681bb50e0b52",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "dea50a1c1b106ee390aecfcafb73f070080630b23fe7e1488363fa080fb71665",
+   "reviews": [
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Already down nearly 25% today with upcoming earnings news, making shorting risky.",
+     "symbol": "IBRX"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive 72.7% drop already makes chasing the short position extremely risky.",
+     "symbol": "ZURA"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum with a deal catalyst and high z-score supports the long proposal.",
+     "symbol": "DDI"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum following positive guidance, aligning well with the long proposal.",
+     "symbol": "DCTH"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and up 38%, but multi-day trend is weak, suggesting caution.",
+     "symbol": "GFR"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.24667,
+   "news": 1,
+   "pace": null,
+   "price": 6.505,
+   "r20": -0.1784,
+   "r5": 0.04162,
+   "short": true,
+   "src": "iex",
+   "symbol": "IBRX",
+   "z": -4.982
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.6943,
+   "news": 0,
+   "pace": null,
+   "price": 0.59,
+   "r20": -0.48118,
+   "r5": -0.29818,
+   "short": true,
+   "src": "iex",
+   "symbol": "SOC",
+   "z": -18.877
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.72738,
+   "news": 0,
+   "pace": null,
+   "price": 1.115,
+   "r20": 0.0225,
+   "r5": 0.01238,
+   "short": true,
+   "src": "iex",
+   "symbol": "ZURA",
+   "z": -16.634
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.15795,
+   "news": 0,
+   "pace": null,
+   "price": 15.725,
+   "r20": -0.00513,
+   "r5": 0.00742,
+   "short": true,
+   "src": "iex",
+   "symbol": "DDI",
+   "z": 10.769
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.25184,
+   "news": 0,
+   "pace": null,
+   "price": 18.69,
+   "r20": -0.02799,
+   "r5": 0.06339,
+   "short": true,
+   "src": "iex",
+   "symbol": "DCTH",
+   "z": 9.065
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.38036,
+   "news": 0,
+   "pace": null,
+   "price": 7.73,
+   "r20": -0.11811,
+   "r5": -0.16418,
+   "short": false,
+   "src": "iex",
+   "symbol": "GFR",
+   "z": 8.377
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.4381,
+   "news": 0,
+   "pace": null,
+   "price": 12.39,
+   "r20": -0.1529,
+   "r5": 0.17978,
+   "short": false,
+   "src": "iex",
+   "symbol": "FTH",
+   "z": -8.212
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.26859,
+   "news": 0,
+   "pace": null,
+   "price": 3.05,
+   "r20": -0.15587,
+   "r5": -0.04138,
+   "short": true,
+   "src": "iex",
+   "symbol": "ABEO",
+   "z": -7.847
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.24295,
+   "news": 0,
+   "pace": null,
+   "price": 4.16,
+   "r20": -0.09163,
+   "r5": -0.15983,
+   "short": true,
+   "src": "iex",
+   "symbol": "VISN",
+   "z": -6.298
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.2341,
+   "news": 0,
+   "pace": null,
+   "price": 1.325,
+   "r20": -0.23111,
+   "r5": 0.10897,
+   "short": true,
+   "src": "iex",
+   "symbol": "NKTX",
+   "z": -4.957
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5091.101,
+  "PICK-MAIN-coin": 5148.6695,
+  "PICK-PENNY": 473.93,
+  "PICK-PENNY-coin": 513.6482
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-09T14:35:20.850336+00:00",
+   "entry": 14.725,
+   "exit": 15.33,
+   "net": 7.9847,
+   "opened": "2026-10-26T14:42:34.463692+00:00",
+   "qty": 16,
+   "side": 1,
+   "symbol": "XP",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-09T14:35:20.850336+00:00",
+   "entry": 2.22,
+   "exit": 3.9,
+   "net": 17.664,
+   "opened": "2026-10-26T14:45:20.317482+00:00",
+   "qty": 11,
+   "side": 1,
+   "symbol": "JBLU",
+   "why": "10 days"
+  }
+ ],
+ "flag_counts": {
+  "move": 16,
+  "news": 150,
+  "volume": 0
+ },
+ "flagged": 165,
+ "flip_test": {
+  "after": null,
+  "answer_sha256": "b8924045cab18826f459e1fd9f4deeeca403fe0c463160a131092566efa8755c",
+  "before": -1,
+  "model": "openai/gpt-oss-20b",
+  "moved": null,
+  "prompt_sha256": "6e5d5d2792b082dc0fae27aa4b34ca8c7468d7327fd484c876f6121593a79249",
+  "quota": false,
+  "retry": {
+   "answer_sha256": "786a7481d34893e2f270c5feec87ab66e616a31eefda1c85bdfc85ec710add56",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "688b3ee913c7fc35c6e904155a33d721a9c6a4bcad5992f23543ac66f49fd7c6"
+  },
+  "swaps": 3,
+  "symbol": "IBRX"
+ },
+ "headline_counts": {
+  "ABEO": 3,
+  "DCTH": 3,
+  "DDI": 1,
+  "FTH": 3,
+  "GFR": 3,
+  "IBRX": 3,
+  "NKTX": 2,
+  "SOC": 3,
+  "VISN": 1,
+  "ZURA": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "ed5bbe9ad30febd6244e6213aac8ae33d6cbcaff3d1b0fe25b80042d53435f89",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2361
+ },
+ "priced": 2361,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IBRX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 14,
+   "skip": "reviewer said none",
+   "symbol": "ZURA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DDI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DCTH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GFR"
+  }
+ ],
+ "slot": "2026-11-09T09:35",
+ "t": "2026-11-09T14:35:20.850336+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T14:35:34.154749Z"
+}
