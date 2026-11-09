@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-09T15:00 ET: 362 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-09T15:05 ET: 339 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $5,003.66 | +0.07% | 43 | 18 | long AHRT, long APP, short ARQT, long ATO, long BA, long CMPS, short INGM, long LOW, long MNDY, long MTDR, long PGEN, long ROL, long RSI, long VRDN, long XYZ | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,815.15 | -3.70% | 44 | 12 | long AHRT, long APP, short ARQT, long ATO, long BA, long INGM, short LOW, long MNDY, short MTDR, long PGEN, long ROL, short RSI, long VRDN, long XYZ | ok |
-| SCOUT-PENNY | $479.40 | -4.12% | 17 | 2 | short NUAI, short TCPC, long TLRY | 1 unreadable agent answers |
-| SCOUT-PENNY-coin | $504.32 | +0.86% | 15 | 4 | short NUAI, long RZLT, long SOC, short TCPC, long TLRY | ok |
+| SCOUT-MAIN | $4,999.15 | -0.02% | 43 | 18 | long AHRT, long APP, short ARQT, long ATO, long BA, long CMPS, short INGM, long LOW, long MNDY, long MTDR, long PGEN, long ROL, long RSI, long VRDN, long XYZ | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,816.87 | -3.66% | 44 | 12 | long AHRT, long APP, short ARQT, long ATO, long BA, long INGM, short LOW, long MNDY, short MTDR, long PGEN, long ROL, short RSI, long VRDN, long XYZ | ok |
+| SCOUT-PENNY | $479.07 | -4.19% | 17 | 2 | short NUAI, short TCPC, long TLRY | 1 unreadable agent answers |
+| SCOUT-PENNY-coin | $504.41 | +0.88% | 15 | 4 | short NUAI, long RZLT, long SOC, short TCPC, long TLRY | ok |
