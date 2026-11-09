@@ -1,0 +1,511 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "b248a8741be4bbecf7c174cb8d52ab73c03c38f46b4dac4e67e4f7481d4704ed",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "db62b64f465c9e47fbb210b4e79ce6b2127d5704096bc13366a26f9ab99d5105",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "FERG",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "LINC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "JANX",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TTD",
+     "tone": -1
+    },
+    {
+     "confidence": 75,
+     "event": "offering",
+     "symbol": "IMVT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "IBRX",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GTN",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "LFMD",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "FISN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "UAMY",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4197aa8c2bacba41bf08be5a645efaf3982125fb789de1571b28e62f97286f24",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat and positive outlook drives momentum",
+     "stop_pct": 0.1,
+     "symbol": "FERG"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Robust earnings beat and raised guidance supports upside",
+     "stop_pct": 0.1,
+     "symbol": "LINC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive Phase 1 data after sharp drop suggests rebound",
+     "stop_pct": 0.12,
+     "symbol": "JANX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings miss and negative tone after large rally may reverse",
+     "stop_pct": 0.12,
+     "symbol": "TTD"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Offering announcement and earnings beat support upside",
+     "stop_pct": 0.1,
+     "symbol": "IMVT"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price down sharply with negative earnings; no clear direction",
+     "stop_pct": 0.0,
+     "symbol": "IBRX"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong price move and volume in penny stock",
+     "stop_pct": 0.1,
+     "symbol": "GTN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative earnings and price decline suggest further downside",
+     "stop_pct": 0.2,
+     "symbol": "LFMD"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Huge price surge with neutral tone; momentum trade",
+     "stop_pct": 0.1,
+     "symbol": "FISN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant price rise and volume; bullish momentum",
+     "stop_pct": 0.1,
+     "symbol": "UAMY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f35e1c1c8cafe4aa50722871436ef498bbf2a45bb07174f2e467f70c9b223b1a"
+  },
+  "reviewer": {
+   "answer_sha256": "0634d3fd07f0a36448c17e1949c6ca4967aabf24d484953e2c752efd5432722e",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "069caf6034a00dd64012b12eeb19ace05293aa91a864252e9d78f3bcd9632cc1",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum and positive earnings tone align well with proposal.",
+     "symbol": "FERG"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume surge and positive earnings tone support continuation.",
+     "symbol": "LINC"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy drop in price despite positive analyst tone makes long proposal risky.",
+     "symbol": "JANX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative earnings tone justifies shorting the overextended move.",
+     "symbol": "TTD"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid volume and positive tone back the long proposal.",
+     "symbol": "IMVT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Consistent upward trend supports the long trade.",
+     "symbol": "GTN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop and negative earnings tone support shorting.",
+     "symbol": "LFMD"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive volume and strong bounce justify the momentum long.",
+     "symbol": "FISN"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong intraday gains and good volume back the long proposal.",
+     "symbol": "UAMY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.12608,
+   "news": 0,
+   "pace": 4.334,
+   "price": 263.165,
+   "r20": 0.06208,
+   "r5": -0.02086,
+   "short": true,
+   "src": "iex",
+   "symbol": "FERG",
+   "z": 6.164
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.25311,
+   "news": 0,
+   "pace": 3.552,
+   "price": 22.13,
+   "r20": -0.24819,
+   "r5": -0.14603,
+   "short": true,
+   "src": "iex",
+   "symbol": "LINC",
+   "z": 6.086
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.22348,
+   "news": 0,
+   "pace": 6.924,
+   "price": 13.69,
+   "r20": -0.04133,
+   "r5": 0.00916,
+   "short": true,
+   "src": "iex",
+   "symbol": "JANX",
+   "z": -5.818
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.14811,
+   "news": 0,
+   "pace": 6.185,
+   "price": 14.845,
+   "r20": 0.07036,
+   "r5": 0.05207,
+   "short": true,
+   "src": "iex",
+   "symbol": "TTD",
+   "z": 4.092
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.12725,
+   "news": 0,
+   "pace": 3.87,
+   "price": 34.415,
+   "r20": 0.00197,
+   "r5": 0.04662,
+   "short": true,
+   "src": "iex",
+   "symbol": "IMVT",
+   "z": 3.839
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.19282,
+   "news": 0,
+   "pace": 9.951,
+   "price": 6.97,
+   "r20": -0.1784,
+   "r5": 0.04162,
+   "short": true,
+   "src": "iex",
+   "symbol": "IBRX",
+   "z": -3.768
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.10772,
+   "news": 0,
+   "pace": 4.593,
+   "price": 5.45,
+   "r20": 0.0837,
+   "r5": 0.09577,
+   "short": true,
+   "src": "iex",
+   "symbol": "GTN",
+   "z": 3.602
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.13713,
+   "news": 0,
+   "pace": 6.505,
+   "price": 2.045,
+   "r20": -0.09886,
+   "r5": 0.03493,
+   "short": true,
+   "src": "iex",
+   "symbol": "LFMD",
+   "z": -3.238
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.44324,
+   "news": 0,
+   "pace": 14.272,
+   "price": 2.67,
+   "r20": -0.58427,
+   "r5": -0.30712,
+   "short": false,
+   "src": "iex",
+   "symbol": "FISN",
+   "z": 2.481
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.19149,
+   "news": 0,
+   "pace": 3.179,
+   "price": 3.36,
+   "r20": -0.2337,
+   "r5": -0.05369,
+   "short": false,
+   "src": "iex",
+   "symbol": "UAMY",
+   "z": 2.427
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5051.2013,
+  "PICK-MAIN-coin": 5161.0706,
+  "PICK-PENNY": 468.4015,
+  "PICK-PENNY-coin": 504.9407
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 45,
+  "news": 5,
+  "volume": 121
+ },
+ "flagged": 146,
+ "headline_counts": {
+  "FERG": 3,
+  "IBRX": 3,
+  "IMVT": 3,
+  "JANX": 2,
+  "LFMD": 1,
+  "LINC": 3,
+  "TTD": 3,
+  "UAMY": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "43620a7971a8243dbea009f2651238852c07e2f62fefd4af2b4e60a3c44c63e5",
+ "price_sources": {
+  "delayed_sip": 170,
+  "iex": 3229
+ },
+ "priced": 3399,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "FERG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "LINC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "JANX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "TTD"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "IMVT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "GTN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "LFMD"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "FISN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "stop under 1%",
+   "symbol": "UAMY"
+  }
+ ],
+ "slot": "2026-11-09T11:25",
+ "t": "2026-11-09T16:25:21.111085+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T16:25:33.350959Z"
+}
