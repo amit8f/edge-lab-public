@@ -1,0 +1,423 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "95ff4c40843d5d9909f834d0da31eb5fac4106d6fe6c7bbc55e5a21d804f74c2",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "8e95c0f857391b0a0a003537d7a48549f973060f41413e34f8d86c05e573bc8c",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MTW",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DSGR",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "regulatory",
+     "symbol": "GSAT",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "SHMD",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "TH",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "ONB",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "AMD",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "CAMT",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "FIBK",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "EOSE",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "3f10a5c3fee9da840f52d691017b052424993cd09eb60d7819c740a256ba3b51",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong intraday gain, high z and positive short-term trend",
+     "stop_pct": 10.0,
+     "symbol": "MTW"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Small move despite high z, no clear direction",
+     "stop_pct": 0.0,
+     "symbol": "DSGR"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Regulatory approval boost, high z and positive momentum",
+     "stop_pct": 10.0,
+     "symbol": "GSAT"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large intraday bounce but not shortable and long-term downtrend",
+     "stop_pct": 0.0,
+     "symbol": "SHMD"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop, negative trend, earnings risk",
+     "stop_pct": 12.0,
+     "symbol": "TH"
+    },
+    {
+     "confidence": 65,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Mixed signals, modest move",
+     "stop_pct": 0.0,
+     "symbol": "ONB"
+    },
+    {
+     "confidence": 65,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Short-term rally amid long-term weakness, uncertain",
+     "stop_pct": 0.0,
+     "symbol": "AMD"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Short-term bounce on news but long-term downtrend",
+     "stop_pct": 12.0,
+     "symbol": "CAMT"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f527af911636072c3c3854d871edecb850ff03664e2c3822c31813f5d491548c"
+  },
+  "reviewer": {
+   "answer_sha256": "5476200badcd7cb52778660315a0dd51912f551898205513c3e8289736f47dee",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "1cb055b40dea62f76b0b9e1b268aab9cdad59f5ce8e62781264b565d882de2d4",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum today with supporting z-score aligning with the long proposal.",
+     "symbol": "MTW"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive price action and regulatory tailwind support the high-confidence long proposal.",
+     "symbol": "GSAT"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe multi-day downtrend justifies continuing with the short proposal.",
+     "symbol": "TH"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Despite a bounce today, the steep multi-week decline supports a short bias.",
+     "symbol": "CAMT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09438,
+   "news": 0,
+   "pace": null,
+   "price": 24.525,
+   "r20": 0.03415,
+   "r5": -0.02692,
+   "short": true,
+   "src": "iex",
+   "symbol": "MTW",
+   "z": 3.252
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.00258,
+   "news": 0,
+   "pace": null,
+   "price": 35.02,
+   "r20": -0.00285,
+   "r5": -0.00143,
+   "short": true,
+   "src": "iex",
+   "symbol": "DSGR",
+   "z": 3.096
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.0268,
+   "news": 0,
+   "pace": null,
+   "price": 86.58,
+   "r20": 0.00597,
+   "r5": 0.02454,
+   "short": true,
+   "src": "iex",
+   "symbol": "GSAT",
+   "z": 3.058
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.23256,
+   "news": 0,
+   "pace": null,
+   "price": 2.65,
+   "r20": -0.43717,
+   "r5": -0.20956,
+   "short": false,
+   "src": "iex",
+   "symbol": "SHMD",
+   "z": 3.019
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.08583,
+   "news": 1,
+   "pace": null,
+   "price": 10.385,
+   "r20": -0.38294,
+   "r5": -0.16898,
+   "short": true,
+   "src": "iex",
+   "symbol": "TH",
+   "z": -1.244
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02006,
+   "news": 1,
+   "pace": null,
+   "price": 25.43,
+   "r20": 0.01424,
+   "r5": -0.00638,
+   "short": true,
+   "src": "iex",
+   "symbol": "ONB",
+   "z": 1.158
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.07997,
+   "news": 1,
+   "pace": null,
+   "price": 484.95,
+   "r20": -0.26157,
+   "r5": -0.11046,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMD",
+   "z": 1.148
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.05647,
+   "news": 1,
+   "pace": null,
+   "price": 102.53,
+   "r20": -0.3649,
+   "r5": -0.16824,
+   "short": true,
+   "src": "iex",
+   "symbol": "CAMT",
+   "z": 1.084
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.0164,
+   "news": 1,
+   "pace": null,
+   "price": 38.42,
+   "r20": 0.1085,
+   "r5": 0.0164,
+   "short": true,
+   "src": "iex",
+   "symbol": "FIBK",
+   "z": 0.937
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00575,
+   "news": 1,
+   "pace": null,
+   "price": 1.75,
+   "r20": -0.30952,
+   "r5": -0.07937,
+   "short": false,
+   "src": "iex",
+   "symbol": "EOSE",
+   "z": 0.065
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5077.1463,
+  "PICK-MAIN-coin": 5162.0706,
+  "PICK-PENNY": 469.4424,
+  "PICK-PENNY-coin": 510.9828
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-09T14:55:21.181933+00:00",
+   "entry": 1.78,
+   "exit": 1.505,
+   "net": -5.7372,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 18,
+   "side": 1,
+   "symbol": "NXH",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 30,
+  "news": 15,
+  "volume": 0
+ },
+ "flagged": 45,
+ "headline_counts": {
+  "AMD": 3,
+  "CAMT": 1,
+  "EOSE": 3,
+  "FIBK": 1,
+  "GSAT": 2,
+  "ONB": 1,
+  "SHMD": 1,
+  "TH": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "ed1d213c7ba666af0ccdcdfbf11658ffde6194adf36001dbec24f79487a69bba",
+ "price_sources": {
+  "delayed_sip": 423,
+  "iex": 2968
+ },
+ "priced": 3391,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MTW"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GSAT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TH"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CAMT"
+  }
+ ],
+ "slot": "2026-11-09T09:55",
+ "t": "2026-11-09T14:55:21.181933+00:00",
+ "universe": 3400,
+ "written_utc": "2026-11-09T14:55:31.828779Z"
+}
