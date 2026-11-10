@@ -72,6 +72,13 @@
     <div class="filters" id="modelfilter" style="margin-top:10px" aria-label="Model"></div>
     <div class="filters" id="feedfilter" style="margin-top:8px"></div>
     <div id="feed" class="feed"></div>
+
+    <div class="feedhead"><h2>BOOM-SHORT</h2><span class="muted small">ledger only · decided before 9:30 ET</span></div>
+    <p class="muted small">Each morning BOOM1 (CatBoost) picks the 20 stocks most likely to move 8% today, then D6
+      (CatBoost) scores which way. Scores at or below -0.119 are shorted, $500 each, closed at -8%, +8% or the close.
+      Random picks from the same 20, shorted the same way, are the control.</p>
+    <div class="filters" id="boomchips"></div>
+    <div id="boomday" class="feed"></div>
   </section>
 
   <section id="tab-progress" class="tab" hidden>

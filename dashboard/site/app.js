@@ -405,6 +405,50 @@ function setMode(live) {
   m.textContent = live ? "LIVE" : `REPLAY ${replayDay || ""}`;
 }
 
+// ---------- BOOM-SHORT on the Live tab ----------
+let boomDay = null;
+function renderBoom() {
+  const days = (SUMMARY && SUMMARY.boomshort) || [];
+  if (!days.length) {
+    $("boomchips").replaceChildren();
+    $("boomday").replaceChildren(el("div", { class: "muted small", text: "No mornings logged yet." }));
+    return;
+  }
+  if (!days.some(d => d.day === boomDay)) boomDay = days[0].day;
+  $("boomchips").replaceChildren(...days.map(d => {
+    const b = el("button", { "aria-pressed": String(d.day === boomDay), text: d.day });
+    b.addEventListener("click", () => { boomDay = d.day; renderBoom(); });
+    return b;
+  }));
+  const d = days.find(x => x.day === boomDay);
+  const pct = x => x == null ? "" : `${x >= 0 ? "+" : ""}${(100 * x).toFixed(2)}%`;
+  const nShort = d.picks.filter(p => p.role === "short").length;
+  const head = d.status !== "decided"
+    ? el("div", { class: "card small warn", text: `${d.status}${d.reason ? `: ${d.reason}` : ""}` })
+    : el("div", { class: "card small" },
+        el("div", { class: "kv" }, el("span", { text: `${d.universe || "?"} stocks scored · ${nShort} shorted` }),
+          el("span", { class: "muted", text: d.decided_at ? `decided ${d.decided_at.slice(11, 16)} ET` : "" })),
+        d.settled ? el("div", { class: "kv" }, el("span", { text: `shorts ${pct(d.book_mean)} each · control ${pct(d.control_mean)}` }),
+          el("span", { class: (d.pnl_usd || 0) >= 0 ? "up" : "down",
+            text: d.pnl_usd == null ? "" : `${d.pnl_usd >= 0 ? "+" : "-"}$${Math.abs(d.pnl_usd).toFixed(0)}` })) : null,
+        d.blocked && d.blocked.length ? el("div", { class: "muted", text: `not easy to borrow, skipped: ${d.blocked.join(", ")}` }) : null);
+  const rows = d.picks.map(p => {
+    const r = p.result;
+    const mark = !r && p.role && p.last_price && p.prev_c ? -(p.last_price / p.prev_c - 1) : null;
+    const res = r && r.status === "settled" ? pct(r.net) : mark != null ? `${pct(mark)} now` : "";
+    const cls = r && r.net != null ? (r.net >= 0 ? "up" : "down") : mark != null ? (mark >= 0 ? "up" : "down") : "muted";
+    const role = p.role === "short" ? "SHORTED" : p.role === "control" ? "control short" : "watched";
+    return el("div", { class: "card small" },
+      el("div", { class: "kv" }, el("span", {}, el("b", { text: p.symbol }), el("span", { class: "muted", text: ` · ${role}` })),
+        el("span", { class: cls, text: res })),
+      el("div", { class: "kv muted" },
+        el("span", { text: `boom ${p.boom1 != null ? p.boom1.toFixed(2) : "?"} · direction ${p.d6 != null ? p.d6.toFixed(3) : "?"}` }),
+        el("span", { text: p.pm_gap != null ? `pre-market ${pct(p.pm_gap)}` : "" })));
+  });
+  $("boomday").replaceChildren(head, ...rows, el("div", { class: "muted small",
+    text: "\"now\" is the short's gain since yesterday's close at the latest price, before costs; the book settles from the first open." }));
+}
+
 // ---------- data ----------
 let SUMMARY = null, liveRows = [];
 async function getJSON(url) {
@@ -427,7 +471,7 @@ async function loadSummary() {
     replayDay = withEvents.day;
     replayList = traded(withEvents).sort((a, b) => (a.t < b.t ? -1 : 1)); replayIx = 0;
   }
-  renderDays(); renderBooks(); renderIdeas(); renderProgress();
+  renderDays(); renderBooks(); renderIdeas(); renderProgress(); renderBoom();
 }
 async function pollLive() {
   const day = etDate();

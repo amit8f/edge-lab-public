@@ -243,3 +243,25 @@ def test_krr_export_matches_the_pipeline():
     got = np.array([K.score(m, list(x))[0] for x in X[:50]])
     assert np.allclose(got, p.predict(X[:50]), atol=1e-5)
     assert len(m["w"]) == 40 and len(m["L"]) == 40
+
+
+def test_boomshort_days_for_the_live_tab(tmp_path, monkeypatch):
+    import json as _j
+    from dashboard import build as DB
+    led = tmp_path / "state-boomshort" / "boomshort" / "ledger"
+    (led / "settle").mkdir(parents=True)
+    (led / "days").mkdir()
+    picks = [{"symbol": "A", "boom1": 0.5, "d6": -0.3, "pm_gap": 0.05, "prev_c": 10.0},
+             {"symbol": "B", "boom1": 0.4, "d6": 0.2, "pm_gap": -0.01, "prev_c": 20.0},
+             {"symbol": "C", "boom1": 0.3, "d6": 0.1, "pm_gap": 0.0, "prev_c": 5.0}]
+    (led / "days" / "2026-11-09.json").write_text(_j.dumps({"status": "missed", "reason": "late"}))
+    (led / "days" / "2026-11-11.json").write_text(_j.dumps({"status": "decided", "universe": 2500, "picks": picks,
+                                                           "shorts": ["A"], "control": ["C"]}))
+    (led / "settle" / "2026-11-09.json").write_text(_j.dumps({"trades": {}, "pnl_usd": 0.0}))
+    monkeypatch.setattr(DB, "latest_prices", lambda syms: {s: 9.0 for s in syms})
+    d = DB.boomshort_days(tmp_path)
+    assert [x["day"] for x in d] == ["2026-11-11", "2026-11-09"] and d[1]["status"] == "missed"
+    p = {x["symbol"]: x for x in d[0]["picks"]}
+    assert [x["symbol"] for x in d[0]["picks"]] == ["A", "C", "B"]        # most bearish direction score first
+    assert p["A"]["role"] == "short" and p["C"]["role"] == "control" and p["B"]["role"] is None
+    assert p["A"]["last_price"] == 9.0 and "last_price" not in p["B"]     # only open trades get a live price
