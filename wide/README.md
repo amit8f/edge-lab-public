@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 12:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8682.90 | -13.17% | 171 | 54 | long APP, long HL, long MRNA, long TTWO |
-| Coin flip on C's picks | $9683.95 | -3.16% | 170 | 87 | long APP, short HL, short MRNA, short TTWO |
-| C's prompt on Groq (K7) | $6861.90 | -31.38% | 371 | 88 | short AXTI, long MRNA, short NVDA, long RKT, long TTWO |
-| Coin flip on C-groq's picks | $8481.74 | -15.18% | 371 | 175 | short AXTI, short MRNA, short NVDA, short RKT, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $9104.63 | -8.95% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10803.21 | +8.03% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9498.56 | -5.01% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10667.59 | +6.68% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9721.48 | -2.79% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8685.66 | -13.14% | 171 | 54 | long APP, long HL, long MRNA, long TTWO |
+| Coin flip on C's picks | $9692.22 | -3.08% | 170 | 87 | long APP, short HL, short MRNA, short TTWO |
+| C's prompt on Groq (K7) | $6842.66 | -31.57% | 371 | 88 | short AXTI, long MRNA, short NVDA, long RKT, long TTWO |
+| Coin flip on C-groq's picks | $8474.47 | -15.26% | 371 | 175 | short AXTI, short MRNA, short NVDA, short RKT, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $9114.44 | -8.86% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10812.56 | +8.13% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9538.17 | -4.62% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10629.57 | +6.30% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9735.81 | -2.64% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-10 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 11:57 | long APP, long HL, long MRNA, long TTWO | sold AMD @ $509.27; sold NET @ $298.94; sold TSM @ $388.92; sold TWLO @ $213.66; bought APP @ $387.19; bought HL @ $14.20; bought MRNA @ $254.55 | Reduced exposure to underperforming tech stocks (AMD, NET, TSM, TWLO) and consolidated into high-momentum stocks (TTWO, MRNA, APP) and a fundamentally strong mining stock (HL) that are showing strong multi-session performance despite recent hourly pullbacks. |
 | 2026-11-10 11:47 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 12:0
 | 2026-11-06 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 12:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-06 12:37 | no answer, nothing changed | none | unreadable answer |
