@@ -29,8 +29,11 @@
     <div class="filters" id="viewswitch" aria-label="Which model to watch">
       <button data-view="XGB" aria-pressed="true">XGBoost (NX3, live account)</button>
       <button data-view="KRR" aria-pressed="false">KRR (shadow book)</button>
+      <button data-view="BOOM" aria-pressed="false">BOOM1 + BOOM-SHORT</button>
     </div>
     <div class="muted small" id="viewnote"></div>
+
+    <div id="nx3view">
 
     <div class="stage card">
       <div class="who">
@@ -72,7 +75,9 @@
     <div class="filters" id="modelfilter" style="margin-top:10px" aria-label="Model"></div>
     <div class="filters" id="feedfilter" style="margin-top:8px"></div>
     <div id="feed" class="feed"></div>
+    </div>
 
+    <div id="boomview" hidden>
     <div class="feedhead"><h2>BOOM1 and BOOM-SHORT</h2><span class="muted small">picked before 9:30 ET · ledger only</span></div>
     <p class="muted small">Each morning BOOM1 (CatBoost) picks the 20 stocks most likely to move 8% from the open today,
       up or down. Each pick shows how far it has gone up and down from the open, and BOOM1 scores a hit once either
@@ -81,6 +86,7 @@
       control.</p>
     <div class="filters" id="boomchips"></div>
     <div id="boomday" class="feed"></div>
+    </div>
   </section>
 
   <section id="tab-progress" class="tab" hidden>
