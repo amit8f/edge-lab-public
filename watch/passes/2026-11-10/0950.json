@@ -1,0 +1,335 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "496716b18d3baf7104a86cf68ddbeb3cd7b1f63493bcb79915cc3eeb75e91193",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "d6781de601ed771793781e44d1759cd84b1a3aaa168d483e9974f72b25b00fa0",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BRSL",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "ETD",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "RNGR",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CWCO",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "AAON",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "GDOT",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "PLX",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "legal",
+     "symbol": "NVDA",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "CNH",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "IMNM",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "bc4d2a15fdf9e3d45881ba54712e7cf3e48c15daf7d0a40df0e592a637de1f1c",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down 6.9% with negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "BRSL"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop suggests further downside",
+     "stop_pct": 12.0,
+     "symbol": "ETD"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "4e385472cbaba26b79b46350be976064213dc0bcd3b1c4c55554e0cd67167e68"
+  },
+  "reviewer": {
+   "answer_sha256": "4a92c3ad52830d792012c6f68b3c0645b4f1f56aa25c18fffbb6462f73c4698e",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "d21c2b0bf3f76b20c3dcc1d361e1343aec85ec5064d527fd2a3eaa1a2ef92f9f",
+   "reviews": [
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe intraday drop with negative earnings tone suggests continuation.",
+     "symbol": "BRSL"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong downside momentum following earnings report warrants short exposure.",
+     "symbol": "ETD"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.06893,
+   "news": 0,
+   "pace": null,
+   "price": 9.32,
+   "r20": 0.00907,
+   "r5": -0.00199,
+   "short": true,
+   "src": "iex",
+   "symbol": "BRSL",
+   "z": -3.409
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08923,
+   "news": 0,
+   "pace": null,
+   "price": 18.525,
+   "r20": 0.00098,
+   "r5": -0.03648,
+   "short": true,
+   "src": "iex",
+   "symbol": "ETD",
+   "z": -3.292
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.0846,
+   "news": 0,
+   "pace": null,
+   "price": 11.415,
+   "r20": -0.1855,
+   "r5": -0.11623,
+   "short": true,
+   "src": "iex",
+   "symbol": "RNGR",
+   "z": -3.277
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.05805,
+   "news": 0,
+   "pace": null,
+   "price": 26.045,
+   "r20": -0.10023,
+   "r5": 0.00876,
+   "short": true,
+   "src": "iex",
+   "symbol": "CWCO",
+   "z": -3.271
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.22467,
+   "news": 0,
+   "pace": null,
+   "price": 76.995,
+   "r20": -0.25835,
+   "r5": -0.07531,
+   "short": true,
+   "src": "iex",
+   "symbol": "AAON",
+   "z": 3.229
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.04369,
+   "news": 0,
+   "pace": null,
+   "price": 12.04,
+   "r20": 0.01043,
+   "r5": 0.02441,
+   "short": true,
+   "src": "iex",
+   "symbol": "GDOT",
+   "z": -3.223
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08949,
+   "news": 0,
+   "pace": null,
+   "price": 2.8,
+   "r20": -0.07554,
+   "r5": 0.00391,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLX",
+   "z": 3.031
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.03833,
+   "news": 1,
+   "pace": null,
+   "price": 171.8216,
+   "r20": -0.21054,
+   "r5": -0.11576,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NVDA",
+   "z": -1.26
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.039,
+   "news": 1,
+   "pace": null,
+   "price": 12.32,
+   "r20": 0.10043,
+   "r5": 0.08552,
+   "short": true,
+   "src": "iex",
+   "symbol": "CNH",
+   "z": -1.204
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.039,
+   "news": 1,
+   "pace": null,
+   "price": 18.605,
+   "r20": 0.01097,
+   "r5": -0.01174,
+   "short": true,
+   "src": "iex",
+   "symbol": "IMNM",
+   "z": -0.891
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5086.9963,
+  "PICK-MAIN-coin": 5146.6006,
+  "PICK-PENNY": 460.4028,
+  "PICK-PENNY-coin": 512.8416
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 33,
+  "news": 20,
+  "volume": 0
+ },
+ "flagged": 52,
+ "headline_counts": {
+  "AAON": 3,
+  "BRSL": 3,
+  "CNH": 3,
+  "CWCO": 2,
+  "ETD": 3,
+  "GDOT": 2,
+  "IMNM": 3,
+  "NVDA": 3,
+  "PLX": 3,
+  "RNGR": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "74e0f63f0da481256e3d94d2a58e648ca23aaad5b4df964ecbb0b7241e911be4",
+ "price_sources": {
+  "delayed_sip": 559,
+  "iex": 2831
+ },
+ "priced": 3390,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BRSL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ETD"
+  }
+ ],
+ "slot": "2026-11-10T09:50",
+ "t": "2026-11-10T14:50:20.518772+00:00",
+ "universe": 3406,
+ "written_utc": "2026-11-10T14:50:56.799286Z"
+}
