@@ -199,6 +199,31 @@ def boomshort_book(st):
                   size=5000.0, days=len(list((led / "days").glob("*.json"))))]
 
 
+def boomshort_days(st, n=5):
+    """BOOM-SHORT's last n logged mornings for the Live tab: the 20 picks with their BOOM1 and D6 scores, which were
+    shorted (and the random control), each settled trade's result, and while a day is open, each short's move since
+    the previous close at the latest price (a mark only, before costs; the ledger settles from the first open)."""
+    led = st / "state-boomshort" / "boomshort" / "ledger"
+    out = []
+    for f in sorted((led / "days").glob("*.json"))[-n:][::-1]:
+        rec = _json(f) or {}
+        stl = _json(led / "settle" / f.name) or {}
+        res = {**stl.get("control", {}), **stl.get("trades", {})}
+        sh, ctl = rec.get("shorts", []), rec.get("control", [])
+        picks = [{"symbol": p["symbol"], "boom1": p.get("boom1"), "d6": p.get("d6"), "pm_gap": p.get("pm_gap"),
+                  "prev_c": p.get("prev_c"), "role": "short" if p["symbol"] in sh else "control" if p["symbol"] in ctl else None,
+                  "result": res.get(p["symbol"])} for p in sorted(rec.get("picks", []), key=lambda x: x.get("d6") or 0)]
+        out.append({"day": f.stem, "status": rec.get("status"), "reason": rec.get("reason"),
+                    "decided_at": rec.get("decided_at"), "universe": rec.get("universe"), "settled": bool(stl),
+                    "blocked": rec.get("blocked_not_etb", []), "picks": picks, "book_mean": stl.get("book_mean"),
+                    "control_mean": stl.get("control_mean"), "pnl_usd": stl.get("pnl_usd")})
+    live = [p for d in out if not d["settled"] for p in d["picks"] if p["role"]]
+    px = latest_prices({p["symbol"] for p in live}) if live else {}
+    for p in live:
+        p["last_price"] = px.get(p["symbol"])
+    return out
+
+
 def day1_book(st):
     """DAY1, the all-day $1,000 bot (research/prereg/DAY1.md): the last logged day's equity and its twin's."""
     days = sorted((st / "state-day1" / "day1" / "ledger" / "days").glob("*.json"))
@@ -703,7 +728,7 @@ def build(states, out, repo_root=".", repo=None, token=None):
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),
            "timeouts": workflow_timeouts(repo_root),
-           "nx3": nx3, "ideas": ideas(repo_root, books)}
+           "nx3": nx3, "boomshort": _safe(boomshort_days, st) or [], "ideas": ideas(repo_root, books)}
     Path(out).mkdir(parents=True, exist_ok=True)
     tmp = Path(out) / "summary.json.tmp"
     tmp.write_text(json.dumps(_clean(res), separators=(",", ":"), default=str))
