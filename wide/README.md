@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8701.76 | -12.98% | 178 | 57 | long CDE, long EQT, long HL, long HUM, long TTWO |
-| Coin flip on C's picks | $9587.62 | -4.12% | 177 | 88 | short CDE, long EQT, short HL, short HUM, short TTWO |
-| C's prompt on Groq (K7) | $6769.43 | -32.31% | 375 | 90 | short ASTS, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq's picks | $8418.16 | -15.82% | 375 | 177 | short ASTS, long AXTI, long NEM, short RKT, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $9165.06 | -8.35% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10864.35 | +8.64% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9567.85 | -4.32% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10566.47 | +5.66% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9760.03 | -2.40% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8707.79 | -12.92% | 178 | 57 | long CDE, long EQT, long HL, long HUM, long TTWO |
+| Coin flip on C's picks | $9569.39 | -4.31% | 177 | 88 | short CDE, long EQT, short HL, short HUM, short TTWO |
+| C's prompt on Groq (K7) | $6784.53 | -32.15% | 375 | 90 | short ASTS, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq's picks | $8413.01 | -15.87% | 375 | 177 | short ASTS, long AXTI, long NEM, short RKT, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $9158.85 | -8.41% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10882.59 | +8.83% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9579.98 | -4.20% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10566.20 | +5.66% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9765.50 | -2.34% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-10 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 15:18 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 15:3
 | 2026-11-09 10:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 09:57 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | none | Maintaining all 5 existing long positions due to continued strong positive momentum and profitability. No new positions are opened as the portfolio is at its maximum capacity. |
 | 2026-11-09 09:49 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | none | Maintaining all current long positions (ABNB, IONQ, MRNA, RKLB, VST) due to their continued positive momentum and recent price appreciation. |
-| 2026-11-06 15:59 | no answer, nothing changed | none | unreadable answer |
