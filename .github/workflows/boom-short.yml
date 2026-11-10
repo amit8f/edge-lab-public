@@ -49,11 +49,13 @@ jobs:
           enable-cache: true
           cache-dependency-glob: requirements.txt
 
-      - name: Python and packages
+      - name: Python and packages (CPU-only torch for FinBERT, as in nx3-live)
         run: |
           uv python install 3.12.10
           uv venv --python 3.12.10 .venv
           uv pip install --python .venv/bin/python -r requirements.txt
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
 
       - name: Check the sources once
         if: inputs.check == 'true'
