@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 11:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8775.82 | -12.24% | 167 | 53 | long AMD, long NET, long TSM, long TTWO, long TWLO |
-| Coin flip on C's picks | $9712.59 | -2.87% | 166 | 86 | short AMD, long NET, long TSM, short TTWO, short TWLO |
-| C's prompt on Groq (K7) | $6831.60 | -31.68% | 370 | 88 | long APP, long MRNA, short NVDA, long RKT, long TTWO |
-| Coin flip on C-groq's picks | $8493.30 | -15.07% | 370 | 174 | short APP, short MRNA, short NVDA, short RKT, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $9146.39 | -8.54% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10756.00 | +7.56% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9518.08 | -4.82% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10663.16 | +6.63% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9729.04 | -2.71% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8746.87 | -12.53% | 167 | 53 | long AMD, long NET, long TSM, long TTWO, long TWLO |
+| Coin flip on C's picks | $9705.16 | -2.95% | 166 | 86 | short AMD, long NET, long TSM, short TTWO, short TWLO |
+| C's prompt on Groq (K7) | $6839.20 | -31.61% | 370 | 88 | long APP, long MRNA, short NVDA, long RKT, long TTWO |
+| Coin flip on C-groq's picks | $8503.90 | -14.96% | 370 | 174 | short APP, short MRNA, short NVDA, short RKT, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $9108.31 | -8.92% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10775.62 | +7.76% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9484.57 | -5.15% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10664.10 | +6.64% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9724.22 | -2.76% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-10 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 11:37 | long AMD, long NET, long TSM, long TTWO, long TWLO | none | Maintaining all existing long positions due to strong positive momentum today for most, and positive news for others, indicating potential for continued recovery or growth. |
 | 2026-11-10 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 11:17 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 11:3
 | 2026-11-06 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 12:17 | long ABNB, long IONQ, long MRNA, long NET, long VST | sold COHR @ $189.28; bought NET @ $273.81 | Sold COHR due to weaker long-term trend despite today's gain, and added NET which shows strong positive momentum and an analyst upgrade, maintaining a fully invested long portfolio. |
-| 2026-11-06 12:07 | no answer, nothing changed | none | unreadable answer |
