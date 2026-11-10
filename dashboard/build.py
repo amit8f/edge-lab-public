@@ -199,6 +199,31 @@ def boomshort_book(st):
                   size=5000.0, days=len(list((led / "days").glob("*.json"))))]
 
 
+def day_ranges(symbols, day):
+    """{symbol: (open, high, low)} of one session from SIP daily bars, adjustment=raw (one day, so no split basis
+    issue), ending at now - 16 minutes (today's bar is the session so far)."""
+    end = min(datetime.now(timezone.utc) - timedelta(minutes=16),
+              datetime.fromisoformat(f"{day}T23:59:00+00:00")).strftime("%Y-%m-%dT%H:%M:%SZ")
+    out, syms = {}, sorted(symbols)
+    for i in range(0, len(syms), 100):
+        j = alpaca_get("/stocks/bars", {"symbols": ",".join(syms[i:i + 100]), "timeframe": "1Day", "start": day,
+                                        "end": end, "feed": "sip", "adjustment": "raw", "limit": 10000}) or {}
+        for sym, bars in (j.get("bars") or {}).items():
+            b = [x for x in bars if x["t"][:10] == day]
+            if b:
+                out[sym] = (b[0]["o"], b[0]["h"], b[0]["l"])
+    return out
+
+
+def boom_move(rng, size=0.08):
+    """BOOM1's label (research/prereg/BOOM1.md): high or low at least 8% from the open. (up, down, hit) or None."""
+    if not rng or not rng[0]:
+        return None
+    o, h, lo = rng
+    up, dn = h / o - 1, lo / o - 1
+    return {"up": up, "down": dn, "hit": bool(up >= size or dn <= -size)}
+
+
 def boomshort_days(st, n=5):
     """BOOM-SHORT's last n logged mornings for the Live tab: the 20 picks with their BOOM1 and D6 scores, which were
     shorted (and the random control), each settled trade's result, and while a day is open, each short's move since
@@ -217,6 +242,13 @@ def boomshort_days(st, n=5):
                     "decided_at": rec.get("decided_at"), "universe": rec.get("universe"), "settled": bool(stl),
                     "blocked": rec.get("blocked_not_etb", []), "picks": picks, "book_mean": stl.get("book_mean"),
                     "control_mean": stl.get("control_mean"), "pnl_usd": stl.get("pnl_usd")})
+    for d in out:      # BOOM1: did each of the 20 picks move 8% from the open (high or low)?
+        if d["picks"]:
+            rg = _safe(day_ranges, [p["symbol"] for p in d["picks"]], d["day"]) or {}
+            for p in d["picks"]:
+                p["move"] = boom_move(rg.get(p["symbol"]))
+            mv = [p["move"] for p in d["picks"] if p["move"]]
+            d["boom1_hits"], d["boom1_priced"] = sum(m["hit"] for m in mv), len(mv)
     live = [p for d in out if not d["settled"] for p in d["picks"] if p["role"]]
     px = latest_prices({p["symbol"] for p in live}) if live else {}
     for p in live:
