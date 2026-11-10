@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8692.45 | -13.08% | 181 | 59 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C's picks | $9578.06 | -4.22% | 180 | 88 | short AKAM, short CVS, short HUM, long RKLB, short TTWO |
-| C's prompt on Groq (K7) | $6771.88 | -32.28% | 375 | 90 | short ASTS, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq's picks | $8414.29 | -15.86% | 375 | 177 | short ASTS, long AXTI, long NEM, short RKT, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $9212.95 | -7.87% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10849.09 | +8.49% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9613.56 | -3.86% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10488.27 | +4.88% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9768.82 | -2.31% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8693.46 | -13.07% | 182 | 59 | long CVS, long HUM, long NET, long RKLB, long TTWO |
+| Coin flip on C's picks | $9587.08 | -4.13% | 181 | 89 | short CVS, short HUM, long NET, long RKLB, short TTWO |
+| C's prompt on Groq (K7) | $6758.44 | -32.42% | 376 | 90 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq's picks | $8387.87 | -16.12% | 376 | 177 | long AAOI, long AXTI, long NEM, short RKT, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $9192.70 | -8.07% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $10810.28 | +8.10% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9619.62 | -3.80% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10480.66 | +4.81% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9766.02 | -2.34% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-10 15:59 | long CVS, long HUM, long NET, long RKLB, long TTWO | sold AKAM @ $83.72; bought NET @ $305.94 | Maintained long positions in TTWO, RKLB, CVS, and HUM due to continued positive momentum and favorable hourly trends. Sold AKAM due to negative price action and initiated a new long position in NET, which shows strong positive momentum and analyst support. |
 | 2026-11-10 15:57 | long AKAM, long CVS, long HUM, long RKLB, long TTWO | sold CDE @ $15.37; sold EQT @ $52.01; sold HL @ $14.29; bought AKAM @ $84.02; bought CVS @ $88.97; bought RKLB @ $62.46 | Sold CDE, EQT, and HL due to weaker performance or negative daily trends. Initiated new long positions in RKLB, CVS, and AKAM based on strong positive daily momentum and recent price action, while maintaining long positions in TTWO and HUM which show continued strength. |
 | 2026-11-10 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 15:37 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 15:5
 | 2026-11-09 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-09 09:57 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | none | Maintaining all 5 existing long positions due to continued strong positive momentum and profitability. No new positions are opened as the portfolio is at its maximum capacity. |
