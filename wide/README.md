@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8841.09 | -11.59% | 167 | 53 | long AMD, long NET, long TSM, long TTWO, long TWLO |
-| Coin flip on C's picks | $9684.70 | -3.15% | 166 | 86 | short AMD, long NET, long TSM, short TTWO, short TWLO |
-| C's prompt on Groq (K7) | $6876.40 | -31.24% | 368 | 88 | long AMD, long CDE, long MRNA, short NVDA, long TTWO |
-| Coin flip on C-groq's picks | $8438.21 | -15.62% | 368 | 173 | short AMD, long CDE, short MRNA, short NVDA, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $9240.43 | -7.60% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10700.29 | +7.00% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9556.28 | -4.44% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10708.11 | +7.08% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9736.72 | -2.63% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8821.94 | -11.78% | 167 | 53 | long AMD, long NET, long TSM, long TTWO, long TWLO |
+| Coin flip on C's picks | $9700.56 | -2.99% | 166 | 86 | short AMD, long NET, long TSM, short TTWO, short TWLO |
+| C's prompt on Groq (K7) | $6854.79 | -31.45% | 369 | 88 | long AMD, long APP, long MRNA, short NVDA, long TTWO |
+| Coin flip on C-groq's picks | $8452.74 | -15.47% | 369 | 173 | short AMD, short APP, short MRNA, short NVDA, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $9228.46 | -7.72% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10706.73 | +7.07% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9545.29 | -4.55% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10711.60 | +7.12% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9735.55 | -2.64% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-10 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 10:57 | long AMD, long NET, long TSM, long TTWO, long TWLO | none | Maintained all existing long positions in AMD, TTWO, NET, TSM, and TWLO. All positions show positive momentum today or over the last 5 sessions, with supportive news for continued growth, particularly in the tech and gaming sectors. |
 | 2026-11-10 10:47 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 11:0
 | 2026-11-06 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 11:57 | long ABNB, long COHR, long IONQ, long MRNA, long VST | sold LRCX @ $202.89; bought VST @ $124.39 | Maintained profitable positions in ABNB, COHR, IONQ, and MRNA due to strong fundamentals and positive price action. Sold LRCX to open a new long position in VST, which reported strong Q3 sales and has good momentum. |
 | 2026-11-06 11:47 | long ABNB, long COHR, long IONQ, long LRCX, long MRNA | sold NET @ $272.85; bought MRNA @ $264.60 | Maintaining long positions in ABNB, IONQ, COHR, and LRCX due to strong earnings/news and positive momentum. Selling NET due to underperformance and initiating a new long position in MRNA based on strong earnings and outlook. |
-| 2026-11-06 11:37 | no answer, nothing changed | none | unreadable answer |
