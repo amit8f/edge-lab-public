@@ -1,0 +1,373 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f5496b32907f69e26358ac5c05f49beecd20f780e8b842419aca762641b02ca7",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "cf7f54280587911d43735ad97bfc32dd08e08ceebb95f03fa28f729aefc401c0",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "GFL",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "GILT",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "legal",
+     "symbol": "EMAT",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "SECZ",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "SENS",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "JBI",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "other",
+     "symbol": "ITIC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "GSHD",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "VFS",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "IMSR",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "2ad89517c35e885b5107ece1b16f6807a8a7bd3756270bedd69a73d95ff74b02",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone, large drop, shortable",
+     "stop_pct": 12.0,
+     "symbol": "GFL"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive tone, rebound potential after big drop",
+     "stop_pct": 12.0,
+     "symbol": "GILT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone but not shortable",
+     "stop_pct": 0.0,
+     "symbol": "EMAT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable, already up",
+     "stop_pct": 0.0,
+     "symbol": "SECZ"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive momentum, bullish outlook",
+     "stop_pct": 12.0,
+     "symbol": "SENS"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "67d4f0f62682c3d1790045fff56297390f1b6e67d35e0b8186471c8dcf83cb0e"
+  },
+  "reviewer": {
+   "answer_sha256": "cad36d69f1f16e3e2a9803114c74f82a88b4a1a3912fbcb3807386be5211782a",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "f89cef01bff68cc12421da6bf3a2bfb5d508db029a92a19111892a4b6e805a50",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe drop today with negative tone on deal news matches proposal.",
+     "symbol": "GFL"
+    },
+    {
+     "confidence": 90,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is down 19 percent and not shortable, but long proposal is risky on steep drop without positive volume confirmation.",
+     "symbol": "GILT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum and positive analyst tone support the long proposal.",
+     "symbol": "SENS"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09819,
+   "news": 0,
+   "pace": null,
+   "price": 41.375,
+   "r20": 0.08284,
+   "r5": -0.00217,
+   "short": true,
+   "src": "iex",
+   "symbol": "GFL",
+   "z": -6.189
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.19195,
+   "news": 0,
+   "pace": null,
+   "price": 6.125,
+   "r20": -0.09816,
+   "r5": 0.02294,
+   "short": false,
+   "src": "iex",
+   "symbol": "GILT",
+   "z": -5.841
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.26606,
+   "news": 0,
+   "pace": null,
+   "price": 1.6,
+   "r20": 0.48299,
+   "r5": 0.42484,
+   "short": false,
+   "src": "iex",
+   "symbol": "EMAT",
+   "z": -5.002
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.36442,
+   "news": 0,
+   "pace": null,
+   "price": 9.51,
+   "r20": -0.41231,
+   "r5": -0.03729,
+   "short": false,
+   "src": "iex",
+   "symbol": "SECZ",
+   "z": 4.834
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.38878,
+   "news": 0,
+   "pace": null,
+   "price": 13.61,
+   "r20": 0.06061,
+   "r5": 0.09131,
+   "short": true,
+   "src": "iex",
+   "symbol": "SENS",
+   "z": 4.763
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15546,
+   "news": 0,
+   "pace": null,
+   "price": 4.02,
+   "r20": 0.14149,
+   "r5": -0.02658,
+   "short": true,
+   "src": "iex",
+   "symbol": "JBI",
+   "z": -4.571
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.07618,
+   "news": 0,
+   "pace": null,
+   "price": 279.635,
+   "r20": -0.10155,
+   "r5": -0.04733,
+   "short": true,
+   "src": "iex",
+   "symbol": "ITIC",
+   "z": 4.527
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.16366,
+   "news": 0,
+   "pace": null,
+   "price": 45.735,
+   "r20": 0.24397,
+   "r5": 0.06495,
+   "short": true,
+   "src": "iex",
+   "symbol": "GSHD",
+   "z": -4.476
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02432,
+   "news": 1,
+   "pace": null,
+   "price": 3.21,
+   "r20": 0.07869,
+   "r5": 0.04444,
+   "short": false,
+   "src": "iex",
+   "symbol": "VFS",
+   "z": -0.672
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02667,
+   "news": 1,
+   "pace": null,
+   "price": 2.92,
+   "r20": 0.01351,
+   "r5": 0.00334,
+   "short": true,
+   "src": "iex",
+   "symbol": "IMSR",
+   "z": -0.416
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5073.2763,
+  "PICK-MAIN-coin": 5153.6256,
+  "PICK-PENNY": 460.5278,
+  "PICK-PENNY-coin": 508.2816
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 28,
+  "news": 160,
+  "volume": 0
+ },
+ "flagged": 186,
+ "headline_counts": {
+  "EMAT": 3,
+  "GFL": 3,
+  "GILT": 3,
+  "GSHD": 3,
+  "IMSR": 3,
+  "ITIC": 2,
+  "JBI": 3,
+  "SECZ": 3,
+  "SENS": 3,
+  "VFS": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "e110f58a8ff6c614684175212ac437e2328013f3175430fa4ba85585f0128d0d",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2562
+ },
+ "priced": 2562,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GFL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GILT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SENS"
+  }
+ ],
+ "slot": "2026-11-10T09:40",
+ "t": "2026-11-10T14:40:20.952850+00:00",
+ "universe": 3406,
+ "written_utc": "2026-11-10T14:40:53.487794Z"
+}
