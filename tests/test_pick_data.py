@@ -62,3 +62,9 @@ def test_sample_is_fixed_and_about_three_percent():
 def test_swing30_is_the_median_30_minute_range():
     b = bars([10.0] * 78, hi=np.full(78, 10.1), lo=np.full(78, 9.9))
     assert abs(P.swing30(b) - 0.02) < 1e-9
+
+
+def test_a_stock_without_a_9_30_bar_is_skipped():
+    late = bars([10.0] * 70, start="09:40")
+    uni = {"A": ("main", 9.8, 1e7)}
+    assert P.day_rows(DAY, uni, {"A": late}, {"A": [0.01] * 20}) == []

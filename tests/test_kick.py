@@ -33,3 +33,15 @@ def test_dashboard_every_ten_minutes_in_market_hours_and_once_early_each_morning
     assert "dashboard.yml" not in kick.due(utc(2026, 10, 26, 20, 46), {}, set())     # 4:46pm ET, settle is in
     assert kick.due(utc(2026, 10, 24, 9, 10), {}, set()) == ["dashboard.yml"]         # Saturday 5:10am ET
     assert kick.due(utc(2026, 10, 24, 14, 0), {}, set()) == []                        # Saturday market hours
+
+
+def test_boom_short_and_n1_screen_are_started():
+    from datetime import datetime as _dt
+    from core import kick as K
+    et = K.ET
+    m = K.due(_dt(2026, 11, 10, 8, 45, tzinfo=et), {}, set())
+    assert "boom-short.yml" in m
+    e = K.due(_dt(2026, 11, 10, 17, 0, tzinfo=et), {"boom-short.yml": [_dt(2026, 11, 10, 8, 45, tzinfo=et)]}, set())
+    assert "boom-short.yml" in e
+    s = K.due(_dt(2026, 11, 14, 3, 20, tzinfo=et), {}, set())       # a Saturday
+    assert "n1-screen.yml" in s and "boom-short.yml" not in s

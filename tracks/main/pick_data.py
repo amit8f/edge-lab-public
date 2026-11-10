@@ -20,6 +20,7 @@ import argparse
 import hashlib
 import json
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import numpy as np
@@ -31,6 +32,7 @@ from tracks.news import w1_data as W
 
 ET = "America/New_York"
 BARS_URL = "https://data.alpaca.markets/v2/stocks/bars"
+THREADS = 4
 CHUNK = 100                     # symbols per request: 100 x 78 five-minute bars fit one 10,000-bar page
 FIRST, LAST = "2018-12", "2025-09"
 TRACKS = {"main": {"lo": 5.0, "hi": np.inf, "dv": 5e6, "tp": 0.08, "cost": 0.002, "widths": (1.0, 1.5, 2.0)},
@@ -65,20 +67,25 @@ def bars_5min(symbols, day, headers):
     """{symbol: DataFrame(t naive ET bar start, o, h, l, c, v)} of the regular session."""
     s, e = (pd.Timestamp(f"{day.date()} {x}", tz=ET).tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
             for x in ("09:30", "16:00"))
-    rows = {}
-    for i in range(0, len(symbols), CHUNK):
-        tok = None
+    def chunk(syms):
+        got, tok = {}, None
         while True:
-            p = {"symbols": ",".join(symbols[i:i + CHUNK]), "timeframe": "5Min", "start": s, "end": e,
+            p = {"symbols": ",".join(syms), "timeframe": "5Min", "start": s, "end": e,
                  "feed": "sip", "adjustment": "raw", "limit": 10000}
             if tok:
                 p["page_token"] = tok
             j = alpaca.get(BARS_URL, p, headers=headers)
             for sym, bs in (j.get("bars") or {}).items():
-                rows.setdefault(sym, []).extend((b["t"], b["o"], b["h"], b["l"], b["c"], b["v"]) for b in bs)
+                got.setdefault(sym, []).extend((b["t"], b["o"], b["h"], b["l"], b["c"], b["v"]) for b in bs)
             tok = j.get("next_page_token")
             if not tok:
-                break
+                return got
+
+    rows = {}
+    with ThreadPoolExecutor(THREADS) as ex:      # 4 at a time stays under Alpaca's 200 requests a minute
+        for got in ex.map(chunk, [symbols[i:i + CHUNK] for i in range(0, len(symbols), CHUNK)]):
+            for sym, r in got.items():
+                rows.setdefault(sym, []).extend(r)
     out = {}
     for sym, r in rows.items():
         d = pd.DataFrame(r, columns=["t", "o", "h", "l", "c", "v"])
@@ -150,11 +157,11 @@ def day_rows(day, uni, bars, swings):
         b = bars.get(sym)
         hist = swings.get(sym, [])
         sw = float(np.mean(hist)) if len(hist) >= 10 else np.nan
-        if b is None or len(b) < 2 or not np.isfinite(sw):
-            continue
+        if b is None or len(b) < 2 or not np.isfinite(sw) or b["t"].iat[0].strftime("%H:%M") != "09:30":
+            continue                    # no 9:30 bar: no clean open for the gap and the inputs
         p = TRACKS[tr]
         hm = b["t"].dt.strftime("%H:%M")
-        for k in np.flatnonzero((hm >= DEC_FIRST) & (hm <= DEC_LAST)):
+        for k in np.flatnonzero((hm >= DEC_FIRST) & (hm <= DEC_LAST)):     # k >= 1: the 9:30 bar comes first
             t = b["t"].iat[k]
             if not keep(sym, day, t.strftime("%H:%M")):
                 continue
