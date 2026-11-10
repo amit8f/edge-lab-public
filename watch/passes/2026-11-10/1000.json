@@ -1,0 +1,726 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "854159597874f602c0599ff6b346537d2568a003b518d83384321e587692990d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "69a84681f721add2fa908ac64495a5ae2bbb697c05a253c37af5249f6377f2c4",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "KULR",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "offering",
+     "symbol": "SMA",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "ZNTL",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "MAIN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "IMVT",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "deal",
+     "symbol": "CRL",
+     "tone": 1
+    },
+    {
+     "confidence": 75,
+     "event": "management",
+     "symbol": "VG",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "REFI",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "GS",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "WES",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "fe9aa59b147b0df2ed2b3172a044a6bb6a408b235cdf065ae632c7ccc6c77bfd",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat and high z-score, analyst confidence 90, bullish tone",
+     "stop_pct": 12.0,
+     "symbol": "KULR"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large negative move with dilutive offering, shortable and analyst confidence 80",
+     "stop_pct": 10.0,
+     "symbol": "SMA"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat and upgrade, high z-score, bullish analyst confidence 85",
+     "stop_pct": 12.0,
+     "symbol": "ZNTL"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral news and small move, no clear edge",
+     "stop_pct": 0.0,
+     "symbol": "MAIN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive product news and upward momentum, analyst confidence 80",
+     "stop_pct": 12.0,
+     "symbol": "IMVT"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strategic deal adds value, bullish tone, confidence 85",
+     "stop_pct": 10.0,
+     "symbol": "CRL"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Management optimistic, price up, analyst confidence 75",
+     "stop_pct": 12.0,
+     "symbol": "VG"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral earnings news, no strong catalyst",
+     "stop_pct": 0.0,
+     "symbol": "REFI"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Analyst positive outlook, modest upside, confidence 70",
+     "stop_pct": 10.0,
+     "symbol": "GS"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral outlook, small move",
+     "stop_pct": 0.0,
+     "symbol": "WES"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "TG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "ACDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "AMTX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "ARKO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached 10 days",
+     "stop_pct": 0.0,
+     "symbol": "CYH"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "d35820c3ae2ba0ae248c5c336f9a3d1f13a10971e7afce51161657362b96430a"
+  },
+  "reviewer": {
+   "answer_sha256": "bb44727e2b26587fb8feb3ffa39bcfe894d1efbe4153e399ab158ce4cbac3bd5",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "2b23e96ec9df69e45bc0398199da4c5636b87f9544db5cff22b393ff9699868f",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and earnings catalyst support the long proposal despite being unshortable.",
+     "symbol": "KULR"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative tone around an offering with sharp intraday drop justifies shorting.",
+     "symbol": "SMA"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone aligns with strong intraday bounce.",
+     "symbol": "ZNTL"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid multi-day trend and positive product news support continuation.",
+     "symbol": "IMVT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive deal catalyst outweighs minor intraday dip.",
+     "symbol": "CRL"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Management catalyst provides decent backing for a long bounce.",
+     "symbol": "VG"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Mild positive analyst sentiment supports a modest long position.",
+     "symbol": "GS"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.19632,
+   "news": 0,
+   "pace": null,
+   "price": 1.95,
+   "r20": -0.30043,
+   "r5": -0.01807,
+   "short": false,
+   "src": "iex",
+   "symbol": "KULR",
+   "z": 3.06
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.05127,
+   "news": 0,
+   "pace": null,
+   "price": 37.655,
+   "r20": 0.21339,
+   "r5": 0.0655,
+   "short": true,
+   "src": "iex",
+   "symbol": "SMA",
+   "z": -3.012
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12931,
+   "news": 0,
+   "pace": null,
+   "price": 1.965,
+   "r20": -0.30952,
+   "r5": -0.05946,
+   "short": true,
+   "src": "iex",
+   "symbol": "ZNTL",
+   "z": 3.005
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.007,
+   "news": 1,
+   "pace": null,
+   "price": 56.73,
+   "r20": 0.06965,
+   "r5": 0.01945,
+   "short": false,
+   "src": "iex",
+   "symbol": "MAIN",
+   "z": -0.59
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01991,
+   "news": 1,
+   "pace": null,
+   "price": 35.85,
+   "r20": 0.19233,
+   "r5": 0.23724,
+   "short": true,
+   "src": "iex",
+   "symbol": "IMVT",
+   "z": 0.455
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01855,
+   "news": 1,
+   "pace": null,
+   "price": 346.785,
+   "r20": 0.17054,
+   "r5": 0.04372,
+   "short": true,
+   "src": "iex",
+   "symbol": "CRL",
+   "z": -0.432
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02161,
+   "news": 1,
+   "pace": null,
+   "price": 12.055,
+   "r20": -0.10129,
+   "r5": -0.08314,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "VG",
+   "z": 0.43
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01016,
+   "news": 1,
+   "pace": null,
+   "price": 8.95,
+   "r20": -0.05241,
+   "r5": 0.0,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "REFI",
+   "z": 0.417
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00907,
+   "news": 1,
+   "pace": null,
+   "price": 914.44,
+   "r20": 0.01373,
+   "r5": 0.00835,
+   "short": true,
+   "src": "iex",
+   "symbol": "GS",
+   "z": 0.363
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00573,
+   "news": 1,
+   "pace": null,
+   "price": 41.235,
+   "r20": -0.07616,
+   "r5": -0.07303,
+   "short": true,
+   "src": "iex",
+   "symbol": "WES",
+   "z": 0.282
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5082.3163,
+  "PICK-MAIN-coin": 5155.5506,
+  "PICK-PENNY": 461.2394,
+  "PICK-PENNY-coin": 514.1726
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.4704,
+   "price": 1.95,
+   "qty": 19,
+   "side": 1,
+   "stop": 1.716,
+   "symbol": "KULR"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.4704,
+   "price": 1.95,
+   "qty": 19,
+   "side": 1,
+   "stop": 1.716,
+   "symbol": "KULR"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.0781,
+   "price": 1.965,
+   "qty": 3,
+   "side": 1,
+   "stop": 1.7292,
+   "symbol": "ZNTL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.0781,
+   "price": 1.965,
+   "qty": 3,
+   "side": 1,
+   "stop": 1.7292,
+   "symbol": "ZNTL"
+  }
+ ],
+ "flag_counts": {
+  "move": 38,
+  "news": 13,
+  "volume": 0
+ },
+ "flagged": 50,
+ "headline_counts": {
+  "CRL": 1,
+  "GS": 3,
+  "IMVT": 2,
+  "KULR": 3,
+  "MAIN": 2,
+  "REFI": 3,
+  "SMA": 3,
+  "VG": 3,
+  "WES": 1,
+  "ZNTL": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "c9e05f8929b61ad3dc7ed83d428b44bc8427c0badbe86199560a372df1fdb68a",
+ "price_sources": {
+  "delayed_sip": 486,
+  "iex": 2908
+ },
+ "priced": 3394,
+ "risk": [
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 19,
+   "skip": null,
+   "symbol": "KULR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SMA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 3,
+   "skip": null,
+   "symbol": "ZNTL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "IMVT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CRL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "VG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GS"
+  }
+ ],
+ "slot": "2026-11-10T10:00",
+ "t": "2026-11-10T15:00:20.755038+00:00",
+ "universe": 3406,
+ "written_utc": "2026-11-10T15:00:39.513602Z"
+}
