@@ -426,6 +426,8 @@ function renderBoom() {
   const head = d.status !== "decided"
     ? el("div", { class: "card small warn", text: `${d.status}${d.reason ? `: ${d.reason}` : ""}` })
     : el("div", { class: "card small" },
+        d.boom1_priced ? el("div", { class: "kv" }, el("b", { text: `BOOM1: ${d.boom1_hits} of ${d.boom1_priced} picks moved 8%+ from the open` }),
+          el("span", { class: d.boom1_hits / d.boom1_priced >= 0.5 ? "up" : "muted", text: `${Math.round(100 * d.boom1_hits / d.boom1_priced)}%` })) : null,
         el("div", { class: "kv" }, el("span", { text: `${d.universe || "?"} stocks scored · ${nShort} shorted` }),
           el("span", { class: "muted", text: d.decided_at ? `decided ${d.decided_at.slice(11, 16)} ET` : "" })),
         d.settled ? el("div", { class: "kv" }, el("span", { text: `shorts ${pct(d.book_mean)} each · control ${pct(d.control_mean)}` }),
@@ -441,6 +443,9 @@ function renderBoom() {
     return el("div", { class: "card small" },
       el("div", { class: "kv" }, el("span", {}, el("b", { text: p.symbol }), el("span", { class: "muted", text: ` · ${role}` })),
         el("span", { class: cls, text: res })),
+      p.move ? el("div", { class: "kv" }, el("span", { class: p.move.hit ? "up" : "muted",
+          text: p.move.hit ? "BOOM: moved 8%+" : "no 8% move yet" }),
+        el("span", { class: "muted", text: `from open: high ${pct(p.move.up)} · low ${pct(p.move.down)}` })) : null,
       el("div", { class: "kv muted" },
         el("span", { text: `boom ${p.boom1 != null ? p.boom1.toFixed(2) : "?"} · direction ${p.d6 != null ? p.d6.toFixed(3) : "?"}` }),
         el("span", { text: p.pm_gap != null ? `pre-market ${pct(p.pm_gap)}` : "" })));

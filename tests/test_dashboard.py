@@ -259,9 +259,13 @@ def test_boomshort_days_for_the_live_tab(tmp_path, monkeypatch):
                                                            "shorts": ["A"], "control": ["C"]}))
     (led / "settle" / "2026-11-09.json").write_text(_j.dumps({"trades": {}, "pnl_usd": 0.0}))
     monkeypatch.setattr(DB, "latest_prices", lambda syms: {s: 9.0 for s in syms})
+    monkeypatch.setattr(DB, "day_ranges", lambda syms, day: {"A": (10.0, 10.2, 9.0), "B": (20.0, 21.0, 19.5)})
     d = DB.boomshort_days(tmp_path)
     assert [x["day"] for x in d] == ["2026-11-11", "2026-11-09"] and d[1]["status"] == "missed"
     p = {x["symbol"]: x for x in d[0]["picks"]}
     assert [x["symbol"] for x in d[0]["picks"]] == ["A", "C", "B"]        # most bearish direction score first
     assert p["A"]["role"] == "short" and p["C"]["role"] == "control" and p["B"]["role"] is None
     assert p["A"]["last_price"] == 9.0 and "last_price" not in p["B"]     # only open trades get a live price
+    assert p["A"]["move"]["hit"] and not p["B"]["move"]["hit"] and p["C"]["move"] is None   # A fell 10% from the open
+    assert d[0]["boom1_hits"] == 1 and d[0]["boom1_priced"] == 2
+    assert DB.boom_move((10.0, 10.8, 10.0))["hit"] and not DB.boom_move((10.0, 10.79, 9.21))["hit"]
