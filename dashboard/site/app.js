@@ -215,6 +215,8 @@ const VIEW_NOTE = {
   XGB: "XGBoost: 400 small yes/no trees, each adds a little to the score. The live NX3 account trades on this one.",
   KRR: "KRR: a smooth curve fitted through 300 reference events from 2016-2025 (the ticks under the curve, darker = " +
     "more like this event). Shown against the news input that moves this event's score most. Ledger-only shadow book since 2026-11-09.",
+  BOOM: "BOOM1 and BOOM-SHORT: two CatBoost models that run once each morning before 9:30 ET, so there is no tree to replay. " +
+    "The day's 20 picks, how far each moved from the open, and the shorts.",
 };
 function krrScore(x) {
   const m = KRR, full = m.inputs.map((_, i) => (x[i] == null || Number.isNaN(x[i]) ? m.median[i] : x[i]));
@@ -301,6 +303,9 @@ async function setView(v) {
   try { localStorage.setItem("view", v); } catch { /* storage blocked: the choice lasts this visit */ }
   for (const b of document.querySelectorAll("#viewswitch button")) b.setAttribute("aria-pressed", String(b.dataset.view === v));
   $("viewnote").textContent = VIEW_NOTE[v];
+  $("nx3view").hidden = v === "BOOM";
+  $("boomview").hidden = v !== "BOOM";
+  if (v === "BOOM") renderBoom();
 }
 for (const b of document.querySelectorAll("#viewswitch button")) b.addEventListener("click", () => setView(b.dataset.view));
 
@@ -389,6 +394,7 @@ async function finale(ev, eff, cut = MODEL.cut, who = "") {
 }
 async function loop() {
   for (;;) {
+    if (VIEW === "BOOM") { await sleep(1000); continue; }     // the NX3 stage is hidden; live events wait in the queue
     let ev = queue.shift();
     if (!ev) {
       setMode(false);
@@ -764,7 +770,7 @@ for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("c
   placeCuts(); setMeters(MODEL.base_score, MODEL.base_score);
   let v0 = "XGB";
   try { v0 = localStorage.getItem("view") || "XGB"; } catch { /* no storage */ }
-  await setView(v0 === "KRR" ? "KRR" : "XGB");
+  await setView(["KRR", "BOOM"].includes(v0) ? v0 : "XGB");
   await loadSummary();
   await pollLive();
   setInterval(loadSummary, 5 * 60000);
