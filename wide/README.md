@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 14:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 14:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8702.20 | -12.98% | 178 | 57 | long CDE, long EQT, long HL, long HUM, long TTWO |
-| Coin flip on C's picks | $9598.59 | -4.01% | 177 | 88 | short CDE, long EQT, short HL, short HUM, short TTWO |
-| C's prompt on Groq (K7) | $6812.80 | -31.87% | 374 | 89 | short ASTS, short AXTI, short NVDA, long RKT, long TTWO |
-| Coin flip on C-groq's picks | $8433.84 | -15.66% | 374 | 176 | short ASTS, long AXTI, short NVDA, short RKT, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $9154.78 | -8.45% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
-| Coin flip on C-groq-slow's picks | $10874.26 | +8.74% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
-| C's answers, acted on once a day (K8) | $9501.97 | -4.98% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
-| Coin flip on C-slow's picks | $10606.68 | +6.07% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
-| Just hold SPY | $9753.00 | -2.47% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8696.10 | -13.04% | 178 | 57 | long CDE, long EQT, long HL, long HUM, long TTWO |
+| Coin flip on C's picks | $9609.43 | -3.91% | 177 | 88 | short CDE, long EQT, short HL, short HUM, short TTWO |
+| C's prompt on Groq (K7) | $6805.71 | -31.94% | 375 | 90 | short ASTS, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq's picks | $8443.63 | -15.56% | 375 | 177 | short ASTS, long AXTI, long NEM, short RKT, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $9172.87 | -8.27% | 25 | 11 | long ABNB, long IONQ, long IREN, short NTRA, short TEAM |
+| Coin flip on C-groq-slow's picks | $10881.88 | +8.82% | 25 | 16 | short ABNB, long IONQ, short IREN, long NTRA, short TEAM |
+| C's answers, acted on once a day (K8) | $9508.19 | -4.92% | 21 | 8 | long ABNB, long IONQ, long MRNA, long RKLB, long VST |
+| Coin flip on C-slow's picks | $10604.13 | +6.04% | 21 | 14 | short ABNB, long IONQ, long MRNA, short RKLB, short VST |
+| Just hold SPY | $9754.63 | -2.45% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-10 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 14:47 | long CDE, long EQT, long HL, long HUM, long TTWO | none | Maintaining all existing long positions due to overall positive performance, strong recent momentum, and supportive news, despite some intraday volatility. |
 | 2026-11-10 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 14:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-10 14:4
 | 2026-11-06 15:47 | long ABNB, long IONQ, long MRNA, long RKLB, long VST | sold COHR @ $193.19; bought MRNA @ $259.32 | Maintaining long positions in ABNB, IONQ, RKLB, and VST due to continued positive momentum and news, and adding MRNA long after strong earnings and outlook, while selling COHR due to its longer-term downtrend despite today's bounce. |
 | 2026-11-06 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-06 15:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-06 15:17 | long ABNB, long COHR, long IONQ, long RKLB, long VST | none | Maintaining all current long positions due to strong positive momentum today and supportive news catalysts for each stock. |
