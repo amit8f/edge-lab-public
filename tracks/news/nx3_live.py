@@ -42,6 +42,7 @@ from tracks.news import nx3_orders as O
 from tracks.news import nx3all_orders as OA
 from tracks.news import nx3all_live as A
 from tracks.news import nx3hi_live as HI
+from tracks.news import nx3sds_live as SDS
 from tracks.news import nx3agent_live as AG
 from tracks.news import nxe_live as XL
 from tracks.news import nxm_live as M
@@ -201,6 +202,9 @@ class Api:
 
     def settle_trades(self, ev, cal):
         return S.month_trades(ev, S.sessions(cal), self.h)
+
+    def day_bars(self, symbols, d, open_t, close_t):
+        return S.day_bars(symbols, d, open_t, close_t, self.h)
 
 
 # ---------- state ----------
@@ -468,6 +472,10 @@ def settle(root, api, cal, today):
         AG.settle(root, api, cal, today)
     except Exception as ex:
         print(f"[nx3agent] settle failed: {type(ex).__name__}: {ex}")
+    try:    # NX3-ALL-SDS (research/prereg/NX3SDS.md): NX3-ALL's trades, shorts bought back the same day
+        SDS.settle(root, api, cal, today)
+    except Exception as ex:
+        print(f"[nx3sds] settle failed: {type(ex).__name__}: {ex}")
     return out
 
 

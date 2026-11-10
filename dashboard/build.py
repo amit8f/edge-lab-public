@@ -49,7 +49,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -130,6 +130,12 @@ def nx3_books(st):
     out.append(_book("NX3-ALL-HI", "NX3-ALL-HI", 30, len(gtr), len((glast or {}).get("picks", [])),
                      realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in gtr), size=5000.0,
                      first_day="2026-11-04"))
+    ssettled = [_json(f) for f in sorted((root / "nx3sds" / "settled").glob("*.json"))]
+    str_ = [t for x in ssettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
+    sopen = len((alast or {}).get("picks", [])) if (alast or {}).get("day", "") >= "2026-11-10" else 0
+    out.append(_book("NX3-ALL-SDS", "NX3-ALL-SDS", 30, len(str_), sopen,      # NX3-ALL's trades, shorts sold at 15:55
+                     realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in str_), size=5000.0,
+                     first_day="2026-11-10"))
     gsettled = [_json(f) for f in sorted((root / "nx3agent" / "settled").glob("*.json"))]
     agdays = sorted((root / "nx3agent" / "days").glob("*.json"))
     alast2 = _json(agdays[-1]) if agdays and agdays[-1].stem > max((x["day"] for x in gsettled if x), default="") else None

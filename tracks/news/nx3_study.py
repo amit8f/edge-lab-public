@@ -977,6 +977,104 @@ def stage_shortfast(cache, out):
     print(json.dumps(rep, indent=1, default=float))
 
 
+def sds_exit(bars, close_t):
+    """NX3-ALL-SDS: close of the last 1-minute bar ending by 15:55 (close_t - 5 minutes), or NaN."""
+    if bars is None or bars.empty:
+        return np.nan
+    b = bars[bars["t"] + pd.Timedelta(minutes=1) <= close_t - pd.Timedelta(minutes=5)]
+    return float(b["c"].iloc[-1]) if len(b) else np.nan
+
+
+def sds_day(p, c, w, px):
+    """One day of NX3-ALL and NX3-ALL-SDS: picks p and control c (row i of c pairs with row i of p), sizes w, and the
+    same-day exit price of each short's symbol. Shorts without a price drop with their pair, in both arms."""
+    def arm(x, same_day):
+        x = x.copy()
+        if same_day:
+            sh = (x["side"] < 0).to_numpy()
+            x.loc[sh, "ret"] = x.loc[sh, "symbol"].map(px).astype(float).to_numpy() / x.loc[sh, "entry"].to_numpy(float) - 1
+            x.loc[sh, "days"] = 1
+        return N.net(x).to_numpy(float)
+    ok = np.ones(len(p), bool)
+    for x in (p, c):
+        sh = (x["side"] < 0).to_numpy()
+        ok &= ~sh | np.isfinite(x["symbol"].map(px).astype(float).to_numpy())
+    out = {}
+    for name, same in (("ALL", False), ("SDS", True)):
+        pn, cn = arm(p, same)[ok], arm(c, same)[ok]
+        ww = w[ok]
+        out[name] = {"sized_net": float(ww @ pn), "sized_pick_minus_control": float(ww @ (pn - cn)),
+                     "short_net": float(ww[(p["side"] < 0).to_numpy()[ok]] @ pn[(p["side"] < 0).to_numpy()[ok]])}
+    out["kept"] = int(ok.sum())
+    return out
+
+
+def stage_sds(cache, out):
+    """NX3-ALL-SDS (research/prereg/NX3SDS.md): NX3-ALL's walk-forward (same models, seeds, picks, sizes) with every
+    short, pick or control, bought back at 15:55 the same day; longs keep the next close. Needs raw 1-minute bars of
+    the day's short symbols (one request per day)."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    ses = sessions(calendar(cache)).set_index("date")
+    headers = alpaca_headers()
+    rows = []
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut_d]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        model = Model(tr)
+        real = te[te["kind"] == "real"]
+        e = model.effect(real[INPUTS].to_numpy(float))
+        real = real.assign(e=e, fired=model.fires(e))
+        rng = np.random.default_rng(SEED + yr)      # NX3-ALL's draws (evaluate also draws a shuffled set per day)
+        for d, day in real.groupby("d", sort=True):
+            p, c = picks(day, rng, cap=None, cut=model.cut)
+            if p.empty or c.empty:
+                continue
+            picks(shuffled(day, model, rng), rng, cap=None, cut=model.cut)     # keeps the draws in step with NX3-ALL
+            if d not in ses.index:
+                continue
+            w = conf_sizes(np.abs(p["e"].to_numpy(float)) / model.cut)
+            shorts = sorted(set(p.loc[p["side"] < 0, "symbol"]) | set(c.loc[c["side"] < 0, "symbol"]))
+            px = {}
+            if shorts:
+                bars = day_bars(shorts, d, ses.loc[d, "open_t"], ses.loc[d, "close_t"], headers)
+                px = {s: sds_exit(bars.get(s), ses.loc[d, "close_t"]) for s in shorts}
+            r = sds_day(p.reset_index(drop=True), c.reset_index(drop=True), w, px)
+            rows.append({"d": d, "year": yr, "kept": r["kept"], "picks": len(p), "short_share": float(w[(p["side"] < 0).to_numpy()].sum() / w.sum()),
+                         **{f"{a}_{k}": v for a in ("ALL", "SDS") for k, v in r[a].items()}})
+    t = pd.DataFrame(rows)
+    rep = {"rule": "SDS sized pick-minus-control NW t >= 1.5 AND own sized net per day > 0 AND paired daily own-net gain "
+                   "over NX3-ALL mean >= -0.0002 AND worst 1% of days better than NX3-ALL's", "days": int(len(t))}
+    if len(t):
+        for a in ("ALL", "SDS"):
+            rep[a] = {"sized_pick_minus_control": tstat(t[f"{a}_sized_pick_minus_control"].to_numpy(float)),
+                      "own_net_per_day": tstat(t[f"{a}_sized_net"].to_numpy(float)),
+                      "short_net_per_day": tstat(t[f"{a}_short_net"].to_numpy(float)),
+                      "worst_1pct_day": float(t[f"{a}_sized_net"].quantile(0.01)),
+                      "sd_day": float(t[f"{a}_sized_net"].std()),
+                      "per_year_own_net": {int(y): float(g[f"{a}_sized_net"].mean()) for y, g in t.groupby("year")}}
+        gain = tstat((t["SDS_sized_net"] - t["ALL_sized_net"]).to_numpy(float))
+        rep["gain_over_nx3all"] = gain
+        hi_short = t["short_share"] >= 0.8
+        rep["days_80pct_short"] = {"days": int(hi_short.sum()),
+                                   "gain": tstat((t.loc[hi_short, "SDS_sized_net"] - t.loc[hi_short, "ALL_sized_net"]).to_numpy(float))}
+        s = rep["SDS"]
+        ok = (s["sized_pick_minus_control"]["mean"] > 0 and s["sized_pick_minus_control"]["t_nw"] >= ALL_PASS_T
+              and s["own_net_per_day"]["mean"] > 0 and gain["mean"] >= -0.0002
+              and s["worst_1pct_day"] > rep["ALL"]["worst_1pct_day"])
+        rep["verdict"] = "passed" if ok else "failed"
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "NX3SDS_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
 NXK_ARMS = ("XGB", "KNN", "KRR")
 NXK2_ARMS = ("XGB", "CAT", "ET")
 NXK_KNN_ROWS = 100_000
@@ -1309,7 +1407,7 @@ def stage_shortall(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze", "dayfilter"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze", "dayfilter", "sds"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1320,6 +1418,9 @@ def main():
         return
     if a.stage == "dayfilter":
         stage_dayfilter(a.cache, a.out)
+        return
+    if a.stage == "sds":
+        stage_sds(a.cache, a.out)
         return
     if a.stage == "uncapped":
         stage_uncapped(a.cache, a.out)
