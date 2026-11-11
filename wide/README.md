@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 10:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9026.61 | -9.73% | 183 | 59 | long CRWV, long HUM, long NET, long RKLB, long TTWO |
-| Coin flip on C's picks | $9609.20 | -3.91% | 182 | 90 | short CRWV, short HUM, long NET, long RKLB, short TTWO |
-| C's prompt on Groq (K7) | $6620.79 | -33.79% | 379 | 90 | long AVGO, long CRWV, long NBIS, long RKT, long TTWO |
-| Coin flip on C-groq's picks | $8590.54 | -14.09% | 379 | 179 | short AVGO, short CRWV, long NBIS, short RKT, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $8751.50 | -12.49% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11455.98 | +14.56% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9880.96 | -1.19% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10181.86 | +1.82% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9849.63 | -1.50% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9004.60 | -9.95% | 184 | 59 | long AXTI, long CRWV, long NET, long RKLB, long TTWO |
+| Coin flip on C's picks | $9600.74 | -3.99% | 183 | 90 | long AXTI, short CRWV, long NET, long RKLB, short TTWO |
+| C's prompt on Groq (K7) | $6603.91 | -33.96% | 379 | 90 | long AVGO, long CRWV, long NBIS, long RKT, long TTWO |
+| Coin flip on C-groq's picks | $8589.26 | -14.11% | 379 | 179 | short AVGO, short CRWV, long NBIS, short RKT, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $8727.85 | -12.72% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11498.72 | +14.99% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9863.40 | -1.37% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10201.30 | +2.01% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9843.90 | -1.56% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-11 10:17 | long AXTI, long CRWV, long NET, long RKLB, long TTWO | sold HUM @ $441.30; bought AXTI @ $46.05 | Maintaining long positions in CRWV, RKLB, NET, and TTWO due to continued positive momentum and adding AXTI for its strong breakout today, while selling HUM for its weak relative performance. |
 | 2026-11-11 10:07 | long CRWV, long HUM, long NET, long RKLB, long TTWO | none | Maintaining all five existing long positions due to continued positive momentum, strong daily gains, and favorable news, with all positions currently profitable. |
 | 2026-11-11 09:57 | long CRWV, long HUM, long NET, long RKLB, long TTWO | none | Maintaining all existing long positions due to continued positive momentum and favorable news where applicable, with no new opportunities identified that warrant replacing current holdings. |
 | 2026-11-11 09:50 | long CRWV, long HUM, long NET, long RKLB, long TTWO | sold CVS @ $88.41; bought CRWV @ $55.44 | Sold CVS due to negative daily performance and declining hourly trend. Maintained HUM, NET, RKLB, and TTWO due to positive performance and momentum. Opened a new long position in CRWV based on significant daily gains and strong positive news. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 10:0
 | 2026-11-09 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 10:47 | long ABNB, long IONQ, long MPWR, long MRNA, long RKLB | sold VST @ $133.05; bought MPWR @ $1,321.45 | Maintaining existing profitable long positions in ABNB, IONQ, MRNA, and RKLB due to strong momentum, and initiating a new long position in MPWR, which shows strong daily and hourly gains with positive recent performance. |
-| 2026-11-09 10:37 | no answer, nothing changed | none | unreadable answer |
