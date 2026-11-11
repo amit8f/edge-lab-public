@@ -93,3 +93,7 @@ Details the registration left open, fixed now:
 - Test: the frozen 2019-2023 refits score every decision row of 2024-01 to 2025-09 in a second download pass
   (all rows, not the 3% sample), keeping only rows above the lowest candidate bar plus one random universe stock
   at the same minute per kept row. The book (one buy per stock per day, sizing as registered) is built from those.
+Clarification (same day, before any fit): the market score is computed per decision row (SPY's move since the open
+changes through the day), z-parameters from 2019-2022 (one value per day for gap, 5-session return and volatility;
+rows for the move since the open), and "bad" is a row score below the 20th percentile of 2019-2022 row scores. SPY's
+gap uses adjusted open over adjusted prior close (the only SPY daily cache stores adjusted prices).
