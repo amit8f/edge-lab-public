@@ -75,3 +75,25 @@ per year; bad days vs other days; per stop tier; the book's daily % (Amit's 3% g
 Most days have no pick. The share ending +3% or better is well above random (picks are jumpy stocks), but after
 costs the mean net is near zero for main and negative for penny. Probability PICK-MAIN passes: about 0.15;
 PICK-PENNY: about 0.05.
+
+## Amendment 1 (2026-11-11, after the rows download, before any model is fitted or any label statistic is seen)
+
+Details the registration left open, fixed now:
+- News inputs per row (from NX1's tone cache, single-symbol headlines with time < the decision time, since the
+  prior session's 16:00): count, mean and max FinBERT positive and negative, LM net, any of each NX1 flag, and
+  minutes since the latest headline (capped at 1,000; no headline = cap). NEWS = these + log_px + mins_open;
+  CHART = the chart inputs already in the rows; COMBINED = both + SPY's move since the open and the market score.
+- Market score (bad days): z-scored on 2019-2022 days, the mean of SPY's gap, SPY's move since the open at the
+  decision time, SPY's 5-session return, and minus its 20-day volatility. Bad = the lowest fifth of 2019-2022
+  values (that cut is frozen).
+- Learner choice: each learner is fitted on the middle stop width's label (main 1.5x, penny 2x) for each version;
+  the lowest 2023 log-loss wins. KRR and Extra Trees are fitted on a fixed 20,000-row random sample of training rows
+  (memory); the others on all training rows. Then the winning learner is fitted per stop width, and the width per
+  tier (terciles of swing30 on 2019-2022 rows) and the bar pair are chosen on 2023 as registered.
+- Test: the frozen 2019-2023 refits score every decision row of 2024-01 to 2025-09 in a second download pass
+  (all rows, not the 3% sample), keeping only rows above the lowest candidate bar plus one random universe stock
+  at the same minute per kept row. The book (one buy per stock per day, sizing as registered) is built from those.
+Clarification (same day, before any fit): the market score is computed per decision row (SPY's move since the open
+changes through the day), z-parameters from 2019-2022 (one value per day for gap, 5-session return and volatility;
+rows for the move since the open), and "bad" is a row score below the 20th percentile of 2019-2022 row scores. SPY's
+gap uses adjusted open over adjusted prior close (the only SPY daily cache stores adjusted prices).

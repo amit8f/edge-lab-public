@@ -1,0 +1,99 @@
+# PICK fit (tracks/main/pick_study.py, research/prereg/PICK.md, Amendment 1). Manual runs only, one at a time.
+# stage=join builds <cache>/pickfit/joined from pick's rows (cache/w1/pick, read only) and NX1's tone and SPY
+# caches (cache/nx1, read only). stage=fit trains on 2019-2022, validates on 2023 and refits on 2019-2023; it never
+# reads a 2024+ month. Rerun until the log says "done" (join resumes month by month). Only the results (PICK_fit.json
+# and the models) are committed, to the branch that ran it.
+name: pick-fit
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "join or fit"
+        required: true
+        default: join
+        type: choice
+        options: [join, fit]
+
+permissions: {}
+
+concurrency:
+  group: pick-fit
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore PICK's rows (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/w1/pick
+          key: pick-v1-none
+          restore-keys: pick-v1-
+
+      - name: Restore NX1's cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+
+      - name: Restore PICK fit's own cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/pickfit
+          key: pickfit-v1-${{ github.run_id }}
+          restore-keys: pickfit-v1-
+
+      - name: Run the stage
+        env:
+          STAGE: ${{ github.event.inputs.stage }}
+        run: |
+          [[ -d cache/w1/pick/rows ]] || { echo "::error::PICK's rows are missing; run pick-study stage=rows first"; exit 1; }
+          [[ -d cache/nx1/nx1/tone ]] || { echo "::error::NX1's tone cache is missing; run nx1-study first"; exit 1; }
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick_study --stage "$STAGE" --rows cache/w1 \
+            --nx1 cache/nx1 --out research/results/PICK --state cache/pickfit
+
+      - name: Save PICK fit's cache (also after a failure, so a rerun resumes)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/pickfit
+          key: pickfit-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        if: inputs.stage == 'fit' || inputs.stage == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/PICK
+          git add research/results/PICK
+          git diff --cached --quiet && { echo "No results yet; rerun to continue"; exit 0; }
+          git commit -q -m "PICK fit results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
