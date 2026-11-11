@@ -90,3 +90,9 @@ Most likely failure: too few trades clear the cut, or the drift after entry is s
 Public, scheduled binary events (FDA decision dates, announced trial readouts) taken before the date, long or short
 by a model's guess of the outcome. Registered now so its count is honest; its rules, data source (a free catalyst
 calendar) and test are written before any data is pulled, in a later amendment to this file. No result exists.
+
+## Amendment 1 (2026-11-11, before any data is pulled or any number computed)
+
+Stage 2a reads the headline only. Our cached history (`news_history.fetch_range`, 2015-10 to 2025-09) kept the
+headline and no summary, so "title + first 400 chars" cannot be trained or tested on history; live uses the same
+headline-only input so training and live match. Found while mapping the cached data; no result exists.
