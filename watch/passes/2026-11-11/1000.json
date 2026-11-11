@@ -1,0 +1,167 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "1e67a1437d3a1faf0985b9a800eab276f695665e614aec208360941a2551968d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "96ff579ec3a6db85c363412104b545a6c483457bde93dea4a5d6528ea452f8ba",
+   "views": [
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AMPX",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AMAT",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "CCAP",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "VEEV",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "product",
+     "symbol": "ADBE",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "QuotaExhausted: groq: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kgtcdj5pemts138hkmtzder9` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 1986",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "dd0cf0d3c281a1192018ee16bcf8fe057dc2fda742c124836ec2dc6897d849c8",
+   "quota": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.06107,
+   "news": 1,
+   "pace": null,
+   "price": 8.61,
+   "r20": 0.07126,
+   "r5": 0.03851,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMPX",
+   "z": -0.939
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.03675,
+   "news": 1,
+   "pace": null,
+   "price": 386.22,
+   "r20": -0.19755,
+   "r5": -0.02459,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMAT",
+   "z": 0.651
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01927,
+   "news": 1,
+   "pace": null,
+   "price": 10.18,
+   "r20": 0.13567,
+   "r5": 0.11016,
+   "short": true,
+   "src": "iex",
+   "symbol": "CCAP",
+   "z": -0.606
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.0081,
+   "news": 1,
+   "pace": null,
+   "price": 308.025,
+   "r20": 0.013,
+   "r5": 0.00772,
+   "short": true,
+   "src": "iex",
+   "symbol": "VEEV",
+   "z": 0.441
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00063,
+   "news": 1,
+   "pace": null,
+   "price": 236.55,
+   "r20": 0.00178,
+   "r5": -0.03835,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADBE",
+   "z": -0.025
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5114.4132,
+  "PICK-MAIN-coin": 5192.3639,
+  "PICK-PENNY": 464.806,
+  "PICK-PENNY-coin": 522.0921
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 17,
+  "news": 6,
+  "volume": 0
+ },
+ "flagged": 23,
+ "headline_counts": {
+  "ADBE": 3,
+  "AMAT": 1,
+  "AMPX": 3,
+  "CCAP": 2,
+  "VEEV": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "4366f31b26a169d5716d9b17c0ecf829d20c3e18a6b902ff35a513759f76016b",
+ "price_sources": {
+  "delayed_sip": 539,
+  "iex": 2860
+ },
+ "priced": 3399,
+ "risk": [],
+ "slot": "2026-11-11T10:00",
+ "t": "2026-11-11T15:00:21.286842+00:00",
+ "universe": 3410,
+ "written_utc": "2026-11-11T15:00:28.043491Z"
+}
