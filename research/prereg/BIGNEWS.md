@@ -96,3 +96,14 @@ calendar) and test are written before any data is pulled, in a later amendment t
 Stage 2a reads the headline only. Our cached history (`news_history.fetch_range`, 2015-10 to 2025-09) kept the
 headline and no summary, so "title + first 400 chars" cannot be trained or tested on history; live uses the same
 headline-only input so training and live match. Found while mapping the cached data; no result exists.
+
+## Amendment 2 (2026-11-11, before any data is pulled or any number computed)
+
+Amit's choice (2026-11-11): the history test finds chart shocks on 5-minute bars first. A shock is a 5-minute
+bar (9:30-16:00, raw SIP) whose volume is at least 10x the stock's median volume for that same 5-minute slot over
+the 20 prior sessions, with a move of at least 3% (main) / 5% (penny) from the prior close; the trigger time is
+the bar's end. The 1-minute scan registered above runs later, as data allows, and is reported as a check of the
+5-minute version; it does not change the primary test.
+Detail fixed with it (same day, before any data): a slot's 20-session median volume is floored at 100 shares, so
+a slot that usually trades nothing cannot flag on a single trade; the 20-session window counts only sessions the
+stock was in the universe, and the scan starts with a 2018-12 warm-up month (no output) so January 2019 can flag.

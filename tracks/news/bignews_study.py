@@ -1,4 +1,5 @@
-"""BIGNEWS (research/prereg/BIGNEWS.md, Amendment 1): headline events and their 1-minute entries, 2019-01 .. 2025-09.
+"""BIGNEWS (research/prereg/BIGNEWS.md, Amendments 1-2): headline events and their 1-minute entries, 2019-01 .. 2025-09,
+and the 5-minute chart shocks of Amendment 2.
 
 Reads NX1's cache: the trading calendar (cal.parquet), the Benzinga headline months (g1/news) and W1's daily bar
 batches (w1/daily). Stages, one file per month, atomic writes, resumable:
@@ -8,10 +9,14 @@ batches (w1/daily). Stages, one file per month, atomic writes, resumable:
   minutes  <out>/minutes/m_YYYY-MM.parquet: raw SIP 1-minute bars 4:00-20:00 of each event day, reduced to entry
            prices (trigger+1, trigger+5, 9:30 open, pre-market), the move to 15:55, the jump before entry, the
            first 5 minutes' volume, and the next closes (all-adjusted, with the day's factor to restate them)
+  shocks   <out>/shocks/s_YYYY-MM.parquet: one row per 5-minute bar of the regular session whose volume is at least
+           10x the median of its slot over the 20 prior sessions and whose move from the prior close is at least 3%
+           (main) or 5% (penny). state.pkl keeps the windows between months; 2018-12 is a warm-up with no output.
 
-Usage: python -m tracks.news.bignews_study --stage events|minutes --cache cache/nx1 --out cache/bignews
+Usage: python -m tracks.news.bignews_study --stage events|minutes|shocks --cache cache/nx1 --out cache/bignews
 """
 import argparse
+import pickle
 import re
 import time
 from pathlib import Path
@@ -21,6 +26,8 @@ import pandas as pd
 
 from core import alpaca
 from core.env import alpaca_headers
+from tracks.main import pick_data as P
+from tracks.news import l1_study as L1
 from tracks.news import nx1_study as N
 from tracks.news import w1_data as W
 
@@ -41,6 +48,10 @@ MEAS = [f"{p}_{k}" for k in ENTRIES for p in ("px", "t", "mfe", "mae", "jump")] 
                                                                                    "adj_f"]
 MIN_COLS = ["id", "symbol", "t", "session_date", "when", "tier", "prev_c", "event_type", "novel"] + MEAS
 EMPTY_BARS = pd.DataFrame({"t": pd.Series(dtype="datetime64[ns]"), **{c: pd.Series(dtype=float) for c in "ohlcv"}})
+SLOTS, WIN, SHOCK_MULT = 78, 20, 10.0
+MIN_MED_V = 100.0     # slot median floored at 100 shares so a usually silent slot cannot flag on any trade                        # 5-minute slots 9:30-16:00, sessions in the window
+SHOCK_MOVE = {"main": 0.03, "penny": 0.05}
+SHOCK_COLS = ["symbol", "session_date", "t", "tier", "prev_c", "c", "move", "v", "v_med", "ratio"]
 
 # Ordered: the first pattern that matches gives the type.
 EVENT_RX = {
@@ -291,15 +302,118 @@ def stage_minutes(cache, out, deadline, months=MONTHS, api=None):
     return True
 
 
+class ShockApi:
+    """Regular-session 5-minute bars (raw SIP, zero-volume bars dropped). Tests pass a fake with the same bars_5min."""
+
+    def __init__(self, headers):
+        self.headers = headers
+
+    def bars_5min(self, symbols, day):
+        return P.bars_5min(symbols, day, self.headers)
+
+
+def shock_universe(rows):
+    """{symbol: (tier, prev close)} from W1 rows of one previous session: raw close >= $1, dv20 >= $1M;
+    main if the close is >= $5, else penny."""
+    r = rows[(rows["c"] >= MIN_PRICE) & (rows["dv20"] >= MIN_DV20)]
+    return {s: ("main" if c >= MAIN_PRICE else "penny", float(c)) for s, c in zip(r["symbol"], r["c"])}
+
+
+def day_shocks(day, uni, bars, win):
+    """Shock rows of one session. Each universe symbol's window is checked first and advanced with this session
+    afterwards, so the median only uses earlier sessions. A gap of more than 15 calendar days since the symbol's last
+    session restarts its window."""
+    open_t, out = day + T_OPEN, []
+    for sym, (tier, prev_c) in uni.items():
+        w = win.get(sym)
+        if w is None or (day - w["last"]).days > L1.GAP_DAYS:
+            w = win[sym] = {"last": day, "n": 0, "vols": np.zeros((WIN, SLOTS))}
+        b, vol = bars.get(sym), np.zeros(SLOTS)
+        if b is not None and len(b):
+            slot = ((b["t"] - open_t) // pd.Timedelta(minutes=5)).to_numpy()
+            ok = (slot >= 0) & (slot < SLOTS)
+            b, slot = b[ok], slot[ok]
+            np.add.at(vol, slot, b["v"].to_numpy(float))
+            if w["n"] >= WIN and len(b):
+                med = np.maximum(np.median(w["vols"][:, slot], axis=0), MIN_MED_V)   # Amendment 2: floor
+                v, c = b["v"].to_numpy(float), b["c"].to_numpy(float)
+                move = c / prev_c - 1
+                hit = (v >= SHOCK_MULT * med) & (np.abs(move) >= SHOCK_MOVE[tier])
+                if hit.any():
+                    with np.errstate(divide="ignore"):
+                        ratio = v[hit] / med[hit]
+                    out.append(pd.DataFrame({
+                        "symbol": sym, "session_date": day, "t": (b["t"][hit] + pd.Timedelta(minutes=5)).to_numpy(),
+                        "tier": tier, "prev_c": prev_c, "c": c[hit], "move": move[hit], "v": v[hit],
+                        "v_med": med[hit], "ratio": ratio}))
+        w["vols"] = np.vstack([w["vols"][1:], vol])
+        w["n"], w["last"] = min(w["n"] + 1, WIN), day
+    return out
+
+
+def shock_month(cache, m, dates, win, api, deadline):
+    """(shock rows, sessions, universe sizes, last session) of one month, or None when the deadline stops it."""
+    days = dates[(dates >= m.start_time) & (dates <= m.end_time)]
+    prev = dates[dates.searchsorted(days) - 1]
+    daily = W.read_rows(cache, ["symbol", "date", "c", "dv20"], [("date", ">=", prev[0]), ("date", "<=", prev[-1])])
+    by = {d: g for d, g in daily.groupby("date")}
+    rows, sizes = [], []
+    for day, p in zip(days, prev):
+        if time.monotonic() > deadline:
+            return None
+        uni = shock_universe(by.get(p, daily.iloc[0:0]))
+        sizes.append(len(uni))
+        if uni:
+            rows += day_shocks(day, uni, api.bars_5min(sorted(uni), day), win)
+    out = pd.concat(rows, ignore_index=True) if rows else pd.DataFrame(columns=SHOCK_COLS)
+    return out, days, sizes
+
+
+def save_state(f, st):
+    f.parent.mkdir(parents=True, exist_ok=True)
+    tmp = f.with_suffix(".tmp")
+    with open(tmp, "wb") as fh:
+        pickle.dump(st, fh)
+    tmp.replace(f)
+
+
+def stage_shocks(cache, out, deadline, months=MONTHS, api=None):
+    """Months in order, starting with a warm-up month before the first one. A month counts as done once the state
+    on disk covers its last session, which is saved after its file is written: a crash between the two reruns it."""
+    out = Path(out)
+    dates = calendar(cache, out)
+    f_state = out / "shocks" / "state.pkl"
+    st = pickle.loads(f_state.read_bytes()) if f_state.exists() else {"last": None, "win": {}}
+    warm = months[0] - 1
+    for m in [warm] + list(months):
+        if st["last"] is not None and st["last"] >= m.end_time.normalize():
+            continue
+        if time.monotonic() > deadline:
+            return False
+        if api is None:
+            api = ShockApi(alpaca_headers())
+        res = shock_month(cache, m, dates, st["win"], api, deadline)
+        if res is None:                       # partial month dropped: the state on disk is the last finished month
+            return False
+        rows, days, sizes = res
+        if m != warm:
+            N.atomic_parquet(rows.reset_index(drop=True), out / "shocks" / f"s_{m}.parquet")
+            print(f"[bignews shocks] {m}: {len(rows)} shocks over {len(days)} days, "
+                  f"{int(round(np.mean(sizes)))} stocks/day", flush=True)
+        st["last"] = days[-1]
+        save_state(f_state, st)
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["events", "minutes"])
+    ap.add_argument("--stage", required=True, choices=["events", "minutes", "shocks"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="cache/bignews")
     ap.add_argument("--budget-min", type=float, default=290)
     a = ap.parse_args()
     deadline = time.monotonic() + a.budget_min * 60
-    stage = stage_events if a.stage == "events" else stage_minutes
+    stage = {"events": stage_events, "minutes": stage_minutes, "shocks": stage_shocks}[a.stage]
     if stage(a.cache, a.out, deadline):
         print(f"[bignews {a.stage}] done")
     else:
