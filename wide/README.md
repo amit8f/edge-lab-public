@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 14:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9156.22 | -8.44% | 187 | 62 | long AXTI, long CRWV, long MU, long NBIS, long RKLB |
-| Coin flip on C's picks | $9608.06 | -3.92% | 186 | 92 | long AXTI, short CRWV, short MU, long NBIS, long RKLB |
-| C's prompt on Groq (K7) | $6713.27 | -32.87% | 390 | 96 | long AMD, long AXTI, long CRWV, long NBIS, long RKLB |
-| Coin flip on C-groq's picks | $8526.35 | -14.74% | 390 | 184 | short AMD, short AXTI, short CRWV, long NBIS, long RKLB |
-| C-groq's answers, acted on once a day (K8) | $8498.50 | -15.01% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11730.83 | +17.31% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9924.41 | -0.76% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10135.71 | +1.36% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9899.89 | -1.00% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9155.01 | -8.45% | 190 | 64 | long BE, long CRWV, long MPWR, long NBIS, long SNDK |
+| Coin flip on C's picks | $9576.35 | -4.24% | 189 | 95 | short BE, short CRWV, short MPWR, long NBIS, long SNDK |
+| C's prompt on Groq (K7) | $6718.44 | -32.82% | 390 | 96 | long AMD, long AXTI, long CRWV, long NBIS, long RKLB |
+| Coin flip on C-groq's picks | $8531.57 | -14.68% | 390 | 184 | short AMD, short AXTI, short CRWV, long NBIS, long RKLB |
+| C-groq's answers, acted on once a day (K8) | $8515.84 | -14.84% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11696.00 | +16.96% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9918.22 | -0.82% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10142.50 | +1.42% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9900.35 | -1.00% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-11 14:27 | long BE, long CRWV, long MPWR, long NBIS, long SNDK | sold AXTI @ $47.65; sold MU @ $818.46; sold RKLB @ $66.17; bought BE @ $212.09; bought MPWR @ $1,483.11; bought SNDK @ $994.31 | Sold AXTI, MU, and RKLB to lock in profits or cut small losses, and reallocated capital to high-momentum stocks (SNDK, BE, MPWR) showing strong daily gains and consistent hourly uptrends, while maintaining conviction in CRWV and NBIS due to strong news and momentum. |
 | 2026-11-11 14:17 | long AXTI, long CRWV, long MU, long NBIS, long RKLB | none | Maintaining current long positions in CRWV, AXTI, NBIS, MU, and RKLB due to strong daily momentum and positive news flow, particularly in the tech/AI sector. |
 | 2026-11-11 14:07 | long AXTI, long CRWV, long MU, long NBIS, long RKLB | sold BE @ $214.13; bought MU @ $820.66 | Maintaining profitable positions in CRWV, AXTI, NBIS, and RKLB due to strong market momentum and positive news, and adding MU to capitalize on the AI rally and positive sentiment. |
 | 2026-11-11 13:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 14:1
 | 2026-11-10 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 11:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-10 10:57 | long AMD, long NET, long TSM, long TTWO, long TWLO | none | Maintained all existing long positions in AMD, TTWO, NET, TSM, and TWLO. All positions show positive momentum today or over the last 5 sessions, with supportive news for continued growth, particularly in the tech and gaming sectors. |
