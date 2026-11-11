@@ -1,0 +1,258 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "37af0c7d53e6570b59aa6d7eef75fa5cbeeac3327a91657fe1d30baea46964e0",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "180278fefbd5545b26c50bb78fc8002fbaee1850bc56bcce06bf79e994ac55db",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BGSI",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TXNM",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "CARL",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "CRWV",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "GLOB",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "NVDA",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "MCD",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "PAGP",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "PAA",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "2814361931d69fde4c6523b7989c743ad8ef95e4e2ab4c307158af6f349ae2cd",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.12102,
+   "news": 0,
+   "pace": null,
+   "price": 77.79,
+   "r20": 0.1039,
+   "r5": 0.00557,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "BGSI",
+   "z": -5.331
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.00835,
+   "news": 0,
+   "pace": null,
+   "price": 58.585,
+   "r20": -0.00017,
+   "r5": -0.00786,
+   "short": true,
+   "src": "iex",
+   "symbol": "TXNM",
+   "z": 3.304
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.17845,
+   "news": 0,
+   "pace": null,
+   "price": 17.335,
+   "r20": 0.01659,
+   "r5": 0.02153,
+   "short": true,
+   "src": "iex",
+   "symbol": "CARL",
+   "z": 3.253
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.13616,
+   "news": 3,
+   "pace": null,
+   "price": 55.365,
+   "r20": -0.37373,
+   "r5": -0.09323,
+   "short": true,
+   "src": "iex",
+   "symbol": "CRWV",
+   "z": 1.648
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.03964,
+   "news": 1,
+   "pace": null,
+   "price": 46.875,
+   "r20": 0.31316,
+   "r5": 0.06642,
+   "short": true,
+   "src": "iex",
+   "symbol": "GLOB",
+   "z": -1.211
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.0291,
+   "news": 1,
+   "pace": null,
+   "price": 173.805,
+   "r20": -0.26094,
+   "r5": -0.18288,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NVDA",
+   "z": 0.894
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01333,
+   "news": 1,
+   "pace": null,
+   "price": 278.41,
+   "r20": 0.1966,
+   "r5": 0.07273,
+   "short": true,
+   "src": "iex",
+   "symbol": "MCD",
+   "z": -0.743
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00157,
+   "news": 1,
+   "pace": null,
+   "price": 25.55,
+   "r20": -0.04457,
+   "r5": -0.07606,
+   "short": true,
+   "src": "iex",
+   "symbol": "PAGP",
+   "z": 0.106
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00021,
+   "news": 1,
+   "pace": null,
+   "price": 23.665,
+   "r20": -0.03506,
+   "r5": -0.08433,
+   "short": true,
+   "src": "iex",
+   "symbol": "PAA",
+   "z": -0.013
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5102.9388,
+  "PICK-MAIN-coin": 5168.1207,
+  "PICK-PENNY": 467.0937,
+  "PICK-PENNY-coin": 522.9248
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 17,
+  "news": 6,
+  "volume": 0
+ },
+ "flagged": 23,
+ "headline_counts": {
+  "BGSI": 3,
+  "CARL": 3,
+  "CRWV": 3,
+  "GLOB": 2,
+  "MCD": 3,
+  "NVDA": 3,
+  "PAA": 1,
+  "PAGP": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "f472b864b886a71fbcedcd762fdf8dd268ccbb367edc5d0ea2edc21d0e898d0f",
+ "price_sources": {
+  "delayed_sip": 675,
+  "iex": 2717
+ },
+ "priced": 3392,
+ "risk": [],
+ "slot": "2026-11-11T09:50",
+ "t": "2026-11-11T14:50:21.180663+00:00",
+ "universe": 3410,
+ "written_utc": "2026-11-11T14:50:35.111719Z"
+}
