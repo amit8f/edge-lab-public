@@ -1,0 +1,408 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "d4d570c5fb94d4ac441d2a6f24031ec7c477fa1309f0b13c7c739f00a60e536a",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "bddd7cf35d3822293b294d3d22f3b814a15d328a50b2a824585f06d30fd58714",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "LAND",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "HIVE",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "product",
+     "symbol": "LLY",
+     "tone": 1
+    },
+    {
+     "confidence": 75,
+     "event": "analyst",
+     "symbol": "BCSF",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "55130dae292b0287d737faf9c2cafa08d83af8c9290e121647d0736e9dfb83c4",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong earnings beat, high confidence, positive z-score",
+     "stop_pct": 12.0,
+     "symbol": "LAND"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "analyst confidence high, positive price move, no shortability",
+     "stop_pct": 20.0,
+     "symbol": "HIVE"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "product news positive, high confidence despite slight dip",
+     "stop_pct": 12.0,
+     "symbol": "LLY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "neutral signal, low z and tone",
+     "stop_pct": 0.0,
+     "symbol": "BCSF"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "REZI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "TG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "XRN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "maintain position",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "1e7657c30947aeab9424e20e98ba9c34c3bf7b173b1a60a82c217fafb8f4035f"
+  },
+  "reviewer": {
+   "answer_sha256": "a200bc2e1ab4759d04e9ef6420ce75caf57e99aa4f951a98124273e5cfe0bbf5",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "f04d8d9bd96c8046228960e434f59ce15ecc8e1712b10ce5c1c8f91f23c5f7b8",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "positive earnings tone and strong daily momentum support the long proposal",
+     "symbol": "LAND"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "analyst supports long despite recent multi-day drawdown",
+     "symbol": "HIVE"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "solid multi-day trend and positive product tone justify long proposal",
+     "symbol": "LLY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08285,
+   "news": 0,
+   "pace": null,
+   "price": 7.45,
+   "r20": -0.28475,
+   "r5": -0.06139,
+   "short": true,
+   "src": "iex",
+   "symbol": "LAND",
+   "z": 3.205
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.02616,
+   "news": 1,
+   "pace": null,
+   "price": 1.765,
+   "r20": -0.27426,
+   "r5": -0.04972,
+   "short": false,
+   "src": "iex",
+   "symbol": "HIVE",
+   "z": 0.457
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01027,
+   "news": 2,
+   "pace": null,
+   "price": 1417.58,
+   "r20": 0.22784,
+   "r5": 0.01626,
+   "short": true,
+   "src": "iex",
+   "symbol": "LLY",
+   "z": -0.411
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00312,
+   "news": 1,
+   "pace": null,
+   "price": 11.195,
+   "r20": 0.05744,
+   "r5": 0.03217,
+   "short": true,
+   "src": "iex",
+   "symbol": "BCSF",
+   "z": -0.162
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5106.5032,
+  "PICK-MAIN-coin": 5171.8889,
+  "PICK-PENNY": 467.086,
+  "PICK-PENNY-coin": 523.9021
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.2205,
+   "price": 7.45,
+   "qty": 57,
+   "side": 1,
+   "stop": 6.556,
+   "symbol": "LAND"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.2418,
+   "price": 7.45,
+   "qty": 57,
+   "side": -1,
+   "stop": 8.344,
+   "symbol": "LAND"
+  }
+ ],
+ "flag_counts": {
+  "move": 19,
+  "news": 7,
+  "volume": 0
+ },
+ "flagged": 25,
+ "headline_counts": {
+  "BCSF": 3,
+  "HIVE": 3,
+  "LAND": 3,
+  "LLY": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "8eb6474c94c25e50b602a8e7a5b1f9d73fc6fe8fb1b98eddf478869dcaf70d67",
+ "price_sources": {
+  "delayed_sip": 609,
+  "iex": 2790
+ },
+ "priced": 3399,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 57,
+   "skip": null,
+   "symbol": "LAND"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HIVE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LLY"
+  }
+ ],
+ "slot": "2026-11-11T09:55",
+ "t": "2026-11-11T14:55:21.016822+00:00",
+ "universe": 3410,
+ "written_utc": "2026-11-11T14:55:51.466145Z"
+}
