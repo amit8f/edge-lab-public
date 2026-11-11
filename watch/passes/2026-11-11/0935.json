@@ -1,0 +1,562 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "422a80469408ea413c1ed0c609350d94415dd4f9ebb1ee00675531eafef5e353",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "177a54bbae05cc5341863d7e8549e656fe4d4fbe27d96ca85977332927673361",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "FOSL",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "RSKD",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "BGS",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "AII",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AEBI",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "LMRI",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "EPM",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "BMGL",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "BV",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "LWLG",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "e2f549cfdd211762110bbec6669a6b69fcca1d89f30e45bb68fced3317c46f2b",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "neutral tone after large jump",
+     "stop_pct": 0.0,
+     "symbol": "FOSL"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive earnings, strong momentum",
+     "stop_pct": 12.0,
+     "symbol": "RSKD"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price surge with positive guidance",
+     "stop_pct": 20.0,
+     "symbol": "BGS"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, upward trend",
+     "stop_pct": 10.0,
+     "symbol": "AII"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative earnings, price decline",
+     "stop_pct": 12.0,
+     "symbol": "AEBI"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "upbeat guidance, strong price rise",
+     "stop_pct": 12.0,
+     "symbol": "LMRI"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings miss, falling price",
+     "stop_pct": 20.0,
+     "symbol": "EPM"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable, extreme volatility",
+     "stop_pct": 0.0,
+     "symbol": "BMGL"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "down move, negative earnings",
+     "stop_pct": 12.0,
+     "symbol": "BV"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price drop, shortable",
+     "stop_pct": 20.0,
+     "symbol": "LWLG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "9ef24822d9ab0318fbeb07eaa388b55c342decafa4d8984b06930298f42f451c"
+  },
+  "reviewer": {
+   "answer_sha256": "5c9335fcc37bda85de45a90bdecdc9e7e68f43fb1f6fa105d971c3a63cd54215",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "1524ef81ce08c8d247125a4de41658604c8e8ef806bd730a16e100f002d07de9",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and positive earnings tone support continuation.",
+     "symbol": "RSKD"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid gains backed by positive guidance and multi-day strength.",
+     "symbol": "BGS"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant intraday surge on positive earnings tone.",
+     "symbol": "AII"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop aligns with negative earnings tone.",
+     "symbol": "AEBI"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong multi-day momentum supported by positive guidance.",
+     "symbol": "LMRI"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Intraday weakness and negative earnings tone justify short.",
+     "symbol": "EPM"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative price action on earnings with solid short confidence.",
+     "symbol": "BV"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy intraday selloff provides momentum for a short trade.",
+     "symbol": "LWLG"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.30623,
+   "news": 0,
+   "pace": null,
+   "price": 10.28,
+   "r20": 0.1007,
+   "r5": 0.17638,
+   "short": true,
+   "src": "iex",
+   "symbol": "FOSL",
+   "z": 7.14
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.24057,
+   "news": 0,
+   "pace": null,
+   "price": 10.52,
+   "r20": 0.00236,
+   "r5": -0.01624,
+   "short": true,
+   "src": "iex",
+   "symbol": "RSKD",
+   "z": 6.641
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.29323,
+   "news": 0,
+   "pace": null,
+   "price": 3.44,
+   "r20": 0.09465,
+   "r5": 0.11297,
+   "short": false,
+   "src": "iex",
+   "symbol": "BGS",
+   "z": 6.578
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.13291,
+   "news": 0,
+   "pace": null,
+   "price": 31.88,
+   "r20": 0.02364,
+   "r5": -0.04416,
+   "short": true,
+   "src": "iex",
+   "symbol": "AII",
+   "z": 5.075
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08953,
+   "news": 0,
+   "pace": null,
+   "price": 10.17,
+   "r20": -0.00623,
+   "r5": -0.0329,
+   "short": true,
+   "src": "iex",
+   "symbol": "AEBI",
+   "z": -4.874
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.17996,
+   "news": 0,
+   "pace": null,
+   "price": 16.425,
+   "r20": 0.31197,
+   "r5": 0.24064,
+   "short": true,
+   "src": "iex",
+   "symbol": "LMRI",
+   "z": 4.228
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07983,
+   "news": 0,
+   "pace": null,
+   "price": 3.285,
+   "r20": -0.05053,
+   "r5": -0.02192,
+   "short": true,
+   "src": "iex",
+   "symbol": "EPM",
+   "z": -3.973
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.59067,
+   "news": 0,
+   "pace": null,
+   "price": 0.79,
+   "r20": -0.4987,
+   "r5": -0.62956,
+   "short": false,
+   "src": "iex",
+   "symbol": "BMGL",
+   "z": -3.805
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08311,
+   "news": 0,
+   "pace": null,
+   "price": 10.48,
+   "r20": 0.05833,
+   "r5": -0.02971,
+   "short": true,
+   "src": "iex",
+   "symbol": "BV",
+   "z": -3.766
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.23007,
+   "news": 0,
+   "pace": null,
+   "price": 3.38,
+   "r20": 0.01974,
+   "r5": -0.06197,
+   "short": true,
+   "src": "iex",
+   "symbol": "LWLG",
+   "z": -3.551
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5098.7713,
+  "PICK-MAIN-coin": 5184.2256,
+  "PICK-PENNY": 466.8727,
+  "PICK-PENNY-coin": 521.4188
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2735,
+   "price": 3.44,
+   "qty": 6,
+   "side": 1,
+   "stop": 2.752,
+   "symbol": "BGS"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2735,
+   "price": 3.44,
+   "qty": 6,
+   "side": 1,
+   "stop": 2.752,
+   "symbol": "BGS"
+  }
+ ],
+ "flag_counts": {
+  "move": 11,
+  "news": 92,
+  "volume": 0
+ },
+ "flagged": 103,
+ "flip_test": {
+  "after": -2,
+  "answer_sha256": "980a7409c20380ecac78d562c2a61a0c8537c821b0f477bca5fab2e1cf33b22c",
+  "before": 1,
+  "model": "openai/gpt-oss-20b",
+  "moved": true,
+  "prompt_sha256": "458143d9a41ad55d24de923a5fb5d34cbb54eaaca11b7842a534f07d93287323",
+  "swaps": 2,
+  "symbol": "RSKD"
+ },
+ "headline_counts": {
+  "AEBI": 2,
+  "AII": 3,
+  "BGS": 3,
+  "BMGL": 3,
+  "BV": 3,
+  "EPM": 2,
+  "FOSL": 3,
+  "LMRI": 3,
+  "LWLG": 3,
+  "RSKD": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "bb5b8d4e833449537b7cce767433ac1d3bfc1fc38938c37baff3d554dd139a71",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2097
+ },
+ "priced": 2097,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RSKD"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 6,
+   "skip": null,
+   "symbol": "BGS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AII"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AEBI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LMRI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EPM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BV"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LWLG"
+  }
+ ],
+ "slot": "2026-11-11T09:35",
+ "t": "2026-11-11T14:35:20.597543+00:00",
+ "universe": 3410,
+ "written_utc": "2026-11-11T14:35:37.487461Z"
+}
