@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-11T12:45 ET: 471 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-11T12:50 ET: 455 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,826.26 | -3.47% | 55 | 21 | long APP, short ARQT, long ATO, short EPRX, short FA, short FUN, long LBTYK, long LCII, short MDLZ, long MTDR, long PGEN, long SRRK, long STLD, long TOST, long VRDN | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,757.00 | -4.86% | 54 | 15 | long APP, short ARQT, long ATO, long EPRX, long EQPT, long FA, short FUN, long LBTYK, short LCII, long MDLZ, short MTDR, long PGEN, long SRRK, long STLD, short TOST, long VRDN | ok |
-| SCOUT-PENNY | $466.78 | -6.64% | 20 | 3 | long ABUS, long LRMR, long MX, short NUAI, short PACB, short PEPG, short STIM, short TCPC, short UWMC | 1 unreadable agent answers |
-| SCOUT-PENNY-coin | $486.55 | -2.69% | 19 | 7 | short ABUS, short LRMR, long MX, short NUAI, long PACB, long PEPG, long RZLT, short STIM, short TCPC, short UWMC | ok |
+| SCOUT-MAIN | $4,823.09 | -3.54% | 55 | 21 | long APP, short ARQT, long ATO, short EPRX, short FA, short FUN, long LBTYK, long LCII, short MDLZ, long MTDR, long PGEN, long SRRK, long STLD, long TOST, long VRDN | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,756.04 | -4.88% | 54 | 15 | long APP, short ARQT, long ATO, long EPRX, long EQPT, long FA, short FUN, long LBTYK, short LCII, long MDLZ, short MTDR, long PGEN, long SRRK, long STLD, short TOST, long VRDN | ok |
+| SCOUT-PENNY | $467.00 | -6.60% | 20 | 3 | long ABUS, long LRMR, long MX, short NUAI, short PACB, short PEPG, short STIM, short TCPC, short UWMC | 1 unreadable agent answers |
+| SCOUT-PENNY-coin | $486.86 | -2.63% | 19 | 7 | short ABUS, short LRMR, long MX, short NUAI, long PACB, long PEPG, long RZLT, short STIM, short TCPC, short UWMC | ok |
