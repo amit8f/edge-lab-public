@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9228.16 | -7.72% | 186 | 61 | long AXTI, long BE, long CRWV, long NBIS, long RKLB |
-| Coin flip on C's picks | $9661.66 | -3.38% | 185 | 91 | long AXTI, long BE, short CRWV, long NBIS, long RKLB |
-| C's prompt on Groq (K7) | $6748.63 | -32.51% | 382 | 92 | long AXTI, long BE, long CRWV, long NBIS, long SNDK |
-| Coin flip on C-groq's picks | $8515.17 | -14.85% | 382 | 179 | short AXTI, long BE, short CRWV, long NBIS, long SNDK |
-| C-groq's answers, acted on once a day (K8) | $8509.48 | -14.91% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11765.34 | +17.65% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9963.55 | -0.36% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10087.88 | +0.88% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9886.35 | -1.14% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9235.53 | -7.64% | 186 | 61 | long AXTI, long BE, long CRWV, long NBIS, long RKLB |
+| Coin flip on C's picks | $9646.33 | -3.54% | 185 | 91 | long AXTI, long BE, short CRWV, long NBIS, long RKLB |
+| C's prompt on Groq (K7) | $6766.80 | -32.33% | 382 | 92 | long AXTI, long BE, long CRWV, long NBIS, long SNDK |
+| Coin flip on C-groq's picks | $8502.10 | -14.98% | 382 | 179 | short AXTI, long BE, short CRWV, long NBIS, long SNDK |
+| C-groq's answers, acted on once a day (K8) | $8470.02 | -15.30% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11824.21 | +18.24% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9980.27 | -0.20% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10071.04 | +0.71% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9885.31 | -1.15% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-11 11:37 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | All existing positions are showing strong positive momentum and are supported by positive news, so I am holding them to capture further gains in this tech rally. |
 | 2026-11-11 11:27 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | All current long positions are performing well with strong upward momentum and positive news, so maintaining the existing portfolio. |
 | 2026-11-11 11:17 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | Maintaining all existing long positions to ride the strong momentum driven by the AI rally, as all are profitable and showing significant gains today. |
 | 2026-11-11 11:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 11:2
 | 2026-11-09 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 12:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-09 11:57 | long ASTS, long BE, long IONQ, long MRNA, long RKLB | sold ABNB @ $194.09; sold MPWR @ $1,351.82; bought ASTS @ $37.16; bought BE @ $197.18 | Maintaining long positions in IONQ, MRNA, and RKLB due to strong momentum. Selling ABNB and MPWR to free up capital for new long positions in ASTS and BE, which show strong daily gains and positive news catalysts. |
