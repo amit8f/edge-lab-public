@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 11:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9235.53 | -7.64% | 186 | 61 | long AXTI, long BE, long CRWV, long NBIS, long RKLB |
-| Coin flip on C's picks | $9646.33 | -3.54% | 185 | 91 | long AXTI, long BE, short CRWV, long NBIS, long RKLB |
-| C's prompt on Groq (K7) | $6766.80 | -32.33% | 382 | 92 | long AXTI, long BE, long CRWV, long NBIS, long SNDK |
-| Coin flip on C-groq's picks | $8502.10 | -14.98% | 382 | 179 | short AXTI, long BE, short CRWV, long NBIS, long SNDK |
-| C-groq's answers, acted on once a day (K8) | $8470.02 | -15.30% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11824.21 | +18.24% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9980.27 | -0.20% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10071.04 | +0.71% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9885.31 | -1.15% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9255.82 | -7.44% | 186 | 61 | long AXTI, long BE, long CRWV, long NBIS, long RKLB |
+| Coin flip on C's picks | $9660.25 | -3.40% | 185 | 91 | long AXTI, long BE, short CRWV, long NBIS, long RKLB |
+| C's prompt on Groq (K7) | $6772.29 | -32.28% | 384 | 94 | long AXTI, long COHR, long CRWV, long MPWR, long NBIS |
+| Coin flip on C-groq's picks | $8521.21 | -14.79% | 384 | 181 | short AXTI, long COHR, short CRWV, long MPWR, long NBIS |
+| C-groq's answers, acted on once a day (K8) | $8489.86 | -15.10% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11798.07 | +17.98% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9999.44 | -0.01% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10048.92 | +0.49% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9887.72 | -1.12% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-11 11:47 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | Maintaining all current long positions as they are all profitable and showing strong positive momentum today, driven by positive news in the AI sector. |
 | 2026-11-11 11:37 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | All existing positions are showing strong positive momentum and are supported by positive news, so I am holding them to capture further gains in this tech rally. |
 | 2026-11-11 11:27 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | All current long positions are performing well with strong upward momentum and positive news, so maintaining the existing portfolio. |
 | 2026-11-11 11:17 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | Maintaining all existing long positions to ride the strong momentum driven by the AI rally, as all are profitable and showing significant gains today. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 11:3
 | 2026-11-09 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-09 12:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-09 12:07 | no answer, nothing changed | none | unreadable answer |
