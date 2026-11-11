@@ -1,0 +1,818 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "00cc030c76943806c9f0281fee428e89674f8b0436c2946d2704412da2b23727",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "b5d061400e45560d13dc34e3f3009b0979d29ba4225fbb8b6948b032d7263b28",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "AZTA",
+     "tone": 2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "SLAB",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "REZI",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "COHU",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "FSK",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "XRN",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "AVNW",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "5a7fb3e0cf47a29de1df6c21b45d7f02219b8eb8c763fe8b6558517ec9e1af7a",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat and high analyst confidence",
+     "stop_pct": 10.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 85,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Modest price move despite high volatility; no clear edge",
+     "stop_pct": 0.0,
+     "symbol": "SLAB"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant intraday gain and positive earnings outlook",
+     "stop_pct": 12.0,
+     "symbol": "REZI"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Recent sharp declines outweigh short-term bounce",
+     "stop_pct": 0.0,
+     "symbol": "COHU"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive medium-term trend with slight dip today",
+     "stop_pct": 13.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Negative tone and downtrend; shortable",
+     "stop_pct": 12.0,
+     "symbol": "XRN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Weak performance and negative outlook; shortable",
+     "stop_pct": 12.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Reached 10\u2011day holding period",
+     "stop_pct": 0.0,
+     "symbol": "AXSM"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Reached 10\u2011day holding period",
+     "stop_pct": 0.0,
+     "symbol": "DMLP"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Reached 10\u2011day holding period",
+     "stop_pct": 0.0,
+     "symbol": "III"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Reached 10\u2011day holding period",
+     "stop_pct": 0.0,
+     "symbol": "KRYS"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Reached 10\u2011day holding period",
+     "stop_pct": 0.0,
+     "symbol": "NWL"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Reached 10\u2011day holding period",
+     "stop_pct": 0.0,
+     "symbol": "NXT"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Reached 10\u2011day holding period",
+     "stop_pct": 0.0,
+     "symbol": "TATT"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "TG"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "ACDC"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "AMTX"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position age below 10\u2011day limit",
+     "stop_pct": 0.0,
+     "symbol": "ARKO"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "a37cc24942fe993cb088d8e295d9f62add4a6bf8dea2ab4e7b46fecaab527f4c"
+  },
+  "reviewer": {
+   "answer_sha256": "ab6427a69a2205ac54984c297ec0f2b3d86e22bfb868dac573f3057d51254433",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "f2c0839ab9ddc69a4a30272f895e42a54a243008a7328ac4b09554e0fa08cda2",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and earnings catalyst support the long proposal.",
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid upward trend and positive earnings tone justify the long trade.",
+     "symbol": "REZI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Steady multi-day gains align well with the proposed long position.",
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weak intermediate-term trend supports the short proposal.",
+     "symbol": "XRN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative momentum over 5 and 20 days favors going short.",
+     "symbol": "AVNW"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.16131,
+   "news": 0,
+   "pace": null,
+   "price": 47.01,
+   "r20": 0.06892,
+   "r5": 0.08993,
+   "short": true,
+   "src": "iex",
+   "symbol": "AZTA",
+   "z": 3.471
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.00487,
+   "news": 0,
+   "pace": null,
+   "price": 222.69,
+   "r20": 0.00208,
+   "r5": -0.00328,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "SLAB",
+   "z": 3.148
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08226,
+   "news": 0,
+   "pace": null,
+   "price": 21.05,
+   "r20": 0.17098,
+   "r5": 0.01091,
+   "short": true,
+   "src": "iex",
+   "symbol": "REZI",
+   "z": 3.138
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.05669,
+   "news": 1,
+   "pace": null,
+   "price": 46.04,
+   "r20": -0.3061,
+   "r5": -0.12912,
+   "short": true,
+   "src": "iex",
+   "symbol": "COHU",
+   "z": 0.617
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00835,
+   "news": 1,
+   "pace": null,
+   "price": 11.87,
+   "r20": 0.11869,
+   "r5": 0.07547,
+   "short": true,
+   "src": "iex",
+   "symbol": "FSK",
+   "z": -0.369
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00826,
+   "news": 1,
+   "pace": null,
+   "price": 26.87,
+   "r20": -0.17975,
+   "r5": -0.12278,
+   "short": true,
+   "src": "iex",
+   "symbol": "XRN",
+   "z": 0.255
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01545,
+   "news": 1,
+   "pace": null,
+   "price": 16.105,
+   "r20": -0.22255,
+   "r5": -0.21173,
+   "short": true,
+   "src": "iex",
+   "symbol": "AVNW",
+   "z": 0.241
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5094.6088,
+  "PICK-MAIN-coin": 5158.1357,
+  "PICK-PENNY": 466.444,
+  "PICK-PENNY-coin": 520.1401
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 127.925,
+   "exit": 146.03,
+   "net": 51.9175,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 3,
+   "side": 1,
+   "symbol": "AXSM",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 28.7,
+   "exit": 27.64,
+   "net": -20.6993,
+   "opened": "2026-11-02T15:20:20.980847+00:00",
+   "qty": 17,
+   "side": 1,
+   "symbol": "DMLP",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 5.705,
+   "exit": 6.13,
+   "net": 28.1289,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 72,
+   "side": 1,
+   "symbol": "III",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 285.08,
+   "exit": 303.93,
+   "net": 16.9339,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "KRYS",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 5.645,
+   "exit": 5.84,
+   "net": 0.669,
+   "opened": "2026-11-02T15:30:20.972291+00:00",
+   "qty": 8,
+   "side": 1,
+   "symbol": "NWL",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 91.73,
+   "exit": 98.67,
+   "net": 32.0339,
+   "opened": "2026-11-02T15:30:20.972291+00:00",
+   "qty": 5,
+   "side": 1,
+   "symbol": "NXT",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 36.06,
+   "exit": 38.62,
+   "net": 25.7623,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 11,
+   "side": 1,
+   "symbol": "TATT",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 285.08,
+   "exit": 303.93,
+   "net": 16.9339,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "KRYS",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 36.06,
+   "exit": 38.62,
+   "net": 25.7623,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 11,
+   "side": 1,
+   "symbol": "TATT",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 91.73,
+   "exit": 98.67,
+   "net": 32.0339,
+   "opened": "2026-11-02T15:30:20.972291+00:00",
+   "qty": 5,
+   "side": 1,
+   "symbol": "NXT",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 28.7,
+   "exit": 27.64,
+   "net": -20.6993,
+   "opened": "2026-11-02T15:20:20.980847+00:00",
+   "qty": 17,
+   "side": 1,
+   "symbol": "DMLP",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 5.645,
+   "exit": 5.84,
+   "net": 0.669,
+   "opened": "2026-11-02T15:30:20.972291+00:00",
+   "qty": 8,
+   "side": 1,
+   "symbol": "NWL",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-11T14:45:20.829204+00:00",
+   "entry": 5.705,
+   "exit": 6.13,
+   "net": 28.1289,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 72,
+   "side": 1,
+   "symbol": "III",
+   "why": "picker exit"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.3137,
+   "price": 47.01,
+   "qty": 10,
+   "side": 1,
+   "stop": 42.309,
+   "symbol": "AZTA"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.3137,
+   "price": 47.01,
+   "qty": 10,
+   "side": 1,
+   "stop": 42.309,
+   "symbol": "AZTA"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.213,
+   "price": 21.05,
+   "qty": 20,
+   "side": 1,
+   "stop": 18.524,
+   "symbol": "REZI"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.213,
+   "price": 21.05,
+   "qty": 20,
+   "side": 1,
+   "stop": 18.524,
+   "symbol": "REZI"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.153,
+   "price": 11.87,
+   "qty": 33,
+   "side": 1,
+   "stop": 10.3269,
+   "symbol": "FSK"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.1694,
+   "price": 11.87,
+   "qty": 33,
+   "side": -1,
+   "stop": 13.4131,
+   "symbol": "FSK"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.854,
+   "price": 26.87,
+   "qty": 9,
+   "side": -1,
+   "stop": 30.0944,
+   "symbol": "XRN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.8458,
+   "price": 26.87,
+   "qty": 9,
+   "side": 1,
+   "stop": 23.6456,
+   "symbol": "XRN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.8544,
+   "price": 16.105,
+   "qty": 15,
+   "side": -1,
+   "stop": 18.0376,
+   "symbol": "AVNW"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.8544,
+   "price": 16.105,
+   "qty": 15,
+   "side": -1,
+   "stop": 18.0376,
+   "symbol": "AVNW"
+  }
+ ],
+ "flag_counts": {
+  "move": 15,
+  "news": 6,
+  "volume": 0
+ },
+ "flagged": 21,
+ "headline_counts": {
+  "AVNW": 2,
+  "AZTA": 3,
+  "COHU": 3,
+  "FSK": 3,
+  "REZI": 3,
+  "SLAB": 2,
+  "XRN": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "dc52fdceec78eee264058e90d66c8230ac8e6a94e1b0c6e61dccf5f16072e5b9",
+ "price_sources": {
+  "delayed_sip": 811,
+  "iex": 2563
+ },
+ "priced": 3374,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 10,
+   "skip": null,
+   "symbol": "AZTA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 20,
+   "skip": null,
+   "symbol": "REZI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 33,
+   "skip": null,
+   "symbol": "FSK"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 9,
+   "skip": null,
+   "symbol": "XRN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 15,
+   "skip": null,
+   "symbol": "AVNW"
+  }
+ ],
+ "slot": "2026-11-11T09:45",
+ "t": "2026-11-11T14:45:20.829204+00:00",
+ "universe": 3410,
+ "written_utc": "2026-11-11T14:45:35.318898Z"
+}
