@@ -301,7 +301,7 @@ def decide(root, api, cal, ses, man, m1, m2, syms, clock, wait_min, sleep):
     u = universe_rows(daily[daily["symbol"] != "SPY"], spy, prev)
     prevc = daily[daily["date"] == prev].set_index("symbol")["c"]
     print(f"[boom-short] {d}: {len(u)} stocks in BOOM1's universe ({time.monotonic() - t0:.0f}s)")
-    finbert = api.finbert(Path(root) / "finbert_meta.json" if not NX1_META.exists() else NX1_META)
+    finbert = api.finbert(Path(root) / "finbert_meta.json")   # pins FinBERT on the first run; NX1_META has no revision key
     while clock() < ses["date"] + DECIDE_AT:
         sleep(min(30.0, max(1.0, (ses["date"] + DECIDE_AT - clock()).total_seconds())))
     now = clock()
