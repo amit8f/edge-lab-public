@@ -210,3 +210,122 @@ def test_novelty_other_type_only_blocks_reposts():
         "headline": ["AAA names new CFO", "AAA opens plant in Ohio", "AAA names new CFO"]})
     got = dict(zip(rows["id"], B.novelty(rows)))
     assert got == {1: True, 2: True, 3: False}
+
+
+SHOCK = pd.Timestamp("2019-01-15")
+SHOCK_JAN = pd.Period("2019-01", "M")
+DAYS = pd.bdate_range("2018-10-01", "2019-02-28")
+
+
+class FakeBars:
+    """Same bars_5min as ShockApi: {symbol: 5-minute bars} for the symbols that have bars on that day."""
+
+    def __init__(self, gen):
+        self.gen = gen
+        self.calls = []
+
+    def bars_5min(self, symbols, day):
+        self.calls.append((tuple(symbols), pd.Timestamp(day)))
+        out = {}
+        for s in symbols:
+            b = self.gen(s, pd.Timestamp(day))
+            if b is not None:
+                out[s] = b
+        return out
+
+
+def bars5(day, close, vol=1000.0, shock=None):
+    """78 regular-session 5-minute bars flat at close with volume vol; shock = {slot: (volume, close)}."""
+    t = pd.date_range(f"{day.date()} 09:30", periods=78, freq="5min")
+    df = pd.DataFrame({"t": t, "o": close, "h": close, "l": close, "c": close, "v": vol})
+    for slot, (v, c) in (shock or {}).items():
+        df.loc[slot, ["v", "c", "h"]] = [v, c, max(c, close)]
+    return df
+
+
+def run_shocks(tmp_path, daily, overrides=None, vols=None, months=(SHOCK_JAN,)):
+    """daily: {symbol: closes over DAYS}; vols: {symbol: daily volumes} (default 1e6 a session);
+    overrides: {day: {symbol: {slot: (volume, close)}}} for the 5-minute bars."""
+    cache, out = tmp_path / "nx1", tmp_path / "out"
+    vols = vols or {}
+    write_cache(cache, DAYS, {s: (c, vols.get(s, np.full(len(DAYS), 1e6))) for s, c in daily.items()})
+
+    def gen(s, day):
+        i = DAYS.get_loc(day)
+        return bars5(day, daily[s][i], shock=(overrides or {}).get(day, {}).get(s))
+
+    api = FakeBars(gen)
+    assert B.stage_shocks(cache, out, FOREVER, months=list(months), api=api)
+    return pd.read_parquet(out / "shocks" / f"s_{months[-1]}.parquet"), api
+
+
+def test_shock_flags_main_at_4pct_not_2pct(tmp_path):
+    daily = {"AAA": np.full(len(DAYS), 10.0), "BBB": np.full(len(DAYS), 10.0)}
+    over = {SHOCK: {"AAA": {10: (15000, 10.4)}, "BBB": {10: (15000, 10.2)}}}
+    rows, _ = run_shocks(tmp_path, daily, over)
+    assert list(rows["symbol"]) == ["AAA"]
+    r = rows.iloc[0]
+    assert r["tier"] == "main" and r["t"] == pd.Timestamp("2019-01-15 10:25")   # slot 10 = 10:20 bar, t = its end
+    assert r["v"] == 15000 and r["v_med"] == 1000 and r["ratio"] == 15
+    assert np.isclose(r["move"], 0.04) and r["prev_c"] == 10.0 and r["c"] == 10.4
+
+
+def test_shock_penny_needs_5pct(tmp_path):
+    daily = {"CCC": np.full(len(DAYS), 3.0), "DDD": np.full(len(DAYS), 3.0)}
+    over = {SHOCK: {"CCC": {10: (15000, 3.12)}, "DDD": {10: (15000, 3.18)}}}     # 4% and 6%
+    rows, _ = run_shocks(tmp_path, daily, over)
+    assert list(rows["symbol"]) == ["DDD"] and rows.iloc[0]["tier"] == "penny"
+
+
+def test_needs_twenty_prior_sessions(tmp_path):
+    s = DAYS.get_loc(SHOCK)
+    for n, expect in ((19, []), (20, ["FFF"])):
+        g = s - 1 - n                                   # FFF trades (is in the universe) from index g + 1
+        daily = {"FFF": np.where(np.arange(len(DAYS)) >= g, 10.0, 0.5)}
+        vols = {"FFF": np.full(len(DAYS), 4e6)}          # keeps dv20 above $1M while the close is under $1
+        over = {SHOCK: {"FFF": {10: (15000, 10.4)}}}
+        rows, _ = run_shocks(tmp_path / f"n{n}", daily, over, vols)
+        assert list(rows["symbol"]) == expect, n
+
+
+def test_window_excludes_current_day(tmp_path):
+    s = DAYS.get_loc(SHOCK)
+    over = {DAYS[i]: {"AAA": {10: (1000.0 if i < s - 10 else 3000.0, 10.0)}} for i in range(s - 20, s)}
+    over[SHOCK] = {"AAA": {10: (25000, 10.4)}}
+    rows, _ = run_shocks(tmp_path, {"AAA": np.full(len(DAYS), 10.0)}, over)
+    # median of the 20 prior values (10 x 1000, 10 x 3000) is 2000; with today's 25000 in it, it would be 3000
+    assert list(rows["symbol"]) == ["AAA"]
+    assert rows.iloc[0]["v_med"] == 2000 and rows.iloc[0]["ratio"] == 12.5
+
+
+def test_gap_over_15_days_resets_window(tmp_path):
+    bad = (DAYS >= pd.Timestamp("2018-12-03")) & (DAYS <= pd.Timestamp("2018-12-28"))   # 4 weeks out of the universe
+    closes = np.where(bad, 0.5, 10.0)
+    vols = {"AAA": np.where(bad, 4e6, 1e6)}
+    over = {SHOCK: {"AAA": {10: (15000, 10.4)}}, pd.Timestamp("2019-01-31"): {"AAA": {10: (15000, 10.4)}}}
+    rows, _ = run_shocks(tmp_path, {"AAA": closes}, over, vols)
+    # 1-15 has only 10 sessions since the gap (window restarted: no flag); 1-31 has 22 and is flagged
+    assert list(rows["session_date"]) == [pd.Timestamp("2019-01-31")]
+
+
+def test_shocks_resume_from_saved_state(tmp_path):
+    feb = pd.Timestamp("2019-02-12")
+    daily = {"AAA": np.full(len(DAYS), 10.0)}
+    over = {SHOCK: {"AAA": {10: (15000, 10.4)}}, feb: {"AAA": {10: (15000, 10.4)}}}
+    cache, out = tmp_path / "nx1", tmp_path / "out"
+    write_cache(cache, DAYS, {"AAA": (daily["AAA"], np.full(len(DAYS), 1e6))})
+
+    def gen(s, day):
+        return bars5(day, 10.0, shock=over.get(day, {}).get(s))
+
+    first = FakeBars(gen)
+    assert B.stage_shocks(cache, out, FOREVER, months=[SHOCK_JAN], api=first)
+    assert (out / "shocks" / "state.pkl").exists() and (out / "shocks" / "s_2019-01.parquet").exists()
+    second = FakeBars(gen)
+    assert B.stage_shocks(cache, out, FOREVER, months=[SHOCK_JAN, pd.Period("2019-02", "M")], api=second)
+    assert second.calls and {pd.Timestamp(d).month for _, d in second.calls} == {2}   # Dec and Jan not refetched
+    resumed = pd.read_parquet(out / "shocks" / "s_2019-02.parquet")
+    once = tmp_path / "once"
+    assert B.stage_shocks(cache, once, FOREVER, months=[SHOCK_JAN, pd.Period("2019-02", "M")], api=FakeBars(gen))
+    pd.testing.assert_frame_equal(resumed, pd.read_parquet(once / "shocks" / "s_2019-02.parquet"))
+    assert list(resumed["session_date"]) == [feb]
