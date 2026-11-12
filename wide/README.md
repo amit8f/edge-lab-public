@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8381.82 | -16.18% | 205 | 66 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
-| Coin flip on C's picks | $9115.77 | -8.84% | 204 | 101 | short AMD, long AVGO, long NBIS, long NVDA, short SMCI |
-| C's prompt on Groq (K7) | $6114.47 | -38.86% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq's picks | $8402.67 | -15.97% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
-| C-groq's answers, acted on once a day (K8) | $8655.57 | -13.44% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11277.00 | +12.77% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9728.31 | -2.72% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
-| Coin flip on C-slow's picks | $10247.02 | +2.47% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
-| Just hold SPY | $9859.13 | -1.41% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8391.99 | -16.08% | 205 | 66 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
+| Coin flip on C's picks | $9152.35 | -8.48% | 204 | 101 | short AMD, long AVGO, long NBIS, long NVDA, short SMCI |
+| C's prompt on Groq (K7) | $6143.77 | -38.56% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq's picks | $8415.54 | -15.84% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
+| C-groq's answers, acted on once a day (K8) | $8608.63 | -13.91% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq-slow's picks | $11267.48 | +12.67% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
+| C's answers, acted on once a day (K8) | $9738.52 | -2.61% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
+| Coin flip on C-slow's picks | $10283.00 | +2.83% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
+| Just hold SPY | $9857.31 | -1.43% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-12 15:57 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI | none | Maintaining all five existing positions (long AMD, long AVGO, short NBIS, short SMCI, short NVDA) due to continued alignment with their respective momentum and news catalysts. |
 | 2026-11-12 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 15:37 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI | sold MPC @ $413.25; sold NVDA @ $163.49 | Maintained strong long positions in AMD and AVGO due to continued positive momentum. Continued short positions in NBIS and SMCI given their significant drops and negative news. Initiated a new short position in NVDA due to its substantial daily decline and highly negative news, replacing the underpe |
 | 2026-11-12 15:27 | long AMD, long AVGO, long MPC, short NBIS, short SMCI | none | Maintaining existing long positions in AMD, AVGO, and MPC due to positive momentum and news, and short positions in NBIS and SMCI due to significant negative news and price action. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 15:4
 | 2026-11-11 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-11 11:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-11 11:47 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | Maintaining all current long positions as they are all profitable and showing strong positive momentum today, driven by positive news in the AI sector. |
-| 2026-11-11 11:37 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | All existing positions are showing strong positive momentum and are supported by positive news, so I am holding them to capture further gains in this tech rally. |
