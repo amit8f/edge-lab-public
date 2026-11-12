@@ -1,0 +1,586 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "fe7d761de93090d76a2deeca560b6785dd183cde63e995b35799f80330ed9f72",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "178c9f2b2a5fcb10a49b5060218a5221b5d223e9b8deec14c3ff6fbca2de7366",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "STDN",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "FATE",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "NVDA",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SAR",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "VMET",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "ALT",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PANL",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BWEN",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "LIFE",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OGG",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "337268834e3dda6c74874228552a4a916c555520b4186eb9cd876c0df9b6cef4",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable, negative tone",
+     "stop_pct": 0.0,
+     "symbol": "STDN"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop, high volume, shortable",
+     "stop_pct": 15.0,
+     "symbol": "FATE"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price dip after earnings, positive analyst tone",
+     "stop_pct": 10.0,
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable, neutral tone",
+     "stop_pct": 0.0,
+     "symbol": "SAR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable, neutral tone",
+     "stop_pct": 0.0,
+     "symbol": "VMET"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, negative earnings tone, shortable",
+     "stop_pct": 20.0,
+     "symbol": "ALT"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price up on strong volume, neutral tone",
+     "stop_pct": 12.0,
+     "symbol": "PANL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, negative earnings tone, shortable",
+     "stop_pct": 20.0,
+     "symbol": "BWEN"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price dip, shortable, neutral tone",
+     "stop_pct": 12.0,
+     "symbol": "LIFE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, negative earnings tone, shortable",
+     "stop_pct": 20.0,
+     "symbol": "OGG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "LAND"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "LUNR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position age <10 days",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "7e0c7dbefaf1f87e29f207d6bd234617f79384ddbf442b34114020e60446fc67"
+  },
+  "reviewer": {
+   "answer_sha256": "39d89e04bd938e83cd113d17a0bb9639b0575978391a226f2b8485e2d1ebfa32",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "bad95a22eedd0009c4b8d878678e92d4f46ebbea2562385df9084a9dfb5397d8",
+   "reviews": [
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "extreme downward momentum, high volume, and multi-day weakness align with proposal",
+     "symbol": "FATE"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "heavy volume and a positive deal catalyst support a dip-buy opportunity",
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "negative earnings tone and ongoing downward drift justify the short position",
+     "symbol": "ALT"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "strong positive momentum and volume pace validate continuation",
+     "symbol": "PANL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "negative earnings tone and sharp intraday drop favor short side",
+     "symbol": "BWEN"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "oversold dip on solid volume offers good risk-reward for long",
+     "symbol": "LIFE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "negative earnings sentiment and persistent selling pressure justify short",
+     "symbol": "OGG"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16186,
+   "news": 0,
+   "pace": 7.525,
+   "price": 10.46,
+   "r20": 0.06213,
+   "r5": 0.02632,
+   "short": false,
+   "src": "iex",
+   "symbol": "STDN",
+   "z": -5.218
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.20249,
+   "news": 0,
+   "pace": 6.983,
+   "price": 1.28,
+   "r20": -0.17268,
+   "r5": -0.23206,
+   "short": true,
+   "src": "iex",
+   "symbol": "FATE",
+   "z": -4.08
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07713,
+   "news": 0,
+   "pace": 25.739,
+   "price": 160.33,
+   "r20": -0.21496,
+   "r5": -0.13191,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NVDA",
+   "z": -2.415
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0556,
+   "news": 0,
+   "pace": 3.517,
+   "price": 11.975,
+   "r20": -0.13447,
+   "r5": -0.07106,
+   "short": false,
+   "src": "iex",
+   "symbol": "SAR",
+   "z": -2.343
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0716,
+   "news": 0,
+   "pace": 4.675,
+   "price": 7.91,
+   "r20": 0.06234,
+   "r5": -0.06476,
+   "short": false,
+   "src": "iex",
+   "symbol": "VMET",
+   "z": -2.19
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0829,
+   "news": 0,
+   "pace": 4.154,
+   "price": 1.77,
+   "r20": -0.1645,
+   "r5": -0.08962,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALT",
+   "z": -2.176
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06448,
+   "news": 0,
+   "pace": 8.265,
+   "price": 9.41,
+   "r20": 0.08201,
+   "r5": 0.1771,
+   "short": true,
+   "src": "iex",
+   "symbol": "PANL",
+   "z": 2.121
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.11409,
+   "news": 0,
+   "pace": 3.378,
+   "price": 2.64,
+   "r20": -0.18356,
+   "r5": -0.00334,
+   "short": true,
+   "src": "iex",
+   "symbol": "BWEN",
+   "z": -1.95
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.09126,
+   "news": 0,
+   "pace": 4.44,
+   "price": 34.205,
+   "r20": -0.03413,
+   "r5": 0.01374,
+   "short": true,
+   "src": "iex",
+   "symbol": "LIFE",
+   "z": -1.925
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06933,
+   "news": 0,
+   "pace": 3.494,
+   "price": 2.215,
+   "r20": -0.07031,
+   "r5": 0.00847,
+   "short": true,
+   "src": "iex",
+   "symbol": "OGG",
+   "z": -1.716
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5070.4437,
+  "PICK-MAIN-coin": 5221.4762,
+  "PICK-PENNY": 453.1308,
+  "PICK-PENNY-coin": 518.1576
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 21,
+  "news": 5,
+  "volume": 211
+ },
+ "flagged": 215,
+ "headline_counts": {
+  "ALT": 3,
+  "BWEN": 2,
+  "NVDA": 3,
+  "OGG": 2,
+  "STDN": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "6712aed5f6bbc39d407b87ec8bf1339788332ed4d91ab29d057893154b1e8307",
+ "price_sources": {
+  "delayed_sip": 340,
+  "iex": 3060
+ },
+ "priced": 3400,
+ "risk": [
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "FATE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NVDA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ALT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PANL"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BWEN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "LIFE"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OGG"
+  }
+ ],
+ "slot": "2026-11-12T10:25",
+ "t": "2026-11-12T15:25:20.525304+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:25:55.493688Z"
+}
