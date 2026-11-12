@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 12:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8375.70 | -16.24% | 201 | 65 | long AMD, long AVGO, long CLS, long MPC, long VLO |
-| Coin flip on C's picks | $9147.89 | -8.52% | 200 | 99 | short AMD, long AVGO, short CLS, short MPC, short VLO |
-| C's prompt on Groq (K7) | $6142.06 | -38.58% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq's picks | $8358.78 | -16.41% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
-| C-groq's answers, acted on once a day (K8) | $8616.02 | -13.84% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11422.91 | +14.23% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9848.50 | -1.51% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10220.00 | +2.20% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9909.47 | -0.91% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8367.79 | -16.32% | 201 | 65 | long AMD, long AVGO, long CLS, long MPC, long VLO |
+| Coin flip on C's picks | $9149.01 | -8.51% | 200 | 99 | short AMD, long AVGO, short CLS, short MPC, short VLO |
+| C's prompt on Groq (K7) | $6139.45 | -38.61% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq's picks | $8354.69 | -16.45% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
+| C-groq's answers, acted on once a day (K8) | $8641.15 | -13.59% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11389.07 | +13.89% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9835.59 | -1.64% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10235.17 | +2.35% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9906.41 | -0.94% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-12 12:17 | long AMD, long AVGO, long CLS, long MPC, long VLO | none | Maintaining all existing long positions in AMD, AVGO, CLS, MPC, and VLO due to continued positive momentum and favorable news, especially in the semiconductor sector benefiting from Nvidia's decline. |
 | 2026-11-12 12:07 | long AMD, long AVGO, long CLS, long MPC, long VLO | bought MSTR @ $117.42; bought NBIS @ $128.20; bought NVDA @ $164.49; bought CLS @ $257.76; bought MPC @ $415.24; bought VLO @ $376.23 | Closed losing short positions in MSTR, NBIS, and NVDA to cut losses. Initiated new long positions in CLS, MPC, and VLO, which show strong positive momentum and potential for continued gains, while maintaining existing strong long positions in AMD and AVGO. |
 | 2026-11-12 11:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 11:47 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 12:0
 | 2026-11-10 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 14:47 | long CDE, long EQT, long HL, long HUM, long TTWO | none | Maintaining all existing long positions due to overall positive performance, strong recent momentum, and supportive news, despite some intraday volatility. |
 | 2026-11-10 14:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-10 14:27 | no answer, nothing changed | none | unreadable answer |
