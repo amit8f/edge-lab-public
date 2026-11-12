@@ -1,0 +1,535 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "b69010091bb214b1fb6f5d584727a6f4f3a4391ee70ca060733d4a7d033e90bb",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "7a7d0c6f3feb249407e17ff13fdb6d1b2dd4db5a8b5715b01a3c07c0a350f828",
+   "views": [
+    {
+     "confidence": 95,
+     "event": "earnings",
+     "symbol": "ALLT",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "CLBT",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "HSDT",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "SGHT",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MANE",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TRMK",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "JBS",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DFNS",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BKKT",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BBOT",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "fa6c5905b23aae724fad64208a0bae7fd99be75802c98cee49f71ef56dd48e49",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings beat and raised guidance after sharp sell-off; analyst bullish.",
+     "stop_pct": 12.0,
+     "symbol": "ALLT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral analyst, modest decline; no clear edge.",
+     "stop_pct": 0.0,
+     "symbol": "CLBT"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong downtrend with high volume; shortable and momentum negative.",
+     "stop_pct": 20.0,
+     "symbol": "HSDT"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong uptrend, high volume, positive news and analyst bullish.",
+     "stop_pct": 12.0,
+     "symbol": "SGHT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Extreme volatility; insufficient confidence for trade.",
+     "stop_pct": 0.0,
+     "symbol": "MANE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price up on volume but no clear signal; hold.",
+     "stop_pct": 0.0,
+     "symbol": "TRMK"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop with volume; shortable penny stock.",
+     "stop_pct": 12.0,
+     "symbol": "JBS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable and heavy decline; avoid.",
+     "stop_pct": 0.0,
+     "symbol": "DFNS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline, high volume; shortable penny stock.",
+     "stop_pct": 20.0,
+     "symbol": "BKKT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Mixed recent performance; no clear direction.",
+     "stop_pct": 0.0,
+     "symbol": "BBOT"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded.",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "4466bd88c422333cad1330d036cc41dbdcf1d75f2178c7213760fb04c2a59d14"
+  },
+  "reviewer": {
+   "answer_sha256": "b90ea583fac3d5a205b3bd8fde5d5749076fbdc6c144a4ce5e424f086dafe207",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "c8a2ab055a09e042af21fafb04dd66df49a3d50f6ac6880d318f2567f9c567da",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone and high volume ahead of news supports a long bounce.",
+     "symbol": "ALLT"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Persistent multi-day downtrend with high volume pace favors continuation.",
+     "symbol": "HSDT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum over 5 and 20 days with positive analyst tone.",
+     "symbol": "SGHT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop on heavy volume without news catalysts suggests further weakness.",
+     "symbol": "JBS"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weak broader trend and sharp intraday drop favor the short proposal.",
+     "symbol": "BKKT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09476,
+   "news": 0,
+   "pace": 8.503,
+   "price": 8.12,
+   "r20": 0.04302,
+   "r5": 0.0358,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALLT",
+   "z": -3.143
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.05591,
+   "news": 0,
+   "pace": 3.667,
+   "price": 11.99,
+   "r20": 0.17267,
+   "r5": 0.02172,
+   "short": true,
+   "src": "iex",
+   "symbol": "CLBT",
+   "z": -3.081
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.05108,
+   "news": 1,
+   "pace": 6.062,
+   "price": 1.765,
+   "r20": -0.16216,
+   "r5": -0.11429,
+   "short": true,
+   "src": "iex",
+   "symbol": "HSDT",
+   "z": -1.38
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.02747,
+   "news": 1,
+   "pace": 4.041,
+   "price": 11.22,
+   "r20": 0.32364,
+   "r5": 0.1281,
+   "short": true,
+   "src": "iex",
+   "symbol": "SGHT",
+   "z": 0.796
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.12334,
+   "news": 0,
+   "pace": 13.367,
+   "price": 137.25,
+   "r20": 0.37975,
+   "r5": 0.14688,
+   "short": true,
+   "src": "iex",
+   "symbol": "MANE",
+   "z": -2.79
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.03753,
+   "news": 0,
+   "pace": 25.141,
+   "price": 47.27,
+   "r20": 0.0324,
+   "r5": -0.00153,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRMK",
+   "z": 2.638
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07068,
+   "news": 0,
+   "pace": 4.054,
+   "price": 11.57,
+   "r20": -0.04378,
+   "r5": -0.03935,
+   "short": true,
+   "src": "iex",
+   "symbol": "JBS",
+   "z": -2.629
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.15121,
+   "news": 0,
+   "pace": 10.221,
+   "price": 2.105,
+   "r20": -0.62195,
+   "r5": -0.12982,
+   "short": false,
+   "src": "iex",
+   "symbol": "DFNS",
+   "z": -1.565
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08333,
+   "news": 0,
+   "pace": 3.864,
+   "price": 3.63,
+   "r20": -0.33779,
+   "r5": -0.16981,
+   "short": true,
+   "src": "iex",
+   "symbol": "BKKT",
+   "z": -1.493
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0918,
+   "news": 0,
+   "pace": 4.107,
+   "price": 2.325,
+   "r20": -0.11876,
+   "r5": 0.11304,
+   "short": true,
+   "src": "iex",
+   "symbol": "BBOT",
+   "z": -1.491
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5073.4537,
+  "PICK-MAIN-coin": 5224.4762,
+  "PICK-PENNY": 454.3574,
+  "PICK-PENNY-coin": 518.2242
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.0236,
+   "price": 1.765,
+   "qty": 1,
+   "side": -1,
+   "stop": 2.118,
+   "symbol": "HSDT"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.0234,
+   "price": 1.765,
+   "qty": 1,
+   "side": 1,
+   "stop": 1.412,
+   "symbol": "HSDT"
+  }
+ ],
+ "flag_counts": {
+  "move": 22,
+  "news": 6,
+  "volume": 229
+ },
+ "flagged": 235,
+ "headline_counts": {
+  "ALLT": 2,
+  "BBOT": 1,
+  "CLBT": 3,
+  "DFNS": 1,
+  "HSDT": 3,
+  "SGHT": 1,
+  "TRMK": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "0a35abe2e7bab566c39063053d96f3e1054248637cbeec25fc5e3193c937c9f9",
+ "price_sources": {
+  "delayed_sip": 415,
+  "iex": 2984
+ },
+ "priced": 3399,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ALLT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "HSDT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SGHT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "JBS"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BKKT"
+  }
+ ],
+ "slot": "2026-11-12T10:20",
+ "t": "2026-11-12T15:20:20.404129+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:20:40.694141Z"
+}
