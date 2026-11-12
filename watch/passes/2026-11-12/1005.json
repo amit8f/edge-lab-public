@@ -1,0 +1,553 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "52429a84391e158b4909f4e9ed305b1cf1d1057d2dd40a7a29b718dd92a7daf7",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "f823237ea2aa23f366a743178706c7ab5aa163b5c11db36f10c94e653a1dd5bf",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PHI",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BRUN",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "offering",
+     "symbol": "KDP",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ITRG",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "NBIS",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "YETI",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ENVX",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "MDWD",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PLUG",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "BTQ",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "fc26e6037f290e7ae1c46f78f115396d369d1caa4aa28ca8e2435a35b3f2e78b",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "PHI"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop with high volume, shortable",
+     "stop_pct": 12.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative tone, high volume, price down",
+     "stop_pct": 13.0,
+     "symbol": "KDP"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, positive tone despite drop",
+     "stop_pct": 20.0,
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "mixed signals, hold",
+     "stop_pct": 0.0,
+     "symbol": "NBIS"
+    },
+    {
+     "confidence": 78,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down with high volume, earnings positive tone but shortable",
+     "stop_pct": 12.0,
+     "symbol": "YETI"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "oversold penny, no shortability",
+     "stop_pct": 20.0,
+     "symbol": "ENVX"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "moderate drop, neutral tone, not shortable",
+     "stop_pct": 12.0,
+     "symbol": "MDWD"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant drop with volume, shortable",
+     "stop_pct": 20.0,
+     "symbol": "PLUG"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price down, not shortable, potential rebound",
+     "stop_pct": 20.0,
+     "symbol": "BTQ"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "2d6c8294f9e25aa23186d89ee288c4e5177fdb83cce46da68685e8e2e5c2be20"
+  },
+  "reviewer": {
+   "answer_sha256": "8bb62ced10e0b8dd128c05fe69936b425fdd93adc989bb0c675d1c494166bc70",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "44bfdf1993f463d7c11e4df4f01528d6f3fb874dbfb669ed32d6eb6c2fb25565",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy volume, sharp drop today, proposal aligns with momentum.",
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Offering news catalyst with negative tone supports short proposal.",
+     "symbol": "KDP"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone on heavy volume warrants long bounce attempt.",
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 78,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weakness today combined with earnings news suggests continuation lower.",
+     "symbol": "YETI"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and long proposal carries low conviction.",
+     "symbol": "ENVX"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Not shortable, but earnings dip offers reasonable long setup.",
+     "symbol": "MDWD"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum breakdown with high short confidence.",
+     "symbol": "PLUG"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Not shortable and mixed multi-day downtrend makes long risky.",
+     "symbol": "BTQ"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07571,
+   "news": 0,
+   "pace": null,
+   "price": 16.36,
+   "r20": -0.08669,
+   "r5": -0.02318,
+   "short": true,
+   "src": "iex",
+   "symbol": "PHI",
+   "z": -3.919
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.23306,
+   "news": 0,
+   "pace": 7.633,
+   "price": 5.66,
+   "r20": -0.23523,
+   "r5": 0.11061,
+   "short": true,
+   "src": "iex",
+   "symbol": "BRUN",
+   "z": -2.722
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0583,
+   "news": 0,
+   "pace": 4.921,
+   "price": 36.02,
+   "r20": 0.15489,
+   "r5": 0.03968,
+   "short": true,
+   "src": "iex",
+   "symbol": "KDP",
+   "z": -2.701
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.10714,
+   "news": 0,
+   "pace": 13.495,
+   "price": 1.875,
+   "r20": -0.09091,
+   "r5": -0.0411,
+   "short": true,
+   "src": "iex",
+   "symbol": "ITRG",
+   "z": -2.611
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.18767,
+   "news": 0,
+   "pace": 21.858,
+   "price": 125.66,
+   "r20": -0.16838,
+   "r5": 0.09306,
+   "short": true,
+   "src": "iex",
+   "symbol": "NBIS",
+   "z": -2.472
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07362,
+   "news": 0,
+   "pace": 13.306,
+   "price": 39.64,
+   "r20": 0.05628,
+   "r5": -0.11463,
+   "short": true,
+   "src": "iex",
+   "symbol": "YETI",
+   "z": -2.383
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.19565,
+   "news": 0,
+   "pace": 9.99,
+   "price": 2.035,
+   "r20": 0.03689,
+   "r5": -0.09319,
+   "short": false,
+   "src": "iex",
+   "symbol": "ENVX",
+   "z": -2.367
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08973,
+   "news": 0,
+   "pace": 3.049,
+   "price": 12.58,
+   "r20": 0.16037,
+   "r5": -0.02676,
+   "short": false,
+   "src": "iex",
+   "symbol": "MDWD",
+   "z": -2.353
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.09225,
+   "news": 0,
+   "pace": 4.704,
+   "price": 1.23,
+   "r20": -0.06552,
+   "r5": -0.07192,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLUG",
+   "z": -2.145
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.11207,
+   "news": 0,
+   "pace": 4.945,
+   "price": 1.545,
+   "r20": -0.24348,
+   "r5": -0.10309,
+   "short": false,
+   "src": "iex",
+   "symbol": "BTQ",
+   "z": -1.962
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5082.0687,
+  "PICK-MAIN-coin": 5219.4312,
+  "PICK-PENNY": 454.7869,
+  "PICK-PENNY-coin": 516.9885
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.0685,
+   "price": 5.66,
+   "qty": 1,
+   "side": -1,
+   "stop": 6.3392,
+   "symbol": "BRUN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.0682,
+   "price": 5.66,
+   "qty": 1,
+   "side": 1,
+   "stop": 4.9808,
+   "symbol": "BRUN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.2733,
+   "price": 1.875,
+   "qty": 11,
+   "side": 1,
+   "stop": 1.5,
+   "symbol": "ITRG"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.2733,
+   "price": 1.875,
+   "qty": 11,
+   "side": 1,
+   "stop": 1.5,
+   "symbol": "ITRG"
+  }
+ ],
+ "flag_counts": {
+  "move": 21,
+  "news": 11,
+  "volume": 281
+ },
+ "flagged": 292,
+ "headline_counts": {
+  "BTQ": 1,
+  "ENVX": 3,
+  "ITRG": 1,
+  "KDP": 3,
+  "MDWD": 3,
+  "NBIS": 3,
+  "YETI": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "e1f06cb84393f383d05365d48b940832f4615bac199ce50e099cc1350048554a",
+ "price_sources": {
+  "delayed_sip": 474,
+  "iex": 2920
+ },
+ "priced": 3394,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "BRUN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KDP"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 11,
+   "skip": null,
+   "symbol": "ITRG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "YETI"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ENVX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MDWD"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PLUG"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BTQ"
+  }
+ ],
+ "slot": "2026-11-12T10:05",
+ "t": "2026-11-12T15:05:20.414228+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:07:26.110515Z"
+}
