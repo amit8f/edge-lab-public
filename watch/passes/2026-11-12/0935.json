@@ -1,0 +1,606 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "a7eaccbf7a43e4331c75d9b6d785204b4812d02ee928340391bfc925a047179f",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "74c4315177ef8f1036138a0ac722b4ce774b1796619e98baabba888df27d6dee",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "MBGL",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "TRMK",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "ADIG",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "CDNL",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BZ",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CTVA",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "PSFE",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "HWC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CURI",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "YSWY",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "7f9b41871e453f817a1df5b71bb7ec1d07d73289ec794f09214d3b45d1799010",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings surprise, strong z-score and analyst confidence",
+     "stop_pct": 10.0,
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Deal announcement, positive tone and solid move",
+     "stop_pct": 10.0,
+     "symbol": "TRMK"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large drop, negative earnings, high confidence short",
+     "stop_pct": 12.0,
+     "symbol": "ADIG"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Severe decline, negative earnings, analyst short",
+     "stop_pct": 12.0,
+     "symbol": "CDNL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline, neutral tone but high confidence, short opportunity",
+     "stop_pct": 10.0,
+     "symbol": "BZ"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Downward move, negative earnings, analyst short",
+     "stop_pct": 10.0,
+     "symbol": "CTVA"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Big drop, earnings miss, high confidence short",
+     "stop_pct": 10.0,
+     "symbol": "PSFE"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Deal news positive, price dip may rebound",
+     "stop_pct": 10.0,
+     "symbol": "HWC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat, positive tone, strong price jump",
+     "stop_pct": 20.0,
+     "symbol": "CURI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Deal news positive, price dip may recover",
+     "stop_pct": 10.0,
+     "symbol": "YSWY"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "ea6eca63578409975d008150a31479096272e97c9b697e47575e675b869badf2",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "130377b85db45653f6ec2089b61712cd2995cc600cd38e904bcaa2498406cfe9",
+    "model": "openai/gpt-oss-120b",
+    "prompt_sha256": "f7c473cb182da82c935c1208aa20c34084c9e3e491880fc63b68609bab76882d"
+   }
+  },
+  "reviewer": {
+   "answer_sha256": "eb3b7bb6207ca1e8f441ecbc2c2c88b68ed33068dca7f2ce3e6c9733def5c5d4",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "ea56af63dc7cfbe2a8a292c82326824b2f7a0433c777d1668a957289af1abfb8",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and earnings catalyst support the long proposal.",
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive price action and deal catalyst validate the long proposal.",
+     "symbol": "TRMK"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe downward price shock with negative earnings tone justifies shorting.",
+     "symbol": "ADIG"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive sell-off aligns with negative earnings tone and short proposal.",
+     "symbol": "CDNL"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative price movement justifies the short proposal.",
+     "symbol": "BZ"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp drop on negative earnings matches the short proposal.",
+     "symbol": "CTVA"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy drop following earnings supports the short position.",
+     "symbol": "PSFE"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Contradiction between severe daily drop and positive deal tone makes long risky.",
+     "symbol": "HWC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid intraday momentum following earnings supports the long proposal.",
+     "symbol": "CURI"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant daily drop conflicts with positive earnings tone and long proposal.",
+     "symbol": "YSWY"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.13128,
+   "news": 1,
+   "pace": null,
+   "price": 22.535,
+   "r20": 0.11659,
+   "r5": 0.00657,
+   "short": true,
+   "src": "iex",
+   "symbol": "MBGL",
+   "z": 5.869
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.05729,
+   "news": 1,
+   "pace": null,
+   "price": 48.17,
+   "r20": 0.0324,
+   "r5": -0.00153,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRMK",
+   "z": 3.989
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.32099,
+   "news": 0,
+   "pace": null,
+   "price": 13.295,
+   "r20": 0.26323,
+   "r5": 0.03543,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADIG",
+   "z": -13.366
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.57472,
+   "news": 0,
+   "pace": null,
+   "price": 6.375,
+   "r20": -0.08931,
+   "r5": 0.00402,
+   "short": true,
+   "src": "iex",
+   "symbol": "CDNL",
+   "z": -12.628
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.19318,
+   "news": 0,
+   "pace": null,
+   "price": 13.49,
+   "r20": 0.02263,
+   "r5": -0.04238,
+   "short": true,
+   "src": "iex",
+   "symbol": "BZ",
+   "z": -11.199
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.20181,
+   "news": 0,
+   "pace": null,
+   "price": 9.69,
+   "r20": -0.09403,
+   "r5": -0.00979,
+   "short": true,
+   "src": "iex",
+   "symbol": "CTVA",
+   "z": -10.363
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.30352,
+   "news": 0,
+   "pace": null,
+   "price": 4.75,
+   "r20": 0.22883,
+   "r5": 0.03805,
+   "short": true,
+   "src": "iex",
+   "symbol": "PSFE",
+   "z": -9.934
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10362,
+   "news": 0,
+   "pace": null,
+   "price": 64.88,
+   "r20": 0.0071,
+   "r5": -0.01201,
+   "short": true,
+   "src": "iex",
+   "symbol": "HWC",
+   "z": -7.476
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.20675,
+   "news": 0,
+   "pace": null,
+   "price": 2.86,
+   "r20": -0.12868,
+   "r5": -0.10902,
+   "short": true,
+   "src": "iex",
+   "symbol": "CURI",
+   "z": 5.577
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10292,
+   "news": 0,
+   "pace": null,
+   "price": 23.01,
+   "r20": 0.19247,
+   "r5": 0.01786,
+   "short": true,
+   "src": "iex",
+   "symbol": "YSWY",
+   "z": -5.001
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5098.2103,
+  "PICK-MAIN-coin": 5207.2775,
+  "PICK-PENNY": 460.902,
+  "PICK-PENNY-coin": 523.2764
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.1353,
+   "price": 22.535,
+   "qty": 17,
+   "side": 1,
+   "stop": 20.2815,
+   "symbol": "MBGL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.1488,
+   "price": 22.535,
+   "qty": 17,
+   "side": -1,
+   "stop": 24.7885,
+   "symbol": "MBGL"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.0575,
+   "price": 4.75,
+   "qty": 1,
+   "side": -1,
+   "stop": 5.225,
+   "symbol": "PSFE"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.0575,
+   "price": 4.75,
+   "qty": 1,
+   "side": -1,
+   "stop": 5.225,
+   "symbol": "PSFE"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.1516,
+   "price": 2.86,
+   "qty": 4,
+   "side": 1,
+   "stop": 2.288,
+   "symbol": "CURI"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.1526,
+   "price": 2.86,
+   "qty": 4,
+   "side": -1,
+   "stop": 3.432,
+   "symbol": "CURI"
+  }
+ ],
+ "flag_counts": {
+  "move": 17,
+  "news": 114,
+  "volume": 0
+ },
+ "flagged": 129,
+ "flip_test": {
+  "after": -1,
+  "answer_sha256": "e2513ea2ce817b214ddd9004ef0acd194852d7f6b9dfae2568e5df0381b4cfeb",
+  "before": -1,
+  "model": "openai/gpt-oss-20b",
+  "moved": false,
+  "prompt_sha256": "f43a5142579087b0b4626aa5de1e8ec471708f27da851834cc9f230e2adf87a7",
+  "swaps": 2,
+  "symbol": "ADIG"
+ },
+ "headline_counts": {
+  "ADIG": 3,
+  "BZ": 1,
+  "CDNL": 3,
+  "CTVA": 3,
+  "CURI": 3,
+  "HWC": 3,
+  "MBGL": 3,
+  "PSFE": 3,
+  "TRMK": 3,
+  "YSWY": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "cab66bf04b319aebb2f1428b56e3eb61a1b6e015d73960a6d4a35283b4f3b41f",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2220
+ },
+ "priced": 2220,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 17,
+   "skip": null,
+   "symbol": "MBGL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TRMK"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ADIG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CDNL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BZ"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CTVA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "PSFE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HWC"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 4,
+   "skip": null,
+   "symbol": "CURI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "YSWY"
+  }
+ ],
+ "slot": "2026-11-12T09:35",
+ "t": "2026-11-12T14:35:20.527918+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T14:36:02.618002Z"
+}
