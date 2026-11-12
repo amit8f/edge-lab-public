@@ -1,0 +1,623 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "f1e3d622281a9c6a14c57c8c787a5f1c2a44f426d848a67382c5ed87cece72a0",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ae53ea3accd810512f5365601a3b65f82ae20f9893b4e795259f36bfca6affba",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ADIG",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "CDNL",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "BZ",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CTVA",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "HWC",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "YSWY",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "XNDU",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "TNXP",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "ALVO",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "ENGN",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "349f105aef07502452f5c96cce9b1cf982aa18872a3c59c422316d46af5b841a",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative earnings, huge drop, high confidence short",
+     "stop_pct": 10.0,
+     "symbol": "ADIG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "CDNL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "BZ"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative earnings, strong down move, high confidence short",
+     "stop_pct": 10.0,
+     "symbol": "CTVA"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "accretive deal announced, positive tone, solid confidence",
+     "stop_pct": 12.0,
+     "symbol": "HWC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive earnings beat, upward momentum, strong confidence",
+     "stop_pct": 12.0,
+     "symbol": "YSWY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "neutral tone, insufficient edge",
+     "stop_pct": 0.0,
+     "symbol": "XNDU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no clear catalyst, risk of rebound",
+     "stop_pct": 0.0,
+     "symbol": "TNXP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no clear catalyst",
+     "stop_pct": 0.0,
+     "symbol": "ALVO"
+    },
+    {
+     "confidence": 78,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10% price rise, high volume, positive product news, strong confidence",
+     "stop_pct": 20.0,
+     "symbol": "ENGN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "LAND"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "LUNR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "PSFE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "REZI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "TG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "446e9e6606863e5a1b9060f881f2f564fd582012e8f2bf276981145ed7b1c4ab"
+  },
+  "reviewer": {
+   "answer_sha256": "539755ba60a4ceb50b7cfaa311983df4081efebeece12a279d4440072898e583",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "c25422aa2e55c6338d9a13a3903c28daef4bd058fa24b15a4b68dc07b7cae651",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive negative price move on heavy volume with negative earnings tone.",
+     "symbol": "ADIG"
+    },
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe intraday drop with high volume pace and negative earnings tone.",
+     "symbol": "CTVA"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Pullback presents a dip-buying opportunity on a positive deal catalyst.",
+     "symbol": "HWC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong medium-term trend with a positive earnings tone supporting upside.",
+     "symbol": "YSWY"
+    },
+    {
+     "confidence": 78,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "High volume pace and positive product catalyst support continued momentum.",
+     "symbol": "ENGN"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.33606,
+   "news": 0,
+   "pace": 8.591,
+   "price": 13.0,
+   "r20": 0.26323,
+   "r5": 0.03543,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADIG",
+   "z": -14.141
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.59606,
+   "news": 0,
+   "pace": 62.545,
+   "price": 6.055,
+   "r20": -0.08931,
+   "r5": 0.00402,
+   "short": true,
+   "src": "iex",
+   "symbol": "CDNL",
+   "z": -13.389
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.21202,
+   "news": 0,
+   "pace": 15.362,
+   "price": 13.175,
+   "r20": 0.02263,
+   "r5": -0.04238,
+   "short": true,
+   "src": "iex",
+   "symbol": "BZ",
+   "z": -12.431
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.22858,
+   "news": 0,
+   "pace": 6.25,
+   "price": 9.365,
+   "r20": -0.09403,
+   "r5": -0.00979,
+   "short": true,
+   "src": "iex",
+   "symbol": "CTVA",
+   "z": -11.931
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.12061,
+   "news": 0,
+   "pace": 12.764,
+   "price": 63.65,
+   "r20": 0.0071,
+   "r5": -0.01201,
+   "short": true,
+   "src": "iex",
+   "symbol": "HWC",
+   "z": -8.784
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.07407,
+   "news": 0,
+   "pace": 4.626,
+   "price": 23.75,
+   "r20": 0.19247,
+   "r5": 0.01786,
+   "short": true,
+   "src": "iex",
+   "symbol": "YSWY",
+   "z": -3.544
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.07857,
+   "news": 1,
+   "pace": 5.12,
+   "price": 2.58,
+   "r20": -0.12226,
+   "r5": 0.0687,
+   "short": true,
+   "src": "iex",
+   "symbol": "XNDU",
+   "z": -1.146
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.09819,
+   "news": 0,
+   "pace": 4.546,
+   "price": 3.49,
+   "r20": -0.39531,
+   "r5": -0.24266,
+   "short": true,
+   "src": "iex",
+   "symbol": "TNXP",
+   "z": -2.584
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08435,
+   "news": 0,
+   "pace": 6.304,
+   "price": 4.505,
+   "r20": -0.04836,
+   "r5": 0.05353,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALVO",
+   "z": -2.356
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.1,
+   "news": 0,
+   "pace": 31.198,
+   "price": 1.98,
+   "r20": 0.15385,
+   "r5": 0.04651,
+   "short": true,
+   "src": "iex",
+   "symbol": "ENGN",
+   "z": 1.899
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5087.6237,
+  "PICK-MAIN-coin": 5234.2162,
+  "PICK-PENNY": 453.9299,
+  "PICK-PENNY-coin": 517.9415
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 21,
+  "news": 16,
+  "volume": 283
+ },
+ "flagged": 298,
+ "headline_counts": {
+  "ADIG": 3,
+  "ALVO": 3,
+  "BZ": 1,
+  "CDNL": 3,
+  "CTVA": 3,
+  "ENGN": 3,
+  "HWC": 3,
+  "XNDU": 3,
+  "YSWY": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "68d2bb7015ed57648f24869b29d3978455010e6449609f85970890f1b6892fbd",
+ "price_sources": {
+  "delayed_sip": 399,
+  "iex": 2999
+ },
+ "priced": 3398,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ADIG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CTVA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "HWC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "YSWY"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ENGN"
+  }
+ ],
+ "slot": "2026-11-12T10:10",
+ "t": "2026-11-12T15:10:20.459773+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:11:06.658612Z"
+}
