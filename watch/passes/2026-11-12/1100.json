@@ -1,0 +1,532 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "0131073565a23767899ae19f97f0166d4f8adc2f539b499290d262ebf27db3e0",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "5006b94019a8a6e9c2b10356d7b95f11f87bc7228562a73e73468192c84efa40",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "61625a7921d821111183bc70df6546bfe36402bf2f3303cc44592ccd435a52c2",
+    "model": "openai/gpt-oss-20b",
+    "prompt_sha256": "c9d2bff87e18bc8b85fb01bf809bd117919975ef112a098b865a3c10c6fbf797"
+   },
+   "views": [
+    {
+     "confidence": 90,
+     "event": "deal",
+     "symbol": "TRMK",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "PANL",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "ALLT",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "MANE",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CAE",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "offering",
+     "symbol": "KDP",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OGG",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "GSM",
+     "tone": 0
+    },
+    {
+     "confidence": 75,
+     "event": "deal",
+     "symbol": "ANGX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "EMAT",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "39831a815712f7184f924ce63c3056a53a4b1ecbd6f473cdf9d469a0530f20d4",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong up move, high volume, analyst confidence",
+     "stop_pct": 10.0,
+     "symbol": "TRMK"
+    },
+    {
+     "confidence": 78,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large intraday gain, high volume",
+     "stop_pct": 10.0,
+     "symbol": "PANL"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings positive tone, oversold price drop",
+     "stop_pct": 12.0,
+     "symbol": "ALLT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp down move with high volume",
+     "stop_pct": 12.0,
+     "symbol": "MANE"
+    },
+    {
+     "confidence": 78,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings upbeat, price up, high volume",
+     "stop_pct": 10.0,
+     "symbol": "CAE"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price decline, negative offering tone",
+     "stop_pct": 12.0,
+     "symbol": "KDP"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "down move, negative earnings, shortable",
+     "stop_pct": 20.0,
+     "symbol": "OGG"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price surge, volume, neutral tone",
+     "stop_pct": 20.0,
+     "symbol": "GSM"
+    },
+    {
+     "confidence": 78,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "deal news, price up, high volume",
+     "stop_pct": 20.0,
+     "symbol": "ANGX"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price drop but positive tone, not shortable",
+     "stop_pct": 20.0,
+     "symbol": "EMAT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "hold",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "hold",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "61aba6f3d4019511eb4ea8369257a8111480f99163b1f614e6da8d03f4c21c75"
+  },
+  "reviewer": {
+   "answer_sha256": "66a204a7d7992a2aeeaf4c8c89f2160cf10991ae0827d1f2c8d4df8ad856e667",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "85d37c8e15302aabdf71bcffae7733d3e226508d626894f4bcbdad6699227c17",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive volume and strong deal catalyst support the long proposal.",
+     "symbol": "TRMK"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum and high volume support continuation.",
+     "symbol": "PANL"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp drop on high volume despite positive earnings tone suggests caution.",
+     "symbol": "ALLT"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant pullback after a strong multi-day run offers a shorting opportunity.",
+     "symbol": "MANE"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings catalyst and steady trend align with the long proposal.",
+     "symbol": "CAE"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Offering catalyst and negative tone justify the short position.",
+     "symbol": "KDP"
+    },
+    {
+     "confidence": 72,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Earnings tone is negative with downward price pressure.",
+     "symbol": "OGG"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong intraday momentum supports the long trade despite weak 20-day trend.",
+     "symbol": "GSM"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Deal catalyst and strong momentum across timeframes support long.",
+     "symbol": "ANGX"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy drop and not shortable, but buying falling knives is risky.",
+     "symbol": "EMAT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.04434,
+   "news": 0,
+   "pace": 16.902,
+   "price": 47.58,
+   "r20": 0.0324,
+   "r5": -0.00153,
+   "short": true,
+   "src": "iex",
+   "symbol": "TRMK",
+   "z": 3.106
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.08937,
+   "news": 0,
+   "pace": 6.007,
+   "price": 9.63,
+   "r20": 0.08201,
+   "r5": 0.1771,
+   "short": true,
+   "src": "iex",
+   "symbol": "PANL",
+   "z": 2.905
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07915,
+   "news": 0,
+   "pace": 4.509,
+   "price": 8.26,
+   "r20": 0.04302,
+   "r5": 0.0358,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALLT",
+   "z": -2.604
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.10609,
+   "news": 0,
+   "pace": 8.64,
+   "price": 139.95,
+   "r20": 0.37975,
+   "r5": 0.14688,
+   "short": true,
+   "src": "iex",
+   "symbol": "MANE",
+   "z": -2.377
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.03724,
+   "news": 0,
+   "pace": 4.273,
+   "price": 28.41,
+   "r20": 0.17857,
+   "r5": 0.00625,
+   "short": true,
+   "src": "iex",
+   "symbol": "CAE",
+   "z": 2.225
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0481,
+   "news": 0,
+   "pace": 3.262,
+   "price": 36.41,
+   "r20": 0.15489,
+   "r5": 0.03968,
+   "short": true,
+   "src": "iex",
+   "symbol": "KDP",
+   "z": -2.217
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.05462,
+   "news": 0,
+   "pace": 3.065,
+   "price": 2.25,
+   "r20": -0.07031,
+   "r5": 0.00847,
+   "short": true,
+   "src": "iex",
+   "symbol": "OGG",
+   "z": -1.342
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.09233,
+   "news": 0,
+   "pace": 3.822,
+   "price": 3.135,
+   "r20": -0.26031,
+   "r5": -0.02048,
+   "short": true,
+   "src": "iex",
+   "symbol": "GSM",
+   "z": 1.178
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06628,
+   "news": 0,
+   "pace": 4.356,
+   "price": 4.585,
+   "r20": 0.21813,
+   "r5": 0.17166,
+   "short": true,
+   "src": "iex",
+   "symbol": "ANGX",
+   "z": 1.121
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.13061,
+   "news": 0,
+   "pace": 3.162,
+   "price": 1.065,
+   "r20": -0.18333,
+   "r5": -0.33784,
+   "short": false,
+   "src": "iex",
+   "symbol": "EMAT",
+   "z": -0.951
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5091.2187,
+  "PICK-MAIN-coin": 5211.0412,
+  "PICK-PENNY": 453.8568,
+  "PICK-PENNY-coin": 521.4086
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 22,
+  "news": 3,
+  "volume": 137
+ },
+ "flagged": 144,
+ "headline_counts": {
+  "ALLT": 3,
+  "ANGX": 1,
+  "CAE": 3,
+  "EMAT": 1,
+  "GSM": 2,
+  "KDP": 3,
+  "OGG": 2,
+  "TRMK": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "716eaf16133f257166f2dc0aed26830d4582802652d6b3261d3ce69fcbe3e6a6",
+ "price_sources": {
+  "delayed_sip": 253,
+  "iex": 3150
+ },
+ "priced": 3403,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TRMK"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PANL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ALLT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "MANE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CAE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KDP"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OGG"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GSM"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ANGX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "EMAT"
+  }
+ ],
+ "slot": "2026-11-12T11:00",
+ "t": "2026-11-12T16:00:20.391296+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T16:01:42.122580Z"
+}
