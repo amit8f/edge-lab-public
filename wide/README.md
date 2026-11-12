@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 15:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 09:51 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9113.89 | -8.86% | 192 | 64 | long AMD, long CRWV, long MU, long NBIS, long SNDK |
-| Coin flip on C's picks | $9590.49 | -4.10% | 191 | 96 | short AMD, short CRWV, short MU, long NBIS, long SNDK |
-| C's prompt on Groq (K7) | $6662.97 | -33.37% | 392 | 96 | long CRWV, long MTSI, long NBIS, long RKLB, long SNDK |
-| Coin flip on C-groq's picks | $8556.01 | -14.44% | 392 | 186 | short CRWV, short MTSI, long NBIS, long RKLB, long SNDK |
-| C-groq's answers, acted on once a day (K8) | $8561.24 | -14.39% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11661.48 | +16.61% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9889.84 | -1.10% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10174.37 | +1.74% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9901.26 | -0.99% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8529.87 | -14.70% | 195 | 65 | long AMD, long AVGO, long NBIS, long RKLB, short SMCI |
+| Coin flip on C's picks | $9256.80 | -7.43% | 194 | 97 | short AMD, long AVGO, long NBIS, long RKLB, long SMCI |
+| C's prompt on Groq (K7) | $6211.15 | -37.89% | 395 | 96 | long CRWV, long IONQ, long MPWR, short NVDA, long RKLB |
+| Coin flip on C-groq's picks | $8277.12 | -17.23% | 395 | 187 | short CRWV, long IONQ, long MPWR, short NVDA, long RKLB |
+| C-groq's answers, acted on once a day (K8) | $8766.19 | -12.34% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11340.42 | +13.40% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9841.79 | -1.58% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10226.04 | +2.26% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9872.61 | -1.27% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-12 09:51 | long AMD, long AVGO, long NBIS, long RKLB, short SMCI | sold CRWV @ $56.74; sold MU @ $783.31; sold SNDK @ $927.65; bought AVGO @ $359.80; bought RKLB @ $65.92; sold SMCI @ $27.86 | Maintaining long positions in AMD, NBIS, and RKLB due to strong fundamentals or positive momentum. Initiating a new long in AVGO based on strong performance and sector rotation. Initiating a new short in SMCI due to significant negative momentum and price action. |
 | 2026-11-11 15:17 | long AMD, long CRWV, long MU, long NBIS, long SNDK | sold BE @ $212.04; sold MPWR @ $1,479.41; bought AMD @ $556.55; bought MU @ $815.85 | Maintaining profitable AI-related positions (CRWV, NBIS, SNDK) and adding MU and AMD to capitalize on the strong AI sector rally driven by CoreWeave's positive earnings and related news, while exiting BE and MPWR due to recent hourly pullbacks. |
 | 2026-11-11 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-11 14:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-11 15:1
 | 2026-11-10 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 12:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-10 11:57 | long APP, long HL, long MRNA, long TTWO | sold AMD @ $509.27; sold NET @ $298.94; sold TSM @ $388.92; sold TWLO @ $213.66; bought APP @ $387.19; bought HL @ $14.20; bought MRNA @ $254.55 | Reduced exposure to underperforming tech stocks (AMD, NET, TSM, TWLO) and consolidated into high-momentum stocks (TTWO, MRNA, APP) and a fundamentally strong mining stock (HL) that are showing strong multi-session performance despite recent hourly pullbacks. |
