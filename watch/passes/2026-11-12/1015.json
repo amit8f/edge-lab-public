@@ -1,0 +1,579 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "26fefb63422bad493cf8318d8ae3f1fe926d7026da0de7c6dce0e4ed5a87d57e",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "f071a4648d11ef5bdfb903f6dc9939f9cb29cf847220833c801f05094bc9cdec",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AGRO",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OPRX",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "legal",
+     "symbol": "GLAS",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "RCMT",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TIGO",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "DGII",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "NEXN",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "LAC",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "SIDU",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "BUR",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "01218c734c5ca360c8597e0703c739552abbebc59024d7d01ce7e4c3f638cef9",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong down move, high volume, negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "AGRO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Extreme drop, very high volume, negative earnings tone",
+     "stop_pct": 13.0,
+     "symbol": "OPRX"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline, high volume, negative legal tone",
+     "stop_pct": 20.0,
+     "symbol": "GLAS"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop, elevated volume, negative earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "RCMT"
+    },
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Price dip after recent uptrend, neutral tone",
+     "stop_pct": 10.0,
+     "symbol": "TIGO"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large decline, high volume, modestly negative tone",
+     "stop_pct": 13.0,
+     "symbol": "DGII"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside move, positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "NEXN"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Notable drop, high volume, negative earnings tone",
+     "stop_pct": 20.0,
+     "symbol": "LAC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Not shortable and negative tone",
+     "stop_pct": 0.0,
+     "symbol": "SIDU"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive tone despite dip, potential rebound",
+     "stop_pct": 15.0,
+     "symbol": "BUR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not reached",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "8424a674618be8bd10f0fa9024fde2033054bef789200380b6bbcb92283f8773"
+  },
+  "reviewer": {
+   "answer_sha256": "9c1d1824b6e2542667ed33ee0c0e8a37835fe202ebe37b5ee7e600ded3c3b36a",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "78fc1af04709206c923f8c55d4e0829e748caf66fa2c37f8bc923f17952eaeb7",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selling on massive volume after negative earnings news.",
+     "symbol": "AGRO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe drop on extreme volume following negative earnings.",
+     "symbol": "OPRX"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Penny stock down nearly 40% with legal issues presents high short-squeeze/blow-up risk.",
+     "symbol": "GLAS"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp selloff on heavy volume following poor earnings tone.",
+     "symbol": "RCMT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Pullback in an otherwise strong multi-week uptrend offers a dip-buying opportunity.",
+     "symbol": "TIGO"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative momentum and volume following analyst downgrade/news.",
+     "symbol": "DGII"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings catalyst driving strong upside momentum and volume.",
+     "symbol": "NEXN"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continuing downward trend backed by negative earnings sentiment.",
+     "symbol": "LAC"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Modest dip with positive analyst tone in a longer-term uptrend.",
+     "symbol": "BUR"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.14144,
+   "news": 0,
+   "pace": 9.801,
+   "price": 7.77,
+   "r20": -0.10837,
+   "r5": -0.00648,
+   "short": true,
+   "src": "iex",
+   "symbol": "AGRO",
+   "z": -8.296
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.25363,
+   "news": 0,
+   "pace": 30.25,
+   "price": 6.68,
+   "r20": 0.07961,
+   "r5": -0.08859,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPRX",
+   "z": -6.575
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.39037,
+   "news": 0,
+   "pace": 16.498,
+   "price": 1.14,
+   "r20": -0.49322,
+   "r5": -0.27519,
+   "short": true,
+   "src": "iex",
+   "symbol": "GLAS",
+   "z": -5.812
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.13354,
+   "news": 0,
+   "pace": 4.551,
+   "price": 30.17,
+   "r20": -0.10049,
+   "r5": -0.00201,
+   "short": true,
+   "src": "iex",
+   "symbol": "RCMT",
+   "z": -5.007
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.10746,
+   "news": 0,
+   "pace": 9.641,
+   "price": 79.82,
+   "r20": 0.11314,
+   "r5": 0.16007,
+   "short": true,
+   "src": "iex",
+   "symbol": "TIGO",
+   "z": -4.931
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.16965,
+   "news": 0,
+   "pace": 8.814,
+   "price": 55.6,
+   "r20": -0.06179,
+   "r5": -0.07743,
+   "short": true,
+   "src": "iex",
+   "symbol": "DGII",
+   "z": -4.058
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.10884,
+   "news": 0,
+   "pace": 2.564,
+   "price": 10.035,
+   "r20": 0.02608,
+   "r5": -0.00768,
+   "short": true,
+   "src": "iex",
+   "symbol": "NEXN",
+   "z": 4.911
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.09091,
+   "news": 0,
+   "pace": 5.637,
+   "price": 1.5,
+   "r20": -0.2029,
+   "r5": -0.15385,
+   "short": true,
+   "src": "iex",
+   "symbol": "LAC",
+   "z": -1.897
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08636,
+   "news": 0,
+   "pace": 3.606,
+   "price": 1.005,
+   "r20": -0.12698,
+   "r5": 0.05769,
+   "short": false,
+   "src": "iex",
+   "symbol": "SIDU",
+   "z": -1.642
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08356,
+   "news": 0,
+   "pace": 5.023,
+   "price": 3.345,
+   "r20": 0.10942,
+   "r5": -0.1226,
+   "short": true,
+   "src": "iex",
+   "symbol": "BUR",
+   "z": -1.635
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5078.4737,
+  "PICK-MAIN-coin": 5230.5562,
+  "PICK-PENNY": 453.6672,
+  "PICK-PENNY-coin": 517.9588
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-PENNY",
+   "cost": 0.0201,
+   "price": 1.5,
+   "qty": 1,
+   "side": -1,
+   "stop": 1.8,
+   "symbol": "LAC"
+  },
+  {
+   "action": "open",
+   "book": "PICK-PENNY-coin",
+   "cost": 0.0201,
+   "price": 1.5,
+   "qty": 1,
+   "side": -1,
+   "stop": 1.8,
+   "symbol": "LAC"
+  }
+ ],
+ "flag_counts": {
+  "move": 20,
+  "news": 6,
+  "volume": 256
+ },
+ "flagged": 263,
+ "headline_counts": {
+  "AGRO": 1,
+  "BUR": 1,
+  "DGII": 3,
+  "GLAS": 1,
+  "LAC": 3,
+  "NEXN": 3,
+  "OPRX": 3,
+  "RCMT": 2,
+  "SIDU": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "6e1697d597feb3fbbdd87b2910fedb4e067729cacd031323650de8f1a9691ef1",
+ "price_sources": {
+  "delayed_sip": 401,
+  "iex": 2997
+ },
+ "priced": 3398,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AGRO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OPRX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 1,
+   "skip": "reviewer said none",
+   "symbol": "GLAS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RCMT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TIGO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DGII"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NEXN"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "LAC"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BUR"
+  }
+ ],
+ "slot": "2026-11-12T10:15",
+ "t": "2026-11-12T15:15:20.592849+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:18:27.367165Z"
+}
