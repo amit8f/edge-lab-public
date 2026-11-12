@@ -1,0 +1,423 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "ed338f420003b69b6af4dd8adf2e044b6529f59fe8d68c2241ed0164aa1ce6c3",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ac91cbf487dcc38c27fa9b11b3cd6f3cd096dfee61ce7ef599c8c5d77ce1b4c6",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CAE",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OPRX",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "AGRO",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DGII",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TIGO",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "NEXN",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "BBOT",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "GLAS",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ALLT",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "NIQ",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "9915021ff1896515d3388b0980b022f23d865408a87c50bf7bcb9a19c7858470",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong earnings beat, positive tone and price up",
+     "stop_pct": 10.0,
+     "symbol": "CAE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp 21% drop, negative z, neutral tone",
+     "stop_pct": 12.0,
+     "symbol": "OPRX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large decline with negative z, no positive catalyst",
+     "stop_pct": 12.0,
+     "symbol": "AGRO"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Heavy 19% fall, negative z, bearish outlook",
+     "stop_pct": 12.0,
+     "symbol": "DGII"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant 10% drop, negative z, bearish sentiment",
+     "stop_pct": 12.0,
+     "symbol": "TIGO"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong upside, positive earnings tone and high z",
+     "stop_pct": 10.0,
+     "symbol": "NEXN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "da891b6d20ce45e095c81dd54799d50d40142c494b232fcaddc211eef0c48a46"
+  },
+  "reviewer": {
+   "answer_sha256": "da19c9bdbba663a015c59e99d1e03a840aaebc538dfe17e1dd60c54d10d7b993",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "a214325615c2c4311ffff9a6428563838a43a6ce4aae02f63b008ba1348f8db1",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum and upcoming news support the long proposal.",
+     "symbol": "CAE"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant intraday drop supports continuation of the short proposal.",
+     "symbol": "OPRX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy sell-off today aligns well with the proposed short direction.",
+     "symbol": "AGRO"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme negative price shock with high confidence for the short trade.",
+     "symbol": "DGII"
+    },
+    {
+     "confidence": 100,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop justifies the proposed short trade despite recent gains.",
+     "symbol": "TIGO"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid upward price movement and positive analyst tone validate the long proposal.",
+     "symbol": "NEXN"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.05622,
+   "news": 2,
+   "pace": null,
+   "price": 28.93,
+   "r20": 0.17857,
+   "r5": 0.00625,
+   "short": true,
+   "src": "iex",
+   "symbol": "CAE",
+   "z": 3.329
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.2162,
+   "news": 0,
+   "pace": null,
+   "price": 7.015,
+   "r20": 0.07961,
+   "r5": -0.08859,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPRX",
+   "z": -5.476
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08729,
+   "news": 0,
+   "pace": null,
+   "price": 8.26,
+   "r20": -0.10837,
+   "r5": -0.00648,
+   "short": true,
+   "src": "iex",
+   "symbol": "AGRO",
+   "z": -4.969
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.18877,
+   "news": 0,
+   "pace": null,
+   "price": 54.32,
+   "r20": -0.06179,
+   "r5": -0.07743,
+   "short": true,
+   "src": "iex",
+   "symbol": "DGII",
+   "z": -4.566
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09767,
+   "news": 0,
+   "pace": null,
+   "price": 80.695,
+   "r20": 0.11314,
+   "r5": 0.16007,
+   "short": true,
+   "src": "iex",
+   "symbol": "TIGO",
+   "z": -4.458
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08453,
+   "news": 0,
+   "pace": null,
+   "price": 9.815,
+   "r20": 0.02608,
+   "r5": -0.00768,
+   "short": true,
+   "src": "iex",
+   "symbol": "NEXN",
+   "z": 3.857
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.2168,
+   "news": 0,
+   "pace": null,
+   "price": 2.005,
+   "r20": -0.11876,
+   "r5": 0.11304,
+   "short": true,
+   "src": "iex",
+   "symbol": "BBOT",
+   "z": -3.784
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.24599,
+   "news": 0,
+   "pace": null,
+   "price": 1.41,
+   "r20": -0.49322,
+   "r5": -0.27519,
+   "short": true,
+   "src": "iex",
+   "symbol": "GLAS",
+   "z": -3.316
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09532,
+   "news": 0,
+   "pace": null,
+   "price": 8.115,
+   "r20": 0.04302,
+   "r5": 0.0358,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALLT",
+   "z": -3.163
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.04463,
+   "news": 3,
+   "pace": null,
+   "price": 20.12,
+   "r20": 0.15397,
+   "r5": 0.03897,
+   "short": true,
+   "src": "iex",
+   "symbol": "NIQ",
+   "z": -2.231
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5091.9153,
+  "PICK-MAIN-coin": 5226.9725,
+  "PICK-PENNY": 457.597,
+  "PICK-PENNY-coin": 520.3864
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 18,
+  "news": 112,
+  "volume": 0
+ },
+ "flagged": 127,
+ "headline_counts": {
+  "AGRO": 1,
+  "ALLT": 2,
+  "BBOT": 1,
+  "CAE": 3,
+  "DGII": 3,
+  "GLAS": 1,
+  "NEXN": 2,
+  "NIQ": 3,
+  "OPRX": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "318b025357cd792e5b1aede5498496acf10c0f9af45059fc29ca2bb4cf16921f",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2524
+ },
+ "priced": 2524,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CAE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OPRX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AGRO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DGII"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TIGO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NEXN"
+  }
+ ],
+ "slot": "2026-11-12T09:40",
+ "t": "2026-11-12T14:40:20.501022+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T14:40:37.520152Z"
+}
