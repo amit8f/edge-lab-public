@@ -1,0 +1,424 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "3b863a3101fe671d8480d3bc2fb5d9a725f5f86e5e25bd4511a9cc8f3600bd78",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "846600fa94fb0940c2507ae2acc1e867ed74f83e90e5c82984517d503d1caf1a",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OPRX",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "RCMT",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "TIGO",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "DGII",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "YSWY",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "NEXN",
+     "tone": 2
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "SIDU",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "STFS",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PRME",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PSQL",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "02a0afadb22078d1eb0a1e14f031c0df032b21e2b17d33ac4fdd26a4fc08cba3",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "oversold bounce after large drop, positive earnings tone",
+     "stop_pct": 10.0,
+     "symbol": "OPRX"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp decline with high volume, neutral tone suggests further downside",
+     "stop_pct": 13.0,
+     "symbol": "RCMT"
+    },
+    {
+     "confidence": 95,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant drop and high volume, potential rebound",
+     "stop_pct": 12.0,
+     "symbol": "TIGO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large fall with strong volume, likely continued weakness",
+     "stop_pct": 13.0,
+     "symbol": "DGII"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat, positive tone after drop",
+     "stop_pct": 10.0,
+     "symbol": "YSWY"
+    },
+    {
+     "confidence": 85,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong upside momentum and positive earnings tone",
+     "stop_pct": 12.0,
+     "symbol": "NEXN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "8f02f880cfa52718176c6d089a8fc990edcb360c0303629a79651ec7c41e7963"
+  },
+  "reviewer": {
+   "answer_sha256": "435b796c3b73f9e6e0901e896795e05fffef99a74d288275fae96648273d7ce0",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "4bad914f61f7aebd39315c2e8438fd44ad126f5d83f161f2740bcffaaed899f5",
+   "reviews": [
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe oversold drop on high volume with positive earnings tone offers a bounce opportunity.",
+     "symbol": "OPRX"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp decline on heavy volume breaking down further.",
+     "symbol": "RCMT"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong medium-term trend despite a sharp pullback, high volume suggests capitulation buy.",
+     "symbol": "TIGO"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continuing downward momentum with high volume selloff.",
+     "symbol": "DGII"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone and strong 20-day trend support a bounce from intraday weakness.",
+     "symbol": "YSWY"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upside momentum with high z-score and positive earnings tone.",
+     "symbol": "NEXN"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.20391,
+   "news": 0,
+   "pace": 18.409,
+   "price": 7.125,
+   "r20": 0.07961,
+   "r5": -0.08859,
+   "short": true,
+   "src": "iex",
+   "symbol": "OPRX",
+   "z": -5.126
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.13354,
+   "news": 0,
+   "pace": 4.497,
+   "price": 30.17,
+   "r20": -0.10049,
+   "r5": -0.00201,
+   "short": true,
+   "src": "iex",
+   "symbol": "RCMT",
+   "z": -5.007
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09706,
+   "news": 0,
+   "pace": 9.861,
+   "price": 80.75,
+   "r20": 0.11314,
+   "r5": 0.16007,
+   "short": true,
+   "src": "iex",
+   "symbol": "TIGO",
+   "z": -4.429
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.1483,
+   "news": 0,
+   "pace": 6.823,
+   "price": 57.03,
+   "r20": -0.06179,
+   "r5": -0.07743,
+   "short": true,
+   "src": "iex",
+   "symbol": "DGII",
+   "z": -3.503
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.06433,
+   "news": 0,
+   "pace": 3.246,
+   "price": 24.0,
+   "r20": 0.19247,
+   "r5": 0.01786,
+   "short": true,
+   "src": "iex",
+   "symbol": "YSWY",
+   "z": -3.062
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.12486,
+   "news": 0,
+   "pace": 2.664,
+   "price": 10.18,
+   "r20": 0.02608,
+   "r5": -0.00768,
+   "short": true,
+   "src": "iex",
+   "symbol": "NEXN",
+   "z": 5.593
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08182,
+   "news": 0,
+   "pace": 4.219,
+   "price": 1.01,
+   "r20": -0.12698,
+   "r5": 0.05769,
+   "short": false,
+   "src": "iex",
+   "symbol": "SIDU",
+   "z": -1.552
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06195,
+   "news": 0,
+   "pace": 3.016,
+   "price": 4.8,
+   "r20": 0.18016,
+   "r5": -0.17064,
+   "short": false,
+   "src": "iex",
+   "symbol": "STFS",
+   "z": 1.466
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.10233,
+   "news": 0,
+   "pace": 3.047,
+   "price": 3.86,
+   "r20": 0.3738,
+   "r5": -0.13481,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRME",
+   "z": -1.14
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06527,
+   "news": 0,
+   "pace": 3.012,
+   "price": 4.225,
+   "r20": -0.22337,
+   "r5": -0.10317,
+   "short": false,
+   "src": "iex",
+   "symbol": "PSQL",
+   "z": -1.138
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5089.3687,
+  "PICK-MAIN-coin": 5218.9562,
+  "PICK-PENNY": 452.4568,
+  "PICK-PENNY-coin": 519.5786
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 22,
+  "news": 6,
+  "volume": 164
+ },
+ "flagged": 174,
+ "headline_counts": {
+  "DGII": 3,
+  "NEXN": 3,
+  "OPRX": 3,
+  "RCMT": 2,
+  "SIDU": 1,
+  "YSWY": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "3c4d1b98b50ed3e9caaff34aa466bfc8a5517c20b118dab4b358c5611e8225ec",
+ "price_sources": {
+  "delayed_sip": 267,
+  "iex": 3136
+ },
+ "priced": 3403,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "OPRX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RCMT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TIGO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DGII"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "YSWY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NEXN"
+  }
+ ],
+ "slot": "2026-11-12T10:50",
+ "t": "2026-11-12T15:50:20.396401+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:53:31.142382Z"
+}
