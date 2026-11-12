@@ -1,0 +1,281 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "32a8a51d11cbef925c351e0b28b79d3f7e5c99e4243b8b6ab62e10166736c1b6",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "33cbb3c74aea80b3acaee2d9887156e9b2d0aad7ee02f2bb2d5caf53d308323b",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "STDN",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "FATE",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "guidance",
+     "symbol": "WWW",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ALT",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AMPX",
+     "tone": -1
+    },
+    {
+     "confidence": 75,
+     "event": "product",
+     "symbol": "IBM",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "BV",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "REF",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "LFST",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "CTMX",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "8f55ecd72620b3ed38120210ecfca9df219444261987ec8255193a5de651da07",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10577,
+   "news": 0,
+   "pace": null,
+   "price": 11.16,
+   "r20": 0.06213,
+   "r5": 0.02632,
+   "short": false,
+   "src": "iex",
+   "symbol": "STDN",
+   "z": -3.303
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15576,
+   "news": 0,
+   "pace": null,
+   "price": 1.355,
+   "r20": -0.17268,
+   "r5": -0.23206,
+   "short": true,
+   "src": "iex",
+   "symbol": "FATE",
+   "z": -3.053
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.05791,
+   "news": 1,
+   "pace": null,
+   "price": 23.2,
+   "r20": 0.16463,
+   "r5": -0.06681,
+   "short": true,
+   "src": "iex",
+   "symbol": "WWW",
+   "z": 1.563
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.0544,
+   "news": 1,
+   "pace": null,
+   "price": 1.825,
+   "r20": -0.1645,
+   "r5": -0.08962,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALT",
+   "z": -1.406
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.06433,
+   "news": 1,
+   "pace": null,
+   "price": 8.0,
+   "r20": 0.06875,
+   "r5": 0.00945,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMPX",
+   "z": -0.989
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00979,
+   "news": 1,
+   "pace": null,
+   "price": 245.79,
+   "r20": 0.09677,
+   "r5": -0.01722,
+   "short": true,
+   "src": "iex",
+   "symbol": "IBM",
+   "z": -0.582
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01773,
+   "news": 1,
+   "pace": null,
+   "price": 10.045,
+   "r20": -0.06623,
+   "r5": -0.17613,
+   "short": true,
+   "src": "iex",
+   "symbol": "BV",
+   "z": 0.435
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01869,
+   "news": 1,
+   "pace": null,
+   "price": 19.08,
+   "r20": 0.38127,
+   "r5": 0.01738,
+   "short": true,
+   "src": "iex",
+   "symbol": "REF",
+   "z": 0.342
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00974,
+   "news": 1,
+   "pace": null,
+   "price": 14.51,
+   "r20": 0.14776,
+   "r5": 0.01126,
+   "short": true,
+   "src": "iex",
+   "symbol": "LFST",
+   "z": 0.323
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.0,
+   "news": 1,
+   "pace": null,
+   "price": 2.13,
+   "r20": -0.04484,
+   "r5": -0.09362,
+   "short": true,
+   "src": "iex",
+   "symbol": "CTMX",
+   "z": 0.0
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5101.7953,
+  "PICK-MAIN-coin": 5212.6975,
+  "PICK-PENNY": 458.1786,
+  "PICK-PENNY-coin": 520.0667
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 22,
+  "news": 10,
+  "volume": 0
+ },
+ "flagged": 32,
+ "headline_counts": {
+  "ALT": 3,
+  "AMPX": 3,
+  "BV": 2,
+  "CTMX": 1,
+  "IBM": 3,
+  "LFST": 2,
+  "REF": 1,
+  "STDN": 2,
+  "WWW": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "3fb4ea06a0d35a5b80a89b95346c012673769dd0d2b7e8d7112f032cdaa7216a",
+ "price_sources": {
+  "delayed_sip": 613,
+  "iex": 2774
+ },
+ "priced": 3387,
+ "risk": [],
+ "slot": "2026-11-12T09:50",
+ "t": "2026-11-12T14:50:21.162285+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T14:50:34.207384Z"
+}
