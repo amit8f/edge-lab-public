@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 13:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 13:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8356.80 | -16.43% | 201 | 65 | long AMD, long AVGO, long CLS, long MPC, long VLO |
-| Coin flip on C's picks | $9158.60 | -8.41% | 200 | 99 | short AMD, long AVGO, short CLS, short MPC, short VLO |
-| C's prompt on Groq (K7) | $6121.11 | -38.79% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq's picks | $8365.28 | -16.35% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
-| C-groq's answers, acted on once a day (K8) | $8654.51 | -13.45% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11378.94 | +13.79% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9845.44 | -1.55% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10223.78 | +2.24% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9899.76 | -1.00% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8360.39 | -16.40% | 201 | 65 | long AMD, long AVGO, long CLS, long MPC, long VLO |
+| Coin flip on C's picks | $9159.95 | -8.40% | 200 | 99 | short AMD, long AVGO, short CLS, short MPC, short VLO |
+| C's prompt on Groq (K7) | $6126.96 | -38.73% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq's picks | $8366.74 | -16.33% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
+| C-groq's answers, acted on once a day (K8) | $8653.24 | -13.47% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11372.02 | +13.72% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9831.19 | -1.69% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10240.21 | +2.40% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9900.15 | -1.00% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-12 13:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 12:47 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 13:0
 | 2026-11-10 15:57 | long AKAM, long CVS, long HUM, long RKLB, long TTWO | sold CDE @ $15.37; sold EQT @ $52.01; sold HL @ $14.29; bought AKAM @ $84.02; bought CVS @ $88.97; bought RKLB @ $62.46 | Sold CDE, EQT, and HL due to weaker performance or negative daily trends. Initiated new long positions in RKLB, CVS, and AKAM based on strong positive daily momentum and recent price action, while maintaining long positions in TTWO and HUM which show continued strength. |
 | 2026-11-10 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 15:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-10 15:27 | no answer, nothing changed | none | unreadable answer |
