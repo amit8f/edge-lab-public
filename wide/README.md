@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 12:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8370.35 | -16.30% | 201 | 65 | long AMD, long AVGO, long CLS, long MPC, long VLO |
-| Coin flip on C's picks | $9162.12 | -8.38% | 200 | 99 | short AMD, long AVGO, short CLS, short MPC, short VLO |
-| C's prompt on Groq (K7) | $6141.19 | -38.59% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq's picks | $8369.61 | -16.30% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
-| C-groq's answers, acted on once a day (K8) | $8652.51 | -13.47% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
-| Coin flip on C-groq-slow's picks | $11378.68 | +13.79% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
-| C's answers, acted on once a day (K8) | $9847.64 | -1.52% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
-| Coin flip on C-slow's picks | $10221.16 | +2.21% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
-| Just hold SPY | $9913.83 | -0.86% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8386.45 | -16.14% | 201 | 65 | long AMD, long AVGO, long CLS, long MPC, long VLO |
+| Coin flip on C's picks | $9145.10 | -8.55% | 200 | 99 | short AMD, long AVGO, short CLS, short MPC, short VLO |
+| C's prompt on Groq (K7) | $6145.30 | -38.55% | 404 | 97 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq's picks | $8386.97 | -16.13% | 404 | 190 | long AMD, long ANET, long AVGO, short MPWR, long SMCI |
+| C-groq's answers, acted on once a day (K8) | $8636.73 | -13.63% | 30 | 14 | short AAOI, short AXTI, long NEM, long RKT, long TTWO |
+| Coin flip on C-groq-slow's picks | $11423.26 | +14.23% | 30 | 20 | long AAOI, long AXTI, short NEM, long RKT, long TTWO |
+| C's answers, acted on once a day (K8) | $9871.05 | -1.29% | 25 | 10 | long AKAM, long CVS, long HUM, long RKLB, long TTWO |
+| Coin flip on C-slow's picks | $10194.87 | +1.95% | 25 | 16 | short AKAM, short CVS, short HUM, short RKLB, short TTWO |
+| Just hold SPY | $9913.18 | -0.87% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-12 12:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 12:17 | long AMD, long AVGO, long CLS, long MPC, long VLO | none | Maintaining all existing long positions in AMD, AVGO, CLS, MPC, and VLO due to continued positive momentum and favorable news, especially in the semiconductor sector benefiting from Nvidia's decline. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-12 12:3
 | 2026-11-10 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 15:18 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-10 15:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-10 14:57 | no answer, nothing changed | none | unreadable answer |
