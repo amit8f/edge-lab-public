@@ -1,0 +1,519 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "a66c7a0b64c87028cb0ccb97c9d622c2fcbaaf6c5cc7c850cc9415271e3ee25d",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "217f94bbded8952f7eb3f240b126509f76270eaeb580b96f55d9df5a47519e65",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "SSYS",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "ETOR",
+     "tone": -1
+    },
+    {
+     "confidence": 75,
+     "event": "analyst",
+     "symbol": "AMD",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "PHI",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "YETI",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ENVX",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "NBIS",
+     "tone": -1
+    },
+    {
+     "confidence": 60,
+     "event": "other",
+     "symbol": "BTQ",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "regulatory",
+     "symbol": "STLA",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "BTGO",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "c830674016b68c55e4deb54ecfe041e47715ae25866cb19d5bb2e08e03f2c09d",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative earnings tone, price down 4.4%, high volume",
+     "stop_pct": 12.0,
+     "symbol": "SSYS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative analyst tone, price down 3.4%, high volume",
+     "stop_pct": 12.0,
+     "symbol": "ETOR"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive analyst tone, price up 2.3%, high volume",
+     "stop_pct": 10.0,
+     "symbol": "AMD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "PHI"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative earnings tone, price down 8.5%, very high volume",
+     "stop_pct": 12.0,
+     "symbol": "YETI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and negative tone",
+     "stop_pct": 0.0,
+     "symbol": "ENVX"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop 18.7%, high volume, negative tone",
+     "stop_pct": 12.0,
+     "symbol": "NBIS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and negative move",
+     "stop_pct": 0.0,
+     "symbol": "BTQ"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "shortable, price down 5.1%, negative regulatory tone",
+     "stop_pct": 20.0,
+     "symbol": "STLA"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "shortable, price down 8.4%, neutral tone but high volume",
+     "stop_pct": 20.0,
+     "symbol": "BTGO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f1c8dbbda33dbe5a4e67959f2d90fc8be9530f3aa28eb50687cf57f8add2eb8b"
+  },
+  "reviewer": {
+   "answer_sha256": "7b45f3fe0a1a289d53092948c3c0c76eefd6954fbbc82dd08dc21ebcca708b34",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "c143da648bf8149ad2072d2cbf64102254d0cdeeb683832f9cdbc2d9ffe43865",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Consistent downtrend and upcoming earnings catalyst with negative tone supports short proposal.",
+     "symbol": "SSYS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative price action and analyst tone align well with short proposal.",
+     "symbol": "ETOR"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong volume and positive momentum align with long proposal.",
+     "symbol": "AMD"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selling pressure and negative earnings tone justify short trade.",
+     "symbol": "YETI"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop on heavy volume makes short proposal viable.",
+     "symbol": "NBIS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Regulatory pressure and negative trends support short proposal.",
+     "symbol": "STLA"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe multi-day losses warrant continuation short despite neutral tone.",
+     "symbol": "BTGO"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.04434,
+   "news": 1,
+   "pace": 3.35,
+   "price": 6.25,
+   "r20": -0.07102,
+   "r5": -0.04106,
+   "short": true,
+   "src": "iex",
+   "symbol": "SSYS",
+   "z": -1.325
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": -0.03393,
+   "news": 1,
+   "pace": 3.433,
+   "price": 22.21,
+   "r20": -0.05817,
+   "r5": -0.03078,
+   "short": true,
+   "src": "iex",
+   "symbol": "ETOR",
+   "z": -1.119
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume",
+    "news"
+   ],
+   "move": 0.02251,
+   "news": 1,
+   "pace": 5.174,
+   "price": 565.345,
+   "r20": -0.03139,
+   "r5": 0.13118,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMD",
+   "z": 0.298
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.0613,
+   "news": 0,
+   "pace": 2.732,
+   "price": 16.615,
+   "r20": -0.08669,
+   "r5": -0.02318,
+   "short": true,
+   "src": "iex",
+   "symbol": "PHI",
+   "z": -3.149
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0853,
+   "news": 0,
+   "pace": 8.701,
+   "price": 39.14,
+   "r20": 0.05628,
+   "r5": -0.11463,
+   "short": true,
+   "src": "iex",
+   "symbol": "YETI",
+   "z": -2.779
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.21937,
+   "news": 0,
+   "pace": 5.292,
+   "price": 1.975,
+   "r20": 0.03689,
+   "r5": -0.09319,
+   "short": false,
+   "src": "iex",
+   "symbol": "ENVX",
+   "z": -2.692
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.18721,
+   "news": 0,
+   "pace": 10.581,
+   "price": 125.73,
+   "r20": -0.16838,
+   "r5": 0.09306,
+   "short": true,
+   "src": "iex",
+   "symbol": "NBIS",
+   "z": -2.465
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.12644,
+   "news": 0,
+   "pace": 3.43,
+   "price": 1.52,
+   "r20": -0.24348,
+   "r5": -0.10309,
+   "short": false,
+   "src": "iex",
+   "symbol": "BTQ",
+   "z": -2.231
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.05109,
+   "news": 0,
+   "pace": 3.447,
+   "price": 3.9,
+   "r20": -0.03747,
+   "r5": -0.11613,
+   "short": true,
+   "src": "iex",
+   "symbol": "STLA",
+   "z": -1.349
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08372,
+   "news": 0,
+   "pace": 3.025,
+   "price": 3.995,
+   "r20": -0.30463,
+   "r5": -0.19557,
+   "short": true,
+   "src": "iex",
+   "symbol": "BTGO",
+   "z": -1.346
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5090.8187,
+  "PICK-MAIN-coin": 5209.1212,
+  "PICK-PENNY": 451.8642,
+  "PICK-PENNY-coin": 517.836
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 20,
+  "news": 24,
+  "volume": 179
+ },
+ "flagged": 199,
+ "headline_counts": {
+  "AMD": 3,
+  "BTGO": 2,
+  "BTQ": 1,
+  "ENVX": 3,
+  "ETOR": 3,
+  "NBIS": 3,
+  "SSYS": 3,
+  "STLA": 2,
+  "YETI": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "467d3573c4553d99636a806ee91dbdb3a06b41bb1ad9c1cf75278b679f3bdff6",
+ "price_sources": {
+  "delayed_sip": 313,
+  "iex": 3088
+ },
+ "priced": 3401,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SSYS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ETOR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "AMD"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "YETI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NBIS"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "STLA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BTGO"
+  }
+ ],
+ "slot": "2026-11-12T10:40",
+ "t": "2026-11-12T15:40:20.354174+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:41:00.319451Z"
+}
