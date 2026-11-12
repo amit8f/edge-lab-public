@@ -1,0 +1,592 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "775fede963795a1d1864d427c6aa2c92c1bd421d35258e697592527ed1edfbf9",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "ebeb84cc4a1088c6aaea7f6c3483334b97fa5ed335500bf06d14a658c79a8974",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "management",
+     "symbol": "NVDA",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "TTEK",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "PLGO",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "RCMT",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "MANE",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "NTWK",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "a5c62349e55d4ce4ad12eafe5464e4df222996c775278ec08eed40508545b9ac",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "CEO resignation triggers sharp drop",
+     "stop_pct": 10.0,
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Neutral outlook despite price rise",
+     "stop_pct": 0.0,
+     "symbol": "TTEK"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings beat and premium growth",
+     "stop_pct": 12.0,
+     "symbol": "PLGO"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings miss and significant price decline",
+     "stop_pct": 12.0,
+     "symbol": "RCMT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "No clear signal",
+     "stop_pct": 0.0,
+     "symbol": "MANE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Minor move, negative tone insufficient",
+     "stop_pct": 0.0,
+     "symbol": "NTWK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "LAND"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "OPRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "PSFE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "PTLO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "REZI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "SRAD"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "TG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "TRMB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "XRN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "YOU"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "ZBH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "ACDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "ARKO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "BGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "CURI"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period exceeded",
+     "stop_pct": 0.0,
+     "symbol": "CYH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "DDD"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period exceeded",
+     "stop_pct": 0.0,
+     "symbol": "DNUT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "GOGO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop and time limit",
+     "stop_pct": 0.0,
+     "symbol": "GRAB"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "9593028532235e97b0dada067d952370a6380919d973811a89e83080a1325474"
+  },
+  "reviewer": {
+   "answer_sha256": "7a964a2bee7c0a86034d548adfd638c83f577dce7872f486ea85f6b6c0b21289",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "cfd33909c5b09dfc9325e8137e658905c1ae11ea6680d0d8877469dd6bbaff01",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong downward momentum with heavy losses today and negative management tone.",
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive price action today continuing a steady upward trend.",
+     "symbol": "PLGO"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop with negative earnings-related sentiment.",
+     "symbol": "RCMT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13659,
+   "news": 0,
+   "pace": null,
+   "price": 150.0,
+   "r20": -0.21496,
+   "r5": -0.13191,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NVDA",
+   "z": -4.419
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.10436,
+   "news": 0,
+   "pace": null,
+   "price": 41.535,
+   "r20": 0.11901,
+   "r5": -0.08134,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "TTEK",
+   "z": 3.756
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.05899,
+   "news": 0,
+   "pace": null,
+   "price": 29.62,
+   "r20": 0.1301,
+   "r5": 0.02006,
+   "short": true,
+   "src": "iex",
+   "symbol": "PLGO",
+   "z": 3.557
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09535,
+   "news": 0,
+   "pace": null,
+   "price": 31.5,
+   "r20": -0.10049,
+   "r5": -0.00201,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "RCMT",
+   "z": -3.5
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.13608,
+   "news": 0,
+   "pace": null,
+   "price": 135.255,
+   "r20": 0.37975,
+   "r5": 0.14688,
+   "short": true,
+   "src": "iex",
+   "symbol": "MANE",
+   "z": -3.101
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02598,
+   "news": 1,
+   "pace": null,
+   "price": 6.711,
+   "r20": 0.06163,
+   "r5": -0.01991,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NTWK",
+   "z": -0.461
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5099.3653,
+  "PICK-MAIN-coin": 5241.3675,
+  "PICK-PENNY": 457.8826,
+  "PICK-PENNY-coin": 520.6957
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-12T14:45:20.341328+00:00",
+   "entry": 2.17,
+   "exit": 2.295,
+   "net": -0.1962,
+   "opened": "2026-11-02T15:45:20.341023+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "CYH",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-12T14:45:20.341328+00:00",
+   "entry": 3.415,
+   "exit": 3.835,
+   "net": 0.6473,
+   "opened": "2026-11-02T15:20:20.980847+00:00",
+   "qty": 2,
+   "side": 1,
+   "symbol": "DNUT",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-12T14:45:20.341328+00:00",
+   "entry": 2.17,
+   "exit": 2.295,
+   "net": 0.0656,
+   "opened": "2026-11-02T15:45:20.341023+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "CYH",
+   "why": "picker exit"
+  }
+ ],
+ "flag_counts": {
+  "move": 24,
+  "news": 2,
+  "volume": 0
+ },
+ "flagged": 25,
+ "headline_counts": {
+  "NTWK": 3,
+  "NVDA": 3,
+  "PLGO": 3,
+  "RCMT": 2,
+  "TTEK": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "b0dddd0ad4424b9673d6fe2f652710d864343c38e9c2f7f9cb4db518ede4c3da",
+ "price_sources": {
+  "delayed_sip": 697,
+  "iex": 2677
+ },
+ "priced": 3374,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NVDA"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PLGO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "RCMT"
+  }
+ ],
+ "slot": "2026-11-12T09:45",
+ "t": "2026-11-12T14:45:20.341328+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T14:45:35.280255Z"
+}
