@@ -1,0 +1,288 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "139966d8da1cf3152d377a3db751c5fda2f2ddf9e00ffad8d7ddd877b6011927",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "8d6144d1310e018f3f83fd11a033a91f4caaeb48c4a0793677bbb7d23333c386",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "ADIG",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "CDNL",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "BZ",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "CTVA",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "HWC",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AGRO",
+     "tone": -1
+    },
+    {
+     "confidence": 60,
+     "event": "other",
+     "symbol": "GLAS",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "ENGN",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "ALVO",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "none",
+     "symbol": "TNXP",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "17a1bb59fd4a2112a996f49953381930cbeccac2b50c177b8607dc279ab24ed7",
+   "quota": false
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": null
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.39734,
+   "news": 0,
+   "pace": 11.921,
+   "price": 11.8,
+   "r20": 0.26323,
+   "r5": 0.03543,
+   "short": true,
+   "src": "iex",
+   "symbol": "ADIG",
+   "z": -17.485
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.59973,
+   "news": 0,
+   "pace": 40.993,
+   "price": 6.0,
+   "r20": -0.08931,
+   "r5": 0.00402,
+   "short": true,
+   "src": "iex",
+   "symbol": "CDNL",
+   "z": -13.524
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.22279,
+   "news": 0,
+   "pace": 9.96,
+   "price": 12.995,
+   "r20": 0.02263,
+   "r5": -0.04238,
+   "short": true,
+   "src": "iex",
+   "symbol": "BZ",
+   "z": -13.149
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.23929,
+   "news": 0,
+   "pace": 4.779,
+   "price": 9.235,
+   "r20": -0.09403,
+   "r5": -0.00979,
+   "short": true,
+   "src": "iex",
+   "symbol": "CTVA",
+   "z": -12.574
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.11771,
+   "news": 0,
+   "pace": 11.048,
+   "price": 63.86,
+   "r20": 0.0071,
+   "r5": -0.01201,
+   "short": true,
+   "src": "iex",
+   "symbol": "HWC",
+   "z": -8.559
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.12044,
+   "news": 0,
+   "pace": 8.263,
+   "price": 7.96,
+   "r20": -0.10837,
+   "r5": -0.00648,
+   "short": true,
+   "src": "iex",
+   "symbol": "AGRO",
+   "z": -6.981
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.33155,
+   "news": 0,
+   "pace": 17.678,
+   "price": 1.25,
+   "r20": -0.49322,
+   "r5": -0.27519,
+   "short": true,
+   "src": "iex",
+   "symbol": "GLAS",
+   "z": -4.73
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.125,
+   "news": 0,
+   "pace": 29.094,
+   "price": 2.025,
+   "r20": 0.15385,
+   "r5": 0.04651,
+   "short": true,
+   "src": "iex",
+   "symbol": "ENGN",
+   "z": 2.347
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07012,
+   "news": 0,
+   "pace": 4.569,
+   "price": 4.575,
+   "r20": -0.04836,
+   "r5": 0.05353,
+   "short": true,
+   "src": "iex",
+   "symbol": "ALVO",
+   "z": -1.943
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06718,
+   "news": 0,
+   "pace": 3.773,
+   "price": 3.61,
+   "r20": -0.39531,
+   "r5": -0.24266,
+   "short": true,
+   "src": "iex",
+   "symbol": "TNXP",
+   "z": -1.739
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5091.5287,
+  "PICK-MAIN-coin": 5213.2662,
+  "PICK-PENNY": 453.6518,
+  "PICK-PENNY-coin": 518.7536
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 20,
+  "news": 6,
+  "volume": 171
+ },
+ "flagged": 179,
+ "headline_counts": {
+  "ADIG": 3,
+  "AGRO": 1,
+  "ALVO": 3,
+  "BZ": 1,
+  "CDNL": 3,
+  "CTVA": 3,
+  "ENGN": 3,
+  "GLAS": 1,
+  "HWC": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "9274ac0146d25517152f9ea63332327aa923b8b9daad319627e2fd7355533e13",
+ "price_sources": {
+  "delayed_sip": 262,
+  "iex": 3141
+ },
+ "priced": 3403,
+ "risk": [],
+ "slot": "2026-11-12T10:45",
+ "t": "2026-11-12T15:45:21.257362+00:00",
+ "universe": 3404,
+ "written_utc": "2026-11-12T15:45:36.385622Z"
+}
