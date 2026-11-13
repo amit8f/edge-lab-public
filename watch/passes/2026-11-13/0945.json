@@ -1,0 +1,573 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "046364fabfa8e830b3fdb8ffb486e724bef5371375c13926f82c2dc5e859df0b",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "1032806256c9b81095f1c8ab7e4691c82ab4dccf7c3ea14c74340a409781aae4",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "6dc7d117f0ed6f827d6217d149ad16f6a257320ce0970f451bf2dcaa7d6a82bc",
+    "model": "openai/gpt-oss-20b",
+    "prompt_sha256": "a2548999e558903747ee0fd7b40b3213632e8bc65cc7f82f958687293881bf7d"
+   },
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "BACC",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "EVAC",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ANDG",
+     "tone": 2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "SHG",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "CDNL",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "legal",
+     "symbol": "META",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "CSCO",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "AMPG",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "NVDA",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "a80ef7dbfda7236eed371e2426e835db019ac20de95558a5316e8e27e215be3e",
+   "decisions": [
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "extreme drop suggests rebound",
+     "stop_pct": 12.0,
+     "symbol": "BACC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no clear signal",
+     "stop_pct": 0.0,
+     "symbol": "EVAC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat and positive tone despite dip",
+     "stop_pct": 10.0,
+     "symbol": "ANDG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "no strong bias",
+     "stop_pct": 0.0,
+     "symbol": "SHG"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "legal issues after sharp rise",
+     "stop_pct": 12.0,
+     "symbol": "CDNL"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative legal tone with modest gain",
+     "stop_pct": 12.0,
+     "symbol": "META"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative tone and recent dip",
+     "stop_pct": 12.0,
+     "symbol": "CSCO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "ticker correction, insufficient data",
+     "stop_pct": 0.0,
+     "symbol": "AMP"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative tone despite modest rise",
+     "stop_pct": 12.0,
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "earnings beat and positive tone",
+     "stop_pct": 20.0,
+     "symbol": "AMPG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BKNG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CCOI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "CRCT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "DRVN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding",
+     "stop_pct": 0.0,
+     "symbol": "FLYW"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "fdbfa5faf02d6a2538d0ccf26365998fc6109b3f52a37ad282fc37b0b079d4a3"
+  },
+  "reviewer": {
+   "answer_sha256": "e35be57bcc3843289f9f93bf9b604715e52f2b5ef90218269d14fc5b158ef515",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "869430df1fe8c68d2749ce0a9f56fc89038be90edb5007ad7ad8c279cac0b0f3",
+   "reviews": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and showing extreme negative momentum with Z-score -93.1.",
+     "symbol": "BACC"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid 20-day trend and positive earnings tone align well with the long proposal.",
+     "symbol": "ANDG"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe downward multi-day trend despite today's bounce and negative legal news tone support shorting.",
+     "symbol": "CDNL"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative legal tone and 20-day weakness support the short proposal.",
+     "symbol": "META"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Analyst negative tone and recent weakness favor the short side.",
+     "symbol": "CSCO"
+    },
+    {
+     "confidence": 60,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Multi-week weakness and negative analyst tone validate the short proposal.",
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 50,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone supports a modest long position despite penny stock status.",
+     "symbol": "AMPG"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.07619,
+   "news": 0,
+   "pace": null,
+   "price": 9.7,
+   "r20": 0.00671,
+   "r5": 0.00287,
+   "short": false,
+   "src": "delayed_sip",
+   "symbol": "BACC",
+   "z": -93.077
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.00289,
+   "news": 0,
+   "pace": null,
+   "price": 10.4,
+   "r20": 0.0068,
+   "r5": 0.00193,
+   "short": false,
+   "src": "delayed_sip",
+   "symbol": "EVAC",
+   "z": 4.012
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.05442,
+   "news": 0,
+   "pace": null,
+   "price": 61.86,
+   "r20": 0.10975,
+   "r5": -0.01283,
+   "short": true,
+   "src": "iex",
+   "symbol": "ANDG",
+   "z": -3.272
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.05065,
+   "news": 0,
+   "pace": null,
+   "price": 67.0,
+   "r20": -0.10599,
+   "r5": 0.0095,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "SHG",
+   "z": 3.01
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.17553,
+   "news": 1,
+   "pace": null,
+   "price": 6.63,
+   "r20": -0.64573,
+   "r5": -0.55185,
+   "short": true,
+   "src": "iex",
+   "symbol": "CDNL",
+   "z": 0.709
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01698,
+   "news": 1,
+   "pace": null,
+   "price": 634.2,
+   "r20": -0.15353,
+   "r5": 0.03062,
+   "short": true,
+   "src": "iex",
+   "symbol": "META",
+   "z": 0.652
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01701,
+   "news": 1,
+   "pace": null,
+   "price": 100.275,
+   "r20": -0.07137,
+   "r5": 0.06571,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "CSCO",
+   "z": -0.607
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01233,
+   "news": 1,
+   "pace": null,
+   "price": 519.81,
+   "r20": 0.02516,
+   "r5": 0.0116,
+   "short": true,
+   "src": "iex",
+   "symbol": "AMP",
+   "z": 0.585
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.01447,
+   "news": 2,
+   "pace": null,
+   "price": 168.595,
+   "r20": -0.23496,
+   "r5": -0.08486,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "NVDA",
+   "z": 0.423
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01064,
+   "news": 1,
+   "pace": null,
+   "price": 2.325,
+   "r20": -0.08382,
+   "r5": 0.06818,
+   "short": false,
+   "src": "iex",
+   "symbol": "AMPG",
+   "z": -0.191
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5067.1452,
+  "PICK-MAIN-coin": 5141.6529,
+  "PICK-PENNY": 440.2848,
+  "PICK-PENNY-coin": 516.7416
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-13T14:45:20.315914+00:00",
+   "entry": 13.95,
+   "exit": 12.27,
+   "net": -1.9965,
+   "opened": "2026-11-12T15:00:20.683709+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "LUNR",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-13T14:45:20.315914+00:00",
+   "entry": 13.95,
+   "exit": 12.27,
+   "net": -1.9965,
+   "opened": "2026-11-12T15:00:20.683709+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "LUNR",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 16,
+  "news": 14,
+  "volume": 0
+ },
+ "flagged": 30,
+ "headline_counts": {
+  "AMP": 2,
+  "AMPG": 3,
+  "ANDG": 3,
+  "CDNL": 3,
+  "CSCO": 3,
+  "META": 3,
+  "NVDA": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "718055b1b34c1e62e668f888b4e94ba558ae9e63e1ca316d1cc43dd20ec5658c",
+ "price_sources": {
+  "delayed_sip": 837,
+  "iex": 2520
+ },
+ "priced": 3357,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "BACC"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ANDG"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CDNL"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "META"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CSCO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NVDA"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "AMPG"
+  }
+ ],
+ "slot": "2026-11-13T09:45",
+ "t": "2026-11-13T14:45:20.315914+00:00",
+ "universe": 3394,
+ "written_utc": "2026-11-13T14:45:47.076176Z"
+}
