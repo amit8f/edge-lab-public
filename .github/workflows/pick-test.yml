@@ -1,0 +1,117 @@
+# PICK-MAIN / PICK-PENNY one-time test on 2024-01..2025-09 (research/prereg/PICK.md, Amendment 2). Manual start
+# with stage=rows; each rows run queues the next until done, then stage=test runs once and commits PICK_test.json.
+# Reads W1, NX1 and PICK fit's caches; writes only its own cache picktest-v1-*.
+name: pick-test
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "rows or test"
+        required: true
+        default: rows
+        type: choice
+        options: [rows, test]
+
+permissions: {}
+
+concurrency:
+  group: pick-test
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore W1's daily cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/w1
+          key: w1-v1-none
+          restore-keys: w1-v1-
+
+      - name: Restore NX1's cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+
+      - name: Restore PICK fit's cache (read only, for the sizing top)
+        if: inputs.stage == 'test'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/pickfit
+          key: pickfit-v1-none
+          restore-keys: pickfit-v1-
+
+      - name: Restore PICK test's own cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/picktest
+          key: picktest-v1-${{ github.run_id }}
+          restore-keys: picktest-v1-
+
+      - name: Run the stage
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          STAGE: ${{ inputs.stage }}
+        run: |
+          set -o pipefail
+          [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
+          [[ -d cache/nx1/nx1/tone ]] || { echo "::error::NX1's tone cache is missing"; exit 1; }
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick_test --stage "$STAGE" --w1 cache/w1 --nx1 cache/nx1 \
+            --fit research/results/PICK --fitstate cache/pickfit --state cache/picktest --budget-min 320 | tee stage.log
+
+      - name: Save PICK test's cache (also after a failure, so a rerun resumes)
+        if: always() && inputs.stage == 'rows'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/picktest
+          key: picktest-v1-${{ github.run_id }}
+
+      - name: Queue the next run (rows again until done, then test)
+        if: success() && inputs.stage == 'rows'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if grep -q "time budget used" stage.log; then NEXT=rows; else NEXT=test; fi
+          gh workflow run pick-test.yml --repo "$GITHUB_REPOSITORY" --ref main -f stage="$NEXT"
+          echo "queued stage=$NEXT"
+
+      - name: Commit the result to this branch
+        if: inputs.stage == 'test'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/PICK/PICK_test.json
+          git diff --cached --quiet && { echo "No result"; exit 1; }
+          git commit -q -m "PICK test result (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
