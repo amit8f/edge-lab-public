@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) nxe (NXE, NXF and NXT, research/prereg/NXE.md, NXF.md, NXT.md), uncapped (NX3-ALL, research/prereg/NX3ALL.md) sizer (NXS-ML, research/prereg/NXS.md) highbar (NX3-HI, research/prereg/NX3HI.md) highbar_all (NX3-ALL-HI, research/prereg/NX3ALLHI.md) shortfix (SHORT-FIX, research/prereg/SHORTFIX.md) shortfix2 (SHORT-FIX2, research/prereg/SHORTFIX2.md) shortml (SHORT-ML, research/prereg/SHORTML.md) shortfast (SHORT-FAST, research/prereg/SHORTFAST.md) nxk (NXK-KNN and NXK-KRR, research/prereg/NXK.md) nxk2 (NXK2-CAT and NXK2-ET, research/prereg/NXK2.md) bars_cat / bars_krr (NX3-BARS table for CatBoost / KRR, descriptive) nxk_v1 (version 1 KRR and CatBoost models for their shadow books) chart_bars (daily chart inputs for NX3TA and CHART1) nx3ta (NX3TA, research/prereg/NX3TA.md) chart1 (CHART1, research/prereg/CHART1.md) shortall (SHORT-ALL, research/prereg/SHORTALL.md) dayfilter (DAYFILTER, research/prereg/DAYFILTER.md) sds (NX3-ALL-SDS, research/prereg/NX3SDS.md) boom1 (BOOM1, research/prereg/BOOM1.md) boom2_picks / boom2_minutes / boom2 (BOOM2, research/prereg/BOOM2.md) dirgate (DIR-GATE, research/prereg/DIRECTION.md) or bars (NX3-BARS, research/prereg/NX3BARS.md; also writes NX3_fired_trades.csv)"
+        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) nxe (NXE, NXF and NXT, research/prereg/NXE.md, NXF.md, NXT.md), uncapped (NX3-ALL, research/prereg/NX3ALL.md) sizer (NXS-ML, research/prereg/NXS.md) highbar (NX3-HI, research/prereg/NX3HI.md) highbar_all (NX3-ALL-HI, research/prereg/NX3ALLHI.md) shortfix (SHORT-FIX, research/prereg/SHORTFIX.md) shortfix2 (SHORT-FIX2, research/prereg/SHORTFIX2.md) shortml (SHORT-ML, research/prereg/SHORTML.md) shortfast (SHORT-FAST, research/prereg/SHORTFAST.md) nxk (NXK-KNN and NXK-KRR, research/prereg/NXK.md) nxk2 (NXK2-CAT and NXK2-ET, research/prereg/NXK2.md) bars_cat / bars_krr (NX3-BARS table for CatBoost / KRR, descriptive) nxk_v1 (version 1 KRR and CatBoost models for their shadow books) chart_bars (daily chart inputs for NX3TA and CHART1) nx3ta (NX3TA, research/prereg/NX3TA.md) chart1 (CHART1, research/prereg/CHART1.md) shortall (SHORT-ALL, research/prereg/SHORTALL.md) dayfilter (DAYFILTER, research/prereg/DAYFILTER.md) sds (NX3-ALL-SDS, research/prereg/NX3SDS.md) boom1 (BOOM1, research/prereg/BOOM1.md) boom2_picks / boom2_minutes / boom2 (BOOM2, research/prereg/BOOM2.md) dirgate, dirpeer_data, dirpeer (DIR-GATE, DIR-PEER, research/prereg/DIRECTION.md) or bars (NX3-BARS, research/prereg/NX3BARS.md; also writes NX3_fired_trades.csv)"
         required: false
         default: all
 
@@ -99,6 +99,11 @@ jobs:
               --out research/results/NXE --budget-min 300
             exit 0
           fi
+          if [ "$STAGE" = dirpeer_data ] || [ "$STAGE" = dirpeer ]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.main.dir_peer --stage "$STAGE" --cache cache/nx1 \
+              --out research/results/DIR --budget-min 290
+            exit 0
+          fi
           if [ "$STAGE" = dirgate ]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.news.dir_gate --cache cache/nx1 --out research/results/DIR
             exit 0
@@ -121,7 +126,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag' && inputs.stage != 'boom_freeze' && inputs.stage != 'dayfilter' && inputs.stage != 'sds' && inputs.stage != 'dirgate'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag' && inputs.stage != 'boom_freeze' && inputs.stage != 'dayfilter' && inputs.stage != 'sds' && inputs.stage != 'dirgate' && inputs.stage != 'dirpeer'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3
