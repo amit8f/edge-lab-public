@@ -216,3 +216,16 @@ def test_late_decision_before_935_enters_at_the_next_minute(tmp_path, monkeypatc
     assert first["status"] == "settled" and np.isclose(first["entry"], np.linspace(100, 95, len(rt))[2])
     rep = json.loads((tmp_path / "boomshort" / "report.json").read_text())
     assert rep["late_days"] == 1
+
+
+def test_reasons_names_the_inputs_that_pushed_the_score():
+    import numpy as np
+    from catboost import CatBoostClassifier
+
+    from tracks.main import boom_short as S
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(300, 3))
+    m = CatBoostClassifier(iterations=30, verbose=0, loss_function="MultiClass").fit(X, np.sign(X[:, 1]).astype(int))
+    r = S.reasons(m, X[:2], ["r1", "pm_gap", "zz"], toward=-1)
+    assert r[0][0][0] == "pre-market move" and len(r[0]) == 3
+    assert (r[0][0][1] > 0) == (X[0, 1] < 0)          # a falling pre-market pushes toward down

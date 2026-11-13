@@ -101,9 +101,9 @@ def freeze(cache, out=MODEL_DIR):
     syms = sorted(df["symbol"].unique())
     (out / "symbols.json").write_text(json.dumps(syms))
     man = {"frozen": "2026-11-07, before any BOOM-SHORT day was logged (research/prereg/BOOMSHORT.md)",
-           "fold": FREEZE_YEAR, "boom1_train_rows": int(len(tr)), "boom1_train_last_day": f"{cut_d:%Y-%m-%d}",
-           "boom1_refit_vs_saved_2025": drift, "d6_train_picks": int(len(tr2)), "d6_classes": [int(c) for c in m2.classes_],
-           "cut": cut, "cover": COVER, "oos_2025": {"picks": int(len(te2)), "shorts": int(len(sel)),
+           "fold": FREEZE_YEAR, "boom1_train_rows": len(tr), "boom1_train_last_day": f"{cut_d:%Y-%m-%d}",
+           "boom1_refit_vs_saved_2025": drift, "d6_train_picks": len(tr2), "d6_classes": [int(c) for c in m2.classes_],
+           "cut": cut, "cover": COVER, "oos_2025": {"picks": len(te2), "shorts": len(sel),
                                                      "net_per_trade": float(np.nanmean(oos)),
                                                      "down_first": float((sel["lab"] == -1).mean())},
            "inputs_boom1": B.INPUTS, "inputs_d6": d6_cols(), "symbols": len(syms),
@@ -121,6 +121,45 @@ def d6_score(m, d):
     pr = m.predict_proba(d[d6_cols()].to_numpy(np.float32))
     k = [int(c) for c in m.classes_]
     return pr[:, k.index(1)] - pr[:, k.index(-1)]
+
+
+LABELS = {"r1": "yesterday's move", "r5": "last week's move", "r20": "last month's move", "r60": "3-month move",
+          "r120": "6-month move", "mom12_1": "1-year momentum", "vol20": "how jumpy it was this month",
+          "vol60": "how jumpy it was over 3 months", "vol_ratio": "jumpiness rising or falling", "rsi14": "RSI (14 days)",
+          "rsi2": "RSI (2 days)", "macd_h": "MACD", "bb_pctb": "place in its Bollinger band", "bb_width": "Bollinger width",
+          "atr14": "average daily range", "d_sma20": "distance from its 20-day average",
+          "d_sma50": "distance from its 50-day average", "d_sma200": "distance from its 200-day average",
+          "hi52": "distance from its 1-year high", "lo52": "distance from its 1-year low", "gap": "yesterday's opening gap",
+          "oc": "yesterday's open-to-close move", "clv": "where yesterday closed in its range",
+          "rng_atr": "yesterday's range vs normal", "vrel20": "yesterday's volume vs normal",
+          "vrel5_20": "this week's volume vs normal", "obv20": "buying vs selling volume (OBV)",
+          "maxret20": "biggest up day this month", "minret20": "biggest down day this month", "streak": "up/down streak",
+          "log_dv": "dollars traded a day", "log_px": "share price", "spy_r1": "the market yesterday",
+          "spy_r5": "the market last week", "spy_d200": "the market vs its 200-day average",
+          "spy_vol20": "how jumpy the market was", "pre_news": "news before the open", "pre_articles": "number of news stories",
+          "pre_fb_neg": "how bad the news sounded", "pre_fb_pos": "how good the news sounded", "pre_lm_net": "news word tone",
+          "pre_fb_max_neg": "worst-sounding headline", "pre_fb_max_pos": "best-sounding headline",
+          "score": "its big-move chance", "pm_gap": "pre-market move", "pm_dv": "pre-market trading volume",
+          "pre_offering": "share-sale news"}
+for _k in range(10):
+    LABELS |= {f"rz_{_k}": f"daily move {_k + 1} days ago", f"rg_{_k}": f"daily range {_k + 1} days ago",
+               f"vr_{_k}": f"volume {_k + 1} days ago"}
+
+
+def reasons(m, X, cols, toward=None, k=3):
+    """Each row's top k inputs by SHAP push: [(plain label, push)]. Binary model: push toward class 1 (a big move).
+    Multiclass (D6): push toward down-first minus toward up-first when toward == -1. For display only."""
+    from catboost import Pool
+    sv = np.asarray(m.get_feature_importance(Pool(np.asarray(X, np.float32)), type="ShapValues"))
+    if sv.ndim == 3:
+        cl = [int(c) for c in m.classes_]
+        sv = sv[:, cl.index(-1), :] - sv[:, cl.index(1), :] if toward == -1 else sv[:, cl.index(1), :] - sv[:, cl.index(-1), :]
+    sv = sv[:, :len(cols)]
+    out = []
+    for row in sv:
+        top = np.argsort(-np.abs(row))[:k]
+        out.append([[LABELS.get(cols[j], cols[j]), round(float(row[j]), 4)] for j in top])
+    return out
 
 
 def load_frozen(dirpath=MODEL_DIR):
@@ -186,7 +225,7 @@ def premarket(b, prev_c, dv20, day):
         return {"pm_gap": 0.0, "pm_dv": 0.0, "pm_bars": 0}
     last = float(pm["c"].iloc[-1])
     return {"pm_gap": last / prev_c - 1 if prev_c > 0 else 0.0,
-            "pm_dv": float((pm["c"] * pm["v"]).sum()) / dv20 if dv20 > 0 else 0.0, "pm_bars": int(len(pm))}
+            "pm_dv": float((pm["c"] * pm["v"]).sum()) / dv20 if dv20 > 0 else 0.0, "pm_bars": len(pm)}
 
 
 def choose(picks, cut, short_ok, seed):
@@ -311,7 +350,7 @@ def pre_open_events(api, root, ses, now, finbert, early=None):
     if rows.empty:
         return pd.DataFrame(), 0
     ev = X.session_events(rows, pd.DataFrame([ses]))
-    return ev.assign(open_t=ses["open_t"]), int(len(rows))
+    return ev.assign(open_t=ses["open_t"]), len(rows)
 
 
 def decide(root, api, cal, ses, man, m1, m2, syms, clock, wait_min, sleep):
@@ -343,7 +382,7 @@ def decide(root, api, cal, ses, man, m1, m2, syms, clock, wait_min, sleep):
     now = clock()
     ev, n_heads = pre_open_events(api, root, ses, now, finbert, early)
     u = with_news(u, news_inputs(ev))
-    rec = {"status": "decided", "decided_at": now.isoformat(), "prev": f"{prev:%Y-%m-%d}", "universe": int(len(u)),
+    rec = {"status": "decided", "decided_at": now.isoformat(), "prev": f"{prev:%Y-%m-%d}", "universe": len(u),
            "headlines": n_heads, "news_stocks": int(u["pre_news"].sum()), "cut": man["cut"],
            "models_sha256": man["sha256"], "book": BOOK, "per_trade": PER_TRADE}
     if len(u) < B.TOP * 5:
@@ -371,6 +410,14 @@ def decide(root, api, cal, ses, man, m1, m2, syms, clock, wait_min, sleep):
         rec |= {"status": "missed", "reason": "decision finished after 9:35 ET", "shorts": [], "control": []}
     elif fin > ses["open_t"]:        # Amendment 1: a late decision enters at the next whole minute's open
         rec["entry_from"] = fin.ceil("min").isoformat()
+    if rec.get("picks"):             # display only, after the decision: why each pick was chosen and its lean
+        try:
+            why1 = reasons(m1, p[B.INPUTS], B.INPUTS)
+            why6 = reasons(m2, p[d6_cols()], d6_cols(), toward=-1)
+            for x, a_, b_ in zip(rec["picks"], why1, why6):
+                x["why_move"], x["why_down"] = a_, b_
+        except Exception as e:  # noqa: BLE001 -- never let the explanation stop the record
+            print(f"[boom-short] reasons failed: {e}")
     led.write_json("boomshort_day", d, f"days/{d}.json", rec)
     print(f"[boom-short] {d}: {rec['status']}, shorts {rec.get('shorts')}, control {rec.get('control')}")
 
@@ -414,7 +461,7 @@ def report(root):
     bm = np.array([r["book_mean"] for r in rows if r["book_mean"] is not None], float)
     bc = np.array([r["book_minus_control"] for r in rows if r["book_minus_control"] is not None], float)
     on_time = np.array([r["book_mean"] for r in rows if r["book_mean"] is not None and not r.get("entry_from")], float)
-    return {"closed_trades": n, "days_with_trades": int(len(bm)), "book": X.tstat(bm), "book_minus_control": X.tstat(bc),
+    return {"closed_trades": n, "days_with_trades": len(bm), "book": X.tstat(bm), "book_minus_control": X.tstat(bc),
             "late_days": sum(bool(r.get("entry_from")) for r in rows), "book_on_time": X.tstat(on_time),
             "pnl_usd": float(sum(r["pnl_usd"] for r in rows))}
 

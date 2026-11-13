@@ -88,3 +88,18 @@ BOOM direction arms already failed (BOOM2). None of these four repeats them: eac
 
 A combined model (report test 5) is registered only if at least one of these is non-negative, in a new file.
 Options snapshots (test 6) were not chosen.
+
+## Amendment 1 (2026-11-13, written before any DIR result was read and before any DIR-PEER data exists; the DIR-GATE items describe code committed before its run)
+
+Details the code needs that the text above left open. None changes a pass rule.
+
+- DIR-GATE: a pick's similarity is the highest cosine between any of its event headlines (previous close to NX3's
+  decision time) and any of the stock's single-symbol headlines in the 20 sessions before (previous close of the
+  session 20 back to the previous close). The vocabulary drops terms seen in only one 2019-2022 headline
+  (`min_df=2`). The control is k of the day's real NX3 events at random, taken long, seed yyyymmdd + 2.
+- DIR-PEER: the SIC-to-sector-ETF map is the one already committed in `tracks/main/ch_data.py` (`SECTORS`, SIC
+  ranges to the 11 SPDR sector ETFs, SPY where no range matches), in place of a new 2-digit map. Peers are BOOM1
+  universe stocks of that session with the same first three SIC digits (EDGAR). The previous close is the
+  all-adjusted close scaled to the session's raw prices. Follow-gap and fade-gap use the sign of the stock's own
+  move at the same observation time (9:14 for the 9:30 entry, 9:35 for the 9:51 entry). No call when the stock's or
+  the peers' move is missing or exactly zero.

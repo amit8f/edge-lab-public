@@ -246,6 +246,18 @@ def boom_day_text(rec):
             f"{lo['d6']:.3f}; a short needs {rec.get('cut', -0.119):.3f} or lower).")
 
 
+def boom_picks(rec):
+    """All 20 BOOM1 picks of a morning, most bearish first: BOOM1's big-move chance, D6's lean (below 0 leans down;
+    a short needs the cut or lower), the pre-market facts, and from 2026-11-16 the top inputs behind each score."""
+    sh = set(rec.get("shorts", []))
+    out = []
+    for x in sorted(rec.get("picks", []), key=lambda x: x.get("d6") if x.get("d6") is not None else 0):
+        out.append({"symbol": x["symbol"], "boom1": x.get("boom1"), "d6": x.get("d6"), "pm_gap": x.get("pm_gap"),
+                    "pre_news": bool(x.get("pre_news")), "pm_dv": x.get("pm_dv"), "shorted": x["symbol"] in sh,
+                    "why_move": x.get("why_move"), "why_down": x.get("why_down")})
+    return out
+
+
 def boom_tab(st, boom1):
     """The Boom tab: BOOM1's hit rate and BOOM-SHORT's overall result, day by day, on one page."""
     led = st / "state-boomshort" / "boomshort" / "ledger"
@@ -260,9 +272,15 @@ def boom_tab(st, boom1):
         nets += tr
         ctl += cn
         days.append({"day": f.stem, "status": rec.get("status") or "error", "reason": rec.get("reason"),
-                     "text": boom_day_text(rec), "shorts": rec.get("shorts", []),
+                     "text": boom_day_text(rec), "shorts": rec.get("shorts", []), "cut": rec.get("cut"),
+                     "picks": boom_picks(rec),
                      "trades": len(tr), "pnl_usd": pnl if stl else None, "cum_pct": 100 * cum / 5000.0,
                      "mean": sum(tr) / len(tr) if tr else None, "control_mean": sum(cn) / len(cn) if cn else None})
+    for d in days[-5:]:              # the last 5 mornings: how far each pick went from the open
+        if d["picks"]:
+            rg = _safe(day_ranges, [p["symbol"] for p in d["picks"]], d["day"]) or {}
+            for p in d["picks"]:
+                p["move"] = boom_move(rg.get(p["symbol"]))
     return {"boom1": {"days": boom1, "hits": hits, "picks": priced, "hit_rate": hits / priced if priced else None,
                       "history": 0.55, "random": 0.03},
             "short": {"days": days[::-1], "size": 5000.0, "pnl_usd": cum, "pnl_pct": 100 * cum / 5000.0,
@@ -482,7 +500,7 @@ def workflow_timeouts(repo_root):
     """Each workflow file's longest job time limit in minutes, keyed by its path (the Progress tab's 100%)."""
     out = {}
     for f in sorted(Path(repo_root, ".github", "workflows").glob("*.yml")):
-        m = [int(x) for x in re.findall(r"^\s*timeout-minutes:\s*(\d+)", f.read_text(), re.M)]
+        m = [int(x) for x in re.findall(r"^\s*timeout-minutes:\s*(\d+)", f.read_text(), re.MULTILINE)]
         if m:
             out[f".github/workflows/{f.name}"] = max(m)
     return out
@@ -802,7 +820,7 @@ def history_sim(repo_root, name, book=5000.0, step=5):
     eq = book + day.cumsum()
     yr = day.groupby(day.index.str[:4]).sum() / book
     return {"label": "History simulation 2019-2025 (walk-forward, after costs, every fired trade, sized by confidence, single trades capped at +-50%)",
-            "start": book, "end": float(eq.iloc[-1]), "days": int(len(day)), "trades": int(len(t)),
+            "start": book, "end": float(eq.iloc[-1]), "days": len(day), "trades": len(t),
             "mean_net_per_trade": float(t["net"].mean()), "per_year_pct": {k: float(100 * v) for k, v in yr.items()},
             "curve": [[d, round(float(v), 2)] for d, v in list(eq.items())[::step]]}
 

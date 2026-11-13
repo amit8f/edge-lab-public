@@ -1,0 +1,187 @@
+{
+ "verdict": "failed",
+ "rule": "gated longs: n >= 500, mean net minus all NX3 longs >= +0.10%/trade with day-clustered 95% lower bound > 0, own mean net > 0, and gated minus same-day random control lower bound > 0",
+ "gated_trades": 2333,
+ "all_longs": 4652,
+ "gated_share": 0.5015047291487532,
+ "gated_mean_net": 0.001338156647909222,
+ "all_longs_mean_net": 0.0013229389625035296,
+ "gated_hit_rate": 0.44234890698671236,
+ "all_longs_hit_rate": 0.45507308684436804,
+ "gain_over_all_longs": {
+  "mean": 1.5217685405692367e-05,
+  "lo": -0.0025620429038043908,
+  "hi": 0.002930665684054598
+ },
+ "gated_minus_control_per_day": {
+  "mean": 0.005205044040545121,
+  "lo": 0.0008366696796339966,
+  "hi": 0.009839440880295638,
+  "days": 1262
+ },
+ "gated_own_per_day": {
+  "mean": 0.00035844319744560274,
+  "lo": -0.0034296620439640086,
+  "hi": 0.004554421177150368,
+  "days": 1262
+ },
+ "novel_share": 0.9780739466895959,
+ "per_year": {
+  "2019": {
+   "n": 365,
+   "mean_net": -0.0016604173788935606
+  },
+  "2020": {
+   "n": 354,
+   "mean_net": -0.000692692072974347
+  },
+  "2021": {
+   "n": 389,
+   "mean_net": 0.005199868343462791
+  },
+  "2022": {
+   "n": 366,
+   "mean_net": 0.001272789182297893
+  },
+  "2023": {
+   "n": 273,
+   "mean_net": 0.004527264918572272
+  },
+  "2024": {
+   "n": 380,
+   "mean_net": 0.0006624009973736298
+  },
+  "2025": {
+   "n": 206,
+   "mean_net": -1.4856948538747262e-05
+  }
+ },
+ "flags_all_longs": {
+  "earnings": {
+   "n": 2221,
+   "mean_net": 0.0016197623078221673
+  },
+  "guidance": {
+   "n": 649,
+   "mean_net": 0.001767502528026487
+  },
+  "analyst_up": {
+   "n": 1119,
+   "mean_net": 0.0032574490983744053
+  },
+  "analyst_down": {
+   "n": 189,
+   "mean_net": -0.0013731408406860936
+  },
+  "offering": {
+   "n": 48,
+   "mean_net": 0.001969959003155036
+  },
+  "merger": {
+   "n": 217,
+   "mean_net": 0.000716262758073599
+  },
+  "fda": {
+   "n": 57,
+   "mean_net": 0.0079289787587435
+  },
+  "contract": {
+   "n": 151,
+   "mean_net": -0.01385142796446555
+  },
+  "legal": {
+   "n": 12,
+   "mean_net": -0.010536109577267557
+  },
+  "bankruptcy": {
+   "n": 0,
+   "mean_net": null
+  },
+  "dividend": {
+   "n": 1078,
+   "mean_net": 0.0035601018232851154
+  },
+  "executive": {
+   "n": 78,
+   "mean_net": -0.0014552066958016684
+  }
+ },
+ "novelty_deciles_all_longs": [
+  {
+   "decile": 1,
+   "sim_max": 0.0,
+   "n": 466,
+   "mean_net": -0.0024927549086909335
+  },
+  {
+   "decile": 2,
+   "sim_max": 0.0,
+   "n": 465,
+   "mean_net": 0.005425872077305987
+  },
+  {
+   "decile": 3,
+   "sim_max": 0.0,
+   "n": 465,
+   "mean_net": 0.009542699225749057
+  },
+  {
+   "decile": 4,
+   "sim_max": 0.09168177098035812,
+   "n": 465,
+   "mean_net": 0.008053314652266007
+  },
+  {
+   "decile": 5,
+   "sim_max": 0.15391488373279572,
+   "n": 465,
+   "mean_net": 0.0005645951027144297
+  },
+  {
+   "decile": 6,
+   "sim_max": 0.21663996577262878,
+   "n": 465,
+   "mean_net": -0.0026253179163252464
+  },
+  {
+   "decile": 7,
+   "sim_max": 0.28836724162101746,
+   "n": 465,
+   "mean_net": -0.005693526997109464
+  },
+  {
+   "decile": 8,
+   "sim_max": 0.38733237981796265,
+   "n": 465,
+   "mean_net": 0.002890680682843763
+  },
+  {
+   "decile": 9,
+   "sim_max": 0.5588780641555786,
+   "n": 465,
+   "mean_net": -0.0008611304431663941
+  },
+  {
+   "decile": 10,
+   "sim_max": 1.0000001192092896,
+   "n": 466,
+   "mean_net": -0.0015606348233324911
+  }
+ ],
+ "idea_count": "145 (160 with phase 1)",
+ "period": "2019-01-03..2025-09-23",
+ "vocabulary": {
+  "years": [
+   2019,
+   2022
+  ],
+  "headlines": 571571,
+  "terms": 455942,
+  "ngrams": [
+   1,
+   2
+  ],
+  "min_df": 2
+ },
+ "novelty_note": "a pick's similarity is the highest cosine between any of its event headlines (previous close to the decision time) and any of the stock's headlines in the 20 sessions before"
+}

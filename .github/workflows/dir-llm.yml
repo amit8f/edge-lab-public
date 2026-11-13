@@ -1,0 +1,119 @@
+# DIR-LLM (research/prereg/DIRECTION.md, tracks/news/dir_llm.py): Gemini 2.5 Flash's forced up/down answer on
+# masked headlines. Run stage=items once (needs NX1's and NX3's caches); the daily schedule then runs stage=calls
+# until every prompt is answered (free-tier daily quota); then dispatch stage=test. Headline text and prompts stay
+# in the cache; only DIRLLM.json and the answer counts are committed, to the branch that ran it.
+name: dir-llm
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "items, calls or test"
+        required: true
+        default: calls
+  schedule:
+    - cron: "40 8 * * *"     # after Gemini's daily quota resets (midnight Pacific) and after N1B's 08:15 run
+
+concurrency:
+  group: dir-llm
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  run:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore NX1's cache (items only)
+        if: inputs.stage == 'items'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+          fail-on-cache-miss: true
+
+      - name: Restore NX3's cache (items only)
+        if: inputs.stage == 'items'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1/nx3
+          key: nx3-v1-none
+          restore-keys: nx3-v1-
+          fail-on-cache-miss: true
+
+      - name: Restore DIR-LLM's state
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/dirllm
+          key: dirllm-v1-${{ github.run_id }}
+          restore-keys: dirllm-v1-
+
+      - name: Run the stage
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          STAGE: ${{ inputs.stage || 'calls' }}
+        run: |
+          if [ "$STAGE" = calls ] && [ ! -f cache/dirllm/items.parquet ]; then
+            echo "No items yet: dispatch stage=items first"; exit 0
+          fi
+          PYTHONPATH=. .venv/bin/python -u -m tracks.news.dir_llm --stage "$STAGE" --cache cache/nx1 \
+            --state cache/dirllm --out research/results/DIR --budget-min 240
+          mkdir -p research/results/DIR
+          if [ -f cache/dirllm/answers.jsonl ]; then
+            PYTHONPATH=. .venv/bin/python - <<'PY'
+          import json, pathlib
+          st = pathlib.Path("cache/dirllm")
+          meta = json.loads((st / "meta.json").read_text())
+          rows = [json.loads(x) for x in (st / "answers.jsonl").read_text().splitlines() if x.strip()]
+          mode = json.loads((st / "mode.json").read_text())["mode"] if (st / "mode.json").exists() else None
+          got = {k: sum(r["kind"] == k for r in rows) for k in meta["items"]}
+          out = {"model": meta["model"], "cutoff": meta["cutoff"], "mode": mode, "items": meta["items"], "answered": got}
+          pathlib.Path("research/results/DIR/DIRLLM_progress.json").write_text(json.dumps(out, indent=1))
+          print(out)
+          PY
+          fi
+
+      - name: Save DIR-LLM's state (also after a failure)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/dirllm
+          key: dirllm-v1-${{ github.run_id }}
+
+      - name: Commit the summary to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/DIR
+          git add research/results/DIR
+          git diff --cached --quiet && { echo "Nothing new"; exit 0; }
+          git commit -q -m "DIR-LLM ${{ inputs.stage || 'calls' }} (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
