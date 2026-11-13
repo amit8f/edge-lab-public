@@ -1,0 +1,316 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "e9b006c7cd5526b001448b2d059427d57bec76ee0291e97c6eec0938acc359ff",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "97a00174f9e540448dcc00e93dc897ea005c3370b149e8d39b6818f17a5ab950",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "LFMD",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "GRVY",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "analyst",
+     "symbol": "NBIS",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "NUAI",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "ITG",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "OKLO",
+     "tone": -1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "CWEN",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "ENLT",
+     "tone": -1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CMG",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "regulatory",
+     "symbol": "XOM",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4f84d1368bf671a85d551307e144b5dcb67d9a847483875776e639ed5afb8ddf",
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "7857a4f734f64bbd8704b4eb5854fd0e8e0b2f1ea73cc2a41d35262957fcef54",
+   "quota": false,
+   "retry": {
+    "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/completions",
+    "model": "openai/gpt-oss-120b",
+    "prompt_sha256": "18eff99b79e7de110824f1164699d13b726704921237304d280edb1a4c3fc101",
+    "quota": false
+   },
+   "unreadable": true
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": "1 unreadable agent answers",
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.28701,
+   "news": 0,
+   "pace": null,
+   "price": 2.13,
+   "r20": -0.32724,
+   "r5": -0.27729,
+   "short": true,
+   "src": "iex",
+   "symbol": "LFMD",
+   "z": 3.828
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.04361,
+   "news": 0,
+   "pace": null,
+   "price": 70.35,
+   "r20": 0.01049,
+   "r5": 0.01399,
+   "short": true,
+   "src": "delayed_sip",
+   "symbol": "GRVY",
+   "z": 3.106
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.10518,
+   "news": 1,
+   "pace": null,
+   "price": 115.11,
+   "r20": -0.31723,
+   "r5": 0.0687,
+   "short": true,
+   "src": "iex",
+   "symbol": "NBIS",
+   "z": -1.201
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": 0.11213,
+   "news": 1,
+   "pace": null,
+   "price": 3.025,
+   "r20": -0.18318,
+   "r5": 0.66871,
+   "short": true,
+   "src": "iex",
+   "symbol": "NUAI",
+   "z": 0.725
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.04623,
+   "news": 1,
+   "pace": null,
+   "price": 5.055,
+   "r20": -0.10774,
+   "r5": 0.25296,
+   "short": false,
+   "src": "iex",
+   "symbol": "ITG",
+   "z": -0.506
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.03517,
+   "news": 1,
+   "pace": null,
+   "price": 23.59,
+   "r20": -0.18527,
+   "r5": 0.27344,
+   "short": true,
+   "src": "iex",
+   "symbol": "OKLO",
+   "z": -0.475
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00869,
+   "news": 1,
+   "pace": null,
+   "price": 33.67,
+   "r20": 0.11415,
+   "r5": -0.02625,
+   "short": true,
+   "src": "iex",
+   "symbol": "CWEN",
+   "z": 0.34
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00907,
+   "news": 1,
+   "pace": null,
+   "price": 66.66,
+   "r20": -0.03982,
+   "r5": 0.04117,
+   "short": false,
+   "src": "delayed_sip",
+   "symbol": "ENLT",
+   "z": -0.253
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.00512,
+   "news": 1,
+   "pace": null,
+   "price": 34.99,
+   "r20": 0.1501,
+   "r5": -0.0065,
+   "short": true,
+   "src": "iex",
+   "symbol": "CMG",
+   "z": -0.154
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00294,
+   "news": 1,
+   "pace": null,
+   "price": 170.28,
+   "r20": -0.02805,
+   "r5": 0.0271,
+   "short": true,
+   "src": "iex",
+   "symbol": "XOM",
+   "z": 0.144
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5060.1552,
+  "PICK-MAIN-coin": 5141.6829,
+  "PICK-PENNY": 438.103,
+  "PICK-PENNY-coin": 514.6698
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-13T14:50:20.611560+00:00",
+   "entry": 2.63,
+   "exit": 2.225,
+   "net": -5.1651,
+   "opened": "2026-11-09T16:35:21.213097+00:00",
+   "qty": 11,
+   "side": 1,
+   "symbol": "SHMD",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-13T14:50:20.611560+00:00",
+   "entry": 2.63,
+   "exit": 2.225,
+   "net": -5.1651,
+   "opened": "2026-11-09T16:35:21.213097+00:00",
+   "qty": 11,
+   "side": 1,
+   "symbol": "SHMD",
+   "why": "stop"
+  }
+ ],
+ "flag_counts": {
+  "move": 18,
+  "news": 10,
+  "volume": 0
+ },
+ "flagged": 27,
+ "headline_counts": {
+  "CMG": 3,
+  "CWEN": 1,
+  "ENLT": 1,
+  "GRVY": 2,
+  "ITG": 3,
+  "LFMD": 3,
+  "NBIS": 3,
+  "NUAI": 2,
+  "OKLO": 1,
+  "XOM": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "cbed178e085b4cc4900fd768a089b9208fe3204927f1f3244c6ea409ff3d6b13",
+ "price_sources": {
+  "delayed_sip": 674,
+  "iex": 2696
+ },
+ "priced": 3370,
+ "risk": [],
+ "slot": "2026-11-13T09:50",
+ "t": "2026-11-13T14:50:20.611560+00:00",
+ "universe": 3394,
+ "written_utc": "2026-11-13T14:51:37.393315Z"
+}
