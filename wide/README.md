@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 14:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8184.35 | -18.16% | 214 | 69 | short AMD, long APP, short CBRS, short NBIS, long NU |
-| Coin flip on C's picks | $9059.77 | -9.40% | 213 | 106 | short AMD, long APP, long CBRS, long NBIS, short NU |
-| C's prompt on Groq (K7) | $5861.52 | -41.38% | 415 | 100 | long APP, long AVGO, short BMNR, short NVDA, long RKLB |
-| Coin flip on C-groq's picks | $8221.06 | -17.79% | 415 | 194 | long APP, short AVGO, short BMNR, short NVDA, short RKLB |
-| C-groq's answers, acted on once a day (K8) | $8258.02 | -17.42% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq-slow's picks | $10986.15 | +9.86% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
-| C's answers, acted on once a day (K8) | $9691.23 | -3.09% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
-| Coin flip on C-slow's picks | $10159.96 | +1.60% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
-| Just hold SPY | $9813.49 | -1.87% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8191.75 | -18.08% | 214 | 69 | short AMD, long APP, short CBRS, short NBIS, long NU |
+| Coin flip on C's picks | $9050.37 | -9.50% | 213 | 106 | short AMD, long APP, long CBRS, long NBIS, short NU |
+| C's prompt on Groq (K7) | $5859.29 | -41.41% | 415 | 100 | long APP, long AVGO, short BMNR, short NVDA, long RKLB |
+| Coin flip on C-groq's picks | $8220.01 | -17.80% | 415 | 194 | long APP, short AVGO, short BMNR, short NVDA, short RKLB |
+| C-groq's answers, acted on once a day (K8) | $8253.84 | -17.46% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq-slow's picks | $10982.27 | +9.82% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
+| C's answers, acted on once a day (K8) | $9695.21 | -3.05% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
+| Coin flip on C-slow's picks | $10158.86 | +1.59% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
+| Just hold SPY | $9813.55 | -1.86% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-13 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 14:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 14:07 | short AMD, long APP, short CBRS, short NBIS, long NU | bought SMCI @ $26.82; sold AMD @ $531.79; bought APP @ $410.08 | Closed SMCI to consolidate winning short positions and added a new short on AMD due to negative news and price action, while maintaining long NU and adding long APP for strong positive momentum, and keeping short CBRS and NBIS. |
 | 2026-11-13 13:57 | short CBRS, short NBIS, long NU, short SMCI | bought AMD @ $529.06; bought DELL @ $346.08; bought NVDA @ $162.69; sold CBRS @ $108.44; bought NU @ $12.96 | Closed losing short positions in AMD, DELL, and NVDA to cut losses. Maintained profitable shorts in NBIS and SMCI. Initiated a new short in CBRS due to analyst downgrades despite a daily gain, and a new long in NU based on strong earnings news. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 14:1
 | 2026-11-12 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 11:08 | long AMD, long AVGO, short MSTR, short NBIS, short NVDA | none | Maintaining existing positions in AMD and AVGO due to strong upward momentum. Keeping shorts in MSTR, NBIS, and NVDA as they continue to show weakness and negative catalysts. |
-| 2026-11-12 10:57 | no answer, nothing changed | none | unreadable answer |
