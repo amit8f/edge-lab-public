@@ -488,9 +488,14 @@ function renderBoomTab() {
   $("boomsdays").replaceChildren(...sh.days.map(d => el("div", { class: `job ${d.status !== "decided" ? "bad" : ""}` },
     el("span", { text: d.day }),
     el("span", { class: d.status !== "decided" ? "down" : d.pnl_usd == null ? "muted" : d.pnl_usd >= 0 ? "up" : "down",
-      text: d.status !== "decided" ? `${d.status}${d.reason ? `: ${d.reason}` : ""}`
-        : d.pnl_usd == null ? "decided, settles after the close"
-        : `${d.trades} shorts · ${usd(d.pnl_usd)} · total ${sgn(d.cum_pct)}` }))));
+      text: d.pnl_usd != null && d.trades ? `${d.text} ${d.trades} closed · ${usd(d.pnl_usd)} · total ${sgn(d.cum_pct)}`
+        : d.shorts && d.shorts.length ? `${d.text} Settles after the close.` : d.text }))));
+  const last = sh.days[0];
+  $("boomtoday").replaceChildren(last ? el("div", { class: "card small" },
+    el("div", { class: "kv" }, el("b", { text: `Latest morning (${last.day})` }),
+      el("span", { class: sh.trades ? (sh.pnl_pct >= 0 ? "up" : "down") : "muted",
+        text: sh.trades ? `book ${sgn(sh.pnl_pct)} overall` : "no trades yet, book at $5,000" })),
+    el("div", { text: last.text })) : el("div", { class: "muted small", text: "No mornings logged yet." }));
 }
 
 // ---------- data ----------

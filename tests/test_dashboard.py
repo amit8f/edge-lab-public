@@ -303,3 +303,13 @@ def test_boom_tab_totals(tmp_path):
     s = t["short"]
     assert s["trades"] == 2 and s["wins"] == 1 and abs(s["mean"] - 0.01) < 1e-12 and s["control_mean"] == 0.01
     assert s["pnl_pct"] == 0.2 and s["missed"] == 1 and s["days"][0]["day"] == "2026-11-12"
+
+
+def test_boom_day_text_says_what_it_did():
+    from dashboard import build as DB
+    assert DB.boom_day_text({"status": "missed", "reason": "run started after 9:35 ET"}).endswith("started too late.")
+    assert "after the open" in DB.boom_day_text({"status": "missed", "reason": "decision finished after 9:35 ET"})
+    assert DB.boom_day_text({"status": "decided", "shorts": ["A", "B"]}) == "Shorted A, B at the open."
+    t = DB.boom_day_text({"status": "decided", "shorts": [], "cut": -0.119,
+                          "picks": [{"symbol": "VIR", "d6": -0.037}, {"symbol": "X", "d6": 0.2}]})
+    assert "VIR at -0.037" in t and "-0.119 or lower" in t
