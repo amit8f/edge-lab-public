@@ -103,3 +103,19 @@ Details the code needs that the text above left open. None changes a pass rule.
   all-adjusted close scaled to the session's raw prices. Follow-gap and fade-gap use the sign of the stock's own
   move at the same observation time (9:14 for the 9:30 entry, 9:35 for the 9:51 entry). No call when the stock's or
   the peers' move is missing or exactly zero.
+
+## Amendment 2 (2026-11-13, before any DIR-FLOW data exists): DIR-OFI, a second DIR-FLOW arm
+
+Registered with `DIRECTION2.md` (Amit chose "All five" on the brainstorm card). Its own idea (phase-2 count 150 with
+the four in DIRECTION2), its own pass rule; DIR-FLOW's rule is unchanged.
+
+- Data: Alpaca SIP quotes (`feed=sip`) for the same BOOM candidates, 9:30:00 to 9:50:59 ET, 2022-01 to 2025-09.
+  Quotes are processed one stock-day at a time and only the summary is kept (no quote file is stored).
+- Input: order flow imbalance at the best bid and offer (Cont, Kukanov and Stoikov 2014), summed over every NBBO
+  update in the window, divided by the window's mean of (bid size + ask size) / 2. Updates with a crossed or locked
+  quote, or a zero size, are skipped.
+- Rule: side = the sign of the OFI; entry 9:51, +-4% barriers or the close. Minimum 1,000 calls.
+- Pass: balanced accuracy >= the sign of the stock's move from the previous close to 9:50 + 3 points, AND arm minus
+  control with bootstrap lower bound > 0, AND own mean net > 0. Reported: OFI deciles, the 9:30-9:40 and 9:40-9:51
+  halves, quote updates per stock-day.
+- Prediction: 0.10.
