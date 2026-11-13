@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-13T13:50 ET: 62 flagged of 3394, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-13T13:55 ET: 62 flagged of 3394, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $5,025.99 | +0.52% | 32 | 16 | short ADTN, short AVNW, long AZTA, long BBSI, long BKNG, short BRUN, short CCOI, long CRCT, short DRVN, long FLYW, long FSK, long LAND, long MBGL, long OPRT, short PSFE, short PTLO, long REZI, long SENEA, short TG, short TRMB, short XRN, long YOU, long ZBH | 1 unreadable agent answers |
-| PICK-MAIN-coin | $5,165.02 | +3.30% | 33 | 14 | short AVNW, long AZTA, short BBSI, short BKNG, long BRUN, long CRCT, long DRVN, short FLYW, short FSK, short LAND, short MBGL, short OPRT, short PSFE, long PTLO, long REZI, long SENEA, short SRAD, long TG, long TRMB, long XRN, short YOU, short ZBH | ok |
-| PICK-PENNY | $437.52 | -12.50% | 51 | 15 | short ACDC, long ARKO, long BGS, short CERS, long CURI, long DDD, long FRMI, short GOGO, long GRAB, short HSDT, short IHRT, long ITRG, short LAC, long LAES, long NKTX, short PEPG, long SERV, long STLN, short TBLA, short TE, short TSHA, long VFF | paused |
-| PICK-PENNY-coin | $516.66 | +3.33% | 43 | 13 | short ACDC, short AMTX, short ARKO, long BGS, long CERS, short CURI, short DDD, long FRMI, short GOGO, long GRAB, short HLLY, long HSDT, short IHRT, long ITRG, short LAC, long LAES, long LENZ, short NXH, short PEPG, long SERV, short SLDP, long SSP, short STIM, short STLN, short TBLA, short TE, long TLS, short TSHA, long VFF, long ZURA | ok |
+| PICK-MAIN | $5,027.32 | +0.55% | 32 | 16 | short ADTN, short AVNW, long AZTA, long BBSI, long BKNG, short BRUN, short CCOI, long CRCT, short DRVN, long FLYW, long FSK, long LAND, long MBGL, long OPRT, short PSFE, short PTLO, long REZI, long SENEA, short TG, short TRMB, short XRN, long YOU, long ZBH | 1 unreadable agent answers |
+| PICK-MAIN-coin | $5,163.38 | +3.27% | 33 | 14 | short AVNW, long AZTA, short BBSI, short BKNG, long BRUN, long CRCT, long DRVN, short FLYW, short FSK, short LAND, short MBGL, short OPRT, short PSFE, long PTLO, long REZI, long SENEA, short SRAD, long TG, long TRMB, long XRN, short YOU, short ZBH | ok |
+| PICK-PENNY | $437.63 | -12.47% | 51 | 15 | short ACDC, long ARKO, long BGS, short CERS, long CURI, long DDD, long FRMI, short GOGO, long GRAB, short HSDT, short IHRT, long ITRG, short LAC, long LAES, long NKTX, short PEPG, long SERV, long STLN, short TBLA, short TE, short TSHA, long VFF | paused |
+| PICK-PENNY-coin | $516.79 | +3.36% | 43 | 13 | short ACDC, short AMTX, short ARKO, long BGS, long CERS, short CURI, short DDD, long FRMI, short GOGO, long GRAB, short HLLY, long HSDT, short IHRT, long ITRG, short LAC, long LAES, long LENZ, short NXH, short PEPG, long SERV, short SLDP, long SSP, short STIM, short STLN, short TBLA, short TE, long TLS, short TSHA, long VFF, long ZURA | ok |
