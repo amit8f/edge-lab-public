@@ -226,6 +226,26 @@ def boom1_book(st, today=None, days=None):
     return [_book("BOOM1", "BOOM1", None, len(days), 0, unit="days", hits=hits, picks=priced, hit_rate=rate, note=note)]
 
 
+def boom_day_text(rec):
+    """One plain sentence on what BOOM-SHORT decided that morning (it only ever shorts)."""
+    st, why = rec.get("status") or "error", rec.get("reason") or ""
+    if st == "missed":
+        late = "the morning job started too late" if "started" in why else "the decision finished after the open"
+        return f"No trade: {late}."
+    if st == "too few stocks":
+        return "No trade: too few stocks had data."
+    if st != "decided":
+        return "No trade: the morning job failed."
+    if rec.get("shorts"):
+        return f"Shorted {', '.join(rec['shorts'])} at the open."
+    p = [x for x in rec.get("picks", []) if x.get("d6") is not None]
+    if not p:
+        return "No trade."
+    lo = min(p, key=lambda x: x["d6"])
+    return (f"No trade: none of the 20 looked likely enough to fall (most bearish was {lo['symbol']} at "
+            f"{lo['d6']:.3f}; a short needs {rec.get('cut', -0.119):.3f} or lower).")
+
+
 def boom_tab(st, boom1):
     """The Boom tab: BOOM1's hit rate and BOOM-SHORT's overall result, day by day, on one page."""
     led = st / "state-boomshort" / "boomshort" / "ledger"
@@ -240,6 +260,7 @@ def boom_tab(st, boom1):
         nets += tr
         ctl += cn
         days.append({"day": f.stem, "status": rec.get("status") or "error", "reason": rec.get("reason"),
+                     "text": boom_day_text(rec), "shorts": rec.get("shorts", []),
                      "trades": len(tr), "pnl_usd": pnl if stl else None, "cum_pct": 100 * cum / 5000.0,
                      "mean": sum(tr) / len(tr) if tr else None, "control_mean": sum(cn) / len(cn) if cn else None})
     return {"boom1": {"days": boom1, "hits": hits, "picks": priced, "hit_rate": hits / priced if priced else None,
