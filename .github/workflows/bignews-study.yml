@@ -22,6 +22,7 @@ jobs:
   run:
     permissions:
       contents: read
+      actions: write
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     steps:
@@ -64,8 +65,9 @@ jobs:
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
           STAGE: ${{ inputs.stage }}
         run: |
+          set -o pipefail
           PYTHONPATH=. .venv/bin/python -u -m tracks.news.bignews_study --stage "$STAGE" --cache cache/nx1 \
-            --out cache/bignews --budget-min 300
+            --out cache/bignews --budget-min 300 | tee stage.log
 
       - name: Save BIGNEWS's cache
         if: always()
@@ -73,3 +75,15 @@ jobs:
         with:
           path: cache/bignews
           key: bignews-v1-${{ github.run_id }}
+
+      - name: Queue the next run (same stage if the time budget ran out, else shocks after minutes)
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STAGE: ${{ inputs.stage }}
+        run: |
+          if grep -q "time budget used" stage.log; then NEXT="$STAGE"
+          elif [ "$STAGE" = minutes ]; then NEXT=shocks
+          else exit 0; fi
+          gh workflow run bignews-study.yml --repo "$GITHUB_REPOSITORY" --ref main -f stage="$NEXT"
+          echo "queued stage=$NEXT"

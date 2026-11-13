@@ -12,7 +12,7 @@ Each regular session, before the open:
 5. A pick is shorted when its D6 score <= the frozen cut, Alpaca marks it shortable and easy to borrow, at most
    MAX_SHORTS a day (lowest scores first), $500 each. Control: as many of the day's other 20 picks drawn at
    random (default_rng(SEED + yyyymmdd)), shorted the same way. The decision is logged (kind boomshort_day)
-   before 9:30 ET; a day decided later than that is logged as missed, with no trades.
+   before 9:30 ET; one finished by 9:35 enters at the next whole minute (Amendment 1), later is missed.
 After the close (and on later runs), each logged day is settled from 1-minute SIP bars (raw) exactly as BOOM2's
 history: entry = the first regular-session bar's open, exit at the -8% / +8% barrier touched first (filled at the
 barrier), else the close; net = short return - NX3's cost model (one day, borrow). Kind boomshort_settle.
@@ -49,7 +49,7 @@ BOOK, PER_TRADE = 5000.0, 500.0
 MAX_SHORTS = 10
 HIST_DAYS = 420
 DECIDE_AT = pd.Timedelta(hours=9, minutes=28)       # ET; logged before the 9:30 open
-LATEST = pd.Timedelta(hours=9, minutes=30)
+LATEST = pd.Timedelta(hours=9, minutes=35)        # Amendment 1: a decision may finish up to 9:35 ET
 COVER = 0.10                                         # the bearish tenth (BOOM2 diagnosis, post hoc)
 FREEZE_YEAR = 2025                                   # the walk-forward fold whose models are frozen
 
@@ -322,7 +322,7 @@ def decide(root, api, cal, ses, man, m1, m2, syms, clock, wait_min, sleep):
         return
     now = clock()
     if now > ses["date"] + LATEST:
-        led.write_json("boomshort_day", d, f"days/{d}.json", {"status": "missed", "reason": "run started after 9:30 ET",
+        led.write_json("boomshort_day", d, f"days/{d}.json", {"status": "missed", "reason": "run started after 9:35 ET",
                                                              "started": now.isoformat()})
         print(f"[boom-short] {d}: missed (started {now:%H:%M})")
         return
@@ -365,8 +365,12 @@ def decide(root, api, cal, ses, man, m1, m2, syms, clock, wait_min, sleep):
                            "prev_c": float(prevc.get(r.symbol, np.nan)), "dv20": float(r.dv20)} for r in p.itertuples()],
                 "shorts": sh, "control": ctl, "blocked_not_etb": blocked,
                 "inputs_sha256": hashlib.sha256(p[d6_cols()].to_numpy(np.float64).tobytes()).hexdigest()}
-    if clock() > ses["date"] + LATEST:
-        rec |= {"status": "missed", "reason": "decision finished after 9:30 ET", "shorts": [], "control": []}
+    fin = clock()
+    rec["finished_at"] = fin.isoformat()
+    if fin > ses["date"] + LATEST:
+        rec |= {"status": "missed", "reason": "decision finished after 9:35 ET", "shorts": [], "control": []}
+    elif fin > ses["open_t"]:        # Amendment 1: a late decision enters at the next whole minute's open
+        rec["entry_from"] = fin.ceil("min").isoformat()
     led.write_json("boomshort_day", d, f"days/{d}.json", rec)
     print(f"[boom-short] {d}: {rec['status']}, shorts {rec.get('shorts')}, control {rec.get('control')}")
 
@@ -388,7 +392,8 @@ def settle(root, api, cal):
         names = sorted(set(rec.get("shorts", [])) | set(rec.get("control", [])))
         info = {x["symbol"]: (x["prev_c"], x["dv20"]) for x in rec.get("picks", []) if x["symbol"] in names}
         o_t, c_t = ses.loc[day, "open_t"], ses.loc[day, "close_t"]
-        res = settle_rows(api.minutes(names, day + pd.Timedelta(hours=4), c_t), info, o_t, c_t) if names else {}
+        o_e = max(o_t, pd.Timestamp(rec["entry_from"])) if rec.get("entry_from") else o_t
+        res = settle_rows(api.minutes(names, day + pd.Timedelta(hours=4), c_t), info, o_e, c_t) if names else {}
         bk = [res[s]["net"] for s in rec.get("shorts", []) if res.get(s, {}).get("status") == "settled"]
         cl = [res[s]["net"] for s in rec.get("control", []) if res.get(s, {}).get("status") == "settled"]
         led.write_json("boomshort_settle", e["date"], f"settle/{e['date']}.json", {
@@ -396,7 +401,7 @@ def settle(root, api, cal):
             "control": {s: res[s] for s in rec.get("control", []) if s in res},
             "book_mean": float(np.mean(bk)) if bk else None, "control_mean": float(np.mean(cl)) if cl else None,
             "book_minus_control": float(np.mean(bk) - np.mean(cl)) if bk and cl else None,
-            "pnl_usd": float(np.sum(bk) * PER_TRADE) if bk else 0.0})
+            "pnl_usd": float(np.sum(bk) * PER_TRADE) if bk else 0.0, "entry_from": rec.get("entry_from")})
         print(f"[boom-short] settled {e['date']}: {len(bk)} trades, book {np.mean(bk) if bk else float('nan'):+.4f}")
 
 
@@ -408,7 +413,9 @@ def report(root):
     n = sum(len([v for v in r["trades"].values() if v.get("status") == "settled"]) for r in rows)
     bm = np.array([r["book_mean"] for r in rows if r["book_mean"] is not None], float)
     bc = np.array([r["book_minus_control"] for r in rows if r["book_minus_control"] is not None], float)
+    on_time = np.array([r["book_mean"] for r in rows if r["book_mean"] is not None and not r.get("entry_from")], float)
     return {"closed_trades": n, "days_with_trades": int(len(bm)), "book": X.tstat(bm), "book_minus_control": X.tstat(bc),
+            "late_days": sum(bool(r.get("entry_from")) for r in rows), "book_on_time": X.tstat(on_time),
             "pnl_usd": float(sum(r["pnl_usd"] for r in rows))}
 
 

@@ -285,3 +285,21 @@ def test_boom1_book_counts_finished_days_only(tmp_path, monkeypatch):
     b = DB.boom1_book(tmp_path, today="2026-11-13")[0]
     assert b["name"] == "BOOM1" and b["closed"] == 1 and b["picks"] == 3 and b["hits"] == 2
     assert abs(b["hit_rate"] - 2 / 3) < 1e-9 and b["note"].startswith("2 of 3 picks")
+
+
+def test_boom_tab_totals(tmp_path):
+    import json as _j
+    from dashboard import build as DB
+    led = tmp_path / "state-boomshort" / "boomshort" / "ledger"
+    (led / "settle").mkdir(parents=True)
+    (led / "days").mkdir()
+    (led / "days" / "2026-11-11.json").write_text(_j.dumps({"status": "missed", "reason": "late"}))
+    (led / "days" / "2026-11-12.json").write_text(_j.dumps({"status": "decided"}))
+    (led / "settle" / "2026-11-12.json").write_text(_j.dumps({
+        "trades": {"A": {"status": "settled", "net": 0.04}, "B": {"status": "settled", "net": -0.02}},
+        "control": {"C": {"status": "settled", "net": 0.01}}, "pnl_usd": 10.0}))
+    t = DB.boom_tab(tmp_path, [{"day": "2026-11-12", "picks": 20, "hits": 11}])
+    assert t["boom1"]["hit_rate"] == 0.55 and t["boom1"]["picks"] == 20
+    s = t["short"]
+    assert s["trades"] == 2 and s["wins"] == 1 and abs(s["mean"] - 0.01) < 1e-12 and s["control_mean"] == 0.01
+    assert s["pnl_pct"] == 0.2 and s["missed"] == 1 and s["days"][0]["day"] == "2026-11-12"

@@ -199,23 +199,55 @@ def boomshort_book(st):
                   size=5000.0, days=len(list((led / "days").glob("*.json"))))]
 
 
-def boom1_book(st, today=None):
-    """BOOM1's forward record (research/prereg/BOOM1.md) from the 20 picks BOOM-SHORT logs each morning: how many
-    moved 8% from the open (high or low). Only finished sessions count. History: 55% of picks, random 3%."""
+def boom1_days(st, today=None):
+    """BOOM1's forward record (research/prereg/BOOM1.md) from the 20 picks BOOM-SHORT logs each morning: per finished
+    session, how many picks moved 8% from the open (high or low). Days without picks (a crash) are left out."""
     led = st / "state-boomshort" / "boomshort" / "ledger"
     today = today or datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
-    hits = priced = days = 0
+    out = []
     for f in sorted((led / "days").glob("*.json")):
         picks = [p["symbol"] for p in (_json(f) or {}).get("picks", [])]
         if not picks or f.stem >= today:
             continue
         rg = _safe(day_ranges, picks, f.stem) or {}
         mv = [m for m in (boom_move(rg.get(s)) for s in picks) if m]
-        days, priced, hits = days + 1, priced + len(mv), hits + sum(m["hit"] for m in mv)
+        if mv:
+            out.append({"day": f.stem, "picks": len(mv), "hits": sum(m["hit"] for m in mv)})
+    return out
+
+
+def boom1_book(st, today=None, days=None):
+    """BOOM1's card for the Books tab. History: 55% of picks moved 8%, random stocks 3%."""
+    days = boom1_days(st, today) if days is None else days
+    hits, priced = sum(d["hits"] for d in days), sum(d["picks"] for d in days)
     rate = hits / priced if priced else None
     note = (f"{hits} of {priced} picks moved 8%+ from the open ({100 * rate:.0f}%). History 55%, random 3%."
             if priced else "No finished day with picks yet. History 55%, random 3%.")
-    return [_book("BOOM1", "BOOM1", None, days, 0, unit="days", hits=hits, picks=priced, hit_rate=rate, note=note)]
+    return [_book("BOOM1", "BOOM1", None, len(days), 0, unit="days", hits=hits, picks=priced, hit_rate=rate, note=note)]
+
+
+def boom_tab(st, boom1):
+    """The Boom tab: BOOM1's hit rate and BOOM-SHORT's overall result, day by day, on one page."""
+    led = st / "state-boomshort" / "boomshort" / "ledger"
+    hits, priced = sum(d["hits"] for d in boom1), sum(d["picks"] for d in boom1)
+    days, cum, nets, ctl = [], 0.0, [], []
+    for f in sorted((led / "days").glob("*.json")):
+        rec, stl = _json(f) or {}, _json(led / "settle" / f.name)
+        tr = [v["net"] for v in ((stl or {}).get("trades") or {}).values() if v.get("status") == "settled"]
+        cn = [v["net"] for v in ((stl or {}).get("control") or {}).values() if v.get("status") == "settled"]
+        pnl = (stl or {}).get("pnl_usd") or 0.0
+        cum += pnl
+        nets += tr
+        ctl += cn
+        days.append({"day": f.stem, "status": rec.get("status") or "error", "reason": rec.get("reason"),
+                     "trades": len(tr), "pnl_usd": pnl if stl else None, "cum_pct": 100 * cum / 5000.0,
+                     "mean": sum(tr) / len(tr) if tr else None, "control_mean": sum(cn) / len(cn) if cn else None})
+    return {"boom1": {"days": boom1, "hits": hits, "picks": priced, "hit_rate": hits / priced if priced else None,
+                      "history": 0.55, "random": 0.03},
+            "short": {"days": days[::-1], "size": 5000.0, "pnl_usd": cum, "pnl_pct": 100 * cum / 5000.0,
+                      "trades": len(nets), "target": 100, "wins": sum(x > 0 for x in nets),
+                      "mean": sum(nets) / len(nets) if nets else None, "control_mean": sum(ctl) / len(ctl) if ctl else None,
+                      "missed": sum(d["status"] != "decided" for d in days)}}
 
 
 def day_ranges(symbols, day):
@@ -769,7 +801,8 @@ def last_change(repo_root, names):
 
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(boom1_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    b1days = _safe(boom1_days, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:
@@ -779,7 +812,8 @@ def build(states, out, repo_root=".", repo=None, token=None):
     res = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "books": books,
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),
            "timeouts": workflow_timeouts(repo_root),
-           "nx3": nx3, "boomshort": _safe(boomshort_days, st) or [], "ideas": ideas(repo_root, books)}
+           "nx3": nx3, "boomshort": _safe(boomshort_days, st) or [],
+           "boom": _safe(boom_tab, st, b1days) or None, "ideas": ideas(repo_root, books)}
     Path(out).mkdir(parents=True, exist_ok=True)
     tmp = Path(out) / "summary.json.tmp"
     tmp.write_text(json.dumps(_clean(res), separators=(",", ":"), default=str))
