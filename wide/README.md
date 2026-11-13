@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8359.51 | -16.40% | 210 | 67 | short AMD, short DELL, short NBIS, short NVDA, short SMCI |
-| Coin flip on C's picks | $9097.57 | -9.02% | 209 | 104 | long AMD, short DELL, long NBIS, long NVDA, short SMCI |
-| C's prompt on Groq (K7) | $5903.42 | -40.97% | 411 | 97 | long AMD, long NU, short NVDA, long RKLB, short SMCI |
-| Coin flip on C-groq's picks | $8243.14 | -17.57% | 411 | 193 | long AMD, short NU, short NVDA, short RKLB, long SMCI |
-| C-groq's answers, acted on once a day (K8) | $8248.56 | -17.51% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq-slow's picks | $10894.84 | +8.95% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
-| C's answers, acted on once a day (K8) | $9733.99 | -2.66% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
-| Coin flip on C-slow's picks | $10150.19 | +1.50% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
-| Just hold SPY | $9778.13 | -2.22% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8322.91 | -16.77% | 210 | 67 | short AMD, short DELL, short NBIS, short NVDA, short SMCI |
+| Coin flip on C's picks | $9086.80 | -9.13% | 209 | 104 | long AMD, short DELL, long NBIS, long NVDA, short SMCI |
+| C's prompt on Groq (K7) | $5891.85 | -41.08% | 411 | 97 | long AMD, long NU, short NVDA, long RKLB, short SMCI |
+| Coin flip on C-groq's picks | $8256.10 | -17.44% | 411 | 193 | long AMD, short NU, short NVDA, short RKLB, long SMCI |
+| C-groq's answers, acted on once a day (K8) | $8248.13 | -17.52% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq-slow's picks | $10921.26 | +9.21% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
+| C's answers, acted on once a day (K8) | $9722.15 | -2.78% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
+| Coin flip on C-slow's picks | $10158.12 | +1.58% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
+| Just hold SPY | $9786.73 | -2.13% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-13 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 12:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:57 | short AMD, short DELL, short NBIS, short NVDA, short SMCI | bought CRWV @ $51.53; sold NU @ $13.21; sold AMD @ $523.86; sold DELL @ $336.97 | Closed losing CRWV short and profitable NU long. Maintained profitable shorts in NBIS, NVDA, and SMCI due to continued negative catalysts. Initiated new short positions in AMD and DELL, capitalizing on significant daily drops and negative news flow. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 12:1
 | 2026-11-11 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-11 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-11 14:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-11 14:37 | no answer, nothing changed | none | unreadable answer |
