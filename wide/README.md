@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8227.47 | -17.73% | 216 | 70 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Coin flip on C's picks | $9003.28 | -9.97% | 214 | 106 | short AMD, long CBRS, long NBIS, short NU, long U |
-| C's prompt on Groq (K7) | $5844.90 | -41.55% | 417 | 100 | long APP, long AVGO, long NU, short NVDA, long RKLB |
-| Coin flip on C-groq's picks | $8197.32 | -18.03% | 417 | 194 | long APP, short AVGO, short NU, short NVDA, short RKLB |
-| C-groq's answers, acted on once a day (K8) | $8240.71 | -17.59% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
-| Coin flip on C-groq-slow's picks | $10942.68 | +9.43% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
-| C's answers, acted on once a day (K8) | $9704.02 | -2.96% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Coin flip on C-slow's picks | $10149.16 | +1.49% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Just hold SPY | $9806.39 | -1.94% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8252.78 | -17.47% | 217 | 70 | long CBRS, short IONQ, short NBIS, long NU, long U |
+| Coin flip on C's picks | $9009.41 | -9.91% | 215 | 106 | long CBRS, short IONQ, long NBIS, short NU, long U |
+| C's prompt on Groq (K7) | $5841.08 | -41.59% | 417 | 100 | long APP, long AVGO, long NU, short NVDA, long RKLB |
+| Coin flip on C-groq's picks | $8193.10 | -18.07% | 417 | 194 | long APP, short AVGO, short NU, short NVDA, short RKLB |
+| C-groq's answers, acted on once a day (K8) | $8235.68 | -17.64% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
+| Coin flip on C-groq-slow's picks | $10908.06 | +9.08% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
+| C's answers, acted on once a day (K8) | $9737.92 | -2.62% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Coin flip on C-slow's picks | $10184.65 | +1.85% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Just hold SPY | $9818.24 | -1.82% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-13 15:57 | long CBRS, short IONQ, short NBIS, long NU, long U | bought AMD @ $535.96; sold IONQ @ $28.95 | Maintaining long positions in CBRS, NU, and U due to strong positive momentum and favorable news. Keeping short on NBIS as it continues to decline. Closing AMD short due to a bounce from lows and opening a new short on IONQ due to leadership changes and negative intraday trend. |
 | 2026-11-13 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 15:37 | short AMD, long CBRS, short NBIS, long NU, long U | sold APP @ $408.02; bought CBRS @ $108.10; bought CBRS @ $108.10; bought U @ $52.59 | Closed APP for a small loss. Maintained profitable short positions in NBIS and AMD due to continued negative momentum and news. Maintained profitable long position in NU due to positive news and momentum. Opened a new long position in CBRS based on strong positive news and momentum. Opened a new lon |
 | 2026-11-13 15:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 15:4
 | 2026-11-12 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 12:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 12:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-12 12:27 | no answer, nothing changed | none | unreadable answer |
