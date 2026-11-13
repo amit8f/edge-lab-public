@@ -89,7 +89,7 @@ BOOM direction arms already failed (BOOM2). None of these four repeats them: eac
 A combined model (report test 5) is registered only if at least one of these is non-negative, in a new file.
 Options snapshots (test 6) were not chosen.
 
-## Amendment 1 (2026-11-13, written before any DIR result or DIR-PEER data exists)
+## Amendment 1 (2026-11-13, written before any DIR result was read and before any DIR-PEER data exists; the DIR-GATE items describe code committed before its run)
 
 Details the code needs that the text above left open. None changes a pass rule.
 
