@@ -97,3 +97,28 @@ Clarification (same day, before any fit): the market score is computed per decis
 changes through the day), z-parameters from 2019-2022 (one value per day for gap, 5-session return and volatility;
 rows for the move since the open), and "bad" is a row score below the 20th percentile of 2019-2022 row scores. SPY's
 gap uses adjusted open over adjusted prior close (the only SPY daily cache stores adjusted prices).
+
+## Amendment 2 (2026-11-13, after the fit, before any test-period row is downloaded or scored)
+
+How the one test is run, fixed before it runs. Nothing about the models, widths or bars changes (all frozen in
+`research/results/PICK/PICK_fit.json` and `models/`).
+- Test rows (`tracks/main/pick_test.py`, stage rows): 2023-12 is a warm-up month (the 20-session swing only), then
+  every decision row of every universe stock, 2024-01-02 to 2025-09-30, gets the same chart inputs as pick_data
+  (a vectorised copy, tested equal to `pick_data.inputs`), NX1 news inputs and the market score with the frozen
+  parameters and cut. Each version scores every row with its frozen per-width models and its tier's width. A row
+  is kept if any version's score clears that version's frozen normal-day bar (the bad-day bar is never lower).
+- Random control: for each kept row and each version it clears, one other stock of the same track with a decision
+  row at the same minute, drawn with `default_rng` seeded by (day, minute, symbol, version); it trades by the
+  same rule with its own tier's width for that version. Trades are simulated only for kept and control rows.
+- Picks (stage test): a row is a pick if its score clears the day's bar (bad-day bar on bad rows). One buy per
+  stock per day: the first time it clears. A pick whose trade is undefined (no bar to fill) is dropped with its
+  control.
+- Size: 10% + 30% x (score - bar) / (top - bar), clipped to 10-40%, where top is the 99th percentile of the
+  2019-2023 normal-day scores (refit models, sampled rows) at or above the normal bar. The book is $5,000 per day:
+  picks are taken in time order, and at one decision time highest score first; a pick takes the room left if it
+  is under its size, and is skipped if under 10% is left. Room is released only at the close (exit times are not
+  modelled; this is the cautious reading of "until the book is fully used").
+- Statistics: rule 1, 2,000 day-resampled bootstrap draws (seed 0) of the pick share minus the control share of
+  trades ending +3% or better; rule 2, NW t (5 lags) of the daily book return (sum of size x net) over days with a
+  pick, also reported over all test days; rule 3, NW t of the daily mean of pick net minus its control's net. At
+  least 30 picks. Everything is reported per version; only COMBINED decides.
