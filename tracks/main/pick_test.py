@@ -381,7 +381,7 @@ def stage_test(fit_dir, fitstate, state, out, cal):
     R = pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
     R["d"] = pd.to_datetime(R["d"])
     dates = pd.DatetimeIndex(sorted(cal["date"]))
-    test_days = dates[(dates >= pd.Timestamp(f"{FIRST}-01")) & (dates <= pd.Timestamp(LAST).end_time)]
+    test_days = dates[(dates >= pd.Timestamp(f"{FIRST}-01")) & (dates <= pd.Period(LAST, "M").end_time)]
     tops = top_scores(fitstate, fit, frozen)
     res = {"test": f"{FIRST}..{LAST}", "rows_kept": int((R["role"] == "pick").sum()), "tops": tops, "tracks": {}}
     for tr, F in frozen.items():
