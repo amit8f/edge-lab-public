@@ -66,3 +66,11 @@ A barrier touched in the same minute as the opposite barrier is ambiguous and dr
 DIR-SSTOP, DIR-BRKT and DIR-AGE run on BOOM2's minute bars (being rebuilt now; the rebuild also stores each pick's
 minute path from 9:30 to the close in the cache). NX3-EXIT reads NX3's event minute bars and daily bars. DIR-OFI is the
 largest download and runs after DIR-FLOW's trade download.
+
+## Implementation notes (2026-11-13, written with the code, before any data)
+
+- 1-minute bars don't show whether a bar's high or low came first. A bar that reaches both a trade's stop and its
+  target drops that trade (arm and control alike). DIR-BRKT starts checking exits on the bar after the fill bar.
+- DIR-SSTOP's reported "D6's most bearish tenth" uses D6's walk-forward score (each year scored by a model trained
+  on earlier years' picks, `boom2_study.side_d6`), never the frozen 2025 model on earlier years.
+- DIR-AGE's move is the last bar at or before 9:35 against the previous session's raw close (BOOM2's `c`).
