@@ -95,3 +95,40 @@ def test_nxr_arms_start_on_their_own_first_day(tmp_path):
     M.close_day(root, d, pd.Timestamp("2026-11-09"), 1, models)       # NXK-KRR and NXK2-CAT start 2026-11-09
     r9 = json.loads((root / led.entry("nxm_day", "2026-11-09")["file"]).read_text())
     assert set(r9["arms"]) == set(M.ARMS)
+
+
+def test_all_book_takes_every_fired_event_sized_by_confidence():
+    d = [dec("S4", 40, 3), dec("S1", 31, 2), dec("S2", 35, 0.5), dec("S3", 36, -2, etb=False), dec("S5", 50, -4),
+         dec("S6", 51, 5), dec("S7", 52, 6), dec("S8", 53, 7)]
+    picks, ctrl = M.book_all(d, Lin(1), 7)
+    assert [(p["symbol"], p["side"]) for p in picks] == [("S1", 1), ("S4", 1), ("S5", -1), ("S6", 1), ("S7", 1),
+                                                         ("S8", 1)]          # no 3+3 cap; S3 not borrowable
+    assert np.allclose([p["w"] for p in picks], S.conf_sizes([2, 3, 4, 5, 6, 7]))
+    assert [(c["side"], c["w"]) for c in ctrl] == [(p["side"], p["w"]) for p in picks]
+    assert ctrl == M.book_all(d, Lin(1), 7)[1]
+
+
+def test_all_books_log_from_their_first_day_and_settle(tmp_path):
+    root = tmp_path / "nx3"
+    root.mkdir()
+    models = {a: Lin(1) for a in M.ARMS}
+    d = [dec("AAA", 31, 2), dec("BBB", 40, -2), dec("CCC", 45, 0.1), dec("DDD", 46, 1.5)]
+    assert M.close_day_all(root, d, pd.Timestamp("2026-11-13"), 1, models) is None      # before ALL_FIRST
+    assert M.close_day_all(root, d, pd.Timestamp("2026-11-16"), 1, models) is not None
+    assert M.close_day_all(root, d, pd.Timestamp("2026-11-16"), 1, models) is None      # once a day
+    led = Ledger(root)
+    rec = json.loads((root / led.entry("nxmall_day", "2026-11-16")["file"]).read_text())
+    assert set(rec["arms"]) == set(M.ARMS) and [p["symbol"] for p in rec["arms"]["CAT"]["picks"]] == ["AAA", "BBB", "DDD"]
+
+    class Api:
+        def settle_trades(self, ev, cal):
+            return ev.assign(entry=20.0, exit_ac=21.0, ret=np.where(ev["role"] == "picks", 0.05, 0.0), spy_ret=0.0,
+                             price=20.0, days=2)
+
+    cal = pd.DataFrame({"date": pd.to_datetime(["2026-11-16", "2026-11-17"])})
+    assert M.settle_all(root, Api(), cal, pd.Timestamp("2026-11-16")) == []
+    M.settle_all(root, Api(), cal, pd.Timestamp("2026-11-17"))
+    s = json.loads((root / led.entry("nxmall_settle", "2026-11-16")["file"]).read_text())
+    a = s["arms"]["ENS"]
+    assert len(a["trades"]) == 6 and a["sized_pick_minus_control"] > 0 and a["book_pnl"] is not None
+    assert led.verify() == []

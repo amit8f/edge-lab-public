@@ -403,6 +403,10 @@ def close_day(root, day, d, api=None):
         M.close_day(root, day.decisions, d, day_seed(d))
     except Exception as ex:
         print(f"[nxm] day not logged: {type(ex).__name__}: {ex}")
+    try:    # the uncapped -ALL copies of the NXM books (research/prereg/NXMALL.md); they never stop NX3
+        M.close_day_all(root, day.decisions, d, day_seed(d))
+    except Exception as ex:
+        print(f"[nxmall] day not logged: {type(ex).__name__}: {ex}")
     try:    # the NX3-ALL book and NXS-LLM sizes (research/prereg/NX3ALL.md, NXS.md); they never stop NX3
         A.close_day(root, day.decisions, d, day_seed(d), day.ctx["cut"])
     except Exception as ex:
@@ -459,6 +463,10 @@ def settle(root, api, cal, today):
         M.settle(root, api, cal, today)
     except Exception as ex:
         print(f"[nxm] settle failed: {type(ex).__name__}: {ex}")
+    try:
+        M.settle_all(root, api, cal, today)
+    except Exception as ex:
+        print(f"[nxmall] settle failed: {type(ex).__name__}: {ex}")
     try:
         A.settle(root, api, cal, today)
     except Exception as ex:
