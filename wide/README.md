@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 10:48 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8396.13 | -16.04% | 208 | 66 | short CRWV, short NBIS, long NU, short NVDA, short SMCI |
-| Coin flip on C's picks | $9053.06 | -9.47% | 207 | 103 | long CRWV, long NBIS, short NU, long NVDA, short SMCI |
-| C's prompt on Groq (K7) | $5860.38 | -41.40% | 409 | 97 | long AVGO, long MPWR, long NU, short NVDA, short SMCI |
-| Coin flip on C-groq's picks | $8350.46 | -16.50% | 409 | 192 | long AVGO, short MPWR, short NU, short NVDA, long SMCI |
-| C-groq's answers, acted on once a day (K8) | $8205.81 | -17.94% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq-slow's picks | $10902.80 | +9.03% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
-| C's answers, acted on once a day (K8) | $9794.10 | -2.06% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
-| Coin flip on C-slow's picks | $10194.71 | +1.95% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
-| Just hold SPY | $9772.01 | -2.28% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8408.51 | -15.91% | 208 | 66 | short CRWV, short NBIS, long NU, short NVDA, short SMCI |
+| Coin flip on C's picks | $9041.17 | -9.59% | 207 | 103 | long CRWV, long NBIS, short NU, long NVDA, short SMCI |
+| C's prompt on Groq (K7) | $5876.76 | -41.23% | 409 | 97 | long AVGO, long MPWR, long NU, short NVDA, short SMCI |
+| Coin flip on C-groq's picks | $8327.12 | -16.73% | 409 | 192 | long AVGO, short MPWR, short NU, short NVDA, long SMCI |
+| C-groq's answers, acted on once a day (K8) | $8224.78 | -17.75% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq-slow's picks | $10925.22 | +9.25% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
+| C's answers, acted on once a day (K8) | $9795.44 | -2.05% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
+| Coin flip on C-slow's picks | $10197.37 | +1.97% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
+| Just hold SPY | $9777.35 | -2.23% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-13 10:57 | short CRWV, short NBIS, long NU, short NVDA, short SMCI | none | Maintaining current positions: short NBIS, NU long, short NVDA, short SMCI, and short CRWV. The strategy focuses on capitalizing on strong negative momentum in AI-related stocks due to NVIDIA news and DOJ investigations, while holding a strong performer (NU) that is bucking the trend. |
 | 2026-11-13 10:48 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 10:37 | short CRWV, short NBIS, long NU, short NVDA, short SMCI | sold CBRS @ $102.20; sold CRWV @ $49.45 | Maintained existing short positions in NBIS, NVDA, and SMCI due to continued weakness and negative news, and the long position in NU for its strong positive momentum. Closed CBRS for underperformance and initiated a new short in CRWV based on its sharp daily decline and concerning news. |
 | 2026-11-13 10:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 10:4
 | 2026-11-11 13:37 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | Maintaining all existing long positions due to strong positive momentum across the board, especially in AI-related stocks, and all positions are currently profitable. |
 | 2026-11-11 13:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-11 13:17 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | All existing long positions are maintained due to strong positive momentum and favorable sector news, indicating a continuation of the current rally. |
-| 2026-11-11 13:07 | long AXTI, long BE, long CRWV, long NBIS, long RKLB | none | Maintaining all current long positions due to strong positive momentum today, supported by favorable hourly closes and relevant news, indicating continued upward potential in the current market environment. |
