@@ -155,3 +155,35 @@ def test_run_after_open_logs_missed(tmp_path, monkeypatch):
     BS.run(tmp_path, api=api, clock=lambda: today + pd.Timedelta(hours=9, minutes=45))
     rec = json.loads((tmp_path / "boomshort" / "ledger" / "days" / "2025-03-03.json").read_text())
     assert rec["status"] == "missed"
+
+
+def test_cached_scorer_scores_each_text_once():
+    calls = []
+
+    def fb(texts):
+        calls.append(list(texts))
+        return np.array([[len(t), 0.0, 1.0] for t in texts])
+    run = BS.cached_scorer(fb)
+    a = run(["x", "yy", "x"])
+    b = run(["yy", "zzz"])
+    assert calls == [["x", "yy"], ["zzz"]]
+    assert a[:, 0].tolist() == [1, 2, 1] and b[:, 0].tolist() == [2, 3]
+
+
+def test_pre_open_events_merges_warm_news_and_fetches_only_the_tail(tmp_path, monkeypatch):
+    ses = {"date": pd.Timestamp("2026-11-12"), "prev_close_t": pd.Timestamp("2026-11-11 16:00"),
+           "open_t": pd.Timestamp("2026-11-12 09:30")}
+    seen = {}
+
+    class Api:
+        def news(self, start, end):
+            seen["start"] = start
+            return pd.DataFrame({"id": [2, 3], "headline": ["b2", "c"]})
+    old = pd.DataFrame({"id": [1, 2], "headline": ["a", "b"]})
+    got = {}
+    monkeypatch.setattr(BS.N, "headline_rows", 
+                        lambda news, fb: (got.setdefault("n", news), pd.DataFrame({"t": pd.to_datetime([])}))[1])
+    until = pd.Timestamp("2026-11-12 09:00")
+    BS.pre_open_events(Api(), tmp_path, ses, pd.Timestamp("2026-11-12 09:28"), None, (old, until))
+    assert seen["start"] == pd.Timestamp("2026-11-12 08:55", tz="America/New_York").tz_convert("UTC")
+    assert sorted(got["n"]["id"]) == [1, 2, 3] and got["n"].set_index("id").loc[2, "headline"] == "b2"

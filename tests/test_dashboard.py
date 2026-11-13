@@ -269,3 +269,19 @@ def test_boomshort_days_for_the_live_tab(tmp_path, monkeypatch):
     assert p["A"]["move"]["hit"] and not p["B"]["move"]["hit"] and p["C"]["move"] is None   # A fell 10% from the open
     assert d[0]["boom1_hits"] == 1 and d[0]["boom1_priced"] == 2
     assert DB.boom_move((10.0, 10.8, 10.0))["hit"] and not DB.boom_move((10.0, 10.79, 9.21))["hit"]
+
+
+def test_boom1_book_counts_finished_days_only(tmp_path, monkeypatch):
+    import json as _j
+    from dashboard import build as DB
+    days = tmp_path / "state-boomshort" / "boomshort" / "ledger" / "days"
+    days.mkdir(parents=True)
+    pk = lambda *s: _j.dumps({"picks": [{"symbol": x} for x in s]})
+    (days / "2026-11-10.json").write_text(pk("A", "B", "C"))
+    (days / "2026-11-11.json").write_text(_j.dumps({"status": "error"}))      # crashed: no picks
+    (days / "2026-11-13.json").write_text(pk("A"))                           # today: not finished
+    rng = {"A": (10.0, 11.0, 9.9), "B": (10.0, 10.2, 9.0), "C": (10.0, 10.1, 9.95)}
+    monkeypatch.setattr(DB, "day_ranges", lambda syms, day: {s: rng[s] for s in syms if s != "C" or day == "2026-11-10"})
+    b = DB.boom1_book(tmp_path, today="2026-11-13")[0]
+    assert b["name"] == "BOOM1" and b["closed"] == 1 and b["picks"] == 3 and b["hits"] == 2
+    assert abs(b["hit_rate"] - 2 / 3) < 1e-9 and b["note"].startswith("2 of 3 picks")
