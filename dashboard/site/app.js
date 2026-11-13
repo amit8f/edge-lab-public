@@ -485,11 +485,26 @@ function renderBoomTab() {
     stat("Average short", sh.mean == null ? "–" : sgn(100 * sh.mean), sh.mean == null ? "muted" : sh.mean >= 0 ? "up" : "down",
       `random control ${sh.control_mean == null ? "–" : sgn(100 * sh.control_mean)}`),
     stat("Days not traded", String(sh.missed), sh.missed ? "warn" : "muted", "crashed, late or too few stocks"));
+  const why = w => w && w.length ? w.map(([k, v]) => `${k} ${v >= 0 ? "▲" : "▼"}`).join(", ") : "";
+  const lean = (p, cut) => p.d6 == null ? "–" : p.d6 <= cut ? `down ${p.d6.toFixed(3)} (short)`
+    : `${p.d6 < 0 ? "down" : "up"} ${p.d6.toFixed(3)}`;
+  const moved = m => !m ? "–" : `${sgn(100 * m.up, 1)} / ${sgn(100 * m.down, 1)}${m.hit ? " ✓8%" : ""}`;
+  const pickTable = d => el("details", {}, el("summary", { text: `All 20 picks, why and which way (${d.picks.length})` }),
+    el("div", { class: "muted small", text: `Chance = BOOM1's chance of an 8% move. Lean = the direction model's score: below 0 leans down, `
+      + `${d.cut == null ? "-0.119" : d.cut.toFixed(3)} or lower gets shorted. "Why" = the 3 inputs that pushed each score most `
+      + `(▲ pushed it up, ▼ down; for the lean, ▲ means toward falling). High / low = how far it went from the open.` }),
+    el("div", { class: "jobs" }, ...d.picks.map(p => el("div", { class: `job ${p.shorted ? "bad" : ""}` },
+      el("span", { text: `${p.symbol} · chance ${pct(p.boom1)} · lean ${lean(p, d.cut == null ? -0.119 : d.cut)}` }),
+      el("span", { class: "muted small", text: [`pre-market ${sgn(100 * (p.pm_gap || 0), 1)}`, p.pre_news ? "news" : "no news",
+        p.move ? `high / low ${moved(p.move)}` : null,
+        p.why_move ? `why picked: ${why(p.why_move)}` : null, p.why_down ? `why that lean: ${why(p.why_down)}` : null]
+        .filter(Boolean).join(" · ") })))));
   $("boomsdays").replaceChildren(...sh.days.map(d => el("div", { class: `job ${d.status !== "decided" ? "bad" : ""}` },
-    el("span", { text: d.day }),
+    el("div", {}, el("span", { text: d.day }), " ",
     el("span", { class: d.status !== "decided" ? "down" : d.pnl_usd == null ? "muted" : d.pnl_usd >= 0 ? "up" : "down",
       text: d.pnl_usd != null && d.trades ? `${d.text} ${d.trades} closed · ${usd(d.pnl_usd)} · total ${sgn(d.cum_pct)}`
-        : d.shorts && d.shorts.length ? `${d.text} Settles after the close.` : d.text }))));
+        : d.shorts && d.shorts.length ? `${d.text} Settles after the close.` : d.text })),
+    d.picks && d.picks.length ? pickTable(d) : null)));
   const last = sh.days[0];
   $("boomtoday").replaceChildren(last ? el("div", { class: "card small" },
     el("div", { class: "kv" }, el("b", { text: `Latest morning (${last.day})` }),

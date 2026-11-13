@@ -204,6 +204,7 @@ def test_workflow_timeouts(tmp_path):
 
 def test_boomshort_book(tmp_path):
     import json as _j
+
     from dashboard import build as DB
     led = tmp_path / "state-boomshort" / "boomshort" / "ledger"
     (led / "settle").mkdir(parents=True)
@@ -232,6 +233,7 @@ def test_krr_export_matches_the_pipeline():
     from sklearn.linear_model import Ridge
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
+
     from dashboard import export_krr as K
     rng = np.random.default_rng(0)
     X = rng.normal(size=(300, 5))
@@ -247,6 +249,7 @@ def test_krr_export_matches_the_pipeline():
 
 def test_boomshort_days_for_the_live_tab(tmp_path, monkeypatch):
     import json as _j
+
     from dashboard import build as DB
     led = tmp_path / "state-boomshort" / "boomshort" / "ledger"
     (led / "settle").mkdir(parents=True)
@@ -273,6 +276,7 @@ def test_boomshort_days_for_the_live_tab(tmp_path, monkeypatch):
 
 def test_boom1_book_counts_finished_days_only(tmp_path, monkeypatch):
     import json as _j
+
     from dashboard import build as DB
     days = tmp_path / "state-boomshort" / "boomshort" / "ledger" / "days"
     days.mkdir(parents=True)
@@ -289,6 +293,7 @@ def test_boom1_book_counts_finished_days_only(tmp_path, monkeypatch):
 
 def test_boom_tab_totals(tmp_path):
     import json as _j
+
     from dashboard import build as DB
     led = tmp_path / "state-boomshort" / "boomshort" / "ledger"
     (led / "settle").mkdir(parents=True)
@@ -313,3 +318,13 @@ def test_boom_day_text_says_what_it_did():
     t = DB.boom_day_text({"status": "decided", "shorts": [], "cut": -0.119,
                           "picks": [{"symbol": "VIR", "d6": -0.037}, {"symbol": "X", "d6": 0.2}]})
     assert "VIR at -0.037" in t and "-0.119 or lower" in t
+
+
+def test_boom_picks_lists_all_twenty_most_bearish_first():
+    from dashboard import build as DB
+    rec = {"shorts": ["B"], "picks": [{"symbol": "A", "d6": 0.1, "boom1": 0.7, "pm_gap": 0.02, "pre_news": 1.0},
+                                      {"symbol": "B", "d6": -0.2, "boom1": 0.6, "pm_gap": -0.03, "pre_news": 0.0,
+                                       "why_down": [["pre-market move", 0.3]]}]}
+    p = DB.boom_picks(rec)
+    assert [x["symbol"] for x in p] == ["B", "A"] and p[0]["shorted"] and not p[1]["shorted"]
+    assert p[0]["why_down"] == [["pre-market move", 0.3]] and p[1]["pre_news"] is True
