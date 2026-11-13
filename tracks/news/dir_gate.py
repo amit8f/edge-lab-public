@@ -113,7 +113,7 @@ def report(longs, events):
 
 # ---------- stage (disk) ----------
 
-def nx3_longs(cache):
+def nx3_longs(cache, years=None):
     """NX3's walk-forward (3 + 3 a day, same models and seeds as the registered NX3 history): long picks and every
     real test event with its long net."""
     d3 = X.nx3dir(cache)
@@ -121,7 +121,7 @@ def nx3_longs(cache):
     ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
     caldates = pd.DatetimeIndex(X.calendar(cache)["date"])
     longs, events = [], []
-    for yr in N.TEST_YEARS:
+    for yr in (years or N.TEST_YEARS):
         start = pd.Timestamp(f"{yr}-01-01")
         cut_d = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
         tr = ev[ev["d"] <= cut_d]

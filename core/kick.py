@@ -29,7 +29,8 @@ JOBS = {"listen.yml": (dtime(3, 55), dtime(19, 30)),
 # market hours until the NX3 settle has landed, and early each morning (weekends too) for the nightly logs.
 EVERY = {"dashboard.yml": [(dtime(9, 25), dtime(16, 45), 10), (dtime(5, 0), dtime(5, 30), 60)],
          "boom-short.yml": [(dtime(16, 45), dtime(18, 0), 300)],      # the evening settle, after the close
-         "n1-screen.yml": [(dtime(3, 15), dtime(3, 45), 300)]}        # N1B labels, every day (its cron skipped 2026-11-09)
+         "n1-screen.yml": [(dtime(3, 15), dtime(3, 45), 300)],        # N1B labels, every day (its cron skipped 2026-11-09)
+         "dir-llm.yml": [(dtime(4, 20), dtime(4, 50), 300)]}          # DIR-LLM's daily Gemini calls (stage=calls)
 
 
 def holidays(path=HOLIDAYS):
