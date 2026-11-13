@@ -162,7 +162,7 @@ def stage_minutes(cache, deadline):
             continue
         if time.monotonic() > deadline:
             return False
-        out = []
+        out, paths = [], []
         for day, g in gm.groupby("nxt"):
             if day not in ses.index:
                 continue
@@ -173,6 +173,10 @@ def stage_minutes(cache, deadline):
                 rec = pick_row(b, float(r.c), o_t, c_t, float(r.dv20)) if b is not None and len(b) else None
                 if rec:
                     out.append({"symbol": r.symbol, "nxt": day} | rec)
+                    rs = b[(b["t"] >= o_t) & (b["t"] < c_t)]      # DIRECTION2: the session's minute path
+                    paths.append(rs[["t", "o", "h", "l", "c"]].assign(symbol=r.symbol, nxt=day))
+        if paths:
+            N.atomic_parquet(pd.concat(paths, ignore_index=True), bdir(cache) / "paths" / f"p_{m}.parquet")
         N.atomic_parquet(pd.DataFrame(out), f)
         print(f"[boom2 minutes] {m}: {len(gm)} picks, {len(out)} with bars", flush=True)
     return True
