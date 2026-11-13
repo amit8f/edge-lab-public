@@ -49,7 +49,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -197,6 +197,25 @@ def boomshort_book(st):
     closed = sum(1 for x in st_ if x for v in x.get("trades", {}).values() if v.get("status") == "settled")
     return [_book("BOOM-SHORT", "BOOM-SHORT", 100, closed, 0, realized=sum((x or {}).get("pnl_usd") or 0.0 for x in st_),
                   size=5000.0, days=len(list((led / "days").glob("*.json"))))]
+
+
+def boom1_book(st, today=None):
+    """BOOM1's forward record (research/prereg/BOOM1.md) from the 20 picks BOOM-SHORT logs each morning: how many
+    moved 8% from the open (high or low). Only finished sessions count. History: 55% of picks, random 3%."""
+    led = st / "state-boomshort" / "boomshort" / "ledger"
+    today = today or datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
+    hits = priced = days = 0
+    for f in sorted((led / "days").glob("*.json")):
+        picks = [p["symbol"] for p in (_json(f) or {}).get("picks", [])]
+        if not picks or f.stem >= today:
+            continue
+        rg = _safe(day_ranges, picks, f.stem) or {}
+        mv = [m for m in (boom_move(rg.get(s)) for s in picks) if m]
+        days, priced, hits = days + 1, priced + len(mv), hits + sum(m["hit"] for m in mv)
+    rate = hits / priced if priced else None
+    note = (f"{hits} of {priced} picks moved 8%+ from the open ({100 * rate:.0f}%). History 55%, random 3%."
+            if priced else "No finished day with picks yet. History 55%, random 3%.")
+    return [_book("BOOM1", "BOOM1", None, days, 0, unit="days", hits=hits, picks=priced, hit_rate=rate, note=note)]
 
 
 def day_ranges(symbols, day):
@@ -750,7 +769,7 @@ def last_change(repo_root, names):
 
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(boom1_book, st) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:

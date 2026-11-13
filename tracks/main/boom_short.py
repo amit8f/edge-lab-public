@@ -253,11 +253,46 @@ def now_et():
 
 # ---------- the day ----------
 
-def pre_open_events(api, root, ses, now, finbert):
+def cached_scorer(finbert):
+    """Wraps a FinBERT scorer so each distinct text is scored once per run (same scores, less work at 9:28)."""
+    memo = {}
+
+    def run(texts):
+        new = [t for t in dict.fromkeys(texts) if t not in memo]
+        if new:
+            memo.update(zip(new, np.asarray(finbert(new), dtype=float).reshape(len(new), 3)))
+        return np.array([memo[t] for t in texts], dtype=float).reshape(len(texts), 3)
+    return run
+
+
+def _utc(t):
+    return pd.Timestamp(t, tz=ET).tz_convert("UTC")
+
+
+def warm_news(api, ses, now, finbert):
+    """Before the 9:28 wait: fetch the news so far and score it, so 9:28 only fetches and scores the last minutes.
+    Returns (news, fetched_until) or None; a failure here only costs speed."""
+    try:
+        news = api.news(_utc(ses["prev_close_t"]), _utc(now))
+        if news is not None and len(news):
+            N.headline_rows(news, finbert)
+        return news, now
+    except Exception as e:                              # noqa: BLE001 - the 9:28 fetch repeats the work
+        print(f"[boom-short] news warm-up failed ({type(e).__name__}); 9:28 fetches everything")
+        return None
+
+
+def pre_open_events(api, root, ses, now, finbert, early=None):
     """News since the previous close to now -> pre-open events; the headline hashes of the last 4 days are kept
-    (no text) in <root>/heads.parquet for the 3-day dedup."""
-    start = pd.Timestamp(ses["prev_close_t"], tz=ET).tz_convert("UTC")
-    news = api.news(start, pd.Timestamp(now, tz=ET).tz_convert("UTC"))
+    (no text) in <root>/heads.parquet for the 3-day dedup. `early` = (news, until) from warm_news: then only
+    news from 5 minutes before `until` is fetched again and articles are merged by id."""
+    if early is None or early[0] is None:
+        news = api.news(_utc(ses["prev_close_t"]), _utc(now))
+    else:
+        old, until = early
+        new = api.news(_utc(until - pd.Timedelta(minutes=5)), _utc(now))
+        parts = [x for x in (old, new) if x is not None and len(x)]
+        news = pd.concat(parts, ignore_index=True).drop_duplicates("id", keep="last") if parts else new
     hf = Path(root) / "heads.parquet"
     heads = pd.read_parquet(hf) if hf.exists() else pd.DataFrame(columns=["symbol", "hkey", "t"])
     last = {}
@@ -301,11 +336,12 @@ def decide(root, api, cal, ses, man, m1, m2, syms, clock, wait_min, sleep):
     u = universe_rows(daily[daily["symbol"] != "SPY"], spy, prev)
     prevc = daily[daily["date"] == prev].set_index("symbol")["c"]
     print(f"[boom-short] {d}: {len(u)} stocks in BOOM1's universe ({time.monotonic() - t0:.0f}s)")
-    finbert = api.finbert(Path(root) / "finbert_meta.json")   # pins FinBERT on the first run; NX1_META has no revision key
+    finbert = cached_scorer(api.finbert(Path(root) / "finbert_meta.json"))   # pins FinBERT on the first run
+    early = warm_news(api, ses, clock(), finbert) if clock() < ses["date"] + DECIDE_AT else None
     while clock() < ses["date"] + DECIDE_AT:
         sleep(min(30.0, max(1.0, (ses["date"] + DECIDE_AT - clock()).total_seconds())))
     now = clock()
-    ev, n_heads = pre_open_events(api, root, ses, now, finbert)
+    ev, n_heads = pre_open_events(api, root, ses, now, finbert, early)
     u = with_news(u, news_inputs(ev))
     rec = {"status": "decided", "decided_at": now.isoformat(), "prev": f"{prev:%Y-%m-%d}", "universe": int(len(u)),
            "headlines": n_heads, "news_stocks": int(u["pre_news"].sum()), "cut": man["cut"],
