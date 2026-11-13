@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8372.77 | -16.27% | 208 | 66 | short CRWV, short NBIS, long NU, short NVDA, short SMCI |
-| Coin flip on C's picks | $9097.15 | -9.03% | 207 | 103 | long CRWV, long NBIS, short NU, long NVDA, short SMCI |
-| C's prompt on Groq (K7) | $5903.43 | -40.97% | 410 | 97 | long MPWR, long NU, short NVDA, long RKLB, short SMCI |
-| Coin flip on C-groq's picks | $8263.34 | -17.37% | 410 | 192 | short MPWR, short NU, short NVDA, short RKLB, long SMCI |
-| C-groq's answers, acted on once a day (K8) | $8224.13 | -17.76% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
-| Coin flip on C-groq-slow's picks | $10887.52 | +8.88% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
-| C's answers, acted on once a day (K8) | $9749.92 | -2.50% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
-| Coin flip on C-slow's picks | $10155.48 | +1.55% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
-| Just hold SPY | $9771.23 | -2.29% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8385.95 | -16.14% | 208 | 66 | short CRWV, short NBIS, long NU, short NVDA, short SMCI |
+| Coin flip on C's picks | $9096.78 | -9.03% | 207 | 103 | long CRWV, long NBIS, short NU, long NVDA, short SMCI |
+| C's prompt on Groq (K7) | $5908.59 | -40.91% | 410 | 97 | long MPWR, long NU, short NVDA, long RKLB, short SMCI |
+| Coin flip on C-groq's picks | $8262.79 | -17.37% | 410 | 192 | short MPWR, short NU, short NVDA, short RKLB, long SMCI |
+| C-groq's answers, acted on once a day (K8) | $8228.20 | -17.72% | 35 | 15 | long AMD, long ANET, long AVGO, long MPWR, short SMCI |
+| Coin flip on C-groq-slow's picks | $10881.06 | +8.81% | 35 | 24 | long AMD, long ANET, short AVGO, long MPWR, long SMCI |
+| C's answers, acted on once a day (K8) | $9749.98 | -2.50% | 30 | 15 | long AMD, long AVGO, short NBIS, short NVDA, short SMCI |
+| Coin flip on C-slow's picks | $10147.87 | +1.48% | 30 | 16 | long AMD, long AVGO, short NBIS, long NVDA, short SMCI |
+| Just hold SPY | $9766.54 | -2.33% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-13 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-13 11:2
 | 2026-11-11 14:17 | long AXTI, long CRWV, long MU, long NBIS, long RKLB | none | Maintaining current long positions in CRWV, AXTI, NBIS, MU, and RKLB due to strong daily momentum and positive news flow, particularly in the tech/AI sector. |
 | 2026-11-11 14:07 | long AXTI, long CRWV, long MU, long NBIS, long RKLB | sold BE @ $214.13; bought MU @ $820.66 | Maintaining profitable positions in CRWV, AXTI, NBIS, and RKLB due to strong market momentum and positive news, and adding MU to capitalize on the AI rally and positive sentiment. |
 | 2026-11-11 13:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-11 13:47 | no answer, nothing changed | none | unreadable answer |
