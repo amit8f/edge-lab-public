@@ -107,3 +107,24 @@ the bar's end. The 1-minute scan registered above runs later, as data allows, an
 Detail fixed with it (same day, before any data): a slot's 20-session median volume is floored at 100 shares, so
 a slot that usually trades nothing cannot flag on a single trade; the 20-session window counts only sessions the
 stock was in the universe, and the scan starts with a 2018-12 warm-up month (no output) so January 2019 can flag.
+
+## Amendment 3 (2026-11-11, before any label, return or model number is computed)
+
+From the research dig of 2026-11-11 (/mnt/project-files/reports/High edge events for small accounts.md). Inputs
+added to stages 1 and 3, all computable from the headline history and the shock scan already registered:
+1. Stale-news score: the highest token-overlap (Jaccard on normalized words) between the headline and the same
+   stock's headlines of the prior 5 calendar days (0 when there are none). Published evidence: stale news reverses.
+2. Activist short-report flag: the headline names a short-seller research firm from a fixed list written into the
+   code before any fit (Hindenburg, Muddy Waters, Citron, Spruce Point, Grizzly, Kerrisdale, Scorpion, Culper, Wolfpack,
+   Blue Orca, Viceroy, Gotham City, J Capital, Iceberg, Fuzzy Panda, Bleecker Street, White Diamond, Jehoshaphat,
+   Night Market, Morpheus) or the words "short report" / "short seller".
+3. Trial words: phase (1, 2, 3), "primary endpoint" met / missed / failed, "discontinue", "clinical hold",
+   "complete response letter", "approval" (keyword flags).
+4. For chart shocks: whether any headline for the stock exists in the 60 minutes before the shock and in the prior
+   24 hours (two flags).
+
+Reported, no rule (added): shocks with no news in the prior 24 hours as their own group, with the return of
+trading against the move shown next to the return of following it.
+
+Prediction added (written before any result): the chosen exit is next close or 5 sessions, not same day; the raw
+moves are larger on the short side.
