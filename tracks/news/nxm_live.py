@@ -1,6 +1,7 @@
 """NXM shadow books (research/prereg/NXM.md "What happens next"): one $5,000 ledger book per arm that passed
 (LGBM, LIN, MLP, ENS), on NX3's live events, plus NXR's passing arms (XGBR, RFR; research/prereg/NXR.md) from
 2026-10-30, and NXK-KRR / NXK2-CAT (research/prereg/NXK.md, NXK2.md) from 2026-11-09. Ledger only: no orders, no extra API calls.
+From 2026-11-16 each arm also has an uncapped "-ALL" book (research/prereg/NXMALL.md; kinds nxmall_day / nxmall_settle).
 
 Each arm reads the inputs NX3's scorer logged for every decided event at its decision time (nx3_live.decide),
 so its effect is the one it would have had live. After the close, per arm: e = N(x) - N(x0) with the arm's
@@ -29,6 +30,9 @@ ARMS = NXM_ARMS + NXR_ARMS + NXK_ARMS   # an arm's control seed adds its number 
 FIRST = {a: "2026-10-29" for a in NXM_ARMS} | {a: "2026-10-30" for a in NXR_ARMS} | {a: "2026-11-09" for a in NXK_ARMS}
 FIRST_DAY = min(FIRST.values())         # 2026-10-29: the first session whose decisions log easy-to-borrow
 SLIM = ["symbol", "t", "side", "e", "prev_c", "dv20"]
+ALL_FIRST = "2026-11-16"                # the -ALL books (research/prereg/NXMALL.md) count from this session
+BOOK_ALL = 5000.0
+ALL_SEED = 200                          # an -ALL book's control seed: SEED + yyyymmdd + 200 + arm number
 
 
 class Arm:
@@ -163,5 +167,90 @@ def settle(root, api, cal, today):
                         "pick_minus_control": float(p["net"].mean() - c["net"].mean()) if len(p) and len(c) else None,
                         "book_pnl": float((p["net"] * N.NOTIONAL).sum())}
         out.append(led.write_json("nxm_settle", e["date"], f"nxm/settled/{e['date']}.json",
+                                  json.loads(json.dumps(res, default=str))))
+    return out
+
+
+# ---------- the -ALL books (research/prereg/NXMALL.md): each arm without the 3+3 cap, sized like NX3-ALL ----------
+
+def book_all(decided, model, seed):
+    """Every event the arm fires (a short only where easy to borrow), sized by S.conf_sizes(|e|/cut), and the paired
+    control: as many decided events at random, control trade i takes pick i's side and size."""
+    dec = sorted(decided, key=lambda x: (pd.Timestamp(x["t"]), x["symbol"]))
+    if not dec:
+        return [], []
+    X = np.array([[x["inputs"][k] if x["inputs"][k] is not None else np.nan for k in S.INPUTS] for x in dec], float)
+    e = model.effect(X)
+    picks = []
+    for x, ei in zip(dec, e):
+        if not (abs(ei) >= model.cut and abs(ei) > 0):
+            continue
+        side = 1 if ei > 0 else -1
+        if side < 0 and not x.get("etb"):
+            continue
+        picks.append(dict(x, side=side, e=float(ei), conf=float(abs(ei) / model.cut)))
+    w = S.conf_sizes([p["conf"] for p in picks]) if picks else np.zeros(0)
+    for i, (p, wi) in enumerate(zip(picks, w)):
+        p.update(i=i, w=float(wi))
+    ctrl = []
+    if picks and len(dec) >= len(picks):
+        k = np.random.default_rng(seed).choice(len(dec), size=len(picks), replace=False)
+        ctrl = [dict(dec[j], side=p["side"], i=p["i"], w=p["w"]) for j, p in zip(k, picks)]
+    return picks, ctrl
+
+
+def close_day_all(root, decisions, d, seed, models=None):
+    """After the close: every arm's -ALL book for day d (kind nxmall_day). None before ALL_FIRST or if done."""
+    day_s = f"{pd.Timestamp(d):%Y-%m-%d}"
+    led = Ledger(root)
+    if day_s < ALL_FIRST or led.has("nxmall_day", day_s):
+        return None
+    models = models or load()
+    dec = [x for x in decisions if x["status"] == "decided"]
+    keep = SLIM + ["i", "w", "conf"]
+    arms = {}
+    for a, m in models.items():
+        p, c = book_all(dec, m, seed + ALL_SEED + ARMS.index(a) + 1)
+        arms[a] = {"fire_cut": m.cut, "picks": [{k: x.get(k) for k in keep} for x in p],
+                   "control": [{k: x.get(k) for k in keep} for x in c]}
+    sh = shas()
+    rec = {"day": day_s, "models_sha256": {a: sh[a] for a in arms if a in sh}, "decided": len(dec), "arms": arms}
+    return led.write_json("nxmall_day", day_s, f"nxmall/days/{day_s}.json", json.loads(json.dumps(rec, default=str)))
+
+
+def settle_all(root, api, cal, today):
+    """Settles every nxmall_day whose exit session has closed (kind nxmall_settle): per arm the sized book minus
+    its control (sum of w x (pick net - control net)) and the book's P&L in dollars."""
+    led = Ledger(root)
+    caldates = pd.DatetimeIndex(cal["date"])
+    out = []
+    for e in [x for x in led.entries() if x["kind"] == "nxmall_day"]:
+        if led.has("nxmall_settle", e["date"]):
+            continue
+        d = pd.Timestamp(e["date"])
+        k = caldates.searchsorted(d)
+        if k + 1 >= len(caldates) or caldates[k + 1] > today:
+            continue
+        rec = json.loads((Path(root) / e["file"]).read_text())
+        rows = [dict(p, arm=a, role=role) for a, b in rec["arms"].items() for role in ("picks", "control")
+                for p in b[role]]
+        res = {"day": e["date"], "arms": {a: {"trades": [], "sized_pick_minus_control": None} for a in rec["arms"]}}
+        if rows:
+            ev = pd.DataFrame(rows).assign(d=d, next=caldates[k + 1])
+            ev["t"] = pd.to_datetime(ev["t"])
+            t = api.settle_trades(ev, cal)
+            if len(t):
+                t["net"] = N.net(t)
+                cols = ["symbol", "role", "i", "w", "side", "t", "entry", "exit_ac", "ret", "net"]
+                for a, g in t.groupby("arm"):
+                    p = g[g["role"] == "picks"].set_index("i")
+                    c = g[g["role"] == "control"].set_index("i")
+                    both = p.index.intersection(c.index)
+                    res["arms"][a] = {
+                        "trades": g[[x for x in cols if x in g]].to_dict("records"),
+                        "sized_pick_minus_control": float((p.loc[both, "w"] * (p.loc[both, "net"] - c.loc[both, "net"])).sum())
+                        if len(both) else None,
+                        "book_pnl": float((p["w"] * BOOK_ALL * p["net"]).sum())}
+        out.append(led.write_json("nxmall_settle", e["date"], f"nxmall/settled/{e['date']}.json",
                                   json.loads(json.dumps(res, default=str))))
     return out

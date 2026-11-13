@@ -584,10 +584,14 @@ let selModel = "NX3";     // whose decisions the day list shows: NX3 or one of t
 const MODELS = [["NX3", "NX3"], ["LGBM", "NXM LightGBM"], ["LIN", "NXM linear"], ["MLP", "NXM neural net"],
   ["ENS", "NXM blend"], ["XGBR", "NXR XGBoost"], ["RFR", "NXR forest"], ["KRR", "NXK kernel model"], ["CAT", "NXK2 CatBoost"], ["ALL", "NX3-ALL (no cap)"],
   ["HI", "NX3-HI"], ["ALLHI", "NX3-ALL-HI (no cap)"], ["AGENT", "NX3-AGENT (Gemini)"]];
+// the NXM / NXR / NXK arms each have an uncapped "-ALL" copy (research/prereg/NXMALL.md); the "no cap" switch shows it
+const HAS_ALL = new Set(["LGBM", "LIN", "MLP", "ENS", "XGBR", "RFR", "KRR", "CAT"]);
+let noCap = false;
+function modelKey(k = selModel) { return noCap && HAS_ALL.has(k) ? `${k}-ALL` : k; }
 // an event as the chosen model saw it: NX3's own decision, or that book's pick (side and result) or a skip
 function asModel(ev) {
   if (selModel === "NX3") return ev;
-  const a = (ev.arms || {})[selModel];
+  const a = (ev.arms || {})[modelKey()];
   return Object.assign({}, ev, { side: a ? a.side : null, w: a ? a.w : null, skip: a ? null : "not picked", nx3_side: ev.side, orig: ev,
     result: a && a.net != null ? { net: a.net } : null });
 }
@@ -598,12 +602,17 @@ function renderFeed(day) {
   const booksIn = day !== etDate() || evs.some(ev => ev.arms);
   if (!booksIn) selModel = "NX3";
   $("modelfilter").replaceChildren(...MODELS.filter(([k]) => booksIn || k === "NX3").map(([k, label]) => {
-    const n = k === "NX3" ? evs.filter(ev => ev.side).length : evs.filter(ev => (ev.arms || {})[k]).length;
+    const n = k === "NX3" ? evs.filter(ev => ev.side).length : evs.filter(ev => (ev.arms || {})[modelKey(k)]).length;
     const b = el("button", { "aria-pressed": String(selModel === k), text: `${label} ${n}`,
       title: k === "NX3" ? "NX3, the model the tree shows" : "this book's picks; the tree still shows NX3" });
     b.addEventListener("click", () => { selModel = k; feedFilter = "all"; renderFeed(day); });
     return b;
-  }));
+  }), ...(booksIn && HAS_ALL.has(selModel) ? [(() => {
+    const b = el("button", { "aria-pressed": String(noCap), text: "no cap (-ALL)",
+      title: "this model's uncapped -ALL book: every event it fires, sized 5-10% by confidence (counts from 2026-11-16)" });
+    b.addEventListener("click", () => { noCap = !noCap; feedFilter = "all"; renderFeed(day); });
+    return b;
+  })()] : []));
   const c = d ? d.counts : null;
   $("daysum").textContent = !d ? "No decisions logged yet for this day." :
     `${c.seen} headlines seen · ${c.decided} decided · ${c.fired} fired · ${c.picks} picks` +
@@ -619,7 +628,7 @@ function renderFeed(day) {
     for (const ev of open) {
       const r = ev.result ? ev.result.net : (ev.last_price && ev.entry_iex ? ev.side * (ev.last_price / ev.entry_iex - 1) : null);
       if (r == null) continue;
-      tot += ((selModel === "ALL" || selModel === "ALLHI" || selModel === "AGENT") && ev.w != null ? ev.w : 0.1) * r; cnt++;
+      tot += ((selModel === "ALL" || selModel === "ALLHI" || selModel === "AGENT" || modelKey().endsWith("-ALL")) && ev.w != null ? ev.w : 0.1) * r; cnt++;
     }
     if (cnt) $("daysum").textContent += ` · book P&L ${pct(tot)} of $5,000 so far (${cnt} of ${open.length} trades priced; open trades before costs)`;
   }
@@ -635,7 +644,7 @@ function renderFeed(day) {
   if (!shownEvs.length) $("feed").append(el("p", { class: "muted small", text: "No headlines with this decision on this day." }));
 }
 function pickedBy(ev) {
-  const names = Object.keys(ev.arms || {}).filter(k => k !== selModel);
+  const names = Object.keys(ev.arms || {}).filter(k => k !== modelKey() && !k.endsWith("-ALL"));
   if (selModel !== "NX3" && ev.nx3_side) names.unshift("NX3");
   return names.length ? el("div", { class: "l2", text: `also picked by ${names.join(", ")}` }) : "";
 }
@@ -688,10 +697,26 @@ function simPanel(sim) {
   return box;
 }
 
+function allPanel(a) {
+  const box = el("div", { class: "sim" }), cb = el("input", { type: "checkbox" });
+  const pnl = a.pnl_pct == null ? "" : `${a.pnl_pct >= 0 ? "+" : ""}${a.pnl_pct.toFixed(2)}%`;
+  const body = el("div", { class: "simbody" },
+    el("div", { class: "kv small" }, el("span", { text: `${a.closed} of ${a.target} trades` }),
+      el("span", { class: a.pnl_pct == null ? "muted" : a.pnl_pct >= 0 ? "up" : "down", text: pnl })),
+    a.open ? el("div", { class: "muted small", text: `${a.open} open${a.unrealized != null ? ", counted in the %" : ""}` }) : null,
+    el("div", { class: "muted small", text: `No 3+3 cap: every event it fires, 5-10% of $5,000 by confidence. ${a.closed ? "" : `Counts from ${a.first_day}.`}` }));
+  body.hidden = true;
+  cb.addEventListener("change", () => { body.hidden = !cb.checked; });
+  box.append(el("label", { class: "small" }, cb, ` show ${a.name}`), body);
+  return box;
+}
+
 function renderBooks() {
   const S = SUMMARY;
   const twins = Object.fromEntries(S.books.filter(b => b.control).map(b => [b.name.replace(/-coin$/, ""), b]));
-  $("books").replaceChildren(...S.books.filter(b => !b.control).map(b => {
+  // an arm's uncapped -ALL book is shown inside its base book's card, behind a switch
+  const alls = Object.fromEntries(S.books.filter(b => b.base).map(b => [b.base, b]));
+  $("books").replaceChildren(...S.books.filter(b => !b.control && !(b.base && S.books.some(x => x.name === b.base))).map(b => {
     const tw = twins[b.name];
     const p = b.target ? Math.min(100, 100 * b.closed / b.target) : null;
     return el("div", { class: "card book" },
@@ -710,6 +735,7 @@ function renderBooks() {
       tw ? el("div", { class: "kv muted small" }, el("span", { text: `coin-flip twin: ${tw.closed} trades` }),
         el("span", { text: tw.pnl_pct == null ? "" : `${tw.pnl_pct >= 0 ? "+" : ""}${tw.pnl_pct.toFixed(2)}%` })) : null,
       b.note ? el("div", { class: "muted small", text: b.note }) : null,
+      alls[b.name] ? allPanel(alls[b.name]) : null,
       b.sim ? simPanel(b.sim) : null);
   }));
   const ad = S.adaptive;

@@ -42,6 +42,7 @@ SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", 
 NX3_ARMS = ["LGBM", "LIN", "MLP", "ENS", "XGBR", "RFR", "KRR", "CAT"]   # the arms with live books (NXM-RF failed)
 ARM_IDEA = {"XGBR": "NXR", "RFR": "NXR", "KRR": "NXK", "CAT": "NXK2"}
 ARM_FIRST = {"NXM": "2026-10-29", "NXR": "2026-10-30", "NXK": "2026-11-09", "NXK2": "2026-11-09"}
+NXMALL_FIRST_DAY = "2026-11-16"      # each arm's uncapped -ALL book (research/prereg/NXMALL.md) counts from this day
 WATCH = [("PICK-MAIN", "SYS2", "state-watch", "watch/books.json", 30), ("PICK-PENNY", "SYS2", "state-watch",
          "watch/books.json", 30), ("SCOUT-MAIN", "SYS2B", "state-scouts", "scouts/books.json", 30),
          ("SCOUT-PENNY", "SYS2B", "state-scouts", "scouts/books.json", 30)]
@@ -110,6 +111,16 @@ def nx3_books(st):
         open_a = len((last or {}).get("arms", {}).get(a, {}).get("picks", [])) if last else 0
         out.append(_book(f"{idea}-{a}", idea, 100, len(tr), open_a, realized=sum(500 * (t["net"] or 0) for t in tr),
                          size=5000.0, first_day=ARM_FIRST[idea]))
+    xsettled = [_json(f) for f in sorted((root / "nxmall" / "settled").glob("*.json"))]
+    xdays = sorted((root / "nxmall" / "days").glob("*.json"))
+    xlast = _json(xdays[-1]) if xdays and xdays[-1].stem > max((s["day"] for s in xsettled if s), default="") else None
+    for a in NX3_ARMS:          # the uncapped -ALL copy of each arm, sized like NX3-ALL (research/prereg/NXMALL.md)
+        tr = [t for s in xsettled if s for t in s.get("arms", {}).get(a, {}).get("trades", []) if t.get("role") == "picks"]
+        idea = ARM_IDEA.get(a, "NXM")
+        out.append(_book(f"{idea}-{a}-ALL", "NXM-ALL", 30, len(tr),
+                         len((xlast or {}).get("arms", {}).get(a, {}).get("picks", [])),
+                         realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in tr), size=5000.0,
+                         first_day=NXMALL_FIRST_DAY, base=f"{idea}-{a}"))
     asettled = [_json(f) for f in sorted((root / "nx3all" / "settled").glob("*.json"))]
     adays = sorted((root / "nx3all" / "days").glob("*.json"))
     tr = [t for x in asettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
@@ -173,6 +184,19 @@ def mark_open_nx3(books, days):
             if g and g.get("side") and g.get("w"):
                 un["NX3-ALL-HI"] += 5000 * g["w"] * g["side"] * mv
                 n["NX3-ALL-HI"] += 1
+    allname = {f"{a}-ALL": f"{ARM_IDEA.get(a, 'NXM')}-{a}-ALL" for a in NX3_ARMS}
+    for d in days:
+        if d.get("settled") or d.get("excluded"):
+            continue
+        for e in d["events"]:
+            px, last = e.get("entry_iex"), e.get("last_price")
+            if not px or not last:
+                continue
+            for k, name in allname.items():
+                x = (e.get("arms") or {}).get(k)
+                if x and x.get("side") and x.get("w") and x.get("net") is None:
+                    un[name] = un.get(name, 0.0) + 5000 * x["w"] * x["side"] * (last / px - 1)
+                    n[name] = n.get(name, 0) + 1
     for b in books:
         if b["name"] in un and b.get("size") and n[b["name"]]:
             b["open"] = n[b["name"]]
@@ -684,6 +708,13 @@ def arm_picks(root, day, rows=()):
         net = {t["symbol"]: t.get("net") for t in st.get("arms", {}).get(a, {}).get("trades", []) if t.get("role") == "picks"}
         out[a] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"])}
                   for p in rec.get("arms", {}).get(a, {}).get("picks", [])}
+    xrec = _json(root / "nxmall" / "days" / f"{day}.json") or {}     # each arm's -ALL book (research/prereg/NXMALL.md)
+    xst = _json(root / "nxmall" / "settled" / f"{day}.json") or {}
+    for a in NX3_ARMS:
+        net = {t["symbol"]: t.get("net") for t in xst.get("arms", {}).get(a, {}).get("trades", []) if t.get("role") == "picks"}
+        picks = xrec.get("arms", {}).get(a, {}).get("picks", [])
+        if picks:
+            out[f"{a}-ALL"] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w")} for p in picks}
     al = _json(root / "nx3all" / "days" / f"{day}.json") or {}          # NX3-ALL (research/prereg/NX3ALL.md)
     ast = _json(root / "nx3all" / "settled" / f"{day}.json") or {}
     net = {t["symbol"]: t.get("net") for t in ast.get("trades", []) if t.get("role") == "picks"}
