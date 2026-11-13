@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-13T15:30 ET: 286 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-13T15:35 ET: 269 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,780.02 | -4.40% | 63 | 23 | short AIRO, short CTRE, short EPRX, short FA, short FUN, long HOS, long KEY, long LBTYK, long LCII, long MTDR, long OPRT, short SMCI, long STLD, long TOST, long VRDN | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,723.15 | -5.54% | 61 | 18 | long AIRO, short BRUN, long CTRE, long EPRX, long EQPT, long FA, short FUN, short HOS, short KEY, long LBTYK, short LCII, short MTDR, long OPRT, short SMCI, long STLD, short TOST, long VRDN | ok |
-| SCOUT-PENNY | $461.67 | -7.67% | 24 | 4 | long ABUS, long EOSE, long LRMR, long MX, short PACB, short PEPG, long PSEC, long RZLT, short UWMC, long VISN | paused |
-| SCOUT-PENNY-coin | $475.81 | -4.84% | 24 | 9 | long EOSE, short LRMR, long MX, short NVA, long PACB, long PEPG, long PSEC, short RZLT, short UWMC, long VISN | ok |
+| SCOUT-MAIN | $4,784.04 | -4.32% | 63 | 23 | short AIRO, short CTRE, short EPRX, short FA, short FUN, long HOS, long KEY, long LBTYK, long LCII, long MTDR, long OPRT, short SMCI, long STLD, long TOST, long VRDN | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,719.26 | -5.61% | 61 | 18 | long AIRO, short BRUN, long CTRE, long EPRX, long EQPT, long FA, short FUN, short HOS, short KEY, long LBTYK, short LCII, short MTDR, long OPRT, short SMCI, long STLD, short TOST, long VRDN | ok |
+| SCOUT-PENNY | $462.16 | -7.57% | 24 | 4 | long ABUS, long EOSE, long LRMR, long MX, short PACB, short PEPG, long PSEC, long RZLT, short UWMC, long VISN | paused |
+| SCOUT-PENNY-coin | $476.46 | -4.71% | 24 | 9 | long EOSE, short LRMR, long MX, short NVA, long PACB, long PEPG, long PSEC, short RZLT, short UWMC, long VISN | ok |
