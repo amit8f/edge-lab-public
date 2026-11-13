@@ -187,3 +187,32 @@ def test_pre_open_events_merges_warm_news_and_fetches_only_the_tail(tmp_path, mo
     BS.pre_open_events(Api(), tmp_path, ses, pd.Timestamp("2026-11-12 09:28"), None, (old, until))
     assert seen["start"] == pd.Timestamp("2026-11-12 08:55", tz="America/New_York").tz_convert("UTC")
     assert sorted(got["n"]["id"]) == [1, 2, 3] and got["n"].set_index("id").loc[2, "headline"] == "b2"
+
+
+def test_late_decision_before_935_enters_at_the_next_minute(tmp_path, monkeypatch):
+    syms = [f"S{i:03d}" for i in range(120)]
+    daily = pd.concat([_daily(s, n=330, seed=i) for i, s in enumerate(syms)] + [_daily("SPY", n=330, seed=999, px=400)],
+                      ignore_index=True)
+    days = pd.bdate_range("2025-01-02", periods=330)
+    today = days[-1] + pd.offsets.BDay(1)
+    monkeypatch.setattr(BS, "load_frozen", lambda: ({"cut": -0.2, "sha256": {}}, _M1(), _M2(), syms))
+    t = {"now": today + pd.Timedelta(hours=9, minutes=28)}
+    d6 = BS.d6_score
+
+    def slow_d6(m2, p):                                  # the decision runs past the open
+        t["now"] = today + pd.Timedelta(hours=9, minutes=31, seconds=20)
+        return d6(m2, p)
+    monkeypatch.setattr(BS, "d6_score", slow_d6)
+    api = _Api(daily)
+    BS.run(tmp_path, api=api, clock=lambda: t["now"], sleep=lambda s: None)
+    rec = json.loads((tmp_path / "boomshort" / "ledger" / "days" / f"{today:%Y-%m-%d}.json").read_text())
+    assert rec["status"] == "decided" and rec["shorts"]
+    assert pd.Timestamp(rec["entry_from"]) == today + pd.Timedelta(hours=9, minutes=32)
+    monkeypatch.setattr(BS, "now_et", lambda: today + pd.Timedelta(hours=17))
+    BS.run(tmp_path, settle_only=True, api=api, clock=lambda: today + pd.Timedelta(hours=17))
+    st = json.loads((tmp_path / "boomshort" / "ledger" / "settle" / f"{today:%Y-%m-%d}.json").read_text())
+    rt = pd.date_range(today + pd.Timedelta(hours=9, minutes=30), today + pd.Timedelta(hours=15, minutes=59), freq="1min")
+    first = st["trades"][rec["shorts"][0]]
+    assert first["status"] == "settled" and np.isclose(first["entry"], np.linspace(100, 95, len(rt))[2])
+    rep = json.loads((tmp_path / "boomshort" / "report.json").read_text())
+    assert rep["late_days"] == 1

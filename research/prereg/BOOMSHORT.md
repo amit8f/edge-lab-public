@@ -46,3 +46,16 @@ sign-off.
 ## Prediction (written first)
 
 Post-hoc edges usually shrink out of sample. Pass: 0.2. Most likely: a mean near zero, positive before costs.
+
+## Amendment 1 (2026-11-13, before any trade): decisions may finish until 9:35 ET
+
+Why: no trade has been logged yet. 11-09 never ran (timers skipped), 11-11 crashed (FinBERT meta bug, PR #161),
+and 11-12 finished at 9:30:39 ET and was logged missed (all overnight headlines were scored after the 9:28 wait;
+PR #166 now scores them before the wait). Amit asked on 2026-11-13 to let the decision run until 5 minutes after
+the open so a slow morning isn't lost.
+
+Change: a decision that finishes after 9:30 but by 9:35 ET is kept. Its shorts and control enter at the open of
+the first whole minute after it finished (logged as `entry_from`; the -8%/+8% barriers are measured from that
+price), and later than 9:35 is missed as before. Inputs are unchanged: news up to 9:28, pre-market bars up to
+then minus the 16-minute delay. Days that entered after 9:30 are flagged in the report and the pass rule is
+also read without them. The pass rule itself is unchanged.

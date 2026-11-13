@@ -460,6 +460,39 @@ function renderBoom() {
     text: "\"now\" is the short's gain since yesterday's close at the latest price, before costs; the book settles from the first open." }));
 }
 
+// ---------- the Boom tab ----------
+function renderBoomTab() {
+  const B = SUMMARY && SUMMARY.boom;
+  if (!B) { $("boom1sum").replaceChildren(el("div", { class: "muted small", text: "No BOOM data yet." })); return; }
+  const pct = (x, d = 0) => x == null ? "–" : `${(100 * x).toFixed(d)}%`;
+  const sgn = (x, d = 2) => x == null ? "–" : `${x >= 0 ? "+" : ""}${x.toFixed(d)}%`;
+  const usd = x => `${x >= 0 ? "+" : "-"}$${Math.abs(x).toFixed(0)}`;
+  const b1 = B.boom1, sh = B.short;
+  const stat = (label, value, cls, sub) => el("div", { class: "card book" },
+    el("div", { class: "muted small", text: label }), el("div", { class: `name ${cls || ""}`, text: value }),
+    sub ? el("div", { class: "muted small", text: sub }) : null);
+  $("boom1sum").replaceChildren(
+    stat("Picks that moved 8%+", pct(b1.hit_rate), b1.hit_rate == null ? "muted" : b1.hit_rate >= 0.4 ? "up" : "down",
+      `${b1.hits} of ${b1.picks} picks over ${b1.days.length} days`),
+    stat("History (2020-2025)", pct(b1.history), "", "what BOOM1 scored before going live"),
+    stat("Random stocks", pct(b1.random), "muted", "the same test on random picks"));
+  $("boom1days").replaceChildren(...b1.days.slice().reverse().map(d => el("div", { class: "job" },
+    el("span", { text: d.day }), el("span", { class: d.hits / d.picks >= 0.4 ? "up" : "muted",
+      text: `${d.hits} of ${d.picks} moved 8%+ · ${pct(d.hits / d.picks)}` }))));
+  $("boomssum").replaceChildren(
+    stat("Overall P&L", sgn(sh.pnl_pct), sh.pnl_pct >= 0 ? "up" : "down", `${usd(sh.pnl_usd)} on $5,000`),
+    stat("Trades", `${sh.trades} of ${sh.target}`, "", sh.trades ? `${sh.wins} winners (${pct(sh.wins / sh.trades)})` : "verdict at 100 trades"),
+    stat("Average short", sh.mean == null ? "–" : sgn(100 * sh.mean), sh.mean == null ? "muted" : sh.mean >= 0 ? "up" : "down",
+      `random control ${sh.control_mean == null ? "–" : sgn(100 * sh.control_mean)}`),
+    stat("Days not traded", String(sh.missed), sh.missed ? "warn" : "muted", "crashed, late or too few stocks"));
+  $("boomsdays").replaceChildren(...sh.days.map(d => el("div", { class: `job ${d.status !== "decided" ? "bad" : ""}` },
+    el("span", { text: d.day }),
+    el("span", { class: d.status !== "decided" ? "down" : d.pnl_usd == null ? "muted" : d.pnl_usd >= 0 ? "up" : "down",
+      text: d.status !== "decided" ? `${d.status}${d.reason ? `: ${d.reason}` : ""}`
+        : d.pnl_usd == null ? "decided, settles after the close"
+        : `${d.trades} shorts · ${usd(d.pnl_usd)} · total ${sgn(d.cum_pct)}` }))));
+}
+
 // ---------- data ----------
 let SUMMARY = null, liveRows = [];
 async function getJSON(url) {
@@ -482,7 +515,7 @@ async function loadSummary() {
     replayDay = withEvents.day;
     replayList = traded(withEvents).sort((a, b) => (a.t < b.t ? -1 : 1)); replayIx = 0;
   }
-  renderDays(); renderBooks(); renderIdeas(); renderProgress(); renderBoom();
+  renderDays(); renderBooks(); renderIdeas(); renderProgress(); renderBoom(); renderBoomTab();
 }
 async function pollLive() {
   const day = etDate();
@@ -758,7 +791,7 @@ function renderProgress() {
 }
 
 // ---------- tabs and start ----------
-const TABS = ["live", "progress", "books", "ideas"];
+const TABS = ["live", "progress", "books", "boom", "ideas"];
 function showTab(name) {
   for (const x of document.querySelectorAll(".tabs button")) x.setAttribute("aria-selected", String(x.dataset.tab === name));
   for (const t of TABS) $(`tab-${t}`).hidden = t !== name;

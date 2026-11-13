@@ -14,6 +14,7 @@
     <button role="tab" data-tab="live" aria-selected="true">Live</button>
     <button role="tab" data-tab="progress" aria-selected="false">Progress</button>
     <button role="tab" data-tab="books" aria-selected="false">Books</button>
+    <button role="tab" data-tab="boom" aria-selected="false">Boom</button>
     <button role="tab" data-tab="ideas" aria-selected="false">Ideas</button>
   </nav>
   <div class="updated muted" id="updated">loading…</div>
@@ -106,6 +107,17 @@
     <div id="accounts" class="grid"></div>
     <h2>Jobs</h2>
     <div id="jobs" class="jobs"></div>
+  </section>
+
+  <section id="tab-boom" class="tab" hidden>
+    <h2>BOOM1: does it find the stocks that move 8%?</h2>
+    <p class="muted small">BOOM1 doesn't trade. Each morning it names 20 stocks it expects to move 8% up or down from the open. The % is how many really did.</p>
+    <div id="boom1sum" class="grid"></div>
+    <div id="boom1days" class="jobs"></div>
+    <h2>BOOM-SHORT: the $5,000 book that shorts BOOM1's picks</h2>
+    <p class="muted small">Shorts the picks the direction model expects to fall, $500 each, closed at 8% either way or at the close. P&amp;L is after costs, as a % of $5,000. The control shorts random picks from the same 20.</p>
+    <div id="boomssum" class="grid"></div>
+    <div id="boomsdays" class="jobs"></div>
   </section>
 
   <section id="tab-ideas" class="tab" hidden>
