@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 from tracks.crypto import cdata as C
+from tracks.crypto import day_live as F
 from tracks.crypto import day_study as D
 from tracks.crypto import trend_live as L
 from tracks.crypto import trend_study as T
@@ -199,3 +200,55 @@ def test_live_trend_job_starts_on_the_newest_day_and_catches_up(tmp_path):
     assert L.Ledger(tmp_path / "crytrend" / "ledger").verify() == []
     with pytest.raises(RuntimeError):                     # a hole in the candles stops the job
         L.run(tmp_path / "x", fetch=lambda: {c: {d: v[d] for d in days[40:50]} for c, v in closes.items()})
+
+
+# ---------- the day model's forward replay ----------
+
+class _Model:
+    """Stands in for a fitted regressor: likes a coin that just fell (long) or just rose (short)."""
+    def __init__(self, sign):
+        self.sign = sign
+
+    def predict(self, X):
+        return self.sign * -X[:, D.FEATS.index("r_4")] * 40
+
+
+def _fwd_source(months):
+    rng = np.random.default_rng(5)
+    t = pd.date_range("2026-11-01", "2027-01-31 23:45", freq="15min")
+    bars, fund = {}, {}
+    for s in ("BTCUSDT", "AAAUSDT", "BBBUSDT", "CCCUSDT"):
+        c = 100 * np.exp(np.cumsum(rng.normal(0, 0.004, len(t))))
+        o = np.r_[c[0], c[:-1]]
+        bars[s] = pd.DataFrame({"t": t, "o": o, "h": np.maximum(o, c) * 1.002, "l": np.minimum(o, c) * 0.998, "c": c,
+                                "v": 1.0, "qv": 100.0, "n": 10.0, "tbqv": 50.0})
+        ft = pd.date_range("2026-11-01", "2027-01-31 16:00", freq="8h")
+        fund[s] = pd.DataFrame({"t": ft, "rate": 0.0001})
+    uni = {"2026Q4": ["AAAUSDT", "BBBUSDT", "BTCUSDT"], "2027Q1": ["AAAUSDT", "CCCUSDT", "BTCUSDT"]}
+    end = pd.Period(months[-1], freq="M").end_time
+    return lambda root, today: ({s: b[b["t"] <= end] for s, b in bars.items()},
+                                {s: f[f["t"] <= end] for s, f in fund.items()}, uni)
+
+
+def test_forward_replay_logs_each_month_once_and_reproduces_earlier_trades(tmp_path):
+    import json
+    models = lambda: ({"L": _Model(1), "S": _Model(-1)}, 0.004, {"L": "x", "S": "y"})
+    F.run(tmp_path, source=_fwd_source(["2026-11"]), load_models=models)
+    led = F.Ledger(tmp_path / "cryday" / "ledger")
+    first = json.loads((led.root / led.entries()[0]["file"]).read_text())
+    assert first["through"] == "2026-11-30 19:30:00" and len(first["trades"]) > 3
+    assert min(t["t"] for t in first["trades"]) >= "2026-11-15"            # the warm-up days are never scored
+    F.run(tmp_path, source=_fwd_source(["2026-11"]), load_models=models)   # the same month again: nothing written
+    assert len(led.entries()) == 1
+    F.run(tmp_path, source=_fwd_source(["2026-11", "2026-12", "2027-01"]), load_models=models)
+    assert len(led.entries()) == 2 and led.verify() == []
+    second = json.loads((led.root / led.entries()[1]["file"]).read_text())
+    assert min(t["t"] for t in second["trades"]) > max(t["t"] for t in first["trades"])
+    assert {t["symbol"] for t in second["trades"] if t["t"] >= "2027-01-01"} <= {"AAAUSDT", "CCCUSDT", "BTCUSDT"}
+    s = json.loads((tmp_path / "cryday" / "summary.json").read_text())
+    assert s["summary"]["trades"] == len(first["trades"]) + len(second["trades"])
+    assert ("verdict" in s) == (s["summary"]["trades"] >= 100)
+    F.run(tmp_path / "b", source=_fwd_source(["2026-11"]), load_models=models)
+    with pytest.raises(RuntimeError):                                      # a changed model no longer matches the ledger
+        F.run(tmp_path / "b", source=_fwd_source(["2026-11", "2026-12"]),
+              load_models=lambda: ({"L": _Model(-1), "S": _Model(1)}, 0.004, {}))

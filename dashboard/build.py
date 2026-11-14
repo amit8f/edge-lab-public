@@ -50,7 +50,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-DAY-FWD",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -234,6 +234,21 @@ def crytrend_book(st):
     return [_book("CRY-TREND", "CRY-TREND", s["min_round_trips"], s["round_trips"], len(s["held"]), unreal=s["rule_usd"] - 1000,
                   size=1000.0, unit="round trips", first_day=s["first_day"],
                   note=f"Holding {held}. Just holding both coins: {twin:+.2f}%. Judged on {s['judged']}.")]
+
+
+def crydayfwd_book(st):
+    """CRY-DAY-FWD (research/prereg/CRYDAYFWD.md): the frozen crypto day-trading model replayed month by month;
+    each trade is a third of a $1,000 book."""
+    s = _json(st / "state-cryday" / "cryday" / "summary.json")
+    if not s:
+        return [_book("CRY-DAY-FWD", "CRY-DAY-FWD", 50, 0, 0, size=1000.0, first_day="2026-11-15",
+                      note="Updated monthly from Binance's archive; the first trades are logged in early December.")]
+    x = s["summary"]
+    note = f"Updated monthly from Binance's archive; scored through {s['through'][:10]}. Read once at {s['read_at']} trades or the end of 2027."
+    if s.get("verdict"):
+        note = f"Verdict: {s['verdict']}. " + note
+    return [_book("CRY-DAY-FWD", "CRY-DAY-FWD", s["min_trades"], x["trades"], 0, realized=1000 * (x.get("book_total") or 0.0),
+                  size=1000.0, first_day=s["first"][:10], note=note)]
 
 
 def boom1_days(st, today=None):
@@ -885,7 +900,7 @@ def last_change(repo_root, names):
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     b1days = _safe(boom1_days, st)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crydayfwd_book, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:
