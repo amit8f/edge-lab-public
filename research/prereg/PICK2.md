@@ -1,7 +1,7 @@
 # PICK2: the same-day long picker, trained on what a trade earns
 
-DRAFT 2026-11-14, written before any PICK2 number is computed; it becomes a registration when Amit answers the
-decision card of the same day (this draft is the "Core + bad-day" option). Source: Amit, 2026-11-14: "what can we
+Registered 2026-11-14, before any PICK2 number is computed. Amit chose "Core + bad-day" on the decision card
+the same day. Source: Amit, 2026-11-14: "what can we
 learn from the 3% picker? can we try and salvage it, adjust some stuff, use different formulas". Two ideas:
 PICK2-MAIN and PICK2-BAD. Phase-2 count 158 -> 160 (phase 1 + phase 2 = 175). PICK-MAIN and PICK-PENNY stay FAILED.
 
