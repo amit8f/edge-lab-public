@@ -1,0 +1,40 @@
+# Keeps only the newest Actions cache of each kind. Every run of a study saves a fresh copy of its cache
+# (key <name>-<run id>); the old copies are never read again (a restore takes the newest), but they fill the
+# repository's 10 GB cache allowance, and GitHub then evicts whole caches that are still needed (N1B's labels,
+# PICK's rows and W1's daily bars were lost this way in November 2026). Hourly and by hand.
+name: cache-prune
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: cache-prune
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    permissions:
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Delete superseded copies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh cache list --repo "$GITHUB_REPOSITORY" --limit 1000 --json id,key,createdAt,sizeInBytes > caches.json
+          jq -r 'map(select(.key | test("-[0-9]{9,}$")))
+                 | group_by(.key | sub("-[0-9]{9,}$"; ""))
+                 | map(sort_by(.createdAt) | .[:-1][])
+                 | .[] | "\(.id) \(.key)"' caches.json > old.txt
+          while read -r id key; do
+            gh cache delete "$id" --repo "$GITHUB_REPOSITORY" && echo "deleted $key"
+          done < old.txt
+          echo "deleted $(wc -l < old.txt) of $(jq length caches.json) caches"
+          jq -r --slurpfile o <(jq -R 'split(" ")[0] | tonumber' old.txt) \
+            '[.[] | select(.id as $i | $o | index($i) | not) | .sizeInBytes] | add // 0
+             | "kept \(. / 1e9 * 100 | round / 100) GB"' caches.json
