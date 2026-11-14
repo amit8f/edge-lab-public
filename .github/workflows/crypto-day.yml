@@ -1,0 +1,62 @@
+# CRY-DAY-FWD (tracks/crypto/day_live.py, research/prereg/CRYDAYFWD.md): the frozen day-trading model replayed on each finished month. Ledger only: no orders.
+# Binance publishes a month in the first days of the next one; a run that finds nothing new writes nothing, so a
+# skipped run is caught up by the next. State lives on the orphan branch `state-cryday`.
+name: crypto-day
+
+on:
+  schedule:
+    - cron: "20 5 3 * *"
+    - cron: "20 5 6 * *"
+    - cron: "20 5 10 * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: cryday-state
+  cancel-in-progress: false
+
+jobs:
+  book:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-cryday
+        run: bash deploy/state.sh restore
+
+      - name: Log the finished months
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: PYTHONPATH=. .venv/bin/python -m tracks.crypto.day_live --state state
+
+      - name: Save the state
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-cryday
+          RUN_LABEL: crypto-day ${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash deploy/state.sh save

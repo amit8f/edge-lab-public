@@ -342,3 +342,19 @@ def test_crytrend_book(tmp_path):
     b = DB.crytrend_book(tmp_path)[0]
     assert b["closed"] == 1 and b["target"] == 8 and b["open"] == 1 and abs(b["pnl_pct"] - 2.0) < 1e-9
     assert "Holding BTC" in b["note"] and "-1.00%" in b["note"]
+
+
+def test_crydayfwd_book(tmp_path):
+    import json as _j
+
+    from dashboard import build as DB
+    assert DB.crydayfwd_book(tmp_path)[0]["closed"] == 0 and DB.crydayfwd_book(tmp_path)[0]["pnl_pct"] is None
+    d = tmp_path / "state-cryday" / "cryday"
+    d.mkdir(parents=True)
+    (d / "summary.json").write_text(_j.dumps({"first": "2026-11-15 00:00:00", "through": "2026-11-30 19:30:00", "min_trades": 50,
+                                              "read_at": 100, "summary": {"trades": 3, "book_total": 0.012}}))
+    b = DB.crydayfwd_book(tmp_path)[0]
+    assert b["closed"] == 3 and b["target"] == 50 and abs(b["pnl_pct"] - 1.2) < 1e-9 and "2026-11-30" in b["note"]
+    (d / "summary.json").write_text('{"first": "2026-11-15", "through": "2026-11-30", "min_trades": 50, "read_at": 100, '
+                                    '"summary": {"trades": 0, "mean_net": NaN}}')
+    assert DB.crydayfwd_book(tmp_path)[0]["pnl_pct"] == 0
