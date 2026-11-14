@@ -334,3 +334,29 @@ def test_slow_rules_weights_and_mom_picks():
     B = X5.weights_book(R, X5.w_hold, cost=0.001)
     assert np.isclose(B["turnover"].iat[0], 1.0) and np.isclose(B["net"].iat[1], 0.01 - 0.001)
     assert X5.drawdown(B) == 0.0
+
+
+def test_slow_forward_books_log_months_once_and_reproduce(tmp_path):
+    import json
+
+    from tracks.crypto import slow_live as SL
+    nofund = pd.DataFrame({"t": pd.to_datetime([]), "rate": []})
+    syms = ["BTCUSDT"] + [f"C{i}USDT" for i in range(7)]
+    candles = {s: _daily(260, i, "2026-08-01") for i, s in enumerate(syms)}
+    uni = {"2026-11": syms, "2026-12": syms, "2027-01": syms, "2027-02": syms, "2027-03": syms, "2027-04": syms}
+
+    def src(end):
+        return lambda today: (X5.assemble({s: X5.coin_rows(c[c["t"] <= pd.Timestamp(end)], nofund)
+                                           for s, c in candles.items()}, uni), uni)
+    SL.run(tmp_path, source=src("2026-11-30"))
+    s = json.loads((tmp_path / "cryslow" / "summary.json").read_text())
+    assert s["books"]["TWIN"]["days"] >= 13 and s["books"]["TWIN"]["last_day"] == "2026-11-29"
+    SL.run(tmp_path, source=src("2026-11-30"))
+    led = SL.Ledger(tmp_path / "cryslow" / "ledger")
+    assert len(led.entries()) == 1
+    SL.run(tmp_path, source=src("2026-12-31"))
+    assert len(led.entries()) == 2 and led.verify() == []
+    s2 = json.loads((tmp_path / "cryslow" / "summary.json").read_text())
+    assert s2["books"]["TWIN"]["days"] > s["books"]["TWIN"]["days"]
+    first = json.loads((led.root / led.entries()[0]["file"]).read_text())["rows"]["TWIN"]
+    assert first[0][0] == "2026-11-15"

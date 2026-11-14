@@ -30,3 +30,17 @@ funding and realistic costs on small coins; the benefit of trend rules is mostly
 - If a rule survives: a $1,000 forward ledger book with its twin, under a short amendment written before it starts,
   judged at 2027-12-31 against the twin (higher net Sharpe and smaller drawdown).
 - Predictions: CRY-WIDE survives the history check (0.5); CRY-MOM survives (0.3).
+
+## Amendment 1 (2026-11-14, after the history checks and before the forward books start)
+
+Both rules survived (`research/results/CRYSLOW/CRYSLOW.json`). The forward books:
+
+1. A $1,000 ledger book for each rule and one for the twin (equal-weight universe hold), all from the first day
+   held, 2026-11-15 (decision at the 2026-11-14 close). No orders.
+2. Data: Binance's archive monthly daily candles and funding, replayed once each month is published
+   (`tracks/crypto/slow_live.py`, `crypto-slow.yml`), with xs_study's own code. Candles from 2026-08 warm up the
+   28- and 60-day inputs; a coin's age is counted from its first candle in that window. The universe is ranked
+   from 2026-11 on by the month before, as in the history check.
+3. Each month is logged once in the hash-chained ledger; every earlier day is recomputed and must match.
+4. Judged once on the days to 2027-12-31: a rule passes if its daily net Sharpe is above the twin's and its largest
+   drawdown smaller. Nothing else changes.
