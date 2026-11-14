@@ -389,6 +389,95 @@ def stage_fund(cache, out):
     return res
 
 
+def weights_book(R, weights, cost=COST_SIDE):
+    """Daily long-only book from target weights. weights(t, g) -> {symbol: weight} for decision day t (g: its rows).
+    -> frame indexed by the day held: gross, fund, turnover, net."""
+    prev, out = {}, []
+    for t, g in R.groupby("t", sort=True):
+        w = weights(t, g)
+        gs = g.set_index("symbol")
+        gross = sum(v * gs.at[s, "fwd"] for s, v in w.items())
+        fund = -sum(v * gs.at[s, "fund_fwd"] for s, v in w.items())
+        turn = sum(abs(w.get(s, 0.0) - prev.get(s, 0.0)) for s in set(w) | set(prev))
+        out.append((t + pd.Timedelta(days=1), gross, fund, turn))
+        prev = w
+    B = pd.DataFrame(out, columns=["day", "gross", "fund", "turnover"]).set_index("day")
+    B["net"] = B["gross"] + B["fund"] - B["turnover"] * cost
+    return B
+
+
+def w_wide(t, g):
+    n = len(g)
+    return {s: 1.0 / n for s in g.loc[g["r_28"] > 0, "symbol"]}
+
+
+def w_hold(t, g):
+    return {s: 1.0 / len(g) for s in g["symbol"]}
+
+
+def mom_picks(R, k=5, rng=None):
+    """{Monday decision day: [k symbols]} by 28-day return (or at random with rng)."""
+    out = {}
+    for t, g in R[R["t"].dt.dayofweek == 0].groupby("t"):
+        g = g.dropna(subset=["r_28"]).sort_values(["r_28", "symbol"], ascending=[False, True])
+        out[t] = list(g["symbol"].iloc[rng.permutation(len(g))[:k]] if rng is not None else g["symbol"].head(k))
+    return out
+
+
+def w_mom(picks):
+    keys = sorted(picks)
+
+    def w(t, g):
+        i = np.searchsorted(np.array(keys, dtype="datetime64[ns]"), np.datetime64(t), side="right") - 1
+        if i < 0 or (t - keys[i]).days >= 7:
+            return {}
+        live = set(g["symbol"])
+        return {s: 1.0 / len(picks[keys[i]]) for s in picks[keys[i]] if s in live}
+    return w
+
+
+def drawdown(B):
+    eq = np.cumprod(1 + B["net"].to_numpy())
+    return float((1 - eq / np.maximum.accumulate(np.r_[1.0, eq])[1:]).max())
+
+
+def slow_check(B, H):
+    """CRY-SLOW's history check on two periods: Sharpe above the twin's and a smaller drawdown."""
+    out = {}
+    for name, lo in (("2020-07..2025-09", FIRST), ("2022-01..2025-09", pd.Timestamp("2022-01-01"))):
+        b, h = B[B.index >= lo], H[H.index >= lo]
+        out[name] = {"rule": {"sharpe": sharpe(b["net"]), "max_drawdown": drawdown(b), "total_net": float(b["net"].sum()),
+                              "mean_daily_turnover": float(b["turnover"].mean()), "mean_daily_funding": float(b["fund"].mean())},
+                     "twin": {"sharpe": sharpe(h["net"]), "max_drawdown": drawdown(h), "total_net": float(h["net"].sum())}}
+        out[name]["ok"] = bool(out[name]["rule"]["sharpe"] > out[name]["twin"]["sharpe"]
+                               and out[name]["rule"]["max_drawdown"] < out[name]["twin"]["max_drawdown"])
+    return out
+
+
+def stage_slow(cache, out):
+    """CRY-WIDE and CRY-MOM history checks (research/prereg/CRYSLOW.md) -> CRYSLOW.json."""
+    out = Path(out)
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet").reset_index(drop=True)
+    assert R["t"].max() < END
+    H = weights_book(R, w_hold)
+    picks = mom_picks(R)
+    res = {"idea_count": 182}
+    for name, w in (("CRY-WIDE", w_wide), ("CRY-MOM", w_mom(picks))):
+        B = weights_book(R, w)
+        chk = slow_check(B, H)
+        res[name] = {"check": chk, "verdict": "not rejected: start the forward book" if all(v["ok"] for v in chk.values())
+                     else "FAILED: rejected by the history check",
+                     "spot_0.25pct": slow_check(weights_book(R, w, COST_SPOT_SIDE), weights_book(R, w_hold, COST_SPOT_SIDE))}
+        print(f"[cry-slow] {name}: {res[name]['verdict']}", flush=True)
+    rng = np.random.default_rng(SEED)
+    sh = sharpe(weights_book(R, w_mom(picks))["net"])
+    rnd = [sharpe(weights_book(R, w_mom(mom_picks(R, rng=rng)))["net"]) for _ in range(200)]
+    res["CRY-MOM"]["random_picks_sharpe_percentile"] = float(np.mean(np.array(rnd) < sh))
+    res["CRY-MOM"]["random_picks_n"] = 200
+    S.atomic_json(res, out / "CRYSLOW.json")
+    return res
+
+
 def load_model(path):
     if str(path).endswith(".joblib"):
         import joblib
@@ -419,14 +508,14 @@ def stage_test(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test", "trace", "fund"])
+    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test", "trace", "fund", "slow"])
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYXS")
     a = ap.parse_args()
     if a.stage == "data":
         stage_data(a.cache)
     else:
-        {"fit": stage_fit, "qa": stage_qa, "test": stage_test, "trace": stage_trace, "fund": stage_fund}[a.stage](a.cache, a.out)
+        {"fit": stage_fit, "qa": stage_qa, "test": stage_test, "trace": stage_trace, "fund": stage_fund, "slow": stage_slow}[a.stage](a.cache, a.out)
 
 
 if __name__ == "__main__":

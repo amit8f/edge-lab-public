@@ -319,3 +319,18 @@ def test_xs_assemble_fit_and_choose():
     assert s["mean_daily_net"] > 0 and X5.verdict(s)[0]["beats_control_t_2"]     # a book that sees the answer wins
     ch = X5.choose({"A": {"3": {"sharpe": 1.0, "mean_daily_net": 0.001}}, "B": {"5": {"sharpe": 2.0, "mean_daily_net": 0.002}}})
     assert ch["learner"] == "B" and ch["k"] == 5
+
+
+def test_slow_rules_weights_and_mom_picks():
+    t0 = pd.Timestamp("2024-01-01")                                   # a Monday
+    days = pd.date_range(t0, periods=9)
+    R = pd.DataFrame([{"t": d, "symbol": s, "r_28": r, "fwd": 0.01, "fund_fwd": 0.001}
+                      for d in days for s, r in (("A", 0.3), ("B", 0.1), ("C", -0.2))])
+    assert X5.w_wide(t0, R[R["t"] == t0]) == {"A": 1 / 3, "B": 1 / 3}
+    picks = X5.mom_picks(R, k=2)
+    assert picks == {t0: ["A", "B"], t0 + pd.Timedelta(days=7): ["A", "B"]}
+    w = X5.w_mom({t0: ["A", "B"]})
+    assert w(t0 + pd.Timedelta(days=6), R) == {"A": 0.5, "B": 0.5} and w(t0 + pd.Timedelta(days=7), R) == {}
+    B = X5.weights_book(R, X5.w_hold, cost=0.001)
+    assert np.isclose(B["turnover"].iat[0], 1.0) and np.isclose(B["net"].iat[1], 0.01 - 0.001)
+    assert X5.drawdown(B) == 0.0
