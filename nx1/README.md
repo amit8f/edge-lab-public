@@ -1,8 +1,8 @@
-# NX1 shadow books, night 2026-11-12
+# NX1 shadow books, night 2026-11-13
 
-Headlines in the batch: 3258. Events: 995 real, 995 placebo.
+Headlines in the batch: 2591. Events: 821 real, 821 placebo.
 
-- picks: equity $5,062.42, 11 open, 6 to enter, 61 closed
-- control: equity $4,894.56, 10 open, 4 to enter, 58 closed
+- picks: equity $5,083.46, 12 open, 4 to enter, 66 closed
+- control: equity $4,848.37, 10 open, 4 to enter, 62 closed
 
-Picks: long GAP, long BBSI, long AGM, short ADTN, short MNTS, short MNTK
+Picks: long GNE, long BMI, long TFPM, short SPCE, short FRMI, short NUAI
