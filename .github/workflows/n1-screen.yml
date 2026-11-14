@@ -58,6 +58,17 @@ jobs:
           key: n1-v1-${{ github.run_id }}
           restore-keys: n1-v1-
 
+      - name: Bring back the committed labels if the cache lost them
+        run: |
+          # GitHub evicts caches when the repository passes its size limit (N1B's was lost 2026-11-14 with 7,650
+          # labels). The label files hold only a headline hash and POS/NEG/NEU, so they are also kept in git.
+          mkdir -p cache/n1
+          for f in research/results/N1B/labels/*.jsonl; do
+            [ -e "$f" ] || continue
+            b="cache/n1/$(basename "$f")"
+            if [ ! -e "$b" ] || [ "$(wc -l < "$f")" -gt "$(wc -l < "$b")" ]; then cp "$f" "$b"; fi
+          done
+
       - name: Run the stage
         env:
           STAGE: ${{ github.event.inputs.stage || 'labels' }}
@@ -76,7 +87,14 @@ jobs:
           path: cache/n1
           key: n1-v1-${{ github.run_id }}
 
+      - name: Copy the labels so far into the results (hash and label only, no headline text)
+        if: always()
+        run: |
+          mkdir -p research/results/N1B/labels
+          cp cache/n1/labels_n1b_*.jsonl research/results/N1B/labels/ 2>/dev/null || true
+
       - name: Commit the results to this branch
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
           IDEA: ${{ github.event.inputs.idea || 'n1b' }}
