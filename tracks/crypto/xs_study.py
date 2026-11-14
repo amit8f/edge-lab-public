@@ -321,6 +321,37 @@ def stage_qa(cache, out):
     return res
 
 
+def stage_trace(cache, out):
+    """POST-HOC, after the one test: which coins and days made the 2025 result (CRYXS_trace.json). Changes nothing."""
+    out = Path(out)
+    if not (out / "CRYXS_test.json").exists():
+        raise SystemExit("the test has not run")
+    fitj = json.loads((out / "CRYXS_fit.json").read_text())
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet", filters=[("t", ">=", TEST0)]).reset_index(drop=True)
+    k = fitj["chosen"]["k"]
+    R["pred"] = predict(load_model(fitj["refit"]["model"]), R)
+    g = R.groupby("t")["pred"]
+    R["side"] = np.where(g.rank(ascending=False, method="first") <= k, "L",
+                         np.where(g.rank(method="first") <= k, "S", ""))
+    H = R[R["side"] != ""].copy()
+    sg = np.where(H["side"] == "L", 1.0, -1.0)
+    H["gross"] = sg * H["fwd"] / (2 * k)
+    H["fund"] = -sg * H["fund_fwd"] / (2 * k)
+    H["month"] = H["t"].dt.to_period("M").astype(str)
+    by = H.groupby(["month", "symbol", "side"])[["gross", "fund"]].sum().reset_index()
+    by["sum"] = by["gross"] + by["fund"]
+    days = H.groupby("t")[["gross", "fund"]].sum().assign(sum=lambda x: x["gross"] + x["fund"])
+    worst = days["sum"].sort_values().head(10).index
+    res = {"worst_coin_months": json.loads(by.sort_values("sum").head(15).to_json(orient="records")),
+           "best_coin_months": json.loads(by.sort_values("sum").tail(10).to_json(orient="records")),
+           "worst_days": {str(d.date()): json.loads(H.loc[H["t"] == d, ["symbol", "side", "fwd", "fund_fwd", "r_1", "r_7",
+                                                                        "fund_1"]].to_json(orient="records")) for d in worst},
+           "funding_by_side": {sd: float(H.loc[H["side"] == sd, "fund"].sum()) for sd in ("L", "S")}}
+    S.atomic_json(res, out / "CRYXS_trace.json")
+    print("[cry-xs trace] written", flush=True)
+    return res
+
+
 def load_model(path):
     if str(path).endswith(".joblib"):
         import joblib
@@ -351,14 +382,14 @@ def stage_test(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test"])
+    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test", "trace"])
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYXS")
     a = ap.parse_args()
     if a.stage == "data":
         stage_data(a.cache)
     else:
-        {"fit": stage_fit, "qa": stage_qa, "test": stage_test}[a.stage](a.cache, a.out)
+        {"fit": stage_fit, "qa": stage_qa, "test": stage_test, "trace": stage_trace}[a.stage](a.cache, a.out)
 
 
 if __name__ == "__main__":
