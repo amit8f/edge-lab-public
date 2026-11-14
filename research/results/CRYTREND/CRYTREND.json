@@ -1,0 +1,114 @@
+{
+ "rule": "hold while close > close 28 days earlier; BTC and ETH, half each",
+ "periods": {
+  "2018-01..2025-09": {
+   "primary_0.5pct": {
+    "rule": {
+     "sharpe": 0.9115905015232814,
+     "cagr": 0.389153262036223,
+     "max_drawdown": 0.6617789587331155,
+     "end": 12.78800019641328
+    },
+    "hold": {
+     "sharpe": 0.7157809613371363,
+     "cagr": 0.28483019434574963,
+     "max_drawdown": 0.8810177661218493,
+     "end": 6.9811537022330175
+    },
+    "round_trips": [
+     122,
+     112
+    ],
+    "share_of_days_held": [
+     0.5438162544169611,
+     0.5222614840989399
+    ],
+    "twin_sharpe_percentile": 0.964,
+    "twin_sharpe_median": 0.49577954554590786,
+    "ok": true
+   },
+   "futures_0.12pct": {
+    "rule": {
+     "sharpe": 1.025046386432778,
+     "cagr": 0.46939184947739543,
+     "max_drawdown": 0.6380461948747647,
+     "end": 19.76464393490849
+    },
+    "hold": {
+     "sharpe": 0.7157809613371363,
+     "cagr": 0.28483019434574963,
+     "max_drawdown": 0.8810177661218493,
+     "end": 6.9811537022330175
+    },
+    "round_trips": [
+     122,
+     112
+    ],
+    "share_of_days_held": [
+     0.5438162544169611,
+     0.5222614840989399
+    ],
+    "twin_sharpe_percentile": 0.961,
+    "twin_sharpe_median": 0.6165633228109948,
+    "ok": true
+   }
+  },
+  "2022-01..2025-09": {
+   "primary_0.5pct": {
+    "rule": {
+     "sharpe": 0.681554655086237,
+     "cagr": 0.2045369250033484,
+     "max_drawdown": 0.4136723600006271,
+     "end": 2.0096979894220004
+    },
+    "hold": {
+     "sharpe": 0.5596681291005203,
+     "cagr": 0.16924923520691193,
+     "max_drawdown": 0.6886996411283741,
+     "end": 1.7976209305390456
+    },
+    "round_trips": [
+     64,
+     56
+    ],
+    "share_of_days_held": [
+     0.5449233016800584,
+     0.4813732651570489
+    ],
+    "twin_sharpe_percentile": 0.913,
+    "twin_sharpe_median": 0.26575530870465497,
+    "ok": true
+   },
+   "futures_0.12pct": {
+    "rule": {
+     "sharpe": 0.839809902888016,
+     "cagr": 0.27844870202273886,
+     "max_drawdown": 0.3898750113830579,
+     "end": 2.512670091771818
+    },
+    "hold": {
+     "sharpe": 0.5596681291005203,
+     "cagr": 0.16924923520691193,
+     "max_drawdown": 0.6886996411283741,
+     "end": 1.7976209305390456
+    },
+    "round_trips": [
+     64,
+     56
+    ],
+    "share_of_days_held": [
+     0.5449233016800584,
+     0.4813732651570489
+    ],
+    "twin_sharpe_percentile": 0.908,
+    "twin_sharpe_median": 0.43400785055291036,
+    "ok": true
+   }
+  }
+ },
+ "days": {
+  "first": "2017-08-17",
+  "last": "2025-09-30"
+ },
+ "verdict": "not rejected: start the forward book"
+}
