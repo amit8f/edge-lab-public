@@ -90,3 +90,19 @@ scalp lost 0.14% a trade on BTC and ETH.
    The universe candidates are every USDT symbol folder in the archive's futures listing.
 3. The long-only 0.5% scenario reruns the book with shorts removed.
 4. The "hand check" recomputes 20 random test trades from the raw candles with a separate slow routine.
+
+## Amendment 2 (2026-11-14, with the forward job's code and before its first run): the CRY-TREND forward book
+
+The history check did not reject the rule (results in `research/results/CRYTREND/CRYTREND.json`), so the forward
+book starts. Details the text left open:
+
+1. Prices: Kraken's public daily candles for BTC/USD and ETH/USD (a candle is the UTC day, as in the history
+   check). Binance's bulk archive is a day or more late and its API may refuse the job's servers.
+2. The book starts with $1,000 in cash at the newest finished daily close when the job first runs. At every daily
+   close it applies Amendment 1's rule at that close's price, paying 0.25% of the traded amount on each side.
+3. The twin puts $500 in each coin at the starting close and never trades. It pays no cost, as in the history
+   check.
+4. Every finished day is logged once in the hash-chained ledger. A day the job misses is logged by the next run
+   from the same candles, at that day's close.
+5. Judgement, once, on the days up to 2027-12-31: Sharpe ratios and largest drawdowns from daily equity (365 days
+   a year); a round trip is one completed sale. Nothing else is changed.

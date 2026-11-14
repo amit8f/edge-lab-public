@@ -50,7 +50,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -221,6 +221,19 @@ def boomshort_book(st):
     closed = sum(1 for x in st_ if x for v in x.get("trades", {}).values() if v.get("status") == "settled")
     return [_book("BOOM-SHORT", "BOOM-SHORT", 100, closed, 0, realized=sum((x or {}).get("pnl_usd") or 0.0 for x in st_),
                   size=5000.0, days=len(list((led / "days").glob("*.json"))))]
+
+
+def crytrend_book(st):
+    """CRY-TREND $1,000 ledger book (research/prereg/CRYPTO.md): BTC and ETH held only in an uptrend, next to a
+    buy-and-hold twin; judged once, at the end of 2027."""
+    s = _json(st / "state-crytrend" / "crytrend" / "summary.json")
+    if not s:
+        return []
+    twin = 100 * (s["twin_usd"] / 1000 - 1)
+    held = " and ".join(s["held"]) or "cash only"
+    return [_book("CRY-TREND", "CRY-TREND", s["min_round_trips"], s["round_trips"], len(s["held"]), unreal=s["rule_usd"] - 1000,
+                  size=1000.0, unit="round trips", first_day=s["first_day"],
+                  note=f"Holding {held}. Just holding both coins: {twin:+.2f}%. Judged on {s['judged']}.")]
 
 
 def boom1_days(st, today=None):
@@ -872,7 +885,7 @@ def last_change(repo_root, names):
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     b1days = _safe(boom1_days, st)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:
