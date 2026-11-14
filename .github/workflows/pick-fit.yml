@@ -14,6 +14,10 @@ on:
         default: join
         type: choice
         options: [join, fit]
+      last:
+        description: "last month to join (YYYY-MM)"
+        required: true
+        default: "2025-09"
 
 permissions: {}
 
@@ -25,6 +29,7 @@ jobs:
   run:
     permissions:
       contents: write
+      actions: read
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     steps:
@@ -53,6 +58,20 @@ jobs:
           key: pick-v1-none
           restore-keys: pick-v1-
 
+      - name: Fall back to the rows the last run kept as an artifact (caches get evicted)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ -d cache/w1/pick/rows ]] && exit 0
+          run=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=pick-rows&per_page=20" \
+            --jq '[.artifacts[] | select(.expired | not)][0].workflow_run.id // empty')
+          if [[ -n "$run" ]]; then
+            gh run download "$run" --repo "$GITHUB_REPOSITORY" -n pick-rows -D cache/w1/pick
+            ls cache/w1/pick/rows | wc -l
+          else
+            echo "no artifact yet"
+          fi
+
       - name: Restore NX1's cache (read only)
         uses: actions/cache/restore@v4
         with:
@@ -70,11 +89,12 @@ jobs:
       - name: Run the stage
         env:
           STAGE: ${{ github.event.inputs.stage }}
+          LAST_MONTH: ${{ github.event.inputs.last }}
         run: |
           [[ -d cache/w1/pick/rows ]] || { echo "::error::PICK's rows are missing; run pick-study stage=rows first"; exit 1; }
           [[ -d cache/nx1/nx1/tone ]] || { echo "::error::NX1's tone cache is missing; run nx1-study first"; exit 1; }
           PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick_study --stage "$STAGE" --rows cache/w1 \
-            --nx1 cache/nx1 --out research/results/PICK --state cache/pickfit
+            --nx1 cache/nx1 --out research/results/PICK --state cache/pickfit --last "${LAST_MONTH:-2025-09}"
 
       - name: Save PICK fit's cache (also after a failure, so a rerun resumes)
         if: always()

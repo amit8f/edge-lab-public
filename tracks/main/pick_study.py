@@ -173,11 +173,11 @@ def read_tone(nx1, per):
     return pd.read_parquet(f, columns=NEWS_TONE)
 
 
-def stage_join(rows_cache, nx1, state):
+def stage_join(rows_cache, nx1, state, last=LAST):
     spy = pd.read_parquet(Path(nx1) / "nx1" / "spy.parquet")
     sess = np.unique(to_ns(spy["date"]))
     parts = spy_parts(spy)
-    for m in pd.period_range(FIRST, LAST, freq="M"):
+    for m in pd.period_range(FIRST, last, freq="M"):
         f = Path(state) / "joined" / f"{m}.parquet"
         if f.exists():
             continue
@@ -464,9 +464,10 @@ def main():
     ap.add_argument("--nx1", default="cache/nx1")
     ap.add_argument("--out", default="research/results/PICK")
     ap.add_argument("--state", default="cache/pickfit")
+    ap.add_argument("--last", default=LAST, help="last month to join (YYYY-MM)")
     a = ap.parse_args()
     if a.stage == "join":
-        stage_join(a.rows, a.nx1, a.state)
+        stage_join(a.rows, a.nx1, a.state, a.last)
     else:
         stage_fit(a.state, a.out)
 
