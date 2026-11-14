@@ -11,6 +11,7 @@ from tracks.crypto import day_live as F
 from tracks.crypto import day_study as D
 from tracks.crypto import trend_live as L
 from tracks.crypto import trend_study as T
+from tracks.crypto import xs_study as X5
 
 
 def zipped(text, name="x.csv"):
@@ -252,3 +253,69 @@ def test_forward_replay_logs_each_month_once_and_reproduces_earlier_trades(tmp_p
     with pytest.raises(RuntimeError):                                      # a changed model no longer matches the ledger
         F.run(tmp_path / "b", source=_fwd_source(["2026-11", "2026-12"]),
               load_models=lambda: ({"L": _Model(-1), "S": _Model(1)}, 0.004, {}))
+
+
+# ---------- CRY-XS: the daily cross-sectional model ----------
+
+def _daily(n=120, seed=0, start="2021-01-01"):
+    rng = np.random.default_rng(seed)
+    t = pd.date_range(start, periods=n, freq="D")
+    c = 100 * np.exp(np.cumsum(rng.normal(0, 0.03, n)))
+    o = np.r_[c[0], c[:-1]]
+    return pd.DataFrame({"t": t, "o": o, "h": np.maximum(o, c) * 1.01, "l": np.minimum(o, c) * 0.99, "c": c,
+                         "qv": 1000.0 + seed, "tbqv": 500.0})
+
+
+def test_xs_rows_use_the_next_open_to_the_open_after_and_that_days_funding():
+    df = _daily()
+    fund = pd.DataFrame({"t": pd.date_range("2021-01-01", periods=360, freq="8h"), "rate": 0.0001})
+    fund.loc[fund["t"] == pd.Timestamp("2021-02-12 00:00"), "rate"] = 0.01      # paid by whoever held Feb 11
+    X = X5.coin_rows(df, fund).set_index("t")
+    d = pd.Timestamp("2021-02-10")
+    o = df.set_index("t")["o"]
+    assert np.isclose(X.at[d, "fwd"], o[d + pd.Timedelta(days=2)] / o[d + pd.Timedelta(days=1)] - 1)
+    assert np.isclose(X.at[d, "fund_fwd"], 0.0102)                               # Feb 11 08:00, 16:00 and Feb 12 00:00
+    assert np.isclose(X.at[d, "fund_1"], 0.0003) and np.isclose(X.at[d, "r_1"], df.set_index("t")["c"].pct_change()[d])
+    gap = df.drop(index=50)                                                      # a missing day blocks three decisions
+    Xg = X5.coin_rows(gap, fund)
+    assert Xg["fwd"].isna().sum() == X["fwd"].isna().sum() + 3
+
+
+def test_xs_universe_ranks_on_the_month_before_and_needs_60_days():
+    vol = pd.DataFrame({"AUSDT": [5.0, 5, 5], "BUSDT": [9.0, 1, 9], "NEWUSDT": [0.0, 99, 99]},
+                       index=pd.period_range("2021-03", periods=3, freq="M"))
+    age = {"AUSDT": pd.Timestamp("2020-01-01"), "BUSDT": pd.Timestamp("2020-01-01"), "NEWUSDT": pd.Timestamp("2021-04-01")}
+    u = X5.universe(vol, age, n=1)
+    assert u == {"2021-04": ["BUSDT"], "2021-05": ["AUSDT"]}                     # NEW is too young in May
+
+
+def test_xs_book_weights_costs_funding_and_control():
+    t = pd.Timestamp("2024-01-01")
+    R = pd.DataFrame({"t": [t] * 4 + [t + pd.Timedelta(days=1)] * 4, "symbol": list("ABCD") * 2,
+                      "fwd": [0.10, 0.0, 0.0, -0.10, 0.02, 0.0, 0.0, 0.02], "fund_fwd": [0.001, 0, 0, 0.001] * 2})
+    B = X5.book(R, np.array([4, 3, 2, 1, 4, 3, 2, 1.0]), 1, cost=0.001)
+    assert np.isclose(B["gross"].iat[0], 0.10) and np.isclose(B["fund"].iat[0], 0.0)   # long pays, short receives
+    assert np.isclose(B["turnover"].iat[0], 1.0) and np.isclose(B["turnover"].iat[1], 0.0)
+    assert np.isclose(B["net"].iat[0], 0.10 - 0.001) and np.isclose(B["net"].iat[1], 0.0)
+    assert B.index[0] == t + pd.Timedelta(days=1)
+    Lg = X5.book(R, np.array([4, 3, 2, 1, 4, 3, 2, 1.0]), 1, side="L")
+    assert np.isclose(Lg["gross"].iat[0], 0.10) and np.isclose(Lg["fund"].iat[0], -0.001)
+    a, b = X5.book(R, np.zeros(8), 1, seed=0), X5.book(R, np.zeros(8), 1, seed=0)
+    assert a.equals(b)
+    assert X5.book(R[R["symbol"] == "A"], np.zeros(2), 1)["net"].abs().sum() == 0      # too few coins: flat
+
+
+def test_xs_assemble_fit_and_choose():
+    rows = {s: X5.coin_rows(_daily(400, i, "2020-05-01"), pd.DataFrame({"t": pd.to_datetime([]), "rate": []}))
+            for i, s in enumerate(["BTCUSDT", "AUSDT", "BUSDT", "CUSDT", "DUSDT", "EUSDT"])}
+    uni = {str(m): ["BTCUSDT", "AUSDT", "BUSDT", "CUSDT", "DUSDT"] for m in pd.period_range("2020-06", "2021-06", freq="M")}
+    R = X5.assemble(rows, uni)
+    assert set(R["symbol"]) == set(uni["2020-06"]) and R["t"].min() >= X5.FIRST
+    assert np.allclose(R.groupby("t")["rel"].sum(), 0) and R["rk_r_1"].between(-0.5, 0.5).all()
+    m = X5.fit("Ridge", R, np.ones(len(R), bool))
+    assert len(X5.predict(m, R)) == len(R)
+    s = X5.summary(X5.book(R, R["rel"].to_numpy(), 2), X5.book(R, R["rel"].to_numpy(), 2, seed=0),
+                   pd.Series(0.01, index=pd.date_range("2020-06-01", "2021-07-01")).mul(np.arange(396) % 3 - 1))
+    assert s["mean_daily_net"] > 0 and X5.verdict(s)[0]["beats_control_t_2"]     # a book that sees the answer wins
+    ch = X5.choose({"A": {"3": {"sharpe": 1.0, "mean_daily_net": 0.001}}, "B": {"5": {"sharpe": 2.0, "mean_daily_net": 0.002}}})
+    assert ch["learner"] == "B" and ch["k"] == 5

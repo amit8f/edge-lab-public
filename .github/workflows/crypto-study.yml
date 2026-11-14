@@ -9,11 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, data, trend, day-rows, day-fit or day-test"
+        description: "all, data, trend, day-rows, day-fit, day-test, xs (data + fit) or xs-test"
         required: true
         default: all
         type: choice
-        options: [all, data, trend, day-rows, day-fit, day-test]
+        options: [all, data, trend, day-rows, day-fit, day-test, xs, xs-test]
 
 permissions: {}
 
@@ -85,6 +85,9 @@ jobs:
             day-rows) rows ;;
             day-fit) fit ;;
             day-test) py tracks.crypto.day_study --stage test --cache cache --out research/results/CRYDAY ;;
+            xs) py tracks.crypto.xs_study --stage data --cache cache
+                py tracks.crypto.xs_study --stage fit --cache cache --out research/results/CRYXS ;;
+            xs-test) py tracks.crypto.xs_study --stage test --cache cache --out research/results/CRYXS ;;
           esac
 
       - name: Save the crypto cache (also after a failure, so a rerun resumes)
@@ -111,8 +114,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/CRYTREND research/results/CRYDAY
-          git add research/results/CRYTREND research/results/CRYDAY
+          mkdir -p research/results/CRYTREND research/results/CRYDAY research/results/CRYXS
+          git add research/results/CRYTREND research/results/CRYDAY research/results/CRYXS
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
           git commit -q -m "Crypto ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
