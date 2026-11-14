@@ -77,3 +77,16 @@ scalp lost 0.14% a trade on BTC and ETH.
   side, by coin and by exit kind, and a hand check of 20 random trades against the raw candles.
 - If it passes: a forward ledger book under its own registration. Until then no live job is built.
 - Prediction: the 2024 gate passes (0.35); the 2025 test passes (0.10).
+
+## Amendment 1 (2026-11-14, with the code and before any download): details the text left open
+
+1. CRY-TREND: day d's return is earned with the signal from the close before it; a coin is entered with half the
+   book's value at that moment (or the cash left, if less) and sold whole on exit. Sharpe ratios use daily returns
+   and 365 days a year. A random twin keeps the coin's held runs and cash runs and shuffles each set.
+2. CRY-DAY: a missing 15-minute candle is filled flat with no volume and is never a decision bar. A funding
+   payment counts when its time is after the entry bar's open and no later than the exit bar's open. A position
+   frees its slot at the end of its exit bar. When both sides of a row clear the bar the higher prediction is
+   used. Daily book returns sum each trade's net return divided by 3, on its entry day, with 0 on other days.
+   The universe candidates are every USDT symbol folder in the archive's futures listing.
+3. The long-only 0.5% scenario reruns the book with shorts removed.
+4. The "hand check" recomputes 20 random test trades from the raw candles with a separate slow routine.

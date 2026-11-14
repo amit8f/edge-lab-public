@@ -1,0 +1,120 @@
+# CRY-TREND and CRY-DAY (research/prereg/CRYPTO.md). Manual runs only, one at a time. Free data from Binance's
+# public archive (no key). stage=all downloads the history, runs the trend rule's history check, builds the
+# day-trading rows and fits and chooses on 2024. stage=day-test is the one test on 2025; start it by hand, once,
+# and only after the fit's gate passed. Raw candles stay in the cache and a 90-day artifact; only results are
+# committed.
+name: crypto-study
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "all, data, trend, day-rows, day-fit or day-test"
+        required: true
+        default: all
+        type: choice
+        options: [all, data, trend, day-rows, day-fit, day-test]
+
+permissions: {}
+
+concurrency:
+  group: crypto-study
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the crypto cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/crypto
+          key: crypto-v1-${{ github.run_id }}
+          restore-keys: crypto-v1-
+
+      - name: Fall back to the candles the last run kept as an artifact (caches get evicted)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ -d cache/crypto/um15 ]] && exit 0
+          run=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=crypto-data&per_page=20" \
+            --jq '[.artifacts[] | select(.expired | not)][0].workflow_run.id // empty')
+          if [[ -n "$run" ]]; then
+            gh run download "$run" --repo "$GITHUB_REPOSITORY" -n crypto-data -D cache/crypto
+          else
+            echo "no artifact yet"
+          fi
+
+      - name: Run the stage
+        env:
+          STAGE: ${{ inputs.stage }}
+        run: |
+          py() { PYTHONPATH=. .venv/bin/python -u -m "$@"; }
+          data()  { py tracks.crypto.cdata --stage rank --cache cache
+                    py tracks.crypto.cdata --stage bars --cache cache
+                    py tracks.crypto.cdata --stage daily --cache cache; }
+          trend() { py tracks.crypto.trend_study --cache cache --out research/results/CRYTREND; }
+          rows()  { py tracks.crypto.day_study --stage rows --cache cache; }
+          fit()   { py tracks.crypto.day_study --stage fit --cache cache --out research/results/CRYDAY; }
+          case "$STAGE" in
+            all) data; trend; rows; fit ;;
+            data) data ;;
+            trend) trend ;;
+            day-rows) rows ;;
+            day-fit) fit ;;
+            day-test) py tracks.crypto.day_study --stage test --cache cache --out research/results/CRYDAY ;;
+          esac
+
+      - name: Save the crypto cache (also after a failure, so a rerun resumes)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/crypto
+          key: crypto-v1-${{ github.run_id }}
+
+      - name: Keep the candles as an artifact too
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: crypto-data
+          path: |
+            cache/crypto
+            !cache/crypto/rows
+          retention-days: 90
+          if-no-files-found: ignore
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/CRYTREND research/results/CRYDAY
+          git add research/results/CRYTREND research/results/CRYDAY
+          git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
+          git commit -q -m "Crypto ${{ inputs.stage }} results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
