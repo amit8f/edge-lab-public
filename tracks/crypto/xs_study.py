@@ -352,6 +352,43 @@ def stage_trace(cache, out):
     return res
 
 
+FUND_VERSIONS = [(f, k) for f in ("fund_1", "fund_7") for k in KS]
+
+
+def stage_fund(cache, out):
+    """CRY-FUND (research/prereg/CRYFUND.md): long the coins with the most negative funding, short the most positive.
+    Version chosen on 2020-07..2024, then the one test on 2025-01..09 -> CRYFUND.json."""
+    out = Path(out)
+    if (out / "CRYFUND.json").exists():
+        raise SystemExit("the one test has already been run")
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet").reset_index(drop=True)
+    hist = (R["t"] < TEST0).to_numpy()
+    H = R[hist].reset_index(drop=True)
+    table = {f"{f} K{k}": summary(book(H, -H[f].fillna(0).to_numpy(), k)) for f, k in FUND_VERSIONS}
+    best = max(table, key=lambda v: table[v]["sharpe"] if np.isfinite(table[v]["sharpe"]) else -9)
+    res = {"history": "2020-07..2024-12", "table_history": table, "chosen": best, "idea_count": 180,
+           "gate": "failed on history"}
+    print("[cry-fund] " + ", ".join(f"{v}: Sharpe {s['sharpe']:.2f}" for v, s in table.items()), flush=True)
+    if table[best]["mean_daily_net"] > 0:
+        res["gate"] = "passed"
+        f, k = FUND_VERSIONS[list(table).index(best)]
+        T = R[~hist & (R["t"] >= TEST0).to_numpy()].reset_index(drop=True)
+        p = -T[f].fillna(0).to_numpy()
+        B, ctrl = book(T, p, k), book(T, p, k, seed=SEED)
+        s = summary(B, ctrl, btc_daily(cache))
+        s["dsr"] = CS.deflated_sharpe(B["net"].to_numpy(), 180)
+        rules, v = verdict(s)
+        T = T.assign(p=p)
+        g = T.groupby("t")["p"]
+        held = T[(g.rank(ascending=False, method="first") <= k) | (g.rank(method="first") <= k)]
+        res.update({"test": "2025-01-01..2025-09-30", "primary": s, "rules": rules, "verdict": v,
+                    "long_side": summary(book(T, p, k, side="L")), "short_side": summary(book(T, p, k, side="S")),
+                    "held_days_with_abs_move_over_50pct": int((held["fwd"].abs() > 0.5).sum())})
+        print(f"[cry-fund] {best}: {v}, mean daily net {s['mean_daily_net']:.5f}, t {s['t_nw']:.2f}", flush=True)
+    S.atomic_json(res, out / "CRYFUND.json")
+    return res
+
+
 def load_model(path):
     if str(path).endswith(".joblib"):
         import joblib
@@ -382,14 +419,14 @@ def stage_test(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test", "trace"])
+    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test", "trace", "fund"])
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYXS")
     a = ap.parse_args()
     if a.stage == "data":
         stage_data(a.cache)
     else:
-        {"fit": stage_fit, "qa": stage_qa, "test": stage_test, "trace": stage_trace}[a.stage](a.cache, a.out)
+        {"fit": stage_fit, "qa": stage_qa, "test": stage_test, "trace": stage_trace, "fund": stage_fund}[a.stage](a.cache, a.out)
 
 
 if __name__ == "__main__":
