@@ -54,3 +54,12 @@ large results, the test waits for a data check on the 2024 choice year only (`--
 how much of the profit comes from a few days or coins, moves above 50% in a day, the long and short sides apart,
 which inputs the model leans on, and the same picks entered one day late. A data or code bug found this way is
 fixed and the fit rerun, logged here. Nothing else about the method, the choice or the test changes.
+
+Data check result (2026-11-14, `research/results/CRYXS/CRYXS_qa.json`, 2024 only): no bug found. 2024's net came
+from many days (58% of days positive; the best 5 days were 27% of the year's net) and 83 coins; three one-day
+moves above 50% exist and are real listed-coin events (REEF -63% on 2024-10-15 after +44% the day before, which the
+book shorted; BCH and WLD +55-59%, both on the book's short list). The long side made +0.31% a day and the short
+side +0.54% a day on their own. The same picks entered one day late made +0.03% a day, so the effect lasts about
+a day; that fits a short-term reversal after big moves (the model leans on 60-day return, 28-day volatility and
+funding) and is the opposite of the look-ahead warning sign (an edge that survives delay). The one caveat: 0.06%
+a side may be light for the smallest coins it trades. The 2025 test runs as registered.
