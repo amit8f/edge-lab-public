@@ -48,3 +48,28 @@ closed trades, mean net per trade > 0 with Newey-West t >= 2 on daily book retur
 
 PICK2-MAIN's 2023 book is positive (chance 0.5) and it passes forward (0.15). PICK2-BAD passes forward: 0.15; bad
 days are about a fifth of days, so 30 trades may take longer than 60 days.
+
+## Amendment 1 (2026-11-14, before any PICK2 number exists): how the fit and the 2023 choice are computed
+
+Written with the code (`tracks/main/pick2_study.py`) and before it has run on real data. Nothing above changes;
+these are the details the text left open.
+
+1. Training rows are PICK's (the fixed 3% sample of 2019-2023 main decision rows). Each input set (NEWS, CHART,
+   COMBINED) keeps the tier stops PICK froze for it, so a row's target is its net return at its own tier's stop,
+   divided by swing30. One model per input set and learner; as in PICK, only COMBINED decides, the other two are
+   reported.
+2. Huber loss with delta 1 (one swing): XGBoost's pseudo-Huber with slope 1, CatBoost `Huber:delta=1`, LightGBM
+   `huber` with alpha 1. Trees, depth and learning rates are the ones PICK's classifiers used.
+3. Bars: for each model, the top 0.10%, 0.05%, 0.02% and 0.01% of its own predicted net returns on its 2019-2022
+   training rows. Bad and normal rows share one population and one bar.
+4. The 2023 book is built from **every** 2023 main decision row, not the 3% sample, because "the first two to
+   clear the bar" can only be found by looking at every row. The 2019-2022 models score a fresh full scan of 2023
+   (5-minute bars, the same code path as PICK's test). A stock's first clearing row is its only candidate that
+   day; at the same minute the higher prediction is bought first; a row with no valid trade is skipped.
+5. Learner and bar are chosen together: among the 12 (learner, bar) books of an input set with at least 100 trades
+   in 2023, the one with the highest mean net per trade. If none has 100 trades, or COMBINED's chosen book has
+   mean net <= 0: "failed at validation", no PICK2-MAIN book.
+6. Refit bars and the sizing top come from the 2019-2023 refit model's predictions on the sampled rows (the same
+   share as the chosen bar; top = the 99th percentile of predictions at or above the bar, PICK's rule).
+7. Models (validation and refit) are committed under `research/results/PICK2`, so an evicted cache cannot lose
+   them.

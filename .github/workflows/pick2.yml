@@ -1,0 +1,128 @@
+# PICK2-MAIN fit and 2023 choice (research/prereg/PICK2.md, Amendment 1). Manual start, one run at a time.
+# stage=fit trains on PICK's joined 2019-2023 rows (cache pickfit-v1-*, read only) and commits the models and
+# PICK2_fit.json. stage=scan scores every 2023 decision row with the 2019-2022 models (5-minute bars from Alpaca);
+# it queues itself until done, then writes and commits PICK2_choose.json. Never reads a 2024+ month.
+name: pick2
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "fit or scan"
+        required: true
+        default: fit
+        type: choice
+        options: [fit, scan]
+
+permissions: {}
+
+concurrency:
+  group: pick2
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore PICK fit's joined rows (read only)
+        if: inputs.stage == 'fit'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/pickfit
+          key: pickfit-v1-none
+          restore-keys: pickfit-v1-
+
+      - name: Restore W1's daily cache (read only)
+        if: inputs.stage == 'scan'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/w1
+          key: w1-v1-none
+          restore-keys: w1-v1-
+
+      - name: Restore NX1's cache (read only)
+        if: inputs.stage == 'scan'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+
+      - name: Restore the scan's own cache
+        if: inputs.stage == 'scan'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/pick2
+          key: pick2-v1-${{ github.run_id }}
+          restore-keys: pick2-v1-
+
+      - name: Run the stage
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          STAGE: ${{ inputs.stage }}
+        run: |
+          set -o pipefail
+          if [[ "$STAGE" == fit ]]; then
+            [[ -d cache/pickfit/joined ]] || { echo "::error::PICK's joined rows are missing; run pick-fit stage=join first"; exit 1; }
+          else
+            [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
+            [[ -d cache/nx1/nx1/tone ]] || { echo "::error::NX1's tone cache is missing"; exit 1; }
+            [[ -f research/results/PICK2/PICK2_fit.json ]] || { echo "::error::run stage=fit first"; exit 1; }
+          fi
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick2_study --stage "$STAGE" --w1 cache/w1 --nx1 cache/nx1 \
+            --fitstate cache/pickfit --pick research/results/PICK --out research/results/PICK2 --state cache/pick2 \
+            --budget-min 320 | tee stage.log
+
+      - name: Save the scan's cache (also after a failure, so a rerun resumes)
+        if: always() && inputs.stage == 'scan'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/pick2
+          key: pick2-v1-${{ github.run_id }}
+
+      - name: Queue the scan again until it is done
+        if: success() && inputs.stage == 'scan'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if grep -q "time budget used" stage.log; then
+            gh workflow run pick2.yml --repo "$GITHUB_REPOSITORY" --ref main -f stage=scan
+            echo "queued stage=scan"
+          fi
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/PICK2
+          git add research/results/PICK2
+          git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
+          git commit -q -m "PICK2 ${{ inputs.stage }} results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
