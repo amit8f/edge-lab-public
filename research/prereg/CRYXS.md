@@ -45,3 +45,12 @@ costs and funding; expect most of it to be gone.
 - If it passes: a forward ledger book under its own registration. A result that is positive after costs but short
   of t 3 may get a watch-only forward book (the near-miss rule); it is still a FAIL here.
 - Prediction: the 2024 gate passes (0.5); the 2025 test passes (0.05).
+
+## Amendment 1 (2026-11-14, after the 2024 choice and before the 2025 test): a data check first
+
+The 2024 gate passed with numbers too good to take at face value: XGBoost with K = 3 made +0.42% a day after
+costs (Sharpe 3.3), and all three tree learners were above Sharpe 2. Under the project's rule for implausibly
+large results, the test waits for a data check on the 2024 choice year only (`--stage qa`, no 2025 row is read):
+how much of the profit comes from a few days or coins, moves above 50% in a day, the long and short sides apart,
+which inputs the model leans on, and the same picks entered one day late. A data or code bug found this way is
+fixed and the fit rerun, logged here. Nothing else about the method, the choice or the test changes.

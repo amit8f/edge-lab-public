@@ -276,6 +276,51 @@ def stage_fit(cache, out):
     return res
 
 
+def stage_qa(cache, out):
+    """Data checks on the 2024 choice year for the chosen version, before the one test (Amendment 1). Reads
+    nothing from 2025."""
+    out = Path(out)
+    ch = json.loads((out / "CRYXS_fit.json").read_text())["chosen"]
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet", filters=[("t", "<", TEST0 - PURGE)]).reset_index(drop=True)
+    assert R["t"].max() < TEST0
+    tr = (R["t"] < VAL0 - PURGE).to_numpy()
+    m = fit(ch["learner"], R, tr)
+    V = R[~tr & (R["t"] >= VAL0).to_numpy()].reset_index(drop=True)
+    pred, k = predict(m, V), ch["k"]
+    B = book(V, pred, k)
+    V = V.assign(pred=pred)
+    V["rank_hi"] = V.groupby("t")["pred"].rank(ascending=False, method="first")
+    V["rank_lo"] = V.groupby("t")["pred"].rank(ascending=True, method="first")
+    held = V[(V["rank_hi"] <= k) | (V["rank_lo"] <= k)].assign(side=lambda x: np.where(x["rank_hi"] <= k, "L", "S"))
+    held["contrib"] = np.where(held["side"] == "L", 1, -1) * held["fwd"] / (2 * k)
+    top = B["net"].abs().sort_values(ascending=False).head(8).index
+    nxt = V.sort_values(["symbol", "t"]).groupby("symbol")["fwd"].shift(-1)       # the day after the traded day
+    late = V.assign(fwd=nxt.reindex(V.index)).dropna(subset=["fwd"])
+    imp = getattr(m, "feature_importances_", None)
+    res = {"chosen": ch, "net_total": float(B["net"].sum()),
+           "share_of_net_from_top_5_days": float(B["net"].sort_values(ascending=False).head(5).sum() / B["net"].sum()),
+           "days_positive": float((B["net"] > 0).mean()),
+           "long_side": summary(book(V, pred, k, side="L")), "short_side": summary(book(V, pred, k, side="S")),
+           "universe_mean_daily_fwd": float(V.groupby("t")["fwd"].mean().mean()),
+           "entry_one_day_late": summary(book(late, late["pred"].to_numpy(), k)),
+           "abs_fwd_over_50pct": json.loads(V.loc[V["fwd"].abs() > 0.5, ["t", "symbol", "fwd", "pred"]].assign(
+               t=lambda x: x["t"].astype(str)).to_json(orient="records")),
+           "biggest_days": {str(d.date()): {"net": float(B.at[d, "net"]), "held": json.loads(
+               held.loc[held["t"] == d - pd.Timedelta(days=1), ["symbol", "side", "fwd", "r_1", "pred"]].to_json(orient="records"))}
+               for d in top},
+           "by_coin_top": {s: float(v) for s, v in held.groupby("symbol")["contrib"].sum().sort_values(ascending=False).head(10).items()},
+           "by_coin_bottom": {s: float(v) for s, v in held.groupby("symbol")["contrib"].sum().sort_values().head(5).items()},
+           "coins_held": int(held["symbol"].nunique()),
+           "feature_importance": dict(sorted(zip(FEATS, map(float, imp), strict=True), key=lambda x: -x[1])[:12]) if imp is not None else None,
+           "rows_per_day": {"min": int(V.groupby("t").size().min()), "median": float(V.groupby("t").size().median())},
+           "pred_vs_rel_corr": float(np.corrcoef(pred, V["rel"])[0, 1]),
+           "r1_vs_rel_corr": float(V[["r_1", "rel"]].corr().iloc[0, 1])}
+    S.atomic_json(res, out / "CRYXS_qa.json")
+    print(f"[cry-xs qa] top-5-day share {res['share_of_net_from_top_5_days']:.2f}; one day late mean "
+          f"{res['entry_one_day_late']['mean_daily_net']:.5f}", flush=True)
+    return res
+
+
 def load_model(path):
     if str(path).endswith(".joblib"):
         import joblib
@@ -306,14 +351,14 @@ def stage_test(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["data", "fit", "test"])
+    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test"])
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYXS")
     a = ap.parse_args()
     if a.stage == "data":
         stage_data(a.cache)
     else:
-        {"fit": stage_fit, "test": stage_test}[a.stage](a.cache, a.out)
+        {"fit": stage_fit, "qa": stage_qa, "test": stage_test}[a.stage](a.cache, a.out)
 
 
 if __name__ == "__main__":
