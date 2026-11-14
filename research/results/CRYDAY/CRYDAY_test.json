@@ -1,0 +1,366 @@
+{
+  "test": "2025-01-01..2025-09-30",
+  "chosen": {
+    "learner": "XGBoost",
+    "q": "0.005",
+    "trades": 262,
+    "mean_net": 0.005887695873322688
+  },
+  "bar": 0.005594582169120774,
+  "primary": {
+    "trades": 34,
+    "mean_net": 0.008454221032356171,
+    "median_net": 0.011338076043970448,
+    "win_share": 0.7352941176470589,
+    "book_daily": {
+      "mean": 0.00035096888290611693,
+      "se_nw": 0.00016843766012192423,
+      "t_nw": 2.08367227763712
+    },
+    "book_total": 0.09581450503336993,
+    "days_with_trades": 17,
+    "exits": {
+      "time": 0.8529411764705882,
+      "stop": 0.11764705882352941,
+      "tp": 0.029411764705882353
+    },
+    "by_side": {
+      "L": {
+        "n": 25,
+        "mean_net": 0.008715668784295898
+      },
+      "S": {
+        "n": 9,
+        "mean_net": 0.007727977276968032
+      }
+    },
+    "by_coin": {
+      "1000PEPEUSDT": {
+        "n": 7,
+        "mean_net": 0.016183607900025005
+      },
+      "ADAUSDT": {
+        "n": 10,
+        "mean_net": 0.002291959892232266
+      },
+      "DOGEUSDT": {
+        "n": 2,
+        "mean_net": 0.010725453465704228
+      },
+      "FARTCOINUSDT": {
+        "n": 3,
+        "mean_net": 0.018800076453228558
+      },
+      "LINKUSDT": {
+        "n": 3,
+        "mean_net": -4.142385507705422e-06
+      },
+      "SOLUSDT": {
+        "n": 3,
+        "mean_net": 0.010903635898560858
+      },
+      "SUIUSDT": {
+        "n": 2,
+        "mean_net": 0.003814484830036456
+      },
+      "TRUMPUSDT": {
+        "n": 2,
+        "mean_net": 0.022505978276847166
+      },
+      "XRPUSDT": {
+        "n": 2,
+        "mean_net": -0.005975941083204393
+      }
+    },
+    "minus_control_daily": {
+      "mean": 0.00037836854646359315,
+      "se_nw": 0.00022474405889178875,
+      "t_nw": 1.6835530528785747
+    },
+    "mean_ctrl_net": -0.0006600095427521498,
+    "alpha_on_btc": {
+      "alpha": 0.000352679212153086,
+      "t": 2.1046502756507346,
+      "beta": -0.001780304251796368
+    },
+    "dsr": {
+      "sr": 0.13323103653234739,
+      "sr0": 0.16524827723555788,
+      "n_trials": 177,
+      "t_obs": 273,
+      "dsr": 0.21262588222689904
+    }
+  },
+  "rules": {
+    "mean_net_above_0": true,
+    "t_3": false,
+    "trades_100": false,
+    "beats_control_t_2": false,
+    "alpha_on_btc_t_2": true
+  },
+  "verdict": "FAIL",
+  "long_only_at_0.5pct": {
+    "trades": 25,
+    "mean_net": 0.004911453584295895,
+    "median_net": 0.008172338090011059,
+    "win_share": 0.68,
+    "book_daily": {
+      "mean": 0.00014992227058290277,
+      "se_nw": 0.00014200507976409798,
+      "t_nw": 1.0557528704744719
+    },
+    "book_total": 0.04092877986913246,
+    "days_with_trades": 13,
+    "exits": {
+      "time": 0.92,
+      "stop": 0.08
+    },
+    "by_side": {
+      "L": {
+        "n": 25,
+        "mean_net": 0.004911453584295895
+      }
+    },
+    "by_coin": {
+      "1000PEPEUSDT": {
+        "n": 4,
+        "mean_net": 0.02496634548479743
+      },
+      "ADAUSDT": {
+        "n": 9,
+        "mean_net": -0.003422671040791484
+      },
+      "DOGEUSDT": {
+        "n": 1,
+        "mean_net": 0.0019114868912132365
+      },
+      "FARTCOINUSDT": {
+        "n": 2,
+        "mean_net": 0.015520559607801302
+      },
+      "LINKUSDT": {
+        "n": 3,
+        "mean_net": -0.0038041423855077056
+      },
+      "SOLUSDT": {
+        "n": 2,
+        "mean_net": 0.007203546848876367
+      },
+      "TRUMPUSDT": {
+        "n": 2,
+        "mean_net": 0.018664803276847167
+      },
+      "XRPUSDT": {
+        "n": 2,
+        "mean_net": -0.009775941083204395
+      }
+    }
+  },
+  "idea_count": 177,
+  "hand_check": {
+    "n": 20,
+    "all_match": true,
+    "trades": [
+      {
+        "symbol": "LINKUSDT",
+        "t": "2025-03-07 02:45:00",
+        "side": "L",
+        "gross": 0.018205143869509444,
+        "gross_recomputed": 0.018205143869509444,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "ADAUSDT",
+        "t": "2025-03-08 11:00:00",
+        "side": "L",
+        "gross": 0.023732200849363005,
+        "gross_recomputed": 0.023732200849363005,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "1000PEPEUSDT",
+        "t": "2025-05-13 03:15:00",
+        "side": "L",
+        "gross": 0.054049006715273906,
+        "gross_recomputed": 0.054049006715273906,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "LINKUSDT",
+        "t": "2025-03-08 03:00:00",
+        "side": "L",
+        "gross": 0.01317233809001106,
+        "gross_recomputed": 0.01317233809001106,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "1000PEPEUSDT",
+        "t": "2025-02-07 18:15:00",
+        "side": "S",
+        "gross": 0.0737092306936491,
+        "gross_recomputed": 0.0737092306936491,
+        "exit": "tp",
+        "exit_recomputed": "tp",
+        "match": true
+      },
+      {
+        "symbol": "TRUMPUSDT",
+        "t": "2025-05-13 03:15:00",
+        "side": "L",
+        "gross": 0.029871286327207924,
+        "gross_recomputed": 0.029871286327207924,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "FARTCOINUSDT",
+        "t": "2025-07-15 03:00:00",
+        "side": "L",
+        "gross": 0.01721364221364219,
+        "gross_recomputed": 0.01721364221364219,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "XRPUSDT",
+        "t": "2025-03-07 23:45:00",
+        "side": "L",
+        "gross": -0.0174938121407896,
+        "gross_recomputed": -0.0174938121407896,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "SOLUSDT",
+        "t": "2025-03-07 01:45:00",
+        "side": "L",
+        "gross": 0.018000711490572696,
+        "gross_recomputed": 0.018000711490572696,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "FARTCOINUSDT",
+        "t": "2025-08-07 01:15:00",
+        "side": "S",
+        "gross": 0.019175760144083065,
+        "gross_recomputed": 0.019175760144083065,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "1000PEPEUSDT",
+        "t": "2025-05-24 00:45:00",
+        "side": "L",
+        "gross": 0.03459415012334066,
+        "gross_recomputed": 0.03459415012334066,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "1000PEPEUSDT",
+        "t": "2025-05-12 18:15:00",
+        "side": "L",
+        "gross": 0.034378329021457876,
+        "gross_recomputed": 0.034378329021457876,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "LINKUSDT",
+        "t": "2025-03-07 23:45:00",
+        "side": "L",
+        "gross": -0.02778990911604362,
+        "gross_recomputed": -0.02778990911604362,
+        "exit": "stop",
+        "exit_recomputed": "stop",
+        "match": true
+      },
+      {
+        "symbol": "ADAUSDT",
+        "t": "2025-03-06 17:15:00",
+        "side": "L",
+        "gross": 0.01871240810871,
+        "gross_recomputed": 0.01871240810871,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "ADAUSDT",
+        "t": "2025-03-07 20:00:00",
+        "side": "L",
+        "gross": -0.036992021039567224,
+        "gross_recomputed": -0.036992021039567224,
+        "exit": "stop",
+        "exit_recomputed": "stop",
+        "match": true
+      },
+      {
+        "symbol": "DOGEUSDT",
+        "t": "2025-05-17 01:00:00",
+        "side": "L",
+        "gross": 0.0069114868912132366,
+        "gross_recomputed": 0.0069114868912132366,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "ADAUSDT",
+        "t": "2025-03-06 09:45:00",
+        "side": "S",
+        "gross": 0.02043395828944594,
+        "gross_recomputed": 0.02043395828944594,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "ADAUSDT",
+        "t": "2025-03-07 23:45:00",
+        "side": "L",
+        "gross": 0.005260582334230435,
+        "gross_recomputed": 0.005260582334230435,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      },
+      {
+        "symbol": "1000PEPEUSDT",
+        "t": "2025-05-18 02:00:00",
+        "side": "S",
+        "gross": -0.035189130375087974,
+        "gross_recomputed": -0.035189130375087974,
+        "exit": "stop",
+        "exit_recomputed": "stop",
+        "match": true
+      },
+      {
+        "symbol": "ADAUSDT",
+        "t": "2025-03-10 03:30:00",
+        "side": "L",
+        "gross": -0.002419029700309161,
+        "gross_recomputed": -0.002419029700309161,
+        "exit": "time",
+        "exit_recomputed": "time",
+        "match": true
+      }
+    ]
+  }
+}
