@@ -10,6 +10,10 @@ on:
         description: "rows"
         required: true
         default: rows
+      last:
+        description: "last month to build (YYYY-MM)"
+        required: true
+        default: "2025-09"
 
 permissions: {}
 
@@ -19,6 +23,8 @@ concurrency:
 
 jobs:
   run:
+    permissions:
+      actions: write
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     steps:
@@ -60,14 +66,31 @@ jobs:
           key: pick-v1-${{ github.run_id }}
           restore-keys: pick-v1-
 
+      - name: Fall back to the rows the last run kept as an artifact (caches get evicted)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ -d cache/w1/pick/rows ]] && exit 0
+          run=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=pick-rows&per_page=20" \
+            --jq '[.artifacts[] | select(.expired | not)][0].workflow_run.id // empty')
+          if [[ -n "$run" ]]; then
+            gh run download "$run" --repo "$GITHUB_REPOSITORY" -n pick-rows -D cache/w1/pick
+            ls cache/w1/pick/rows | wc -l
+          else
+            echo "no artifact yet"
+          fi
+
       - name: Run the stage
         env:
           STAGE: ${{ github.event.inputs.stage }}
+          LAST_MONTH: ${{ github.event.inputs.last }}
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
         run: |
+          set -o pipefail
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing; run w1-study part=w1a stage=data first"; exit 1; }
-          PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick_data --stage "$STAGE" --cache cache/w1 --budget-min 320
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick_data --stage "$STAGE" --cache cache/w1 --budget-min 320 \
+            --last "${LAST_MONTH:-2025-09}" | tee stage.log
           ls cache/w1/pick/rows | wc -l
 
       - name: Save PICK's cache (also after a failure, so a rerun resumes)
@@ -76,3 +99,23 @@ jobs:
         with:
           path: cache/w1/pick
           key: pick-v1-${{ github.run_id }}
+
+      - name: Keep the rows as an artifact too (a cache can be evicted within days)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pick-rows
+          path: cache/w1/pick
+          retention-days: 90
+          if-no-files-found: ignore
+
+      - name: Queue the next run until the rows are done
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LAST_MONTH: ${{ github.event.inputs.last }}
+        run: |
+          if grep -q "stopped on the time budget" stage.log; then
+            gh workflow run pick-study.yml --repo "$GITHUB_REPOSITORY" --ref main -f stage=rows -f last="${LAST_MONTH:-2025-09}"
+            echo "queued the next rows run"
+          fi

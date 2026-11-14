@@ -173,7 +173,7 @@ def day_rows(day, uni, bars, swings):
     return out
 
 
-def stage_rows(cache, deadline, cal):
+def stage_rows(cache, deadline, cal, last=LAST):
     daily = W.read_rows(cache, ["symbol", "date", "c", "dv20"],
                         [("date", ">=", pd.Timestamp(f"{FIRST}-01") - pd.Timedelta(days=10)), ("c", ">=", 1.0),
                          ("dv20", ">=", 1e6)])
@@ -182,7 +182,7 @@ def stage_rows(cache, deadline, cal):
     state = pdir(cache) / "swings.json"
     swings = {k: v for k, v in json.loads(state.read_text()).items()} if state.exists() else {}
     h = alpaca_headers()
-    for m in pd.period_range(FIRST, LAST, freq="M"):
+    for m in pd.period_range(FIRST, last, freq="M"):
         f = pdir(cache) / "rows" / f"{m}.parquet"
         if f.exists():
             continue
@@ -214,10 +214,11 @@ def main():
     ap.add_argument("--stage", default="rows", choices=["rows"])
     ap.add_argument("--cache", default="cache/w1")
     ap.add_argument("--budget-min", type=float, default=330)
+    ap.add_argument("--last", default=LAST, help="last month to build (YYYY-MM)")
     a = ap.parse_args()
     deadline = time.monotonic() + 60 * a.budget_min
     cal = alpaca.trading_calendar(pd.Timestamp(f"{FIRST}-01") - pd.Timedelta(days=10), pd.Timestamp("2025-10-01"))
-    done = stage_rows(a.cache, deadline, cal)
+    done = stage_rows(a.cache, deadline, cal, a.last)
     print("done" if done else "stopped on the time budget; rerun to continue", flush=True)
 
 
