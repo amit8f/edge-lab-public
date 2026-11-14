@@ -328,3 +328,17 @@ def test_boom_picks_lists_all_twenty_most_bearish_first():
     p = DB.boom_picks(rec)
     assert [x["symbol"] for x in p] == ["B", "A"] and p[0]["shorted"] and not p[1]["shorted"]
     assert p[0]["why_down"] == [["pre-market move", 0.3]] and p[1]["pre_news"] is True
+
+
+def test_crytrend_book(tmp_path):
+    import json as _j
+
+    from dashboard import build as DB
+    assert DB.crytrend_book(tmp_path) == []
+    d = tmp_path / "state-crytrend" / "crytrend"
+    d.mkdir(parents=True)
+    (d / "summary.json").write_text(_j.dumps({"first_day": "2026-11-14", "rule_usd": 1020.0, "twin_usd": 990.0, "held": ["BTC"],
+                                              "round_trips": 1, "min_round_trips": 8, "judged": "2027-12-31"}))
+    b = DB.crytrend_book(tmp_path)[0]
+    assert b["closed"] == 1 and b["target"] == 8 and b["open"] == 1 and abs(b["pnl_pct"] - 2.0) < 1e-9
+    assert "Holding BTC" in b["note"] and "-1.00%" in b["note"]

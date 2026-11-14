@@ -8,6 +8,7 @@ import pytest
 
 from tracks.crypto import cdata as C
 from tracks.crypto import day_study as D
+from tracks.crypto import trend_live as L
 from tracks.crypto import trend_study as T
 
 
@@ -156,3 +157,45 @@ def test_verdict_needs_every_rule():
     assert D.verdict(s)[1] == "PASS"
     s["book_daily"]["t_nw"] = 2.9
     assert D.verdict(s)[1] == "FAIL"
+
+
+# ---------- the trend rule's forward book ----------
+
+def _closes(n, seed=3):
+    rng = np.random.default_rng(seed)
+    days = [str(d.date()) for d in pd.date_range("2026-01-01", periods=n)]
+    return {c: dict(zip(days, 100 * np.cumprod(1 + rng.normal(0, 0.04, n)), strict=True)) for c in L.COINS}, days
+
+
+def test_live_trend_book_repeats_the_history_book_day_by_day():
+    closes, days = _closes(200)
+    P = pd.DataFrame(closes)
+    sig = np.column_stack([T.signal(P[c].to_numpy()) for c in L.COINS])
+    ret = P.pct_change().to_numpy()
+    start = 40
+    eq = T.book(ret[start + 1:], sig[start:-1], L.COST)
+    book, _ = L.trade(L.new_book(), L.signal_at(closes, days[start]))
+    assert L.signal_at(closes, days[start]) == dict(zip(L.COINS, sig[start].astype(int), strict=True))
+    got = []
+    for i in range(start + 1, len(days)):
+        book = L.grow(book, {c: closes[c][days[i]] / closes[c][days[i - 1]] - 1 for c in L.COINS})
+        got.append(L.equity(book) / L.START_USD)
+        book, _ = L.trade(book, L.signal_at(closes, days[i]))
+    assert np.allclose(got, eq)
+    assert np.isclose(sum(book["twin"].values()) / L.START_USD, T.hold(ret[start + 1:])[-1])
+
+
+def test_live_trend_job_starts_on_the_newest_day_and_catches_up(tmp_path):
+    import json
+    closes, days = _closes(60)
+    cut = lambda n: {c: {d: v[d] for d in days[:n]} for c, v in closes.items()}
+    L.run(tmp_path, fetch=lambda: cut(50))
+    L.run(tmp_path, fetch=lambda: cut(50))                # nothing new: no second file, no error
+    s = json.loads((tmp_path / "crytrend" / "summary.json").read_text())
+    assert s["days"] == 1 and s["first_day"] == days[49] and s["rule_usd"] == 1000 and s["twin_usd"] == 1000
+    L.run(tmp_path, fetch=lambda: cut(60))                # ten days later: every missed day is logged in order
+    s = json.loads((tmp_path / "crytrend" / "summary.json").read_text())
+    assert s["days"] == 11 and s["last_day"] == days[59] and len(s["curve"]) == 11 and "sharpe" in s["rule"]
+    assert L.Ledger(tmp_path / "crytrend" / "ledger").verify() == []
+    with pytest.raises(RuntimeError):                     # a hole in the candles stops the job
+        L.run(tmp_path / "x", fetch=lambda: {c: {d: v[d] for d in days[40:50]} for c, v in closes.items()})
