@@ -84,8 +84,8 @@ POST-HOC / NOT PRE-REGISTERED: the bars were set from each model's predictions o
 Amendment 1), and CHART's and COMBINED's bars (+0.6% to +4.1% predicted net) were almost never reached in 2023.
 [Correction 2026-11-15: the first reading here, that in-sample predictions spread wider than predictions on new
 rows, was wrong. PICK2-OOF's out-of-fold bars came out higher, not lower (COMBINED XGBoost top 0.10%: +4.9% vs
-+1.3%). Inferred, not checked: the top 2019-2022 predictions come from wild market stretches such as 2020 that
-2023 did not have, so 2023's predictions sit well below either bar.]
++1.3%). Checked 2026-11-15 (data check below): the top 2019-2022 predictions come from 2020 and 2022, and 2023's
+predictions sit well below either bar.]
 
 ## Amendment 2 (2026-11-15, before PICK2-BAD's first session): how the forward book runs
 
@@ -138,3 +138,15 @@ passes forward (0.1).
 **Failed at validation; the idea ends.** With out-of-fold bars, COMBINED cleared no bar on any 2023 day (0 trades
 for every learner and bar); CHART's best had 12 trades. NEWS's chosen book (LightGBM, top 0.10%) had 103 trades at
 -0.09% a trade. Count 168 (183 with phase 1). No book; PICK2-BAD's forward book is unaffected.
+
+## Data check after the two failures (2026-11-15, POST-HOC, run 43715521956, `research/results/PICK2/PICK2_diag.json`)
+
+Amit asked whether 0 trades in 2023 meant a bug. Two checks, no rule:
+1. Parity: on 2023-03-01, 06-01 and 09-01 the scan path rebuilt 2,644-2,779 of the training rows of the same stock
+   and minute. Every input matched except swing30 (up to 0.4 points apart, because the check warms the swing on
+   20 sessions instead of the run's full history), and predictions differ by at most 0.2 points. No bug.
+2. Predictions by year on the training rows themselves (COMBINED XGBoost, predicted net): the top 0.1% is
+   +0.03% in 2019, +2.9% in 2020, +0.2% in 2021, +1.1% in 2022 and +0.09% in 2023; the 2023 maximum is +0.6%,
+   under the +1.3% bar. 3.4% of 2020's rows clear that bar and none of 2023's. The model predicts big net gains only
+   in wild markets (its prediction is in units of the stock's swing, which was large in 2020 and 2022), so a bar
+   set on 2019-2022 as a whole is set by 2020. CHART behaves the same way.

@@ -12,7 +12,7 @@ on:
         required: true
         default: fit
         type: choice
-        options: [fit, scan, oof, scan-oof]
+        options: [fit, scan, oof, scan-oof, diag]
 
 permissions: {}
 
@@ -47,7 +47,7 @@ jobs:
           uv pip install --python .venv/bin/python -r requirements.txt
 
       - name: Restore PICK fit's joined rows (read only)
-        if: inputs.stage == 'fit' || inputs.stage == 'oof'
+        if: inputs.stage == 'fit' || inputs.stage == 'oof' || inputs.stage == 'diag'
         uses: actions/cache/restore@v4
         with:
           path: cache/pickfit
@@ -55,7 +55,7 @@ jobs:
           restore-keys: pickfit-v1-
 
       - name: Restore W1's daily cache (read only)
-        if: inputs.stage == 'scan' || inputs.stage == 'scan-oof'
+        if: inputs.stage == 'scan' || inputs.stage == 'scan-oof' || inputs.stage == 'diag'
         uses: actions/cache/restore@v4
         with:
           path: cache/w1
@@ -63,7 +63,7 @@ jobs:
           restore-keys: w1-v1-
 
       - name: Restore NX1's cache (read only)
-        if: inputs.stage == 'scan' || inputs.stage == 'scan-oof'
+        if: inputs.stage == 'scan' || inputs.stage == 'scan-oof' || inputs.stage == 'diag'
         uses: actions/cache/restore@v4
         with:
           path: cache/nx1
@@ -86,7 +86,9 @@ jobs:
         run: |
           set -o pipefail
           STATE=cache/pick2; [[ "$STAGE" == scan-oof ]] && STATE=cache/pick2oof
-          if [[ "$STAGE" == fit || "$STAGE" == oof ]]; then
+          if [[ "$STAGE" == diag ]]; then
+            [[ -d cache/pickfit/joined && -d cache/w1/w1/daily && -d cache/nx1/nx1/tone ]] || { echo "::error::a cache is missing"; exit 1; }
+          elif [[ "$STAGE" == fit || "$STAGE" == oof ]]; then
             [[ -d cache/pickfit/joined ]] || { echo "::error::PICK's joined rows are missing; run pick-fit stage=join first"; exit 1; }
           else
             [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
