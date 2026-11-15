@@ -298,6 +298,89 @@ def read_fit(out, oof):
     return with_oof(fit, json.loads((Path(out) / "PICK2_oof.json").read_text())) if oof else fit
 
 
+def stage_diag(fitstate, w1, nx1, pick_dir, out, cal, days=("2023-03-01", "2023-06-01", "2023-09-01")):
+    """Data check (2026-11-15, after PICK2-OOF made 0 trades): (1) the validation models' predicted net by year on
+    the sampled 2019-2023 training rows, and the share of rows at or above each bar; (2) parity on a few 2023 days:
+    the scan path's inputs and predictions against the training rows of the same (symbol, minute)."""
+    fit = read_fit(out, False)
+    oof = json.loads((Path(out) / "PICK2_oof.json").read_text())
+    F = frozen(json.loads((Path(pick_dir) / "PICK_fit.json").read_text()))
+    val = Val(fit)
+    cols = ["symbol", "t", "track", "d", *S.FIT_NUM]
+    parts = []
+    for m in pd.period_range("2019-01", "2023-12", freq="M"):
+        df = S.read_joined(fitstate, str(m), cols)
+        if len(df):
+            parts.append(df[df["track"] == TRACK])
+    D = pd.concat(parts, ignore_index=True)
+    D["d"] = pd.to_datetime(D["d"])
+    D["market_score"] = S.market_score(D, F["mkt"])
+    D = D[D["market_score"].notna()].reset_index(drop=True)
+    yr = D["d"].dt.year.to_numpy()
+    val.score(D)
+    res = {"by_year": {}, "parity": {}}
+    for V, vv in fit["versions"].items():
+        for L in vv["learners"]:
+            c = col_of(V, L)
+            p = D[c].to_numpy(float)
+            b_in = float(vv["learners"][L]["bars_val"]["0.001"])
+            b_oof = float(oof["versions"][V]["learners"][L]["bars_val"]["0.001"])
+            res["by_year"][c] = {str(y): {"n": int((yr == y).sum()),
+                                          "q50": float(np.nanquantile(p[yr == y], 0.5)),
+                                          "q99": float(np.nanquantile(p[yr == y], 0.99)),
+                                          "q999": float(np.nanquantile(p[yr == y], 0.999)),
+                                          "max": float(np.nanmax(p[yr == y])),
+                                          "share_ge_bar_in": float(np.mean(p[yr == y] >= b_in)),
+                                          "share_ge_bar_oof": float(np.mean(p[yr == y] >= b_oof))}
+                                 for y in range(2019, 2024)}
+            print(f"[pick2 diag] {c}: " + ", ".join(f"{y} q999 {v['q999']:.4f}" for y, v in res["by_year"][c].items()),
+                  flush=True)
+    spy = pd.read_parquet(Path(nx1) / "nx1" / "spy.parquet")
+    sess = np.unique(S.to_ns(spy["date"]))
+    sp = S.spy_parts(spy)
+    daily = W.read_rows(w1, ["symbol", "date", "c", "dv20"],
+                        [("date", ">=", pd.Timestamp("2022-12-01")), ("date", "<=", pd.Timestamp("2023-12-31")),
+                         ("c", ">=", 1.0), ("dv20", ">=", 1e6)])
+    by_day = {d: g for d, g in daily.groupby("date")}
+    dates = pd.DatetimeIndex(sorted(cal["date"]))
+    h = alpaca_headers()
+    feats = sorted({f for v in S.VERSIONS.values() for f in v})
+    for ds in days:
+        day = dates[dates >= pd.Timestamp(ds)][0]
+        i = dates.get_loc(day)
+        swings = {}
+        for wd in dates[i - P.SWING_N:i]:
+            j = dates.get_loc(wd)
+            for sym, b in P.bars_5min(sorted(P.universe(by_day.get(dates[j - 1], daily.iloc[0:0]))) + ["SPY"], wd, h).items():
+                s_ = P.swing30(b)
+                if np.isfinite(s_):
+                    swings[sym] = (swings.get(sym, []) + [s_])[-P.SWING_N:]
+        uni = P.universe(by_day.get(dates[i - 1], daily.iloc[0:0]))
+        bars = P.bars_5min(sorted(uni) + ["SPY"], day, h)
+        g = T.day_inputs(day, uni, bars, swings)
+        g = g[g["track"] == TRACK].reset_index(drop=True)
+        tone = pd.concat([S.read_tone(nx1, str(x)) for x in (pd.Period(day, "M") - 1, pd.Period(day, "M"))],
+                         ignore_index=True)
+        g = S.join_rows(g, tone, sess, sp)
+        g["market_score"] = S.market_score(g, val.mkt)
+        val.score(g)
+        tr = D[D["d"] == day]
+        m = tr.merge(g, on=["symbol", "t"], suffixes=("_train", "_scan"))
+        out_d = {"scan_rows": len(g), "train_rows": len(tr), "matched": len(m), "max_abs_diff": {}}
+        for c in feats + [col_of(V, L) for V in S.VERSIONS for L in LEARNERS]:
+            a, b = m[f"{c}_train"].to_numpy(float), m[f"{c}_scan"].to_numpy(float)
+            both = np.isfinite(a) & np.isfinite(b)
+            out_d["max_abs_diff"][c] = {"max": float(np.max(np.abs(a[both] - b[both]))) if both.any() else None,
+                                        "nan_mismatch": int((np.isfinite(a) != np.isfinite(b)).sum())}
+        out_d["scan_q999"] = {col_of(V, L): float(np.nanquantile(g[col_of(V, L)], 0.999))
+                              for V in S.VERSIONS for L in LEARNERS}
+        res["parity"][str(day.date())] = out_d
+        bad = {c: v for c, v in out_d["max_abs_diff"].items() if (v["max"] or 0) > 1e-4 or v["nan_mismatch"]}
+        print(f"[pick2 diag] {day.date()}: {len(m)} matched of {len(tr)}; differing: {bad}", flush=True)
+    S.atomic_json(res, Path(out) / "PICK2_diag.json")
+    return res
+
+
 # ---------- scan and choice ----------
 
 class Val:
@@ -421,7 +504,7 @@ def stage_choose(out, state, oof=False):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["fit", "scan", "oof", "scan-oof"])
+    ap.add_argument("--stage", required=True, choices=["fit", "scan", "oof", "scan-oof", "diag"])
     ap.add_argument("--w1", default="cache/w1")
     ap.add_argument("--nx1", default="cache/nx1")
     ap.add_argument("--fitstate", default="cache/pickfit")
@@ -440,6 +523,10 @@ def main():
         return
     oof = a.stage == "scan-oof"
     cal = alpaca.trading_calendar(pd.Timestamp(f"{WARM}-01") - pd.Timedelta(days=10), pd.Timestamp("2024-01-01"))
+    if a.stage == "diag":
+        stage_diag(a.fitstate, a.w1, a.nx1, a.pick, a.out, cal)
+        print("[pick2 diag] done", flush=True)
+        return
     if stage_scan(a.w1, a.nx1, a.out, a.state, time.monotonic() + 60 * a.budget_min, cal, oof):
         stage_choose(a.out, a.state, oof)
         print("[pick2 scan] done", flush=True)
