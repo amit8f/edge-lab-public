@@ -81,9 +81,11 @@ these are the details the text left open.
 at -0.09% a trade. Idea count unchanged: 167 (182 with phase 1).
 
 POST-HOC / NOT PRE-REGISTERED: the bars were set from each model's predictions on its own training rows (item 3 of
-Amendment 1). In-sample tree predictions spread wider than predictions on new rows, so the CHART and COMBINED bars
-(+0.6% to +4.1% predicted net) were almost never reached in 2023. NEWS's predictions sit near zero, so its bars
-were. A bar set from out-of-fold predictions would avoid this; that would be a new idea, put to Amit first.
+Amendment 1), and CHART's and COMBINED's bars (+0.6% to +4.1% predicted net) were almost never reached in 2023.
+[Correction 2026-11-15: the first reading here, that in-sample predictions spread wider than predictions on new
+rows, was wrong. PICK2-OOF's out-of-fold bars came out higher, not lower (COMBINED XGBoost top 0.10%: +4.9% vs
++1.3%). Inferred, not checked: the top 2019-2022 predictions come from wild market stretches such as 2020 that
+2023 did not have, so 2023's predictions sit well below either bar.]
 
 ## Amendment 2 (2026-11-15, before PICK2-BAD's first session): how the forward book runs
 
@@ -130,3 +132,9 @@ reported, not decisive.
 
 Prediction (written first): COMBINED's 2023 book reaches 100 trades (0.8); its mean net is > 0 (0.3); it then
 passes forward (0.1).
+
+## Result: PICK2-OOF (2026-11-15, runs 43692605422 and 43695990216, `research/results/PICK2/PICK2_choose_oof.json`)
+
+**Failed at validation; the idea ends.** With out-of-fold bars, COMBINED cleared no bar on any 2023 day (0 trades
+for every learner and bar); CHART's best had 12 trades. NEWS's chosen book (LightGBM, top 0.10%) had 103 trades at
+-0.09% a trade. Count 168 (183 with phase 1). No book; PICK2-BAD's forward book is unaffected.
