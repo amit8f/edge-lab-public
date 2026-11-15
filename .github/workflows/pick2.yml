@@ -8,11 +8,11 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "fit or scan"
+        description: "fit, scan, oof (PICK2-OOF bars) or scan-oof"
         required: true
         default: fit
         type: choice
-        options: [fit, scan]
+        options: [fit, scan, oof, scan-oof]
 
 permissions: {}
 
@@ -47,7 +47,7 @@ jobs:
           uv pip install --python .venv/bin/python -r requirements.txt
 
       - name: Restore PICK fit's joined rows (read only)
-        if: inputs.stage == 'fit'
+        if: inputs.stage == 'fit' || inputs.stage == 'oof'
         uses: actions/cache/restore@v4
         with:
           path: cache/pickfit
@@ -55,7 +55,7 @@ jobs:
           restore-keys: pickfit-v1-
 
       - name: Restore W1's daily cache (read only)
-        if: inputs.stage == 'scan'
+        if: inputs.stage == 'scan' || inputs.stage == 'scan-oof'
         uses: actions/cache/restore@v4
         with:
           path: cache/w1
@@ -63,7 +63,7 @@ jobs:
           restore-keys: w1-v1-
 
       - name: Restore NX1's cache (read only)
-        if: inputs.stage == 'scan'
+        if: inputs.stage == 'scan' || inputs.stage == 'scan-oof'
         uses: actions/cache/restore@v4
         with:
           path: cache/nx1
@@ -71,12 +71,12 @@ jobs:
           restore-keys: nx1-v1-
 
       - name: Restore the scan's own cache
-        if: inputs.stage == 'scan'
+        if: inputs.stage == 'scan' || inputs.stage == 'scan-oof'
         uses: actions/cache/restore@v4
         with:
-          path: cache/pick2
-          key: pick2-v1-${{ github.run_id }}
-          restore-keys: pick2-v1-
+          path: cache/${{ inputs.stage == 'scan-oof' && 'pick2oof' || 'pick2' }}
+          key: ${{ inputs.stage == 'scan-oof' && 'pick2oof' || 'pick2' }}-v1-${{ github.run_id }}
+          restore-keys: ${{ inputs.stage == 'scan-oof' && 'pick2oof' || 'pick2' }}-v1-
 
       - name: Run the stage
         env:
@@ -85,32 +85,35 @@ jobs:
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
-          if [[ "$STAGE" == fit ]]; then
+          STATE=cache/pick2; [[ "$STAGE" == scan-oof ]] && STATE=cache/pick2oof
+          if [[ "$STAGE" == fit || "$STAGE" == oof ]]; then
             [[ -d cache/pickfit/joined ]] || { echo "::error::PICK's joined rows are missing; run pick-fit stage=join first"; exit 1; }
           else
             [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
             [[ -d cache/nx1/nx1/tone ]] || { echo "::error::NX1's tone cache is missing"; exit 1; }
             [[ -f research/results/PICK2/PICK2_fit.json ]] || { echo "::error::run stage=fit first"; exit 1; }
+            [[ "$STAGE" != scan-oof || -f research/results/PICK2/PICK2_oof.json ]] || { echo "::error::run stage=oof first"; exit 1; }
           fi
           PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick2_study --stage "$STAGE" --w1 cache/w1 --nx1 cache/nx1 \
-            --fitstate cache/pickfit --pick research/results/PICK --out research/results/PICK2 --state cache/pick2 \
+            --fitstate cache/pickfit --pick research/results/PICK --out research/results/PICK2 --state "$STATE" \
             --budget-min 320 | tee stage.log
 
       - name: Save the scan's cache (also after a failure, so a rerun resumes)
-        if: always() && inputs.stage == 'scan'
+        if: always() && (inputs.stage == 'scan' || inputs.stage == 'scan-oof')
         uses: actions/cache/save@v4
         with:
-          path: cache/pick2
-          key: pick2-v1-${{ github.run_id }}
+          path: cache/${{ inputs.stage == 'scan-oof' && 'pick2oof' || 'pick2' }}
+          key: ${{ inputs.stage == 'scan-oof' && 'pick2oof' || 'pick2' }}-v1-${{ github.run_id }}
 
       - name: Queue the scan again until it is done
-        if: success() && inputs.stage == 'scan'
+        if: success() && (inputs.stage == 'scan' || inputs.stage == 'scan-oof')
         env:
           GH_TOKEN: ${{ github.token }}
+          STAGE: ${{ inputs.stage }}
         run: |
           if grep -q "time budget used" stage.log; then
-            gh workflow run pick2.yml --repo "$GITHUB_REPOSITORY" --ref main -f stage=scan
-            echo "queued stage=scan"
+            gh workflow run pick2.yml --repo "$GITHUB_REPOSITORY" --ref main -f stage="$STAGE"
+            echo "queued stage=$STAGE"
           fi
 
       - name: Commit the results to this branch
