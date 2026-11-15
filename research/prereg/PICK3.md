@@ -43,3 +43,16 @@ trades, net > 0 with NW t >= 2, beats random buys with t >= 2), judged then or a
 ## Prediction (written first)
 
 Trades per day 0.8-1.6 (chance 0.7). Not rejected by the history check: 0.3. Passes forward: 0.1.
+
+## Result (2026-11-15, run 43741342553, `research/results/PICK3/PICK3_check.json`)
+
+**Rejected.** 2024-01-02 to 2025-09-30, 438 sessions: 357 trades, 0.82 a day, a trade on 46% of days (the rate Amit
+expected was met). But the average trade lost 0.22% after costs (median +0.03%), the daily book's NW t was -1.69, and
+the picks did worse than the random same-minute buys (-0.22% vs -0.12%). 10.4% ended +3%. Exits: 83% the 15:50 close,
+15% the stop, 2% the +8% target. Of the four rules only "at least 150 trades" held. By year: 2024 -0.15% (193 trades),
+2025 -0.31% (164). Count 169 (184 with phase 1).
+
+POST-HOC / NOT PRE-REGISTERED: the 48 trades on bad-market minutes averaged +0.29%, the 309 on normal minutes
+-0.30%. That is the same pattern PICK's own test showed (bad days +1.0%, normal days negative) and is what PICK2-BAD's
+forward book already tests, so it is not a new lead. The model has a rate-of-trades fix (the bar) but no edge on
+normal days.
