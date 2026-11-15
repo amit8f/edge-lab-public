@@ -50,7 +50,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-DAY-FWD",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -236,6 +236,20 @@ def crytrend_book(st):
                   note=f"Holding {held}. Just holding both coins: {twin:+.2f}%. Judged on {s['judged']}.")]
 
 
+def pick2bad_book(st):
+    """PICK2-BAD $5,000 ledger book (research/prereg/PICK2.md): PICK-MAIN's frozen model buying only on bad-market
+    minutes, logged after each close, next to random same-minute buys."""
+    s = _json(st / "state-pick2bad" / "pick2bad" / "summary.json")
+    if not s or not s.get("days"):
+        return [_book("PICK2-BAD", "PICK2-BAD", 30, 0, 0, size=5000.0, first_day="2026-11-16",
+                      note="Logged after each close from Mon Nov 16. Buys only on bad-market minutes, so most days have no trade.")]
+    ctrl = "" if s.get("mean_ctrl") is None else f" Random buys: {100 * s['mean_ctrl']:+.2f}% a trade."
+    mean = "" if s.get("mean_net") is None else f" Mean {100 * s['mean_net']:+.2f}% a trade."
+    return [_book("PICK2-BAD", "PICK2-BAD", s["min_trades"], s["trades"], 0, realized=s["book_usd"] - 5000.0,
+                  size=5000.0, first_day=s["first_day"],
+                  note=f"{s['days_with_trades']} of {s['days']} days traded.{mean}{ctrl} Judged at {s['min_days']} days and {s['min_trades']} trades, or {s['judged']}.")]
+
+
 def crydayfwd_book(st):
     """CRY-DAY-FWD (research/prereg/CRYDAYFWD.md): the frozen crypto day-trading model replayed month by month;
     each trade is a third of a $1,000 book."""
@@ -249,6 +263,23 @@ def crydayfwd_book(st):
         note = f"Verdict: {s['verdict']}. " + note
     return [_book("CRY-DAY-FWD", "CRY-DAY-FWD", s["min_trades"], x["trades"], 0, realized=1000 * (x.get("book_total") or 0.0),
                   size=1000.0, first_day=s["first"][:10], note=note)]
+
+
+def cryslow_books(st):
+    """CRY-WIDE and CRY-MOM $1,000 ledger books (research/prereg/CRYSLOW.md), replayed monthly, each next to the
+    equal-weight hold of the 30 most traded coins."""
+    s = _json(st / "state-cryslow" / "cryslow" / "summary.json")
+    out = []
+    for name in ("CRY-WIDE", "CRY-MOM"):
+        if not s:
+            out.append(_book(name, name, None, 0, 0, size=1000.0, unit="days", first_day="2026-11-15",
+                             note="Updated monthly from Binance's archive; the first month lands in early December."))
+            continue
+        b, tw = s["books"][name], s["books"]["TWIN"]
+        out.append(_book(name, name, None, b["days"], 0, realized=b["usd"] - 1000, size=1000.0, unit="days",
+                         first_day=s["first_day"], note=f"Holding all 30 coins: {100 * (tw['usd'] / 1000 - 1):+.2f}%. "
+                         f"Scored through {b['last_day']}; judged on {s['judged']}."))
+    return out
 
 
 def boom1_days(st, today=None):
@@ -900,7 +931,7 @@ def last_change(repo_root, names):
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     b1days = _safe(boom1_days, st)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crydayfwd_book, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:

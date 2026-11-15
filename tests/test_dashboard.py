@@ -358,3 +358,32 @@ def test_crydayfwd_book(tmp_path):
     (d / "summary.json").write_text('{"first": "2026-11-15", "through": "2026-11-30", "min_trades": 50, "read_at": 100, '
                                     '"summary": {"trades": 0, "mean_net": NaN}}')
     assert DB.crydayfwd_book(tmp_path)[0]["pnl_pct"] == 0
+
+
+def test_cryslow_books(tmp_path):
+    import json as _j
+
+    from dashboard import build as DB
+    assert [b["closed"] for b in DB.cryslow_books(tmp_path)] == [0, 0]
+    d = tmp_path / "state-cryslow" / "cryslow"
+    d.mkdir(parents=True)
+    bk = lambda usd: {"days": 16, "usd": usd, "last_day": "2026-11-30"}
+    (d / "summary.json").write_text(_j.dumps({"first_day": "2026-11-15", "judged": "2027-12-31",
+                                              "books": {"CRY-WIDE": bk(1010.0), "CRY-MOM": bk(980.0), "TWIN": bk(1005.0)}}))
+    w, m = DB.cryslow_books(tmp_path)
+    assert abs(w["pnl_pct"] - 1.0) < 1e-9 and abs(m["pnl_pct"] + 2.0) < 1e-9 and "+0.50%" in w["note"] and w["closed"] == 16
+
+
+def test_pick2bad_book(tmp_path):
+    import json as _j
+
+    from dashboard import build as DB
+    b = DB.pick2bad_book(tmp_path)[0]
+    assert b["closed"] == 0 and b["target"] == 30 and "Nov 16" in b["note"]
+    d = tmp_path / "state-pick2bad" / "pick2bad"
+    d.mkdir(parents=True)
+    (d / "summary.json").write_text(_j.dumps({"first_day": "2026-11-16", "days": 5, "days_with_trades": 1, "trades": 2,
+                                              "book_usd": 5050.0, "mean_net": 0.02, "mean_ctrl": -0.01, "min_days": 60,
+                                              "min_trades": 30, "judged": "2027-12-31"}))
+    b = DB.pick2bad_book(tmp_path)[0]
+    assert b["closed"] == 2 and abs(b["pnl_pct"] - 1.0) < 1e-9 and "1 of 5 days" in b["note"] and "-1.00%" in b["note"]

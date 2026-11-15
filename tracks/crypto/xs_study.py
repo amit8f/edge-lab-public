@@ -276,6 +276,208 @@ def stage_fit(cache, out):
     return res
 
 
+def stage_qa(cache, out):
+    """Data checks on the 2024 choice year for the chosen version, before the one test (Amendment 1). Reads
+    nothing from 2025."""
+    out = Path(out)
+    ch = json.loads((out / "CRYXS_fit.json").read_text())["chosen"]
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet", filters=[("t", "<", TEST0 - PURGE)]).reset_index(drop=True)
+    assert R["t"].max() < TEST0
+    tr = (R["t"] < VAL0 - PURGE).to_numpy()
+    m = fit(ch["learner"], R, tr)
+    V = R[~tr & (R["t"] >= VAL0).to_numpy()].reset_index(drop=True)
+    pred, k = predict(m, V), ch["k"]
+    B = book(V, pred, k)
+    V = V.assign(pred=pred)
+    V["rank_hi"] = V.groupby("t")["pred"].rank(ascending=False, method="first")
+    V["rank_lo"] = V.groupby("t")["pred"].rank(ascending=True, method="first")
+    held = V[(V["rank_hi"] <= k) | (V["rank_lo"] <= k)].assign(side=lambda x: np.where(x["rank_hi"] <= k, "L", "S"))
+    held["contrib"] = np.where(held["side"] == "L", 1, -1) * held["fwd"] / (2 * k)
+    top = B["net"].abs().sort_values(ascending=False).head(8).index
+    nxt = V.sort_values(["symbol", "t"]).groupby("symbol")["fwd"].shift(-1)       # the day after the traded day
+    late = V.assign(fwd=nxt.reindex(V.index)).dropna(subset=["fwd"])
+    imp = getattr(m, "feature_importances_", None)
+    res = {"chosen": ch, "net_total": float(B["net"].sum()),
+           "share_of_net_from_top_5_days": float(B["net"].sort_values(ascending=False).head(5).sum() / B["net"].sum()),
+           "days_positive": float((B["net"] > 0).mean()),
+           "long_side": summary(book(V, pred, k, side="L")), "short_side": summary(book(V, pred, k, side="S")),
+           "universe_mean_daily_fwd": float(V.groupby("t")["fwd"].mean().mean()),
+           "entry_one_day_late": summary(book(late, late["pred"].to_numpy(), k)),
+           "abs_fwd_over_50pct": json.loads(V.loc[V["fwd"].abs() > 0.5, ["t", "symbol", "fwd", "pred"]].assign(
+               t=lambda x: x["t"].astype(str)).to_json(orient="records")),
+           "biggest_days": {str(d.date()): {"net": float(B.at[d, "net"]), "held": json.loads(
+               held.loc[held["t"] == d - pd.Timedelta(days=1), ["symbol", "side", "fwd", "r_1", "pred"]].to_json(orient="records"))}
+               for d in top},
+           "by_coin_top": {s: float(v) for s, v in held.groupby("symbol")["contrib"].sum().sort_values(ascending=False).head(10).items()},
+           "by_coin_bottom": {s: float(v) for s, v in held.groupby("symbol")["contrib"].sum().sort_values().head(5).items()},
+           "coins_held": int(held["symbol"].nunique()),
+           "feature_importance": dict(sorted(zip(FEATS, map(float, imp), strict=True), key=lambda x: -x[1])[:12]) if imp is not None else None,
+           "rows_per_day": {"min": int(V.groupby("t").size().min()), "median": float(V.groupby("t").size().median())},
+           "pred_vs_rel_corr": float(np.corrcoef(pred, V["rel"])[0, 1]),
+           "r1_vs_rel_corr": float(V[["r_1", "rel"]].corr().iloc[0, 1])}
+    S.atomic_json(res, out / "CRYXS_qa.json")
+    print(f"[cry-xs qa] top-5-day share {res['share_of_net_from_top_5_days']:.2f}; one day late mean "
+          f"{res['entry_one_day_late']['mean_daily_net']:.5f}", flush=True)
+    return res
+
+
+def stage_trace(cache, out):
+    """POST-HOC, after the one test: which coins and days made the 2025 result (CRYXS_trace.json). Changes nothing."""
+    out = Path(out)
+    if not (out / "CRYXS_test.json").exists():
+        raise SystemExit("the test has not run")
+    fitj = json.loads((out / "CRYXS_fit.json").read_text())
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet", filters=[("t", ">=", TEST0)]).reset_index(drop=True)
+    k = fitj["chosen"]["k"]
+    R["pred"] = predict(load_model(fitj["refit"]["model"]), R)
+    g = R.groupby("t")["pred"]
+    R["side"] = np.where(g.rank(ascending=False, method="first") <= k, "L",
+                         np.where(g.rank(method="first") <= k, "S", ""))
+    H = R[R["side"] != ""].copy()
+    sg = np.where(H["side"] == "L", 1.0, -1.0)
+    H["gross"] = sg * H["fwd"] / (2 * k)
+    H["fund"] = -sg * H["fund_fwd"] / (2 * k)
+    H["month"] = H["t"].dt.to_period("M").astype(str)
+    by = H.groupby(["month", "symbol", "side"])[["gross", "fund"]].sum().reset_index()
+    by["sum"] = by["gross"] + by["fund"]
+    days = H.groupby("t")[["gross", "fund"]].sum().assign(sum=lambda x: x["gross"] + x["fund"])
+    worst = days["sum"].sort_values().head(10).index
+    res = {"worst_coin_months": json.loads(by.sort_values("sum").head(15).to_json(orient="records")),
+           "best_coin_months": json.loads(by.sort_values("sum").tail(10).to_json(orient="records")),
+           "worst_days": {str(d.date()): json.loads(H.loc[H["t"] == d, ["symbol", "side", "fwd", "fund_fwd", "r_1", "r_7",
+                                                                        "fund_1"]].to_json(orient="records")) for d in worst},
+           "funding_by_side": {sd: float(H.loc[H["side"] == sd, "fund"].sum()) for sd in ("L", "S")}}
+    S.atomic_json(res, out / "CRYXS_trace.json")
+    print("[cry-xs trace] written", flush=True)
+    return res
+
+
+FUND_VERSIONS = [(f, k) for f in ("fund_1", "fund_7") for k in KS]
+
+
+def stage_fund(cache, out):
+    """CRY-FUND (research/prereg/CRYFUND.md): long the coins with the most negative funding, short the most positive.
+    Version chosen on 2020-07..2024, then the one test on 2025-01..09 -> CRYFUND.json."""
+    out = Path(out)
+    if (out / "CRYFUND.json").exists():
+        raise SystemExit("the one test has already been run")
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet").reset_index(drop=True)
+    hist = (R["t"] < TEST0).to_numpy()
+    H = R[hist].reset_index(drop=True)
+    table = {f"{f} K{k}": summary(book(H, -H[f].fillna(0).to_numpy(), k)) for f, k in FUND_VERSIONS}
+    best = max(table, key=lambda v: table[v]["sharpe"] if np.isfinite(table[v]["sharpe"]) else -9)
+    res = {"history": "2020-07..2024-12", "table_history": table, "chosen": best, "idea_count": 180,
+           "gate": "failed on history"}
+    print("[cry-fund] " + ", ".join(f"{v}: Sharpe {s['sharpe']:.2f}" for v, s in table.items()), flush=True)
+    if table[best]["mean_daily_net"] > 0:
+        res["gate"] = "passed"
+        f, k = FUND_VERSIONS[list(table).index(best)]
+        T = R[~hist & (R["t"] >= TEST0).to_numpy()].reset_index(drop=True)
+        p = -T[f].fillna(0).to_numpy()
+        B, ctrl = book(T, p, k), book(T, p, k, seed=SEED)
+        s = summary(B, ctrl, btc_daily(cache))
+        s["dsr"] = CS.deflated_sharpe(B["net"].to_numpy(), 180)
+        rules, v = verdict(s)
+        T = T.assign(p=p)
+        g = T.groupby("t")["p"]
+        held = T[(g.rank(ascending=False, method="first") <= k) | (g.rank(method="first") <= k)]
+        res.update({"test": "2025-01-01..2025-09-30", "primary": s, "rules": rules, "verdict": v,
+                    "long_side": summary(book(T, p, k, side="L")), "short_side": summary(book(T, p, k, side="S")),
+                    "held_days_with_abs_move_over_50pct": int((held["fwd"].abs() > 0.5).sum())})
+        print(f"[cry-fund] {best}: {v}, mean daily net {s['mean_daily_net']:.5f}, t {s['t_nw']:.2f}", flush=True)
+    S.atomic_json(res, out / "CRYFUND.json")
+    return res
+
+
+def weights_book(R, weights, cost=COST_SIDE):
+    """Daily long-only book from target weights. weights(t, g) -> {symbol: weight} for decision day t (g: its rows).
+    -> frame indexed by the day held: gross, fund, turnover, net."""
+    prev, out = {}, []
+    for t, g in R.groupby("t", sort=True):
+        w = weights(t, g)
+        gs = g.set_index("symbol")
+        gross = sum(v * gs.at[s, "fwd"] for s, v in w.items())
+        fund = -sum(v * gs.at[s, "fund_fwd"] for s, v in w.items())
+        turn = sum(abs(w.get(s, 0.0) - prev.get(s, 0.0)) for s in set(w) | set(prev))
+        out.append((t + pd.Timedelta(days=1), gross, fund, turn))
+        prev = w
+    B = pd.DataFrame(out, columns=["day", "gross", "fund", "turnover"]).set_index("day")
+    B["net"] = B["gross"] + B["fund"] - B["turnover"] * cost
+    return B
+
+
+def w_wide(t, g):
+    n = len(g)
+    return {s: 1.0 / n for s in g.loc[g["r_28"] > 0, "symbol"]}
+
+
+def w_hold(t, g):
+    return {s: 1.0 / len(g) for s in g["symbol"]}
+
+
+def mom_picks(R, k=5, rng=None):
+    """{Monday decision day: [k symbols]} by 28-day return (or at random with rng)."""
+    out = {}
+    for t, g in R[R["t"].dt.dayofweek == 0].groupby("t"):
+        g = g.dropna(subset=["r_28"]).sort_values(["r_28", "symbol"], ascending=[False, True])
+        out[t] = list(g["symbol"].iloc[rng.permutation(len(g))[:k]] if rng is not None else g["symbol"].head(k))
+    return out
+
+
+def w_mom(picks):
+    keys = sorted(picks)
+
+    def w(t, g):
+        i = np.searchsorted(np.array(keys, dtype="datetime64[ns]"), np.datetime64(t), side="right") - 1
+        if i < 0 or (t - keys[i]).days >= 7:
+            return {}
+        live = set(g["symbol"])
+        return {s: 1.0 / len(picks[keys[i]]) for s in picks[keys[i]] if s in live}
+    return w
+
+
+def drawdown(B):
+    eq = np.cumprod(1 + B["net"].to_numpy())
+    return float((1 - eq / np.maximum.accumulate(np.r_[1.0, eq])[1:]).max())
+
+
+def slow_check(B, H):
+    """CRY-SLOW's history check on two periods: Sharpe above the twin's and a smaller drawdown."""
+    out = {}
+    for name, lo in (("2020-07..2025-09", FIRST), ("2022-01..2025-09", pd.Timestamp("2022-01-01"))):
+        b, h = B[B.index >= lo], H[H.index >= lo]
+        out[name] = {"rule": {"sharpe": sharpe(b["net"]), "max_drawdown": drawdown(b), "total_net": float(b["net"].sum()),
+                              "mean_daily_turnover": float(b["turnover"].mean()), "mean_daily_funding": float(b["fund"].mean())},
+                     "twin": {"sharpe": sharpe(h["net"]), "max_drawdown": drawdown(h), "total_net": float(h["net"].sum())}}
+        out[name]["ok"] = bool(out[name]["rule"]["sharpe"] > out[name]["twin"]["sharpe"]
+                               and out[name]["rule"]["max_drawdown"] < out[name]["twin"]["max_drawdown"])
+    return out
+
+
+def stage_slow(cache, out):
+    """CRY-WIDE and CRY-MOM history checks (research/prereg/CRYSLOW.md) -> CRYSLOW.json."""
+    out = Path(out)
+    R = pd.read_parquet(C.cdir(cache) / "xs_rows.parquet").reset_index(drop=True)
+    assert R["t"].max() < END
+    H = weights_book(R, w_hold)
+    picks = mom_picks(R)
+    res = {"idea_count": 182}
+    for name, w in (("CRY-WIDE", w_wide), ("CRY-MOM", w_mom(picks))):
+        B = weights_book(R, w)
+        chk = slow_check(B, H)
+        res[name] = {"check": chk, "verdict": "not rejected: start the forward book" if all(v["ok"] for v in chk.values())
+                     else "FAILED: rejected by the history check",
+                     "spot_0.25pct": slow_check(weights_book(R, w, COST_SPOT_SIDE), weights_book(R, w_hold, COST_SPOT_SIDE))}
+        print(f"[cry-slow] {name}: {res[name]['verdict']}", flush=True)
+    rng = np.random.default_rng(SEED)
+    sh = sharpe(weights_book(R, w_mom(picks))["net"])
+    rnd = [sharpe(weights_book(R, w_mom(mom_picks(R, rng=rng)))["net"]) for _ in range(200)]
+    res["CRY-MOM"]["random_picks_sharpe_percentile"] = float(np.mean(np.array(rnd) < sh))
+    res["CRY-MOM"]["random_picks_n"] = 200
+    S.atomic_json(res, out / "CRYSLOW.json")
+    return res
+
+
 def load_model(path):
     if str(path).endswith(".joblib"):
         import joblib
@@ -306,14 +508,14 @@ def stage_test(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["data", "fit", "test"])
+    ap.add_argument("--stage", required=True, choices=["data", "fit", "qa", "test", "trace", "fund", "slow"])
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYXS")
     a = ap.parse_args()
     if a.stage == "data":
         stage_data(a.cache)
     else:
-        {"fit": stage_fit, "test": stage_test}[a.stage](a.cache, a.out)
+        {"fit": stage_fit, "qa": stage_qa, "test": stage_test, "trace": stage_trace, "fund": stage_fund, "slow": stage_slow}[a.stage](a.cache, a.out)
 
 
 if __name__ == "__main__":
