@@ -1,0 +1,111 @@
+# PICK3 seen-period check (research/prereg/PICK3.md). Manual start, one run at a time. stage=scan scores every main
+# decision row from 2023-10 (bar warm-up) to 2025-09 with PICK2's committed COMBINED refit models and trades against
+# the moving bar; it queues itself until done, then writes and commits PICK3_check.json. stage=check redoes only
+# the rules from the cached trades.
+name: pick3
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "scan or check"
+        required: true
+        default: scan
+        type: choice
+        options: [scan, check]
+
+permissions: {}
+
+concurrency:
+  group: pick3
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore W1's daily cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/w1
+          key: w1-v1-none
+          restore-keys: w1-v1-
+
+      - name: Restore NX1's cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+
+      - name: Restore the scan's own cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/pick3
+          key: pick3-v1-${{ github.run_id }}
+          restore-keys: pick3-v1-
+
+      - name: Run the stage
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          STAGE: ${{ inputs.stage }}
+        run: |
+          set -o pipefail
+          [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
+          [[ -d cache/nx1/nx1/tone ]] || { echo "::error::NX1's tone cache is missing"; exit 1; }
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.pick3_study --stage "$STAGE" --w1 cache/w1 --nx1 cache/nx1 \
+            --state cache/pick3 --out research/results/PICK3 --budget-min 320 | tee stage.log
+
+      - name: Save the scan's cache (also after a failure, so a rerun resumes)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/pick3
+          key: pick3-v1-${{ github.run_id }}
+
+      - name: Queue the scan again until it is done
+        if: success() && inputs.stage == 'scan'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if grep -q "time budget used" stage.log; then
+            gh workflow run pick3.yml --repo "$GITHUB_REPOSITORY" --ref "${GITHUB_REF_NAME}" -f stage=scan
+            echo "queued stage=scan"
+          fi
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p research/results/PICK3
+          git add research/results/PICK3
+          git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
+          git commit -q -m "PICK3 ${{ inputs.stage }} results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
