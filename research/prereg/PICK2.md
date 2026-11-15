@@ -105,3 +105,28 @@ Written with the code (`tracks/main/pick2_bad_live.py`, workflow `pick2-bad.yml`
    bad-day bar; sizes by PICK's rule over the bad picks alone (top = `PICK_test.json`'s main COMBINED top), each
    with PICK's random same-minute control. Each session is one ledger entry (kind `day`) with its trades,
    control results, book return and counts; nothing is ever sent to a broker.
+
+## PICK2-OOF (registered 2026-11-15, before any number for it exists; count 168, 183 with phase 1)
+
+Amit chose "Retry once" (decision card, 2026-11-15) after PICK2-MAIN failed at validation. Question: with buy bars
+set where each model's scores on **unseen** rows actually fall, does PICK2-MAIN's 2023 book net more than zero?
+
+Changes from PICK2-MAIN, and nothing else:
+1. Bars come from out-of-fold predictions. For the validation models (trained 2019-2022): each year 2019..2022 is
+   predicted by the same learner (same settings) fitted on the other three years; the bars are the same top shares
+   (0.10%, 0.05%, 0.02%, 0.01%) of those pooled out-of-fold predicted net returns. For the refit (2019-2023): the
+   same with five yearly folds; the sizing top is the 99th percentile of the out-of-fold predictions at or above
+   the chosen bar.
+2. The 2023 scan scores every 2023 main decision row with the **committed** validation models
+   (`research/results/PICK2/models_val`, unchanged) against those bars, through the same code. The choice and gate
+   are Amendment 1, items 4-5: among 12 (learner, bar) books with >= 100 trades in 2023, the best mean net; COMBINED
+   decides; if none qualifies or its mean net <= 0, "failed at validation" and the idea ends.
+3. If it passes: a $5,000 ledger book with PICK's random control from the first session after it is built, the
+   refit model and refit out-of-fold bar, logged like PICK2-BAD; pass by PROTOCOL rule 20.
+
+Honest limits, written first: 2023 is now read a second time with these same models (PICK2-MAIN's books at higher
+bars are known), so a 2023 pass earns only a forward paper book, never a history claim. NEWS and CHART are
+reported, not decisive.
+
+Prediction (written first): COMBINED's 2023 book reaches 100 trades (0.8); its mean net is > 0 (0.3); it then
+passes forward (0.1).
