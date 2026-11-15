@@ -82,3 +82,32 @@ def test_learners_fit_a_number_and_reload(name, tmp_path):
     assert np.corrcoef(p, y)[0, 1] > 0.7
     path = S.save_model(name, m, str(tmp_path / "m"))
     assert np.allclose(S2.predict(S2.load_model(path), X), p, atol=1e-4)
+
+
+def test_oof_predicts_each_year_with_a_model_that_never_saw_it(monkeypatch):
+    seen = []
+
+    class M:
+        def fit(self, X, y):
+            self.years = set(np.unique(X[:, 0]).tolist())
+            seen.append(self.years)
+
+        def predict(self, X):
+            assert not set(np.unique(X[:, 0]).tolist()) & self.years
+            return np.full(len(X), 1.0)
+
+    monkeypatch.setattr(S2, "make", lambda name: M())
+    year = np.repeat([2019, 2020, 2021], 4)
+    X = year[:, None].astype(np.float32)
+    out = S2.oof_predict("XGBoost", X, np.zeros(12, np.float32), year, [2019, 2020, 2021])
+    assert np.all(out == 1.0) and seen == [{2020.0, 2021.0}, {2019.0, 2021.0}, {2019.0, 2020.0}]
+
+
+def test_with_oof_replaces_bars_and_tops_but_keeps_the_models():
+    fit = {"versions": {"COMBINED": {"learners": {"XGBoost": {"model_val": "a", "model": "b", "bars_val": {"0.001": 9.0},
+                                                               "bars": {"0.001": 9.0}, "tops": {"0.001": 10.0}}}}}}
+    oof = {"versions": {"COMBINED": {"learners": {"XGBoost": {"bars_val": {"0.001": 1.0}, "bars": {"0.001": 2.0},
+                                                               "tops": {"0.001": 3.0}}}}}}
+    got = S2.with_oof(fit, oof)["versions"]["COMBINED"]["learners"]["XGBoost"]
+    assert got == {"model_val": "a", "model": "b", "bars_val": {"0.001": 1.0}, "bars": {"0.001": 2.0}, "tops": {"0.001": 3.0}}
+    assert fit["versions"]["COMBINED"]["learners"]["XGBoost"]["bars_val"] == {"0.001": 9.0}

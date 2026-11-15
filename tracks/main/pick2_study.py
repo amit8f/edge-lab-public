@@ -9,7 +9,10 @@ the validation models; per day, model and bar the first rows to clear are kept a
 last month is done the 2023 book of every (input set, learner, bar) is built and the choice and the gate are
 written to <out>/PICK2_choose.json.
 
-Usage: python -m tracks.main.pick2_study --stage fit|scan --w1 cache/w1 --nx1 cache/nx1 --fitstate cache/pickfit \
+Stage oof (PICK2-OOF, prereg PICK2.md): bars and tops from out-of-fold predictions, one fold per year, to
+<out>/PICK2_oof.json; stage scan-oof is stage scan with those bars (its own --state), choice to PICK2_choose_oof.json.
+
+Usage: python -m tracks.main.pick2_study --stage fit|scan|oof|scan-oof --w1 cache/w1 --nx1 cache/nx1 --fitstate cache/pickfit \
            --pick research/results/PICK --out research/results/PICK2 --state cache/pick2 --budget-min 320
 """
 import argparse
@@ -103,6 +106,17 @@ def load_model(path):
 def predict(m, X):
     out = [np.asarray(m.predict(X[i:i + S.TREE_CHUNK]), float) for i in range(0, len(X), S.TREE_CHUNK)]
     return np.concatenate(out) if out else np.empty(0)
+
+
+def oof_predict(L, X, y, year, folds):
+    """Out-of-fold predictions: each year in `folds` predicted by learner L fitted on the other years' rows."""
+    out = np.full(len(y), np.nan, np.float32)
+    for yr in folds:
+        te = year == yr
+        m = make(L)
+        m.fit(X[~te], y[~te])
+        out[te] = predict(m, X[te])
+    return out
 
 
 def bars_of(pred_net):
@@ -238,6 +252,52 @@ def stage_fit(state, pick_dir, out):
     return res
 
 
+def stage_oof(state, pick_dir, out):
+    """PICK2-OOF: bars and tops from out-of-fold predictions (the models themselves are PICK2_fit.json's)."""
+    out = Path(out)
+    F = frozen(json.loads((Path(pick_dir) / "PICK_fit.json").read_text()))
+    D = load(state)
+    assert int(D["year"].max()) <= S.FIT_YEARS[1], "2024+ rows reached the oof stage"
+    D["market_score"] = S.market_score(D, F["mkt"])
+    D = D[D["market_score"].notna()].reset_index(drop=True)
+    year = D["year"].to_numpy()
+    sw = D["swing30"].to_numpy(float)
+    tier = S.tier_of(sw, F["tier_cuts"])
+    val_years = list(range(S.TRAIN_YEARS[0], S.TRAIN_YEARS[1] + 1))
+    fit_years = list(range(S.FIT_YEARS[0], S.FIT_YEARS[1] + 1))
+    res = {"bars": "top shares of out-of-fold predicted net returns, one fold per year",
+           "val_folds": val_years, "refit_folds": fit_years, "versions": {}}
+    for V, feats in S.VERSIONS.items():
+        y = target(row_net(D, tier, F["wpt"][V]), sw)
+        k = np.isfinite(y)
+        tr = k & (year <= S.TRAIN_YEARS[1])
+        X = D[feats].to_numpy(np.float32)
+        res["versions"][V] = {"learners": {}}
+        for L in LEARNERS:
+            pv = oof_predict(L, X[tr], y[tr], year[tr], val_years) * sw[tr]
+            pf = oof_predict(L, X[k], y[k], year[k], fit_years) * sw[k]
+            bf = bars_of(pf)
+            res["versions"][V]["learners"][L] = {"bars_val": bars_of(pv), "bars": bf, "tops": tops_of(pf, bf)}
+            print(f"[pick2 oof] {V} {L}: bars {res['versions'][V]['learners'][L]['bars_val']}", flush=True)
+        del X
+        S.atomic_json(res, out / "PICK2_oof.json")
+    return res
+
+
+def with_oof(fit, oof):
+    """PICK2_fit.json with its bars and tops replaced by PICK2_oof.json's (models unchanged)."""
+    out = json.loads(json.dumps(fit))
+    for V, vv in oof["versions"].items():
+        for L, ll in vv["learners"].items():
+            out["versions"][V]["learners"][L].update(ll)
+    return out
+
+
+def read_fit(out, oof):
+    fit = json.loads((Path(out) / "PICK2_fit.json").read_text())
+    return with_oof(fit, json.loads((Path(out) / "PICK2_oof.json").read_text())) if oof else fit
+
+
 # ---------- scan and choice ----------
 
 class Val:
@@ -278,8 +338,8 @@ def scan_day(D, tone, sess, parts, val, bars):
     return K[keep + [c for c in K.columns if c.startswith(("net_", "exit_"))]]
 
 
-def stage_scan(w1, nx1, out, state, deadline, cal):
-    val = Val(json.loads((Path(out) / "PICK2_fit.json").read_text()))
+def stage_scan(w1, nx1, out, state, deadline, cal, oof=False):
+    val = Val(read_fit(out, oof))
     spy = pd.read_parquet(Path(nx1) / "nx1" / "spy.parquet")
     sess = np.unique(S.to_ns(spy["date"]))
     parts = S.spy_parts(spy)
@@ -324,8 +384,8 @@ def stage_scan(w1, nx1, out, state, deadline, cal):
     return True
 
 
-def stage_choose(out, state):
-    fit = json.loads((Path(out) / "PICK2_fit.json").read_text())
+def stage_choose(out, state, oof=False):
+    fit = read_fit(out, oof)
     files = [Path(state) / "rows" / f"{m}.parquet" for m in pd.period_range(FIRST, LAST, freq="M")]
     R = pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
     R["d"] = pd.to_datetime(R["d"])
@@ -353,13 +413,15 @@ def stage_choose(out, state):
     c = res["versions"]["COMBINED"]["chosen"]
     res["gate"] = {"decides": "COMBINED", "rule": "2023 book mean net per trade > 0 with at least 100 trades",
                    "verdict": "start the forward book" if c and c["mean_net"] > 0 else "failed at validation"}
-    S.atomic_json(res, Path(out) / "PICK2_choose.json")
+    if oof:
+        res["bars"] = "out-of-fold (PICK2-OOF)"
+    S.atomic_json(res, Path(out) / ("PICK2_choose_oof.json" if oof else "PICK2_choose.json"))
     return res
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["fit", "scan"])
+    ap.add_argument("--stage", required=True, choices=["fit", "scan", "oof", "scan-oof"])
     ap.add_argument("--w1", default="cache/w1")
     ap.add_argument("--nx1", default="cache/nx1")
     ap.add_argument("--fitstate", default="cache/pickfit")
@@ -372,9 +434,14 @@ def main():
         stage_fit(a.fitstate, a.pick, a.out)
         print("[pick2 fit] done", flush=True)
         return
+    if a.stage == "oof":
+        stage_oof(a.fitstate, a.pick, a.out)
+        print("[pick2 oof] done", flush=True)
+        return
+    oof = a.stage == "scan-oof"
     cal = alpaca.trading_calendar(pd.Timestamp(f"{WARM}-01") - pd.Timedelta(days=10), pd.Timestamp("2024-01-01"))
-    if stage_scan(a.w1, a.nx1, a.out, a.state, time.monotonic() + 60 * a.budget_min, cal):
-        stage_choose(a.out, a.state)
+    if stage_scan(a.w1, a.nx1, a.out, a.state, time.monotonic() + 60 * a.budget_min, cal, oof):
+        stage_choose(a.out, a.state, oof)
         print("[pick2 scan] done", flush=True)
     else:
         print("[pick2 scan] time budget used; rerun to continue", flush=True)
