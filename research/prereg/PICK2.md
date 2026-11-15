@@ -73,3 +73,35 @@ these are the details the text left open.
    share as the chosen bar; top = the 99th percentile of predictions at or above the bar, PICK's rule).
 7. Models (validation and refit) are committed under `research/results/PICK2`, so an evicted cache cannot lose
    them.
+
+## Result: PICK2-MAIN (2026-11-15, run 43652376291, `research/results/PICK2/PICK2_choose.json`)
+
+**Failed at validation; no PICK2-MAIN book.** COMBINED, the input set that decides, had no (learner, bar) book with
+100 trades in 2023: its best had 2. CHART had none either. NEWS's chosen book (LightGBM, top 0.10%) had 104 trades
+at -0.09% a trade. Idea count unchanged: 167 (182 with phase 1).
+
+POST-HOC / NOT PRE-REGISTERED: the bars were set from each model's predictions on its own training rows (item 3 of
+Amendment 1). In-sample tree predictions spread wider than predictions on new rows, so the CHART and COMBINED bars
+(+0.6% to +4.1% predicted net) were almost never reached in 2023. NEWS's predictions sit near zero, so its bars
+were. A bar set from out-of-fold predictions would avoid this; that would be a new idea, put to Amit first.
+
+## Amendment 2 (2026-11-15, before PICK2-BAD's first session): how the forward book runs
+
+Written with the code (`tracks/main/pick2_bad_live.py`, workflow `pick2-bad.yml`) and before it has logged a session.
+
+1. The book is logged after each close (21:45 UTC, with two catch-up runs), not by a loop during the session. Each
+   finished session from 2026-11-16 is replayed through PICK's history code (`pick_test.day_inputs`, `score_day`,
+   `picks_of`): every decision row 09:35-14:00 uses only 5-minute SIP bars that finished before it and headlines
+   created before it, so no row sees anything a live scan could not have seen at that minute. The fill is the
+   open of the bar starting at the decision time, as in history.
+2. Universe: active Alpaca us_equity assets that `core/instruments.py` keeps (common-stock-like), raw close >= $5
+   and 20-day median dollar volume >= $5M at the previous close (W1's `daily_rows`, raw SIP daily bars). History
+   also required a match in SEC's DERA ticker map; the live book has no such map and drops that filter.
+3. News: Alpaca's Benzinga articles from the previous session's 16:00 ET to 14:05 ET, made into NX1's headline rows
+   (LM counts, FinBERT at NX1's pinned commit `research/results/NX1/nx1_v1_meta.json`, flags); no text is kept.
+4. The usual 30-minute swing (mean of the last 20 sessions' swing30, at least 10) is warmed on the 20 sessions
+   before 2026-11-16 on the first run, then carried forward in the state branch `state-pick2bad`.
+5. Picks: only rows whose market score is below PICK's frozen cut, with a COMBINED score at or above PICK's frozen
+   bad-day bar; sizes by PICK's rule over the bad picks alone (top = `PICK_test.json`'s main COMBINED top), each
+   with PICK's random same-minute control. Each session is one ledger entry (kind `day`) with its trades,
+   control results, book return and counts; nothing is ever sent to a broker.
