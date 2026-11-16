@@ -13,7 +13,7 @@ on:
         required: true
         default: all
         type: choice
-        options: [all, data, trend, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
+        options: [all, data, trend, trend-vt, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
 
 permissions: {}
 
@@ -82,6 +82,7 @@ jobs:
             all) data; trend; rows; fit ;;
             data) data ;;
             trend) trend ;;
+            trend-vt) py tracks.crypto.trend_study --cache cache --out research/results/CRYTREND --rule vt ;;
             day-rows) rows ;;
             day-fit) fit ;;
             day-test) py tracks.crypto.day_study --stage test --cache cache --out research/results/CRYDAY ;;
