@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8197.14 | -18.03% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C's picks | $8570.99 | -14.29% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
-| C's prompt on Groq (K7) | $5671.08 | -43.29% | 432 | 101 | short AAOI, long AMD, long APP, short ASTS, short NTRA |
-| Coin flip on C-groq's picks | $8204.27 | -17.96% | 432 | 203 | long AAOI, short AMD, long APP, long ASTS, long NTRA |
-| C-groq's answers, acted on once a day (K8) | $8092.99 | -19.07% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
-| Coin flip on C-groq-slow's picks | $11017.08 | +10.17% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
-| C's answers, acted on once a day (K8) | $9763.48 | -2.37% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Coin flip on C-slow's picks | $10212.02 | +2.12% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Just hold SPY | $9618.67 | -3.81% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8185.27 | -18.15% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C's picks | $8575.27 | -14.25% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
+| C's prompt on Groq (K7) | $5669.77 | -43.30% | 432 | 101 | short AAOI, long AMD, long APP, short ASTS, short NTRA |
+| Coin flip on C-groq's picks | $8215.35 | -17.85% | 432 | 203 | long AAOI, short AMD, long APP, long ASTS, long NTRA |
+| C-groq's answers, acted on once a day (K8) | $8103.74 | -18.96% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
+| Coin flip on C-groq-slow's picks | $11006.17 | +10.06% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
+| C's answers, acted on once a day (K8) | $9755.21 | -2.45% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Coin flip on C-slow's picks | $10203.35 | +2.03% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Just hold SPY | $9628.76 | -3.71% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-16 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 14:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:1
 | 2026-11-13 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 10:57 | short CRWV, short NBIS, long NU, short NVDA, short SMCI | none | Maintaining current positions: short NBIS, NU long, short NVDA, short SMCI, and short CRWV. The strategy focuses on capitalizing on strong negative momentum in AI-related stocks due to NVIDIA news and DOJ investigations, while holding a strong performer (NU) that is bucking the trend. |
-| 2026-11-13 10:48 | no answer, nothing changed | none | unreadable answer |
