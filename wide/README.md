@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8252.08 | -17.48% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C's picks | $8591.77 | -14.08% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
-| C's prompt on Groq (K7) | $5683.61 | -43.16% | 432 | 101 | short AAOI, long AMD, long APP, short ASTS, short NTRA |
-| Coin flip on C-groq's picks | $8196.69 | -18.03% | 432 | 203 | long AAOI, short AMD, long APP, long ASTS, long NTRA |
-| C-groq's answers, acted on once a day (K8) | $8098.93 | -19.01% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
-| Coin flip on C-groq-slow's picks | $11010.99 | +10.11% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
-| C's answers, acted on once a day (K8) | $9754.08 | -2.46% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Coin flip on C-slow's picks | $10202.23 | +2.02% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Just hold SPY | $9619.52 | -3.80% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8238.25 | -17.62% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C's picks | $8569.82 | -14.30% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
+| C's prompt on Groq (K7) | $5693.45 | -43.07% | 433 | 102 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq's picks | $8171.59 | -18.28% | 433 | 203 | long AAOI, short AMD, long APP, long ASTS, long IREN |
+| C-groq's answers, acted on once a day (K8) | $8081.02 | -19.19% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq-slow's picks | $10982.41 | +9.82% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
+| C's answers, acted on once a day (K8) | $9735.67 | -2.64% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C-slow's picks | $10182.95 | +1.83% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
+| Just hold SPY | $9623.95 | -3.76% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-16 15:47 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS | none | Maintaining all existing short positions as the market continues its broad decline, with all held stocks showing strong bearish momentum and negative news catalysts. |
 | 2026-11-16 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:17 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:3
 | 2026-11-13 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-13 11:07 | no answer, nothing changed | none | unreadable answer |
