@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8238.25 | -17.62% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C's picks | $8569.82 | -14.30% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
-| C's prompt on Groq (K7) | $5693.45 | -43.07% | 433 | 102 | short AAOI, long AMD, long APP, short ASTS, short IREN |
-| Coin flip on C-groq's picks | $8171.59 | -18.28% | 433 | 203 | long AAOI, short AMD, long APP, long ASTS, long IREN |
-| C-groq's answers, acted on once a day (K8) | $8081.02 | -19.19% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
-| Coin flip on C-groq-slow's picks | $10982.41 | +9.82% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
-| C's answers, acted on once a day (K8) | $9735.67 | -2.64% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C-slow's picks | $10182.95 | +1.83% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
-| Just hold SPY | $9623.95 | -3.76% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8234.87 | -17.65% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C's picks | $8616.44 | -13.84% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
+| C's prompt on Groq (K7) | $5698.50 | -43.02% | 433 | 102 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq's picks | $8183.69 | -18.16% | 433 | 203 | long AAOI, short AMD, long APP, long ASTS, long IREN |
+| C-groq's answers, acted on once a day (K8) | $8087.90 | -19.12% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq-slow's picks | $10933.79 | +9.34% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
+| C's answers, acted on once a day (K8) | $9730.72 | -2.69% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C-slow's picks | $10147.93 | +1.48% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
+| Just hold SPY | $9627.66 | -3.72% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-16 15:57 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS | none | Maintaining all existing short positions due to continued strong negative momentum across all timeframes for these stocks, with most positions being profitable. |
 | 2026-11-16 15:47 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS | none | Maintaining all existing short positions as the market continues its broad decline, with all held stocks showing strong bearish momentum and negative news catalysts. |
 | 2026-11-16 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:4
 | 2026-11-13 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-13 11:17 | no answer, nothing changed | none | unreadable answer |
