@@ -103,6 +103,55 @@ def evaluate(ret, sig, cost, rng):
             "ok": bool(st["sharpe"] > hd["sharpe"] and st["max_drawdown"] < hd["max_drawdown"])}
 
 
+# ---------- CRY-TREND-VT (research/prereg/CRYTRENDVT.md) ----------
+
+VT_TARGET, VT_WINDOW, MONDAY = 0.50, 20, 0
+
+
+def realized_vol(ret, window=VT_WINDOW):
+    """Annualised standard deviation of the last `window` daily returns, known at each day's close (NaN until full)."""
+    r = pd.DataFrame(np.asarray(ret, float)).rolling(window).std(ddof=1).to_numpy()
+    return r * np.sqrt(365)
+
+
+def vt_weight(vol, k, target=VT_TARGET):
+    """Share of the book a held coin gets: (1/k) x min(1, target / vol); 0 where the volatility is unknown."""
+    v = np.asarray(vol, float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        w = np.minimum(1.0, target / v) / k
+    return np.where(np.isfinite(v) & (v > 0), w, 0.0)
+
+
+def vt_book(ret, sig, vol, monday, cost):
+    """Daily equity of the volatility-sized book. sig[d, k] and vol[d, k] are known at the previous close; monday[d]
+    is True when that previous close was a Monday's. A coin is rebalanced to (1/k) x min(1, target / vol) of the
+    book's value when it is entered, on Mondays while held, and sold whole on exit; each dollar traded pays cost / 2."""
+    n, k = ret.shape
+    cash, pos = 1.0, np.zeros(k)
+    eq = np.empty(n)
+    w = vt_weight(vol, k)
+    for d in range(n):
+        total = cash + pos.sum()
+        for j in range(k):
+            want = w[d, j] if sig[d, j] else 0.0
+            if pos[j] > 0 and not sig[d, j]:
+                trade = -pos[j]
+            elif sig[d, j] and (pos[j] == 0 or monday[d]):
+                trade = min(want * total, cash + pos[j]) - pos[j]
+            else:
+                continue
+            fee = abs(trade) * cost / 2
+            cash -= trade + fee
+            pos[j] += trade
+        pos = pos * (1 + ret[d])
+        eq[d] = cash + pos.sum()
+    return eq
+
+
+def trades_per_year(sig):
+    return float(np.abs(np.diff(np.asarray(sig), axis=0)).sum(axis=0).mean() / (len(sig) / 365))
+
+
 # ---------- stage ----------
 
 def load(cache):
@@ -136,12 +185,48 @@ def run(cache, out):
     return res
 
 
+def run_vt(cache, out):
+    P = load(cache)
+    sig_all = np.column_stack([signal(P[s].to_numpy()) for s in COINS])
+    ret_all = P.pct_change().to_numpy()
+    vol_all = realized_vol(ret_all)
+    mon_all = (P.index.dayofweek == MONDAY)
+    res = {"rule": f"CRY-TREND with weight 1/2 x min(1, {VT_TARGET} / {VT_WINDOW}-day vol); rebalanced at entry, "
+                   "Mondays, exit", "periods": {}, "days": {"first": str(P.index[0].date()), "last": str(P.index[-1].date())}}
+    for name, (a, b) in PERIODS.items():
+        m = (P.index >= pd.Timestamp(a)) & (P.index <= pd.Timestamp(b))
+        idx = np.flatnonzero(m)
+        ret, sig, vol, mon = ret_all[idx], sig_all[idx - 1], vol_all[idx - 1], mon_all[idx - 1]
+        res["periods"][name] = {}
+        for k, c in COSTS.items():
+            vt, base, hd = stats(vt_book(ret, sig, vol, mon, c)), stats(book(ret, sig, c)), stats(hold(ret))
+            res["periods"][name][k] = {"vt": vt, "trend": base, "hold": hd,
+                                       "ok": bool(vt["sharpe"] > base["sharpe"] and vt["max_drawdown"] < base["max_drawdown"]
+                                                  and vt["sharpe"] > hd["sharpe"])}
+        w = vt_weight(vol, ret.shape[1])
+        res["periods"][name]["avg_invested"] = float((sig * w).sum(axis=1).mean())
+        res["periods"][name]["trades_per_year_signal"] = trades_per_year(sig)
+        rng = np.random.default_rng(SEED)
+        tw = np.array([stats(vt_book(ret, np.column_stack([twin(sig[:, j], rng) for j in range(sig.shape[1])]),
+                                     vol, mon, COSTS["primary_0.5pct"]))["sharpe"] for _ in range(TWINS)])
+        res["periods"][name]["twin_sharpe_percentile"] = float(
+            (tw < res["periods"][name]["primary_0.5pct"]["vt"]["sharpe"]).mean())
+    ok = all(p["primary_0.5pct"]["ok"] for p in res["periods"].values())
+    res["verdict"] = "not rejected: start the forward book" if ok else "FAILED: rejected by the history check"
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "CRYTRENDVT.json").write_text(json.dumps(res, indent=1))
+    print(f"[cry-trend-vt] {res['verdict']}", flush=True)
+    return res
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYTREND")
+    ap.add_argument("--rule", default="plain", choices=["plain", "vt"])
     a = ap.parse_args()
-    run(a.cache, a.out)
+    (run_vt if a.rule == "vt" else run)(a.cache, a.out)
 
 
 if __name__ == "__main__":

@@ -360,3 +360,34 @@ def test_slow_forward_books_log_months_once_and_reproduce(tmp_path):
     assert s2["books"]["TWIN"]["days"] > s["books"]["TWIN"]["days"]
     first = json.loads((led.root / led.entries()[0]["file"]).read_text())["rows"]["TWIN"]
     assert first[0][0] == "2026-11-15"
+
+
+def test_trend_vt_weight_caps_at_one_over_k_and_shrinks_with_volatility():
+    from tracks.crypto import trend_study as TS
+    w = TS.vt_weight(np.array([0.25, 0.5, 1.0, np.nan]), 2)
+    assert list(w) == [0.5, 0.5, 0.25, 0.0]
+
+
+def test_trend_vt_book_equals_the_plain_book_for_one_calm_coin_and_cuts_a_wild_one():
+    from tracks.crypto import trend_study as TS
+    rng = np.random.default_rng(1)
+    ret = rng.normal(0.001, 0.02, (120, 1))
+    sig = np.ones((120, 1))
+    mon = np.zeros(120, bool)
+    calm = np.full((120, 1), 0.3)
+    assert np.allclose(TS.vt_book(ret, sig, calm, mon, 0.0), TS.book(ret, sig, 0.0))
+    wild = np.full((120, 1), 1.0)
+    half = TS.vt_book(ret, sig, wild, mon, 0.0)
+    assert abs(half[0] - (1 + 0.5 * ret[0, 0])) < 1e-12           # half the book is in the coin, half in cash
+
+
+def test_trend_vt_book_charges_only_dollars_traded_and_rebalances_on_mondays():
+    from tracks.crypto import trend_study as TS
+    ret = np.zeros((3, 1))
+    sig = np.ones((3, 1))
+    vol = np.full((3, 1), 0.25)
+    eq = TS.vt_book(ret, sig, vol, np.array([False, False, False]), 0.01)
+    assert abs(eq[0] - (1 - 0.005)) < 1e-12 and eq[1] == eq[0] and eq[2] == eq[0]    # entry only
+    vol2 = np.array([[0.25], [0.25], [1.0]])
+    eq2 = TS.vt_book(ret, sig, vol2, np.array([False, False, True]), 0.01)
+    assert eq2[2] < eq2[1]                                                           # the Monday rebalance trades
