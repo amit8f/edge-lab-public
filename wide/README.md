@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 14:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 14:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8190.52 | -18.09% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C's picks | $8611.98 | -13.88% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
-| C's prompt on Groq (K7) | $5680.06 | -43.20% | 430 | 101 | long AMD, long APP, short ASTS, short IREN, short MSTR |
-| Coin flip on C-groq's picks | $8197.46 | -18.03% | 430 | 201 | short AMD, long APP, long ASTS, long IREN, long MSTR |
-| C-groq's answers, acted on once a day (K8) | $8099.90 | -19.00% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
-| Coin flip on C-groq-slow's picks | $11015.93 | +10.16% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
-| C's answers, acted on once a day (K8) | $9749.88 | -2.50% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Coin flip on C-slow's picks | $10197.75 | +1.98% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Just hold SPY | $9632.15 | -3.68% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8216.07 | -17.84% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C's picks | $8608.68 | -13.91% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
+| C's prompt on Groq (K7) | $5681.61 | -43.18% | 430 | 101 | long AMD, long APP, short ASTS, short IREN, short MSTR |
+| Coin flip on C-groq's picks | $8192.20 | -18.08% | 430 | 201 | short AMD, long APP, long ASTS, long IREN, long MSTR |
+| C-groq's answers, acted on once a day (K8) | $8085.18 | -19.15% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
+| Coin flip on C-groq-slow's picks | $11023.75 | +10.24% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
+| C's answers, acted on once a day (K8) | $9751.80 | -2.48% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Coin flip on C-slow's picks | $10199.80 | +2.00% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Just hold SPY | $9613.14 | -3.87% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-16 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 14:17 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 14:3
 | 2026-11-13 10:37 | short CRWV, short NBIS, long NU, short NVDA, short SMCI | sold CBRS @ $102.20; sold CRWV @ $49.45 | Maintained existing short positions in NBIS, NVDA, and SMCI due to continued weakness and negative news, and the long position in NU for its strong positive momentum. Closed CBRS for underperformance and initiated a new short in CRWV based on its sharp daily decline and concerning news. |
 | 2026-11-13 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 10:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-13 10:07 | long CBRS, short NBIS, long NU, short NVDA, short SMCI | none | Maintaining all existing profitable positions. The market is heavily influenced by negative news surrounding Nvidia and the AI sector, leading to significant drops in many related stocks. My current short positions are benefiting from this trend, while long positions in CBRS and NU are showing resil |
