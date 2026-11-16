@@ -1,0 +1,609 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "3e0ddc8ea844d0ec41a1fbe27e6ce9501a5fb2c548bf71ebc1320c33297cff50",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "3593b81af44851b4857f49cdf91f9234008f17679df889b651c258afe3f227b6",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "TSN",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "NLOP",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "IEP",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "LXEO",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "none",
+     "symbol": "DCBO",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "deal",
+     "symbol": "TU",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "offering",
+     "symbol": "NSIT",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "management",
+     "symbol": "STWD",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "product",
+     "symbol": "ACRS",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "CNC",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "204498cdc8b8f902afaa8e25155a80a82d170fc3c3ac690b29819defec4dd75b",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong positive momentum (+6.8%) with high confidence",
+     "stop_pct": 10.0,
+     "symbol": "TSN"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Extreme negative move (-15.6%) suggests continued downside",
+     "stop_pct": 12.0,
+     "symbol": "NLOP"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp drop (-18.2%) in penny stock, high confidence short",
+     "stop_pct": 20.0,
+     "symbol": "IEP"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Large upside (+39%) and positive analyst tone",
+     "stop_pct": 20.0,
+     "symbol": "LXEO"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant decline (-10.6%) indicates further weakness",
+     "stop_pct": 12.0,
+     "symbol": "DCBO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Solid gain (+8.4%) with decent confidence",
+     "stop_pct": 10.0,
+     "symbol": "TU"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Moderate drop (-7.4%) with offering news, short bias",
+     "stop_pct": 10.0,
+     "symbol": "NSIT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive price move (+4.5%) and management news",
+     "stop_pct": 10.0,
+     "symbol": "STWD"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Down move but positive product tone, potential rebound",
+     "stop_pct": 20.0,
+     "symbol": "ACRS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Upward move (+5.1%) with analyst support",
+     "stop_pct": 10.0,
+     "symbol": "CNC"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding period reached",
+     "stop_pct": 0.0,
+     "symbol": "ADTN"
+    },
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding period not exceeded",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "816c3288ab17257ecc0bff7cf6f4641fec916c66bcab5ab3e1ae1e78bba3856d"
+  },
+  "reviewer": {
+   "answer_sha256": "b1cc5e2b8d356d9fcfab2612bc14d35c982bc4bd80f4ff246d03bbd2f7211c19",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "362653acbb19b4374568647d52bcc95f9a61cdf8df933ff7f0e61b3e7f77fef3",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive momentum today and solid proposal alignment.",
+     "symbol": "TSN"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant selloff today supports the short proposal.",
+     "symbol": "NLOP"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy drop today continuing a weak medium-term trend.",
+     "symbol": "IEP"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive upside breakout with positive product catalyst.",
+     "symbol": "LXEO"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday reversal lower despite recent gains.",
+     "symbol": "DCBO"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong positive price action today with deal catalyst.",
+     "symbol": "TU"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Offering news and sharp drop justify short proposal.",
+     "symbol": "NSIT"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive management tone supports a bounce from lows.",
+     "symbol": "STWD"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Product catalyst with strong 20-day trend backing a dip buy.",
+     "symbol": "ACRS"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive analyst tone and solid upward momentum today.",
+     "symbol": "CNC"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.068,
+   "news": 1,
+   "pace": null,
+   "price": 62.82,
+   "r20": 0.0714,
+   "r5": -0.01441,
+   "short": true,
+   "src": "iex",
+   "symbol": "TSN",
+   "z": 4.066
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.15618,
+   "news": 0,
+   "pace": null,
+   "price": 8.05,
+   "r20": -0.02154,
+   "r5": 0.028,
+   "short": true,
+   "src": "iex",
+   "symbol": "NLOP",
+   "z": -13.765
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.18249,
+   "news": 0,
+   "pace": null,
+   "price": 3.875,
+   "r20": -0.28728,
+   "r5": -0.00212,
+   "short": true,
+   "src": "iex",
+   "symbol": "IEP",
+   "z": -6.682
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": 0.39024,
+   "news": 0,
+   "pace": null,
+   "price": 3.99,
+   "r20": 0.08712,
+   "r5": -0.00692,
+   "short": true,
+   "src": "iex",
+   "symbol": "LXEO",
+   "z": 6.412
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10598,
+   "news": 0,
+   "pace": null,
+   "price": 29.02,
+   "r20": 0.17658,
+   "r5": 0.12066,
+   "short": true,
+   "src": "iex",
+   "symbol": "DCBO",
+   "z": -3.791
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.08382,
+   "news": 0,
+   "pace": null,
+   "price": 9.245,
+   "r20": 0.01066,
+   "r5": -0.06367,
+   "short": true,
+   "src": "iex",
+   "symbol": "TU",
+   "z": 3.559
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.07413,
+   "news": 1,
+   "pace": null,
+   "price": 156.25,
+   "r20": 0.05166,
+   "r5": 0.06641,
+   "short": true,
+   "src": "iex",
+   "symbol": "NSIT",
+   "z": -1.887
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.04497,
+   "news": 1,
+   "pace": null,
+   "price": 11.85,
+   "r20": -0.08989,
+   "r5": -0.05892,
+   "short": true,
+   "src": "iex",
+   "symbol": "STWD",
+   "z": 1.793
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "news"
+   ],
+   "move": -0.07015,
+   "news": 1,
+   "pace": null,
+   "price": 3.645,
+   "r20": 0.19512,
+   "r5": 0.00513,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACRS",
+   "z": -1.664
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.051,
+   "news": 1,
+   "pace": null,
+   "price": 74.905,
+   "r20": 0.03051,
+   "r5": 0.02194,
+   "short": true,
+   "src": "iex",
+   "symbol": "CNC",
+   "z": 1.39
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5047.6119,
+  "PICK-MAIN-coin": 5155.2863,
+  "PICK-PENNY": 443.6282,
+  "PICK-PENNY-coin": 521.3916
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-16T14:35:21.225960+00:00",
+   "entry": 5.22,
+   "exit": 4.64,
+   "net": 1.8212,
+   "opened": "2026-11-03T14:55:21.061005+00:00",
+   "qty": 4,
+   "side": -1,
+   "symbol": "ADTN",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-16T14:35:21.225960+00:00",
+   "entry": 5.66,
+   "exit": 4.885,
+   "net": -0.9024,
+   "opened": "2026-11-12T15:05:20.414228+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "BRUN",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-16T14:35:21.225960+00:00",
+   "entry": 1.9,
+   "exit": 1.465,
+   "net": -5.7575,
+   "opened": "2026-11-05T14:35:20.639239+00:00",
+   "qty": 12,
+   "side": 1,
+   "symbol": "DDD",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-16T14:35:21.225960+00:00",
+   "entry": 1.78,
+   "exit": 1.21,
+   "net": 9.2977,
+   "opened": "2026-11-02T15:15:20.998048+00:00",
+   "qty": 18,
+   "side": -1,
+   "symbol": "NXH",
+   "why": "10 days"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.0974,
+   "price": 8.05,
+   "qty": 1,
+   "side": -1,
+   "stop": 9.016,
+   "symbol": "NLOP"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.0974,
+   "price": 8.05,
+   "qty": 1,
+   "side": -1,
+   "stop": 9.016,
+   "symbol": "NLOP"
+  }
+ ],
+ "flag_counts": {
+  "move": 6,
+  "news": 130,
+  "volume": 0
+ },
+ "flagged": 135,
+ "flip_test": {
+  "after": -2,
+  "answer_sha256": "f220392a96b96a4f2a9236d52d6e230fb08b5cfae31e54f480ea303558d07e33",
+  "before": 1,
+  "model": "openai/gpt-oss-20b",
+  "moved": true,
+  "prompt_sha256": "c0c3095cadc1fcc001a8d63401378a063ee3d696874586a52d108aad868da2e9",
+  "swaps": 1,
+  "symbol": "LXEO"
+ },
+ "headline_counts": {
+  "ACRS": 3,
+  "CNC": 1,
+  "IEP": 1,
+  "LXEO": 3,
+  "NSIT": 3,
+  "STWD": 2,
+  "TSN": 3,
+  "TU": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "9c03c0376d4d64e9c5d9ce77b6619d07b948582956900e1f26e922afc0b2ac57",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2156
+ },
+ "priced": 2156,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TSN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 1,
+   "skip": null,
+   "symbol": "NLOP"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "IEP"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "LXEO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "DCBO"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "TU"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NSIT"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "STWD"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "ACRS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CNC"
+  }
+ ],
+ "slot": "2026-11-16T09:35",
+ "t": "2026-11-16T14:35:21.225960+00:00",
+ "universe": 3384,
+ "written_utc": "2026-11-16T14:35:36.253438Z"
+}
