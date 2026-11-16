@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8149.99 | -18.50% | 221 | 70 | short AMD, short APLD, short IREN, short MSTR, short NBIS |
-| Coin flip on C's picks | $8649.74 | -13.50% | 219 | 107 | long AMD, short APLD, long IREN, short MSTR, long NBIS |
-| C's prompt on Groq (K7) | $5708.36 | -42.92% | 424 | 101 | long AMD, long APP, short AXTI, short IREN, short SNDK |
-| Coin flip on C-groq's picks | $8214.74 | -17.85% | 424 | 197 | short AMD, long APP, long AXTI, long IREN, short SNDK |
-| C-groq's answers, acted on once a day (K8) | $8149.48 | -18.51% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
-| Coin flip on C-groq-slow's picks | $10985.95 | +9.86% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
-| C's answers, acted on once a day (K8) | $9778.78 | -2.21% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Coin flip on C-slow's picks | $10227.94 | +2.28% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Just hold SPY | $9730.99 | -2.69% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8197.25 | -18.03% | 221 | 70 | short AMD, short APLD, short IREN, short MSTR, short NBIS |
+| Coin flip on C's picks | $8662.51 | -13.37% | 219 | 107 | long AMD, short APLD, long IREN, short MSTR, long NBIS |
+| C's prompt on Groq (K7) | $5718.29 | -42.82% | 426 | 101 | long ALAB, long AMD, long APP, short IREN, short MSTR |
+| Coin flip on C-groq's picks | $8189.59 | -18.10% | 426 | 198 | short ALAB, short AMD, long APP, long IREN, long MSTR |
+| C-groq's answers, acted on once a day (K8) | $8141.96 | -18.58% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
+| Coin flip on C-groq-slow's picks | $10978.54 | +9.79% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
+| C's answers, acted on once a day (K8) | $9776.38 | -2.24% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Coin flip on C-slow's picks | $10225.44 | +2.25% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Just hold SPY | $9723.44 | -2.77% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-16 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 10:47 | short AMD, short APLD, short IREN, short MSTR, short NBIS | none | Maintaining all existing short positions as they are performing well or showing strong negative momentum today, supported by relevant negative news for most. |
 | 2026-11-16 10:37 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 10:5
 | 2026-11-12 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-12 14:27 | long AMD, long AVGO, long MPC, short NBIS, short NVDA | sold VLO @ $378.25; sold NVDA @ $163.84 | Maintaining existing long positions in AMD, AVGO, and MPC due to continued positive momentum and news. Keeping the short position in NBIS given its sharp decline and negative headlines. Initiating a new short position in NVDA due to its significant drop and the impactful news of Jensen Huang's resig |
 | 2026-11-12 14:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-12 14:07 | no answer, nothing changed | none | unreadable answer |
