@@ -1,0 +1,486 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "c4e8e61d55fb40a21cc6a116edbe03ec2107c7756a2acb47ad1290d246fba03a",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "719d6a17d9b33433ec64f15e32e6d346dfb5f7b5907640d8e5efdc104aaefab8",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "O",
+     "tone": 1
+    },
+    {
+     "confidence": 90,
+     "event": "analyst",
+     "symbol": "WPC",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "TH",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "b7264248c06600d2a146917f273b0e1633bce78b1087220d9118c48f93f86454",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive analyst tone and modest price rise",
+     "stop_pct": 10.0,
+     "symbol": "O"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive analyst tone and modest price rise",
+     "stop_pct": 10.0,
+     "symbol": "WPC"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Mixed signals despite positive tone",
+     "stop_pct": 0.0,
+     "symbol": "TH"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "BXDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "CET"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "CNNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "DRTS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "FVR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "GAM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "LAND"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "MSTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "NLOP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "PSFE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "REZI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "SENEA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "XRN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "ACDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "BGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "CERS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "CURI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "FRMI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "GOGO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "GRAB"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "HSDT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "IHRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "LAC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "LAES"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "NKTX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "PEPG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "SERV"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "STLN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "TBLA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Position within stop range and holding period",
+     "stop_pct": 0.0,
+     "symbol": "TE"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "8be9851a25c103917f30dc510e073b62d3622cf7838df45a533fecf10a3e57c2"
+  },
+  "reviewer": {
+   "answer_sha256": "181463118142bc4d4fc47fa51fa70e31a075de0a190ea37d258abe3ef0c58b76",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "46dec812d88ef3087adcdd9c570ea2909b82ec481bd219a7f3add9350cbe8c3d",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive analyst tone and upward trend align well with the proposed long position.",
+     "symbol": "O"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Supportive analyst tone and steady short-term gains justify the proposed long trade.",
+     "symbol": "WPC"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00587,
+   "news": 1,
+   "pace": null,
+   "price": 59.165,
+   "r20": 0.05393,
+   "r5": -0.00373,
+   "short": true,
+   "src": "iex",
+   "symbol": "O",
+   "z": 0.457
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.00518,
+   "news": 1,
+   "pace": null,
+   "price": 66.01,
+   "r20": 0.00814,
+   "r5": 0.00953,
+   "short": true,
+   "src": "iex",
+   "symbol": "WPC",
+   "z": 0.351
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02114,
+   "news": 1,
+   "pace": null,
+   "price": 11.345,
+   "r20": -0.25032,
+   "r5": 0.02025,
+   "short": true,
+   "src": "iex",
+   "symbol": "TH",
+   "z": -0.271
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5043.8133,
+  "PICK-MAIN-coin": 5140.4274,
+  "PICK-PENNY": 444.7228,
+  "PICK-PENNY-coin": 519.9698
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 11,
+  "news": 5,
+  "volume": 0
+ },
+ "flagged": 16,
+ "headline_counts": {
+  "O": 2,
+  "TH": 3,
+  "WPC": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "536e9331bff4f5f19e568b3b7107a12a5521b9d7a4c5d0f004430b18cbf1ef24",
+ "price_sources": {
+  "delayed_sip": 530,
+  "iex": 2842
+ },
+ "priced": 3372,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "O"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "WPC"
+  }
+ ],
+ "slot": "2026-11-16T09:55",
+ "t": "2026-11-16T14:55:20.417770+00:00",
+ "universe": 3384,
+ "written_utc": "2026-11-16T14:57:07.893175Z"
+}
