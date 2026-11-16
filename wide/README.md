@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8185.27 | -18.15% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C's picks | $8575.27 | -14.25% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
-| C's prompt on Groq (K7) | $5669.77 | -43.30% | 432 | 101 | short AAOI, long AMD, long APP, short ASTS, short NTRA |
-| Coin flip on C-groq's picks | $8215.35 | -17.85% | 432 | 203 | long AAOI, short AMD, long APP, long ASTS, long NTRA |
-| C-groq's answers, acted on once a day (K8) | $8103.74 | -18.96% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
-| Coin flip on C-groq-slow's picks | $11006.17 | +10.06% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
-| C's answers, acted on once a day (K8) | $9755.21 | -2.45% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Coin flip on C-slow's picks | $10203.35 | +2.03% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
-| Just hold SPY | $9628.76 | -3.71% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8252.08 | -17.48% | 225 | 71 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C's picks | $8591.77 | -14.08% | 223 | 109 | long ASTS, short IONQ, short IREN, short MSTR, long NBIS |
+| C's prompt on Groq (K7) | $5683.61 | -43.16% | 432 | 101 | short AAOI, long AMD, long APP, short ASTS, short NTRA |
+| Coin flip on C-groq's picks | $8196.69 | -18.03% | 432 | 203 | long AAOI, short AMD, long APP, long ASTS, long NTRA |
+| C-groq's answers, acted on once a day (K8) | $8098.93 | -19.01% | 39 | 16 | long APP, long AVGO, long NU, short NVDA, long RKLB |
+| Coin flip on C-groq-slow's picks | $11010.99 | +10.11% | 39 | 24 | short APP, short AVGO, short NU, short NVDA, long RKLB |
+| C's answers, acted on once a day (K8) | $9754.08 | -2.46% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Coin flip on C-slow's picks | $10202.23 | +2.02% | 34 | 17 | short AMD, long CBRS, short NBIS, long NU, long U |
+| Just hold SPY | $9619.52 | -3.80% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-16 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-16 15:2
 | 2026-11-13 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 11:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-13 10:57 | short CRWV, short NBIS, long NU, short NVDA, short SMCI | none | Maintaining current positions: short NBIS, NU long, short NVDA, short SMCI, and short CRWV. The strategy focuses on capitalizing on strong negative momentum in AI-related stocks due to NVIDIA news and DOJ investigations, while holding a strong performer (NU) that is bucking the trend. |
