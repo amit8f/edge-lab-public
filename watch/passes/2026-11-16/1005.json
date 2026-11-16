@@ -1,0 +1,440 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "81c97af1f53b438540d62bfc825fc0345c6b631f777214ac37e067fbd42be747",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "21a20c1d2bff0186b33acde72765edc10d0923a01af7e426fc8b50d23e52c2b4",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "BLDP",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "FWDI",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "PAYP",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "NTWK",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "USDE",
+     "tone": -2
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "NMAX",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "KRSA",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "SOUN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "PSQL",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "none",
+     "symbol": "GPRK",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "87a22f20e2dbe4090a92a39c41eea806323cd506481c704b4628a9b73757e6d1",
+   "decisions": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large drop, high volume, negative analyst tone",
+     "stop_pct": 12.0,
+     "symbol": "BLDP"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant decline with high volume",
+     "stop_pct": 12.0,
+     "symbol": "FWDI"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "sharp fall, high volume",
+     "stop_pct": 12.0,
+     "symbol": "PAYP"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "big drop, extreme volume",
+     "stop_pct": 13.0,
+     "symbol": "NTWK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and negative outlook",
+     "stop_pct": 0.0,
+     "symbol": "USDE"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "recent 5\u2011day rally after dip",
+     "stop_pct": 12.0,
+     "symbol": "NMAX"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "positive move, shorting not allowed",
+     "stop_pct": 10.0,
+     "symbol": "KRSA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "insufficient signal",
+     "stop_pct": 0.0,
+     "symbol": "SOUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and no bullish signal",
+     "stop_pct": 0.0,
+     "symbol": "PSQL"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "07642ed8d22644899fab72106edf5bb2c48c7294184dbb0e1bfbcb536d43030c"
+  },
+  "reviewer": {
+   "answer_sha256": "e2ec8a55b877eda2b225e66699ccd55823d8e77cfa142159eca71b52207bc569",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "3aead0f4fc140ca2d8808ffeb1cdad39a22447f24614a29769a222725a89b641",
+   "reviews": [
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong negative earnings catalyst, high volume, and sharp downward momentum.",
+     "symbol": "BLDP"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Heavy selling pressure and high volume pace align well with the short proposal.",
+     "symbol": "FWDI"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Consistent downward trend and elevated volume support the short trade.",
+     "symbol": "PAYP"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme volume and steep intraday losses favor continuation of the drop.",
+     "symbol": "NTWK"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Pullback within a strong multi-day uptrend presents a solid dip-buying opportunity.",
+     "symbol": "NMAX"
+    },
+    {
+     "confidence": 80,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and long setup lacks strong momentum follow-through.",
+     "symbol": "KRSA"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.08929,
+   "news": 0,
+   "pace": 9.856,
+   "price": 1.275,
+   "r20": -0.10828,
+   "r5": -0.08795,
+   "short": true,
+   "src": "iex",
+   "symbol": "BLDP",
+   "z": -2.195
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.10729,
+   "news": 0,
+   "pace": 8.162,
+   "price": 4.41,
+   "r20": -0.28509,
+   "r5": -0.13333,
+   "short": true,
+   "src": "iex",
+   "symbol": "FWDI",
+   "z": -2.176
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07666,
+   "news": 0,
+   "pace": 4.904,
+   "price": 13.25,
+   "r20": -0.08482,
+   "r5": -0.03756,
+   "short": true,
+   "src": "iex",
+   "symbol": "PAYP",
+   "z": -2.161
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.15637,
+   "news": 0,
+   "pace": 14.042,
+   "price": 4.235,
+   "r20": -0.19163,
+   "r5": -0.2265,
+   "short": true,
+   "src": "iex",
+   "symbol": "NTWK",
+   "z": -2.052
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.16887,
+   "news": 0,
+   "pace": 5.493,
+   "price": 4.405,
+   "r20": -0.50514,
+   "r5": -0.17574,
+   "short": false,
+   "src": "iex",
+   "symbol": "USDE",
+   "z": -2.014
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.13309,
+   "news": 0,
+   "pace": 5.501,
+   "price": 8.305,
+   "r20": 0.09611,
+   "r5": 0.30518,
+   "short": true,
+   "src": "iex",
+   "symbol": "NMAX",
+   "z": -1.991
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.06477,
+   "news": 0,
+   "pace": 3.698,
+   "price": 33.7,
+   "r20": -0.02254,
+   "r5": 0.01932,
+   "short": false,
+   "src": "iex",
+   "symbol": "KRSA",
+   "z": 1.978
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.05587,
+   "news": 0,
+   "pace": 3.167,
+   "price": 3.295,
+   "r20": -0.26059,
+   "r5": -0.15085,
+   "short": true,
+   "src": "iex",
+   "symbol": "SOUN",
+   "z": -1.957
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.11096,
+   "news": 0,
+   "pace": 5.342,
+   "price": 3.325,
+   "r20": -0.34039,
+   "r5": -0.14023,
+   "short": false,
+   "src": "iex",
+   "symbol": "PSQL",
+   "z": -1.83
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.05096,
+   "news": 0,
+   "pace": 3.304,
+   "price": 8.94,
+   "r20": -0.19898,
+   "r5": -0.00212,
+   "short": false,
+   "src": "iex",
+   "symbol": "GPRK",
+   "z": -1.759
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 5033.4233,
+  "PICK-MAIN-coin": 5140.7124,
+  "PICK-PENNY": 443.0698,
+  "PICK-PENNY-coin": 520.2868
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 12,
+  "news": 10,
+  "volume": 285
+ },
+ "flagged": 299,
+ "headline_counts": {
+  "BLDP": 3,
+  "FWDI": 1,
+  "USDE": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "029b0a1d35dce463bc0a04a730ec40546e48de345f1799d478e34c7bcb1970a2",
+ "price_sources": {
+  "delayed_sip": 464,
+  "iex": 2912
+ },
+ "priced": 3376,
+ "risk": [
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "BLDP"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "FWDI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PAYP"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NTWK"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NMAX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "KRSA"
+  }
+ ],
+ "slot": "2026-11-16T10:05",
+ "t": "2026-11-16T15:05:20.701250+00:00",
+ "universe": 3384,
+ "written_utc": "2026-11-16T15:06:06.961835Z"
+}
