@@ -1,0 +1,225 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "6ae76db18ca85640bf1a4dd6c9e00868f2e56663542abd5bd4b88fb5d1fc7dab",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "b943ee713762cdea6b23346dab14d65bfbeac4f4f477c40710de75c6904da14f",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "CUE",
+     "tone": -2
+    },
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "DUOT",
+     "tone": -2
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "78daf3359e6e0bde76999902ffaff3c4ec3ea177f48fb0ff881513684b85d73f",
+   "decisions": [
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "not shortable and negative earnings tone, no entry",
+     "stop_pct": 0.0,
+     "symbol": "CUE"
+    },
+    {
+     "confidence": 90,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "shortable with strong negative earnings surprise, confidence high",
+     "stop_pct": 20.0,
+     "symbol": "DUOT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "ACM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "BXDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "CET"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "CNNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "DRTS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "position within holding period and stop not hit",
+     "stop_pct": 0.0,
+     "symbol": "FVR"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "abf07233420081637b68972270b997bb4bbb35d66d8bd89c702efe6174b9084e"
+  },
+  "reviewer": {
+   "answer_sha256": "6d547e8fcc7c96f1d01ac7fabb4da5b92219ad211476efcaad87c8a7673c2ea6",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "082bf61caa2f0263a34e08f114d82e266eee0f0420adb916753c07daeb12d0ea",
+   "reviews": [
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Already down 18.5% today makes shorting at current levels risky despite negative earnings tone.",
+     "symbol": "DUOT"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.24752,
+   "news": 0,
+   "pace": null,
+   "price": 10.61,
+   "r20": -0.12313,
+   "r5": -0.2999,
+   "short": false,
+   "src": "iex",
+   "symbol": "CUE",
+   "z": -3.946
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.18522,
+   "news": 0,
+   "pace": null,
+   "price": 3.805,
+   "r20": -0.14781,
+   "r5": -0.10192,
+   "short": true,
+   "src": "iex",
+   "symbol": "DUOT",
+   "z": -3.204
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4747.7222,
+  "PICK-MAIN-coin": 4935.1366,
+  "PICK-PENNY": 441.7614,
+  "PICK-PENNY-coin": 518.8881
+ },
+ "fills": [],
+ "flag_counts": {
+  "move": 11,
+  "news": 0,
+  "volume": 0
+ },
+ "flagged": 11,
+ "headline_counts": {
+  "CUE": 1,
+  "DUOT": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "141a5a847a835622bbfc2df231624f6730ba1de43218ecf6eabeaddd576074d4",
+ "price_sources": {
+  "delayed_sip": 621,
+  "iex": 2744
+ },
+ "priced": 3365,
+ "risk": [
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "DUOT"
+  }
+ ],
+ "slot": "2026-11-17T09:50",
+ "t": "2026-11-17T14:50:20.525157+00:00",
+ "universe": 3384,
+ "written_utc": "2026-11-17T14:51:19.061299Z"
+}
