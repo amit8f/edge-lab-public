@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 10:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8278.23 | -17.22% | 227 | 72 | short CRM, short IONQ, short MDB, short MSTR, short NBIS |
-| Coin flip on C's picks | $8697.80 | -13.02% | 225 | 109 | long CRM, short IONQ, long MDB, short MSTR, long NBIS |
-| C's prompt on Groq (K7) | $5482.59 | -45.17% | 446 | 104 | long APP, short CRM, long DIS, long MCHP, long NKE |
-| Coin flip on C-groq's picks | $8142.19 | -18.58% | 446 | 209 | short APP, long CRM, long DIS, short MCHP, long NKE |
-| C-groq's answers, acted on once a day (K8) | $8005.56 | -19.94% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
-| Coin flip on C-groq-slow's picks | $10919.63 | +9.20% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
-| C's answers, acted on once a day (K8) | $9767.94 | -2.32% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C-slow's picks | $10173.11 | +1.73% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
-| Just hold SPY | $9604.09 | -3.96% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8332.89 | -16.67% | 227 | 72 | short CRM, short IONQ, short MDB, short MSTR, short NBIS |
+| Coin flip on C's picks | $8689.06 | -13.11% | 225 | 109 | long CRM, short IONQ, long MDB, short MSTR, long NBIS |
+| C's prompt on Groq (K7) | $5485.15 | -45.15% | 446 | 104 | long APP, short CRM, long DIS, long MCHP, long NKE |
+| Coin flip on C-groq's picks | $8170.51 | -18.29% | 446 | 209 | short APP, long CRM, long DIS, short MCHP, long NKE |
+| C-groq's answers, acted on once a day (K8) | $8015.34 | -19.85% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq-slow's picks | $10937.99 | +9.38% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
+| C's answers, acted on once a day (K8) | $9833.59 | -1.66% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C-slow's picks | $10205.81 | +2.06% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
+| Just hold SPY | $9594.12 | -4.06% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-17 10:17 | short CRM, short IONQ, short MDB, short MSTR, short NBIS | none | Maintaining all existing short positions as the overall market sentiment remains bearish, and current positions are profitable with continued downward trends for most. |
 | 2026-11-17 10:07 | short CRM, short IONQ, short MDB, short MSTR, short NBIS | none | All existing short positions are profitable and align with current negative market trends for these stocks, so they are maintained. No new positions are initiated at this time. |
 | 2026-11-17 09:57 | short CRM, short IONQ, short MDB, short MSTR, short NBIS | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show bearish trends, with no strong signals to close or open new positions. |
 | 2026-11-17 09:47 | short CRM, short IONQ, short MDB, short MSTR, short NBIS | bought ASTS @ $28.75; bought IREN @ $16.43; sold CRM @ $203.06; sold MDB @ $301.62 | Maintained shorts on IONQ, MSTR, and NBIS due to continued negative momentum. Closed ASTS and IREN due to positive price action today. Initiated new short positions in CRM and MDB, which show strong negative momentum across all timeframes and consistent hourly declines. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 10:0
 | 2026-11-13 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 12:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-13 12:07 | no answer, nothing changed | none | unreadable answer |
