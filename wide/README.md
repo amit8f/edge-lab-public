@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 10:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8487.08 | -15.13% | 228 | 73 | short CRM, short IONQ, short MDB, short MSTR, short NOW |
-| Coin flip on C's picks | $8764.34 | -12.36% | 226 | 109 | long CRM, short IONQ, long MDB, short MSTR, short NOW |
-| C's prompt on Groq (K7) | $5433.51 | -45.66% | 446 | 104 | long APP, short CRM, long DIS, long MCHP, long NKE |
-| Coin flip on C-groq's picks | $8175.28 | -18.25% | 446 | 209 | short APP, long CRM, long DIS, short MCHP, long NKE |
-| C-groq's answers, acted on once a day (K8) | $8145.69 | -18.54% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
-| Coin flip on C-groq-slow's picks | $11048.06 | +10.48% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
-| C's answers, acted on once a day (K8) | $10191.95 | +1.92% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C-slow's picks | $10423.27 | +4.23% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
-| Just hold SPY | $9492.55 | -5.07% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8466.55 | -15.33% | 228 | 73 | short CRM, short IONQ, short MDB, short MSTR, short NOW |
+| Coin flip on C's picks | $8770.81 | -12.29% | 226 | 109 | long CRM, short IONQ, long MDB, short MSTR, short NOW |
+| C's prompt on Groq (K7) | $5442.16 | -45.58% | 446 | 104 | long APP, short CRM, long DIS, long MCHP, long NKE |
+| Coin flip on C-groq's picks | $8153.89 | -18.46% | 446 | 209 | short APP, long CRM, long DIS, short MCHP, long NKE |
+| C-groq's answers, acted on once a day (K8) | $8128.19 | -18.72% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq-slow's picks | $11037.19 | +10.37% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
+| C's answers, acted on once a day (K8) | $10169.15 | +1.69% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C-slow's picks | $10421.82 | +4.22% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
+| Just hold SPY | $9509.22 | -4.91% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-17 10:57 | short CRM, short IONQ, short MDB, short MSTR, short NOW | none | All existing short positions are profitable and show continued strong downward momentum, so they are maintained. No new positions are opened due to the current market volatility and the strong performance of existing shorts. |
 | 2026-11-17 10:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 10:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 10:27 | short CRM, short IONQ, short MDB, short MSTR, short NOW | bought NBIS @ $110.51; sold NOW @ $94.00 | Closed NBIS for profit due to a daily bounce, and initiated a new short position in NOW, which shows strong bearish momentum. Maintaining existing profitable short positions in CRM, MDB, IONQ, and MSTR, as their downtrends appear to be continuing. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 10:4
 | 2026-11-13 13:17 | short AMD, short DELL, short NBIS, short NVDA, short SMCI | none | Maintaining all existing short positions as the overall market sentiment for these stocks remains negative, with strong downward price action today and relevant negative news for most. |
 | 2026-11-13 13:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 12:57 | short AMD, short DELL, short NBIS, short NVDA, short SMCI | none | Maintaining all existing short positions as the overall market sentiment for tech/AI stocks remains negative, driven by Nvidia-related news, and most positions are profitable or showing continued weakness. |
-| 2026-11-13 12:47 | no answer, nothing changed | none | unreadable answer |
