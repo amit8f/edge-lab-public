@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8433.14 | -15.67% | 228 | 73 | short CRM, short IONQ, short MDB, short MSTR, short NOW |
-| Coin flip on C's picks | $8760.72 | -12.39% | 226 | 109 | long CRM, short IONQ, long MDB, short MSTR, short NOW |
-| C's prompt on Groq (K7) | $5446.69 | -45.53% | 452 | 107 | long APP, short CRM, long DIS, long HL, short MSTR |
-| Coin flip on C-groq's picks | $8125.53 | -18.74% | 452 | 211 | long APP, short CRM, long DIS, long HL, short MSTR |
-| C-groq's answers, acted on once a day (K8) | $8087.75 | -19.12% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
-| Coin flip on C-groq-slow's picks | $10953.19 | +9.53% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
-| C's answers, acted on once a day (K8) | $10007.70 | +0.08% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C-slow's picks | $10343.37 | +3.43% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
-| Just hold SPY | $9550.76 | -4.49% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8439.70 | -15.60% | 228 | 73 | short CRM, short IONQ, short MDB, short MSTR, short NOW |
+| Coin flip on C's picks | $8777.06 | -12.23% | 226 | 109 | long CRM, short IONQ, long MDB, short MSTR, short NOW |
+| C's prompt on Groq (K7) | $5437.50 | -45.63% | 454 | 107 | long APP, short CRM, long HUM, long IBM, short MSTR |
+| Coin flip on C-groq's picks | $8111.89 | -18.88% | 454 | 211 | long APP, short CRM, long HUM, short IBM, short MSTR |
+| C-groq's answers, acted on once a day (K8) | $8095.45 | -19.05% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq-slow's picks | $10973.16 | +9.73% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
+| C's answers, acted on once a day (K8) | $10049.08 | +0.49% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C-slow's picks | $10370.54 | +3.71% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
+| Just hold SPY | $9542.42 | -4.58% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-17 12:37 | short CRM, short IONQ, short MDB, short MSTR, short NOW | none | Maintaining all existing short positions as they are profitable and continue to show strong downward momentum in a broadly negative market. |
 | 2026-11-17 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 12:17 | short CRM, short IONQ, short MDB, short MSTR, short NOW | none | Maintaining all existing profitable short positions as the market continues its strong downtrend, with all held stocks showing significant declines today. |
 | 2026-11-17 12:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 12:2
 | 2026-11-13 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-13 14:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-13 14:27 | no answer, nothing changed | none | unreadable answer |
