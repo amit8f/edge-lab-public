@@ -1,0 +1,587 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "d3467fdaacc4b5b8cc7c94c95dc45aff0136e8936ffde7a066fc2f9667ec8278",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "455fecc0423a5cace74d04eb24dc300bd014166db7ce74d343f27101d3224ea8",
+   "views": [
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ACM",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "product",
+     "symbol": "SLS",
+     "tone": 2
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "OMER",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "SMWB",
+     "tone": 1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ABX",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "GLSI",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "ENR",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "other",
+     "symbol": "HUM",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "product",
+     "symbol": "ELV",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "analyst",
+     "symbol": "ASH",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "f01367fe8d5119714c8b30bd08d749392fff6104290c5d55592cb9cb7befc158",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong positive momentum, high confidence",
+     "stop_pct": 12.0,
+     "symbol": "ACM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Extreme spike, risk of reversal",
+     "stop_pct": 0.0,
+     "symbol": "SLS"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Sharp decline, earnings miss, shortable",
+     "stop_pct": 13.0,
+     "symbol": "OMER"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings surprise, momentum",
+     "stop_pct": 12.0,
+     "symbol": "SMWB"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant drop, shortable",
+     "stop_pct": 14.0,
+     "symbol": "ABX"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Solid gain, shortable not required",
+     "stop_pct": 13.0,
+     "symbol": "GLSI"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings, momentum",
+     "stop_pct": 12.0,
+     "symbol": "ENR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Modest decline, insufficient signal",
+     "stop_pct": 0.0,
+     "symbol": "HUM"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "094a81362d1f95b32b615a94b5fefcd5d35ad93b309018cca52f4fc8408ec90c",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "ae3151cb7fff31dca5d3a86297bdf2497e9ffdcc9811b4cafc78ea85dd4ed8aa",
+    "model": "openai/gpt-oss-120b",
+    "prompt_sha256": "4b8606a6a4f767dd5f10d43b32a3101228d54112f0936e82a0b79a56916bc73a"
+   }
+  },
+  "reviewer": {
+   "answer_sha256": "00058a833ccf140bff7ad208c564981cfa888870a4e56903c12b35117de08c14",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "3927105bfe03e780393cf95db1cd409b30184e2301fba63a7b16cd4df66cd0df",
+   "reviews": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong momentum and positive recent gains support the long proposal.",
+     "symbol": "ACM"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Significant negative price action and negative earnings tone justify the short.",
+     "symbol": "OMER"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive earnings tone and strong intraday bounce align with long bias.",
+     "symbol": "SMWB"
+    },
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp intraday drop indicates strong selling pressure matching the short proposal.",
+     "symbol": "ABX"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Extreme volatility and unshortable status make this too risky for a directional trade.",
+     "symbol": "GLSI"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Solid positive momentum and earnings support the long continuation.",
+     "symbol": "ENR"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": 0.1051,
+   "news": 1,
+   "pace": null,
+   "price": 80.12,
+   "r20": 0.24957,
+   "r5": 0.03262,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACM",
+   "z": 5.992
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 1.77912,
+   "news": 0,
+   "pace": null,
+   "price": 20.76,
+   "r20": -0.28789,
+   "r5": -0.12937,
+   "short": false,
+   "src": "iex",
+   "symbol": "SLS",
+   "z": 14.048
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.18225,
+   "news": 0,
+   "pace": null,
+   "price": 13.64,
+   "r20": 0.02018,
+   "r5": -0.04957,
+   "short": true,
+   "src": "iex",
+   "symbol": "OMER",
+   "z": -5.573
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11509,
+   "news": 0,
+   "pace": null,
+   "price": 8.72,
+   "r20": -0.09595,
+   "r5": -0.04401,
+   "short": true,
+   "src": "iex",
+   "symbol": "SMWB",
+   "z": 5.209
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.11734,
+   "news": 0,
+   "pace": null,
+   "price": 7.635,
+   "r20": 0.10191,
+   "r5": -0.03782,
+   "short": true,
+   "src": "iex",
+   "symbol": "ABX",
+   "z": -4.968
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.25145,
+   "news": 0,
+   "pace": null,
+   "price": 17.22,
+   "r20": -0.09533,
+   "r5": -0.16707,
+   "short": false,
+   "src": "iex",
+   "symbol": "GLSI",
+   "z": 3.914
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.09532,
+   "news": 0,
+   "pace": null,
+   "price": 26.66,
+   "r20": 0.12685,
+   "r5": -0.02873,
+   "short": true,
+   "src": "iex",
+   "symbol": "ENR",
+   "z": 3.401
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.04464,
+   "news": 1,
+   "pace": null,
+   "price": 440.66,
+   "r20": 0.11386,
+   "r5": 0.08986,
+   "short": true,
+   "src": "iex",
+   "symbol": "HUM",
+   "z": -2.355
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02942,
+   "news": 1,
+   "pace": null,
+   "price": 433.15,
+   "r20": 0.03731,
+   "r5": 0.06702,
+   "short": true,
+   "src": "iex",
+   "symbol": "ELV",
+   "z": -1.431
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02144,
+   "news": 1,
+   "pace": null,
+   "price": 73.95,
+   "r20": 0.06153,
+   "r5": -0.02741,
+   "short": true,
+   "src": "iex",
+   "symbol": "ASH",
+   "z": -1.402
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4736.4522,
+  "PICK-MAIN-coin": 4930.5766,
+  "PICK-PENNY": 441.7977,
+  "PICK-PENNY-coin": 518.6763
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-17T14:35:20.588382+00:00",
+   "entry": 167.45,
+   "exit": 35.625,
+   "net": -265.1849,
+   "opened": "2026-11-09T14:50:21.213728+00:00",
+   "qty": 2,
+   "side": 1,
+   "symbol": "SENEA",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-17T14:35:20.588382+00:00",
+   "entry": 167.45,
+   "exit": 35.625,
+   "net": -265.1849,
+   "opened": "2026-11-09T14:50:21.213728+00:00",
+   "qty": 2,
+   "side": 1,
+   "symbol": "SENEA",
+   "why": "stop"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-17T14:35:20.588382+00:00",
+   "entry": 14.585,
+   "exit": 12.04,
+   "net": 2.2068,
+   "opened": "2026-11-03T14:40:20.428206+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "SRAD",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-17T14:35:20.588382+00:00",
+   "entry": 2.205,
+   "exit": 1.88,
+   "net": 0.2538,
+   "opened": "2026-11-03T15:30:20.780912+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "CERS",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-17T14:35:20.588382+00:00",
+   "entry": 3.265,
+   "exit": 3.21,
+   "net": -0.7052,
+   "opened": "2026-11-03T14:35:20.680068+00:00",
+   "qty": 5,
+   "side": 1,
+   "symbol": "GRAB",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-17T14:35:20.588382+00:00",
+   "entry": 2.205,
+   "exit": 1.88,
+   "net": -0.3793,
+   "opened": "2026-11-03T15:30:20.780912+00:00",
+   "qty": 1,
+   "side": 1,
+   "symbol": "CERS",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-17T14:35:20.588382+00:00",
+   "entry": 3.265,
+   "exit": 3.21,
+   "net": -0.7052,
+   "opened": "2026-11-03T14:35:20.680068+00:00",
+   "qty": 5,
+   "side": 1,
+   "symbol": "GRAB",
+   "why": "10 days"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 1.007,
+   "price": 80.12,
+   "qty": 4,
+   "side": 1,
+   "stop": 70.5056,
+   "symbol": "ACM"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 1.007,
+   "price": 80.12,
+   "qty": 4,
+   "side": 1,
+   "stop": 70.5056,
+   "symbol": "ACM"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.6636,
+   "price": 13.64,
+   "qty": 11,
+   "side": -1,
+   "stop": 15.4132,
+   "symbol": "OMER"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.6636,
+   "price": 13.64,
+   "qty": 11,
+   "side": -1,
+   "stop": 15.4132,
+   "symbol": "OMER"
+  }
+ ],
+ "flag_counts": {
+  "move": 7,
+  "news": 103,
+  "volume": 0
+ },
+ "flagged": 109,
+ "flip_test": {
+  "after": -2,
+  "answer_sha256": "923cf3731a88eab7de149107ba5a74bcff5c178f29537a7341da02f7f481047e",
+  "before": 2,
+  "model": "openai/gpt-oss-20b",
+  "moved": true,
+  "prompt_sha256": "08176839f3536b80e3ee6281ded9a1c6b74380f5830e497f25deb3d3fccc0a3a",
+  "swaps": 1,
+  "symbol": "SLS"
+ },
+ "headline_counts": {
+  "ACM": 2,
+  "ASH": 1,
+  "ELV": 1,
+  "ENR": 3,
+  "GLSI": 1,
+  "HUM": 3,
+  "OMER": 1,
+  "SLS": 1,
+  "SMWB": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "8fb28a8da5491b69b6379651a0f9b2977faa4711947c32beaaf5cc80617a3329",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2227
+ },
+ "priced": 2227,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 4,
+   "skip": null,
+   "symbol": "ACM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 11,
+   "skip": null,
+   "symbol": "OMER"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "SMWB"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ABX"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GLSI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ENR"
+  }
+ ],
+ "slot": "2026-11-17T09:35",
+ "t": "2026-11-17T14:35:20.588382+00:00",
+ "universe": 3384,
+ "written_utc": "2026-11-17T14:35:49.198614Z"
+}
