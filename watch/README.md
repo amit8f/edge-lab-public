@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-17T11:55 ET: 94 flagged of 3384, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-17T12:00 ET: 88 flagged of 3384, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,775.17 | -4.50% | 46 | 21 | long ACM, short AVNW, long AZTA, long BBSI, short BRUN, long BXDC, short CET, short CNNE, long DRTS, short ENTA, long FSK, long FVR, short GAM, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, short PSFE, long REZI, short XRN | ok |
-| PICK-MAIN-coin | $4,951.81 | -0.96% | 46 | 22 | long ACM, short AVNW, long AZTA, short BBSI, short BXDC, short CET, long CNNE, long DRTS, long ENTA, short FSK, long FVR, long GAM, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, short PSFE, long REZI, long XRN | ok |
-| PICK-PENNY | $442.75 | -11.45% | 60 | 19 | short ACDC, long BGS, long CURI, long FRMI, short GOGO, short HSDT, short IHRT, long ITRG, short LAC, long NKTX, short PEPG, long STLN, short TSHA | paused |
-| PICK-PENNY-coin | $518.65 | +3.73% | 53 | 17 | short ACDC, short AMTX, long BGS, short CURI, short DDD, long FRMI, short GOGO, short HLLY, long HSDT, short IHRT, long ITRG, short LAC, short PEPG, short SLDP, long SSP, short STIM, short STLN, long TLS, short TSHA, long ZURA | ok |
+| PICK-MAIN | $4,777.35 | -4.45% | 46 | 21 | long ACM, short AVNW, long AZTA, long BBSI, short BRUN, long BXDC, short CET, short CNNE, long DRTS, short ENTA, long FSK, long FVR, short GAM, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, short PSFE, long REZI, short XRN | ok |
+| PICK-MAIN-coin | $4,946.18 | -1.08% | 46 | 22 | long ACM, short AVNW, long AZTA, short BBSI, short BXDC, short CET, long CNNE, long DRTS, long ENTA, short FSK, long FVR, long GAM, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, short PSFE, long REZI, long XRN | ok |
+| PICK-PENNY | $442.16 | -11.57% | 60 | 19 | short ACDC, long BGS, long CURI, long FRMI, short GOGO, short HSDT, short IHRT, long ITRG, short LAC, long NKTX, short PEPG, long STLN, short TSHA | paused |
+| PICK-PENNY-coin | $518.79 | +3.76% | 53 | 17 | short ACDC, short AMTX, long BGS, short CURI, short DDD, long FRMI, short GOGO, short HLLY, long HSDT, short IHRT, long ITRG, short LAC, short PEPG, short SLDP, long SSP, short STIM, short STLN, long TLS, short TSHA, long ZURA | ok |
