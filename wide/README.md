@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 14:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8379.96 | -16.20% | 229 | 73 | short CRM, short DDOG, short IONQ, short MSTR, short NOW |
-| Coin flip on C's picks | $8787.96 | -12.12% | 227 | 110 | long CRM, short DDOG, short IONQ, short MSTR, short NOW |
-| C's prompt on Groq (K7) | $5408.33 | -45.92% | 459 | 107 | long APP, short CRM, short FSLR, short IONQ, short MSTR |
-| Coin flip on C-groq's picks | $8098.42 | -19.02% | 459 | 212 | long APP, short CRM, short FSLR, long IONQ, short MSTR |
-| C-groq's answers, acted on once a day (K8) | $8095.15 | -19.05% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
-| Coin flip on C-groq-slow's picks | $10965.95 | +9.66% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
-| C's answers, acted on once a day (K8) | $10041.87 | +0.42% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
-| Coin flip on C-slow's picks | $10382.84 | +3.83% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
-| Just hold SPY | $9537.15 | -4.63% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8406.49 | -15.94% | 229 | 73 | short CRM, short DDOG, short IONQ, short MSTR, short NOW |
+| Coin flip on C's picks | $8804.24 | -11.96% | 227 | 110 | long CRM, short DDOG, short IONQ, short MSTR, short NOW |
+| C's prompt on Groq (K7) | $5423.62 | -45.76% | 459 | 107 | long APP, short CRM, short FSLR, short IONQ, short MSTR |
+| Coin flip on C-groq's picks | $8105.42 | -18.95% | 459 | 212 | long APP, short CRM, short FSLR, long IONQ, short MSTR |
+| C-groq's answers, acted on once a day (K8) | $8122.48 | -18.78% | 43 | 17 | short AAOI, long AMD, long APP, short ASTS, short IREN |
+| Coin flip on C-groq-slow's picks | $10953.81 | +9.54% | 43 | 27 | short AAOI, long AMD, short APP, short ASTS, long IREN |
+| C's answers, acted on once a day (K8) | $10102.63 | +1.03% | 38 | 18 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS |
+| Coin flip on C-slow's picks | $10400.51 | +4.01% | 38 | 18 | short ASTS, short IONQ, long IREN, short MSTR, short NBIS |
+| Just hold SPY | $9523.41 | -4.77% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-17 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 14:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 13:57 | short CRM, short DDOG, short IONQ, short MSTR, short NOW | none | All existing short positions are profitable and continue to show strong negative momentum, so they are maintained. No new positions are opened as the current portfolio is at maximum capacity and performing well. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-17 14:1
 | 2026-11-16 10:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 10:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 09:57 | short AMD, short MSTR, short NBIS, long NU, long U | none | Maintained existing profitable shorts on AMD and NBIS, and longs on NU and U. Re-entered MSTR short due to persistent negative catalysts, aiming for a better entry point after its initial drop. |
-| 2026-11-16 09:47 | short AMD, short MSTR, short NBIS, long NU, long U | sold CBRS @ $101.06; sold MSTR @ $104.82 | Maintained short positions in AMD and NBIS due to continued weakness and negative news. Kept long positions in NU and U for their relative strength and positive momentum. Closed CBRS due to underperformance and opened a new short position in MSTR, which is showing significant weakness and negative c |
