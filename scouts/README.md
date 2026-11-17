@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-17T12:00 ET: 362 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-17T12:05 ET: 349 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,715.55 | -5.69% | 75 | 27 | short C, short CTRE, short EPRX, long HOS, long KEY, short MDLN, long OPRT, short SMCI, long TOST | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,742.74 | -5.15% | 73 | 23 | short BRUN, long C, long CTRE, short HOS, short KEY, long MDLN, short NLOP, long OPRT, short SMCI, short SONO, short TOST | ok |
-| SCOUT-PENNY | $453.22 | -9.36% | 30 | 8 | long MX, short PEPG, long PSEC, long VISN | paused |
-| SCOUT-PENNY-coin | $466.57 | -6.69% | 31 | 12 | long MX, long PSEC, long VISN | ok |
+| SCOUT-MAIN | $4,713.47 | -5.73% | 75 | 27 | short C, short CTRE, short EPRX, long HOS, long KEY, short MDLN, long OPRT, short SMCI, long TOST | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,743.80 | -5.12% | 73 | 23 | short BRUN, long C, long CTRE, short HOS, short KEY, long MDLN, short NLOP, long OPRT, short SMCI, short SONO, short TOST | ok |
+| SCOUT-PENNY | $453.29 | -9.34% | 30 | 8 | long MX, short PEPG, long PSEC, long VISN | paused |
+| SCOUT-PENNY-coin | $466.54 | -6.69% | 31 | 12 | long MX, long PSEC, long VISN | ok |
