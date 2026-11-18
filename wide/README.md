@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 14:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 14:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8878.73 | -11.21% | 234 | 77 | short AAOI, short HUM, long OKTA, long TJX, short UNH |
-| Coin flip on C's picks | $9178.23 | -8.22% | 232 | 113 | short AAOI, short HUM, short OKTA, short TJX, short UNH |
-| C's prompt on Groq (K7) | $5486.46 | -45.14% | 475 | 115 | short AAOI, long AKAM, long CRWD, long OKTA, short UNH |
-| Coin flip on C-groq's picks | $8192.81 | -18.07% | 475 | 223 | long AAOI, long AKAM, long CRWD, long OKTA, long UNH |
-| C-groq's answers, acted on once a day (K8) | $8182.31 | -18.18% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
-| Coin flip on C-groq-slow's picks | $10936.31 | +9.36% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
-| C's answers, acted on once a day (K8) | $10610.35 | +6.10% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
-| Coin flip on C-slow's picks | $10501.52 | +5.02% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
-| Just hold SPY | $9505.05 | -4.95% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8859.25 | -11.41% | 234 | 77 | short AAOI, short HUM, long OKTA, long TJX, short UNH |
+| Coin flip on C's picks | $9158.95 | -8.41% | 232 | 113 | short AAOI, short HUM, short OKTA, short TJX, short UNH |
+| C's prompt on Groq (K7) | $5475.53 | -45.24% | 475 | 115 | short AAOI, long AKAM, long CRWD, long OKTA, short UNH |
+| Coin flip on C-groq's picks | $8204.73 | -17.95% | 475 | 223 | long AAOI, long AKAM, long CRWD, long OKTA, long UNH |
+| C-groq's answers, acted on once a day (K8) | $8178.99 | -18.21% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
+| Coin flip on C-groq-slow's picks | $10939.04 | +9.39% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
+| C's answers, acted on once a day (K8) | $10594.01 | +5.94% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
+| Coin flip on C-slow's picks | $10500.49 | +5.00% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
+| Just hold SPY | $9510.52 | -4.89% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-18 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 14:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 14:4
 | 2026-11-17 11:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 11:47 | short CRM, short IONQ, short MDB, short MSTR, short NOW | none | All five existing short positions are profitable and continue to show strong downward momentum, aligning with the overall market trend for these stocks today. No changes are made to the portfolio. |
 | 2026-11-17 11:37 | short CRM, short IONQ, short MDB, short MSTR, short NOW | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show strong negative momentum, aligning with the overall market weakness today. |
-| 2026-11-17 11:27 | no answer, nothing changed | none | unreadable answer |
