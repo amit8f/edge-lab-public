@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 11:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8803.67 | -11.96% | 230 | 73 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
-| Coin flip on C's picks | $9085.47 | -9.15% | 228 | 110 | long CRM, short IONQ, short MSTR, short NOW, short UNH |
-| C's prompt on Groq (K7) | $5478.43 | -45.22% | 470 | 111 | short CRM, long CRWD, short MSTR, long TJX, long TTWO |
-| Coin flip on C-groq's picks | $8171.87 | -18.28% | 470 | 219 | short CRM, long CRWD, short MSTR, short TJX, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $8188.87 | -18.11% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
-| Coin flip on C-groq-slow's picks | $10927.89 | +9.28% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
-| C's answers, acted on once a day (K8) | $10504.11 | +5.04% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
-| Coin flip on C-slow's picks | $10567.40 | +5.67% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
-| Just hold SPY | $9493.46 | -5.07% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8833.12 | -11.67% | 230 | 73 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
+| Coin flip on C's picks | $9112.57 | -8.87% | 228 | 110 | long CRM, short IONQ, short MSTR, short NOW, short UNH |
+| C's prompt on Groq (K7) | $5478.56 | -45.21% | 470 | 111 | short CRM, long CRWD, short MSTR, long TJX, long TTWO |
+| Coin flip on C-groq's picks | $8169.89 | -18.30% | 470 | 219 | short CRM, long CRWD, short MSTR, short TJX, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $8193.91 | -18.06% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
+| Coin flip on C-groq-slow's picks | $10926.25 | +9.26% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
+| C's answers, acted on once a day (K8) | $10539.64 | +5.40% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
+| Coin flip on C-slow's picks | $10593.24 | +5.93% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
+| Just hold SPY | $9481.87 | -5.18% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-18 11:47 | short CRM, short IONQ, short MSTR, short NOW, short UNH | none | Maintaining all five existing short positions (CRM, IONQ, MSTR, NOW, UNH) due to continued strong downward momentum and profitability, with no new positions added. |
 | 2026-11-18 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 11:17 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 11:3
 | 2026-11-16 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 14:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-16 14:47 | no answer, nothing changed | none | unreadable answer |
