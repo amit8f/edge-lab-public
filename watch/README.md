@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-18T11:25 ET: 108 flagged of 3391, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-18T11:30 ET: 103 flagged of 3391, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,756.09 | -4.88% | 47 | 21 | long ACM, short AVNW, long AZTA, short BRUN, long BXDC, short CET, short CNNE, long DRTS, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short XRN | ok |
-| PICK-MAIN-coin | $4,967.11 | -0.66% | 48 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, long DRTS, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, long XRN | ok |
-| PICK-PENNY | $439.82 | -12.04% | 64 | 21 | long BGS, long CURI, long FRMI, short HSDT, short IHRT, long ITRG, short LAC, short PEPG, short TSHA | paused |
-| PICK-PENNY-coin | $520.07 | +4.01% | 59 | 23 | short AMTX, long BGS, short CURI, short DDD, long FRMI, long HSDT, short IHRT, long ITRG, short LAC, short PEPG, long SSP, long TLS, short TSHA, long ZURA | ok |
+| PICK-MAIN | $4,756.37 | -4.87% | 47 | 21 | long ACM, short AVNW, long AZTA, short BRUN, long BXDC, short CET, short CNNE, long DRTS, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short XRN | ok |
+| PICK-MAIN-coin | $4,968.52 | -0.63% | 48 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, long DRTS, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, long XRN | ok |
+| PICK-PENNY | $440.01 | -12.00% | 64 | 21 | long BGS, long CURI, long FRMI, short HSDT, short IHRT, long ITRG, short LAC, short PEPG, short TSHA | paused |
+| PICK-PENNY-coin | $519.79 | +3.96% | 59 | 23 | short AMTX, long BGS, short CURI, short DDD, long FRMI, long HSDT, short IHRT, long ITRG, short LAC, short PEPG, long SSP, long TLS, short TSHA, long ZURA | ok |
