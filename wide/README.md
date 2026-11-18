@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 11:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 11:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8833.12 | -11.67% | 230 | 73 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
-| Coin flip on C's picks | $9112.57 | -8.87% | 228 | 110 | long CRM, short IONQ, short MSTR, short NOW, short UNH |
-| C's prompt on Groq (K7) | $5478.56 | -45.21% | 470 | 111 | short CRM, long CRWD, short MSTR, long TJX, long TTWO |
-| Coin flip on C-groq's picks | $8169.89 | -18.30% | 470 | 219 | short CRM, long CRWD, short MSTR, short TJX, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $8193.91 | -18.06% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
-| Coin flip on C-groq-slow's picks | $10926.25 | +9.26% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
-| C's answers, acted on once a day (K8) | $10539.64 | +5.40% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
-| Coin flip on C-slow's picks | $10593.24 | +5.93% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
-| Just hold SPY | $9481.87 | -5.18% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8849.56 | -11.50% | 230 | 73 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
+| Coin flip on C's picks | $9120.22 | -8.80% | 228 | 110 | long CRM, short IONQ, short MSTR, short NOW, short UNH |
+| C's prompt on Groq (K7) | $5462.18 | -45.38% | 470 | 111 | short CRM, long CRWD, short MSTR, long TJX, long TTWO |
+| Coin flip on C-groq's picks | $8183.64 | -18.16% | 470 | 219 | short CRM, long CRWD, short MSTR, short TJX, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $8194.34 | -18.06% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
+| Coin flip on C-groq-slow's picks | $10938.10 | +9.38% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
+| C's answers, acted on once a day (K8) | $10559.79 | +5.60% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
+| Coin flip on C-slow's picks | $10609.37 | +6.09% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
+| Just hold SPY | $9477.96 | -5.22% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-18 11:57 | short CRM, short IONQ, short MSTR, short NOW, short UNH | none | All existing short positions are profitable and continue to show strong downtrends, so I am holding them. No new positions are initiated as the current market doesn't present compelling new opportunities that outweigh the benefits of holding existing profitable trades. |
 | 2026-11-18 11:47 | short CRM, short IONQ, short MSTR, short NOW, short UNH | none | Maintaining all five existing short positions (CRM, IONQ, MSTR, NOW, UNH) due to continued strong downward momentum and profitability, with no new positions added. |
 | 2026-11-18 11:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 11:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 11:4
 | 2026-11-16 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-16 14:57 | no answer, nothing changed | none | unreadable answer |
