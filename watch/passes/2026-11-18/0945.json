@@ -1,0 +1,614 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "1177eac06ed1a4908ea6c858591366fac6b95ece6ac3200335f452905c888031",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "08e723ac8df9749e85a0de0f9699bc8a457c489dcc4c4bb821ccb6d9326d2c39",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "offering",
+     "symbol": "HY",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "offering",
+     "symbol": "PRE",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "GLBE",
+     "tone": 1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "4d30f45ad5a09beefafecc746174e1e806bc1bdf2ae4dbef7205fcf390ec575c",
+   "decisions": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Convertible notes offering caused 33% drop, shortable, analyst confidence high",
+     "stop_pct": 12.0,
+     "symbol": "HY"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Share issuance led to 29% decline, negative tone, analyst confidence high",
+     "stop_pct": 12.0,
+     "symbol": "PRE"
+    },
+    {
+     "confidence": 78,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Earnings beat with positive tone, moderate decline, analyst confidence high",
+     "stop_pct": 10.0,
+     "symbol": "GLBE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "ACM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Held 10 days, closing per policy",
+     "stop_pct": 0.0,
+     "symbol": "BBSI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "BXDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "CET"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "CNNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "DRTS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "ENTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "FVR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "GAM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "MSTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "NLOP"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "NVDA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "OMER"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "PRVA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "PSFE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "REZI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "XRN"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Held 10 days, closing per policy",
+     "stop_pct": 0.0,
+     "symbol": "ACDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "BGS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "CURI"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "FRMI"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Held 10 days, closing per policy",
+     "stop_pct": 0.0,
+     "symbol": "GOGO"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "HSDT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "IHRT"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "ITRG"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "LAC"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Held 10 days, closing per policy",
+     "stop_pct": 0.0,
+     "symbol": "NKTX"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "PEPG"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Held 10 days, closing per policy",
+     "stop_pct": 0.0,
+     "symbol": "STLN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Holding position",
+     "stop_pct": 0.0,
+     "symbol": "TSHA"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "d2cf29f6186186d7c977cb16e6857039ce760f13a0338a804c9b3a98586342e9"
+  },
+  "reviewer": {
+   "answer_sha256": "2027545760e1b115ca41a6f3d77d1cc2e6ee00eb4037a98f70a1474642a8a661",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "1ffe6f58154ea310f3555cf1313b5cf3b4d630a9c9e4b57c4689fb4605e72b4a",
+   "reviews": [
+    {
+     "confidence": 85,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe drop on offering news justifies following the short proposal.",
+     "symbol": "HY"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive dilution drop and negative tone align with short proposal.",
+     "symbol": "PRE"
+    },
+    {
+     "confidence": 75,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Earnings dip presents a potential bounce opportunity matching the long proposal.",
+     "symbol": "GLBE"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.33473,
+   "news": 0,
+   "pace": null,
+   "price": 17.43,
+   "r20": -0.09468,
+   "r5": -0.06362,
+   "short": true,
+   "src": "iex",
+   "symbol": "HY",
+   "z": -11.861
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.29271,
+   "news": 0,
+   "pace": null,
+   "price": 11.55,
+   "r20": -0.12346,
+   "r5": -0.05223,
+   "short": true,
+   "src": "iex",
+   "symbol": "PRE",
+   "z": -6.917
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.08377,
+   "news": 0,
+   "pace": null,
+   "price": 36.475,
+   "r20": -0.04715,
+   "r5": -0.05192,
+   "short": true,
+   "src": "iex",
+   "symbol": "GLBE",
+   "z": -3.088
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4751.93,
+  "PICK-MAIN-coin": 4942.5615,
+  "PICK-PENNY": 440.0252,
+  "PICK-PENNY-coin": 518.9593
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-MAIN",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 33.23,
+   "exit": 31.0,
+   "net": -10.1508,
+   "opened": "2026-11-09T14:50:21.213728+00:00",
+   "qty": 4,
+   "side": 1,
+   "symbol": "BBSI",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 3.305,
+   "exit": 2.77,
+   "net": 3.0664,
+   "opened": "2026-11-09T16:15:20.597742+00:00",
+   "qty": 7,
+   "side": -1,
+   "symbol": "ACDC",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 3.575,
+   "exit": 2.99,
+   "net": 2.8816,
+   "opened": "2026-11-09T16:35:21.213097+00:00",
+   "qty": 6,
+   "side": -1,
+   "symbol": "GOGO",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 1.27,
+   "exit": 1.24,
+   "net": -1.523,
+   "opened": "2026-11-09T15:45:20.815560+00:00",
+   "qty": 24,
+   "side": 1,
+   "symbol": "NKTX",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 4.15,
+   "exit": 3.34,
+   "net": -4.5475,
+   "opened": "2026-11-09T16:15:20.597742+00:00",
+   "qty": 5,
+   "side": 1,
+   "symbol": "STLN",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-MAIN-coin",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 33.23,
+   "exit": 31.0,
+   "net": 7.5907,
+   "opened": "2026-11-09T14:50:21.213728+00:00",
+   "qty": 4,
+   "side": -1,
+   "symbol": "BBSI",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 3.305,
+   "exit": 2.77,
+   "net": 3.0664,
+   "opened": "2026-11-09T16:15:20.597742+00:00",
+   "qty": 7,
+   "side": -1,
+   "symbol": "ACDC",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 4.15,
+   "exit": 3.34,
+   "net": 3.4508,
+   "opened": "2026-11-09T16:15:20.597742+00:00",
+   "qty": 5,
+   "side": -1,
+   "symbol": "STLN",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-18T14:45:20.912440+00:00",
+   "entry": 3.575,
+   "exit": 2.99,
+   "net": 2.8816,
+   "opened": "2026-11-09T16:35:21.213097+00:00",
+   "qty": 6,
+   "side": -1,
+   "symbol": "GOGO",
+   "why": "picker exit"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.6411,
+   "price": 17.43,
+   "qty": 8,
+   "side": -1,
+   "stop": 19.5216,
+   "symbol": "HY"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.6411,
+   "price": 17.43,
+   "qty": 8,
+   "side": -1,
+   "stop": 19.5216,
+   "symbol": "HY"
+  }
+ ],
+ "flag_counts": {
+  "move": 11,
+  "news": 0,
+  "volume": 0
+ },
+ "flagged": 11,
+ "headline_counts": {
+  "GLBE": 1,
+  "HY": 1,
+  "PRE": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "e883f78f0929fd884b919a614ccff36d950e838a584826f7c7ea26aa1ede8063",
+ "price_sources": {
+  "delayed_sip": 640,
+  "iex": 2721
+ },
+ "priced": 3361,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 8,
+   "skip": null,
+   "symbol": "HY"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PRE"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "GLBE"
+  }
+ ],
+ "slot": "2026-11-18T09:45",
+ "t": "2026-11-18T14:45:20.912440+00:00",
+ "universe": 3391,
+ "written_utc": "2026-11-18T14:45:39.383711Z"
+}
