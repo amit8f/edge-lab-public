@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 12:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8763.43 | -12.37% | 230 | 73 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
-| Coin flip on C's picks | $9055.46 | -9.45% | 228 | 110 | long CRM, short IONQ, short MSTR, short NOW, short UNH |
-| C's prompt on Groq (K7) | $5476.70 | -45.23% | 470 | 111 | short CRM, long CRWD, short MSTR, long TJX, long TTWO |
-| Coin flip on C-groq's picks | $8171.14 | -18.29% | 470 | 219 | short CRM, long CRWD, short MSTR, short TJX, short TTWO |
-| C-groq's answers, acted on once a day (K8) | $8171.68 | -18.28% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
-| Coin flip on C-groq-slow's picks | $10934.73 | +9.35% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
-| C's answers, acted on once a day (K8) | $10454.76 | +4.55% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
-| Coin flip on C-slow's picks | $10462.37 | +4.62% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
-| Just hold SPY | $9543.73 | -4.56% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8743.02 | -12.57% | 230 | 73 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
+| Coin flip on C's picks | $9036.54 | -9.63% | 228 | 110 | long CRM, short IONQ, short MSTR, short NOW, short UNH |
+| C's prompt on Groq (K7) | $5470.42 | -45.30% | 470 | 111 | short CRM, long CRWD, short MSTR, long TJX, long TTWO |
+| Coin flip on C-groq's picks | $8153.56 | -18.46% | 470 | 219 | short CRM, long CRWD, short MSTR, short TJX, short TTWO |
+| C-groq's answers, acted on once a day (K8) | $8165.53 | -18.34% | 47 | 19 | long APP, short CRM, short FSLR, short MSTR, long SPGI |
+| Coin flip on C-groq-slow's picks | $10939.54 | +9.40% | 47 | 28 | short APP, short CRM, long FSLR, long MSTR, short SPGI |
+| C's answers, acted on once a day (K8) | $10430.42 | +4.30% | 41 | 21 | short CRM, short IONQ, short MSTR, short NOW, short UNH |
+| Coin flip on C-slow's picks | $10471.41 | +4.71% | 41 | 20 | short CRM, short IONQ, short MSTR, short NOW, long UNH |
+| Just hold SPY | $9536.30 | -4.64% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-18 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 12:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 12:07 | short CRM, short IONQ, short MSTR, short NOW, short UNH | none | All existing short positions are profitable and continue to show weakness, so they are maintained. No new positions are opened as current market conditions favor holding existing profitable shorts. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-18 12:2
 | 2026-11-16 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-16 15:57 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS | none | Maintaining all existing short positions due to continued strong negative momentum across all timeframes for these stocks, with most positions being profitable. |
 | 2026-11-16 15:47 | short ASTS, short IONQ, short IREN, short MSTR, short NBIS | none | Maintaining all existing short positions as the market continues its broad decline, with all held stocks showing strong bearish momentum and negative news catalysts. |
-| 2026-11-16 15:37 | no answer, nothing changed | none | unreadable answer |
