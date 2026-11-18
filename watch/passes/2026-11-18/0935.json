@@ -1,0 +1,384 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "81037a0f6ca541ee216d2bdbd0a27fc3bd78701c35578793d0551914810b9d4c",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "7283bad94e1aa8eb1edd93c3625a0d9eb390a41f91fd92e711c8e192b4541841",
+   "views": [
+    {
+     "confidence": 80,
+     "event": "management",
+     "symbol": "ECVT",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "JMIA",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "offering",
+     "symbol": "YSWY",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "IIIV",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "BRBR",
+     "tone": 0
+    },
+    {
+     "confidence": 85,
+     "event": "offering",
+     "symbol": "ARDT",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "management",
+     "symbol": "ACIW",
+     "tone": 0
+    },
+    {
+     "confidence": 90,
+     "event": "regulatory",
+     "symbol": "CALM",
+     "tone": -1
+    },
+    {
+     "confidence": 85,
+     "event": "deal",
+     "symbol": "CSW",
+     "tone": 1
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "PGR",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "8eef1ed80d7be4c7af34b6227c81e2c32ee3126d719aa10a31f173d2789c8218",
+   "decisions": [
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "oversold, z -5.5, analyst confidence 80",
+     "stop_pct": 12.0,
+     "symbol": "ECVT"
+    },
+    {
+     "confidence": 90,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "oversold, z -5.5, analyst confidence 100",
+     "stop_pct": 20.0,
+     "symbol": "JMIA"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "4ca3cfed13ba125e5503d8f594cee2182e4adad95ca785b8bbed35a0bcec69b1"
+  },
+  "reviewer": {
+   "answer_sha256": "890fb734307439563114a86093933a6883b2faf78a477d2917d98194f51a1adf",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "66dce65ff26bf85782008b26c7dc330f6c9a6cc166710271d160621f8e6ca842",
+   "reviews": [
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive one-day drop with no news catalyst suggests caution despite analyst confidence.",
+     "symbol": "ECVT"
+    },
+    {
+     "confidence": 60,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Severe downward momentum and lack of analyst coverage make a long proposal too risky.",
+     "symbol": "JMIA"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.09293,
+   "news": 0,
+   "pace": null,
+   "price": 9.37,
+   "r20": 0.02582,
+   "r5": -0.03005,
+   "short": true,
+   "src": "iex",
+   "symbol": "ECVT",
+   "z": -5.477
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "move"
+   ],
+   "move": -0.21166,
+   "news": 0,
+   "pace": null,
+   "price": 3.65,
+   "r20": -0.20035,
+   "r5": -0.16123,
+   "short": true,
+   "src": "iex",
+   "symbol": "JMIA",
+   "z": -5.461
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.10985,
+   "news": 0,
+   "pace": null,
+   "price": 21.595,
+   "r20": 0.05022,
+   "r5": -0.05896,
+   "short": true,
+   "src": "iex",
+   "symbol": "YSWY",
+   "z": -5.155
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.11571,
+   "news": 0,
+   "pace": null,
+   "price": 20.875,
+   "r20": 0.09607,
+   "r5": -0.03157,
+   "short": true,
+   "src": "iex",
+   "symbol": "IIIV",
+   "z": 4.624
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.19391,
+   "news": 0,
+   "pace": null,
+   "price": 13.145,
+   "r20": 0.15773,
+   "r5": 0.0826,
+   "short": true,
+   "src": "iex",
+   "symbol": "BRBR",
+   "z": 4.463
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.20789,
+   "news": 0,
+   "pace": null,
+   "price": 14.06,
+   "r20": 0.46452,
+   "r5": -0.01004,
+   "short": true,
+   "src": "iex",
+   "symbol": "ARDT",
+   "z": -4.205
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.06703,
+   "news": 0,
+   "pace": null,
+   "price": 54.98,
+   "r20": 0.08049,
+   "r5": -0.04101,
+   "short": true,
+   "src": "iex",
+   "symbol": "ACIW",
+   "z": -4.152
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.06484,
+   "news": 1,
+   "pace": null,
+   "price": 69.47,
+   "r20": 0.05703,
+   "r5": -0.02757,
+   "short": true,
+   "src": "iex",
+   "symbol": "CALM",
+   "z": 2.163
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.04783,
+   "news": 1,
+   "pace": null,
+   "price": 282.265,
+   "r20": -0.0694,
+   "r5": -0.05181,
+   "short": true,
+   "src": "iex",
+   "symbol": "CSW",
+   "z": 1.688
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02152,
+   "news": 1,
+   "pace": null,
+   "price": 229.62,
+   "r20": 0.05741,
+   "r5": 0.0126,
+   "short": true,
+   "src": "iex",
+   "symbol": "PGR",
+   "z": -1.438
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4734.5739,
+  "PICK-MAIN-coin": 4931.8746,
+  "PICK-PENNY": 443.8243,
+  "PICK-PENNY-coin": 521.6646
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-18T14:35:21.133989+00:00",
+   "entry": 2.95,
+   "exit": 2.48,
+   "net": 3.0015,
+   "opened": "2026-11-04T14:45:21.303518+00:00",
+   "qty": 8,
+   "side": -1,
+   "symbol": "HLLY",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-18T14:35:21.133989+00:00",
+   "entry": 2.295,
+   "exit": 1.56,
+   "net": 6.6611,
+   "opened": "2026-11-04T15:05:21.340957+00:00",
+   "qty": 10,
+   "side": -1,
+   "symbol": "SLDP",
+   "why": "10 days"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-18T14:35:21.133989+00:00",
+   "entry": 2.655,
+   "exit": 1.26,
+   "net": 1.3226,
+   "opened": "2026-11-04T15:15:21.244260+00:00",
+   "qty": 1,
+   "side": -1,
+   "symbol": "STIM",
+   "why": "10 days"
+  }
+ ],
+ "flag_counts": {
+  "move": 7,
+  "news": 100,
+  "volume": 0
+ },
+ "flagged": 107,
+ "flip_test": {
+  "after": -1,
+  "answer_sha256": "6b01fa79dacb1a59fc8152dec6e4eb0302f4e8e13becaf44b367afd2fb5f84e9",
+  "before": 1,
+  "model": "openai/gpt-oss-20b",
+  "moved": true,
+  "prompt_sha256": "2874a8bacb0ef3b5fcec421dab5c104bde42c33141826216dcd7b49e8ba80add",
+  "swaps": 1,
+  "symbol": "CSW"
+ },
+ "headline_counts": {
+  "ACIW": 1,
+  "ARDT": 2,
+  "BRBR": 2,
+  "CALM": 1,
+  "CSW": 1,
+  "ECVT": 1,
+  "IIIV": 1,
+  "PGR": 1,
+  "YSWY": 1
+ },
+ "kind": "pass",
+ "prev_sha256": "125bd0e3c3961ed0d3e9579d7a97cad4eeeea4ef3cb08727912536ce23247067",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2246
+ },
+ "priced": 2246,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 3,
+   "skip": "reviewer said none",
+   "symbol": "ECVT"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "JMIA"
+  }
+ ],
+ "slot": "2026-11-18T09:35",
+ "t": "2026-11-18T14:35:21.133989+00:00",
+ "universe": 3391,
+ "written_utc": "2026-11-18T14:35:43.986275Z"
+}
