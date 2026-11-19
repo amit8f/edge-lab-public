@@ -79,3 +79,16 @@ and mean net return > 0 with t >= 2). A fail is FAILED and stays logged.
 
 CRY-INTRA-BIG passes: 0.15. CRY-INTRA-MEME passes: 0.15. The research found nothing that beats costs at these
 horizons; the trend gate and skip filter are the only reasons to try.
+
+## Choice on 2024 (run 44515119315; recorded 2026-11-19, before the 2025 test)
+
+The first run (44513658917) stopped at fitting: zero volume or open interest gave x/0 inputs. Fix: those inputs are
+treated as missing (a bug fix, made before any model result).
+
+- CRY-INTRA-BIG: logistic regression, hold 8 hours, top 5% of scores. 2024: 70 trades, +1.44% net per trade, 64%
+  winners. Every trend-on decision taken blindly lost -0.40% (8 h) / -0.21% (24 h) per trade after cost.
+- CRY-INTRA-MEME: CatBoost, hold 24 hours, top 5%. 2024: 113 trades, +1.98% net per trade, 48% winners. The blind
+  gate lost -0.87% / -0.68%.
+- 2024 is the year the versions were chosen on (24 per basket), so these numbers flatter. Next: the one Jan-Sep 2025
+  test. CRY-INTRA-BIG made 70 trades in all of 2024, so reaching the 100-trade minimum in nine months of 2025 is
+  unlikely; the rule stays as registered.
