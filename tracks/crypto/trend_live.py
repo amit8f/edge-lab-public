@@ -27,8 +27,8 @@ MIN_ROUND_TRIPS = 8
 
 # ---------- pure helpers (tested) ----------
 
-def new_book():
-    return {"cash": START_USD, "pos": dict.fromkeys(COINS, 0.0), "twin": dict.fromkeys(COINS, START_USD / len(COINS))}
+def new_book(coins=COINS):
+    return {"cash": START_USD, "pos": dict.fromkeys(coins, 0.0), "twin": dict.fromkeys(coins, START_USD / len(coins))}
 
 
 def grow(book, ret):
@@ -39,17 +39,17 @@ def grow(book, ret):
 
 def trade(book, sig, cost=COST):
     """trend_study.book's rule at one close: sell whole every held coin whose signal is off, then enter every
-    signalled coin not held with half the book's value (or the cash left, if less). -> (book, trades)."""
+    signalled coin not held with 1/k of the book's value (or the cash left, if less). -> (book, trades)."""
     cash, pos, trades = book["cash"], dict(book["pos"]), []
-    for c in COINS:
+    for c in pos:
         if pos[c] > 0 and not sig[c]:
             trades.append({"coin": c, "action": "sell", "usd": pos[c], "cost_usd": pos[c] * cost / 2})
             cash += pos[c] * (1 - cost / 2)
             pos[c] = 0.0
     total = cash + sum(pos.values())
-    for c in COINS:
+    for c in list(pos):
         if pos[c] == 0 and sig[c]:
-            put = min(total / len(COINS), cash)
+            put = min(total / len(pos), cash)
             cash -= put
             pos[c] = put * (1 - cost / 2)
             trades.append({"coin": c, "action": "buy", "usd": put, "cost_usd": put * cost / 2})
@@ -72,10 +72,10 @@ def signal_at(closes, day):
     back = str(np.datetime64(day) - np.timedelta64(T.LOOKBACK, "D"))
     if any(back not in v for v in closes.values()):
         return None
-    return {c: int(closes[c][day] > closes[c][back]) for c in COINS}
+    return {c: int(closes[c][day] > closes[c][back]) for c in closes}
 
 
-def summary(days):
+def summary(days, judged=JUDGED, min_round_trips=MIN_ROUND_TRIPS):
     """The dashboard's view of the logged days (each a day file's dict, oldest first)."""
     rule = np.array([d["rule_equity"] for d in days]) / START_USD
     twin = np.array([d["twin_equity"] for d in days]) / START_USD
@@ -83,7 +83,7 @@ def summary(days):
            "rule_usd": days[-1]["rule_equity"], "twin_usd": days[-1]["twin_equity"],
            "held": [c for c, v in days[-1]["book"]["pos"].items() if v > 0],
            "round_trips": sum(1 for d in days for t in d["trades"] if t["action"] == "sell"),
-           "judged": JUDGED, "min_round_trips": MIN_ROUND_TRIPS,
+           "judged": judged, "min_round_trips": min_round_trips,
            "curve": [[d["day"], round(d["rule_equity"], 2), round(d["twin_equity"], 2)] for d in days]}
     if len(days) > 2:               # the start day is the base of the curve, as in the history check
         out["rule"], out["twin"] = T.stats(rule[1:]), T.stats(twin[1:])
@@ -92,14 +92,16 @@ def summary(days):
 
 # ---------- job ----------
 
-def fetch():
+def fetch(coins=COINS):
     """{coin: {day: close}} from Kraken's finished daily candles (a candle is named by the UTC day it opens)."""
     return {c: {datetime.fromtimestamp(r[0], timezone.utc).strftime("%Y-%m-%d"): r[4] for r in K.candles(p, 1440)}
-            for c, p in COINS.items()}
+            for c, p in coins.items()}
 
 
-def run(state, fetch=fetch):
-    root = Path(state) / "crytrend"
+def run(state, fetch=fetch, name="crytrend", coins=COINS, cost=COST, min_round_trips=MIN_ROUND_TRIPS):
+    """One book under state/<name>. CRY-TREND by default; CRY-BIG and CRY-MEME (research/prereg/CRYBASKETS.md)
+    pass their own coins, cost and round-trip minimum."""
+    root = Path(state) / name
     led = Ledger(root / "ledger")
     logged = sorted(e["date"] for e in led.entries() if e["kind"] == "day")
     prev = json.loads((led.root / "days" / f"{logged[-1]}.json").read_text()) if logged else None
@@ -109,17 +111,17 @@ def run(state, fetch=fetch):
         if sig is None:
             raise RuntimeError(f"no close 28 days before {day}")
         if prev is None:
-            book = new_book()
+            book = new_book(coins)
         else:
             yday = str(np.datetime64(day) - np.timedelta64(1, "D"))
             if yday != prev["day"]:
                 raise RuntimeError(f"day {yday} is missing between {prev['day']} and {day}")
-            book = grow(prev["book"], {c: closes[c][day] / prev["close"][c] - 1 for c in COINS})
-        rec = {"day": day, "close": {c: closes[c][day] for c in COINS}, "signal": sig, "rule_equity": equity(book),
+            book = grow(prev["book"], {c: closes[c][day] / prev["close"][c] - 1 for c in coins})
+        rec = {"day": day, "close": {c: closes[c][day] for c in coins}, "signal": sig, "rule_equity": equity(book),
                "twin_equity": sum(book["twin"].values())}
-        rec["book"], rec["trades"] = trade(book, sig)
+        rec["book"], rec["trades"] = trade(book, sig, cost)
         led.write_json("day", day, f"days/{day}.json", rec)
-        print(f"[cry-trend] {day}: rule ${rec['rule_equity']:.2f} twin ${rec['twin_equity']:.2f} "
+        print(f"[{name}] {day}: rule ${rec['rule_equity']:.2f} twin ${rec['twin_equity']:.2f} "
               f"signal {sig} trades {len(rec['trades'])}", flush=True)
         prev = rec
     probs = led.verify()
@@ -128,7 +130,7 @@ def run(state, fetch=fetch):
     days = [json.loads(f.read_text()) for f in sorted((led.root / "days").glob("*.json"))]
     if days:
         tmp = root / "summary.tmp"
-        tmp.write_text(json.dumps(summary(days), indent=1))
+        tmp.write_text(json.dumps(summary(days, min_round_trips=min_round_trips), indent=1))
         tmp.replace(root / "summary.json")
 
 

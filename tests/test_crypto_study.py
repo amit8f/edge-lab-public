@@ -451,3 +451,27 @@ def test_late_twin_never_holds_before_the_coin_is_available():
         t = T.twin_late(s, av, rng)
         assert t[:10].sum() == 0 and t.sum() == s.sum() and T.round_trips(t) == T.round_trips(s)
     assert T.twin_late(np.zeros(5), np.zeros(5), rng).sum() == 0
+
+
+def test_basket_books_repeat_the_history_book_and_log_both_baskets(tmp_path):
+    import json
+
+    from tracks.crypto import basket_live as BL
+    rng = np.random.default_rng(3)
+    days = [str(np.datetime64("2026-01-01") + np.timedelta64(i, "D")) for i in range(120)]
+    coins = BL.BOOKS["crymeme"]["coins"]
+    px = {c: dict(zip(days, 1 + np.cumsum(rng.normal(0, 0.05, 120)).clip(-0.9) + 1, strict=True)) for c in coins}
+    book, _ = L.trade(L.new_book(coins), L.signal_at(px, days[40]), 0.01)
+    P = pd.DataFrame(px)
+    sig = np.column_stack([T.signal(P[c].to_numpy()) for c in coins])
+    eq = T.book(P.pct_change().to_numpy()[41:], sig[40:-1], 0.01)
+    for i in range(41, 120):
+        book = L.grow(book, {c: px[c][days[i]] / px[c][days[i - 1]] - 1 for c in coins})
+        assert np.isclose(L.equity(book) / L.START_USD, eq[i - 41])
+        book, _ = L.trade(book, L.signal_at(px, days[i]), 0.01)
+    fake = lambda cs: {c: {d: px.get(c, px["DOGE"])[d] for d in days[:100]} for c in cs}
+    BL.run(tmp_path, fetch=fake)
+    for name in BL.BOOKS:
+        s = json.loads((tmp_path / name / "summary.json").read_text())
+        assert s["days"] == 1 and s["min_round_trips"] == 15 and s["rule_usd"] == 1000
+        assert L.Ledger(tmp_path / name / "ledger").verify() == []

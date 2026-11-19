@@ -55,3 +55,21 @@ smaller drawdown, with at least 15 round trips in the book. Shown on the dashboa
 
 CRY-BIG not rejected: 0.6 (it is close to CRY-TREND, which passed). CRY-MEME not rejected: 0.45 (deep meme crashes
 favour the trend rule; whipsaws and the 1% cost work against it).
+
+## Result (run 44511119999, history check only; recorded 2026-11-19)
+
+Verdict: **both not rejected.** At each basket's primary cost, in both periods, the rule beat its buy-and-hold on
+Sharpe and had the smaller drawdown.
+
+| Basket, period | Rule Sharpe | Hold Sharpe | Rule CAGR | Hold CAGR | Rule drawdown | Hold drawdown | Twin pct |
+|---|---|---|---|---|---|---|---|
+| CRY-BIG 2018-01..2025-09 (0.5%) | 1.41 | 1.02 | 81% | 63% | 55% | 82% | 1.00 |
+| CRY-BIG 2022-01..2025-09 (0.5%) | 0.96 | 0.62 | 35% | 21% | 35% | 69% | 0.96 |
+| CRY-MEME 2021-06..2025-09 (1.0%) | 0.90 | 0.63 | 46% | 21% | 56% | 77% | 0.96 |
+| CRY-MEME 2023-06..2025-09 (1.0%) | 1.08 | 0.91 | 72% | 52% | 56% | 76% | 0.87 |
+
+Round trips per coin: CRY-BIG 63-131 (2018-2025); CRY-MEME 24-61 (2021-2025). Cheaper-cost scenarios are better
+still (CRY-MEME 2023-2025 at 0.12%: Sharpe 1.23). Predictions were 0.6 (CRY-BIG) and 0.45 (CRY-MEME): both passed.
+This is not a test: the meme list was picked from survivors, BTC/ETH were read before, and 2025 has been read several
+times. Next: the two $1,000 forward books (`tracks/crypto/basket_live.py`, branch `state-crybaskets`), judged
+2027-12-31 against their buy-and-hold twins with at least 15 round trips each.
