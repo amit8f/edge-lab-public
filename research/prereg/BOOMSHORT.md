@@ -87,3 +87,12 @@ a day (NW t 2.18). With 9:28 inputs, 371 shorts (10.0%), +0.32% a trade, down-fi
 Reading as fixed: **the edge holds at 9:28**; the input mismatch is not why the live book trades so little. (The
 manifest's +0.43% was with its own run; this rerun reads the same picks at +0.34%, a CatBoost runner difference.)
 The low live short rate (1 of 80 picks) is still unexplained; the next check compares live picks' inputs with 2025's.
+
+### Input comparison, 2025 vs live (run 44481753142 plus the four on-time live days; descriptive)
+
+2025 picks at 9:28 inputs: D6 10th percentile -0.119 (by design), median -0.006; share at or below the cut ranged
+5-18% by month, never near zero. Live (80 picks, Nov 13-18): D6 10th percentile -0.026, median +0.032. The three
+inputs D6 leans on most are BOOM1's score, the pre-market move and pre-market dollar volume. Live vs 2025 medians:
+BOOM1 score 0.52 vs 0.69; pre-market dollar volume 0.004 vs 0.026 of a normal day (a quarter of live picks show 0);
+pre-market move 0.000 vs +0.005. So live picks look calmer and show far less pre-market trading than 2025's picks did.
+Not yet known: whether that is the market this week or pre-market bars that are still incomplete at 9:28.
