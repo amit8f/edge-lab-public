@@ -38,3 +38,19 @@ def test_study_runs_every_model_on_a_small_frame():
     assert set(r["models"]) >= {"CatBoost", "LightGBM", "XGBoost", "ExtraTrees", "Logistic", "Tree depth 3", "CatBoost top 10"}
     assert r["models"]["CatBoost"]["2023"]["auc"] > 0.6 and next(iter(r["shap"])) == "atr14"
     assert "atr14" in r["tree_depth3"] and X.md({"p": {"k": r | {"label": "x"}}}).startswith("# BOOMX")
+
+
+def test_slice_columns_and_table():
+    rng = np.random.default_rng(3)
+    n = 600
+    p = pd.DataFrame({"pm_gap": rng.normal(0, 0.04, n), "pre_news": rng.integers(0, 2, n), "pre_fb_max_neg": rng.random(n),
+                      "vol20": rng.random(n), "log_px": np.log(rng.uniform(5, 60, n)), "spy_d200": rng.normal(size=n),
+                      "spy_r1": rng.normal(size=n), "r1": rng.normal(size=n), "year": 2023,
+                      "d": pd.Timestamp("2023-05-01"), "lab": rng.choice([1, -1, 0], n), "open": 10.0,
+                      "close": rng.uniform(9, 11, n)})
+    p["close_up"] = (p["close"] > p["open"]).astype(int)
+    p["p"] = p["close"]
+    q = X.slice_columns(p)
+    t = X.slice_table(q, "s_gap", True)
+    assert sum(v["picks"] for v in t.values()) == n and set(t) <= {"down 5%+", "down 1-5%", "flat", "up 1-5%", "up 5%+"}
+    assert all(v["auc_close"] == 1.0 for v in t.values() if v["auc_close"] is not None)

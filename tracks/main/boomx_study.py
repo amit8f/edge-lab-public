@@ -180,6 +180,71 @@ def top20(te, p):
 def conf(ycol):
     return lambda te, p: confident(te[ycol].to_numpy(), p)
 
+# ---------- slices (Amendment 1) ----------
+
+def slice_columns(p):
+    """Adds the slice columns used by Amendment 1 to a picks frame."""
+    p = p.copy()
+    p["s_gap"] = pd.cut(p["pm_gap"], [-np.inf, -0.05, -0.01, 0.01, 0.05, np.inf],
+                        labels=["down 5%+", "down 1-5%", "flat", "up 1-5%", "up 5%+"])
+    p["s_news"] = np.where(p["pre_news"] > 0, np.where(p["pre_fb_max_neg"] > 0.5, "news, negative", "news, not negative"), "no news")
+    p["s_vol"] = pd.qcut(p["vol20"].rank(method="first"), 3, labels=["calm third", "middle third", "wild third"])
+    p["s_price"] = pd.cut(np.exp(p["log_px"]), [0, 10, 30, np.inf], labels=["$5-10", "$10-30", "$30+"])
+    p["s_market"] = np.where(p["spy_d200"] > 0, "SPY above 200-day", "SPY below 200-day")
+    p["s_spy_yday"] = np.where(p["spy_r1"] > 0, "SPY up yesterday", "SPY down yesterday")
+    p["s_yday"] = np.where(p["r1"] > 0, "stock up yesterday", "stock down yesterday")
+    p["s_weekday"] = p["d"].dt.day_name()
+    p["s_year"] = p["year"].astype(str)
+    return p
+
+
+SLICES = ["s_sector", "s_gap", "s_news", "s_vol", "s_price", "s_market", "s_spy_yday", "s_yday", "s_weekday", "s_year"]
+
+
+def slice_table(p, col, model_p=None):
+    """Per slice value: picks, close-up rate, up-first rate (of picks that touched one side), mean open-to-close
+    return, and (2023-2025 rows with a model score) the model's AUC for close-up inside the slice."""
+    out = {}
+    for k, g in p.groupby(col, observed=True):
+        t = g[g["lab"].isin([1, -1])]
+        r = {"picks": len(g), "close_up": float(g["close_up"].mean()), "up_first": float((t["lab"] == 1).mean()) if len(t) else None,
+             "mean_oc": float((g["close"] / g["open"] - 1).mean())}
+        if model_p is not None and "p" in g:
+            h = g.dropna(subset=["p"])
+            r["test_picks"] = len(h)
+            r["auc_close"] = auc(h["close_up"], h["p"]) if len(h) >= 200 else None
+        out[str(k)] = r
+    return out
+
+
+def sectors_of(cache, symbols):
+    from core import industry
+    from tracks.main import dir_peer
+    from tracks.news import w1_data as W
+    w = W.read_rows(cache, columns=["symbol", "date", "cik"]).dropna(subset=["cik"])
+    last = w.sort_values("date").drop_duplicates("symbol", keep="last")
+    cik = dict(zip(last["symbol"], last["cik"].astype(int)))
+    sic = industry.sic_codes({cik[s] for s in symbols if s in cik}, dir_peer.pdir(cache))
+    return {s: industry.NAMES[industry.ff12(sic.get(cik[s]))] if s in cik else "unknown" for s in symbols}
+
+
+def slices(cache):
+    from tracks.main.boom_short import d6_cols
+    p = B2.load_all(cache)
+    p = p[(p["d"] <= LAST) & (p["year"] >= TRAIN[0])].copy()
+    p["close_up"] = (p["close"] > p["open"]).astype(int)
+    sec = sectors_of(cache, sorted(p["symbol"].unique()))
+    p["s_sector"] = p["symbol"].map(sec)
+    p = slice_columns(p)
+    cols = d6_cols()
+    tr, te = p[p["year"] <= TRAIN[1]], p[p["year"] >= TESTS[0]]
+    m = models(cols)["CatBoost"][0].fit(tr[cols].to_numpy(np.float32), tr["close_up"].to_numpy())
+    p["p"] = np.nan
+    p.loc[te.index, "p"] = m.predict_proba(te[cols].to_numpy(np.float32))[:, 1]
+    return {"picks": len(p), "base_close_up": float(p["close_up"].mean()),
+            "slices": {c: slice_table(p, c, True) for c in SLICES}}
+
+
 
 # ---------- report ----------
 
@@ -211,13 +276,18 @@ def md(rep):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", default="cache/nx1")
-    ap.add_argument("--part", default="all", choices=["boom", "direction", "all"])
+    ap.add_argument("--part", default="all", choices=["boom", "direction", "all", "slices"])
     ap.add_argument("--out", default="research/results/BOOMX")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     f = out / "BOOMX.json"
     rep = json.loads(f.read_text()) if f.exists() else {}
+    if a.part == "slices":
+        r = slices(a.cache)
+        (out / "BOOMX_slices.json").write_text(json.dumps(r, indent=1, default=float))
+        print(json.dumps(r, indent=1, default=float))
+        return
     if a.part in ("direction", "all"):
         from tracks.main.boom_short import d6_cols
         p = B2.load_all(a.cache)

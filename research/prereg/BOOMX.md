@@ -53,3 +53,13 @@ volatility and the pre-market move, not BOOM1's score (1% of SHAP).
 
 POST-HOC hypothesis (not a finding): "the wildest picks fade from the open" is one consistent effect, the same one
 BOOM-SHORT trades. A rule built on it must be registered as a new idea and tested forward.
+
+## Amendment 1 (2026-11-19, before any slice number exists): where is direction easier?
+
+Amit, 2026-11-19: break the data into pieces and see which pieces carry direction. Same picks (2019 to 2025-09), same
+labels. Slices: sector (FF12 from the current SIC), pre-market gap (down 5%+, down 1-5%, flat, up 1-5%, up 5%+),
+news before the open (none, negative with FinBERT max negative > 0.5, other), volatility third (vol20), price band
+($5-10, $10-30, $30+), SPY above or below its 200-day average, SPY up or down yesterday, the stock up or down
+yesterday, weekday, year. Per slice: picks, close-up rate, up-first rate, mean open-to-close return, and the AUC for
+close-up inside the slice of one CatBoost model (D6 inputs) trained on 2019-2022 and scored on 2023-2025/09.
+Descriptive; many slices are compared, so any standout is a hypothesis for a separately registered, forward-tested idea.
