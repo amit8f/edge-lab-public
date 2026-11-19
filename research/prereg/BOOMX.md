@@ -34,3 +34,22 @@ counts. 2023-2025 were already read by BOOM1/BOOM2.
 ## Prediction (written first)
 Boom: volatility and range inputs (atr14, vol20, rng_atr) dominate, news adds a little, every model has a similar AUC.
 Direction: every model's AUC stays under 0.56; pre-market move and BOOM1's score carry most of what there is.
+
+## Result (run 44483068796, recorded 2026-11-19; full tables in research/results/BOOMX/BOOMX.md)
+
+Boom (3.9M stock-days, base 3.9%): every model scores AUC 0.92-0.94 in 2023, 2024 and 2025; logistic regression is
+within 0.01 of CatBoost, and one input alone (atr14, average daily range) reaches 0.89. SHAP: volatility and range 59%,
+volume and size 18% (small, cheap, thin stocks boom more), price trend 11%, news 7% (more articles and stronger
+negative headlines before the open), market 5%. Share of each day's top 20 that boomed: 0.50, 0.61, 0.68.
+
+Direction, up-first vs down-first (18,752 picks): AUC 0.50-0.55 in 2023, 0.51-0.53 in 2024, 0.48-0.50 in 2025; no model
+holds. Direction, close above open (33,770 picks, base 45%): AUC 0.51-0.54 every year, and the most bearish tenth closes
+down 55-65% of the time. Every single input points the same way, every year: the jumpier the pick (vol20, range,
+maxret20, bb_width), the bigger its pre-market gap up and the higher SPY above its 200-day average, the more likely it
+closes below its open (vol20: highest tenth closes up 38%, lowest 48%; AUC 0.47-0.49 in each year 2019-2025).
+
+Prediction check: boom right (volatility dominates, models alike). Direction: AUC under 0.56 right; the carriers are
+volatility and the pre-market move, not BOOM1's score (1% of SHAP).
+
+POST-HOC hypothesis (not a finding): "the wildest picks fade from the open" is one consistent effect, the same one
+BOOM-SHORT trades. A rule built on it must be registered as a new idea and tested forward.
