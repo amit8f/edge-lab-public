@@ -52,3 +52,8 @@ def test_balanced_accuracy_and_bootstrap():
     assert F.balanced_accuracy(np.array([1, 1, -1, 0]), np.array([1, -1, -1, 1])) == 0.75
     days = np.repeat(np.arange(30), 5)
     assert F.boot_lower(days, np.ones(150)) == 1.0
+
+
+def test_frames_read_mixed_timestamp_formats():
+    d = F._frames([{"t": "2022-01-03T14:05:55.123456Z"}, {"t": "2022-01-03T14:05:56Z"}], ["t"])
+    assert list(d["t"].dt.second) == [55, 56] and str(d["t"].iloc[0].hour) == "9"

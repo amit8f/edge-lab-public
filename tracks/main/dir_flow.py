@@ -149,7 +149,7 @@ def _frames(rows, cols):
     d = pd.DataFrame(rows)
     if d.empty:
         return pd.DataFrame(columns=cols)
-    d["t"] = pd.to_datetime(d["t"], utc=True).dt.tz_convert(X.ET).dt.tz_localize(None)
+    d["t"] = pd.to_datetime(d["t"], utc=True, format="ISO8601").dt.tz_convert(X.ET).dt.tz_localize(None)
     return d
 
 
