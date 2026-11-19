@@ -8,6 +8,7 @@ types, and relates sector returns to 10-year yield and WTI oil changes (FRED). W
 import argparse
 import io
 import json
+import time
 from pathlib import Path
 
 import numpy as np
@@ -16,6 +17,7 @@ import requests
 
 from core import industry
 from tracks.main import sector1_study as S1
+from tracks.main.longterm import news_history
 from tracks.news import w1_data as W
 
 TYPES = {
@@ -122,6 +124,21 @@ def parse_fred(text, name):
 
 # ---------- job ----------
 
+def ensure_inputs(w1, cache, deadline):
+    """W1's filings and news can be missing from a restored cache; build them under our own cache (saved
+    by the workflow) and link them into W1's layout. Returns False when the time budget ran out."""
+    links = {W.w1dir(w1) / "subs": Path(cache) / "subs", W.news_dir(w1): Path(cache) / "news"}
+    for dst, src in links.items():
+        if not dst.exists() or not any(dst.iterdir()):
+            src.mkdir(parents=True, exist_ok=True)
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            if dst.exists():
+                dst.rmdir()
+            dst.symlink_to(src.resolve(), target_is_directory=True)
+    W.stage_filings(w1)
+    return news_history.fetch_range(f"{S1.YEARS[0] - 1}-12", f"{S1.YEARS[-1]}-12", W.news_dir(w1), deadline)
+
+
 def macro(cache):
     f = Path(cache) / "fred.parquet"
     if not f.exists():
@@ -138,8 +155,12 @@ def main():
     ap.add_argument("--w1", default="cache/w1")
     ap.add_argument("--out", default="research/results/SECTOR1")
     ap.add_argument("--cache", default="cache/sector1")
+    ap.add_argument("--minutes", type=float, default=150)
     a = ap.parse_args()
     Path(a.cache).mkdir(parents=True, exist_ok=True)
+    if not ensure_inputs(a.w1, a.cache, time.monotonic() + a.minutes * 60):
+        print("[sector2] out of time while fetching news; the cache keeps what was fetched, run again", flush=True)
+        raise SystemExit(1)
     ciks = set()
     for p in W.batch_files(a.w1):
         ciks |= {int(c) for c in pd.read_parquet(p, columns=["cik"])["cik"].dropna().unique()}
