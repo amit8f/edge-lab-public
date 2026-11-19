@@ -422,3 +422,32 @@ def test_trend_vt_book_charges_only_dollars_traded_and_rebalances_on_mondays():
     vol2 = np.array([[0.25], [0.25], [1.0]])
     eq2 = TS.vt_book(ret, sig, vol2, np.array([False, False, True]), 0.01)
     assert eq2[2] < eq2[1]                                                           # the Monday rebalance trades
+
+
+# ---------- CRY-BIG and CRY-MEME ----------
+
+def test_basket_frame_gives_late_coins_no_signal_until_28_days_and_zero_returns():
+    idx = pd.date_range("2024-01-01", periods=60, freq="D")
+    P = pd.DataFrame({"A": np.linspace(1, 2, 60), "B": [np.nan] * 20 + list(np.linspace(1, 2, 40))}, index=idx)
+    sig, ret, av = T.basket_frame(P)
+    assert sig[:28, 0].sum() == 0 and sig[28:, 0].all()
+    assert av[:48, 1].sum() == 0 and av[48:, 1].all()
+    assert sig[:48, 1].sum() == 0 and sig[48:, 1].all()
+    assert (ret[:21, 1] == 0).all() and np.isfinite(ret).all()
+
+
+def test_late_hold_keeps_the_slot_in_cash_until_the_coin_is_available():
+    ret = np.array([[0.1, 0.5], [0.1, 0.5], [0.0, 1.0]])
+    av = np.array([[1, 0], [1, 0], [1, 1]], float)
+    eq = T.hold_late(ret, av)
+    assert np.allclose(eq, [(1.1 + 1) / 2, (1.21 + 1) / 2, (1.21 + 2) / 2])
+
+
+def test_late_twin_never_holds_before_the_coin_is_available():
+    rng = np.random.default_rng(0)
+    s = np.r_[np.zeros(10), [1, 1, 0, 0, 1, 0, 1, 1, 1, 0]]
+    av = np.r_[np.zeros(10), np.ones(10)]
+    for _ in range(20):
+        t = T.twin_late(s, av, rng)
+        assert t[:10].sum() == 0 and t.sum() == s.sum() and T.round_trips(t) == T.round_trips(s)
+    assert T.twin_late(np.zeros(5), np.zeros(5), rng).sum() == 0

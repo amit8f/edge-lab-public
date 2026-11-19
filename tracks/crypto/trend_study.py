@@ -220,13 +220,101 @@ def run_vt(cache, out):
     return res
 
 
+# ---------- CRY-BIG and CRY-MEME (research/prereg/CRYBASKETS.md) ----------
+
+BASKETS = {
+    "CRYBIG": {"coins": ("BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT", "BNBUSDT"), "primary": "primary_0.5pct",
+               "costs": {"primary_0.5pct": 0.005, "futures_0.12pct": 0.0012},
+               "periods": PERIODS},
+    "CRYMEME": {"coins": ("DOGEUSDT", "SHIBUSDT", "PEPEUSDT", "BONKUSDT", "WIFUSDT", "FLOKIUSDT"),
+                "primary": "primary_1.0pct",
+                "costs": {"primary_1.0pct": 0.01, "spot_0.5pct": 0.005, "futures_0.12pct": 0.0012},
+                "periods": {"2021-06..2025-09": ("2021-06-01", "2025-09-30"),
+                            "2023-06..2025-09": ("2023-06-01", "2025-09-30")}},
+}
+
+
+def basket_frame(P, lookback=LOOKBACK):
+    """Wide daily closes (NaN before a coin lists) -> (signal, return, available), each days x coins. A coin is
+    available once it has a close `lookback` days back; before that its signal is 0 and its return counts as 0."""
+    sig = np.column_stack([(P[c] > P[c].shift(lookback)).to_numpy(float) for c in P.columns])
+    avail = np.column_stack([P[c].shift(lookback).notna().to_numpy(float) for c in P.columns])
+    ret = P.pct_change(fill_method=None).fillna(0.0).to_numpy()
+    return sig, ret, avail
+
+
+def hold_late(ret, avail):
+    """Buy and hold with one slot per coin: a slot sits in cash until the coin is available, then is bought and never
+    touched. avail[d, k] is known at the close before day d."""
+    return np.cumprod(1 + ret * avail, axis=0).mean(axis=1)
+
+
+def twin_late(s, avail, rng):
+    """twin() on the part of s where the coin is available; zeros before it."""
+    s = np.asarray(s).astype(int)
+    on = np.flatnonzero(np.asarray(avail) > 0)
+    out = np.zeros(len(s), int)
+    if len(on):
+        out[on[0]:] = twin(s[on[0]:], rng)
+    return out
+
+
+def evaluate_late(ret, sig, avail, cost, rng):
+    eq = book(ret, sig, cost)
+    st, hd = stats(eq), stats(hold_late(ret, avail))
+    k = sig.shape[1]
+    tw = np.array([stats(book(ret, np.column_stack([twin_late(sig[:, j], avail[:, j], rng) for j in range(k)]),
+                              cost))["sharpe"] for _ in range(TWINS)])
+    return {"rule": st, "hold": hd, "round_trips": [round_trips(sig[:, j]) for j in range(k)],
+            "share_of_days_held": [float(sig[:, j].mean()) for j in range(k)],
+            "days_available": [int(avail[:, j].sum()) for j in range(k)],
+            "twin_sharpe_percentile": float((tw < st["sharpe"]).mean()), "twin_sharpe_median": float(np.median(tw)),
+            "ok": bool(st["sharpe"] > hd["sharpe"] and st["max_drawdown"] < hd["max_drawdown"])}
+
+
+def load_wide(cache, coins):
+    px = {}
+    for s in coins:
+        d = pd.read_parquet(C.cdir(cache) / "spot1d" / f"{s}.parquet")
+        px[s] = d.set_index("t")["c"]
+    P = pd.DataFrame(px).sort_index()
+    P = P.loc[P.notna().any(axis=1)]
+    assert P.index.max() < pd.Timestamp("2025-10-01"), "holdout data read"
+    full = pd.date_range(P.index.min(), P.index.max(), freq="D")
+    assert len(full) == len(P), "missing days in the daily closes"
+    return P
+
+
+def run_baskets(cache, out):
+    res = {}
+    for name, cfg in BASKETS.items():
+        P = load_wide(cache, cfg["coins"])
+        sig_all, ret_all, av_all = basket_frame(P)
+        r = {"coins": list(cfg["coins"]), "first_close": {c: str(P[c].first_valid_index().date()) for c in P.columns},
+             "periods": {}}
+        for pname, (a, b) in cfg["periods"].items():
+            m = (P.index >= pd.Timestamp(a)) & (P.index <= pd.Timestamp(b))
+            idx = np.flatnonzero(m)
+            ret, sig, av = ret_all[idx], sig_all[idx - 1], av_all[idx - 1]
+            r["periods"][pname] = {k: evaluate_late(ret, sig, av, c, np.random.default_rng(SEED))
+                                   for k, c in cfg["costs"].items()}
+        ok = all(p[cfg["primary"]]["ok"] for p in r["periods"].values())
+        r["verdict"] = "not rejected: start the forward book" if ok else "FAILED: rejected by the history check"
+        print(f"[{name}] {r['verdict']}", flush=True)
+        res[name] = r
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "CRYBASKETS.json").write_text(json.dumps(res, indent=1))
+    return res
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYTREND")
-    ap.add_argument("--rule", default="plain", choices=["plain", "vt"])
+    ap.add_argument("--rule", default="plain", choices=["plain", "vt", "baskets"])
     a = ap.parse_args()
-    (run_vt if a.rule == "vt" else run)(a.cache, a.out)
+    {"plain": run, "vt": run_vt, "baskets": run_baskets}[a.rule](a.cache, a.out)
 
 
 if __name__ == "__main__":

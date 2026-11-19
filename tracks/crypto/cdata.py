@@ -213,12 +213,20 @@ def stage_daily(cache):
         download("spot", s, "1d", SPOT_FIRST, cdir(cache) / "spot1d" / f"{s}.parquet")
 
 
+def stage_baskets(cache):
+    """Daily spot closes for CRY-BIG and CRY-MEME (research/prereg/CRYBASKETS.md)."""
+    from tracks.crypto.trend_study import BASKETS
+    for cfg in BASKETS.values():
+        for s in cfg["coins"]:
+            download("spot", s, "1d", SPOT_FIRST, cdir(cache) / "spot1d" / f"{s}.parquet")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["rank", "bars", "daily"])
+    ap.add_argument("--stage", required=True, choices=["rank", "bars", "daily", "baskets"])
     ap.add_argument("--cache", default="cache")
     a = ap.parse_args()
-    {"rank": stage_rank, "bars": stage_bars, "daily": stage_daily}[a.stage](a.cache)
+    {"rank": stage_rank, "bars": stage_bars, "daily": stage_daily, "baskets": stage_baskets}[a.stage](a.cache)
     print(f"[crypto {a.stage}] done", flush=True)
 
 
