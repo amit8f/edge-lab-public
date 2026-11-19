@@ -119,3 +119,23 @@ the four in DIRECTION2), its own pass rule; DIR-FLOW's rule is unchanged.
   control with bootstrap lower bound > 0, AND own mean net > 0. Reported: OFI deciles, the 9:30-9:40 and 9:40-9:51
   halves, quote updates per stock-day.
 - Prediction: 0.10.
+
+## Amendment 3 (2026-11-19, before any DIR-FLOW or DIR-OFI data exists): code details
+
+Amit chose on 2026-11-19 to build these two next. Details the text left open, fixed in `tracks/main/dir_flow.py`
+before its first run; no pass rule changes.
+
+- Picks: BOOM2's saved picks with sessions 2022-01-03 to 2025-09-30, ambiguous first-touch picks dropped, and only
+  picks with a 9:51 price.
+- Trades 4:00-9:35 ET are deduplicated on exchange and trade ID. Excluded conditions: 4 (derivatively priced), B and
+  W (average price), Z and U (out of sequence), P (prior reference), O and Q (opening prints, so the opening cross is
+  out), M and 9 (closing prints), H (price variation), V and 7 (contingent). Odd lots (I) are kept; their share is
+  reported. Large prints: 10,000+ shares or $200,000+. Off-exchange share: exchange code D.
+- Lee-Ready uses the latest valid quote (positive, uncrossed, unlocked, non-zero sizes) stamped at least 1 second
+  before the trade, from the same SIP quote feed (Alpaca's SIP quotes are taken as the NBBO); at the midpoint or
+  with no quote, the last price change's direction (tick rule); trades neither decides count in neither side.
+- OFI uses the same valid quotes, 9:30:00 to 9:50:59, consecutive updates in time order.
+- DIR-FLOW's baseline is the sign of the pre-market move to 9:14 (`pm_gap`); DIR-OFI's is the sign of the 9:51 entry
+  price over the previous session's raw close. Controls: one random side per pick (seed 20261113). Bootstrap: 2,000
+  resamples of whole days, the 5th percentile of the mean daily (arm minus control).
+- A zero or missing input makes no call.

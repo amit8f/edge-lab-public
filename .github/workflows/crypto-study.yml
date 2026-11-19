@@ -13,7 +13,7 @@ on:
         required: true
         default: all
         type: choice
-        options: [all, data, trend, trend-vt, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
+        options: [all, data, trend, trend-vt, baskets, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
 
 permissions: {}
 
@@ -82,6 +82,8 @@ jobs:
             all) data; trend; rows; fit ;;
             data) data ;;
             trend) trend ;;
+            baskets) py tracks.crypto.cdata --stage baskets --cache cache
+                     py tracks.crypto.trend_study --cache cache --out research/results/CRYBASKETS --rule baskets ;;
             trend-vt) py tracks.crypto.trend_study --cache cache --out research/results/CRYTREND --rule vt ;;
             day-rows) rows ;;
             day-fit) fit ;;
@@ -119,8 +121,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW
-          git add research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW
+          mkdir -p research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW research/results/CRYBASKETS
+          git add research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW research/results/CRYBASKETS
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
           git commit -q -m "Crypto ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"

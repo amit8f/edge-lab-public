@@ -50,7 +50,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-BIG", "CRY-MEME", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -247,6 +247,22 @@ def crytrendvt_book(st):
     return [_book("CRY-TREND-VT", "CRY-TREND-VT", s["min_round_trips"], s["round_trips"], len(s["held"]), unreal=s["rule_usd"] - 1000,
                   size=1000.0, unit="round trips", first_day=s["first_day"],
                   note=f"Holding {held}, sized by volatility. Just holding both coins: {twin:+.2f}%. Judged on {s['judged']}.")]
+
+
+def crybasket_books(st):
+    """CRY-BIG and CRY-MEME $1,000 ledger books (research/prereg/CRYBASKETS.md): CRY-TREND's rule on five big coins
+    and on six meme coins, each next to a buy-and-hold twin; judged once, at the end of 2027."""
+    out = []
+    for key, name, what in (("crybig", "CRY-BIG", "the five big coins"), ("crymeme", "CRY-MEME", "the six meme coins")):
+        s = _json(st / "state-crybaskets" / key / "summary.json")
+        if not s:
+            continue
+        twin = 100 * (s["twin_usd"] / 1000 - 1)
+        held = ", ".join(s["held"]) or "cash only"
+        out.append(_book(name, name, s["min_round_trips"], s["round_trips"], len(s["held"]), unreal=s["rule_usd"] - 1000,
+                         size=1000.0, unit="round trips", first_day=s["first_day"],
+                         note=f"Holding {held}. Just holding {what}: {twin:+.2f}%. Judged on {s['judged']}."))
+    return out
 
 
 def pick2bad_book(st):
@@ -944,7 +960,7 @@ def last_change(repo_root, names):
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     b1days = _safe(boom1_days, st)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(crybasket_books, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:
