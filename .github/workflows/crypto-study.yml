@@ -13,7 +13,7 @@ on:
         required: true
         default: all
         type: choice
-        options: [all, data, trend, trend-vt, baskets, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
+        options: [all, data, trend, trend-vt, baskets, intra, intra-test, newmeme-probe, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
 
 permissions: {}
 
@@ -84,6 +84,14 @@ jobs:
             trend) trend ;;
             baskets) py tracks.crypto.cdata --stage baskets --cache cache
                      py tracks.crypto.trend_study --cache cache --out research/results/CRYBASKETS --rule baskets ;;
+            intra) py tracks.crypto.intra_study --stage data --cache cache
+                   py tracks.crypto.intra_study --stage rows --cache cache
+                   py tracks.crypto.intra_study --stage fit --cache cache --out research/results/CRYINTRA ;;
+            newmeme-probe) py tracks.crypto.newmeme_live --state /tmp/probe --minutes 7
+                           cat /tmp/probe/newmeme/summary.json
+                           PYTHONPATH=. .venv/bin/python -c "import pandas as pd, glob; f=sorted(glob.glob('/tmp/probe/newmeme/ledger/snaps/*/*.parquet')); d=pd.concat(map(pd.read_parquet, f)) if f else pd.DataFrame(); print(len(d)); print(d.drop(columns=['token','pair']).describe().T.to_string() if len(d) else 'no snapshots'); print(d[['symbol','name','age_h','liq','vol1h']].head(15).to_string() if len(d) else '')"
+                           cat /tmp/probe/newmeme/ledger/events/*/*.json | head -c 3000 ;;
+            intra-test) py tracks.crypto.intra_study --stage test --cache cache --out research/results/CRYINTRA ;;
             trend-vt) py tracks.crypto.trend_study --cache cache --out research/results/CRYTREND --rule vt ;;
             day-rows) rows ;;
             day-fit) fit ;;
@@ -121,8 +129,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW research/results/CRYBASKETS
-          git add research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW research/results/CRYBASKETS
+          mkdir -p research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW research/results/CRYBASKETS research/results/CRYINTRA
+          git add research/results/CRYTREND research/results/CRYDAY research/results/CRYXS research/results/CRYFUND research/results/CRYSLOW research/results/CRYBASKETS research/results/CRYINTRA
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
           git commit -q -m "Crypto ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"

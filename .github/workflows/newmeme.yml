@@ -1,0 +1,66 @@
+# CRY-NEWMEME watcher and paper book (tracks/crypto/newmeme_live.py, research/prereg/CRYNEWMEME.md). Paper only: no
+# wallet. Each run watches for about 5.5 hours, saving the state every 25 minutes; runs queue one at a time, so the next
+# one starts when this one ends. State lives on the orphan branch `state-newmeme`.
+name: newmeme
+
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: newmeme-state
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-newmeme
+        run: bash deploy/state.sh restore
+
+      - name: Watch and save every 25 minutes
+        env:
+          PYTHONUNBUFFERED: "1"
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-newmeme
+          RUN_LABEL: newmeme ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          end=$((SECONDS + 19800))
+          fails=0
+          while (( SECONDS < end - 1560 )); do
+            if PYTHONPATH=. .venv/bin/python -m tracks.crypto.newmeme_live --state state --minutes 25; then
+              fails=0
+            else
+              fails=$((fails + 1))
+              (( fails >= 3 )) && { bash deploy/state.sh save; exit 1; }
+            fi
+            bash deploy/state.sh save
+          done

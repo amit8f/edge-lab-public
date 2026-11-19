@@ -50,7 +50,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
-              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-BIG", "CRY-MEME", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
+              "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-ALL-SDS", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-BIG", "CRY-MEME", "CRY-NEWMEME", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
 
 
@@ -263,6 +263,20 @@ def crybasket_books(st):
                          size=1000.0, unit="round trips", first_day=s["first_day"],
                          note=f"Holding {held}. Just holding {what}: {twin:+.2f}%. Judged on {s['judged']}."))
     return out
+
+
+def newmeme_book(st):
+    """CRY-NEWMEME $1,000 paper book (research/prereg/CRYNEWMEME.md): brand-new Solana/Base meme tokens, $25 a trade,
+    next to a random-token control; judged at 100 and 300 closed trades."""
+    s = _json(st / "state-newmeme" / "newmeme" / "summary.json")
+    if not s:
+        return []
+    f, c = s["arms"]["fresh"], s["arms"]["control"]
+    pct = lambda a: "n/a" if a["mean_net"] is None else f"{100 * a['mean_net']:+.1f}%"
+    hot = ", ".join(s.get("hot", [])[:5]) or "none"
+    return [_book("CRY-NEWMEME", "CRY-NEWMEME", 100, f["closed"], s["open"], realized=f["pnl_usd"], size=1000.0,
+                  note=f"Watching {s['tracked']} new tokens. Average trade {pct(f)} vs random tokens {pct(c)}. "
+                       f"Hot themes now: {hot}.")]
 
 
 def pick2bad_book(st):
@@ -960,7 +974,7 @@ def last_change(repo_root, names):
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     b1days = _safe(boom1_days, st)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(crybasket_books, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(crybasket_books, st) + _safe(newmeme_book, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:
