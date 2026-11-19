@@ -91,3 +91,29 @@ sector's equal-weight daily return to each, and the sector's mean return on the 
 the largest fall of each.
 
 Time of day needs 5-minute bars for every stock-day and is left for a stage 3 (registered before it runs).
+
+## Stage 2 result (2026-11-19, run 44598868569; descriptive, not counted)
+
+Bug fix before reading any number: the first run flagged no earnings days because W1 stores 8-K items as lists;
+`earn_days` now reads both lists and comma strings (test added). Filings were rebuilt from EDGAR because the W1
+cache had been evicted. Summary JSON: `research/results/SECTOR1/SECTOR1_stage2.json`.
+
+- **Earnings windows** are about 3% of stock-days but hold 8-20% of each sector's 8%+ days (Consumer nondurables,
+  Business equipment, Shops ~20%; Utilities, Energy, Money ~8-10%). About one earnings day in 8 is an 8%+ move
+  (Business equipment 19%, Utilities 3%). Their direction is a coin flip (47-53% up).
+- **News days** (any Benzinga headline) are 15-22% of stock-days and hold 35-58% of 8% up days and 42-64% of 8%
+  down days. Down moves lean on news more than up moves in every sector.
+- **No news, no earnings** is ~80% of days and still ~40-65% of 8%+ days (highest in Utilities, Money, Energy,
+  Other). Half the big moves have no company headline at all, which is why news-only models miss them. 2020 is the
+  extreme: ~60% of big moves had no news (market-wide days).
+- **News type sets the direction, not the size.** Deal headlines: +0.3% to +1.3% mean day, 63-85% of 8% days up.
+  Offering headlines: -0.6% to -2.8% mean day, 0-38% of 8% days up. Earnings, guidance and analyst headlines: near
+  50/50. FDA matters only in Health (10% of its 8% days). Utilities news skews down (39% of 8% news days up).
+- **Rates and oil.** Energy is the most tied to both (corr 0.24 with the 10y change, 0.19 with oil; +2.9% on the
+  top 10% oil days, -2.7% on the bottom 10%). Rising-yield days help Energy, Chemicals, Manufacturing and Money;
+  Business equipment and Health don't care (corr ~0.03). On the 10% of days with the biggest yield drop, every
+  sector averages -0.4% to -1.7% (these are risk-off days).
+
+What this suggests (hypotheses only, each would be a new registration): direction can be read from the news type
+(deal up, offering down) while earnings direction needs the content; half of big moves come without news, so a
+boom finder needs market and sector inputs, not just headlines; Energy moves should be read against oil first.
