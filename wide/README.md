@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 11:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 11:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9113.26 | -8.87% | 240 | 78 | short HUM, long OKTA, long PANW, short UNH, long ZS |
-| Coin flip on C's picks | $9117.25 | -8.83% | 238 | 116 | short HUM, short OKTA, long PANW, short UNH, long ZS |
-| C's prompt on Groq (K7) | $5656.02 | -43.44% | 494 | 121 | long AKAM, long CRWD, long NET, long OKTA, long PANW |
-| Coin flip on C-groq's picks | $8602.66 | -13.97% | 494 | 235 | short AKAM, long CRWD, short NET, long OKTA, short PANW |
-| C-groq's answers, acted on once a day (K8) | $8655.32 | -13.45% | 52 | 22 | long AKAM, long CRWD, short HUM, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $10972.61 | +9.73% | 52 | 31 | short AKAM, short CRWD, long HUM, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $11065.62 | +10.66% | 45 | 25 | short HUM, long OKTA, long PANW, long TJX, short UNH |
-| Coin flip on C-slow's picks | $10696.17 | +6.96% | 45 | 24 | long HUM, long OKTA, long PANW, short TJX, long UNH |
-| Just hold SPY | $9510.26 | -4.90% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9062.79 | -9.37% | 241 | 78 | short AMD, short HUM, long OKTA, long PANW, short UNH |
+| Coin flip on C's picks | $9120.02 | -8.80% | 239 | 116 | long AMD, short HUM, short OKTA, long PANW, short UNH |
+| C's prompt on Groq (K7) | $5577.93 | -44.22% | 495 | 121 | long CRWD, long NET, long OKTA, long PANW, short UNH |
+| Coin flip on C-groq's picks | $8619.04 | -13.81% | 495 | 236 | long CRWD, short NET, long OKTA, short PANW, short UNH |
+| C-groq's answers, acted on once a day (K8) | $8580.85 | -14.19% | 52 | 22 | long AKAM, long CRWD, short HUM, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $10976.16 | +9.76% | 52 | 31 | short AKAM, short CRWD, long HUM, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $11024.51 | +10.25% | 45 | 25 | short HUM, long OKTA, long PANW, long TJX, short UNH |
+| Coin flip on C-slow's picks | $10644.76 | +6.45% | 45 | 24 | long HUM, long OKTA, long PANW, short TJX, long UNH |
+| Just hold SPY | $9445.41 | -5.55% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-19 11:57 | short AMD, short HUM, long OKTA, long PANW, short UNH | sold ZS @ $211.72; sold AMD @ $491.38 | Maintained profitable short positions in HUM and UNH due to strong downtrends and negative news. Kept long positions in OKTA and PANW for their strong upward momentum. Closed ZS for a small loss and initiated a new short position in AMD due to its sharp decline and insider selling news. |
 | 2026-11-19 11:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-19 11:37 | short HUM, long OKTA, long PANW, short UNH, long ZS | none | Maintaining current profitable positions in cybersecurity (OKTA, PANW, ZS) due to strong momentum and positive news, and holding shorts in healthcare (UNH, HUM) due to continued weakness and negative regulatory news. |
 | 2026-11-19 11:27 | short HUM, long OKTA, long PANW, short UNH, long ZS | bought AMD @ $494.49; bought ZS @ $212.58 | Maintained long positions in OKTA and PANW due to continued strong momentum. Maintained short positions in UNH and HUM due to continued negative momentum and regulatory concerns. Closed AMD short for a small profit and initiated a new long position in ZS, which shows strong upward momentum today. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 11:4
 | 2026-11-17 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-17 15:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-17 14:57 | short CRM, short IONQ, short MSTR, short NOW, short UNH | bought DDOG @ $165.28; sold UNH @ $388.11 | Maintained profitable short positions in CRM, IONQ, MSTR, and NOW, closed DDOG due to slight loss and positive news, and opened a new short position in UNH based on strong negative news and price action. |
