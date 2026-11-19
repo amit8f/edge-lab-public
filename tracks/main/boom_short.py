@@ -196,6 +196,36 @@ def shift_report(cache, out="research/results/BOOM2"):
     print(json.dumps(res, indent=1))
     return res
 
+def premarket_check(days_dir, out="research/results/BOOM2"):
+    """Descriptive: refetch each logged decided day's pre-market 1-minute bars now (complete) and compare the
+    pre-market inputs with what the book logged at 9:28."""
+    h = alpaca_headers()
+    rows = []
+    for f in sorted(Path(days_dir).glob("*.json")):
+        r = json.loads(f.read_text())
+        if r.get("status") != "decided" or not r.get("picks"):
+            continue
+        day = pd.Timestamp(f.stem)
+        syms = [p["symbol"] for p in r["picks"]]
+        bars = E.bars_1min(syms, day + pd.Timedelta(hours=4), day + B2.PM_LAST, h)
+        for p in r["picks"]:
+            now = premarket(bars.get(p["symbol"]), p["prev_c"], p["dv20"], day)
+            rows.append({"day": f.stem, "symbol": p["symbol"], "logged_bars": p["pm_bars"], "now_bars": now["pm_bars"],
+                         "logged_dv": p["pm_dv"], "now_dv": now["pm_dv"], "logged_gap": p["pm_gap"],
+                         "now_gap": now["pm_gap"]})
+    d = pd.DataFrame(rows)
+    res = {"picks": len(d), "days": sorted(d["day"].unique().tolist()),
+           "median_bars": {"logged": float(d["logged_bars"].median()), "now": float(d["now_bars"].median())},
+           "median_dv": {"logged": float(d["logged_dv"].median()), "now": float(d["now_dv"].median())},
+           "share_bars_missing_at_928": float((d["now_bars"] > d["logged_bars"]).mean()),
+           "share_zero_dv": {"logged": float((d["logged_dv"] == 0).mean()), "now": float((d["now_dv"] == 0).mean())},
+           "mean_abs_gap_diff": float((d["now_gap"] - d["logged_gap"]).abs().mean())}
+    (Path(out) / "BOOMSHORT_pmcheck.json").write_text(json.dumps(res, indent=1))
+    print(json.dumps(res, indent=1))
+    print(d.to_string())
+    return res
+
+
 
 
 
