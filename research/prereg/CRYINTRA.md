@@ -126,3 +126,12 @@ Oct 2025+ crypto data instead of a forward book). Rules, fixed now:
   Jan 2025 to Oct 2026 figures and the per-coin split.
 - A pass earns a $1,000 forward paper book (inputs from live sources, written before it starts). A fail ends
   CRY-INTRA-MEME. Either way the Oct 2025 to Oct 2026 window counts as read for every later meme-coin idea.
+
+## Result: the holdout exam (run 44575337322; recorded 2026-11-19)
+
+**CRY-INTRA-MEME: FAILED.** Oct 2025 to Oct 2026: 51 trades (60 needed), +0.82% net per trade after the 1% cost,
+57% winners, day-clustered t 0.84 (2.0 needed). It beat 99.9% of 1,000 random-entry draws, and the blind gate lost
+-1.24% per trade. PEPE carried it (+3.8% on 11 trades); BONK, WIF and SHIB were slightly negative. Pooled Jan 2025 to
+Oct 2026: 107 trades, about +1.25% per trade. The picks do much better than random entries in an uptrend, but the
+model trades too rarely to show it beats zero reliably. CRY-INTRA-MEME ends here; the Oct 2025 to Oct 2026 window now
+counts as read for meme-coin ideas. Count 174 (189 with phase 1).
