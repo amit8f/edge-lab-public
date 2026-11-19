@@ -78,3 +78,12 @@ Reading, fixed now: "the edge holds at 9:28" if B at the frozen cut has at least
 the per-day difference > 0. Then a fix (a cut set on 9:28 inputs, or a D6 retrained on them) is registered as a new
 idea before any forward use. If not, the 2025 result came from knowing the open, and the book is retired after Amit
 sees it. 2025 includes Oct-Dec 2025, which the freeze already read; nothing new from the holdout is opened.
+
+### Amendment 2 result (run 44481457933, recorded 2026-11-19)
+
+Only 8.3% of the 2025 picks had no pre-market bar by 9:14, so the 9:28 inputs change almost nothing. At the frozen
+cut: as frozen, 372 shorts (10.0%), +0.34% a trade, down-first 46.5%, shorts minus the same day's other picks +0.97%
+a day (NW t 2.18). With 9:28 inputs, 371 shorts (10.0%), +0.32% a trade, down-first 46.6%, +0.99% a day (t 2.20).
+Reading as fixed: **the edge holds at 9:28**; the input mismatch is not why the live book trades so little. (The
+manifest's +0.43% was with its own run; this rerun reads the same picks at +0.34%, a CatBoost runner difference.)
+The low live short rate (1 of 80 picks) is still unexplained; the next check compares live picks' inputs with 2025's.

@@ -174,6 +174,29 @@ def rerun928(cache, out="research/results/BOOM2"):
     print(json.dumps(res, indent=1))
     return res
 
+def shift_report(cache, out="research/results/BOOM2"):
+    """Descriptive (BOOMSHORT.md Amendment 2, next check): the 2025 picks' D6 score by month (share at or below the
+    frozen cut) and quantiles of the inputs the live day files also log, to compare with the live picks."""
+    from catboost import CatBoostClassifier
+    man = json.loads((MODEL_DIR / "manifest.json").read_text())
+    m = CatBoostClassifier()
+    m.load_model(str(MODEL_DIR / "d6.cbm"))
+    picks = B2.load_all(cache)
+    te = picks[(picks["lab"] != 2) & (picks["year"] == FREEZE_YEAR)].reset_index(drop=True)
+    te["d6"] = d6_score(m, live_inputs(te))
+    q = [0.05, 0.1, 0.25, 0.5, 0.75, 0.9]
+    res = {"by_month": {str(k): {"picks": len(g), "share_le_cut": float((g["d6"] <= man["cut"]).mean()),
+                                 "d6_median": float(g["d6"].median())}
+                        for k, g in te.groupby(te["nxt"].dt.to_period("M"))},
+           "quantiles": {c: dict(zip(map(str, q), map(float, te[c].quantile(q))))
+                         for c in ["d6", "score", "pm_gap", "pm_dv", "pre_news"] if c in te}}
+    imp = dict(zip(d6_cols(), map(float, m.get_feature_importance())))
+    res["d6_importance_top"] = dict(sorted(imp.items(), key=lambda kv: -kv[1])[:12])
+    (Path(out) / "BOOMSHORT_shift.json").write_text(json.dumps(res, indent=1))
+    print(json.dumps(res, indent=1))
+    return res
+
+
 
 
 LABELS = {"r1": "yesterday's move", "r5": "last week's move", "r20": "last month's move", "r60": "3-month move",
