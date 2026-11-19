@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-19T14:10 ET: 181 flagged of 3394, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-19T14:15 ET: 51 flagged of 3394, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,711.45 | -5.77% | 49 | 21 | long ACM, short AVNW, long AZTA, short BRUN, long BXDC, short CET, short CNNE, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, short XRN | paused |
-| PICK-MAIN-coin | $4,986.63 | -0.27% | 50 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, long XRN | ok |
-| PICK-PENNY | $434.28 | -13.14% | 66 | 23 | long BGS, long CURI, long FRMI, short HSDT, long ITRG, short LAC, short TSHA | paused |
-| PICK-PENNY-coin | $510.45 | +2.09% | 63 | 27 | long BGS, short CURI, long FRMI, long HSDT, long ITRG, short LAC, long SSP, long TLS, short TSHA, long ZURA | ok |
+| PICK-MAIN | $4,711.74 | -5.77% | 49 | 21 | long ACM, short AVNW, long AZTA, short BRUN, long BXDC, short CET, short CNNE, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, short XRN | paused |
+| PICK-MAIN-coin | $4,988.85 | -0.22% | 50 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, long XRN | ok |
+| PICK-PENNY | $433.55 | -13.29% | 66 | 23 | long BGS, long CURI, long FRMI, short HSDT, long ITRG, short LAC, short TSHA | paused |
+| PICK-PENNY-coin | $509.78 | +1.96% | 63 | 27 | long BGS, short CURI, long FRMI, long HSDT, long ITRG, short LAC, long SSP, long TLS, short TSHA, long ZURA | ok |
