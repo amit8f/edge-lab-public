@@ -80,6 +80,7 @@ def test_every_model_fits_and_scores_with_missing_inputs():
     rng = np.random.default_rng(0)
     R = pd.DataFrame(rng.normal(size=(300, len(I.FEATS))), columns=I.FEATS)
     R["oi4"] = np.nan
+    R.loc[:5, "vratio"] = np.inf
     R["net8"] = rng.normal(size=300)
     for m in I.MODELS:
         st, (sc,) = I.fit_score(m, R, 8, [R.iloc[:50]])

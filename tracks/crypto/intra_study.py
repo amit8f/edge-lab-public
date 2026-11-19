@@ -111,7 +111,7 @@ def coin_rows(h, lead, fund, met, cost):
         f[f"net{H}"] = c.shift(-H) / c - 1 - cost
     f["c"] = c
     keep = (t.hour % 4 == 0) & c.notna().to_numpy() & f["rv168"].notna().to_numpy()
-    out = f.loc[keep].copy()
+    out = f.loc[keep].replace([np.inf, -np.inf], np.nan)     # zero volume or open interest gives x/0
     out.index.name = "t"
     return out.reset_index()
 
@@ -180,11 +180,12 @@ def make(name):
 
 def fit_score(name, Rtr, H, Rs):
     """Fit on Rtr for horizon H -> (training scores, scores of each frame in Rs)."""
-    X = Rtr[FEATS].to_numpy(np.float32)
+    X = np.where(np.isfinite(Rtr[FEATS].to_numpy(np.float32)), Rtr[FEATS].to_numpy(np.float32), np.nan)
     y = (Rtr[f"net{H}"].to_numpy() > 0).astype(int)
     m = make(name)
     m.fit(X, y)
-    sc = lambda D: m.predict_proba(D[FEATS].to_numpy(np.float32))[:, 1]
+    fin = lambda A: np.where(np.isfinite(A), A, np.nan)
+    sc = lambda D: m.predict_proba(fin(D[FEATS].to_numpy(np.float32)))[:, 1]
     return sc(Rtr), [sc(D) for D in Rs]
 
 
