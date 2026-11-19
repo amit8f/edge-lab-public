@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8871.36 | -11.29% | 252 | 81 | long CRWD, long OKTA, long PANW, short TWLO, short UNH |
-| Coin flip on C's picks | $9019.19 | -9.81% | 250 | 120 | long CRWD, short OKTA, long PANW, short TWLO, short UNH |
-| C's prompt on Groq (K7) | $5461.70 | -45.38% | 503 | 121 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq's picks | $8472.00 | -15.28% | 503 | 239 | long CRWD, long MSTR, short NBIS, long OKTA, short PANW |
-| C-groq's answers, acted on once a day (K8) | $8452.84 | -15.47% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $11084.11 | +10.84% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $10943.31 | +9.43% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
-| Coin flip on C-slow's picks | $10650.98 | +6.51% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
-| Just hold SPY | $9331.20 | -6.69% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8895.80 | -11.04% | 253 | 82 | short AMD, long CRWD, long OKTA, long PANW, short UNH |
+| Coin flip on C's picks | $9032.19 | -9.68% | 251 | 121 | long AMD, long CRWD, short OKTA, long PANW, short UNH |
+| C's prompt on Groq (K7) | $5492.71 | -45.07% | 503 | 121 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq's picks | $8496.33 | -15.04% | 503 | 239 | long CRWD, long MSTR, short NBIS, long OKTA, short PANW |
+| C-groq's answers, acted on once a day (K8) | $8500.51 | -14.99% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $11067.57 | +10.68% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $10958.16 | +9.58% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
+| Coin flip on C-slow's picks | $10663.33 | +6.63% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
+| Just hold SPY | $9329.11 | -6.71% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-19 15:57 | short AMD, long CRWD, long OKTA, long PANW, short UNH | bought TWLO @ $179.29; sold AMD @ $489.73 | Maintaining profitable long positions in CRWD, OKTA, and PANW due to strong positive momentum. Continuing to short UNH given its significant decline and negative news. Initiating a new short position in AMD due to its sharp daily drop, negative short-term trends, and concerning news headlines. |
 | 2026-11-19 15:47 | long CRWD, long OKTA, long PANW, short TWLO, short UNH | bought AMD @ $488.64; sold ZS @ $205.59; bought CRWD @ $242.28; bought OKTA @ $206.53 | Closed losing positions in AMD and ZS. Maintained profitable shorts in TWLO and UNH, and long PANW. Initiated new long positions in OKTA and CRWD due to strong positive momentum. |
 | 2026-11-19 15:37 | short AMD, long PANW, short TWLO, short UNH, long ZS | sold OKTA @ $206.18; sold TWLO @ $180.64 | Maintaining long positions in PANW and ZS due to strong positive momentum, and short positions in UNH and AMD due to continued negative trends and news. Initiating a new short position in TWLO given its significant decline across all timeframes. |
 | 2026-11-19 15:27 | short AMD, long OKTA, long PANW, short UNH, long ZS | bought HUM @ $379.12; sold AMD @ $484.08 | Maintained long positions in PANW, OKTA, and ZS due to continued positive momentum. Maintained short position in UNH due to strong negative momentum and news. Closed short HUM due to reduced negative momentum and opened a new short position in AMD due to significant negative price action and news. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 15:4
 | 2026-11-18 12:57 | short CRM, short IONQ, short MSTR, short NOW, short UNH | none | Maintaining all existing profitable short positions in CRM, IONQ, MSTR, NOW, and UNH due to continued negative price action and, in some cases, negative news. |
 | 2026-11-18 12:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 12:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-18 12:27 | no answer, nothing changed | none | unreadable answer |
