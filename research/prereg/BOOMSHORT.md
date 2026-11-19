@@ -96,3 +96,10 @@ inputs D6 leans on most are BOOM1's score, the pre-market move and pre-market do
 BOOM1 score 0.52 vs 0.69; pre-market dollar volume 0.004 vs 0.026 of a normal day (a quarter of live picks show 0);
 pre-market move 0.000 vs +0.005. So live picks look calmer and show far less pre-market trading than 2025's picks did.
 Not yet known: whether that is the market this week or pre-market bars that are still incomplete at 9:28.
+
+### Pre-market refetch (run 44482046049, descriptive)
+
+Refetching the four days' pre-market bars afterwards gives the same picture the book saw at 9:28: median 4 bars
+and pre-market dollar volume 0.4% of a normal day both times; 26% of picks had none either way; 21% of picks gained a
+late bar, moving the pre-market move by 0.2% on average. The data is not the problem. This week's BOOM1 picks are
+simply quieter before the open than 2025's, so D6 rarely calls one bearish enough. No change to the book.
