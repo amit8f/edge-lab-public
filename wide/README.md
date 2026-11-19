@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 14:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8964.58 | -10.35% | 243 | 79 | short AMD, short HUM, long OKTA, long PANW, short UNH |
-| Coin flip on C's picks | $9016.76 | -9.83% | 241 | 116 | short AMD, short HUM, short OKTA, long PANW, short UNH |
-| C's prompt on Groq (K7) | $5439.21 | -45.61% | 502 | 121 | short AMD, long CRWD, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq's picks | $8483.44 | -15.17% | 502 | 238 | long AMD, long CRWD, short NBIS, long OKTA, short PANW |
-| C-groq's answers, acted on once a day (K8) | $8471.92 | -15.28% | 52 | 22 | long AKAM, long CRWD, short HUM, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $11056.28 | +10.56% | 52 | 31 | short AKAM, short CRWD, long HUM, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $10909.00 | +9.09% | 45 | 25 | short HUM, long OKTA, long PANW, long TJX, short UNH |
-| Coin flip on C-slow's picks | $10698.82 | +6.99% | 45 | 24 | long HUM, long OKTA, long PANW, short TJX, long UNH |
-| Just hold SPY | $9383.35 | -6.17% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8972.48 | -10.28% | 243 | 79 | short AMD, short HUM, long OKTA, long PANW, short UNH |
+| Coin flip on C's picks | $9045.76 | -9.54% | 241 | 116 | short AMD, short HUM, short OKTA, long PANW, short UNH |
+| C's prompt on Groq (K7) | $5440.60 | -45.59% | 502 | 121 | short AMD, long CRWD, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq's picks | $8486.69 | -15.13% | 502 | 238 | long AMD, long CRWD, short NBIS, long OKTA, short PANW |
+| C-groq's answers, acted on once a day (K8) | $8451.51 | -15.48% | 52 | 22 | long AKAM, long CRWD, short HUM, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $11038.64 | +10.39% | 52 | 31 | short AKAM, short CRWD, long HUM, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $10903.75 | +9.04% | 45 | 25 | short HUM, long OKTA, long PANW, long TJX, short UNH |
+| Coin flip on C-slow's picks | $10660.36 | +6.60% | 45 | 24 | long HUM, long OKTA, long PANW, short TJX, long UNH |
+| Just hold SPY | $9359.72 | -6.40% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-19 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-19 13:57 | short AMD, short HUM, long OKTA, long PANW, short UNH | none | Maintaining all existing profitable positions. AMD, HUM, and UNH shorts are performing well on negative news and strong downtrends. OKTA and PANW longs are showing strong positive momentum with good news. |
 | 2026-11-19 13:47 | short AMD, short HUM, long OKTA, long PANW, short UNH | none | Maintaining all current positions due to continued alignment with their respective trends and news catalysts. AMD, HUM, and UNH shorts are performing well on bearish momentum and negative news. OKTA and PANW longs are showing strong positive momentum and positive news. |
 | 2026-11-19 13:37 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 13:5
 | 2026-11-18 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 10:47 | short CRM, short IONQ, short MSTR, short NOW, short UNH | none | All existing profitable short positions are maintained due to continued strong downtrends and supporting news. No new positions are opened as current holdings are performing well and the maximum number of positions is reached. |
-| 2026-11-18 10:37 | no answer, nothing changed | none | unreadable answer |
