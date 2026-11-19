@@ -1,0 +1,675 @@
+{
+ "decision": {
+  "dropped": [],
+  "error": "QuotaExhausted: gemini: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.googl",
+  "prompt_sha256": "345b991d744f1dd5460afd55c989de4931b86c477b6fbaa9058bdd4dba45cca1",
+  "summary": "unreadable answer",
+  "want": null
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "b9e4ae2184e7724fd79c75919fcc75cbdc43d54ca5b40ac4d98a01c5f28dcead",
+  "raw": "{\"positions\":[{\"symbol\":\"CRWD\",\"side\":\"long\",\"reason\":\"3% daily gain with +6.8% 5\u2011session and +2.2% 20\u2011session trend\"},{\"symbol\":\"OKTA\",\"side\":\"long\",\"reason\":\"5.9% daily rise, strong +13.7% 5\u2011session momentum\"},{\"symbol\":\"ZS\",\"side\":\"long\",\"reason\":\"6.3% daily increase and +8.5% 5\u2011session upside\"},{\"symbol\":\"AXON\",\"side\":\"long\",\"reason\":\"4.1% daily gain, near\u2011flat 5\u2011session after recent pullback\"},{\"symbol\":\"NBIS\",\"side\":\"short\",\"reason\":\"7% daily drop, -35.7% 5\u2011session and -42.1% 20\u2011session decline\"}],\"summary\":\"Switched to 4 longs (CRWD, OKTA, ZS, AXON) and 1 short (NBIS) to capture current momentum\"}",
+  "summary": "Switched to 4 longs (CRWD, OKTA, ZS, AXON) and 1 short (NBIS) to capture current momentum",
+  "want": {
+   "AXON": 1,
+   "CRWD": 1,
+   "NBIS": -1,
+   "OKTA": 1,
+   "ZS": 1
+  }
+ },
+ "equity": {
+  "C": 9050.452328,
+  "C-coin": 9089.565428,
+  "C-groq": 5505.236926,
+  "C-groq-coin": 8567.073649,
+  "C-groq-slow": 8496.053172,
+  "C-groq-slow-coin": 11000.079389,
+  "C-slow": 10984.833637,
+  "C-slow-coin": 10598.614184,
+  "HOLD": 9368.377246
+ },
+ "fills": {
+  "C": [],
+  "C-coin": [],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1795108655,
+    "entry": 358.96,
+    "exit": 356.64,
+    "notional": 1129.8131673106002,
+    "open_t": 1795105655,
+    "pnl": -8.424624,
+    "side": 1,
+    "sym": "PANW",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795108655,
+    "entry": 327.24,
+    "exit": 328.36,
+    "notional": 1115.8085192627398,
+    "open_t": 1795107443,
+    "pnl": -4.938554,
+    "side": -1,
+    "sym": "UNH",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1101.48798,
+    "price": 312.875,
+    "side": 1,
+    "sym": "AXON",
+    "t": 1795108655
+   },
+   {
+    "action": "open",
+    "notional": 1101.48798,
+    "price": 99.42,
+    "side": -1,
+    "sym": "NBIS",
+    "t": 1795108655
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1795108655,
+    "entry": 358.96,
+    "exit": 356.64,
+    "notional": 1724.6745017439562,
+    "open_t": 1795105655,
+    "pnl": 9.433243,
+    "side": -1,
+    "sym": "PANW",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795108655,
+    "entry": 327.24,
+    "exit": 328.36,
+    "notional": 1724.1534202468918,
+    "open_t": 1795107443,
+    "pnl": -7.631081,
+    "side": -1,
+    "sym": "UNH",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1714.10037,
+    "price": 312.875,
+    "side": 1,
+    "sym": "AXON",
+    "t": 1795108655
+   },
+   {
+    "action": "open",
+    "notional": 1714.10037,
+    "price": 99.42,
+    "side": -1,
+    "sym": "NBIS",
+    "t": 1795108655
+   }
+  ],
+  "C-groq-slow": [],
+  "C-groq-slow-coin": [],
+  "C-slow": [],
+  "C-slow-coin": [],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "ACN": 2,
+  "AMD": 3,
+  "AXON": 2,
+  "CCL": 1,
+  "CI": 1,
+  "CNC": 2,
+  "CRWD": 1,
+  "CRWV": 1,
+  "ELV": 1,
+  "HL": 1,
+  "HUM": 3,
+  "MS": 3,
+  "NKE": 2,
+  "PANW": 1,
+  "PM": 1,
+  "RBLX": 2,
+  "RCL": 1,
+  "TEM": 2,
+  "UNH": 1,
+  "UNP": 1,
+  "V": 2
+ },
+ "kind": "run",
+ "positions": {
+  "C": {
+   "HUM": {
+    "charged": 1795108655,
+    "entry": 394.76,
+    "last": 375.84,
+    "notional": 1756.901123360536,
+    "opened": 1795026447,
+    "qty": 4.450555079948668,
+    "side": -1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 192.18,
+    "last": 207.155,
+    "notional": 1756.901123360536,
+    "opened": 1795026447,
+    "qty": 9.141956100325404,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1795108655,
+    "entry": 336.4,
+    "last": 356.64,
+    "notional": 1759.9297302451357,
+    "opened": 1795034843,
+    "qty": 5.23165793770849,
+    "side": 1
+   },
+   "UNH": {
+    "charged": 1795108655,
+    "entry": 388.11,
+    "last": 328.36,
+    "notional": 1686.2531579575407,
+    "opened": 1794945449,
+    "qty": 4.344781525746671,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1795108655,
+    "entry": 211.13,
+    "last": 210.25,
+    "notional": 1812.7888032633527,
+    "opened": 1795108041,
+    "qty": 8.586126098912295,
+    "side": 1
+   }
+  },
+  "C-coin": {
+   "HUM": {
+    "charged": 1795108655,
+    "entry": 394.76,
+    "last": 375.84,
+    "notional": 1813.1986301146771,
+    "opened": 1795026447,
+    "qty": 4.593167063822771,
+    "side": -1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 192.18,
+    "last": 207.155,
+    "notional": 1813.1986301146771,
+    "opened": 1795026447,
+    "qty": 9.434897648635015,
+    "side": -1
+   },
+   "PANW": {
+    "charged": 1795108655,
+    "entry": 336.4,
+    "last": 356.64,
+    "notional": 1823.0406391022289,
+    "opened": 1795034843,
+    "qty": 5.419264682230169,
+    "side": 1
+   },
+   "UNH": {
+    "charged": 1795108655,
+    "entry": 388.11,
+    "last": 328.36,
+    "notional": 1765.0631807270024,
+    "opened": 1794945449,
+    "qty": 4.547842572278483,
+    "side": -1
+   },
+   "ZS": {
+    "charged": 1795108655,
+    "entry": 211.13,
+    "last": 210.25,
+    "notional": 1821.9839541822703,
+    "opened": 1795108041,
+    "qty": 8.629678180184106,
+    "side": 1
+   }
+  },
+  "C-groq": {
+   "AXON": {
+    "charged": 1795108655,
+    "entry": 312.875,
+    "last": 312.875,
+    "notional": 1101.487980486575,
+    "opened": 1795108655,
+    "qty": 3.520536893285098,
+    "side": 1
+   },
+   "CRWD": {
+    "charged": 1795108655,
+    "entry": 232.78,
+    "last": 244.68,
+    "notional": 1095.6816735138652,
+    "opened": 1795018657,
+    "qty": 4.706940774610642,
+    "side": 1
+   },
+   "NBIS": {
+    "charged": 1795108655,
+    "entry": 99.42,
+    "last": 99.42,
+    "notional": 1101.487980486575,
+    "opened": 1795108655,
+    "qty": 11.079138809963538,
+    "side": -1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 190.255,
+    "last": 207.155,
+    "notional": 1091.8634456702293,
+    "opened": 1795024044,
+    "qty": 5.738947442486292,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1795108655,
+    "entry": 211.13,
+    "last": 210.25,
+    "notional": 1104.3750526772908,
+    "opened": 1795108041,
+    "qty": 5.230782232166394,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "AXON": {
+    "charged": 1795108655,
+    "entry": 312.875,
+    "last": 312.875,
+    "notional": 1714.100369879638,
+    "opened": 1795108655,
+    "qty": 5.478546927302079,
+    "side": 1
+   },
+   "CRWD": {
+    "charged": 1795108655,
+    "entry": 232.78,
+    "last": 244.68,
+    "notional": 1632.9954799180286,
+    "opened": 1795018657,
+    "qty": 7.015188074224713,
+    "side": 1
+   },
+   "NBIS": {
+    "charged": 1795108655,
+    "entry": 99.42,
+    "last": 99.42,
+    "notional": 1714.100369879638,
+    "opened": 1795108655,
+    "qty": 17.241001507540112,
+    "side": -1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 190.255,
+    "last": 207.155,
+    "notional": 1629.4986462884306,
+    "opened": 1795024044,
+    "qty": 8.564813783019792,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1795108655,
+    "entry": 211.13,
+    "last": 210.25,
+    "notional": 1719.8632656088841,
+    "opened": 1795108041,
+    "qty": 8.14599187992651,
+    "side": 1
+   }
+  },
+  "C-groq-slow": {
+   "AKAM": {
+    "charged": 1795108655,
+    "entry": 91.82,
+    "last": 92.7,
+    "notional": 1636.6179570976199,
+    "opened": 1795034843,
+    "qty": 17.824199053557177,
+    "side": 1
+   },
+   "CRWD": {
+    "charged": 1795108655,
+    "entry": 237.26,
+    "last": 244.68,
+    "notional": 1636.6179570976199,
+    "opened": 1795034843,
+    "qty": 6.89799358129318,
+    "side": 1
+   },
+   "HUM": {
+    "charged": 1795108655,
+    "entry": 387.7,
+    "last": 375.84,
+    "notional": 1636.6179570976199,
+    "opened": 1795034843,
+    "qty": 4.221351449826206,
+    "side": -1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 194.57,
+    "last": 207.155,
+    "notional": 1636.6179570976199,
+    "opened": 1795034843,
+    "qty": 8.411460950288431,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1795108655,
+    "entry": 336.4,
+    "last": 356.64,
+    "notional": 1636.6179570976199,
+    "opened": 1795034843,
+    "qty": 4.865094997317539,
+    "side": 1
+   }
+  },
+  "C-groq-slow-coin": {
+   "AKAM": {
+    "charged": 1795108655,
+    "entry": 91.82,
+    "last": 92.7,
+    "notional": 2178.9848447712243,
+    "opened": 1795034843,
+    "qty": 23.731048189623444,
+    "side": -1
+   },
+   "CRWD": {
+    "charged": 1795108655,
+    "entry": 237.26,
+    "last": 244.68,
+    "notional": 2178.9848447712243,
+    "opened": 1795034843,
+    "qty": 9.183953657469546,
+    "side": -1
+   },
+   "HUM": {
+    "charged": 1795108655,
+    "entry": 387.7,
+    "last": 375.84,
+    "notional": 2178.9848447712243,
+    "opened": 1795034843,
+    "qty": 5.620285903459439,
+    "side": 1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 194.57,
+    "last": 207.155,
+    "notional": 2178.9848447712243,
+    "opened": 1795034843,
+    "qty": 11.198976434040317,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1795108655,
+    "entry": 336.4,
+    "last": 356.64,
+    "notional": 2178.9848447712243,
+    "opened": 1795034843,
+    "qty": 6.477362796585091,
+    "side": 1
+   }
+  },
+  "C-slow": {
+   "HUM": {
+    "charged": 1795108655,
+    "entry": 387.7,
+    "last": 375.84,
+    "notional": 2113.1092259628663,
+    "opened": 1795034843,
+    "qty": 5.450372004031123,
+    "side": -1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 194.57,
+    "last": 207.155,
+    "notional": 2113.1092259628663,
+    "opened": 1795034843,
+    "qty": 10.860406156976236,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1795108655,
+    "entry": 336.4,
+    "last": 356.64,
+    "notional": 2113.1092259628663,
+    "opened": 1795034843,
+    "qty": 6.281537532588782,
+    "side": 1
+   },
+   "TJX": {
+    "charged": 1795108655,
+    "entry": 141.525,
+    "last": 140.83,
+    "notional": 2113.1092259628663,
+    "opened": 1795034843,
+    "qty": 14.930996120564325,
+    "side": 1
+   },
+   "UNH": {
+    "charged": 1795108655,
+    "entry": 387.96,
+    "last": 328.36,
+    "notional": 2010.162385619058,
+    "opened": 1794947845,
+    "qty": 5.181365052116347,
+    "side": -1
+   }
+  },
+  "C-slow-coin": {
+   "HUM": {
+    "charged": 1795108655,
+    "entry": 387.7,
+    "last": 375.84,
+    "notional": 2102.46354150638,
+    "opened": 1795034843,
+    "qty": 5.4229134421108585,
+    "side": 1
+   },
+   "OKTA": {
+    "charged": 1795108655,
+    "entry": 194.57,
+    "last": 207.155,
+    "notional": 2102.46354150638,
+    "opened": 1795034843,
+    "qty": 10.805692252178547,
+    "side": 1
+   },
+   "PANW": {
+    "charged": 1795108655,
+    "entry": 336.4,
+    "last": 356.64,
+    "notional": 2102.46354150638,
+    "opened": 1795034843,
+    "qty": 6.249891621600416,
+    "side": 1
+   },
+   "TJX": {
+    "charged": 1795108655,
+    "entry": 141.525,
+    "last": 140.83,
+    "notional": 2102.46354150638,
+    "opened": 1795034843,
+    "qty": 14.855774891407028,
+    "side": -1
+   },
+   "UNH": {
+    "charged": 1795108655,
+    "entry": 387.96,
+    "last": 328.36,
+    "notional": 2077.6975653276154,
+    "opened": 1794947845,
+    "qty": 5.355442739786616,
+    "side": 1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1795108655,
+    "entry": 767.13,
+    "last": 719.395,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "9119347ee7b59ad47f05bce73563ac62828f89e07305ba202bcafa7e8000b32d",
+ "price_source": {
+  "ACN": "iex",
+  "AMD": "iex",
+  "AXON": "iex",
+  "AXTI": "iex",
+  "CAT": "iex",
+  "CBRS": "iex",
+  "CCL": "iex",
+  "CDE": "iex",
+  "CI": "iex",
+  "CNC": "iex",
+  "CRDO": "iex",
+  "CRWD": "iex",
+  "CRWV": "iex",
+  "DASH": "iex",
+  "ECHO": "iex",
+  "ELV": "iex",
+  "FCX": "iex",
+  "FISV": "iex",
+  "HL": "iex",
+  "HUM": "iex",
+  "IREN": "iex",
+  "MCK": "iex",
+  "MS": "iex",
+  "MSTR": "iex",
+  "NBIS": "iex",
+  "NKE": "iex",
+  "OKTA": "iex",
+  "PANW": "iex",
+  "PM": "iex",
+  "RBLX": "iex",
+  "RCL": "iex",
+  "RKLB": "iex",
+  "SHOP": "iex",
+  "SPCX": "iex",
+  "TEM": "iex",
+  "TSEM": "iex",
+  "UNH": "iex",
+  "UNP": "iex",
+  "V": "iex",
+  "VRT": "iex",
+  "XYZ": "iex",
+  "ZS": "iex"
+ },
+ "prices": {
+  "ACN": 217.47,
+  "AMD": 481.1,
+  "AXON": 312.875,
+  "AXTI": 34.42,
+  "CAT": 537.26,
+  "CBRS": 89.985,
+  "CCL": 27.88,
+  "CDE": 11.665,
+  "CI": 268.66,
+  "CNC": 64.385,
+  "CRDO": 118.85,
+  "CRWD": 244.68,
+  "CRWV": 46.03,
+  "DASH": 159.84,
+  "ECHO": 93.24,
+  "ELV": 385.88,
+  "FCX": 49.705,
+  "FISV": 56.945,
+  "HL": 11.21,
+  "HUM": 375.84,
+  "IREN": 14.335,
+  "MCK": 1047.315,
+  "MS": 174.535,
+  "MSTR": 86.88,
+  "NBIS": 99.42,
+  "NKE": 34.43,
+  "OKTA": 207.155,
+  "PANW": 356.64,
+  "PM": 185.02,
+  "RBLX": 49.19,
+  "RCL": 309.575,
+  "RKLB": 50.915,
+  "SHOP": 134.47,
+  "SPCX": 135.79,
+  "TEM": 60.71,
+  "TSEM": 127.6,
+  "UNH": 328.36,
+  "UNP": 290.485,
+  "V": 401.375,
+  "VRT": 185.735,
+  "XYZ": 75.32,
+  "ZS": 210.25
+ },
+ "shortlist": [
+  "AMD",
+  "NBIS",
+  "ZS",
+  "UNH",
+  "IREN",
+  "OKTA",
+  "CI",
+  "FISV",
+  "SPCX",
+  "NKE",
+  "PANW",
+  "CDE",
+  "XYZ",
+  "TEM",
+  "CNC",
+  "VRT",
+  "CBRS",
+  "ACN",
+  "DASH",
+  "RKLB",
+  "AXON",
+  "PM",
+  "HL",
+  "RBLX",
+  "CAT",
+  "MSTR",
+  "ECHO",
+  "CRWV",
+  "CCL",
+  "TSEM",
+  "ELV",
+  "MS",
+  "SHOP",
+  "UNP",
+  "RCL",
+  "MCK",
+  "FCX",
+  "AXTI",
+  "V",
+  "CRDO",
+  "CRWD",
+  "HUM"
+ ],
+ "t": 1795108655,
+ "universe_date": "2026-11-19",
+ "written_utc": "2026-11-19T17:17:46.239566Z"
+}
