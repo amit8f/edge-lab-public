@@ -63,3 +63,13 @@ news before the open (none, negative with FinBERT max negative > 0.5, other), vo
 yesterday, weekday, year. Per slice: picks, close-up rate, up-first rate, mean open-to-close return, and the AUC for
 close-up inside the slice of one CatBoost model (D6 inputs) trained on 2019-2022 and scored on 2023-2025/09.
 Descriptive; many slices are compared, so any standout is a hypothesis for a separately registered, forward-tested idea.
+
+### Amendment 1 result (run 44504568576, recorded 2026-11-19; research/results/BOOMX/BOOMX_slices.json)
+
+No slice makes direction clearly easier: the model's close-up AUC inside every slice with 200+ test picks is 0.49-0.56
+(largest: Utilities 0.563 on 250 picks, gap down 5%+ 0.557, SPY below its 200-day 0.547, wildest third 0.543).
+What does differ is the base rate. Close-up share (all picks 45.2%): wildest third 42.4% vs calmest 47.6%; pre-market
+gap up 5%+ 43.0% vs gap down 5%+ 47.6%; no news 44.1% vs negative news 48.1%; SPY above its 200-day 44.7% (mean
+open-to-close -0.39%) vs below 47.1% (+0.07%); Tuesday 43.9% (-0.71%). Every sector closes up 42-48%. These lean the
+same way as BOOMX's main result (wild, gapped-up, newsless picks fade); a rule combining them is post hoc and must be
+registered and tested forward.
