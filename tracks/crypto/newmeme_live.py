@@ -35,7 +35,7 @@ MIN_LIQ, MIN_VOL1H = 20_000, 50_000
 TP, SL, HOLD_H, RUG_LIQ, MISS_MAX = 2.0, 0.5, 24, 0.10, 3
 THEME_N, THEME_H = 5, 6
 STOP = {"the", "and", "coin", "token", "sol", "solana", "base", "inu", "meme", "official", "for", "you", "new", "of",
-        "on", "ai", "usd", "wif", "dog", "cat", "pump", "fun", "moon", "eth", "baby", "mini", "elon", "real"}
+        "on", "ai", "usd", "usdc", "usdt", "weth", "wsol", "wbtc", "wif", "dog", "cat", "pump", "fun", "moon", "eth", "baby", "mini", "elon", "real"}
 SNAP_COLS = ["ts", "chain", "token", "pair", "symbol", "name", "age_h", "price", "liq", "fdv", "mcap", "buys5", "sells5",
              "buys1h", "sells1h", "vol5", "vol1h", "ch5", "ch1h", "ch6h"]
 
