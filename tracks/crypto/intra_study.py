@@ -333,9 +333,104 @@ def stage_test(cache, out):
     (out / "CRYINTRA_test.json").write_text(json.dumps(res, indent=1))
 
 
+# ---------- Amendment 1: the one holdout exam for CRY-INTRA-MEME ----------
+
+EXAM_START, EXAM_END = pd.Timestamp("2025-10-01"), pd.Timestamp("2026-11-01")
+EXAM_MONTHS, EXAM_MIN = ("2025-10", "2026-10"), 60
+
+
+def _exam_series(d, sym):
+    """Cached history (to Sep 2025) plus the exam months, as one hourly candle frame."""
+    f = d / "exam" / "spot1h" / f"{sym}.parquet"
+    if not f.exists():
+        with ThreadPoolExecutor(C.THREADS) as ex:
+            raws = list(ex.map(lambda m: C.fetch(C.kline_url("spot", sym, "1h", m)), C.months(*EXAM_MONTHS)))
+        new = pd.concat([C.parse_klines(r) for r in raws if r], ignore_index=True)
+        C.atomic(new, f)
+    new = pd.read_parquet(f)
+    old = pd.read_parquet(d / "spot1h" / f"{sym}.parquet")
+    h = pd.concat([old, new], ignore_index=True).sort_values("t").drop_duplicates("t").reset_index(drop=True)
+    assert h["t"].max() < EXAM_END, "data past the exam window"
+    return h
+
+
+def _exam_perp(d, p):
+    f = d / "exam" / "funding" / f"{p}.parquet"
+    if not f.exists():
+        with ThreadPoolExecutor(C.THREADS) as ex:
+            raws = list(ex.map(lambda m: C.fetch(f"{C.BASE}/futures/um/monthly/fundingRate/{p}/{p}-fundingRate-{m}.zip"),
+                               C.months(*EXAM_MONTHS)))
+        parts = [C.parse_funding(r) for r in raws if r]
+        C.atomic(pd.concat(parts, ignore_index=True) if parts else pd.DataFrame({"t": pd.to_datetime([]), "rate": []}), f)
+    g = d / "exam" / "metrics" / f"{p}.parquet"
+    if not g.exists():
+        days = pd.date_range(EXAM_START, EXAM_END - pd.Timedelta(days=1), freq="D").strftime("%Y-%m-%d")
+        with ThreadPoolExecutor(16) as ex:
+            raws = list(ex.map(lambda day: C.fetch(f"{C.BASE}/futures/um/daily/metrics/{p}/{p}-metrics-{day}.zip"), days))
+        parts = []
+        for r in raws:
+            if r:
+                try:
+                    parts.append(parse_metrics(r))
+                except (KeyError, ValueError, zipfile.BadZipFile):
+                    pass
+        C.atomic(pd.concat(parts, ignore_index=True) if parts else pd.DataFrame({"t": pd.to_datetime([]), "oi": [], "tls": []}), g)
+    cat = lambda a, b: pd.concat([pd.read_parquet(a), pd.read_parquet(b)], ignore_index=True).sort_values("t").drop_duplicates("t")
+    return cat(d / "funding" / f"{p}.parquet", f), cat(d / "metrics" / f"{p}.parquet", g)
+
+
+def stage_exam(cache, out):
+    global FEATS
+    base = list(FEATS)
+    out = Path(out)
+    best = json.loads((out / "CRYINTRA_choose.json").read_text())["MEME"]["chosen"]
+    assert (best["model"], best["H"], best["top"]) == ("cat", 24, 0.05), "the registered version changed"
+    H, m, q = best["H"], best["model"], best["top"]
+    b, d = BASKETS["MEME"], C.cdir(cache)
+    btc = _exam_series(d, "BTCUSDT")
+    parts = []
+    for s in b["coins"]:
+        fund, met = _exam_perp(d, perp(s))
+        R = coin_rows(_exam_series(d, s), btc, fund, met, b["cost"])
+        R["symbol"] = s
+        parts.append(R)
+    R = pd.concat(parts, ignore_index=True)
+    R["breadth"] = R.groupby("t")["trend"].transform("mean")
+    R = R[R["t"] < EXAM_END].reset_index(drop=True)
+    FEATS = feats("MEME")
+    cuts = skip_cuts(R)
+    ok = gated(R, cuts)
+    Rtr = train_rows(R, ok, EXAM_START, H)
+    ex = R[ok & (R["t"] >= EXAM_START) & (R["t"] + pd.Timedelta(hours=H) <= EXAM_END) & R[f"net{H}"].notna()]
+    st, (sc,) = fit_score(m, Rtr, H, [ex])
+    tk = take(ex, sc, float(np.quantile(st, 1 - q)), H)
+    net = tk[f"net{H}"].to_numpy()
+    n = len(net)
+    rng = np.random.default_rng(SEED)
+    pool = ex[f"net{H}"].to_numpy()
+    draws = np.array([rng.choice(pool, size=n, replace=False).mean() for _ in range(DRAWS)]) if 0 < n <= len(pool) else np.array([])
+    r = {"version": best, "window": [str(EXAM_START), str(EXAM_END)], "trades": n,
+         "mean_net": float(net.mean()) if n else float("nan"), "win": float((net > 0).mean()) if n else float("nan"),
+         "t_day": clustered_t(net, tk["t"].dt.floor("D")) if n > 1 else float("nan"),
+         "random_pct": float((draws < net.mean()).mean()) if len(draws) else float("nan"),
+         "gate_alone": float(pool.mean()), "gate_points": int(len(pool)),
+         "by_coin": {s: [int(len(g)), float(g[f"net{H}"].mean())] for s, g in tk.groupby("symbol")},
+         "by_month": {str(k): [int(len(g)), float(g[f"net{H}"].mean())] for k, g in tk.groupby(tk["t"].dt.to_period("M"))}}
+    r["pass"] = bool(n >= EXAM_MIN and r["mean_net"] > 0 and r["t_day"] >= 2.0 and r["random_pct"] >= 0.95
+                     and r["mean_net"] > r["gate_alone"])
+    r["verdict"] = "PASSED: start the forward book" if r["pass"] else "FAILED"
+    t25 = json.loads((out / "CRYINTRA_test.json").read_text())["MEME"]
+    nn = t25["trades"] + n
+    r["pooled_2025_2026"] = {"trades": nn, "mean_net": (t25["trades"] * t25["mean_net"] + n * r["mean_net"]) / nn if nn else None}
+    FEATS = base
+    (out / "CRYINTRA_exam.json").write_text(json.dumps(r, indent=1))
+    print(f"[intra exam] {r['verdict']} n={n} mean={r['mean_net']:.4f} t={r['t_day']:.2f} rand={r['random_pct']:.2f} "
+          f"gate={r['gate_alone']:.4f}", flush=True)
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["data", "rows", "fit", "test"])
+    ap.add_argument("--stage", required=True, choices=["data", "rows", "fit", "test", "exam"])
     ap.add_argument("--cache", default="cache")
     ap.add_argument("--out", default="research/results/CRYINTRA")
     a = ap.parse_args()
@@ -345,8 +440,10 @@ def main():
         stage_rows(a.cache)
     elif a.stage == "fit":
         stage_fit(a.cache, a.out)
-    else:
+    elif a.stage == "test":
         stage_test(a.cache, a.out)
+    else:
+        stage_exam(a.cache, a.out)
 
 
 if __name__ == "__main__":

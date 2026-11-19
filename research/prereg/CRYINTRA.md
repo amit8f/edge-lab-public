@@ -107,3 +107,31 @@ Sep 30). Bug fix only.
   Too few trades to tell skill from luck.
 - Count 174 (189 with phase 1). Under the near-miss rule (PR #65) CRY-INTRA-MEME may get a forward watch book; that
   is Amit's call. CRY-INTRA-BIG stops here.
+
+## Amendment 1 (2026-11-19, before any holdout data is downloaded): one holdout exam for CRY-INTRA-MEME
+
+Amit chose "Holdout exam" on the decision card of 2026-11-19 (test the near-miss meme model once on the unread
+Oct 2025+ crypto data instead of a forward book). Rules, fixed now:
+
+- Window: decisions from 2025-10-01 00:00 to 2026-10-31 (the last full month in the Binance monthly archive), exits
+  by 2026-10-31 24:00. Data: the same Binance sources, monthly spot 1-hour candles and funding to 2026-10 and daily
+  metrics files to 2026-10-31. Inputs before Oct 2025 come from the cached history, so every decision has its 7-day
+  and 28-day look-back.
+- Model: the registered version (CatBoost, hold 24 hours, top 5%), refit on every gated decision with an exit before
+  2025-10-01 (2020 to Sep 2025); the entry cut is the 95th percentile of that fit's training scores. Skip cut-offs
+  stay the 2020-2023 ones. No other version is scored.
+- Pass needs all of: at least 60 trades (13 months at the 2025 rate of about 6 a month gives about 80; 100 would
+  likely fail on count alone); mean net return per trade > 0 after the 1% cost with day-clustered t >= 2.0; above
+  95% of 1,000 random-entry draws from the same gated points; above the gate alone. Reported beside it: the pooled
+  Jan 2025 to Oct 2026 figures and the per-coin split.
+- A pass earns a $1,000 forward paper book (inputs from live sources, written before it starts). A fail ends
+  CRY-INTRA-MEME. Either way the Oct 2025 to Oct 2026 window counts as read for every later meme-coin idea.
+
+## Result: the holdout exam (run 44575337322; recorded 2026-11-19)
+
+**CRY-INTRA-MEME: FAILED.** Oct 2025 to Oct 2026: 51 trades (60 needed), +0.82% net per trade after the 1% cost,
+57% winners, day-clustered t 0.84 (2.0 needed). It beat 99.9% of 1,000 random-entry draws, and the blind gate lost
+-1.24% per trade. PEPE carried it (+3.8% on 11 trades); BONK, WIF and SHIB were slightly negative. Pooled Jan 2025 to
+Oct 2026: 107 trades, about +1.25% per trade. The picks do much better than random entries in an uptrend, but the
+model trades too rarely to show it beats zero reliably. CRY-INTRA-MEME ends here; the Oct 2025 to Oct 2026 window now
+counts as read for meme-coin ideas. Count 174 (189 with phase 1).

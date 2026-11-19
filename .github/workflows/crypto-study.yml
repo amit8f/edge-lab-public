@@ -13,7 +13,7 @@ on:
         required: true
         default: all
         type: choice
-        options: [all, data, trend, trend-vt, baskets, intra, intra-test, newmeme-probe, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
+        options: [all, data, trend, trend-vt, baskets, intra, intra-test, intra-exam, newmeme-probe, day-rows, day-fit, day-test, xs, xs-qa, xs-test, xs-trace, fund, slow]
 
 permissions: {}
 
@@ -91,6 +91,7 @@ jobs:
                            cat /tmp/probe/newmeme/summary.json
                            PYTHONPATH=. .venv/bin/python -c "import pandas as pd, glob; f=sorted(glob.glob('/tmp/probe/newmeme/ledger/snaps/*/*.parquet')); d=pd.concat(map(pd.read_parquet, f)) if f else pd.DataFrame(); print(len(d)); print(d.drop(columns=['token','pair']).describe().T.to_string() if len(d) else 'no snapshots'); print(d[['symbol','name','age_h','liq','vol1h']].head(15).to_string() if len(d) else '')"
                            cat /tmp/probe/newmeme/ledger/events/*/*.json | head -c 3000 ;;
+            intra-exam) py tracks.crypto.intra_study --stage exam --cache cache --out research/results/CRYINTRA ;;
             intra-test) py tracks.crypto.intra_study --stage test --cache cache --out research/results/CRYINTRA ;;
             trend-vt) py tracks.crypto.trend_study --cache cache --out research/results/CRYTREND --rule vt ;;
             day-rows) rows ;;
