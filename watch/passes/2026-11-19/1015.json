@@ -1,0 +1,654 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "300826dd541b0b13a21b71e4082b090b42815fe47bafa708ada62a20783a753e",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "8ebe97c1210c6aedc42fdf75ed14baa451845653edc70df0d5acd9a2a487d370",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "1f8d411771e4185b2333e58f7ef5ef540cce10b7bd90fa08c2fcce61879835e4",
+    "model": "openai/gpt-oss-20b",
+    "prompt_sha256": "7811af629e3c68a146e0fa0f34b84e932250908a972ab4e9b47bb1edd166a8d2"
+   },
+   "views": [
+    {
+     "confidence": 70,
+     "event": "earnings",
+     "symbol": "UGI",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ZYN",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "INSM",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "GLAD",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "NJR",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "CPB",
+     "tone": 0
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "NCPL",
+     "tone": 0
+    },
+    {
+     "confidence": 70,
+     "event": "management",
+     "symbol": "QTRX",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "legal",
+     "symbol": "TROX",
+     "tone": -1
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "STTK",
+     "tone": 0
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "ff3ce3bfe273c10914d2ce67b1dfbb7f4671d32e7c895da564139ebcc9b4acea",
+   "decisions": [
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative earnings, high volume drop",
+     "stop_pct": 15.0,
+     "symbol": "UGI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "strong upward momentum, high volume",
+     "stop_pct": 15.0,
+     "symbol": "ZYN"
+    },
+    {
+     "confidence": 65,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "price spike with low volume, potential reversal",
+     "stop_pct": 15.0,
+     "symbol": "INSM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "insufficient signal",
+     "stop_pct": 0.0,
+     "symbol": "GLAD"
+    },
+    {
+     "confidence": 80,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "negative earnings, high volume decline",
+     "stop_pct": 15.0,
+     "symbol": "NJR"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "significant drop with high volume",
+     "stop_pct": 15.0,
+     "symbol": "CPB"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "large upside move, high volume, no shorting allowed",
+     "stop_pct": 25.0,
+     "symbol": "NCPL"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "management change, price drop, shortable",
+     "stop_pct": 25.0,
+     "symbol": "QTRX"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "openai/gpt-oss-120b",
+     "reason": "legal issues, price rise, shortable",
+     "stop_pct": 25.0,
+     "symbol": "TROX"
+    },
+    {
+     "confidence": 60,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "moderate rise with high volume",
+     "stop_pct": 25.0,
+     "symbol": "STTK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "ACM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "AVNW"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "AZTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "BRUN"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "BXDC"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "CET"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "CNNE"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "DRTS"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "ENTA"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "FSK"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "FVR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "GAM"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "HY"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "MBGL"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "MSTR"
+    },
+    {
+     "confidence": 0,
+     "direction": "none",
+     "model": "openai/gpt-oss-120b",
+     "reason": "holding position",
+     "stop_pct": 0.0,
+     "symbol": "NLOP"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "f5e6b66bb22d45a286e6f40b359115998540b621a0ffe9e5fe7fdd9e94bf8514",
+   "quota": false,
+   "retry": {
+    "answer_sha256": "07728ae1cd917df7b529d7ee97ab36809864dead153ab5b9696d91dd6810a3b6",
+    "model": "openai/gpt-oss-120b",
+    "prompt_sha256": "00dd1d1591f59924c97b2c879b91d5c4e9ac19dff5462a0fb50e45ad8806a6af"
+   }
+  },
+  "reviewer": {
+   "answer_sha256": "c91af8573ac81011dda0e31a949cec00a89607b50fb61ebb9cdcd671a476ce77",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "4554b7d80bb19064da6406c563fbc0933a1389e55dca80ca6c2826dc8a797597",
+   "reviews": [
+    {
+     "confidence": 75,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Massive negative drop with high volume pace and negative earnings tone.",
+     "symbol": "UGI"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Strong upward momentum and high volume pace.",
+     "symbol": "ZYN"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Mixed signals with high gap up despite low volume pace.",
+     "symbol": "INSM"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Negative price action and negative earnings tone.",
+     "symbol": "NJR"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Sharp drop today despite recent strong gains.",
+     "symbol": "CPB"
+    },
+    {
+     "confidence": 65,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Continued strong momentum in a penny stock.",
+     "symbol": "NCPL"
+    },
+    {
+     "confidence": 70,
+     "direction": "short",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Ongoing multi-day weakness and negative management tone.",
+     "symbol": "QTRX"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Dead cat bounce on a deeply distressed stock with legal issues.",
+     "symbol": "TROX"
+    },
+    {
+     "confidence": 50,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Weak multi-day trend despite modest intraday bounce.",
+     "symbol": "STTK"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": -0.09146,
+   "news": 0,
+   "pace": 9.834,
+   "price": 34.57,
+   "r20": -0.01323,
+   "r5": 0.01413,
+   "short": true,
+   "src": "iex",
+   "symbol": "UGI",
+   "z": -9.017
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "volume"
+   ],
+   "move": 0.09409,
+   "news": 0,
+   "pace": 64.847,
+   "price": 10.93,
+   "r20": 0.10877,
+   "r5": 0.14433,
+   "short": false,
+   "src": "iex",
+   "symbol": "ZYN",
+   "z": 3.514
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.21035,
+   "news": 0,
+   "pace": 0.499,
+   "price": 145.0,
+   "r20": 0.27393,
+   "r5": -0.00787,
+   "short": true,
+   "src": "iex",
+   "symbol": "INSM",
+   "z": 4.868
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.0381,
+   "news": 0,
+   "pace": 7.767,
+   "price": 17.545,
+   "r20": 0.00388,
+   "r5": -0.0704,
+   "short": true,
+   "src": "iex",
+   "symbol": "GLAD",
+   "z": -2.642
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.02655,
+   "news": 0,
+   "pace": 3.473,
+   "price": 54.63,
+   "r20": 0.07716,
+   "r5": 0.02371,
+   "short": true,
+   "src": "iex",
+   "symbol": "NJR",
+   "z": -2.28
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.06011,
+   "news": 0,
+   "pace": 3.689,
+   "price": 22.905,
+   "r20": 0.24591,
+   "r5": 0.09234,
+   "short": true,
+   "src": "iex",
+   "symbol": "CPB",
+   "z": -2.269
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.24221,
+   "news": 0,
+   "pace": 12.152,
+   "price": 3.59,
+   "r20": 0.84076,
+   "r5": 0.55376,
+   "short": false,
+   "src": "iex",
+   "symbol": "NCPL",
+   "z": 0.983
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": -0.07971,
+   "news": 0,
+   "pace": 7.318,
+   "price": 1.905,
+   "r20": -0.25806,
+   "r5": -0.31457,
+   "short": true,
+   "src": "iex",
+   "symbol": "QTRX",
+   "z": -0.89
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.08725,
+   "news": 0,
+   "pace": 4.541,
+   "price": 1.62,
+   "r20": -0.53408,
+   "r5": -0.46132,
+   "short": true,
+   "src": "iex",
+   "symbol": "TROX",
+   "z": 0.787
+  },
+  {
+   "book": "PICK-PENNY",
+   "flags": [
+    "volume"
+   ],
+   "move": 0.03468,
+   "news": 0,
+   "pace": 10.37,
+   "price": 4.625,
+   "r20": -0.19892,
+   "r5": -0.11485,
+   "short": true,
+   "src": "iex",
+   "symbol": "STTK",
+   "z": 0.747
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4744.6293,
+  "PICK-MAIN-coin": 4981.5142,
+  "PICK-PENNY": 440.1169,
+  "PICK-PENNY-coin": 517.6135
+ },
+ "fills": [
+  {
+   "action": "open",
+   "book": "PICK-MAIN",
+   "cost": 0.1317,
+   "price": 10.93,
+   "qty": 1,
+   "side": 1,
+   "stop": 9.2905,
+   "symbol": "ZYN"
+  },
+  {
+   "action": "open",
+   "book": "PICK-MAIN-coin",
+   "cost": 0.1317,
+   "price": 10.93,
+   "qty": 1,
+   "side": 1,
+   "stop": 9.2905,
+   "symbol": "ZYN"
+  }
+ ],
+ "flag_counts": {
+  "move": 11,
+  "news": 0,
+  "volume": 225
+ },
+ "flagged": 226,
+ "headline_counts": {
+  "NJR": 2,
+  "QTRX": 1,
+  "TROX": 1,
+  "UGI": 3
+ },
+ "kind": "pass",
+ "prev_sha256": "b34b54e8d2e1b0b98da0672817523e25b5ce261da956f15e79a049bf9de89d9a",
+ "price_sources": {
+  "delayed_sip": 348,
+  "iex": 3037
+ },
+ "priced": 3385,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "UGI"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 1,
+   "skip": null,
+   "symbol": "ZYN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "INSM"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "NJR"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "short",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CPB"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "NCPL"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "QTRX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "short",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "TROX"
+  },
+  {
+   "book": "PICK-PENNY",
+   "direction": "long",
+   "qty": 0,
+   "skip": "paused since 2026-11-12T16:10:20.884432+00:00",
+   "symbol": "STTK"
+  }
+ ],
+ "slot": "2026-11-19T10:15",
+ "t": "2026-11-19T15:15:20.605089+00:00",
+ "universe": 3394,
+ "written_utc": "2026-11-19T15:15:49.847205Z"
+}
