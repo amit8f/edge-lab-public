@@ -21,6 +21,8 @@ def test_earnings_window_is_the_filing_day_and_the_next_session():
     assert list(e["cik"]) == [1] and list(e["date"].dt.strftime("%m-%d")) == ["01-09"]
     f.loc[0, "filed"] = pd.Timestamp("2023-01-04")
     assert list(S.earn_days(f, CAL)["date"].dt.strftime("%m-%d")) == ["01-04", "01-05"]
+    f["items"] = [["2.02", "9.01"], ["8.01"], ["2.02"]]  # the W1 cache stores items as lists
+    assert list(S.earn_days(f, CAL)["cik"].unique()) == [1]
 
 
 def test_news_types_and_groups():

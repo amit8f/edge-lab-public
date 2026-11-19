@@ -48,7 +48,8 @@ def to_session(ts_et, cal):
 
 def earn_days(filings, cal):
     """8-K filings with item 2.02 -> (cik, date) for the first trading day on or after filing and the next one."""
-    f = filings[(filings["form"].str.startswith("8-K")) & filings["items"].fillna("").str.contains(r"\b2\.02\b")]
+    items = filings["items"].map(lambda v: ",".join(v) if isinstance(v, (list, np.ndarray)) else (v or ""))
+    f = filings[(filings["form"].str.startswith("8-K")) & items.str.contains(r"\b2\.02\b")]
     i = np.searchsorted(cal.values, f["filed"].values)
     rows = []
     for c, k in zip(f["cik"].to_numpy(), i, strict=True):
