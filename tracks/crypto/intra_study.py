@@ -305,7 +305,7 @@ def stage_test(cache, out):
         FEATS = feats(name)
         H, m, q = best["H"], best["model"], best["top"]
         R = pd.read_parquet(C.cdir(cache) / "intra" / f"{name}.parquet").reset_index(drop=True)
-        assert R["t"].max() < TEST_END
+        assert R["t"].max() <= TEST_END      # the last close (Sep 30 23:00 candle) is stamped Oct 1 00:00
         cuts = skip_cuts(R)              # training rows only (t < 2024), same cut-offs as the choice stage
         ok = gated(R, cuts)
         Rtr = train_rows(R, ok, CHOOSE_END, H)
