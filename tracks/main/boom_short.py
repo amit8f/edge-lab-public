@@ -122,6 +122,112 @@ def d6_score(m, d):
     k = [int(c) for c in m.classes_]
     return pr[:, k.index(1)] - pr[:, k.index(-1)]
 
+def live_inputs(picks):
+    """The picks' D6 inputs as the book sees them at 9:28: with no pre-market bar by 9:14, pre-market move 0 and
+    pre-market dollar volume 0 (history used the open's gap and NaN)."""
+    p = picks.copy()
+    none = ~np.isfinite(p["pm_last"].to_numpy(float))
+    p.loc[none, "pm_gap"] = 0.0
+    p.loc[none, "pm_dv"] = 0.0
+    return p
+
+
+def side_report(te, s, cut):
+    """Shorts at score <= cut: count, share, net per trade, down-first share, and the per-day mean of (shorts minus
+    the same day's other picks, all shorted) with its Newey-West t (5 lags)."""
+    from tracks.main.longterm.stats import nw_tstat
+    te = te.assign(s=s, net=B2.net(-np.ones(len(te)), te["open"], te["exit"], te["open"]))
+    sel = te["s"] <= cut
+    diffs = []
+    for _, g in te.groupby("nxt"):
+        a, b = g.loc[g["s"] <= cut, "net"], g.loc[g["s"] > cut, "net"]
+        if len(a) and len(b):
+            diffs.append(float(a.mean() - b.mean()))
+    out = {"shorts": int(sel.sum()), "share": float(sel.mean()),
+           "net_per_trade": float(te.loc[sel, "net"].mean()) if sel.any() else None,
+           "down_first": float((te.loc[sel, "lab"] == -1).mean()) if sel.any() else None,
+           "days": len(diffs), "minus_others": float(np.mean(diffs)) if diffs else None}
+    if len(diffs) >= 3:
+        out["minus_others_t"] = float(nw_tstat(np.array(diffs), 5)[2])
+    return out
+
+
+def rerun928(cache, out="research/results/BOOM2"):
+    """BOOMSHORT.md Amendment 2: the frozen D6 on the freeze's 2025 picks, as frozen (A) and with 9:28 inputs (B)."""
+    from catboost import CatBoostClassifier
+    man = json.loads((MODEL_DIR / "manifest.json").read_text())
+    m = CatBoostClassifier()
+    m.load_model(str(MODEL_DIR / "d6.cbm"))
+    picks = B2.load_all(cache)
+    te = picks[(picks["lab"] != 2) & (picks["year"] == FREEZE_YEAR)].reset_index(drop=True)
+    sa, sb = d6_score(m, te), d6_score(m, live_inputs(te))
+    nopm = ~np.isfinite(te["pm_last"].to_numpy(float))
+    res = {"note": "research/prereg/BOOMSHORT.md Amendment 2", "picks": len(te), "frozen_cut": man["cut"],
+           "no_premarket_share": float(nopm.mean()),
+           "A_as_frozen": side_report(te, sa, man["cut"]), "B_at_928": side_report(te, sb, man["cut"]),
+           "B_own_cut": float(np.quantile(sb, COVER))}
+    res["B_at_own_cut"] = side_report(te, sb, res["B_own_cut"])
+    b = res["B_at_928"]
+    res["edge_holds_at_928"] = bool(b["shorts"] >= 100 and (b["net_per_trade"] or 0) > 0 and (b["minus_others"] or 0) > 0)
+    Path(out).mkdir(parents=True, exist_ok=True)
+    (Path(out) / "BOOMSHORT_928.json").write_text(json.dumps(res, indent=1))
+    print(json.dumps(res, indent=1))
+    return res
+
+def shift_report(cache, out="research/results/BOOM2"):
+    """Descriptive (BOOMSHORT.md Amendment 2, next check): the 2025 picks' D6 score by month (share at or below the
+    frozen cut) and quantiles of the inputs the live day files also log, to compare with the live picks."""
+    from catboost import CatBoostClassifier
+    man = json.loads((MODEL_DIR / "manifest.json").read_text())
+    m = CatBoostClassifier()
+    m.load_model(str(MODEL_DIR / "d6.cbm"))
+    picks = B2.load_all(cache)
+    te = picks[(picks["lab"] != 2) & (picks["year"] == FREEZE_YEAR)].reset_index(drop=True)
+    te["d6"] = d6_score(m, live_inputs(te))
+    q = [0.05, 0.1, 0.25, 0.5, 0.75, 0.9]
+    res = {"by_month": {str(k): {"picks": len(g), "share_le_cut": float((g["d6"] <= man["cut"]).mean()),
+                                 "d6_median": float(g["d6"].median())}
+                        for k, g in te.groupby(te["nxt"].dt.to_period("M"))},
+           "quantiles": {c: dict(zip(map(str, q), map(float, te[c].quantile(q))))
+                         for c in ["d6", "score", "pm_gap", "pm_dv", "pre_news"] if c in te}}
+    imp = dict(zip(d6_cols(), map(float, m.get_feature_importance())))
+    res["d6_importance_top"] = dict(sorted(imp.items(), key=lambda kv: -kv[1])[:12])
+    (Path(out) / "BOOMSHORT_shift.json").write_text(json.dumps(res, indent=1))
+    print(json.dumps(res, indent=1))
+    return res
+
+def premarket_check(days_dir, out="research/results/BOOM2"):
+    """Descriptive: refetch each logged decided day's pre-market 1-minute bars now (complete) and compare the
+    pre-market inputs with what the book logged at 9:28."""
+    h = alpaca_headers()
+    rows = []
+    for f in sorted(Path(days_dir).glob("*.json")):
+        r = json.loads(f.read_text())
+        if r.get("status") != "decided" or not r.get("picks"):
+            continue
+        day = pd.Timestamp(f.stem)
+        syms = [p["symbol"] for p in r["picks"]]
+        bars = E.bars_1min(syms, day + pd.Timedelta(hours=4), day + B2.PM_LAST, h)
+        for p in r["picks"]:
+            now = premarket(bars.get(p["symbol"]), p["prev_c"], p["dv20"], day)
+            rows.append({"day": f.stem, "symbol": p["symbol"], "logged_bars": p["pm_bars"], "now_bars": now["pm_bars"],
+                         "logged_dv": p["pm_dv"], "now_dv": now["pm_dv"], "logged_gap": p["pm_gap"],
+                         "now_gap": now["pm_gap"]})
+    d = pd.DataFrame(rows)
+    res = {"picks": len(d), "days": sorted(d["day"].unique().tolist()),
+           "median_bars": {"logged": float(d["logged_bars"].median()), "now": float(d["now_bars"].median())},
+           "median_dv": {"logged": float(d["logged_dv"].median()), "now": float(d["now_dv"].median())},
+           "share_bars_missing_at_928": float((d["now_bars"] > d["logged_bars"]).mean()),
+           "share_zero_dv": {"logged": float((d["logged_dv"] == 0).mean()), "now": float((d["now_dv"] == 0).mean())},
+           "mean_abs_gap_diff": float((d["now_gap"] - d["logged_gap"]).abs().mean())}
+    (Path(out) / "BOOMSHORT_pmcheck.json").write_text(json.dumps(res, indent=1))
+    print(json.dumps(res, indent=1))
+    print(d.to_string())
+    return res
+
+
+
+
 
 LABELS = {"r1": "yesterday's move", "r5": "last week's move", "r20": "last month's move", "r60": "3-month move",
           "r120": "6-month move", "mom12_1": "1-year momentum", "vol20": "how jumpy it was this month",

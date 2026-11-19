@@ -1407,7 +1407,7 @@ def stage_shortall(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze", "dayfilter", "sds"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze", "boom_928", "boom_shift", "boom_pmcheck", "dayfilter", "sds"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1465,6 +1465,18 @@ def main():
     if a.stage == "boom_freeze":
         from tracks.main import boom_short as BS
         BS.freeze(a.cache)
+        return
+    if a.stage == "boom_928":
+        from tracks.main import boom_short as BS
+        BS.rerun928(a.cache)
+        return
+    if a.stage == "boom_shift":
+        from tracks.main import boom_short as BS
+        BS.shift_report(a.cache)
+        return
+    if a.stage == "boom_pmcheck":
+        from tracks.main import boom_short as BS
+        BS.premarket_check("cache/bs/boomshort/ledger/days")
         return
     if a.stage in ("boom2_picks", "boom2_minutes", "boom2", "boom2_diag"):
         from tracks.main import boom2_study as B2

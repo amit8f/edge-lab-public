@@ -59,3 +59,47 @@ the first whole minute after it finished (logged as `entry_from`; the -8%/+8% ba
 price), and later than 9:35 is missed as before. Inputs are unchanged: news up to 9:28, pre-market bars up to
 then minus the 16-minute delay. Days that entered after 9:30 are flagged in the report and the pass rule is
 also read without them. The pass rule itself is unchanged.
+
+## Amendment 2 (2026-11-19, before any trade and before the number exists): measure the 9:28 input gap
+
+Why: in four on-time days (Nov 13, 16, 17, 18) only 1 of 80 picks scored at or below the cut, where 2025 put 10% of
+picks below it (expected about 8). The third "known difference" above explains it: in history a pick with no
+pre-market trade by 9:14 got the open's gap as its pre-market move (and NaN pre-market dollar volume); live it gets
+0 and 0. Most live picks have 2-5 pre-market bars, so the model often sees values it never saw in training. Amit chose
+on 2026-11-19 to rerun 2025 before any fix.
+
+Check (diagnostic; the frozen book and its rule are unchanged): score the frozen D6 on the same 2025 picks the freeze
+used, twice. A, as frozen. B, as the book sees them at 9:28: where a pick had no pre-market bar by 9:14, pre-market
+move = 0 and pre-market dollar volume = 0; everything else unchanged. For each, at the frozen cut: shorts, share of
+picks, net per trade after costs, down-first share, and per-day mean of (shorts minus the same day's other picks,
+shorted) with its Newey-West t (5 lags). Also for B at its own 10% quantile (reported, not chosen).
+
+Reading, fixed now: "the edge holds at 9:28" if B at the frozen cut has at least 100 shorts, net per trade > 0, and
+the per-day difference > 0. Then a fix (a cut set on 9:28 inputs, or a D6 retrained on them) is registered as a new
+idea before any forward use. If not, the 2025 result came from knowing the open, and the book is retired after Amit
+sees it. 2025 includes Oct-Dec 2025, which the freeze already read; nothing new from the holdout is opened.
+
+### Amendment 2 result (run 44481457933, recorded 2026-11-19)
+
+Only 8.3% of the 2025 picks had no pre-market bar by 9:14, so the 9:28 inputs change almost nothing. At the frozen
+cut: as frozen, 372 shorts (10.0%), +0.34% a trade, down-first 46.5%, shorts minus the same day's other picks +0.97%
+a day (NW t 2.18). With 9:28 inputs, 371 shorts (10.0%), +0.32% a trade, down-first 46.6%, +0.99% a day (t 2.20).
+Reading as fixed: **the edge holds at 9:28**; the input mismatch is not why the live book trades so little. (The
+manifest's +0.43% was with its own run; this rerun reads the same picks at +0.34%, a CatBoost runner difference.)
+The low live short rate (1 of 80 picks) is still unexplained; the next check compares live picks' inputs with 2025's.
+
+### Input comparison, 2025 vs live (run 44481753142 plus the four on-time live days; descriptive)
+
+2025 picks at 9:28 inputs: D6 10th percentile -0.119 (by design), median -0.006; share at or below the cut ranged
+5-18% by month, never near zero. Live (80 picks, Nov 13-18): D6 10th percentile -0.026, median +0.032. The three
+inputs D6 leans on most are BOOM1's score, the pre-market move and pre-market dollar volume. Live vs 2025 medians:
+BOOM1 score 0.52 vs 0.69; pre-market dollar volume 0.004 vs 0.026 of a normal day (a quarter of live picks show 0);
+pre-market move 0.000 vs +0.005. So live picks look calmer and show far less pre-market trading than 2025's picks did.
+Not yet known: whether that is the market this week or pre-market bars that are still incomplete at 9:28.
+
+### Pre-market refetch (run 44482046049, descriptive)
+
+Refetching the four days' pre-market bars afterwards gives the same picture the book saw at 9:28: median 4 bars
+and pre-market dollar volume 0.4% of a normal day both times; 26% of picks had none either way; 21% of picks gained a
+late bar, moving the pre-market move by 0.2% on average. The data is not the problem. This week's BOOM1 picks are
+simply quieter before the open than 2025's, so D6 rarely calls one bearish enough. No change to the book.
