@@ -92,3 +92,18 @@ treated as missing (a bug fix, made before any model result).
 - 2024 is the year the versions were chosen on (24 per basket), so these numbers flatter. Next: the one Jan-Sep 2025
   test. CRY-INTRA-BIG made 70 trades in all of 2024, so reaching the 100-trade minimum in nine months of 2025 is
   unlikely; the rule stays as registered.
+
+## Result: the one Jan-Sep 2025 test (run 44516814840; recorded 2026-11-19)
+
+A guard asserted every decision time was before 2025-10-01, but the last close (the Sep 30 23:00 candle) is stamped
+2025-10-01 00:00, so run 44516455622 stopped before scoring. Fix: the guard allows that stamp (no label reaches past
+Sep 30). Bug fix only.
+
+- **CRY-INTRA-BIG: FAILED.** 23 trades (100 needed), -1.29% net per trade, 43% winners, day-clustered t -1.67;
+  random-entry percentile 0.02; the blind gate lost -0.48%. The 2024 edge didn't carry over.
+- **CRY-INTRA-MEME: FAILED** on the registered rules, as a near miss. 56 trades (100 needed), +1.64% net per trade
+  after the 1% cost, 59% winners, t 1.31 (2.0 needed). It beat all 1,000 random-entry draws (percentile 1.00), and the
+  blind gate lost -1.00%. Five of six coins were positive (PEPE +6.4% on 7 trades, WIF +2.6% on 11, DOGE -0.3% on 13).
+  Too few trades to tell skill from luck.
+- Count 174 (189 with phase 1). Under the near-miss rule (PR #65) CRY-INTRA-MEME may get a forward watch book; that
+  is Amit's call. CRY-INTRA-BIG stops here.
