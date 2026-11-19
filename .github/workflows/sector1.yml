@@ -4,6 +4,12 @@ name: sector1
 
 on:
   workflow_dispatch:
+    inputs:
+      stage:
+        description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
+        type: choice
+        options: ["1", "2"]
+        default: "1"
 
 permissions: {}
 
@@ -50,14 +56,15 @@ jobs:
           key: sector1-v1-${{ github.run_id }}
           restore-keys: sector1-v1-
 
-      - name: Run stage 1
+      - name: Run the stage
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
           [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
-          PYTHONPATH=. .venv/bin/python -u -m tracks.main.sector1_study --w1 cache/w1 --out research/results/SECTOR1 \
-            --cache cache/sector1
+          mod=tracks.main.sector1_study; [[ "$STAGE" == 2 ]] && mod=tracks.main.sector2_study
+          PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 cache/w1 --out research/results/SECTOR1 --cache cache/sector1
 
       - name: Save the SIC cache
         if: always()
@@ -74,7 +81,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add research/results/SECTOR1
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
-          git commit -q -m "SECTOR1 stage 1 results (run ${{ github.run_id }})"
+          git commit -q -m "SECTOR1 stage ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
           git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
