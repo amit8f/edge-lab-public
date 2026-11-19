@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 14:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8978.64 | -10.21% | 243 | 79 | short AMD, short HUM, long OKTA, long PANW, short UNH |
-| Coin flip on C's picks | $9050.20 | -9.50% | 241 | 116 | short AMD, short HUM, short OKTA, long PANW, short UNH |
-| C's prompt on Groq (K7) | $5432.14 | -45.68% | 503 | 121 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq's picks | $8473.69 | -15.26% | 503 | 239 | long CRWD, long MSTR, short NBIS, long OKTA, short PANW |
-| C-groq's answers, acted on once a day (K8) | $8458.36 | -15.42% | 52 | 22 | long AKAM, long CRWD, short HUM, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $11043.37 | +10.43% | 52 | 31 | short AKAM, short CRWD, long HUM, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $10920.86 | +9.21% | 45 | 25 | short HUM, long OKTA, long PANW, long TJX, short UNH |
-| Coin flip on C-slow's picks | $10656.66 | +6.57% | 45 | 24 | long HUM, long OKTA, long PANW, short TJX, long UNH |
-| Just hold SPY | $9364.01 | -6.36% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8969.56 | -10.30% | 244 | 79 | short HUM, long OKTA, long PANW, short UNH, long ZS |
+| Coin flip on C's picks | $9025.50 | -9.75% | 242 | 116 | short HUM, short OKTA, long PANW, short UNH, long ZS |
+| C's prompt on Groq (K7) | $5443.24 | -45.57% | 503 | 121 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq's picks | $8484.57 | -15.15% | 503 | 239 | long CRWD, long MSTR, short NBIS, long OKTA, short PANW |
+| C-groq's answers, acted on once a day (K8) | $8495.76 | -15.04% | 52 | 22 | long AKAM, long CRWD, short HUM, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $11043.58 | +10.44% | 52 | 31 | short AKAM, short CRWD, long HUM, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $10942.38 | +9.42% | 45 | 25 | short HUM, long OKTA, long PANW, long TJX, short UNH |
+| Coin flip on C-slow's picks | $10683.55 | +6.84% | 45 | 24 | long HUM, long OKTA, long PANW, short TJX, long UNH |
+| Just hold SPY | $9392.40 | -6.08% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-19 14:27 | short HUM, long OKTA, long PANW, short UNH, long ZS | bought AMD @ $486.18; bought ZS @ $206.55 | Closed AMD short due to continued losses. Maintained profitable HUM, OKTA, PANW, and UNH positions. Initiated a new long position in ZS due to strong positive momentum and hourly breakout. |
 | 2026-11-19 14:17 | short AMD, short HUM, long OKTA, long PANW, short UNH | none | Maintaining all five existing profitable positions (short AMD, HUM, UNH; long OKTA, PANW) due to continued favorable price action and supporting news for each. |
 | 2026-11-19 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-19 13:57 | short AMD, short HUM, long OKTA, long PANW, short UNH | none | Maintaining all existing profitable positions. AMD, HUM, and UNH shorts are performing well on negative news and strong downtrends. OKTA and PANW longs are showing strong positive momentum with good news. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-19 14:1
 | 2026-11-18 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 11:07 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-18 10:57 | no answer, nothing changed | none | unreadable answer |
