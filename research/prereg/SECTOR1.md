@@ -39,3 +39,29 @@ overnight gaps include splits only to the extent the adjusted series does. Cells
 ## Prediction (written first)
 Health and Business equipment show the largest absolute moves and the highest share of stock-specific big days; Utilities
 and Money the smallest, with the highest market R-squared; overnight is more than half of the absolute move in most sectors.
+
+## Stage 1 result (run 44481499966, recorded 2026-11-19)
+
+Pooled 2019-2023, 3,440 stocks. "Other" (743 stocks) holds companies whose SIC matches no FF12 range or is missing.
+
+| sector | stocks | mean abs move | 8%+ days | overnight share | market R2 | sector R2 | stock-specific 8% days |
+|---|---|---|---|---|---|---|---|
+| Health | 497 | 2.5% | 4.1% | 30% | 0.17 | 0.22 | 33% |
+| Energy | 104 | 2.5% | 3.8% | 37% | 0.22 | 0.58 | 10% |
+| Business equipment | 496 | 2.2% | 3.0% | 35% | 0.29 | 0.34 | 28% |
+| Shops | 236 | 2.0% | 2.7% | 34% | 0.32 | 0.32 | 25% |
+| Other | 743 | 2.0% | 2.6% | 35% | 0.31 | 0.30 | 28% |
+| Consumer durables | 69 | 2.0% | 2.5% | 37% | 0.39 | 0.40 | 24% |
+| Telecom | 48 | 1.9% | 2.2% | 32% | 0.27 | 0.28 | 28% |
+| Chemicals | 71 | 1.8% | 2.0% | 36% | 0.38 | 0.42 | 22% |
+| Manufacturing | 231 | 1.9% | 2.0% | 36% | 0.40 | 0.43 | 25% |
+| Consumer nondurables | 100 | 1.8% | 1.9% | 33% | 0.29 | 0.30 | 29% |
+| Money | 551 | 1.7% | 1.8% | 36% | 0.42 | 0.50 | 16% |
+| Utilities | 94 | 1.4% | 1.1% | 33% | 0.27 | 0.50 | 16% |
+
+By year, the 8%+ day rate swings 2x to 6x within every sector: 2020 and 2022 high, 2019 and 2023 low (Health 2.1%,
+6.4%, 4.0%, 5.1%, 2.6%). Up share of 8% days is 50-54% everywhere. The cost (0.2% round trip) is 13-23% of a median
+intraday move.
+
+Prediction check: Health largest (right) but Energy, not Business equipment, second; Utilities smallest (right);
+Money has the highest market R2 (right); overnight is a third of the move, not more than half (wrong).
