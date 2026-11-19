@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-19T11:00 ET: 392 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-19T11:05 ET: 386 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,753.79 | -4.92% | 81 | 29 | short ARDT, long BBWI, long BIIB, long BMY, long BRBR, short C, long CDNS, short HY, long IRTC, long KEY, short MDLN, long MP, long MRSH, short NVDA, short PAAS, short SMCI, long TSM, long WMG | 1 unreadable agent answers |
-| SCOUT-MAIN-coin | $4,633.87 | -7.32% | 82 | 25 | short ARDT, long BBWI, long BIIB, short BMY, long CDNS, long IRTC, short KEY, long MDLN, short MP, long MRSH, short NLOP, short NVDA, short PAAS, short SMCI, short SONO, long TSM, long WMG | ok |
+| SCOUT-MAIN | $4,759.92 | -4.80% | 81 | 29 | short ARDT, long BBWI, long BIIB, long BMY, long BRBR, short C, long CDNS, short HY, long IRTC, long KEY, short MDLN, long MP, long MRSH, short NVDA, short PAAS, short SMCI, long TSM, long WMG | 1 unreadable agent answers |
+| SCOUT-MAIN-coin | $4,634.84 | -7.30% | 82 | 25 | short ARDT, long BBWI, long BIIB, short BMY, long CDNS, long IRTC, short KEY, long MDLN, short MP, long MRSH, short NLOP, short NVDA, short PAAS, short SMCI, short SONO, long TSM, long WMG | ok |
 | SCOUT-PENNY | $447.77 | -10.45% | 33 | 9 | long VISN | paused |
 | SCOUT-PENNY-coin | $463.03 | -7.39% | 33 | 12 | long VISN | ok |
