@@ -1,0 +1,426 @@
+{
+ "agents": {
+  "analyst": {
+   "answer_sha256": "a99e429366d159bbbe80774ac5e91989aec017dc6af9ebe1e804d0d53ff0bf3f",
+   "model": "openai/gpt-oss-20b",
+   "prompt_sha256": "359a83cbaa3eb7060ffb902cee50cf5d8b27c076c9455690e0946356ec046da9",
+   "views": [
+    {
+     "confidence": 90,
+     "event": "earnings",
+     "symbol": "NJR",
+     "tone": -2
+    },
+    {
+     "confidence": 85,
+     "event": "earnings",
+     "symbol": "UGI",
+     "tone": -2
+    },
+    {
+     "confidence": 100,
+     "event": "none",
+     "symbol": "ZYN",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "deal",
+     "symbol": "AWK",
+     "tone": -1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "MDB",
+     "tone": -1
+    },
+    {
+     "confidence": 60,
+     "event": "product",
+     "symbol": "MCD",
+     "tone": 0
+    },
+    {
+     "confidence": 80,
+     "event": "earnings",
+     "symbol": "CDNS",
+     "tone": 1
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "PL",
+     "tone": 1
+    },
+    {
+     "confidence": 80,
+     "event": "legal",
+     "symbol": "YUM",
+     "tone": -2
+    },
+    {
+     "confidence": 70,
+     "event": "analyst",
+     "symbol": "IP",
+     "tone": -1
+    }
+   ]
+  },
+  "picker": {
+   "answer_sha256": "aaffbd6df3f8e89c315aba0fb714d01763d3774834b55dc9f0fe66dba3af6c10",
+   "decisions": [
+    {
+     "confidence": 100,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Strong +15% move, high confidence",
+     "stop_pct": 12.0,
+     "symbol": "ZYN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Positive earnings surprise, confidence 80",
+     "stop_pct": 12.0,
+     "symbol": "CDNS"
+    },
+    {
+     "confidence": 70,
+     "direction": "long",
+     "model": "openai/gpt-oss-120b",
+     "reason": "Significant upside, confidence 70",
+     "stop_pct": 12.0,
+     "symbol": "PL"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding period reached",
+     "stop_pct": 1.02012,
+     "symbol": "IHRT"
+    },
+    {
+     "confidence": 100,
+     "direction": "close",
+     "model": "openai/gpt-oss-120b",
+     "reason": "10\u2011day holding period reached",
+     "stop_pct": 7.08,
+     "symbol": "PEPG"
+    }
+   ],
+   "model": "openai/gpt-oss-120b",
+   "prompt_sha256": "87592f6328f1c54489e119a0ceb78bfc4339cdb43a0a1e1d904c89bcb7a17893"
+  },
+  "reviewer": {
+   "answer_sha256": "55ab73fa907846bb3144ebf65ba4955eed033039970b16823dcfaf7fae5d4de0",
+   "model": "gemini-3.5-flash-lite",
+   "prompt_sha256": "c40c98bcb41f820c8600ead8aff01f6fa8b5652108a812551ac8726abaf2e182",
+   "reviews": [
+    {
+     "confidence": 100,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Stock is not shortable and already up significantly today with high recent momentum.",
+     "symbol": "ZYN"
+    },
+    {
+     "confidence": 80,
+     "direction": "long",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Positive tone on earnings with manageable recent pullback offers a decent long entry.",
+     "symbol": "CDNS"
+    },
+    {
+     "confidence": 70,
+     "direction": "none",
+     "model": "gemini-3.5-flash-lite",
+     "reason": "Recent downward trend over 5 and 20 days suggests caution despite today's bounce.",
+     "symbol": "PL"
+    }
+   ]
+  }
+ },
+ "blocked": {
+  "PICK-MAIN": null,
+  "PICK-PENNY": "2026-11-12T16:10:20.884432+00:00"
+ },
+ "books_restarted": false,
+ "books_version": "2026-10-23",
+ "candidates": [
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move",
+    "news"
+   ],
+   "move": -0.04562,
+   "news": 1,
+   "pace": null,
+   "price": 53.56,
+   "r20": 0.07716,
+   "r5": 0.02371,
+   "short": true,
+   "src": "iex",
+   "symbol": "NJR",
+   "z": -3.956
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": -0.06833,
+   "news": 0,
+   "pace": null,
+   "price": 35.45,
+   "r20": -0.01323,
+   "r5": 0.01413,
+   "short": true,
+   "src": "iex",
+   "symbol": "UGI",
+   "z": -6.654
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "move"
+   ],
+   "move": 0.14965,
+   "news": 0,
+   "pace": null,
+   "price": 11.485,
+   "r20": 0.10877,
+   "r5": 0.14433,
+   "short": false,
+   "src": "iex",
+   "symbol": "ZYN",
+   "z": 5.45
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02331,
+   "news": 1,
+   "pace": null,
+   "price": 146.63,
+   "r20": 0.12079,
+   "r5": 0.00921,
+   "short": true,
+   "src": "iex",
+   "symbol": "AWK",
+   "z": -1.284
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.05249,
+   "news": 1,
+   "pace": null,
+   "price": 322.81,
+   "r20": -0.21507,
+   "r5": -0.0929,
+   "short": true,
+   "src": "iex",
+   "symbol": "MDB",
+   "z": 1.191
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02242,
+   "news": 1,
+   "pace": null,
+   "price": 267.885,
+   "r20": 0.11281,
+   "r5": -0.0028,
+   "short": true,
+   "src": "iex",
+   "symbol": "MCD",
+   "z": -1.143
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.03522,
+   "news": 1,
+   "pace": null,
+   "price": 316.59,
+   "r20": -0.0621,
+   "r5": -0.07119,
+   "short": true,
+   "src": "iex",
+   "symbol": "CDNS",
+   "z": 1.077
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": 0.0639,
+   "news": 1,
+   "pace": null,
+   "price": 12.82,
+   "r20": -0.12108,
+   "r5": -0.15969,
+   "short": true,
+   "src": "iex",
+   "symbol": "PL",
+   "z": 1.054
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.01975,
+   "news": 1,
+   "pace": null,
+   "price": 157.625,
+   "r20": 0.06321,
+   "r5": 0.00368,
+   "short": true,
+   "src": "iex",
+   "symbol": "YUM",
+   "z": -1.052
+  },
+  {
+   "book": "PICK-MAIN",
+   "flags": [
+    "news"
+   ],
+   "move": -0.02368,
+   "news": 1,
+   "pace": null,
+   "price": 31.75,
+   "r20": -0.01989,
+   "r5": -0.04884,
+   "short": true,
+   "src": "iex",
+   "symbol": "IP",
+   "z": -1.019
+  }
+ ],
+ "equity": {
+  "PICK-MAIN": 4762.3264,
+  "PICK-MAIN-coin": 4990.6013,
+  "PICK-PENNY": 439.8619,
+  "PICK-PENNY-coin": 518.819
+ },
+ "fills": [
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-19T14:40:20.674336+00:00",
+   "entry": 0.8501,
+   "exit": 0.5231,
+   "net": 7.915,
+   "opened": "2026-11-10T14:35:20.610494+00:00",
+   "qty": 26,
+   "side": -1,
+   "symbol": "IHRT",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY",
+   "closed": "2026-11-19T14:40:20.674336+00:00",
+   "entry": 5.9,
+   "exit": 4.01,
+   "net": 5.1878,
+   "opened": "2026-11-10T14:35:20.610494+00:00",
+   "qty": 3,
+   "side": -1,
+   "symbol": "PEPG",
+   "why": "picker"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-19T14:40:20.674336+00:00",
+   "entry": 5.9,
+   "exit": 4.01,
+   "net": 5.1878,
+   "opened": "2026-11-10T14:35:20.610494+00:00",
+   "qty": 3,
+   "side": -1,
+   "symbol": "PEPG",
+   "why": "picker exit"
+  },
+  {
+   "action": "close",
+   "book": "PICK-PENNY-coin",
+   "closed": "2026-11-19T14:40:20.674336+00:00",
+   "entry": 0.8501,
+   "exit": 0.5231,
+   "net": 7.915,
+   "opened": "2026-11-10T14:35:20.610494+00:00",
+   "qty": 26,
+   "side": -1,
+   "symbol": "IHRT",
+   "why": "picker exit"
+  }
+ ],
+ "flag_counts": {
+  "move": 7,
+  "news": 106,
+  "volume": 0
+ },
+ "flagged": 112,
+ "headline_counts": {
+  "AWK": 3,
+  "CDNS": 2,
+  "IP": 1,
+  "MCD": 3,
+  "MDB": 1,
+  "NJR": 2,
+  "PL": 1,
+  "UGI": 3,
+  "YUM": 2
+ },
+ "kind": "pass",
+ "prev_sha256": "c8064a09f929822c49cff7ce1aa341d3a610e2bfb7f950d80d1592fdc9f0cd92",
+ "price_sources": {
+  "delayed_sip": 0,
+  "iex": 2536
+ },
+ "priced": 2536,
+ "risk": [
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "ZYN"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "CDNS"
+  },
+  {
+   "book": "PICK-MAIN",
+   "direction": "long",
+   "qty": 0,
+   "skip": "size 0 (gross 1x)",
+   "symbol": "PL"
+  }
+ ],
+ "slot": "2026-11-19T09:40",
+ "t": "2026-11-19T14:40:20.674336+00:00",
+ "universe": 3394,
+ "written_utc": "2026-11-19T14:41:51.303732Z"
+}
