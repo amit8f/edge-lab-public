@@ -229,3 +229,25 @@ def test_reasons_names_the_inputs_that_pushed_the_score():
     r = S.reasons(m, X[:2], ["r1", "pm_gap", "zz"], toward=-1)
     assert r[0][0][0] == "pre-market move" and len(r[0]) == 3
     assert (r[0][0][1] > 0) == (X[0, 1] < 0)          # a falling pre-market pushes toward down
+
+
+def test_live_inputs_zero_the_premarket_only_where_there_was_no_premarket_bar():
+    import numpy as np
+    import pandas as pd
+
+    from tracks.main import boom_short as BS
+    p = pd.DataFrame({"pm_last": [np.nan, 10.0], "pm_gap": [0.07, 0.02], "pm_dv": [np.nan, 0.3]})
+    q = BS.live_inputs(p)
+    assert list(q["pm_gap"]) == [0.0, 0.02] and list(q["pm_dv"]) == [0.0, 0.3]
+    assert p["pm_gap"].iloc[0] == 0.07
+
+
+def test_side_report_counts_shorts_and_compares_with_the_same_days_other_picks():
+    import numpy as np
+    import pandas as pd
+
+    from tracks.main import boom_short as BS
+    d = pd.to_datetime(["2025-03-03"] * 3 + ["2025-03-04"] * 3)
+    te = pd.DataFrame({"nxt": d, "open": 20.0, "exit": [18.4, 20, 20, 18.4, 21, 20], "lab": [-1, 0, 0, -1, 1, 0]})
+    r = BS.side_report(te, np.array([-0.5, 0.1, 0.2, -0.4, 0.0, 0.3]), -0.2)
+    assert r["shorts"] == 2 and r["days"] == 2 and r["down_first"] == 1.0 and r["minus_others"] > 0

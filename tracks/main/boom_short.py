@@ -122,6 +122,59 @@ def d6_score(m, d):
     k = [int(c) for c in m.classes_]
     return pr[:, k.index(1)] - pr[:, k.index(-1)]
 
+def live_inputs(picks):
+    """The picks' D6 inputs as the book sees them at 9:28: with no pre-market bar by 9:14, pre-market move 0 and
+    pre-market dollar volume 0 (history used the open's gap and NaN)."""
+    p = picks.copy()
+    none = ~np.isfinite(p["pm_last"].to_numpy(float))
+    p.loc[none, "pm_gap"] = 0.0
+    p.loc[none, "pm_dv"] = 0.0
+    return p
+
+
+def side_report(te, s, cut):
+    """Shorts at score <= cut: count, share, net per trade, down-first share, and the per-day mean of (shorts minus
+    the same day's other picks, all shorted) with its Newey-West t (5 lags)."""
+    from tracks.main.longterm.stats import nw_tstat
+    te = te.assign(s=s, net=B2.net(-np.ones(len(te)), te["open"], te["exit"], te["open"]))
+    sel = te["s"] <= cut
+    diffs = []
+    for _, g in te.groupby("nxt"):
+        a, b = g.loc[g["s"] <= cut, "net"], g.loc[g["s"] > cut, "net"]
+        if len(a) and len(b):
+            diffs.append(float(a.mean() - b.mean()))
+    out = {"shorts": int(sel.sum()), "share": float(sel.mean()),
+           "net_per_trade": float(te.loc[sel, "net"].mean()) if sel.any() else None,
+           "down_first": float((te.loc[sel, "lab"] == -1).mean()) if sel.any() else None,
+           "days": len(diffs), "minus_others": float(np.mean(diffs)) if diffs else None}
+    if len(diffs) >= 3:
+        out["minus_others_t"] = float(nw_tstat(np.array(diffs), 5)[2])
+    return out
+
+
+def rerun928(cache, out="research/results/BOOM2"):
+    """BOOMSHORT.md Amendment 2: the frozen D6 on the freeze's 2025 picks, as frozen (A) and with 9:28 inputs (B)."""
+    from catboost import CatBoostClassifier
+    man = json.loads((MODEL_DIR / "manifest.json").read_text())
+    m = CatBoostClassifier()
+    m.load_model(str(MODEL_DIR / "d6.cbm"))
+    picks = B2.load_all(cache)
+    te = picks[(picks["lab"] != 2) & (picks["year"] == FREEZE_YEAR)].reset_index(drop=True)
+    sa, sb = d6_score(m, te), d6_score(m, live_inputs(te))
+    nopm = ~np.isfinite(te["pm_last"].to_numpy(float))
+    res = {"note": "research/prereg/BOOMSHORT.md Amendment 2", "picks": len(te), "frozen_cut": man["cut"],
+           "no_premarket_share": float(nopm.mean()),
+           "A_as_frozen": side_report(te, sa, man["cut"]), "B_at_928": side_report(te, sb, man["cut"]),
+           "B_own_cut": float(np.quantile(sb, COVER))}
+    res["B_at_own_cut"] = side_report(te, sb, res["B_own_cut"])
+    b = res["B_at_928"]
+    res["edge_holds_at_928"] = bool(b["shorts"] >= 100 and (b["net_per_trade"] or 0) > 0 and (b["minus_others"] or 0) > 0)
+    Path(out).mkdir(parents=True, exist_ok=True)
+    (Path(out) / "BOOMSHORT_928.json").write_text(json.dumps(res, indent=1))
+    print(json.dumps(res, indent=1))
+    return res
+
+
 
 LABELS = {"r1": "yesterday's move", "r5": "last week's move", "r20": "last month's move", "r60": "3-month move",
           "r120": "6-month move", "mom12_1": "1-year momentum", "vol20": "how jumpy it was this month",
