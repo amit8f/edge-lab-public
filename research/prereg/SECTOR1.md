@@ -65,3 +65,29 @@ intraday move.
 
 Prediction check: Health largest (right) but Energy, not Business equipment, second; Utilities smallest (right);
 Money has the highest market R2 (right); overnight is a third of the move, not more than half (wrong).
+
+## Amendment 1 (2026-11-19, before any stage-2 number exists): stage 2, what drives the moves
+
+Still descriptive only, not counted. Same universe, sectors and years (2019-2023), same stage-1 stock-days.
+
+Drivers, each marked per stock-day t:
+- **Earnings window:** the company filed an 8-K with item 2.02 on day t or on the trading day before (a filing
+  after the close moves the next day). From W1's EDGAR filings (filing date only, no time).
+- **News:** at least one Benzinga headline naming the symbol from 16:00 ET on the previous trading day to 16:00 ET
+  on day t (W1's headline months). Count kept.
+- **News type**, by fixed keyword lists on those headlines (case-insensitive; a day can have several):
+  earnings (earnings, EPS, revenue, results, quarter), guidance (guidance, outlook, forecast, raises, lowers, cuts),
+  analyst (upgrade, downgrade, price target, initiates, reiterates), deal (acquire, acquisition, merger, to buy,
+  buyout, takeover, deal), fda (FDA, approval, trial, phase), offering (offering, priced, dilution, private placement,
+  warrants), contract (contract, award, partnership, agreement).
+- **None:** no earnings window and no news.
+- **Rates and oil:** daily change of the 10-year Treasury yield (FRED DGS10, percentage points) and daily % change of
+  WTI crude (FRED DCOILWTICO), same calendar day.
+
+Measures per sector, per driver group (pooled and per year): share of stock-days, mean absolute return, share of
+|return| >= 8%, the up share of those 8% days, mean return, and the share of all the sector's 8% up days and 8% down
+days that fall in the group (what drives up moves vs down moves). For rates and oil: correlation and beta of the
+sector's equal-weight daily return to each, and the sector's mean return on the 10% of days with the largest rise and
+the largest fall of each.
+
+Time of day needs 5-minute bars for every stock-day and is left for a stage 3 (registered before it runs).
