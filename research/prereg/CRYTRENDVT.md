@@ -39,3 +39,14 @@ drawdown smaller).
 
 Not rejected: 0.4. The main risk is that CRY-TREND's Sharpe already counts its best stretches, where the sizing sells
 exposure just before large gains.
+
+## Result (run 43831535322, history check only; recorded 2026-11-19)
+
+Verdict: **not rejected.** At the primary cost (0.5% round trip) the rule beat CRY-TREND on Sharpe in both periods
+and had the smaller drawdown in 2018-2025 (52% vs 66%; hold 88%), and it stayed above buy-and-hold. 2018-2025:
+Sharpe 1.02 (CRY-TREND 0.91, hold 0.72), CAGR 35% (CRY-TREND 39%). 2022-2025: Sharpe 0.69 (0.68, hold 0.56), the
+margin over CRY-TREND is thin there. Futures-cost scenario (0.12%): 1.17 vs 1.03 and 0.87 vs 0.84. Average share
+invested 41-45%; about 30 signal trades a year. Twin-test percentile 0.98 (2018-2025) and 0.89 (2022-2025).
+Prediction was 0.4 for "not rejected": it passed. It gives up some return (CAGR) for the smaller drawdown, and
+2018-2025 was read before, so this is not a test. Next: a $1,000 forward ledger book beside CRY-TREND, judged
+2027-12-31 on Sharpe above CRY-TREND's and a smaller drawdown.

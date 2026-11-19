@@ -11,6 +11,7 @@ from tracks.crypto import day_live as F
 from tracks.crypto import day_study as D
 from tracks.crypto import trend_live as L
 from tracks.crypto import trend_study as T
+from tracks.crypto import trend_vt_live as V
 from tracks.crypto import xs_study as X5
 
 
@@ -201,6 +202,36 @@ def test_live_trend_job_starts_on_the_newest_day_and_catches_up(tmp_path):
     assert L.Ledger(tmp_path / "crytrend" / "ledger").verify() == []
     with pytest.raises(RuntimeError):                     # a hole in the candles stops the job
         L.run(tmp_path / "x", fetch=lambda: {c: {d: v[d] for d in days[40:50]} for c, v in closes.items()})
+
+
+def test_live_vt_book_repeats_the_history_book_day_by_day():
+    closes, days = _closes(200)
+    P = pd.DataFrame(closes)
+    sig = np.column_stack([T.signal(P[c].to_numpy()) for c in L.COINS])
+    ret = P.pct_change().to_numpy()
+    vol = T.realized_vol(ret)
+    mon = np.array([pd.Timestamp(d).weekday() == 0 for d in days])
+    start = 40
+    eq = T.vt_book(ret[start + 1:], sig[start:-1], vol[start:-1], mon[start:-1], V.COST)
+    mondays = lambda i: pd.Timestamp(days[i]).weekday() == 0
+    book, _ = V.trade(L.new_book(), L.signal_at(closes, days[start]), V.vol_at(closes, days[start]), mondays(start))
+    got = []
+    for i in range(start + 1, len(days)):
+        book = L.grow(book, {c: closes[c][days[i]] / closes[c][days[i - 1]] - 1 for c in L.COINS})
+        got.append(L.equity(book) / L.START_USD)
+        book, _ = V.trade(book, L.signal_at(closes, days[i]), V.vol_at(closes, days[i]), mondays(i))
+    assert np.allclose(got, eq)
+
+
+def test_live_vt_job_logs_and_chains(tmp_path):
+    import json
+    closes, days = _closes(80)
+    cut = lambda n: {c: {d: v[d] for d in days[:n]} for c, v in closes.items()}
+    V.run(tmp_path, fetch=lambda: cut(60))
+    V.run(tmp_path, fetch=lambda: cut(70))
+    s = json.loads((tmp_path / "crytrendvt" / "summary.json").read_text())
+    assert s["days"] == 11 and s["first_day"] == days[59]
+    assert V.Ledger(tmp_path / "crytrendvt" / "ledger").verify() == []
 
 
 # ---------- the day model's forward replay ----------

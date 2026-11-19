@@ -1,0 +1,80 @@
+# SECTOR1 stage 1 (tracks/main/sector1_study.py, research/prereg/SECTOR1.md): daily moves by sector, 2019-2023.
+# Manual start. Reads W1's daily cache (read only) and EDGAR SIC codes; commits only the summary JSON.
+name: sector1
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: sector1
+  cancel-in-progress: false
+
+jobs:
+  run:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore W1's daily cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/w1
+          key: w1-v1-none
+          restore-keys: w1-v1-
+
+      - name: Restore the SIC cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/sector1
+          key: sector1-v1-${{ github.run_id }}
+          restore-keys: sector1-v1-
+
+      - name: Run stage 1
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          set -o pipefail
+          [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
+          PYTHONPATH=. .venv/bin/python -u -m tracks.main.sector1_study --w1 cache/w1 --out research/results/SECTOR1 \
+            --cache cache/sector1
+
+      - name: Save the SIC cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache/sector1
+          key: sector1-v1-${{ github.run_id }}
+
+      - name: Commit the results to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/SECTOR1
+          git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
+          git commit -q -m "SECTOR1 stage 1 results (run ${{ github.run_id }})"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
+          git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"
