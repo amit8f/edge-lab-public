@@ -49,6 +49,14 @@ jobs:
           key: w1-v1-none
           restore-keys: w1-v1-
 
+      - name: Fall back to the NX1 cache, which holds a copy of W1's data (caches get evicted)
+        if: hashFiles('cache/w1/w1/daily/**') == ''
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+
       - name: Restore the SIC cache
         uses: actions/cache/restore@v4
         with:
@@ -62,9 +70,11 @@ jobs:
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
-          [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
+          w1=cache/w1; [[ -d cache/w1/w1/daily ]] || w1=cache/nx1
+          [[ -d $w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
+          echo "W1 data from $w1: $(ls $w1/w1) / news: $(ls $w1/g1/news 2>/dev/null | wc -l) months"
           mod=tracks.main.sector1_study; [[ "$STAGE" == 2 ]] && mod=tracks.main.sector2_study
-          PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 cache/w1 --out research/results/SECTOR1 --cache cache/sector1
+          PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1
 
       - name: Save the SIC cache
         if: always()
