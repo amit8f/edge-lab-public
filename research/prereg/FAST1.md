@@ -33,3 +33,10 @@ control's 95th percentile over 200 draws. Reported beside it, not deciding: the 
 
 Pass: a $5,000 ledger shadow book (no orders). Pattern-day-trader rule: a real account under $25k allows 3 day
 trades in 5 days, so S1 stays on paper until that is settled. Fail: written up. Holdout from 2025-10-01 untouched.
+
+## Amendment 1 (2026-11-20, same day, code details before any FAST1 number exists)
+
+`tracks/news/fast1_study.py`. Same NX3 walk-forward refits and seeds as S0. The 200 control draws are the day's
+real events at random, as many as the day's FAST1 trades, with their sides. Costs are NX1's `cost_frac` for a
+$500 position held one day (main or penny by entry price, borrow on shorts). The choice and the test run in one
+job: the test reads only the exit the choice years picked. "Right way" (reported) = net above minus the cost.
