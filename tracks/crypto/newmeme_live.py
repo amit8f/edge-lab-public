@@ -33,6 +33,9 @@ START_USD, SIZE, MAX_OPEN, SIDE_COST = 1000.0, 25.0, 10, 0.015
 AGE_MIN, AGE_MAX = 15 / 60, 6.0                         # hours
 MIN_LIQ, MIN_VOL1H = 20_000, 50_000
 TP, SL, HOLD_H, RUG_LIQ, MISS_MAX = 2.0, 0.5, 24, 0.10, 3
+# Bug fix 2026-11-20: a read more than JUMP_MAX times the last price is a bad quote (one read gave 30,000x in 5 min)
+# and counts as a miss; a take-profit fills at its limit, entry x TP, never above it.
+JUMP_MAX = 20.0
 THEME_N, THEME_H = 5, 6
 STOP = {"the", "and", "coin", "token", "sol", "solana", "base", "inu", "meme", "official", "for", "you", "new", "of",
         "on", "ai", "usd", "usdc", "usdt", "weth", "wsol", "wbtc", "wif", "dog", "cat", "pump", "fun", "moon", "eth", "baby", "mini", "elon", "real"}
@@ -150,7 +153,7 @@ def exit_reason(tr, r, now):
         return None
     x = r["price"] / tr["entry_px"]
     if x >= TP:
-        return "take_profit", r["price"]
+        return "take_profit", tr["entry_px"] * TP
     if x <= SL:
         return "stop", r["price"]
     if r["liq"] < RUG_LIQ * tr["entry_liq"]:
@@ -173,7 +176,15 @@ def clustered_t(net, day):
     return float(net.mean() / se) if se > 0 else float("nan")
 
 
+def fixed_net(t):
+    """A logged trade's net under the 2026-11-20 fix: take-profits fill at entry x TP."""
+    if t["reason"] == "take_profit":
+        return net_return(t["entry_px"], min(t["exit_px"], t["entry_px"] * TP))
+    return t["net"]
+
+
 def summarize(closed, open_trades, now):
+    closed = [{**t, "net": fixed_net(t)} for t in closed]
     out = {"updated": now, "open": sum(1 for t in open_trades if t["arm"] == "fresh"), "arms": {}}
     for arm in ("fresh", "control"):
         c = [t for t in closed if t["arm"] == arm]
@@ -315,6 +326,8 @@ def run(state, minutes=25, get=None, clock=time.time, sleep=time.sleep, rng=None
                 still.append(tr)
                 continue
             r = rows.get(key)
+            if r is not None and tr["last_px"] > 0 and r["price"] / tr["last_px"] > JUMP_MAX:
+                r = None
             ex = exit_reason(tr, r, now)
             if ex is None:
                 if r is None:
