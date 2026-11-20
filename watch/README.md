@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-20T14:10 ET: 142 flagged of 3387, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-20T14:15 ET: 40 flagged of 3387, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,717.73 | -5.65% | 50 | 21 | long ACM, short AVNW, long AZTA, short BRUN, short CET, short CNNE, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, short XRN | paused |
-| PICK-MAIN-coin | $5,006.78 | +0.14% | 50 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, long XRN | ok |
-| PICK-PENNY | $432.85 | -13.43% | 67 | 23 | long BGS, long CURI, long FRMI, short HSDT, short LAC, short TSHA | paused |
-| PICK-PENNY-coin | $508.09 | +1.62% | 65 | 28 | long BGS, short CURI, long FRMI, long HSDT, short LAC, long TLS, short TSHA, long ZURA | ok |
+| PICK-MAIN | $4,716.86 | -5.66% | 50 | 21 | long ACM, short AVNW, long AZTA, short BRUN, short CET, short CNNE, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, short XRN | paused |
+| PICK-MAIN-coin | $5,006.26 | +0.13% | 50 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, long XRN | ok |
+| PICK-PENNY | $432.24 | -13.55% | 67 | 23 | long BGS, long CURI, long FRMI, short HSDT, short LAC, short TSHA | paused |
+| PICK-PENNY-coin | $507.53 | +1.51% | 65 | 28 | long BGS, short CURI, long FRMI, long HSDT, short LAC, long TLS, short TSHA, long ZURA | ok |
