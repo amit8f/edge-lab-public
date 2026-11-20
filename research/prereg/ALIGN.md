@@ -56,3 +56,13 @@ their direction, longs and shorts apart, main and penny apart, each year.
 
 Pass: a $5,000 ledger shadow book next to NX3-ALL-HI (no orders), sized as NX3-ALL; a paper account only after
 PROTOCOL rule 20. Fail: written up, no book. Holdout from 2025-10-01 untouched.
+
+## Amendment 1 (2026-11-20, same day, before any ALIGN number exists)
+
+The research for Amit's fast-trade request (`/mnt/project-files/reports/Sub hour momentum trades.md`, Wang 2025)
+found that peers' moves during the session carry the signal while their overnight gaps reverse during the day.
+Measured from the previous close, ALIGN's related move would mostly be the overnight gap. So:
+- Related, sector and SPY moves are measured from today's 9:30 open to the entry minute.
+- Events whose NX3 entry would be before 10:00 (all pre-open news) enter at 10:00 instead, at the 10:00 bar's open,
+  so related stocks have 30 minutes of session to show their move. Intraday events keep NX3's entry (1 minute after
+  the headline). Everything else is unchanged.
