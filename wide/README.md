@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 14:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 14:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8947.63 | -10.52% | 266 | 89 | short APLD, short IREN, short MU, short SNDK, short WULF |
-| Coin flip on C's picks | $8663.78 | -13.36% | 264 | 129 | long APLD, short IREN, long MU, short SNDK, short WULF |
-| C's prompt on Groq (K7) | $5584.32 | -44.16% | 524 | 129 | short AMD, short AVGO, short BE, short CLS, long RIOT |
-| Coin flip on C-groq's picks | $8393.28 | -16.07% | 524 | 249 | long AMD, long AVGO, short BE, long CLS, short RIOT |
-| C-groq's answers, acted on once a day (K8) | $8568.47 | -14.32% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $10793.98 | +7.94% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $11013.33 | +10.13% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
-| Coin flip on C-slow's picks | $10872.06 | +8.72% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
-| Just hold SPY | $9121.27 | -8.79% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9026.28 | -9.74% | 266 | 89 | short APLD, short IREN, short MU, short SNDK, short WULF |
+| Coin flip on C's picks | $8695.38 | -13.05% | 264 | 129 | long APLD, short IREN, long MU, short SNDK, short WULF |
+| C's prompt on Groq (K7) | $5595.65 | -44.04% | 524 | 129 | short AMD, short AVGO, short BE, short CLS, long RIOT |
+| Coin flip on C-groq's picks | $8399.96 | -16.00% | 524 | 249 | long AMD, long AVGO, short BE, long CLS, short RIOT |
+| C-groq's answers, acted on once a day (K8) | $8568.72 | -14.31% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $10783.71 | +7.84% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $11021.05 | +10.21% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
+| Coin flip on C-slow's picks | $10864.06 | +8.64% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
+| Just hold SPY | $9093.28 | -9.07% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-20 14:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 13:57 | short APLD, short IREN, short MU, short SNDK, short WULF | bought AAOI @ $34.00; sold SNDK @ $81.79 | Maintaining profitable short positions in APLD and WULF, and IREN due to strong downtrends. Re-entering MU short as the overall trend remains down. Initiating a new short in SNDK due to its extreme price collapse. |
 | 2026-11-20 13:47 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 14:0
 | 2026-11-19 11:17 | short AMD, short HUM, long OKTA, long PANW, short UNH | none | Maintaining current profitable positions in OKTA (long), PANW (long), UNH (short), AMD (short), and HUM (short) due to continued strong momentum and relevant news. |
 | 2026-11-19 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-19 10:57 | short AMD, short HUM, long OKTA, long PANW, short UNH | none | Maintaining all existing profitable positions (AMD, HUM, UNH shorts; OKTA, PANW longs) as their trends and supporting news remain favorable. No new positions are added as the current portfolio is well-balanced and performing. |
-| 2026-11-19 10:47 | no answer, nothing changed | none | unreadable answer |
