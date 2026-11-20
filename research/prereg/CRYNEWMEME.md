@@ -56,3 +56,11 @@ fresh-rule book keeps running unchanged.
 ## Prediction (written first)
 
 Passes at 100 trades: 0.1. Most likely outcome: a few large winners, many stops and rugs, mean below zero after 3%.
+
+## Bug fix (2026-11-20, logged before the book is judged)
+
+The control arm showed +106,000% a trade because DexScreener returned one bad quote (DCTY, $0.0000475 to $1.50 in
+five minutes) and take-profits were paid at whatever price the next read showed. From now on a take-profit fills at
+its limit (entry x 2) and a read more than 20 times the last price counts as a missed read. Summaries apply the
+same take-profit rule to trades already logged; the ledger itself is unchanged. Rules, sizes and judging dates stay
+as registered.

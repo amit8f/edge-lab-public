@@ -76,7 +76,15 @@ def test_watcher_enters_with_a_control_and_takes_profit_across_runs(tmp_path):
     w.t += 600
     s = N.run(tmp_path, minutes=3, get=w.get, clock=w.clock, sleep=w.sleep, rng=N.random.Random(0))
     f, c = s["arms"]["fresh"], s["arms"]["control"]
-    assert f["closed"] == 1 and f["reasons"] == {"take_profit": 1} and np.isclose(f["mean_net"], N.net_return(1, 2.5))
+    assert f["closed"] == 1 and f["reasons"] == {"take_profit": 1} and np.isclose(f["mean_net"], N.net_return(1, 2.0))
     assert c["closed"] == 1 and c["reasons"] == {"stop": 1}
     led = Ledger(tmp_path / "newmeme" / "ledger")
     assert led.verify() == [] and {e["kind"] for e in led.entries()} == {"snaps", "events"}
+
+
+def test_take_profit_fills_at_its_limit():
+    from tracks.crypto import newmeme_live as M
+    tr = {"entry_px": 1.0, "entry_liq": 1e5, "entry_ts": 0, "miss": 0, "last_px": 1.0}
+    assert M.exit_reason(tr, {"price": 30000.0, "liq": 1e5}, 60) == ("take_profit", 2.0)
+    t = {"reason": "take_profit", "entry_px": 1.0, "exit_px": 30000.0, "net": 3e4}
+    assert abs(M.fixed_net(t) - M.net_return(1.0, 2.0)) < 1e-12
