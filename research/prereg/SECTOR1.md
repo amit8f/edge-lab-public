@@ -65,3 +65,55 @@ intraday move.
 
 Prediction check: Health largest (right) but Energy, not Business equipment, second; Utilities smallest (right);
 Money has the highest market R2 (right); overnight is a third of the move, not more than half (wrong).
+
+## Amendment 1 (2026-11-19, before any stage-2 number exists): stage 2, what drives the moves
+
+Still descriptive only, not counted. Same universe, sectors and years (2019-2023), same stage-1 stock-days.
+
+Drivers, each marked per stock-day t:
+- **Earnings window:** the company filed an 8-K with item 2.02 on day t or on the trading day before (a filing
+  after the close moves the next day). From W1's EDGAR filings (filing date only, no time).
+- **News:** at least one Benzinga headline naming the symbol from 16:00 ET on the previous trading day to 16:00 ET
+  on day t (W1's headline months). Count kept.
+- **News type**, by fixed keyword lists on those headlines (case-insensitive; a day can have several):
+  earnings (earnings, EPS, revenue, results, quarter), guidance (guidance, outlook, forecast, raises, lowers, cuts),
+  analyst (upgrade, downgrade, price target, initiates, reiterates), deal (acquire, acquisition, merger, to buy,
+  buyout, takeover, deal), fda (FDA, approval, trial, phase), offering (offering, priced, dilution, private placement,
+  warrants), contract (contract, award, partnership, agreement).
+- **None:** no earnings window and no news.
+- **Rates and oil:** daily change of the 10-year Treasury yield (FRED DGS10, percentage points) and daily % change of
+  WTI crude (FRED DCOILWTICO), same calendar day.
+
+Measures per sector, per driver group (pooled and per year): share of stock-days, mean absolute return, share of
+|return| >= 8%, the up share of those 8% days, mean return, and the share of all the sector's 8% up days and 8% down
+days that fall in the group (what drives up moves vs down moves). For rates and oil: correlation and beta of the
+sector's equal-weight daily return to each, and the sector's mean return on the 10% of days with the largest rise and
+the largest fall of each.
+
+Time of day needs 5-minute bars for every stock-day and is left for a stage 3 (registered before it runs).
+
+## Stage 2 result (2026-11-19, run 44598868569; descriptive, not counted)
+
+Bug fix before reading any number: the first run flagged no earnings days because W1 stores 8-K items as lists;
+`earn_days` now reads both lists and comma strings (test added). Filings were rebuilt from EDGAR because the W1
+cache had been evicted. Summary JSON: `research/results/SECTOR1/SECTOR1_stage2.json`.
+
+- **Earnings windows** are about 3% of stock-days but hold 8-20% of each sector's 8%+ days (Consumer nondurables,
+  Business equipment, Shops ~20%; Utilities, Energy, Money ~8-10%). About one earnings day in 8 is an 8%+ move
+  (Business equipment 19%, Utilities 3%). Their direction is a coin flip (47-53% up).
+- **News days** (any Benzinga headline) are 15-22% of stock-days and hold 35-58% of 8% up days and 42-64% of 8%
+  down days. Down moves lean on news more than up moves in every sector.
+- **No news, no earnings** is ~80% of days and still ~40-65% of 8%+ days (highest in Utilities, Money, Energy,
+  Other). Half the big moves have no company headline at all, which is why news-only models miss them. 2020 is the
+  extreme: ~60% of big moves had no news (market-wide days).
+- **News type sets the direction, not the size.** Deal headlines: +0.3% to +1.3% mean day, 63-85% of 8% days up.
+  Offering headlines: -0.6% to -2.8% mean day, 0-38% of 8% days up. Earnings, guidance and analyst headlines: near
+  50/50. FDA matters only in Health (10% of its 8% days). Utilities news skews down (39% of 8% news days up).
+- **Rates and oil.** Energy is the most tied to both (corr 0.24 with the 10y change, 0.19 with oil; +2.9% on the
+  top 10% oil days, -2.7% on the bottom 10%). Rising-yield days help Energy, Chemicals, Manufacturing and Money;
+  Business equipment and Health don't care (corr ~0.03). On the 10% of days with the biggest yield drop, every
+  sector averages -0.4% to -1.7% (these are risk-off days).
+
+What this suggests (hypotheses only, each would be a new registration): direction can be read from the news type
+(deal up, offering down) while earnings direction needs the content; half of big moves come without news, so a
+boom finder needs market and sector inputs, not just headlines; Energy moves should be read against oil first.

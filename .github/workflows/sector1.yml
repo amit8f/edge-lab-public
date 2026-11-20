@@ -4,6 +4,12 @@ name: sector1
 
 on:
   workflow_dispatch:
+    inputs:
+      stage:
+        description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
+        type: choice
+        options: ["1", "2"]
+        default: "1"
 
 permissions: {}
 
@@ -16,7 +22,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 340
     steps:
       - name: Check out the code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -43,6 +49,14 @@ jobs:
           key: w1-v1-none
           restore-keys: w1-v1-
 
+      - name: Fall back to the NX1 cache, which holds a copy of W1's data (caches get evicted)
+        if: hashFiles('cache/w1/w1/daily/**') == ''
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+
       - name: Restore the SIC cache
         uses: actions/cache/restore@v4
         with:
@@ -50,14 +64,19 @@ jobs:
           key: sector1-v1-${{ github.run_id }}
           restore-keys: sector1-v1-
 
-      - name: Run stage 1
+      - name: Run the stage
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
-          [[ -d cache/w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
-          PYTHONPATH=. .venv/bin/python -u -m tracks.main.sector1_study --w1 cache/w1 --out research/results/SECTOR1 \
-            --cache cache/sector1
+          w1=cache/w1; [[ -d cache/w1/w1/daily ]] || w1=cache/nx1
+          [[ -d $w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
+          echo "W1 data from $w1: $(ls $w1/w1) / news: $(ls $w1/g1/news 2>/dev/null | wc -l) months"
+          mod=tracks.main.sector1_study; [[ "$STAGE" == 2 ]] && mod=tracks.main.sector2_study
+          PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
         if: always()
@@ -74,7 +93,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add research/results/SECTOR1
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
-          git commit -q -m "SECTOR1 stage 1 results (run ${{ github.run_id }})"
+          git commit -q -m "SECTOR1 stage ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           git -c "http.extraheader=$auth" pull -q --rebase origin "${GITHUB_REF_NAME}"
           git -c "http.extraheader=$auth" push -q origin "HEAD:${GITHUB_REF_NAME}"

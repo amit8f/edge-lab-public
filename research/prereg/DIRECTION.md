@@ -139,3 +139,18 @@ before its first run; no pass rule changes.
   price over the previous session's raw close. Controls: one random side per pick (seed 20261113). Bootstrap: 2,000
   resamples of whole days, the 5th percentile of the mean daily (arm minus control).
 - A zero or missing input makes no call.
+
+## Result: DIR-FLOW and DIR-OFI (runs 44505802041 and 44553353548 for data, 44593328515 for the test; recorded 2026-11-19)
+
+939 days, 18,724 BOOM2 picks (2022 to Sep 2025).
+
+- **DIR-FLOW: FAILED.** Pre-market signed-volume imbalance called 18,703 picks: balanced accuracy 0.505 vs 0.501 for
+  the gap-sign rule (+0.4 points; +3 needed). Mean net -0.52% per call; it beat random sides by +0.15% (bootstrap
+  lower bound +0.08%), which doesn't cover costs. By decile the up-first share runs 47% to 52% with no slope.
+- **DIR-OFI: FAILED.** Quote order flow imbalance 9:30 to 9:51 called 18,647 picks: balanced accuracy 0.519 vs 0.501
+  for the early-move sign (+1.8 points; +3 needed). Mean net -0.43% per call (must be > 0); it beat random sides by
+  +0.24% (lower bound +0.18%). The deciles have a real slope: up-first 47% in the most negative tenth vs 52-54% in the
+  top three tenths. Both halves of the window point the same way (0.516 and 0.509).
+- Reading: order flow carries a little direction information (OFI more than pre-market prints), but at roughly 52%
+  it is far below what the ±4% trade needs after costs. Per the registration, order flow is closed for BOOM.
+  Count unchanged at 175 (190 with phase 1).
