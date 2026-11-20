@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8927.42 | -10.73% | 258 | 84 | short AMD, short APLD, short DELL, short SNDK, short UNH |
-| Coin flip on C's picks | $8548.60 | -14.51% | 256 | 124 | long AMD, long APLD, short DELL, short SNDK, short UNH |
-| C's prompt on Groq (K7) | $5648.12 | -43.52% | 508 | 124 | short AMD, long FICO, short MSTR, short NBIS, long OKTA |
-| Coin flip on C-groq's picks | $8484.60 | -15.15% | 508 | 242 | long AMD, long FICO, long MSTR, short NBIS, long OKTA |
-| C-groq's answers, acted on once a day (K8) | $8602.19 | -13.98% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $10923.21 | +9.23% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $11002.61 | +10.03% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
-| Coin flip on C-slow's picks | $10866.12 | +8.66% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
-| Just hold SPY | $9183.39 | -8.17% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8954.65 | -10.45% | 258 | 84 | short AMD, short APLD, short DELL, short SNDK, short UNH |
+| Coin flip on C's picks | $8555.43 | -14.45% | 256 | 124 | long AMD, long APLD, short DELL, short SNDK, short UNH |
+| C's prompt on Groq (K7) | $5636.12 | -43.64% | 509 | 124 | short AMD, short MSTR, short NBIS, long OKTA, long UNH |
+| Coin flip on C-groq's picks | $8495.33 | -15.05% | 509 | 242 | long AMD, long MSTR, short NBIS, long OKTA, short UNH |
+| C-groq's answers, acted on once a day (K8) | $8577.87 | -14.22% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $10888.16 | +8.88% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $10991.63 | +9.92% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
+| Coin flip on C-slow's picks | $10856.22 | +8.56% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
+| Just hold SPY | $9178.83 | -8.21% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-20 11:37 | short AMD, short APLD, short DELL, short SNDK, short UNH | none | Maintaining all existing short positions as the market shows broad weakness, with most holdings continuing their downtrend and offering further profit potential. |
 | 2026-11-20 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 11:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 11:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 11:2
 | 2026-11-18 15:07 | short AAOI, long AKAM, short HUM, long OKTA, short UNH | sold TJX @ $141.56; bought AKAM @ $92.65 | Maintaining profitable short positions in AAOI, HUM, and UNH due to strong negative momentum and bearish news where applicable. Keeping profitable long in OKTA due to strong positive momentum. Closing TJX due to negative P/L and adding a new long position in AKAM, which shows strong positive momentu |
 | 2026-11-18 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 14:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-18 14:37 | no answer, nothing changed | none | unreadable answer |
