@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8883.56 | -11.16% | 258 | 84 | short AMD, short APLD, short DELL, short SNDK, short UNH |
-| Coin flip on C's picks | $8567.42 | -14.33% | 256 | 124 | long AMD, long APLD, short DELL, short SNDK, short UNH |
-| C's prompt on Groq (K7) | $5637.22 | -43.63% | 507 | 123 | long FICO, short MSTR, short NBIS, long OKTA, short SNDK |
-| Coin flip on C-groq's picks | $8514.20 | -14.86% | 507 | 241 | long FICO, long MSTR, short NBIS, long OKTA, short SNDK |
-| C-groq's answers, acted on once a day (K8) | $8574.88 | -14.25% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $10905.78 | +9.06% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $10963.55 | +9.64% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
-| Coin flip on C-slow's picks | $10804.31 | +8.04% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
-| Just hold SPY | $9210.80 | -7.89% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8892.09 | -11.08% | 258 | 84 | short AMD, short APLD, short DELL, short SNDK, short UNH |
+| Coin flip on C's picks | $8544.51 | -14.55% | 256 | 124 | long AMD, long APLD, short DELL, short SNDK, short UNH |
+| C's prompt on Groq (K7) | $5629.27 | -43.71% | 507 | 123 | long FICO, short MSTR, short NBIS, long OKTA, short SNDK |
+| Coin flip on C-groq's picks | $8518.66 | -14.81% | 507 | 241 | long FICO, long MSTR, short NBIS, long OKTA, short SNDK |
+| C-groq's answers, acted on once a day (K8) | $8559.14 | -14.41% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $10908.43 | +9.08% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $10962.39 | +9.62% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
+| Coin flip on C-slow's picks | $10811.97 | +8.12% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
+| Just hold SPY | $9194.53 | -8.05% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-20 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 10:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 10:37 | short AMD, short APLD, short DELL, short SNDK, short UNH | sold SNDK @ $80.50; sold SNDK @ $80.50 | Closed the losing long SNDK position and initiated a short on SNDK to capitalize on its extreme collapse. Maintained profitable short positions in AMD, APLD, DELL, and UNH, as the overall market sentiment remains bearish and these positions show strong downward momentum. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 10:5
 | 2026-11-18 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 14:17 | short AAOI, short HUM, long OKTA, long TJX, short UNH | none | Maintaining all 5 existing profitable positions as their underlying trends and news support continued movement in the desired direction. |
-| 2026-11-18 14:07 | no answer, nothing changed | none | unreadable answer |
