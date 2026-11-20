@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 10:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 10:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $8804.70 | -11.95% | 257 | 84 | short AMD, short APLD, short DELL, long SNDK, short UNH |
-| Coin flip on C's picks | $8770.66 | -12.29% | 255 | 124 | long AMD, long APLD, short DELL, long SNDK, short UNH |
-| C's prompt on Groq (K7) | $5538.93 | -44.61% | 505 | 122 | short BE, short MSTR, short NBIS, long OKTA, short SNDK |
-| Coin flip on C-groq's picks | $8553.86 | -14.46% | 505 | 241 | long BE, long MSTR, short NBIS, long OKTA, short SNDK |
-| C-groq's answers, acted on once a day (K8) | $8516.03 | -14.84% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $10988.90 | +9.89% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $10895.75 | +8.96% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
-| Coin flip on C-slow's picks | $10757.49 | +7.57% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
-| Just hold SPY | $9286.53 | -7.13% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $8868.17 | -11.32% | 257 | 84 | short AMD, short APLD, short DELL, long SNDK, short UNH |
+| Coin flip on C's picks | $8682.23 | -13.18% | 255 | 124 | long AMD, long APLD, short DELL, long SNDK, short UNH |
+| C's prompt on Groq (K7) | $5612.87 | -43.87% | 506 | 123 | short MSTR, short NBIS, long OKTA, long RIOT, short SNDK |
+| Coin flip on C-groq's picks | $8515.38 | -14.85% | 506 | 241 | long MSTR, short NBIS, long OKTA, long RIOT, short SNDK |
+| C-groq's answers, acted on once a day (K8) | $8519.50 | -14.80% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $10928.05 | +9.28% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $10930.36 | +9.30% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
+| Coin flip on C-slow's picks | $10766.11 | +7.66% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
+| Just hold SPY | $9237.44 | -7.63% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-20 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 10:17 | short AMD, short APLD, short DELL, long SNDK, short UNH | bought SNDK @ $84.46; bought SNDK @ $84.46 | Maintaining profitable short positions in AMD, APLD, DELL, and UNH due to continued downtrends and negative catalysts where applicable. Closing the existing SNDK short and opening a speculative long position due to an extreme and likely anomalous price drop, anticipating a potential rebound or corre |
 | 2026-11-20 10:07 | short AMD, short APLD, short DELL, short SNDK, short UNH | none | Maintaining all existing short positions as they are largely profitable or show continued bearish momentum, despite some intraday bounces. |
 | 2026-11-20 09:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 10:1
 | 2026-11-18 13:57 | short AAOI, short HUM, long OKTA, long TJX, short UNH | none | Maintaining current positions in OKTA and TJX due to strong positive momentum and news, and short positions in UNH, HUM, and AAOI due to continued negative momentum and news, aiming to capitalize on existing trends. |
 | 2026-11-18 13:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-18 13:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-18 13:27 | short AAOI, short HUM, long OKTA, long TJX, short UNH | bought CRM @ $188.47; bought IONQ @ $23.89; bought MSTR @ $93.08; bought NOW @ $89.92; sold AAOI @ $40.62; sold HUM @ $394.76; bought OKTA @ $192.18; bought TJX @ $143.37 | Closed CRM, IONQ, MSTR, and NOW due to weakening momentum or less compelling setups. Initiated new long positions in TJX and OKTA based on strong positive momentum and news catalysts. Maintained short positions in UNH and HUM due to continued strong negative trends and news, and initiated a new shor |
