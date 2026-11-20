@@ -40,3 +40,22 @@ trades in 5 days, so S1 stays on paper until that is settled. Fail: written up. 
 real events at random, as many as the day's FAST1 trades, with their sides. Costs are NX1's `cost_frac` for a
 $500 position held one day (main or penny by entry price, borrow on shorts). The choice and the test run in one
 job: the test reads only the exit the choice years picked. "Right way" (reported) = gross return above 0.
+
+## Result (2026-11-20, run 44744819857): FAILED
+
+`research/results/FAST1/FAST1_result.json`. Choice years 2019-2023 (7,575 trades), mean net per trade: 30-minute exit
+-0.16%, 60-minute -0.11%, 2%/1% bracket -0.45%, 3%/1.5% bracket -0.34% (control about -0.55% for all). Chosen: the
+60-minute exit, the least bad.
+
+Test, 2024-01 to 2025-09, 60-minute exit: 4,979 trades on 421 days (11.8 a day), mean net **-0.19% a trade**,
+day-clustered t -2.06. It beats the random control (draws mean -0.59%, 95th percentile -0.51%) but loses money
+after costs, so it fails (pass needs net > 0 and t >= 2). Right way before costs 53%. 2024 -0.24%, 2025 -0.13%.
+
+Reported beside it: the same events held to the next close (NX3's own exit) +0.18% a trade. Longs -0.06%, shorts
+-0.31%; pre-open -0.12%, intraday -0.69%; main ($5+) -0.29% on 4,390 trades.
+
+POST-HOC / NOT PRE-REGISTERED: penny ($1-5) trades +0.56% a trade on 589 trades. Not a finding; it would need its
+own registration and forward test.
+
+Reading: the news move is real (it beats random by about 0.4% a trade) but in under an hour it is smaller than the
+costs. Holding to the next close keeps more of it. Brackets cut winners more than they save on losers.
