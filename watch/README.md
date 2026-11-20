@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-20T10:10 ET: 409 flagged of 3387, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-20T10:15 ET: 330 flagged of 3387, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,714.44 | -5.71% | 49 | 21 | long ACM, short AVNW, long AZTA, short BRUN, long BXDC, short CET, short CNNE, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, short XRN | paused |
-| PICK-MAIN-coin | $4,991.87 | -0.16% | 50 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, long XRN | ok |
-| PICK-PENNY | $433.36 | -13.33% | 67 | 23 | long BGS, long CURI, long FRMI, short HSDT, short LAC, short TSHA | paused |
-| PICK-PENNY-coin | $509.76 | +1.95% | 65 | 28 | long BGS, short CURI, long FRMI, long HSDT, short LAC, long TLS, short TSHA, long ZURA | ok |
+| PICK-MAIN | $4,712.41 | -5.75% | 49 | 21 | long ACM, short AVNW, long AZTA, short BRUN, long BXDC, short CET, short CNNE, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, short XRN | paused |
+| PICK-MAIN-coin | $4,979.73 | -0.41% | 50 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, long XRN | ok |
+| PICK-PENNY | $433.38 | -13.32% | 67 | 23 | long BGS, long CURI, long FRMI, short HSDT, short LAC, short TSHA | paused |
+| PICK-PENNY-coin | $509.88 | +1.98% | 65 | 28 | long BGS, short CURI, long FRMI, long HSDT, short LAC, long TLS, short TSHA, long ZURA | ok |
