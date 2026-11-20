@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
         type: choice
-        options: ["1", "2"]
+        options: ["1", "2", "boomcheck"]
         default: "1"
 
 permissions: {}
@@ -72,6 +72,10 @@ jobs:
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
+          if [[ "$STAGE" == boomcheck ]]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.tools.boom_check research/results/boom_live_picks.json
+            exit 0
+          fi
           w1=cache/w1; [[ -d cache/w1/w1/daily ]] || w1=cache/nx1
           [[ -d $w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
           echo "W1 data from $w1: $(ls $w1/w1) / news: $(ls $w1/g1/news 2>/dev/null | wc -l) months"
