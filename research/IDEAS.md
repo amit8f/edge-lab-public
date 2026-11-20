@@ -1,7 +1,7 @@
 # Ideas log (phase 2)
 
-**Phase 2 count: 107** (main 39, penny 14, news 40, cross-track 13, crypto 1; B0 counts as cross-track). Phase 1 tested 15 ideas (I-01 .. I-15, see
-`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 122.
+**Phase 2 count: 179** (running count as of FAST1, 2026-11-20; each registration states its own number, and descriptive studies such as S0, SECTOR1 and BOOMX are not counted). Phase 1 tested 15 ideas (I-01 .. I-15, see
+`breakout-scanner/IDEAS.md`); phase 1 + phase 2 = 194. Lessons from the failures: [LESSONS.md](LESSONS.md).
 
 Two threads registered ideas in parallel on 2026-10-15. In commit order: M10 and P3 (04:03 UTC), then
 M1, N1, P1, P2 and M3 (04:09 UTC), then M11 (11:31 UTC), L1 and B0 (12:40 UTC), M12 (13:02 UTC) and T1 (15:45 UTC). M13, K1, K2, K3 and K4 followed on 2026-10-16, S1, G1 and then W1a-W1c on 2026-10-17. K5 on 2026-10-18 (replaces book A of K2). The counts written inside M1, N1, P1, P2 and
