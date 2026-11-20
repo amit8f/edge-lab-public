@@ -81,7 +81,7 @@ def choose(t):
     best, rep = None, {}
     for k in EXITS:
         x = t[f"net_{k}"].dropna()
-        rep[k] = {"n": int(len(x)), "mean_net": float(x.mean()) if len(x) else float("nan")}
+        rep[k] = {"n": len(x), "mean_net": float(x.mean()) if len(x) else float("nan")}
         if len(x) >= MIN_TRADES and (best is None or rep[k]["mean_net"] > rep[best]["mean_net"]):
             best = k
     return best, rep
@@ -164,7 +164,7 @@ def main():
         dr = t[(t["grp"] == "draw") & t["year"].isin(TEST)].groupby("draw")[col].mean()
         p95 = float(dr.quantile(0.95)) if len(dr) else float("nan")
         rep["test"] = {
-            "n": int(len(te)), "days": int(te["d"].nunique()), "mean_net": m, "t_day": tt,
+            "n": len(te), "days": int(te["d"].nunique()), "mean_net": m, "t_day": tt,
             "control_draws_p95": p95, "control_draws_mean": float(dr.mean()) if len(dr) else float("nan"),
             "right_way": float((te[col] > -N.cost_frac(te["price"], te["side"] < 0, np.ones(len(te)))).mean()),
             "pass": bool(m > 0 and tt >= T_MIN and len(te) >= MIN_TRADES and m > p95),
