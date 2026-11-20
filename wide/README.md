@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 12:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 12:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9031.05 | -9.69% | 264 | 89 | short AAOI, short APLD, short IREN, short SNDK, short WULF |
-| Coin flip on C's picks | $8566.06 | -14.34% | 262 | 127 | long AAOI, long APLD, short IREN, long SNDK, short WULF |
-| C's prompt on Groq (K7) | $5651.69 | -43.48% | 510 | 125 | short AMD, short MSTR, short NBIS, long RIOT, long UNH |
-| Coin flip on C-groq's picks | $8455.01 | -15.45% | 510 | 243 | long AMD, long MSTR, short NBIS, long RIOT, short UNH |
-| C-groq's answers, acted on once a day (K8) | $8580.82 | -14.19% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
-| Coin flip on C-groq-slow's picks | $10818.77 | +8.19% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
-| C's answers, acted on once a day (K8) | $11018.22 | +10.18% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
-| Coin flip on C-slow's picks | $10867.32 | +8.67% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
-| Just hold SPY | $9140.03 | -8.60% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $9009.48 | -9.91% | 264 | 89 | short AAOI, short APLD, short IREN, short SNDK, short WULF |
+| Coin flip on C's picks | $8575.73 | -14.24% | 262 | 127 | long AAOI, long APLD, short IREN, long SNDK, short WULF |
+| C's prompt on Groq (K7) | $5639.06 | -43.61% | 512 | 125 | short AMD, short COHR, short MSTR, short NBIS, short WULF |
+| Coin flip on C-groq's picks | $8461.13 | -15.39% | 512 | 244 | long AMD, short COHR, long MSTR, short NBIS, long WULF |
+| C-groq's answers, acted on once a day (K8) | $8568.05 | -14.32% | 54 | 23 | long CRWD, short MSTR, short NBIS, long OKTA, long PANW |
+| Coin flip on C-groq-slow's picks | $10810.72 | +8.11% | 54 | 32 | short CRWD, short MSTR, long NBIS, long OKTA, long PANW |
+| C's answers, acted on once a day (K8) | $11016.90 | +10.17% | 48 | 27 | short AMD, long PANW, short TWLO, short UNH, long ZS |
+| Coin flip on C-slow's picks | $10847.30 | +8.47% | 48 | 26 | short AMD, long PANW, short TWLO, long UNH, long ZS |
+| Just hold SPY | $9123.23 | -8.77% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-20 12:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 12:17 | short AAOI, short APLD, short IREN, short SNDK, short WULF | bought BE @ $146.22; sold AAOI @ $33.19 | Maintained existing short positions in APLD, IREN, and WULF due to continued strong downtrends and negative catalysts. Re-evaluated SNDK and decided to keep the short given the continued decline post-event. Closed BE due to a slight rebound and added a new short in AAOI, which shows significant dail |
 | 2026-11-20 12:07 | short APLD, short BE, short IREN, short SNDK, short WULF | bought AMD @ $434.66; bought DELL @ $279.68; bought MU @ $602.29; sold BE @ $145.31; sold IREN @ $12.47; sold SNDK @ $79.49 | Closing all existing positions to re-establish a portfolio of five new short positions based on the strongest bearish momentum and significant daily/weekly/monthly declines, prioritizing stocks with fundamental news reinforcing the downtrend where available. SNDK, APLD, WULF, BE, and IREN show the m |
 | 2026-11-20 11:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 12:1
 | 2026-11-18 15:57 | short HUM, long OKTA, long PANW, long TJX, short UNH | none | Maintaining all existing positions due to strong trends or positive news, with TJX showing potential for recovery after earnings. |
 | 2026-11-18 15:47 | short HUM, long OKTA, long PANW, long TJX, short UNH | bought AAOI @ $40.81; sold AKAM @ $91.82; bought PANW @ $336.40; bought TJX @ $141.53 | Closed AAOI and AKAM due to underperformance and poor entry points. Maintained profitable shorts on UNH and HUM due to strong downtrends and negative catalysts. Initiated new long positions in TJX and PANW based on strong daily gains and positive news/earnings, aligning with bullish momentum. |
 | 2026-11-18 15:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-18 15:27 | no answer, nothing changed | none | unreadable answer |
