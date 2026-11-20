@@ -94,6 +94,10 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           STAGE: ${{ inputs.stage || 'all' }}
         run: |
+          if [ "$STAGE" = s0 ]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.news.s0_study --cache cache/nx1 --out research/results/S0
+            exit 0
+          fi
           if [ "$STAGE" = quiz ]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.tools.quiz_prices WIX,ICL,ZG,AVAV,CVS,SPY 2026-11-03 2026-11-19
             exit 0
@@ -146,7 +150,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag' && inputs.stage != 'boom_freeze' && inputs.stage != 'boom_928' && inputs.stage != 'boom_shift' && inputs.stage != 'boom_pmcheck' && inputs.stage != 'boomx' && inputs.stage != 'boomx_slices' && inputs.stage != 'dirflow' && inputs.stage != 'dayfilter' && inputs.stage != 'sds' && inputs.stage != 'dirgate' && inputs.stage != 'dirpeer' && inputs.stage != 'dirpath' && inputs.stage != 'quiz'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag' && inputs.stage != 'boom_freeze' && inputs.stage != 'boom_928' && inputs.stage != 'boom_shift' && inputs.stage != 'boom_pmcheck' && inputs.stage != 'boomx' && inputs.stage != 'boomx_slices' && inputs.stage != 'dirflow' && inputs.stage != 'dayfilter' && inputs.stage != 'sds' && inputs.stage != 'dirgate' && inputs.stage != 'dirpeer' && inputs.stage != 'dirpath' && inputs.stage != 'quiz' && inputs.stage != 's0'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3
@@ -179,8 +183,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX models/boom_short
-          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX models/boom_short
+          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 models/boom_short
+          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 models/boom_short
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "NX3/NXM/NXR/NXE ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
