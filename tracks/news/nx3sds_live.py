@@ -18,6 +18,7 @@ from tracks.news import nx1_study as N
 from tracks.news import nx3_study as S
 
 FIRST_DAY = "2026-11-10"
+LAST_DAY = "2026-11-20"       # the history check failed 2026-11-21 (NX3SDS.md Result): the book stops
 BOOK = 5000.0
 SHORT_EXIT = pd.Timedelta(minutes=5)       # buy back 5 minutes before the close (15:55 on a normal day)
 
@@ -49,7 +50,7 @@ def settle(root, api, cal, today):
     ses = S.sessions(cal).set_index("date")
     out = []
     for e in [x for x in led.entries() if x["kind"] == "nx3all_day"]:
-        if e["date"] < FIRST_DAY or led.has("nx3sds_settle", e["date"]):
+        if e["date"] < FIRST_DAY or e["date"] > LAST_DAY or led.has("nx3sds_settle", e["date"]):
             continue
         d = pd.Timestamp(e["date"])
         k = caldates.searchsorted(d)

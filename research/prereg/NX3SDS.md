@@ -43,3 +43,13 @@ close with shorts at 15:55 (kind nx3sds_settle, `tracks/news/nx3sds_live.py`). O
 
 Average about the same as NX3-ALL (test 3 passes), worst days smaller (test 4 passes), so the history check passes
 with probability about 0.55; it fails mainly if the shorts' overnight move is part of the edge.
+
+## Result (2026-11-21, run 44936808543): FAILED
+
+`research/results/NX3/NX3SDS_walkforward.json`, 1,677 days, 2019 to Sep 2025. Same-day short exits: sized
+pick-minus-control +0.31% a day (NW t 5.73, passes); worst 1% of days -5.4% of the book vs NX3-ALL's -6.6% (passes);
+paired own-net gain over NX3-ALL +0.004% a day (t 0.15, passes the no-worse bar); but own net per day is -0.07%
+(t -1.18), so test 2 (own net > 0) fails. Shorts alone lose either way (-0.06% a day held overnight, -0.06% bought
+back the same day). Per the registration the shadow book stops: `nx3sds_live.LAST_DAY` = 2026-11-20 (trades decided
+on or before that day still settle). Reading: selling shorts the same day trims the worst days but doesn't make
+NX3-ALL's shorts pay. (A 2026-11-20 run crashed before any number: main's cache lacks NX3's trade files.)
