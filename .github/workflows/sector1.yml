@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
         type: choice
-        options: ["1", "2", "boomcheck"]
+        options: ["1", "2", "boomcheck", "newsprobe"]
         default: "1"
 
 permissions: {}
@@ -72,6 +72,10 @@ jobs:
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
+          if [[ "$STAGE" == newsprobe ]]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.tools.news_probe
+            exit 0
+          fi
           if [[ "$STAGE" == boomcheck ]]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.tools.boom_check research/results/boom_live_picks.json
             exit 0
