@@ -91,7 +91,7 @@ jobs:
           PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
-        if: always()
+        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck'
         uses: actions/cache/save@v4
         with:
           path: cache/sector1
