@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
         type: choice
-        options: ["1", "2", "boomcheck", "newsprobe"]
+        options: ["1", "2", "boomcheck", "newsprobe", "warm"]
         default: "1"
 
 permissions: {}
@@ -72,6 +72,10 @@ jobs:
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
+          if [[ "$STAGE" == warm ]]; then
+            echo "caches restored (keeps them from expiring): nx1 $(du -sh cache/nx1 | cut -f1), w1 $(du -sh cache/w1 2>/dev/null | cut -f1), sector1 $(du -sh cache/sector1 2>/dev/null | cut -f1)"
+            exit 0
+          fi
           if [[ "$STAGE" == newsprobe ]]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.tools.news_probe
             exit 0
