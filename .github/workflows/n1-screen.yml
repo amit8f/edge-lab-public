@@ -58,6 +58,24 @@ jobs:
           key: n1-v1-${{ github.run_id }}
           restore-keys: n1-v1-
 
+      - name: Restore NX1's headline months (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1
+          key: nx1-v1-none
+          restore-keys: nx1-v1-
+
+      - name: Use NX1's headline months where N1's are missing or empty
+        run: |
+          # Alpaca no longer serves headlines before ~mid 2026 (found 2026-11-21), so N1's rebuild wrote empty months.
+          # NX1's cache holds the same Benzinga months (cache/nx1/g1/news, same format).
+          mkdir -p cache/n1/news
+          for f in cache/nx1/g1/news/news_2025-0*.parquet; do
+            [ -e "$f" ] || continue
+            b="cache/n1/news/$(basename "$f")"
+            if [ ! -e "$b" ] || [ "$(stat -c %s "$b")" -lt 100000 ]; then cp "$f" "$b"; echo "copied $(basename "$f")"; fi
+          done
+
       - name: Bring back the committed labels if the cache lost them
         run: |
           # GitHub evicts caches when the repository passes its size limit (N1B's was lost 2026-11-14 with 7,650

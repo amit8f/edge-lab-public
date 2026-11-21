@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
         type: choice
-        options: ["1", "2", "boomcheck"]
+        options: ["1", "2", "boomcheck", "newsprobe", "warm", "backup"]
         default: "1"
 
 permissions: {}
@@ -69,9 +69,34 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
+          if [[ "$STAGE" == backup ]]; then
+            # Amit 2026-11-21 ("Warm + private"): Alpaca no longer serves old headlines, so NX1's Benzinga months
+            # (cache/nx1/g1/news) go, encrypted, to a release of the private amit8f/edge-lab repo. Passphrase: the
+            # ALPACA_API_SECRET_KEY secret (decrypt: openssl enc -d -aes-256-cbc -pbkdf2 -pass env:ALPACA_API_SECRET_KEY).
+            n=$(ls cache/nx1/g1/news/news_*.parquet | wc -l)
+            [[ $n -ge 100 ]] || { echo "::error::only $n news months in the cache"; exit 1; }
+            tag="news-backup-$(date -u +%Y%m%d)"
+            tar -C cache/nx1/g1 -cf - news | gzip -1 | openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:ALPACA_API_SECRET_KEY -out /tmp/benzinga_news.tar.gz.enc
+            ( cd cache/nx1/g1/news && sha256sum news_*.parquet ) > /tmp/benzinga_news.sha256
+            ls -l /tmp/benzinga_news.tar.gz.enc; echo "$n months"
+            GH_TOKEN="$EVIDENCE_TOKEN" gh release create "$tag" /tmp/benzinga_news.tar.gz.enc /tmp/benzinga_news.sha256 \
+              --repo amit8f/edge-lab --title "Benzinga news months backup ($n months)" \
+              --notes "Encrypted copy of NX1's cached Benzinga headline months (cache/nx1/g1/news). Alpaca stopped serving old news in 2026. See edge-lab-public sector1.yml stage backup."
+            GH_TOKEN="$EVIDENCE_TOKEN" gh release view "$tag" --repo amit8f/edge-lab --json assets --jq '.assets[]|.name+" "+(.size|tostring)'
+            exit 0
+          fi
+          if [[ "$STAGE" == warm ]]; then
+            echo "caches restored (keeps them from expiring): nx1 $(du -sh cache/nx1 | cut -f1), w1 $(du -sh cache/w1 2>/dev/null | cut -f1), sector1 $(du -sh cache/sector1 2>/dev/null | cut -f1)"
+            exit 0
+          fi
+          if [[ "$STAGE" == newsprobe ]]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.tools.news_probe
+            exit 0
+          fi
           if [[ "$STAGE" == boomcheck ]]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.tools.boom_check research/results/boom_live_picks.json
             exit 0
@@ -83,7 +108,7 @@ jobs:
           PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
-        if: always()
+        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup'
         uses: actions/cache/save@v4
         with:
           path: cache/sector1

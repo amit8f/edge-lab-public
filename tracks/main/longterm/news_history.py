@@ -38,6 +38,8 @@ def fetch_range(first_month, last_month, cache_dir, deadline=None, fetch=alpaca.
         if deadline is not None and time.monotonic() > deadline:
             return False
         df = fetch_month(str(per), fetch)
+        if df.empty:      # Alpaca stopped serving old headlines (2026-11-21); an empty month would poison the cache
+            raise RuntimeError(f"no news returned for {per}: not writing an empty month (old news may no longer be served)")
         tmp = f.with_suffix(".tmp")
         df.to_parquet(tmp)
         tmp.replace(f)

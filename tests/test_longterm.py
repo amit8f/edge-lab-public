@@ -503,3 +503,11 @@ def test_scheduled_run_skips_days_without_a_log(tmp_path, monkeypatch):
     monkeypatch.setattr(live.bars_batch, "assets_all", lambda: (_ for _ in ()).throw(AssertionError("no work expected")))
     assert live.run(tmp_path / "state", tmp_path / "cache", now=pd.Timestamp("2026-10-15T03:30:00Z"), log_days_only=True) is None
     assert not (tmp_path / "state" / "longterm" / "dashboard.html").exists()
+
+
+def test_fetch_range_refuses_an_empty_month(tmp_path):
+    import pytest
+    from tracks.main.longterm import news_history
+    with pytest.raises(RuntimeError):
+        news_history.fetch_range("2020-01", "2020-01", tmp_path, fetch=lambda s, end=None, page_token=None: {"news": []})
+    assert not list(tmp_path.glob("news_*.parquet"))
