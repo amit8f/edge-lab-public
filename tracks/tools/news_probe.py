@@ -8,13 +8,18 @@ WINDOWS = [("2023-03-01T13:00:00Z", "2023-03-01T15:00:00Z"), ("2025-03-03T13:00:
 
 if __name__ == "__main__":
     now = pd.Timestamp.now(tz="UTC")
-    wins = WINDOWS + [((now - pd.Timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ"), None)]
+    f = "%Y-%m-%dT%H:%M:%SZ"
+    wins = WINDOWS + [((now - pd.Timedelta(days=d)).strftime(f), (now - pd.Timedelta(days=d) + pd.Timedelta(hours=6)).strftime(f))
+                      for d in (1, 3, 7, 14, 30, 60, 120, 240, 400)]
     for s, e in wins:
         for sort in ("asc", "desc"):
             p = {"start": s, "sort": sort, "limit": 50, "include_content": "false"}
             if e:
                 p["end"] = e
             j = alpaca.get(alpaca.NEWS_URL, p)
+            if not (j.get("news") or []) and sort == "desc":
+                j2 = alpaca.get(alpaca.NEWS_URL, p | {"symbols": "AAPL,TSLA,NVDA,AMZN,MSFT"})
+                print(f"[probe]   with symbols: {len(j2.get('news') or [])}", flush=True)
             n = j.get("news") or []
             print(f"[probe] {s}..{e} sort={sort}: {len(n)} articles, keys {sorted(j)}, token {bool(j.get('next_page_token'))}",
                   flush=True)
