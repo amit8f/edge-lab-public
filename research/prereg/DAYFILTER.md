@@ -37,3 +37,12 @@ ledger shadow book beside NX3-ALL (no orders); an Alpaca account only under PROT
 The filter removes few trades (about 15%), the removed ones are not clearly worse than the kept ones, and the
 paired gain over NX3-ALL is not significant (NX3-HI and NX3-BARS found that a higher bar by side did not beat
 plain NX3). Probability the primary test passes: about 0.15.
+
+## Result (2026-11-21, run 44936806404): FAILED
+
+`research/results/NX3/DAYFILTER_walkforward.json`, 1,677 days, 2019 to Sep 2025. Bar 1.5 against the market's colour:
+sized pick-minus-control +0.33% a day (NW t 5.55, passes), but the paired gain over plain NX3-ALL is -0.03% a day
+(t -0.76), so it fails. Bar 2.0: gain -0.08% (t -1.82). As predicted, a higher bar against the day doesn't beat
+plain NX3-ALL. Reported: own net per day after costs is -0.08% (t -1.16) for plain NX3-ALL and -0.06% for bar 1.5; the
+edge over random is real, but uncapped NX3-ALL's own net on history is not above zero. No shadow book.
+(An earlier run on 2026-11-20 crashed before any number: main's cache lacks NX3's trade files; rerun on the branch.)
