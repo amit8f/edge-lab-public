@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 13:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 13:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $7096.46 | -29.04% | 279 | 93 | long APLD, long DELL, long IREN, long NVDA, long ZS |
-| Coin flip on C's picks | $8065.54 | -19.34% | 277 | 134 | long APLD, long DELL, long IREN, long NVDA, short ZS |
-| C's prompt on Groq (K7) | $5751.67 | -42.48% | 572 | 141 | long MPWR, long NVDA, long TSLA, long TSM, long ZS |
-| Coin flip on C-groq's picks | $9007.67 | -9.92% | 571 | 272 | short MPWR, long NVDA, long TSLA, short TSM, short ZS |
-| C-groq's answers, acted on once a day (K8) | $9260.65 | -7.39% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
-| Coin flip on C-groq-slow's picks | $11579.62 | +15.80% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
-| C's answers, acted on once a day (K8) | $8804.99 | -11.95% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10386.58 | +3.87% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9397.87 | -6.02% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $7067.35 | -29.33% | 282 | 93 | long COHR, long ENTG, long MPWR, long NVDA, long ZS |
+| Coin flip on C's picks | $8044.23 | -19.56% | 280 | 134 | long COHR, long ENTG, short MPWR, long NVDA, short ZS |
+| C's prompt on Groq (K7) | $5735.63 | -42.64% | 572 | 141 | long MPWR, long NVDA, long TSLA, long TSM, long ZS |
+| Coin flip on C-groq's picks | $9018.28 | -9.82% | 571 | 272 | short MPWR, long NVDA, long TSLA, short TSM, short ZS |
+| C-groq's answers, acted on once a day (K8) | $9252.68 | -7.47% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
+| Coin flip on C-groq-slow's picks | $11569.65 | +15.70% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
+| C's answers, acted on once a day (K8) | $8840.25 | -11.60% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10407.94 | +4.08% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9397.22 | -6.03% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-23 13:57 | long COHR, long ENTG, long MPWR, long NVDA, long ZS | sold APLD @ $13.86; sold DELL @ $334.70; sold IREN @ $14.61; bought COHR @ $213.97; bought ENTG @ $140.49; bought MPWR @ $1,316.74 | Sold APLD, DELL, IREN to consolidate into stronger momentum plays. Maintained NVDA and ZS due to strong news and daily performance. Opened new long positions in MPWR, COHR, and ENTG, which show strong daily gains and positive longer-term trends. |
 | 2026-11-23 13:47 | long APLD, long DELL, long IREN, long NVDA, long ZS | none | Maintaining current long positions in NVDA, DELL, APLD, ZS, and IREN due to strong intraday momentum and positive news catalysts, anticipating continued upward movement. |
 | 2026-11-23 13:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 13:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 13:4
 | 2026-11-20 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 10:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 10:37 | short AMD, short APLD, short DELL, short SNDK, short UNH | sold SNDK @ $80.50; sold SNDK @ $80.50 | Closed the losing long SNDK position and initiated a short on SNDK to capitalize on its extreme collapse. Maintained profitable short positions in AMD, APLD, DELL, and UNH, as the overall market sentiment remains bearish and these positions show strong downward momentum. |
-| 2026-11-20 10:27 | no answer, nothing changed | none | unreadable answer |
