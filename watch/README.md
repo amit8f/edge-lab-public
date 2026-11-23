@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-23T12:10 ET: 69 flagged of 3388, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-23T12:15 ET: 60 flagged of 3388, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,666.66 | -6.67% | 58 | 25 | long ACM, short CET, short CNNE, short ENTA, long FVR, short GAM, short HY, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short RRGB | paused |
-| PICK-MAIN-coin | $4,950.54 | -0.99% | 57 | 25 | long ACM, short BXDC, short CET, long CNNE, long FVR, long GAM, short HY, short LAND, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short RRGB | ok |
+| PICK-MAIN | $4,666.20 | -6.68% | 58 | 25 | long ACM, short CET, short CNNE, short ENTA, long FVR, short GAM, short HY, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short RRGB | paused |
+| PICK-MAIN-coin | $4,948.39 | -1.03% | 57 | 25 | long ACM, short BXDC, short CET, long CNNE, long FVR, long GAM, short HY, short LAND, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short RRGB | ok |
 | PICK-PENNY | $435.82 | -12.84% | 73 | 28 | cash | paused |
 | PICK-PENNY-coin | $512.30 | +2.46% | 73 | 34 | cash | ok |
