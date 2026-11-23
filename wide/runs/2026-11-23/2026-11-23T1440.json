@@ -1,0 +1,697 @@
+{
+ "decision": {
+  "dropped": [],
+  "prompt_sha256": "a14db087e40bb1bb3398d37042f71f0a9f5f3816064bd15dde4765a4ddfb8055",
+  "raw": "{\n  \"positions\": [],\n  \"summary\": \"Closing all losing short positions to preserve capital after a significant market move against them. Re-evaluating strategy with an all-cash position.\"\n}",
+  "summary": "Closing all losing short positions to preserve capital after a significant market move against them. Re-evaluating strategy with an all-cash position.",
+  "want": {}
+ },
+ "decision_C-groq": {
+  "dropped": [],
+  "prompt_sha256": "e92b128141f35d53c1f67e15002763183d4afab89e5db2dbef8c30f67d80ff21",
+  "raw": "{\"positions\":[{\"symbol\":\"CRDO\",\"side\":\"long\",\"reason\":\"Continue long after +20.2% today, strong momentum\"},{\"symbol\":\"MU\",\"side\":\"long\",\"reason\":\"Continue long after +12.9% today, solid upside\"},{\"symbol\":\"STX\",\"side\":\"long\",\"reason\":\"Continue long after +13.5% today, momentum persists\"},{\"symbol\":\"NVDA\",\"side\":\"long\",\"reason\":\"Open long after +29.1% today and CEO reinstatement news\"},{\"symbol\":\"ZS\",\"side\":\"long\",\"reason\":\"Open long after +17.8% today and announced CrowdStrike acquisition\"}],\"summary\":\"Closed losing shorts, kept three winners, added NVDA and ZS for momentum\"}",
+  "summary": "Closed losing shorts, kept three winners, added NVDA and ZS for momentum",
+  "want": {
+   "CRDO": 1,
+   "MU": 1,
+   "NVDA": 1,
+   "STX": 1,
+   "ZS": 1
+  }
+ },
+ "equity": {
+  "C": 7273.698739,
+  "C-coin": 8141.708783,
+  "C-groq": 5789.024952,
+  "C-groq-coin": 8963.674715,
+  "C-groq-slow": 9116.256496,
+  "C-groq-slow-coin": 11399.063242,
+  "C-slow": 8686.458646,
+  "C-slow-coin": 10255.886931,
+  "HOLD": 9349.038718
+ },
+ "fills": {
+  "C": [
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 12.8,
+    "exit": 14.35,
+    "notional": 1746.4918711702155,
+    "open_t": 1795186085,
+    "pnl": -213.447231,
+    "side": -1,
+    "sym": "APLD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 12.475,
+    "exit": 15.25,
+    "notional": 1812.7132512800124,
+    "open_t": 1795194446,
+    "pnl": -405.444741,
+    "side": -1,
+    "sym": "IREN",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 594.52,
+    "exit": 671.16,
+    "notional": 1833.9135990449975,
+    "open_t": 1795208399,
+    "pnl": -238.481443,
+    "side": -1,
+    "sym": "MU",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 128.2,
+    "exit": 162.05,
+    "notional": 1824.4949551837233,
+    "open_t": 1795205240,
+    "pnl": -484.046908,
+    "side": -1,
+    "sym": "NVDA",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 10.235,
+    "exit": 11.39,
+    "notional": 1798.0467807571895,
+    "open_t": 1795193245,
+    "pnl": -204.907062,
+    "side": -1,
+    "sym": "WULF",
+    "why": "decision"
+   }
+  ],
+  "C-coin": [
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 12.8,
+    "exit": 14.35,
+    "notional": 1763.6653731353888,
+    "open_t": 1795186085,
+    "pnl": 211.59162,
+    "side": 1,
+    "sym": "APLD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 12.475,
+    "exit": 15.25,
+    "notional": 1714.9588329341627,
+    "open_t": 1795194446,
+    "pnl": -383.580271,
+    "side": -1,
+    "sym": "IREN",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 594.52,
+    "exit": 671.16,
+    "notional": 1744.5459935887877,
+    "open_t": 1795208399,
+    "pnl": 222.92124,
+    "side": 1,
+    "sym": "MU",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 128.2,
+    "exit": 162.05,
+    "notional": 1735.6298443406624,
+    "open_t": 1795205240,
+    "pnl": -460.470585,
+    "side": -1,
+    "sym": "NVDA",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 10.235,
+    "exit": 11.39,
+    "notional": 1709.2334388512554,
+    "open_t": 1795193245,
+    "pnl": -194.785812,
+    "side": -1,
+    "sym": "WULF",
+    "why": "decision"
+   }
+  ],
+  "C-groq": [
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 427.01,
+    "exit": 447.255,
+    "notional": 1103.3147420234932,
+    "open_t": 1795205847,
+    "pnl": -53.464954,
+    "side": -1,
+    "sym": "AMD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 200.495,
+    "exit": 223.52,
+    "notional": 1098.674910968913,
+    "open_t": 1795206445,
+    "pnl": -127.397519,
+    "side": -1,
+    "sym": "CLS",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1158.268298,
+    "price": 162.05,
+    "side": 1,
+    "sym": "NVDA",
+    "t": 1795445263
+   },
+   {
+    "action": "open",
+    "notional": 1158.268298,
+    "price": 229.43,
+    "side": 1,
+    "sym": "ZS",
+    "t": 1795445263
+   }
+  ],
+  "C-groq-coin": [
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 427.01,
+    "exit": 447.255,
+    "notional": 1668.9858698496348,
+    "open_t": 1795205847,
+    "pnl": 77.380288,
+    "side": 1,
+    "sym": "AMD",
+    "why": "decision"
+   },
+   {
+    "action": "close",
+    "close_t": 1795445263,
+    "entry": 200.495,
+    "exit": 223.52,
+    "notional": 1670.2671644667616,
+    "open_t": 1795206445,
+    "pnl": -193.676848,
+    "side": -1,
+    "sym": "CLS",
+    "why": "decision"
+   },
+   {
+    "action": "open",
+    "notional": 1793.452324,
+    "price": 162.05,
+    "side": 1,
+    "sym": "NVDA",
+    "t": 1795445263
+   },
+   {
+    "action": "open",
+    "notional": 1793.452324,
+    "price": 229.43,
+    "side": -1,
+    "sym": "ZS",
+    "t": 1795445263
+   }
+  ],
+  "C-groq-slow": [],
+  "C-groq-slow-coin": [],
+  "C-slow": [],
+  "C-slow-coin": [],
+  "HOLD": []
+ },
+ "headline_counts": {
+  "APLD": 2,
+  "BMNR": 2,
+  "CBRS": 2,
+  "ENTG": 1,
+  "LITE": 1,
+  "NVDA": 3,
+  "ORCL": 1,
+  "RBLX": 1,
+  "SNDK": 1,
+  "TSLA": 1,
+  "VRT": 1,
+  "WULF": 1,
+  "ZS": 2
+ },
+ "kind": "run",
+ "positions": {
+  "C": {},
+  "C-coin": {},
+  "C-groq": {
+   "CRDO": {
+    "charged": 1795445263,
+    "entry": 100.52,
+    "last": 120.06,
+    "notional": 1098.674910968913,
+    "opened": 1795206445,
+    "qty": 10.929913559181388,
+    "side": 1
+   },
+   "MU": {
+    "charged": 1795445263,
+    "entry": 595.43,
+    "last": 671.16,
+    "notional": 1098.674910968913,
+    "opened": 1795206445,
+    "qty": 1.8451789647295453,
+    "side": 1
+   },
+   "NVDA": {
+    "charged": 1795445263,
+    "entry": 162.05,
+    "last": 162.05,
+    "notional": 1158.2682977652892,
+    "opened": 1795445263,
+    "qty": 7.147598258347974,
+    "side": 1
+   },
+   "STX": {
+    "charged": 1795445263,
+    "entry": 460.965,
+    "last": 518.915,
+    "notional": 1100.9411534297385,
+    "opened": 1795205240,
+    "qty": 2.388340011562133,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1795445263,
+    "entry": 229.43,
+    "last": 229.43,
+    "notional": 1158.2682977652892,
+    "opened": 1795445263,
+    "qty": 5.0484605228840564,
+    "side": 1
+   }
+  },
+  "C-groq-coin": {
+   "CRDO": {
+    "charged": 1795445263,
+    "entry": 100.52,
+    "last": 120.06,
+    "notional": 1670.2671644667616,
+    "opened": 1795206445,
+    "qty": 16.61626705597654,
+    "side": 1
+   },
+   "MU": {
+    "charged": 1795445263,
+    "entry": 595.43,
+    "last": 671.16,
+    "notional": 1670.2671644667616,
+    "opened": 1795206445,
+    "qty": 2.805144457730987,
+    "side": 1
+   },
+   "NVDA": {
+    "charged": 1795445263,
+    "entry": 162.05,
+    "last": 162.05,
+    "notional": 1793.452324015363,
+    "opened": 1795445263,
+    "qty": 11.067277531720844,
+    "side": 1
+   },
+   "STX": {
+    "charged": 1795445263,
+    "entry": 460.965,
+    "last": 518.915,
+    "notional": 1667.2781063603245,
+    "opened": 1795205240,
+    "qty": 3.6169299325552364,
+    "side": 1
+   },
+   "ZS": {
+    "charged": 1795445263,
+    "entry": 229.43,
+    "last": 229.43,
+    "notional": 1793.452324015363,
+    "opened": 1795445263,
+    "qty": 7.816991343831944,
+    "side": -1
+   }
+  },
+  "C-groq-slow": {
+   "AMD": {
+    "charged": 1795445263,
+    "entry": 420.31,
+    "last": 447.255,
+    "notional": 1720.229437135187,
+    "opened": 1795208238,
+    "qty": 4.092763524863046,
+    "side": -1
+   },
+   "CLS": {
+    "charged": 1795445263,
+    "entry": 200.24,
+    "last": 223.52,
+    "notional": 1720.229437135187,
+    "opened": 1795208238,
+    "qty": 8.590838179860103,
+    "side": -1
+   },
+   "CRDO": {
+    "charged": 1795445263,
+    "entry": 98.82,
+    "last": 120.06,
+    "notional": 1720.229437135187,
+    "opened": 1795208238,
+    "qty": 17.407705293818935,
+    "side": 1
+   },
+   "MU": {
+    "charged": 1795445263,
+    "entry": 589.655,
+    "last": 671.16,
+    "notional": 1720.229437135187,
+    "opened": 1795208238,
+    "qty": 2.91734902126699,
+    "side": 1
+   },
+   "STX": {
+    "charged": 1795445263,
+    "entry": 458.365,
+    "last": 518.915,
+    "notional": 1720.229437135187,
+    "opened": 1795208238,
+    "qty": 3.752968566830336,
+    "side": 1
+   }
+  },
+  "C-groq-slow-coin": {
+   "AMD": {
+    "charged": 1795445263,
+    "entry": 420.31,
+    "last": 447.255,
+    "notional": 2150.993026008775,
+    "opened": 1795208238,
+    "qty": 5.117634664911077,
+    "side": -1
+   },
+   "CLS": {
+    "charged": 1795445263,
+    "entry": 200.24,
+    "last": 223.52,
+    "notional": 2150.993026008775,
+    "opened": 1795208238,
+    "qty": 10.742074640475304,
+    "side": -1
+   },
+   "CRDO": {
+    "charged": 1795445263,
+    "entry": 98.82,
+    "last": 120.06,
+    "notional": 2150.993026008775,
+    "opened": 1795208238,
+    "qty": 21.76677824335939,
+    "side": 1
+   },
+   "MU": {
+    "charged": 1795445263,
+    "entry": 589.655,
+    "last": 671.16,
+    "notional": 2150.993026008775,
+    "opened": 1795208238,
+    "qty": 3.6478839762382664,
+    "side": 1
+   },
+   "STX": {
+    "charged": 1795445263,
+    "entry": 458.365,
+    "last": 518.915,
+    "notional": 2150.993026008775,
+    "opened": 1795208238,
+    "qty": 4.6927514666450865,
+    "side": 1
+   }
+  },
+  "C-slow": {
+   "APLD": {
+    "charged": 1795445263,
+    "entry": 11.51,
+    "last": 14.35,
+    "notional": 2210.3862738974044,
+    "opened": 1795207042,
+    "qty": 192.0405103299222,
+    "side": -1
+   },
+   "IREN": {
+    "charged": 1795445263,
+    "entry": 12.04,
+    "last": 15.25,
+    "notional": 2210.3862738974044,
+    "opened": 1795207042,
+    "qty": 183.58689982536583,
+    "side": -1
+   },
+   "MU": {
+    "charged": 1795445263,
+    "entry": 591.93,
+    "last": 671.16,
+    "notional": 2210.3862738974044,
+    "opened": 1795207042,
+    "qty": 3.7342021419718625,
+    "side": -1
+   },
+   "NVDA": {
+    "charged": 1795445263,
+    "entry": 127.33,
+    "last": 162.05,
+    "notional": 2210.3862738974044,
+    "opened": 1795207042,
+    "qty": 17.359508944454603,
+    "side": -1
+   },
+   "WULF": {
+    "charged": 1795445263,
+    "entry": 9.955,
+    "last": 11.39,
+    "notional": 2210.3862738974044,
+    "opened": 1795207042,
+    "qty": 222.0377974783932,
+    "side": -1
+   }
+  },
+  "C-slow-coin": {
+   "APLD": {
+    "charged": 1795445263,
+    "entry": 11.51,
+    "last": 14.35,
+    "notional": 2167.7073505722797,
+    "opened": 1795207042,
+    "qty": 188.3325239419878,
+    "side": -1
+   },
+   "IREN": {
+    "charged": 1795445263,
+    "entry": 12.04,
+    "last": 15.25,
+    "notional": 2167.7073505722797,
+    "opened": 1795207042,
+    "qty": 180.04213875185047,
+    "side": 1
+   },
+   "MU": {
+    "charged": 1795445263,
+    "entry": 591.93,
+    "last": 671.16,
+    "notional": 2167.7073505722797,
+    "opened": 1795207042,
+    "qty": 3.6621008405931104,
+    "side": 1
+   },
+   "NVDA": {
+    "charged": 1795445263,
+    "entry": 127.33,
+    "last": 162.05,
+    "notional": 2167.7073505722797,
+    "opened": 1795207042,
+    "qty": 17.024325379504276,
+    "side": -1
+   },
+   "WULF": {
+    "charged": 1795445263,
+    "entry": 9.955,
+    "last": 11.39,
+    "notional": 2167.7073505722797,
+    "opened": 1795207042,
+    "qty": 217.750612814895,
+    "side": -1
+   }
+  },
+  "HOLD": {
+   "SPY": {
+    "charged": 1795445263,
+    "entry": 767.13,
+    "last": 717.91,
+    "notional": 9990.009990009992,
+    "opened": 1792417712,
+    "qty": 13.022577646565761,
+    "side": 1
+   }
+  }
+ },
+ "prev_sha256": "b27f184da864324c786ce299e3ce56b4ef5ae23f5fa48f4d045f271d7dff8ee3",
+ "price_source": {
+  "AAOI": "iex",
+  "ALAB": "iex",
+  "AMD": "iex",
+  "APLD": "iex",
+  "ASTS": "iex",
+  "AXTI": "iex",
+  "BE": "iex",
+  "BMNR": "iex",
+  "CBRS": "iex",
+  "CIEN": "iex",
+  "CLS": "iex",
+  "COHR": "iex",
+  "CRDO": "iex",
+  "CRWV": "iex",
+  "DELL": "iex",
+  "ENTG": "iex",
+  "HPE": "iex",
+  "INTC": "iex",
+  "IONQ": "iex",
+  "IREN": "iex",
+  "LITE": "iex",
+  "LRCX": "iex",
+  "MPWR": "iex",
+  "MRVL": "iex",
+  "MSTR": "iex",
+  "MTSI": "iex",
+  "MU": "iex",
+  "NBIS": "iex",
+  "NVDA": "iex",
+  "ORCL": "iex",
+  "RBLX": "iex",
+  "SMCI": "iex",
+  "SNDK": "iex",
+  "STX": "iex",
+  "TER": "iex",
+  "TSEM": "iex",
+  "TSLA": "iex",
+  "TSM": "iex",
+  "VRT": "iex",
+  "WDC": "iex",
+  "WULF": "iex",
+  "ZS": "iex"
+ },
+ "prices": {
+  "AAOI": 39.8,
+  "ALAB": 205.65,
+  "AMD": 447.255,
+  "APLD": 14.35,
+  "ASTS": 26.68,
+  "AXTI": 38.19,
+  "BE": 168.56,
+  "BMNR": 15.12,
+  "CBRS": 98.6,
+  "CIEN": 266.86,
+  "CLS": 223.52,
+  "COHR": 219.11,
+  "CRDO": 120.06,
+  "CRWV": 48.02,
+  "DELL": 332.145,
+  "ENTG": 143.545,
+  "HPE": 45.78,
+  "INTC": 57.98,
+  "IONQ": 24.005,
+  "IREN": 15.25,
+  "LITE": 546.565,
+  "LRCX": 206.635,
+  "MPWR": 1301.35,
+  "MRVL": 140.96,
+  "MSTR": 88.52,
+  "MTSI": 224.33,
+  "MU": 671.16,
+  "NBIS": 100.98,
+  "NVDA": 162.05,
+  "ORCL": 114.26,
+  "RBLX": 52.155,
+  "SMCI": 25.555,
+  "SNDK": 92.1,
+  "STX": 518.915,
+  "TER": 234.2,
+  "TSEM": 136.2,
+  "TSLA": 387.205,
+  "TSM": 363.91,
+  "VRT": 185.98,
+  "WDC": 296.12,
+  "WULF": 11.39,
+  "ZS": 229.43
+ },
+ "shortlist": [
+  "NVDA",
+  "IREN",
+  "AXTI",
+  "APLD",
+  "NBIS",
+  "CRWV",
+  "AAOI",
+  "CRDO",
+  "DELL",
+  "CBRS",
+  "LITE",
+  "BE",
+  "SMCI",
+  "TSEM",
+  "ZS",
+  "COHR",
+  "BMNR",
+  "SNDK",
+  "IONQ",
+  "WULF",
+  "MRVL",
+  "ENTG",
+  "MTSI",
+  "ASTS",
+  "TER",
+  "TSM",
+  "ALAB",
+  "MPWR",
+  "CIEN",
+  "MSTR",
+  "STX",
+  "WDC",
+  "INTC",
+  "ORCL",
+  "MU",
+  "LRCX",
+  "TSLA",
+  "HPE",
+  "VRT",
+  "RBLX",
+  "AMD",
+  "CLS"
+ ],
+ "t": 1795445263,
+ "universe_date": "2026-11-23",
+ "written_utc": "2026-11-23T14:47:55.245134Z"
+}

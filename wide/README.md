@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 15:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 09:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $9167.73 | -8.32% | 269 | 92 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C's picks | $8720.99 | -12.79% | 267 | 130 | long APLD, short IREN, long MU, short NVDA, short WULF |
-| C's prompt on Groq (K7) | $5459.09 | -45.41% | 542 | 133 | short AMD, short CLS, long CRDO, long MU, long STX |
-| Coin flip on C-groq's picks | $8304.01 | -16.96% | 542 | 258 | long AMD, short CLS, long CRDO, long MU, long STX |
-| C-groq's answers, acted on once a day (K8) | $8584.58 | -14.15% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
-| Coin flip on C-groq-slow's picks | $10734.25 | +7.34% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
-| C's answers, acted on once a day (K8) | $11088.74 | +10.89% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10836.00 | +8.36% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $8994.43 | -10.06% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $7273.70 | -27.26% | 274 | 92 | cash |
+| Coin flip on C's picks | $8141.71 | -18.58% | 272 | 132 | cash |
+| C's prompt on Groq (K7) | $5789.02 | -42.11% | 544 | 133 | long CRDO, long MU, long NVDA, long STX, long ZS |
+| Coin flip on C-groq's picks | $8963.67 | -10.36% | 544 | 259 | long CRDO, long MU, long NVDA, long STX, short ZS |
+| C-groq's answers, acted on once a day (K8) | $9116.26 | -8.84% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
+| Coin flip on C-groq-slow's picks | $11399.06 | +13.99% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
+| C's answers, acted on once a day (K8) | $8686.46 | -13.14% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10255.89 | +2.56% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9349.04 | -6.51% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-23 09:47 | all cash | bought APLD @ $14.35; bought IREN @ $15.25; bought MU @ $671.16; bought NVDA @ $162.05; bought WULF @ $11.39 | Closing all losing short positions to preserve capital after a significant market move against them. Re-evaluating strategy with an all-cash position. |
 | 2026-11-20 15:59 | short APLD, short IREN, short MU, short NVDA, short WULF | bought SNDK @ $79.38; sold MU @ $594.52 | Maintained profitable short positions in APLD, IREN, NVDA, and WULF due to continued downtrends and negative catalysts. Closed SNDK due to extreme volatility and added a new short in MU, which shows a strong bearish trend and upcoming earnings. |
 | 2026-11-20 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 15:47 | short APLD, short IREN, short NVDA, short SNDK, short WULF | bought MU @ $596.68; sold SNDK @ $79.56 | Replaced MU with SNDK due to extreme daily drop and potential for further downside. Maintained other profitable short positions (APLD, IREN, WULF) and NVDA due to continued weakness and negative news, expecting further declines in the overall market. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-20 15:5
 | 2026-11-19 13:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-19 13:07 | short HUM, long OKTA, long PANW, short UNH, long ZS | none | All existing positions are performing well or showing continued momentum in their favor. No new positions are initiated as the current portfolio is balanced and performing as expected. |
 | 2026-11-19 12:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-19 12:47 | short HUM, long OKTA, long PANW, short UNH, long ZS | none | Maintaining existing profitable long positions in OKTA, PANW, and ZS due to strong positive momentum and short positions in UNH and HUM due to continued negative momentum and relevant news. All positions are performing well or showing continued weakness. |
