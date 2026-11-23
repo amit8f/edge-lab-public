@@ -1,10 +1,10 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-23T09:45 ET: 15 flagged of 3388, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-23T09:50 ET: 15 flagged of 3388, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| PICK-MAIN | $4,657.16 | -6.86% | 50 | 21 | long ACM, short AVNW, long AZTA, short BRUN, short CET, short CNNE, short ENTA, long FSK, long FVR, short GAM, short HY, long MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, short XRN | paused |
-| PICK-MAIN-coin | $4,933.50 | -1.33% | 50 | 23 | long ACM, short AVNW, long AZTA, short BXDC, short CET, long CNNE, short FSK, long FVR, long GAM, short HY, short LAND, short MBGL, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short PSFE, long REZI, short RRGB, long XRN | ok |
-| PICK-PENNY | $437.21 | -12.56% | 67 | 23 | long BGS, long CURI, long FRMI, short HSDT, short LAC, short TSHA | paused |
-| PICK-PENNY-coin | $513.67 | +2.73% | 67 | 29 | long BGS, short CURI, long FRMI, long HSDT, short LAC, short TSHA | ok |
+| PICK-MAIN | $4,667.01 | -6.66% | 58 | 25 | long ACM, short CET, short CNNE, short ENTA, long FVR, short GAM, short HY, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short RRGB | paused |
+| PICK-MAIN-coin | $4,943.97 | -1.12% | 57 | 25 | long ACM, short BXDC, short CET, long CNNE, long FVR, long GAM, short HY, short LAND, short MSTR, short NLOP, short NVDA, short OMER, long PRVA, short RRGB | ok |
+| PICK-PENNY | $435.82 | -12.84% | 73 | 28 | cash | paused |
+| PICK-PENNY-coin | $512.30 | +2.46% | 73 | 34 | cash | ok |
