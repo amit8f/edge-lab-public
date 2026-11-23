@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 14:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 14:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $7098.64 | -29.01% | 282 | 93 | long COHR, long ENTG, long MPWR, long NVDA, long ZS |
-| Coin flip on C's picks | $8044.54 | -19.55% | 280 | 134 | long COHR, long ENTG, short MPWR, long NVDA, short ZS |
-| C's prompt on Groq (K7) | $5758.43 | -42.42% | 573 | 141 | long CRDO, long MPWR, long NVDA, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $9008.75 | -9.91% | 572 | 272 | short CRDO, short MPWR, long NVDA, long TSLA, short ZS |
-| C-groq's answers, acted on once a day (K8) | $9283.17 | -7.17% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
-| Coin flip on C-groq-slow's picks | $11607.77 | +16.08% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
-| C's answers, acted on once a day (K8) | $8801.57 | -11.98% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10415.12 | +4.15% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9422.55 | -5.77% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $7078.88 | -29.21% | 282 | 93 | long COHR, long ENTG, long MPWR, long NVDA, long ZS |
+| Coin flip on C's picks | $8039.43 | -19.61% | 280 | 134 | long COHR, long ENTG, short MPWR, long NVDA, short ZS |
+| C's prompt on Groq (K7) | $5741.88 | -42.58% | 573 | 141 | long CRDO, long MPWR, long NVDA, long TSLA, long ZS |
+| Coin flip on C-groq's picks | $9012.25 | -9.88% | 572 | 272 | short CRDO, short MPWR, long NVDA, long TSLA, short ZS |
+| C-groq's answers, acted on once a day (K8) | $9279.95 | -7.20% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
+| Coin flip on C-groq-slow's picks | $11603.75 | +16.04% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
+| C's answers, acted on once a day (K8) | $8863.18 | -11.37% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10403.10 | +4.03% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9408.16 | -5.92% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-23 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 14:17 | long COHR, long ENTG, long MPWR, long NVDA, long ZS | none | Maintaining all five existing long positions as they are showing strong daily gains and positive momentum, despite some recent pullbacks from hourly highs or mixed news. |
 | 2026-11-23 14:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 14:2
 | 2026-11-20 11:37 | short AMD, short APLD, short DELL, short SNDK, short UNH | none | Maintaining all existing short positions as the market shows broad weakness, with most holdings continuing their downtrend and offering further profit potential. |
 | 2026-11-20 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 11:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-20 11:07 | no answer, nothing changed | none | unreadable answer |
