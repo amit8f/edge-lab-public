@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 15:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 15:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $7114.89 | -28.85% | 285 | 93 | long APLD, long CRWV, long DELL, long NVDA, long ZS |
-| Coin flip on C's picks | $7990.52 | -20.09% | 283 | 135 | long APLD, short CRWV, long DELL, long NVDA, short ZS |
-| C's prompt on Groq (K7) | $5794.66 | -42.05% | 576 | 142 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
-| Coin flip on C-groq's picks | $8920.34 | -10.80% | 575 | 272 | long LITE, short LRCX, short MPWR, long TSLA, short ZS |
-| C-groq's answers, acted on once a day (K8) | $9308.38 | -6.92% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
-| Coin flip on C-groq-slow's picks | $11639.29 | +16.39% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
-| C's answers, acted on once a day (K8) | $8851.63 | -11.48% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10448.27 | +4.48% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9427.17 | -5.73% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $7130.41 | -28.70% | 285 | 93 | long APLD, long CRWV, long DELL, long NVDA, long ZS |
+| Coin flip on C's picks | $7984.30 | -20.16% | 283 | 135 | long APLD, short CRWV, long DELL, long NVDA, short ZS |
+| C's prompt on Groq (K7) | $5780.96 | -42.19% | 576 | 142 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
+| Coin flip on C-groq's picks | $8928.84 | -10.71% | 575 | 272 | long LITE, short LRCX, short MPWR, long TSLA, short ZS |
+| C-groq's answers, acted on once a day (K8) | $9286.46 | -7.14% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
+| Coin flip on C-groq-slow's picks | $11666.04 | +16.66% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
+| C's answers, acted on once a day (K8) | $8833.63 | -11.66% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10409.63 | +4.10% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9410.77 | -5.89% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-23 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:27 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 15:4
 | 2026-11-20 12:57 | short AAOI, short APLD, short IREN, short MU, short WULF | none | Maintaining all existing short positions as they continue to show strong downward momentum and are mostly profitable, aligning with the broad market downturn. |
 | 2026-11-20 12:47 | short AAOI, short APLD, short IREN, short MU, short WULF | bought SNDK @ $80.64; sold MU @ $604.13 | Maintaining profitable short positions in APLD, AAOI, IREN, and WULF due to strong bearish momentum and adding a new short in MU given its significant daily and multi-session declines. Closing SNDK due to extreme volatility and a slight recovery from its intraday low after a massive drop. |
 | 2026-11-20 12:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-20 12:27 | no answer, nothing changed | none | unreadable answer |
