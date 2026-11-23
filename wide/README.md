@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $7232.66 | -27.67% | 277 | 93 | long APLD, long MU, long NVDA, long WDC, long ZS |
-| Coin flip on C's picks | $8222.25 | -17.78% | 275 | 134 | long APLD, long MU, long NVDA, long WDC, short ZS |
-| C's prompt on Groq (K7) | $5871.79 | -41.28% | 557 | 137 | long APLD, long CRDO, long MPWR, long NVDA, long TSM |
-| Coin flip on C-groq's picks | $9168.07 | -8.32% | 557 | 266 | long APLD, long CRDO, long MPWR, long NVDA, short TSM |
-| C-groq's answers, acted on once a day (K8) | $9309.11 | -6.91% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
-| Coin flip on C-groq-slow's picks | $11640.20 | +16.40% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
-| C's answers, acted on once a day (K8) | $8459.16 | -15.41% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10355.90 | +3.56% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9434.47 | -5.66% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $7210.46 | -27.90% | 277 | 93 | long APLD, long MU, long NVDA, long WDC, long ZS |
+| Coin flip on C's picks | $8209.25 | -17.91% | 275 | 134 | long APLD, long MU, long NVDA, long WDC, short ZS |
+| C's prompt on Groq (K7) | $5872.59 | -41.27% | 557 | 137 | long APLD, long CRDO, long MPWR, long NVDA, long TSM |
+| Coin flip on C-groq's picks | $9185.21 | -8.15% | 557 | 266 | long APLD, long CRDO, long MPWR, long NVDA, short TSM |
+| C-groq's answers, acted on once a day (K8) | $9287.65 | -7.12% | 59 | 26 | short AMD, short CLS, long CRDO, long MU, long STX |
+| Coin flip on C-groq-slow's picks | $11613.37 | +16.13% | 59 | 35 | short AMD, short CLS, long CRDO, long MU, long STX |
+| C's answers, acted on once a day (K8) | $8504.86 | -14.95% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10306.67 | +3.07% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9420.53 | -5.79% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-23 11:27 | long APLD, long MU, long NVDA, long WDC, long ZS | none | Maintaining current long positions in NVDA, APLD, MU, ZS, and WDC due to strong hourly momentum and positive news for NVDA and APLD, anticipating continued upward movement. |
 | 2026-11-23 11:17 | long APLD, long MU, long NVDA, long WDC, long ZS | none | Maintaining all existing long positions due to strong positive news, significant daily gains, and favorable hourly price action, indicating continued upward momentum for these stocks. |
 | 2026-11-23 11:07 | long APLD, long MU, long NVDA, long WDC, long ZS | none | Maintaining all current long positions (NVDA, MU, APLD, WDC, ZS) due to strong positive catalysts, significant daily gains, and/or news-driven momentum, anticipating further upside. |
 | 2026-11-23 10:57 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-23 11:1
 | 2026-11-19 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-19 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-19 14:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-19 14:27 | short HUM, long OKTA, long PANW, short UNH, long ZS | bought AMD @ $486.18; bought ZS @ $206.55 | Closed AMD short due to continued losses. Maintained profitable HUM, OKTA, PANW, and UNH positions. Initiated a new long position in ZS due to strong positive momentum and hourly breakout. |
