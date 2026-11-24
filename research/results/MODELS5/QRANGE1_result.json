@@ -1,0 +1,54 @@
+{
+ "rule": "QRANGE1 passes if net per trade minus next-close NX3-ALL-HI on the same trades is > 0 with day-clustered t >= 2 and 300+ trades, and its own net per trade > 0 (2024-01..2025-09)",
+ "picks": 12673,
+ "with_minute_path": 12673,
+ "qa_path_end_vs_logged_ret": {
+  "median_abs": 0.0,
+  "share_over_1pct": 0.014755780004734475
+ },
+ "choose_2023": {
+  "0.5": {
+   "net_per_trade": 0.002460407048865798,
+   "target_hit": 0.5513874614594039,
+   "stop_hit": 0.10020554984583761
+  },
+  "0.7": {
+   "net_per_trade": 0.003651345010226631,
+   "target_hit": 0.33658787255909556,
+   "stop_hit": 0.10945529290853032
+  }
+ },
+ "q_tp": 0.7,
+ "calibration_2023_share_beyond": {
+  "stop_A0.9": 0.11510791366906475,
+  "target_F0.5": 0.55344295991778,
+  "target_F0.7": 0.33658787255909556
+ },
+ "test": {
+  "trades": 5022,
+  "gain_vs_next_close_by_day": {
+   "mean": -0.0026179969471189883,
+   "se_nw": 0.00167995528581949,
+   "t_nw": -1.5583729931489916,
+   "days": 421
+  },
+  "own_net_by_day": {
+   "mean": -0.0016941137112576814,
+   "se_nw": 0.0022598757569622994,
+   "t_nw": -0.749649048642785,
+   "days": 421
+  },
+  "mean_net_per_trade": 0.0004932287589738771,
+  "next_close_net_per_trade": 0.0018656487336230138,
+  "target_hit": 0.3199920350457985,
+  "stop_hit": 0.12504978096375946,
+  "median_target": 0.06955060030613641,
+  "median_stop": 0.0985873901059606,
+  "per_side": {
+   "1": 0.0015212503360854752,
+   "-1": -0.0004515140354294065
+  }
+ },
+ "ngboost": "not run (exploratory; would add a dependency)",
+ "verdict": "failed"
+}
