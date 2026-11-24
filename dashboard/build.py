@@ -160,6 +160,13 @@ def nx3_books(st):
                      realized=sum(x.get("book_pnl") or 0 for x in lsettled if x), size=5000.0, first_day="2026-11-25",
                      unit="long trades", note="NX3-ALL-HI's trades, longs held by the survival model; settles 5 sessions after entry",
                      long_gain_usd=5000 * sum(x.get("long_gain") or 0 for x in lsettled if x)))
+    csettled = [x for x in (_json(f) for f in sorted((root / "cost1" / "settled").glob("*.json"))) if x]
+    ctr = [t for x in csettled for t in x.get("trades", []) if t.get("kept")]
+    out.append(_book("COST1", "COST1", 100, len(ctr), 0, realized=sum(x.get("book_pnl_cost1") or 0 for x in csettled),
+                     size=5000.0, first_day="2026-11-25", unit="kept trades",
+                     note="NX3-ALL-HI with real quoted spreads, skipping entries whose half-spread is above 0.5%",
+                     measured_all_usd=sum(x.get("book_pnl_measured") or 0 for x in csettled),
+                     flat_all_usd=sum(x.get("book_pnl_flat") or 0 for x in csettled)))
     ssettled = [_json(f) for f in sorted((root / "nx3sds" / "settled").glob("*.json"))]
     str_ = [t for x in ssettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
     sopen = len((alast or {}).get("picks", [])) if (alast or {}).get("day", "") >= "2026-11-10" else 0
