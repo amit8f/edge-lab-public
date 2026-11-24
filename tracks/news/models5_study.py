@@ -1,7 +1,7 @@
 """VOL1 and REGIME1 (research/prereg/VOL1.md, REGIME1.md): NX3-ALL-HI's history re-sized by a GARCH volatility
-forecast, and cut in a hidden-Markov "storm" regime. SURV1, QRANGE1 and ANOM1 come in a later stage.
+forecast, cut in a hidden-Markov "storm" regime, and SURV1's survival-model exits (research/prereg/SURV1.md).
 
-    python -m tracks.news.models5_study --stage picks|vol1|regime1 --cache cache/nx1 --out research/results/MODELS5
+    python -m tracks.news.models5_study --stage picks|vol1|regime1|surv1 --cache cache/nx1 --out research/results/MODELS5
 
 picks: NX3-ALL-HI's walk-forward picks (same models and seeds as NX3-ALL, confidence >= 1.5, uncapped, sized by
 confidence) with each trade's net after costs -> cache nx3/models5/picks.parquet. Choose years 2019-2023, one
@@ -118,6 +118,29 @@ def garch_sigma(r):
 
 def tstat(x):
     return X.tstat(np.asarray(x, float))
+
+
+SURV_TARGET, SURV_MAX, SURV_GRID = 0.03, 5, (0.3, 0.4, 0.5)
+SURV_LGB = dict(n_estimators=200, max_depth=4, learning_rate=0.05, random_state=7, verbose=-1)
+SURV_INPUTS = ["j", "r_so_far", "conf", "side", "penny", "atr", "spy_so_far", "dow"]
+
+
+def surv_path(ret1, ac_after):
+    """Signed-direction-agnostic close path of a trade: close 1 is NX3's exit (return ret1, gross, unsigned);
+    later closes scale it by the all-adjusted close ratio. ac_after: closes at sessions 1..n (session 1 = next)."""
+    ac = np.asarray(ac_after, float)
+    return (1 + ret1) * ac / ac[0] - 1
+
+
+def surv_exit(sig, probs, pstar, target=SURV_TARGET):
+    """Close index (0-based) at which a trade exits. sig: signed returns at closes 0..n-1; probs[k]: model's
+    chance of reaching the target at a later close, known at close k. Exit at the first close where the target
+    is reached, or where probs[k] < pstar, or at the last close."""
+    n = len(sig)
+    for k in range(n):
+        if sig[k] >= target or k == n - 1 or not probs[k] >= pstar:
+            return k
+    return n - 1
 
 
 # ---------- stages ----------
@@ -282,6 +305,110 @@ def stage_regime1(cache, out):
     write(out, "REGIME1_result.json", rep)
 
 
+def surv_rows(p, panel, spy):
+    """Per pick: its closes for sessions 1..SURV_MAX after entry (session 1 = NX3's exit close), from the
+    all-adjusted panel; trades with a gap in those sessions are dropped."""
+    by = {s: g.set_index("date") for s, g in panel.groupby("symbol")}
+    sp = spy.set_index("date")["ac"]
+    cal = sp.index
+    paths, spaths, keep = [], [], []
+    for i, r in enumerate(p.itertuples(index=False)):
+        g = by.get(r.symbol)
+        k = cal.searchsorted(r.next)
+        if g is None or k + SURV_MAX > len(cal) or cal[k] != r.next:
+            continue
+        ds = cal[k:k + SURV_MAX]
+        if not ds.isin(g.index).all() or ds[-1] > N.LAST_EXIT:
+            continue
+        ac = g.loc[ds, "ac"].to_numpy(float)
+        if not np.isfinite(ac).all() or g.loc[ds, "seg"].nunique() != 1:
+            continue
+        paths.append(r.side * surv_path(r.ret, ac))
+        spaths.append(sp.loc[ds].to_numpy(float) / sp.iloc[max(k - 1, 0)] - 1)
+        keep.append(i)
+    return np.array(keep), np.vstack(paths), np.vstack(spaths), [cal[cal.searchsorted(n_):][:SURV_MAX] for n_ in p["next"].iloc[keep]]
+
+
+def hazard_table(p, paths, spaths):
+    """Discrete-time hazard rows: at close j (1..SURV_MAX-1, 1-based) for trades not yet at the target, label = the
+    target is reached at close j+1."""
+    rows = []
+    for i in range(len(p)):
+        r = p.iloc[i]
+        for j in range(1, SURV_MAX):
+            if paths[i, j - 1] >= SURV_TARGET:
+                break
+            rows.append({"i": i, "j": j, "r_so_far": paths[i, j - 1], "conf": r.conf, "side": r.side,
+                         "penny": float(r.price < 5), "atr": r.atr, "spy_so_far": r.side * spaths[i, j - 1],
+                         "dow": float(pd.Timestamp(r.d).dayofweek), "y": int(paths[i, j] >= SURV_TARGET)})
+    return pd.DataFrame(rows)
+
+
+def surv_probs(model, p, paths, spaths):
+    """probs[i, k]: chance of reaching the target at a later close, known at close k (0-based), with the hazard
+    model's inputs held at close k for the remaining days (only j changes)."""
+    out = np.zeros((len(p), SURV_MAX))
+    for k in range(SURV_MAX - 1):
+        surv = np.ones(len(p))
+        for j in range(k + 1, SURV_MAX):
+            Xk = pd.DataFrame({"j": float(j), "r_so_far": paths[:, k], "conf": p["conf"].to_numpy(float),
+                               "side": p["side"].to_numpy(float), "penny": (p["price"] < 5).to_numpy(float),
+                               "atr": p["atr"].to_numpy(float), "spy_so_far": p["side"].to_numpy(float) * spaths[:, k],
+                               "dow": p["d"].dt.dayofweek.to_numpy(float)})[SURV_INPUTS]
+            surv *= 1 - model.predict_proba(Xk)[:, 1]
+        out[:, k] = 1 - surv
+    return out
+
+
+def surv_net(p, paths, dates, probs, pstar):
+    net = np.zeros(len(p))
+    held = np.zeros(len(p), int)
+    for i in range(len(p)):
+        k = surv_exit(paths[i], probs[i], pstar)
+        days = (dates[i][k] - p["d"].iloc[i]).days
+        net[i] = paths[i, k] - N.cost_frac([p["price"].iloc[i]], [p["side"].iloc[i] < 0], [days])[0]
+        held[i] = k + 1
+    return net, held
+
+
+def stage_surv1(cache, out):
+    import lightgbm as lgb
+    p = pd.read_parquet(mdir(cache) / "picks.parquet")
+    f = mdir(cache) / "vol1_inputs.parquet"
+    p = p.merge(pd.read_parquet(f)[["symbol", "d", "t", "atr"]], on=["symbol", "d", "t"], how="left")
+    panel = chart_panel(cache, set(p["symbol"]))
+    spy = pd.read_parquet(X.nx3dir(cache) / X.CHART / "spy.parquet")[["date", "ac"]].sort_values("date")
+    keep, paths, spaths, dates = surv_rows(p, panel, spy)
+    p = p.iloc[keep].reset_index(drop=True)
+    tr = p["year"] <= 2022
+    ht = hazard_table(p[tr].reset_index(drop=True), paths[tr.to_numpy()], spaths[tr.to_numpy()])
+    model = lgb.LGBMClassifier(**SURV_LGB).fit(ht[SURV_INPUTS], ht["y"])
+    probs = surv_probs(model, p, paths, spaths)
+    base = paths[:, 0] - N.cost_frac(p["price"], p["side"] < 0, p["days"])
+    sel = (p["year"] == 2023).to_numpy()
+    choose = {}
+    for ps in SURV_GRID:
+        n, h = surv_net(p[sel].reset_index(drop=True), paths[sel], [dates[i] for i in np.where(sel)[0]], probs[sel], ps)
+        choose[str(ps)] = {"net_per_trade": float(n.mean()), "held_past_day1": float((h > 1).mean())}
+    pstar = float(max(SURV_GRID, key=lambda ps: choose[str(ps)]["net_per_trade"]))
+    te = p["year"].isin(TEST).to_numpy()
+    n, h = surv_net(p[te].reset_index(drop=True), paths[te], [dates[i] for i in np.where(te)[0]], probs[te], pstar)
+    diff = pd.DataFrame({"d": p.loc[te, "d"].to_numpy(), "x": n - base[te]}).groupby("d")["x"].mean()
+    own = pd.DataFrame({"d": p.loc[te, "d"].to_numpy(), "x": n}).groupby("d")["x"].mean()
+    gd, go = tstat(diff.to_numpy()), tstat(own.to_numpy())
+    rep = {"rule": "SURV1 passes if net per trade minus next-close NX3-ALL-HI on the same trades is > 0 with day-clustered t >= 2 "
+                   "and 300+ trades, and its own net per trade > 0 (2024-01..2025-09)",
+           "trades_with_5_day_path": int(len(p)), "hazard_rows_train": int(len(ht)), "hazard_rate_train": float(ht["y"].mean()),
+           "choose_2023": choose, "pstar": pstar,
+           "test": {"trades": int(te.sum()), "gain_vs_next_close_by_day": gd, "own_net_by_day": go,
+                    "mean_net_per_trade": float(n.mean()), "next_close_net_per_trade": float(base[te].mean()),
+                    "held_past_day1": float((h > 1).mean()), "mean_days_held": float(h.mean()),
+                    "per_side": {int(s): float(n[(p.loc[te, "side"] == s).to_numpy()].mean()) for s in (1, -1)}},
+           "km_reach_target_by_close": [float((paths[:, :k + 1].max(1) >= SURV_TARGET).mean()) for k in range(SURV_MAX)]}
+    rep["verdict"] = "passed" if (gd["mean"] > 0 and gd["t_nw"] >= 2 and te.sum() >= 300 and n.mean() > 0) else "failed"
+    write(out, "SURV1_result.json", rep)
+
+
 def write(out, name, rep):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -291,13 +418,13 @@ def write(out, name, rep):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["picks", "vol1", "regime1"])
+    ap.add_argument("--stage", required=True, choices=["picks", "vol1", "regime1", "surv1"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/MODELS5")
     a = ap.parse_args()
     cache = Path(a.cache)
     {"picks": lambda: stage_picks(cache), "vol1": lambda: stage_vol1(cache, a.out),
-     "regime1": lambda: stage_regime1(cache, a.out)}[a.stage]()
+     "regime1": lambda: stage_regime1(cache, a.out), "surv1": lambda: stage_surv1(cache, a.out)}[a.stage]()
 
 
 if __name__ == "__main__":

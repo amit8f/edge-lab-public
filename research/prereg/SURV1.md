@@ -35,3 +35,12 @@ the model's calibration on 2023.
 ## Prediction (written first)
 
 Next close stays hard to beat (NXE, STOP8). P(pass) about 0.15.
+
+## Amendment 1 (2026-11-24, code details, before any result)
+
+`tracks/news/models5_study.py`. Closes 1..5 count from NX3's own exit close (close 1 = next close, using the
+trade's logged return); later closes scale it by the all-adjusted close ratio. Trades without five unbroken sessions
+after entry (gap, delisting, or past 2025-09-30) are dropped from SURV1 and from its next-close comparison alike.
+A trade that reaches +3% at a close exits at that close. The hazard model's inputs at close k are held fixed for the
+remaining days (only the day number changes) when it predicts the chance of reaching +3% later. The comparison is the
+same trades' next-close net.

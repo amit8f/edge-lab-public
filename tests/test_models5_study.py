@@ -53,3 +53,12 @@ def test_boot_sharpe_diff_sign():
     month = np.repeat(np.arange(20), 20)
     d, lo, hi = M.boot_sharpe_diff(a, b, month, n=200)
     assert d > 0 and lo > 0
+
+
+def test_surv_path_and_exit():
+    path = M.surv_path(0.01, [10.0, 10.2, 10.4])
+    assert np.isclose(path[0], 0.01) and np.isclose(path[2], 1.01 * 1.04 - 1)
+    sig = np.array([0.01, 0.02, 0.035, 0.0, 0.0])
+    assert M.surv_exit(sig, np.full(5, 0.9), 0.4) == 2      # target reached at close 3
+    assert M.surv_exit(sig, np.full(5, 0.1), 0.4) == 0      # low chance: out at NX3's normal close
+    assert M.surv_exit(np.zeros(5), np.full(5, 0.9), 0.4) == 4
