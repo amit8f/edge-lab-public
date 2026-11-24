@@ -397,3 +397,14 @@ def test_dayfilter_stage_writes_the_report(tmp_path, monkeypatch):
     rep = json.loads((tmp_path / "out" / "DAYFILTER_walkforward.json").read_text())
     assert set(rep["bars"]) == {"1.0", "1.5", "2.0"} and rep["verdict"] in ("passed", "failed")
     assert "gain_over_nx3all" in rep["bars"]["1.5"] and "gain_over_nx3all" not in rep["bars"]["1.0"]
+
+
+def test_tie_break_by_confidence_changes_the_slots_only_within_one_minute():
+    t0, t1 = pd.Timestamp("2024-03-01 09:30"), pd.Timestamp("2024-03-01 10:00")
+    day = pd.DataFrame({"symbol": ["AAA", "BBB", "CCC", "DDD", "EEE"], "t": [t0, t0, t0, t0, t1],
+                        "e": [1.1, 3.0, 2.0, 1.5, 9.0], "fired": True})
+    rng = np.random.default_rng(0)
+    plain, _ = X.picks(day, rng, cut=1.0, cap=3)
+    conf, _ = X.picks(day, np.random.default_rng(0), cut=1.0, cap=3, tie="conf")
+    assert list(plain["symbol"]) == ["AAA", "BBB", "CCC"]           # alphabetical within the open
+    assert list(conf["symbol"]) == ["BBB", "CCC", "DDD"]            # most confident first; the 10:00 event is late

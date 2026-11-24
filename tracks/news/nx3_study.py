@@ -187,12 +187,18 @@ def against_day(lo, sh, bar, cut):
     return lo, sh
 
 
-def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None, only=None, against=1.0):
+def picks(day, rng, col="e", cap=PICKS, hi=1.0, cut=None, only=None, against=1.0, tie="symbol"):
     """Fired events in time order: the first `cap` with e > 0 go long, the first `cap` with e < 0 short
     (cap None: all of them, NX3-ALL). Control: as many of the day's real events at random, same sides.
     hi: NX3-HI bar (research/prereg/NX3HI.md): only confidence |e|/cut >= hi takes a slot; a pair (long bar,
-    short bar) sets a bar per side (NX3-BARS, research/prereg/NX3BARS.md). only: 1 or -1 keeps one side."""
-    f = day[day["fired"]].sort_values("t", kind="stable")
+    short bar) sets a bar per side (NX3-BARS, research/prereg/NX3BARS.md). only: 1 or -1 keeps one side.
+    tie: "symbol" keeps the input order (symbols) among events at the same minute; "conf" (NX3-TIE,
+    research/prereg/NX3TIE.md) puts the highest |e| first among them."""
+    f = day[day["fired"]]
+    if tie == "conf":
+        f = f.assign(_c=f[col].abs()).sort_values(["t", "_c"], ascending=[True, False], kind="stable").drop(columns="_c")
+    else:
+        f = f.sort_values("t", kind="stable")
     hl, hs = hi if isinstance(hi, tuple) else (hi, hi)
     lo, sh = f[f[col] > 0], f[f[col] < 0]
     if hl > 1.0:
@@ -240,7 +246,7 @@ def importance(model):
     return {g: float(sum(by.get(k, 0.0) for k in ks)) for g, ks in GROUPS.items()}
 
 
-def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None, against=1.0):
+def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None, against=1.0, tie="symbol"):
     real = te[te["kind"] == "real"]
     e = model.effect(real[INPUTS].to_numpy(float))
     real = real.assign(e=e, fired=model.fires(e))
@@ -249,10 +255,10 @@ def evaluate(te, model, seed, cap=PICKS, hi=1.0, only=None, against=1.0):
     rng = np.random.default_rng(seed)
     rows, pk = [], []
     for d, day in real.groupby("d", sort=True):
-        p, c = picks(day, rng, cap=cap, hi=hi, cut=model.cut, only=only, against=against)
+        p, c = picks(day, rng, cap=cap, hi=hi, cut=model.cut, only=only, against=against, tie=tie)
         if p.empty or c.empty:
             continue
-        s, _ = picks(shuffled(day, model, rng), rng, cap=cap, hi=hi, cut=model.cut, only=only)
+        s, _ = picks(shuffled(day, model, rng), rng, cap=cap, hi=hi, cut=model.cut, only=only, tie=tie)
         pn = N.net(p).mean()
         row = {"d": d, "pick_minus_control": pn - N.net(c).mean(),
                "pick_minus_shuffled": pn - N.net(s).mean() if len(s) else np.nan}
@@ -629,6 +635,61 @@ def stage_highbar(cache, out, bars=(1.0, 1.25, 1.5, 2.0), uncapped=False):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     (out / ("NX3ALLHI_walkforward.json" if uncapped else "NX3HI_walkforward.json")).write_text(json.dumps(rep, indent=1, default=float))
+    print(json.dumps(rep, indent=1, default=float))
+
+
+def stage_tie(cache, out):
+    """NX3-TIE (research/prereg/NX3TIE.md): NX3's walk-forward with ties at one minute broken by confidence instead
+    of symbol. Same models, seeds and costs per year; the control is drawn per arm."""
+    d3 = nx3dir(cache)
+    ev = pd.concat([pd.read_parquet(f) for f in sorted((d3 / TRADES).glob("t_*.parquet"))], ignore_index=True)
+    ev = ev[np.isfinite(ev["mret"]) & (ev["next"] <= N.LAST_EXIT)].reset_index(drop=True)
+    caldates = pd.DatetimeIndex(calendar(cache)["date"])
+    arms = {"nx3": [], "tie": []}
+    picks_by = {"nx3": [], "tie": []}
+    for yr in N.TEST_YEARS:
+        start = pd.Timestamp(f"{yr}-01-01")
+        cut = caldates[max(caldates.searchsorted(start) - N.PURGE - 1, 0)]
+        tr = ev[ev["d"] <= cut]
+        te = ev[(ev["d"] >= start) & (ev["d"] < pd.Timestamp(f"{yr + 1}-01-01"))]
+        if tr.empty or te.empty:
+            continue
+        model = Model(tr)
+        for arm, tie in (("nx3", "symbol"), ("tie", "conf")):
+            n, pk, _, _ = evaluate(te, model, SEED + yr, PICKS, tie=tie)
+            if len(n):
+                arms[arm].append(n.assign(year=yr))
+                picks_by[arm].append(pk.assign(year=yr))
+    cat = lambda fr: pd.concat(fr, ignore_index=True)     # noqa: E731
+    a, b = cat(arms["nx3"]), cat(arms["tie"])
+    pa, pb = cat(picks_by["nx3"]), cat(picks_by["tie"])
+    m = b.merge(a, on="d", suffixes=("", "_nx3"))
+    keys = ["symbol", "d", "t"]
+    same = pa[keys].merge(pb[keys], on=keys, how="outer", indicator=True)
+    changed_days = same.loc[same["_merge"] != "both", "d"].nunique()
+    first_a = lambda p: float(p["symbol"].str.startswith("A").mean())     # noqa: E731
+    open_share = lambda p: float((p["mins_open"] <= 0).mean())            # noqa: E731
+    rep = {"rule": "NX3-TIE passes if picks minus control has NW t >= 2 and NX3-TIE minus NX3 on shared days has mean > 0 "
+                   "with NW t >= 1.5 (all test years)",
+           "nx3": {"pick_minus_control": tstat(a["pick_minus_control"].to_numpy(float)), "pick_days": int(len(a)),
+                   "net_per_trade": float(N.net(pa).mean()), "picks": int(len(pa)),
+                   "share_symbol_A": first_a(pa), "share_at_open": open_share(pa)},
+           "tie": {"pick_minus_control": tstat(b["pick_minus_control"].to_numpy(float)), "pick_days": int(len(b)),
+                   "net_per_trade": float(N.net(pb).mean()), "picks": int(len(pb)),
+                   "share_symbol_A": first_a(pb), "share_at_open": open_share(pb)},
+           "tie_minus_nx3_shared_days": tstat((m["pick_minus_control"] - m["pick_minus_control_nx3"]).to_numpy(float)),
+           "days_with_changed_slots": int(changed_days), "days_nx3": int(len(a)),
+           "per_year": {int(y): {"nx3": tstat(g["pick_minus_control"].to_numpy(float)),
+                                 "tie": tstat(b.loc[b["year"] == y, "pick_minus_control"].to_numpy(float))}
+                        for y, g in a.groupby("year")},
+           "per_side_net": {int(s): {"nx3": float(N.net(pa[pa["side"] == s]).mean()),
+                                     "tie": float(N.net(pb[pb["side"] == s]).mean())} for s in (1, -1)}}
+    d = rep["tie_minus_nx3_shared_days"]
+    rep["verdict"] = ("passed" if rep["tie"]["pick_minus_control"]["mean"] > 0 and rep["tie"]["pick_minus_control"]["t_nw"] >= GATE_T
+                      and d["mean"] > 0 and d["t_nw"] >= 1.5 else "failed")
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "NX3TIE_walkforward.json").write_text(json.dumps(rep, indent=1, default=float))
     print(json.dumps(rep, indent=1, default=float))
 
 
@@ -1407,7 +1468,7 @@ def stage_shortall(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze", "boom_928", "boom_shift", "boom_pmcheck", "dirflow_data", "dirflow", "dayfilter", "sds"])
+    ap.add_argument("--stage", default="all", choices=["all", "events", "minutes", "train", "extremes", "uncapped", "highbar", "highbar_all", "bars", "shortfix", "shortfix2", "shortml", "shortfast", "nxk", "nxk2", "bars_cat", "bars_krr", "nxk_v1", "chart_bars", "nx3ta", "chart1", "shortall", "boom1", "boom2_picks", "boom2_minutes", "boom2", "boom2_diag", "boom_freeze", "boom_928", "boom_shift", "boom_pmcheck", "dirflow_data", "dirflow", "dayfilter", "sds", "tie"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/NX3")
     ap.add_argument("--budget-min", type=float, default=290)
@@ -1421,6 +1482,9 @@ def main():
         return
     if a.stage == "sds":
         stage_sds(a.cache, a.out)
+        return
+    if a.stage == "tie":
+        stage_tie(a.cache, a.out)
         return
     if a.stage == "uncapped":
         stage_uncapped(a.cache, a.out)
