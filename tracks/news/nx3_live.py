@@ -356,6 +356,21 @@ def poll(day, api, ses, now, finbert, last):
     return ev
 
 
+_VOTE = []
+
+
+def _vote_e(inp):
+    """NXM-VOTE's score for one decided event (research/prereg/NXMVOTE.md), logged so the dashboard can show its picks
+    during the day; the book itself is still made after the close. None if the models can't load; never stops NX3."""
+    try:
+        if not _VOTE:
+            _VOTE.append(VL.Vote(M.load()))
+        x = np.array([[inp[k] if inp[k] is not None else np.nan for k in S.INPUTS]], dtype=float)
+        return float(_VOTE[0].effect(x)[0])
+    except Exception:
+        return None
+
+
 def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
     """Decides the ready events (time order, ties in symbol order) and logs each one."""
     ready = ready.sort_values(["t", "symbol"], kind="stable")
@@ -387,6 +402,7 @@ def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
         fired = bool(abs(e) >= day.ctx["cut"] and abs(e) > 0)
         side, why = take(e, fired, r["symbol"], short_ok, day.taken())
         day.log(base | {"status": "decided", "inputs": inp, "e": e, "fired": fired, "side": side, "skip": why,
+                        "vote_e": _vote_e(inp),
                         "entry_iex": entry, "entry_iex_t": trades[r["symbol"]][1], "prev_c": c["prev_c"],
                         "dv20": c["dv20"], "etb": r["symbol"] in short_ok})
 
