@@ -44,3 +44,13 @@ survive (CRY-TREND).
 ## 10. A few trades make the average
 M5 (GME 2020), A1 (two squeezed shorts), the live NXM books (top 3 trades = half the profit). Next time: report the
 median trade and the result without the top 3 beside the mean.
+
+## 11. Don't trim NX3's tails (VOL1, REGIME1, SURV1, QRANGE1, ANOM1; 2026-11-24)
+Four ways of reshaping NX3-ALL-HI's trades all lost to the plain next-close trade, for one reason: its profit sits
+in a few big moves in volatile stocks on volatile days. GARCH sizing shrank exactly those trades (Sharpe 0.79 ->
+0.15); the HMM storm switch cut the worst 1% day from -12.1% to -8.5% but halved the return, because rebounds after
+crashes are where it earns; quantile take-profits (median 7%) capped the winners (+0.05% vs +0.19% a trade). Holding
+longer helped longs (+0.39% a trade) and hurt shorts (-0.13%), the same split as lessons 5 and 6. ANOM1 failed for a
+different reason: BOOM1's inputs already hold the range and volume an anomaly score sees (alone it picks 41% movers
+against 37% at random from the same pool). Next time: risk tools are a choice of less loss for less return, not a
+free gain; a fix chosen from these splits (e.g. hold only longs) is a new idea tested forward only.
