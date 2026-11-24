@@ -108,6 +108,18 @@ def get(a, cache, name):
     return f
 
 
+def stage_data(cache):
+    """Downloads the three training files into the cache and nothing else, logging time and size per file, so a lost
+    runner can be told apart from a lost download (NUM1.md Amendment 4)."""
+    import time
+    a = api()
+    for name in ("validation_example_preds.parquet", "validation.parquet", "train.parquet"):
+        t0 = time.monotonic()
+        f = get(a, cache, name)
+        print(f"[num1] {name}: {f.stat().st_size / 1e9:.2f} GB in {time.monotonic() - t0:.0f} s, "
+              f"peak memory {peak_rss_gb():.1f} GB", flush=True)
+
+
 def stage_train(cache, out):
     import lightgbm as lgb
     a = api()
@@ -189,10 +201,13 @@ def stage_submit(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["train", "submit", "export"])
+    ap.add_argument("--stage", required=True, choices=["data", "train", "submit", "export"])
     ap.add_argument("--cache", default="cache/numerai")
     ap.add_argument("--out", default="research/results/NUM1")
     x = ap.parse_args()
+    if x.stage == "data":
+        stage_data(x.cache)
+        return
     {"train": stage_train, "submit": stage_submit, "export": stage_export}[x.stage](x.cache, x.out)
 
 

@@ -58,3 +58,9 @@ without looking at any score), validation reads the same features, and the job l
 target, validation and the forward test are unchanged.
 The swap file is also dropped (it can starve the runner), and the training step gets a 150-minute limit so a stall
 ends with a log instead of a lost runner.
+
+Addendum 4 (2026-11-24, still before any result): the fifth run (45505018055, every 12th date, 500 features, no swap)
+lost its runner after 51 minutes too, again with no log, so memory in training is not the proven cause. To tell a lost
+download from a lost training run, a separate stage `numeraidata` only downloads the three files into the cache (time,
+size and peak memory logged per file); training then reads them from the cache. Nothing about the model, the target,
+the validation or the forward test changes.

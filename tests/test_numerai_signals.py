@@ -73,3 +73,17 @@ def test_read_uses_only_the_given_features(tmp_path):
     pq.write_table(pa.table({"date": ["a", "b"], "feature_a": [1.0, 2.0], "feature_b": [3.0, 4.0], "target": [0.1, 0.2]}), f)
     df, feats = S.read(f, keep=("date", "target"), use=["feature_b"])
     assert feats == ["feature_b"] and "feature_a" not in df.columns
+
+
+def test_stage_data_downloads_each_file_once(tmp_path, monkeypatch, capsys):
+    got = []
+
+    class A:
+        def download_dataset(self, name, dest):
+            got.append(name)
+            open(dest, "wb").write(b"x" * 10)
+
+    monkeypatch.setattr(S, "api", lambda: A())
+    S.stage_data(str(tmp_path))
+    S.stage_data(str(tmp_path))                      # a second call finds the files and downloads nothing
+    assert len(got) == 3 and all(n.startswith(f"signals/{S.VERSION}/") for n in got)
