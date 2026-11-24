@@ -583,7 +583,8 @@ let feedFilter = "all";   // all, buy, short or skip
 let selModel = "NX3";     // whose decisions the day list shows: NX3 or one of the NXM / NXR books
 const MODELS = [["NX3", "NX3"], ["LGBM", "NXM LightGBM"], ["LIN", "NXM linear"], ["MLP", "NXM neural net"],
   ["ENS", "NXM blend"], ["XGBR", "NXR XGBoost"], ["RFR", "NXR forest"], ["KRR", "NXK kernel model"], ["CAT", "NXK2 CatBoost"], ["ALL", "NX3-ALL (no cap)"],
-  ["HI", "NX3-HI"], ["ALLHI", "NX3-ALL-HI (no cap)"], ["AGENT", "NX3-AGENT (Gemini)"]];
+  ["HI", "NX3-HI"], ["ALLHI", "NX3-ALL-HI (no cap)"], ["AGENT", "NX3-AGENT (Gemini)"],
+  ["VOTE", "NXM-VOTE (all four agree)"], ["COST1", "COST1 (wide spreads skipped)"], ["SURV1", "SURV1-LONG (longs held)"]];
 // the NXM / NXR / NXK arms each have an uncapped "-ALL" copy (research/prereg/NXMALL.md); the "no cap" switch shows it
 const HAS_ALL = new Set(["LGBM", "LIN", "MLP", "ENS", "XGBR", "RFR", "KRR", "CAT"]);
 let noCap = false;
@@ -628,7 +629,7 @@ function renderFeed(day) {
     for (const ev of open) {
       const r = ev.result ? ev.result.net : (ev.last_price && ev.entry_iex ? ev.side * (ev.last_price / ev.entry_iex - 1) : null);
       if (r == null) continue;
-      tot += ((selModel === "ALL" || selModel === "ALLHI" || selModel === "AGENT" || modelKey().endsWith("-ALL")) && ev.w != null ? ev.w : 0.1) * r; cnt++;
+      tot += ((selModel === "ALL" || selModel === "ALLHI" || selModel === "AGENT" || selModel === "VOTE" || selModel === "COST1" || selModel === "SURV1" || modelKey().endsWith("-ALL")) && ev.w != null ? ev.w : 0.1) * r; cnt++;
     }
     if (cnt) $("daysum").textContent += ` · book P&L ${pct(tot)} of $5,000 so far (${cnt} of ${open.length} trades priced; open trades before costs)`;
   }

@@ -870,6 +870,18 @@ def arm_picks(root, day, rows=()):
             live = _hi_so_far(rows, arm)
             if live:
                 out[arm] = live
+    vr = _json(root / "nxvote" / "days" / f"{day}.json") or {}       # NXM-VOTE (research/prereg/NXMVOTE.md)
+    if vr.get("picks"):
+        vst = _json(root / "nxvote" / "settled" / f"{day}.json") or {}
+        net = {t["symbol"]: t.get("net") for t in vst.get("trades", []) if t.get("role") == "picks"}
+        out["VOTE"] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w")} for p in vr["picks"]}
+    cst = _json(root / "cost1" / "settled" / f"{day}.json") or {}      # COST1: NX3-ALL-HI's kept trades, real spreads
+    if cst.get("trades"):
+        out["COST1"] = {t["symbol"]: {"side": t.get("side"), "net": t.get("net_m"), "w": t.get("w")}
+                        for t in cst["trades"] if t.get("kept")}
+    sst = _json(root / "surv1long" / "settled" / f"{day}.json") or {}  # SURV1-LONG: NX3-ALL-HI, longs held by the model
+    if sst.get("trades"):
+        out["SURV1"] = {t["symbol"]: {"side": t.get("side"), "net": t.get("net"), "w": t.get("w")} for t in sst["trades"]}
     ag = _json(root / "nx3agent" / "days" / f"{day}.json") or {}      # NX3-AGENT: Gemini's TAKE / SKIP / FLIP on each fired event
     if ag.get("events"):
         ast2 = _json(root / "nx3agent" / "settled" / f"{day}.json") or {}
