@@ -45,6 +45,7 @@ from tracks.news import nx3hi_live as HI
 from tracks.news import nx3sds_live as SDS
 from tracks.news import surv1long_live as SL
 from tracks.news import cost1_live as CL
+from tracks.news import nxvote_live as VL
 from tracks.news import nx3agent_live as AG
 from tracks.news import nxe_live as XL
 from tracks.news import nxm_live as M
@@ -409,6 +410,10 @@ def close_day(root, day, d, api=None):
         M.close_day_all(root, day.decisions, d, day_seed(d))
     except Exception as ex:
         print(f"[nxmall] day not logged: {type(ex).__name__}: {ex}")
+    try:    # NXM-VOTE (research/prereg/NXMVOTE.md): trade only when all four voters agree; it never stops NX3
+        VL.close_day(root, day.decisions, d, day_seed(d))
+    except Exception as ex:
+        print(f"[nxvote] day not logged: {type(ex).__name__}: {ex}")
     try:    # the NX3-ALL book and NXS-LLM sizes (research/prereg/NX3ALL.md, NXS.md); they never stop NX3
         A.close_day(root, day.decisions, d, day_seed(d), day.ctx["cut"])
     except Exception as ex:
@@ -486,6 +491,10 @@ def settle(root, api, cal, today):
         SDS.settle(root, api, cal, today)
     except Exception as ex:
         print(f"[nx3sds] settle failed: {type(ex).__name__}: {ex}")
+    try:
+        VL.settle(root, api, cal, today)
+    except Exception as ex:
+        print(f"[nxvote] settle failed: {type(ex).__name__}: {ex}")
     try:    # COST1 (research/prereg/COST1.md): NX3-ALL-HI with quoted spreads, skipping wide entries
         CL.settle(root, api, cal, today)
     except Exception as ex:

@@ -51,7 +51,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
               "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-BIG", "CRY-MEME", "CRY-NEWMEME", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
-              "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1"}
+              "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1", "SURV1-LONG", "COST1", "NXM-VOTE", "NUM1"}
 
 
 def _json(p):
@@ -167,6 +167,13 @@ def nx3_books(st):
                      note="NX3-ALL-HI with real quoted spreads, skipping entries whose half-spread is above 0.5%",
                      measured_all_usd=sum(x.get("book_pnl_measured") or 0 for x in csettled),
                      flat_all_usd=sum(x.get("book_pnl_flat") or 0 for x in csettled)))
+    vsettled = [x for x in (_json(f) for f in sorted((root / "nxvote" / "settled").glob("*.json"))) if x]
+    vdays = sorted((root / "nxvote" / "days").glob("*.json"))
+    vtr = [t for x in vsettled for t in x.get("trades", []) if t.get("role") == "picks"]
+    vlast = _json(vdays[-1]) if vdays and vdays[-1].stem > max((x["day"] for x in vsettled), default="") else None
+    out.append(_book("NXM-VOTE", "NXM-VOTE", 100, len(vtr), len((vlast or {}).get("picks", [])),
+                     realized=sum(x.get("book_pnl") or 0 for x in vsettled), size=5000.0, first_day="2026-11-25",
+                     note="Trades a news event only when LGBM, MLP, ENS and RFR all fire the same way"))
     ssettled = [_json(f) for f in sorted((root / "nx3sds" / "settled").glob("*.json"))]
     str_ = [t for x in ssettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
     sopen = len((alast or {}).get("picks", [])) if (alast or {}).get("day", "") >= "2026-11-10" else 0

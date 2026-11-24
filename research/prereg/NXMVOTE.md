@@ -46,3 +46,22 @@ trades per day. Net with COST1's measured spreads for vote trades that are also 
 
 The vote book trades less than any arm and wins a little more per trade, but the arms agree mostly on the same
 events NX3 already takes, so it ties NX3-ALL. P(pass) about 0.35; P(beats NX3-ALL by NW t >= 2) about 0.1.
+
+## Result (2026-11-24, run 45441301081): PASSED
+
+`research/results/NXMVOTE/NXMVOTE_result.json`. 2019-2023 chose k = 4, all four voters agreeing (+0.06% a day; k = 2
+-0.03%, k = 3 -0.01%). Test 2024-01 to 2025-09, 433 days: 1,881 trades (4.3 a day), +0.48% per trade, median +0.13%,
+longs +0.58%, shorts +0.39%; the top 3 trades are 24% of the profit. Sized book minus same-day random control +0.36% a
+day, NW t 3.29; own sized daily net +0.15%, NW t 1.86 (the rule asks only > 0).
+
+Reported, same period and sizing, each model alone and uncapped: XGB (NX3-ALL) -0.02% a trade, LGBM -0.21%, MLP
+-0.32%, ENS -0.16%, RFR -0.17%. Vote minus each per day: XGB +0.17% (t 1.68, not significant), LGBM t 2.31, MLP t 4.21,
+ENS t 2.49, RFR t 3.50. 88% of vote trades are also NX3-ALL trades. With COST1's measured spreads, the 68% of vote
+trades that have a quote go from +0.75% (flat) to +0.15% a trade, and +1.27% for those COST1 would keep.
+
+The prediction (ties NX3-ALL) holds for the head-to-head; the pass is against random. Caveats: k = 4 won 2019-2023 by a
+small margin, and real spreads take most of the edge unless COST1's skip is applied.
+
+Next (as registered): the $5,000 NXM-VOTE ledger book from 2026-11-25 (`tracks/news/nxvote_live.py`, kinds
+nxvote_day / nxvote_settle), using the version 1 LGBM, MLP, ENS and RFR models the NXM/NXR books already run, k = 4,
+uncapped, a short only where easy to borrow. Forward test after 100 trades.
