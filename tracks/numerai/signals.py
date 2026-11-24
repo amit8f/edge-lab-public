@@ -57,9 +57,10 @@ def summary(s):
 TRAIN_EVERY = 4                 # every 4th weekly date: the 20-day targets overlap (NUM1.md Amendment 1, memory)
 
 
-def read(f, keep=(), every=1):
+def read(f, keep=(), every=1, rows=None):
     """Only the feature columns (as float32) and `keep` columns of a Numerai parquet, read in batches; with every > 1
-    only every n-th date is kept. The full train file does not fit in a runner's 16 GB as float64."""
+    only every n-th date is kept; `rows(df)` (a boolean mask) filters each batch as it is read. The full train file
+    does not fit in a runner's 16 GB as float64."""
     import pyarrow.parquet as pq
     pf = pq.ParquetFile(f)
     names = pf.schema_arrow.names
@@ -73,6 +74,8 @@ def read(f, keep=(), every=1):
         df = b.to_pandas()
         if dates is not None:
             df = df[df["date"].isin(dates)]
+        if rows is not None:
+            df = df[rows(df)]
         parts.append(df.astype({c: np.float32 for c in feats}))
     return pd.concat(parts, ignore_index=True), feats
 
@@ -93,17 +96,18 @@ def get(a, cache, name):
 def stage_train(cache, out):
     import lightgbm as lgb
     a = api()
-    tr, feats = read(get(a, cache, "train.parquet"), keep=("date", TARGET), every=TRAIN_EVERY)
-    tr = tr[tr[TARGET].notna()]
+    tr, feats = read(get(a, cache, "train.parquet"), keep=("date", TARGET), every=TRAIN_EVERY,
+                     rows=lambda df: df[TARGET].notna().to_numpy())
     print(f"[num1] train rows {len(tr)}, dates {tr['date'].nunique()}, features {len(feats)}", flush=True)
     m = lgb.LGBMRegressor(**LGB).fit(tr[feats], tr[TARGET])
     m.booster_.save_model(str(Path(cache) / "model.txt"))
     (Path(cache) / "model.json").write_text(json.dumps({"features": feats, "version": VERSION}))
     del tr
-    va, _ = read(get(a, cache, "validation.parquet"), keep=("date", TARGET, "data_type", "numerai_ticker"))
-    va = va[(va["data_type"] == "validation") & va[TARGET].notna()].copy()
+    va, _ = read(get(a, cache, "validation.parquet"), keep=("date", TARGET, "data_type", "numerai_ticker"),
+                 rows=lambda df: (df["data_type"] == "validation").to_numpy() & df[TARGET].notna().to_numpy())
     va["date"] = va["date"].astype(str)
-    va["pred"] = m.predict(va[feats])
+    va["pred"] = np.concatenate([m.predict(va[feats].iloc[i:i + 200_000]) for i in range(0, len(va), 200_000)])
+    print(f"[num1] validation rows {len(va)}, dates {va['date'].nunique()}", flush=True)
     rep = {"model": "LightGBM on Numerai Signals features", "features": len(feats), "params": LGB,
            "validation": summary(date_corr(va, "pred"))}
     va["us"] = va["numerai_ticker"].astype(str).str.endswith(" US")

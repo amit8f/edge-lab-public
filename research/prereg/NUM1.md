@@ -44,3 +44,8 @@ target, validation and the forward test are unchanged.
 Addendum (same day, still before any result): the second run (45446969302) lost its runner too. The files are now
 read in batches with only every 4th date kept as they are read, LightGBM uses 3 of the runner's 4 cores, and the
 Numerai stages no longer restore the large W1/NX1 caches. Nothing about the model or the test changes.
+
+Addendum 2 (same day, still before any result): the third run (45455760774) lost its runner after 47 minutes, most
+likely while reading the whole validation file at once after training. Rows are now filtered while each batch is
+read (validation rows with a target only; training rows with a target), and validation is predicted in batches.
+Nothing about the model or the test changes.
