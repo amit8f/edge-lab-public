@@ -730,6 +730,11 @@ function renderBooks() {
       b.edge_pct != null ? el("div", { class: "kv small" }, el("span", { class: "muted", text: "picks minus random so far" }),
         el("span", { class: b.edge_pct >= 0 ? "up" : "down", text: `${b.edge_pct >= 0 ? "+" : ""}${b.edge_pct.toFixed(2)}%` +
           (b.t_nw != null ? ` · t ${b.t_nw.toFixed(2)}` : "") })) : null,
+      b.drift && b.drift.h != null && b.drift.trades ? el("div", { class: "kv small" },
+        el("span", { class: "muted", text: "drift check vs history" }),
+        el("span", { class: b.drift.alarm ? "down" : "muted",
+          text: b.drift.alarm ? `alarm: running below history (${b.drift.s_max.toFixed(1)} > ${b.drift.h.toFixed(1)})`
+            : `ok (${b.drift.s.toFixed(1)} of ${b.drift.h.toFixed(1)})` })) : null,
       b.first_day && b.closed === 0 ? el("div", { class: "muted small", text: `counts from ${b.first_day}` }) : null,
       b.excluded_days && b.excluded_days.length ? el("div", { class: "muted small", text: `left out: ${b.excluded_days.join(", ")}` }) : null,
       tw ? el("div", { class: "kv muted small" }, el("span", { text: `coin-flip twin: ${tw.closed} trades` }),
