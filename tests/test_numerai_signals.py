@@ -33,3 +33,5 @@ def test_read_keeps_features_as_float32_and_thins_dates(tmp_path):
     assert feats == ["feature_a"] and list(got.columns) == ["date", "feature_a", "target"]
     assert got["feature_a"].dtype == np.float32
     assert S.thin_dates(got)["date"].tolist() == ["d1", "d5"]
+    thin, _ = S.read(f, keep=("date", "target"), every=4)
+    assert thin["date"].tolist() == ["d1", "d5"] and thin["feature_a"].tolist() == [0.0, 4.0]

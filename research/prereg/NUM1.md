@@ -40,3 +40,7 @@ memory: the full train file (4.33M rows) read as float64 does not fit in 16 GB. 
 columns (as float32), the date and `target`, and train on every 4th weekly date (Numerai's own example does the
 same, since the 20-day targets of neighbouring weeks overlap). The job also gets 16 GB of swap. Model settings,
 target, validation and the forward test are unchanged.
+
+Addendum (same day, still before any result): the second run (45446969302) lost its runner too. The files are now
+read in batches with only every 4th date kept as they are read, LightGBM uses 3 of the runner's 4 cores, and the
+Numerai stages no longer restore the large W1/NX1 caches. Nothing about the model or the test changes.

@@ -43,6 +43,7 @@ jobs:
           uv pip install --python .venv/bin/python -r requirements.txt
 
       - name: Restore W1's daily cache (read only)
+        if: ${{ !startsWith(inputs.stage, 'numerai') }}
         uses: actions/cache/restore@v4
         with:
           path: cache/w1
@@ -50,7 +51,7 @@ jobs:
           restore-keys: w1-v1-
 
       - name: Fall back to the NX1 cache, which holds a copy of W1's data (caches get evicted)
-        if: hashFiles('cache/w1/w1/daily/**') == ''
+        if: ${{ !startsWith(inputs.stage, 'numerai') && hashFiles('cache/w1/w1/daily/**') == '' }}
         uses: actions/cache/restore@v4
         with:
           path: cache/nx1

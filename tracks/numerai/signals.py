@@ -19,7 +19,7 @@ VERSION = "v3.1"
 MODEL_NAME = "edgelab_signals"
 TARGET = "target"
 LGB = dict(n_estimators=2000, learning_rate=0.01, max_depth=5, num_leaves=31, colsample_bytree=0.1,
-           random_state=7, verbose=-1)
+           random_state=7, verbose=-1, n_jobs=3)   # one core left for the runner
 
 
 def api():
@@ -57,18 +57,24 @@ def summary(s):
 TRAIN_EVERY = 4                 # every 4th weekly date: the 20-day targets overlap (NUM1.md Amendment 1, memory)
 
 
-def read(f, keep=()):
-    """Only the feature columns (as float32) and `keep` columns of a Numerai parquet: the full train file does not
-    fit in a runner's 16 GB as float64."""
+def read(f, keep=(), every=1):
+    """Only the feature columns (as float32) and `keep` columns of a Numerai parquet, read in batches; with every > 1
+    only every n-th date is kept. The full train file does not fit in a runner's 16 GB as float64."""
     import pyarrow.parquet as pq
-    names = pq.read_schema(f).names
+    pf = pq.ParquetFile(f)
+    names = pf.schema_arrow.names
     feats = features(names)
-    t = pq.read_table(f, columns=[c for c in names if c in feats or c in keep])
-    df = t.to_pandas(self_destruct=True)
-    del t
-    for c in feats:
-        df[c] = df[c].astype(np.float32, copy=False)
-    return df, feats
+    dates = None
+    if every > 1:
+        d = np.sort(pq.read_table(f, columns=["date"]).column("date").to_pandas().unique())
+        dates = set(d[::every])
+    parts = []
+    for b in pf.iter_batches(batch_size=200_000, columns=[c for c in names if c in feats or c in keep]):
+        df = b.to_pandas()
+        if dates is not None:
+            df = df[df["date"].isin(dates)]
+        parts.append(df.astype({c: np.float32 for c in feats}))
+    return pd.concat(parts, ignore_index=True), feats
 
 
 def thin_dates(df, every=TRAIN_EVERY):
@@ -87,8 +93,8 @@ def get(a, cache, name):
 def stage_train(cache, out):
     import lightgbm as lgb
     a = api()
-    tr, feats = read(get(a, cache, "train.parquet"), keep=("date", TARGET))
-    tr = thin_dates(tr[tr[TARGET].notna()])
+    tr, feats = read(get(a, cache, "train.parquet"), keep=("date", TARGET), every=TRAIN_EVERY)
+    tr = tr[tr[TARGET].notna()]
     print(f"[num1] train rows {len(tr)}, dates {tr['date'].nunique()}, features {len(feats)}", flush=True)
     m = lgb.LGBMRegressor(**LGB).fit(tr[feats], tr[TARGET])
     m.booster_.save_model(str(Path(cache) / "model.txt"))
