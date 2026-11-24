@@ -1,0 +1,55 @@
+# NUM1 (research/prereg/NUM1.md): upload the Numerai Signals ranks for each daily round to model edgelab_signals.
+# Unstaked: nothing is bought and no money moves. The model comes from sector1.yml stage numeraitrain (Actions
+# cache numerai-v1-*); Numerai keeps the submission history, so nothing is committed here.
+name: numerai
+
+on:
+  schedule:
+    - cron: "40 13 * * 2-6"
+    - cron: "40 19 * * 2-6"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: numerai
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: github.repository != 'amit8f/edge-lab'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt numerapi==3.1.1
+
+      - name: Restore NUM1's model
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/numerai
+          key: numerai-v1-none
+          restore-keys: numerai-v1-
+
+      - name: Upload today's ranks
+        env:
+          NUMERAI_PUBLIC_ID: ${{ secrets.NUMERAI_PUBLIC_ID }}
+          NUMERAI_SECRET_KEY: ${{ secrets.NUMERAI_SECRET_KEY }}
+        run: |
+          [ -f cache/numerai/model.txt ] || { echo "::error::NUM1 model missing; run sector1.yml stage numeraitrain"; exit 1; }
+          PYTHONPATH=. .venv/bin/python -u -m tracks.numerai.signals --stage submit --cache cache/numerai --out /tmp/num1
