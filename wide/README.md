@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 15:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 15:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6725.20 | -32.75% | 296 | 95 | short ADI, short DELL, short HPE, short MRVL, short MU |
-| Coin flip on C's picks | $7635.23 | -23.65% | 294 | 140 | short ADI, short DELL, long HPE, long MRVL, long MU |
-| C's prompt on Groq (K7) | $5533.27 | -44.67% | 603 | 149 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
-| Coin flip on C-groq's picks | $9066.22 | -9.34% | 602 | 287 | long ADI, long AXTI, long HPE, short MRNA, long RVMD |
-| C-groq's answers, acted on once a day (K8) | $8760.20 | -12.40% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
-| Coin flip on C-groq-slow's picks | $11828.90 | +18.29% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
-| C's answers, acted on once a day (K8) | $10186.75 | +1.87% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10529.90 | +5.30% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9327.94 | -6.72% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6750.34 | -32.50% | 296 | 95 | short ADI, short DELL, short HPE, short MRVL, short MU |
+| Coin flip on C's picks | $7625.10 | -23.75% | 294 | 140 | short ADI, short DELL, long HPE, long MRVL, long MU |
+| C's prompt on Groq (K7) | $5549.09 | -44.51% | 603 | 149 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
+| Coin flip on C-groq's picks | $9039.56 | -9.60% | 602 | 287 | long ADI, long AXTI, long HPE, short MRNA, long RVMD |
+| C-groq's answers, acted on once a day (K8) | $8722.83 | -12.77% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
+| Coin flip on C-groq-slow's picks | $11807.88 | +18.08% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
+| C's answers, acted on once a day (K8) | $10259.53 | +2.60% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10552.97 | +5.53% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9321.17 | -6.79% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-24 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 15:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 15:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 15:2
 | 2026-11-23 12:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 12:27 | long APLD, long DELL, long IREN, long NVDA, long ZS | none | Maintaining current long positions in NVDA, DELL, IREN, ZS, and APLD due to strong daily performance, positive news catalysts, and favorable hourly trends, despite some minor pullbacks from recent peaks. |
 | 2026-11-23 12:17 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-23 12:07 | no answer, nothing changed | none | unreadable answer |
