@@ -33,3 +33,11 @@ Share of days in the storm state; state flips per year; per-year results; longs 
 ## Prediction (written first)
 
 Storm days are few (about 15%), the cut trims the worst days but also some of the best rebounds. P(pass) about 0.2.
+
+## Amendment 1 (2026-11-24, code details, before any result)
+
+`tracks/news/models5_study.py`. Inputs: SPY daily log return and its 20-day standard deviation (annualised) from the
+all-adjusted close. The storm state is the HMM state with the higher mean volatility. Day d uses the state filtered
+through the close before d (a forward filter written out by hand, so no later day can leak in). When a storm day
+trades only one side, the 60% side cap can't apply; that day is only cut to 50% gross. Worst day, gains and own net
+are measured per dollar of plain NX3-ALL-HI's gross for that day.

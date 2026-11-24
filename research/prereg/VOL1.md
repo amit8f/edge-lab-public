@@ -34,3 +34,9 @@ Per year; longs and shorts; worst 1% day; how often the clip binds; GARCH fit fa
 ## Prediction (written first)
 
 GARCH and ATR weights rank risk almost the same, so VOL1 beats plain sizing a little and ties ATR. P(pass) about 0.2.
+
+## Amendment 1 (2026-11-24, code details, before any result)
+
+`tracks/news/models5_study.py`. GARCH uses log returns of the all-adjusted close from the stock's latest unbroken
+segment before the entry day; a fit that doesn't converge counts as missing and the trade takes its ATR value.
+The ATR baseline uses ATR(14)/close at the prior session's close. A trade with neither keeps its base size.
