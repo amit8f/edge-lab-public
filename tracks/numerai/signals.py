@@ -125,11 +125,28 @@ def stage_train(cache, out):
     print(json.dumps(rep, indent=1, default=float))
 
 
+MODEL_DIR = Path("models/num1")    # committed copy: the daily job on main cannot read a branch's Actions cache
+
+
+def model_dir(cache):
+    return MODEL_DIR if (MODEL_DIR / "model.txt").exists() else Path(cache)
+
+
+def stage_export(cache, out):
+    """Copies the trained model from the cache to models/num1 so it can be committed."""
+    import shutil
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    for name in ("model.txt", "model.json"):
+        shutil.copyfile(Path(cache) / name, MODEL_DIR / name)
+    print(f"[num1] model exported to {MODEL_DIR}")
+
+
 def stage_submit(cache, out):
     import lightgbm as lgb
     a = api()
-    meta = json.loads((Path(cache) / "model.json").read_text())
-    b = lgb.Booster(model_file=str(Path(cache) / "model.txt"))
+    md = model_dir(cache)
+    meta = json.loads((md / "model.json").read_text())
+    b = lgb.Booster(model_file=str(md / "model.txt"))
     live_f = Path(cache) / "live.parquet"
     if live_f.exists():
         live_f.unlink()
@@ -151,11 +168,11 @@ def stage_submit(cache, out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["train", "submit"])
+    ap.add_argument("--stage", required=True, choices=["train", "submit", "export"])
     ap.add_argument("--cache", default="cache/numerai")
     ap.add_argument("--out", default="research/results/NUM1")
     x = ap.parse_args()
-    (stage_train if x.stage == "train" else stage_submit)(x.cache, x.out)
+    {"train": stage_train, "submit": stage_submit, "export": stage_export}[x.stage](x.cache, x.out)
 
 
 if __name__ == "__main__":

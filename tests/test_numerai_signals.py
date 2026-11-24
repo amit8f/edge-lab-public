@@ -35,3 +35,14 @@ def test_read_keeps_features_as_float32_and_thins_dates(tmp_path):
     assert S.thin_dates(got)["date"].tolist() == ["d1", "d5"]
     thin, _ = S.read(f, keep=("date", "target"), every=4)
     assert thin["date"].tolist() == ["d1", "d5"] and thin["feature_a"].tolist() == [0.0, 4.0]
+
+
+def test_export_and_model_dir(tmp_path, monkeypatch):
+    monkeypatch.setattr(S, "MODEL_DIR", tmp_path / "models" / "num1")
+    cache = tmp_path / "cache"
+    cache.mkdir()
+    (cache / "model.txt").write_text("tree")
+    (cache / "model.json").write_text("{}")
+    assert S.model_dir(cache) == cache
+    S.stage_export(cache, None)
+    assert (S.MODEL_DIR / "model.txt").read_text() == "tree" and S.model_dir(cache) == S.MODEL_DIR
