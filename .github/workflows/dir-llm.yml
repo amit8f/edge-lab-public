@@ -54,6 +54,12 @@ jobs:
           restore-keys: nx1-v1-
           fail-on-cache-miss: true
 
+      - name: Bring back the old headline months from the encrypted backup if the cache lost them
+        env:
+          EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: bash deploy/news_restore.sh cache/nx1/g1/news
+
       - name: Restore NX3's cache (items only)
         if: inputs.stage == 'items'
         uses: actions/cache/restore@v4

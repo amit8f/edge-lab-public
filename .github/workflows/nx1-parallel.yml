@@ -60,6 +60,12 @@ jobs:
           key: nx1-v1-tone-${{ github.run_id }}
           restore-keys: nx1-v1-
 
+      - name: Bring back the old headline months from the encrypted backup if the cache lost them
+        env:
+          EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: bash deploy/news_restore.sh cache/nx1/g1/news
+
       - name: Score this shard's months
         env:
           SHARD: ${{ matrix.shard }}
@@ -111,6 +117,12 @@ jobs:
           path: cache/nx1
           key: nx1-v1-${{ github.run_id }}
           restore-keys: nx1-v1-
+
+      - name: Bring back the old headline months from the encrypted backup if the cache lost them
+        env:
+          EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: bash deploy/news_restore.sh cache/nx1/g1/news
 
       - name: Collect the tone files
         uses: actions/download-artifact@v4

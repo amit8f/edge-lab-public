@@ -65,6 +65,12 @@ jobs:
           key: nx1-v1-none
           restore-keys: nx1-v1-
 
+      - name: Bring back the old headline months from the encrypted backup if the cache lost them
+        env:
+          EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: bash deploy/news_restore.sh cache/nx1/g1/news
+
       - name: Use NX1's headline months where N1's are missing or empty
         run: |
           # Alpaca no longer serves headlines before ~mid 2026 (found 2026-11-21), so N1's rebuild wrote empty months.

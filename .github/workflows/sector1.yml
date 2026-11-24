@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
         type: choice
-        options: ["1", "2", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe"]
+        options: ["1", "2", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe", "newsrestore"]
         default: "1"
 
 permissions: {}
@@ -57,6 +57,13 @@ jobs:
           key: nx1-v1-none
           restore-keys: nx1-v1-
 
+      - name: Bring back the old headline months from the encrypted backup if the cache lost them
+        if: inputs.stage == '2' || inputs.stage == 'backup'
+        env:
+          EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: bash deploy/news_restore.sh cache/nx1/g1/news
+
       - name: Restore the SIC cache
         uses: actions/cache/restore@v4
         with:
@@ -93,6 +100,10 @@ jobs:
             echo "caches restored (keeps them from expiring): nx1 $(du -sh cache/nx1 | cut -f1), w1 $(du -sh cache/w1 2>/dev/null | cut -f1), sector1 $(du -sh cache/sector1 2>/dev/null | cut -f1)"
             exit 0
           fi
+          if [[ "$STAGE" == newsrestore ]]; then
+            # Proof that a job with no cache gets every old headline month back from the encrypted backup.
+            bash deploy/news_restore.sh /tmp/newstest && ls /tmp/newstest | wc -l && du -sh /tmp/newstest; exit 0
+          fi
           if [[ "$STAGE" == borrowprobe ]]; then
             PYTHONPATH=. .venv/bin/python -m tracks.tools.borrow_log --print-only; exit 0
           fi
@@ -111,7 +122,7 @@ jobs:
           PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
-        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe'
+        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore'
         uses: actions/cache/save@v4
         with:
           path: cache/sector1
