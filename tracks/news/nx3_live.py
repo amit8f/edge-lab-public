@@ -43,6 +43,7 @@ from tracks.news import nx3all_orders as OA
 from tracks.news import nx3all_live as A
 from tracks.news import nx3hi_live as HI
 from tracks.news import nx3sds_live as SDS
+from tracks.news import surv1long_live as SL
 from tracks.news import nx3agent_live as AG
 from tracks.news import nxe_live as XL
 from tracks.news import nxm_live as M
@@ -484,6 +485,11 @@ def settle(root, api, cal, today):
         SDS.settle(root, api, cal, today)
     except Exception as ex:
         print(f"[nx3sds] settle failed: {type(ex).__name__}: {ex}")
+    try:    # SURV1-LONG (research/prereg/SURV1LONG.md): NX3-ALL-HI's longs held by SURV1's frozen model
+        if (SL.MODEL_DIR / "hazard.txt").exists():
+            SL.settle(root, lambda syms, first, last: S.daily_ohlcv(syms, first, last, api.h), cal, today)
+    except Exception as ex:
+        print(f"[surv1long] settle failed: {type(ex).__name__}: {ex}")
     return out
 
 
