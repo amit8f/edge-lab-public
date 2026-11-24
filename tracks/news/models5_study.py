@@ -410,6 +410,29 @@ def stage_surv1(cache, out):
     write(out, "SURV1_result.json", rep)
 
 
+def stage_surv1_export(cache, out_dir="models/surv1"):
+    """SURV1-LONG (research/prereg/SURV1LONG.md): the SURV1 hazard model refit exactly as in stage_surv1 (trades
+    with a 5-close path, 2019-2022) and saved as LightGBM text with its inputs and p* = 0.3."""
+    import lightgbm as lgb
+    p = pd.read_parquet(mdir(cache) / "picks.parquet")
+    p = p.merge(pd.read_parquet(mdir(cache) / "vol1_inputs.parquet")[["symbol", "d", "t", "atr"]],
+                on=["symbol", "d", "t"], how="left")
+    panel = chart_panel(cache, set(p["symbol"]))
+    spy = pd.read_parquet(X.nx3dir(cache) / X.CHART / "spy.parquet")[["date", "ac"]].sort_values("date")
+    keep, paths, spaths, _ = surv_rows(p, panel, spy)
+    p = p.iloc[keep].reset_index(drop=True)
+    tr = p["year"] <= 2022
+    ht = hazard_table(p[tr].reset_index(drop=True), paths[tr.to_numpy()], spaths[tr.to_numpy()])
+    model = lgb.LGBMClassifier(**SURV_LGB).fit(ht[SURV_INPUTS], ht["y"])
+    o = Path(out_dir)
+    o.mkdir(parents=True, exist_ok=True)
+    model.booster_.save_model(str(o / "hazard.txt"))
+    (o / "meta.json").write_text(json.dumps({"inputs": SURV_INPUTS, "pstar": 0.3, "target": SURV_TARGET,
+                                             "max_closes": SURV_MAX, "train_rows": int(len(ht)),
+                                             "train_rate": float(ht["y"].mean())}, indent=1))
+    print(f"[surv1 export] {len(ht)} hazard rows -> {o}")
+
+
 # ---------- QRANGE1 (research/prereg/QRANGE1.md) ----------
 
 Q_TP_GRID, Q_SL = (0.5, 0.7), 0.9
@@ -599,7 +622,7 @@ def write(out, name, rep):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["picks", "vol1", "regime1", "surv1", "qpaths", "qrange1"])
+    ap.add_argument("--stage", required=True, choices=["picks", "vol1", "regime1", "surv1", "qpaths", "qrange1", "surv1_export"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/MODELS5")
     ap.add_argument("--minutes", type=float, default=300)
@@ -608,7 +631,7 @@ def main():
     {"picks": lambda: stage_picks(cache), "vol1": lambda: stage_vol1(cache, a.out),
      "regime1": lambda: stage_regime1(cache, a.out), "surv1": lambda: stage_surv1(cache, a.out),
      "qpaths": lambda: stage_qpaths(cache, __import__("time").monotonic() + 60 * a.minutes),
-     "qrange1": lambda: stage_qrange1(cache, a.out)}[a.stage]()
+     "qrange1": lambda: stage_qrange1(cache, a.out), "surv1_export": lambda: stage_surv1_export(cache)}[a.stage]()
 
 
 if __name__ == "__main__":
