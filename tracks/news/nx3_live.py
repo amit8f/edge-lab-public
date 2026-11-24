@@ -349,7 +349,11 @@ def poll(day, api, ses, now, finbert, last):
     if day.rows is None or day.rows.empty:
         return pd.DataFrame(columns=["symbol", "d", "t", *N.NEWS_INPUTS, "key"])
     ev = S.session_events(day.rows[day.rows["t"] <= now], pd.DataFrame([ses]))
-    return ev.assign(key=ev["symbol"] + "|" + ev["d"].dt.strftime("%Y-%m-%d"))
+    ev = ev.assign(key=ev["symbol"] + "|" + ev["d"].dt.strftime("%Y-%m-%d"))
+    seen = day.ctx.setdefault("seen", {})          # when this job first saw each event (latency log, BOOMNX3.md review)
+    for k in ev["key"]:
+        seen.setdefault(k, now.isoformat())
+    return ev
 
 
 def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
@@ -360,7 +364,8 @@ def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
     bars = api.iex_bars(syms + ["SPY"], ses["open_t"], now + pd.Timedelta(minutes=1), "1Min") if syms else {}
     spy_b = bars.get("SPY", pd.DataFrame(columns=["t", "o", "c", "v"]))
     for r in ready.to_dict("records"):
-        base = {"key": r["key"], "symbol": r["symbol"], "d": r["d"], "t": r["t"], "decided_at": now}
+        base = {"key": r["key"], "symbol": r["symbol"], "d": r["d"], "t": r["t"], "decided_at": now,
+                "seen_at": day.ctx.get("seen", {}).get(r["key"])}
         c = ctx.get(r["symbol"])
         if c is None or not c["uni"]:
             day.log(base | {"status": "not in universe"})
