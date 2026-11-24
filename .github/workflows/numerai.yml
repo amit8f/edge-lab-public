@@ -1,6 +1,6 @@
 # NUM1 (research/prereg/NUM1.md): upload the Numerai Signals ranks for each daily round to model edgelab_signals.
 # Unstaked: nothing is bought and no money moves. The model comes from sector1.yml stage numeraitrain (Actions
-# cache numerai-v1-*); Numerai keeps the submission history, so nothing is committed here.
+# cache numerai-v1-*, committed to models/num1 by stage numeraiexport); Numerai keeps the submission history, so nothing is committed here.
 name: numerai
 
 on:
@@ -51,5 +51,5 @@ jobs:
           NUMERAI_PUBLIC_ID: ${{ secrets.NUMERAI_PUBLIC_ID }}
           NUMERAI_SECRET_KEY: ${{ secrets.NUMERAI_SECRET_KEY }}
         run: |
-          [ -f cache/numerai/model.txt ] || { echo "::error::NUM1 model missing; run sector1.yml stage numeraitrain"; exit 1; }
+          [ -f models/num1/model.txt ] || [ -f cache/numerai/model.txt ] || { echo "::error::NUM1 model missing; run sector1.yml stages numeraitrain then numeraiexport"; exit 1; }
           PYTHONPATH=. .venv/bin/python -u -m tracks.numerai.signals --stage submit --cache cache/numerai --out /tmp/num1
