@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 10:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 10:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6675.76 | -33.24% | 292 | 94 | short ADI, short AMD, short DELL, short HPE, short MU |
-| Coin flip on C's picks | $7739.40 | -22.61% | 290 | 137 | short ADI, short AMD, long DELL, long HPE, long MU |
-| C's prompt on Groq (K7) | $5524.03 | -44.76% | 580 | 142 | short ADI, short HPE, long MPWR, long RIOT, long ZS |
-| Coin flip on C-groq's picks | $9084.46 | -9.16% | 579 | 274 | long ADI, short HPE, short MPWR, long RIOT, short ZS |
-| C-groq's answers, acted on once a day (K8) | $8784.18 | -12.16% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
-| Coin flip on C-groq-slow's picks | $11882.80 | +18.83% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
-| C's answers, acted on once a day (K8) | $10196.75 | +1.97% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10582.08 | +5.82% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9331.07 | -6.69% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6755.51 | -32.44% | 292 | 94 | short ADI, short AMD, short DELL, short HPE, short MU |
+| Coin flip on C's picks | $7715.90 | -22.84% | 290 | 137 | short ADI, short AMD, long DELL, long HPE, long MU |
+| C's prompt on Groq (K7) | $5522.31 | -44.78% | 582 | 142 | short ADI, long AMD, short HPE, short SNDK, long ZS |
+| Coin flip on C-groq's picks | $9061.72 | -9.38% | 581 | 275 | long ADI, long AMD, short HPE, long SNDK, short ZS |
+| C-groq's answers, acted on once a day (K8) | $8709.76 | -12.90% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
+| Coin flip on C-groq-slow's picks | $11888.19 | +18.88% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
+| C's answers, acted on once a day (K8) | $10402.04 | +4.02% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10629.31 | +6.29% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9304.37 | -6.96% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-24 10:47 | short ADI, short AMD, short DELL, short HPE, short MU | none | All current short positions are profitable and the market is broadly down today, indicating continued bearish sentiment. Maintaining all existing positions. |
 | 2026-11-24 10:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 10:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 10:17 | short ADI, short AMD, short DELL, short HPE, short MU | none | All existing short positions are profitable and the market is broadly down, indicating continued bearish sentiment. No new positions are initiated as current holdings are performing well. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 10:3
 | 2026-11-20 14:17 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 14:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 13:57 | short APLD, short IREN, short MU, short SNDK, short WULF | bought AAOI @ $34.00; sold SNDK @ $81.79 | Maintaining profitable short positions in APLD and WULF, and IREN due to strong downtrends. Re-entering MU short as the overall trend remains down. Initiating a new short in SNDK due to its extreme price collapse. |
-| 2026-11-20 13:47 | no answer, nothing changed | none | unreadable answer |
