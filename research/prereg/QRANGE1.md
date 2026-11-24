@@ -46,3 +46,13 @@ QRANGE1 and its next-close comparison alike. Inputs: ATR(14)/price at the prior 
 (price < $5) as the price tier, side, confidence, gap = entry / prior all-adjusted close - 1, SPY's move at entry
 (`spy_open`). Predicted levels below 0.1% are set to 0.1%. An exit on day d is charged one day of borrow. The NGBoost
 version is not run (it would add a dependency for an exploratory line).
+
+## Result (2026-11-24, run 45419129536): FAILED
+
+`research/results/MODELS5/QRANGE1_result.json`. All 12,673 NX3-ALL-HI trades got a minute path (path end matches the
+logged return: median gap 0, 1.5% of trades off by more than 1%). 2023 chose q_tp = 0.7 (+0.37% per trade against
++0.25% at 0.5); calibration on 2023 was close (34% of trades ran past the 0.7 target, 12% past the 0.9 stop).
+Test 2024 to Sep 2025, 5,022 trades over 421 days: gain over next close -0.26% a day (NW t -1.56), own net -0.17% a
+day (t -0.75). Per trade +0.05% against +0.19% for plain next close. Median target 7.0%, median stop 9.9%; 32% of
+trades hit the target and 13% the stop. Reported: longs +0.15%, shorts -0.05% per trade. The target cuts off the few
+big winners that carry NX3, as fixed brackets did (FAST1, STOP8). No shadow book. NGBoost not run.
