@@ -36,7 +36,7 @@ NX3_DAYS, STALE_DAYS = 7, 7
 NX3HI_FIRST_DAY = "2026-11-04"          # NX3-HI and NX3-ALL-HI have no picks before this day
 NX3ALL_FIRST_DAY = "2026-11-02"      # the NX3-ALL book has no picks before this day
 NX3_COST = 0.002          # NX3's round trip (config/risk.yaml news track), for the skipped stocks' moves
-SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs"]
+SLIM = ["symbol", "t", "decided_at", "e", "fired", "side", "skip", "entry_iex", "prev_c", "dv20", "etb", "inputs", "vote_e"]
 
 # Forward books: where each one's record lives and what it is judged at (PROTOCOL / the idea's prereg).
 NX3_ARMS = ["LGBM", "LIN", "MLP", "ENS", "XGBR", "RFR", "KRR", "CAT"]   # the arms with live books (NXM-RF failed)
@@ -875,13 +875,22 @@ def arm_picks(root, day, rows=()):
         vst = _json(root / "nxvote" / "settled" / f"{day}.json") or {}
         net = {t["symbol"]: t.get("net") for t in vst.get("trades", []) if t.get("role") == "picks"}
         out["VOTE"] = {p["symbol"]: {"side": p.get("side"), "net": net.get(p["symbol"]), "w": p.get("w")} for p in vr["picks"]}
+    elif rows and day >= VOTE_FIRST_DAY:      # today, before the close writes the book: from the logged vote scores
+        live = _vote_so_far(rows)
+        if live:
+            out["VOTE"] = live
+    allhi = out.get("ALLHI") or {}
     cst = _json(root / "cost1" / "settled" / f"{day}.json") or {}      # COST1: NX3-ALL-HI's kept trades, real spreads
     if cst.get("trades"):
         out["COST1"] = {t["symbol"]: {"side": t.get("side"), "net": t.get("net_m"), "w": t.get("w")}
                         for t in cst["trades"] if t.get("kept")}
+    elif allhi and day >= VOTE_FIRST_DAY:     # before the quotes are read (after settlement): NX3-ALL-HI's picks so far
+        out["COST1"] = {k: dict(v, net=None, pending="spread not read yet") for k, v in allhi.items()}
     sst = _json(root / "surv1long" / "settled" / f"{day}.json") or {}  # SURV1-LONG: NX3-ALL-HI, longs held by the model
     if sst.get("trades"):
         out["SURV1"] = {t["symbol"]: {"side": t.get("side"), "net": t.get("net"), "w": t.get("w")} for t in sst["trades"]}
+    elif allhi and day >= VOTE_FIRST_DAY:     # held up to 5 closes: open until then
+        out["SURV1"] = {k: dict(v, net=None) for k, v in allhi.items()}
     ag = _json(root / "nx3agent" / "days" / f"{day}.json") or {}      # NX3-AGENT: Gemini's TAKE / SKIP / FLIP on each fired event
     if ag.get("events"):
         ast2 = _json(root / "nx3agent" / "settled" / f"{day}.json") or {}
@@ -909,6 +918,28 @@ def _hi_so_far(rows, arm):
     dec = [r for r in rows if r.get("t")]
     picks = (H.book(dec, cut, 0) if arm == "HI" else H.book_all(dec, cut, 0))[0]
     return {p["symbol"]: {"side": p["side"], "net": None, "w": p.get("w"), "live": True} for p in picks}
+
+
+VOTE_FIRST_DAY = "2026-11-25"
+
+
+def _vote_so_far(rows):
+    """NXM-VOTE's picks from the vote scores logged so far (same rule as tracks/news/nxvote_live: |vote| >= 1, a short
+    only if easy to borrow, sized by the voters' mean confidence). Sizes are provisional."""
+    from tracks.news import nx3_study as S
+    picks = []
+    for r in sorted(rows, key=lambda x: (x.get("t") or "", x["symbol"])):
+        v = r.get("vote_e")
+        if v is None or abs(v) < 1:
+            continue
+        side = 1 if v > 0 else -1
+        if side < 0 and not r.get("etb"):
+            continue
+        picks.append((r["symbol"], side, abs(v)))
+    if not picks:
+        return {}
+    w = S.conf_sizes([c for _, _, c in picks])
+    return {sym: {"side": side, "net": None, "w": float(wi), "live": True} for (sym, side, _), wi in zip(picks, w)}
 
 
 def _nx3all_so_far(rows):

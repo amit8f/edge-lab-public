@@ -349,7 +349,26 @@ def poll(day, api, ses, now, finbert, last):
     if day.rows is None or day.rows.empty:
         return pd.DataFrame(columns=["symbol", "d", "t", *N.NEWS_INPUTS, "key"])
     ev = S.session_events(day.rows[day.rows["t"] <= now], pd.DataFrame([ses]))
-    return ev.assign(key=ev["symbol"] + "|" + ev["d"].dt.strftime("%Y-%m-%d"))
+    ev = ev.assign(key=ev["symbol"] + "|" + ev["d"].dt.strftime("%Y-%m-%d"))
+    seen = day.ctx.setdefault("seen", {})          # when this job first saw each event (latency log, BOOMNX3.md review)
+    for k in ev["key"]:
+        seen.setdefault(k, now.isoformat())
+    return ev
+
+
+_VOTE = []
+
+
+def _vote_e(inp):
+    """NXM-VOTE's score for one decided event (research/prereg/NXMVOTE.md), logged so the dashboard can show its picks
+    during the day; the book itself is still made after the close. None if the models can't load; never stops NX3."""
+    try:
+        if not _VOTE:
+            _VOTE.append(VL.Vote(M.load()))
+        x = np.array([[inp[k] if inp[k] is not None else np.nan for k in S.INPUTS]], dtype=float)
+        return float(_VOTE[0].effect(x)[0])
+    except Exception:
+        return None
 
 
 def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
@@ -360,7 +379,8 @@ def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
     bars = api.iex_bars(syms + ["SPY"], ses["open_t"], now + pd.Timedelta(minutes=1), "1Min") if syms else {}
     spy_b = bars.get("SPY", pd.DataFrame(columns=["t", "o", "c", "v"]))
     for r in ready.to_dict("records"):
-        base = {"key": r["key"], "symbol": r["symbol"], "d": r["d"], "t": r["t"], "decided_at": now}
+        base = {"key": r["key"], "symbol": r["symbol"], "d": r["d"], "t": r["t"], "decided_at": now,
+                "seen_at": day.ctx.get("seen", {}).get(r["key"])}
         c = ctx.get(r["symbol"])
         if c is None or not c["uni"]:
             day.log(base | {"status": "not in universe"})
@@ -382,6 +402,7 @@ def decide(day, api, ses, ready, ctx, market, nd, short_ok, effect, now):
         fired = bool(abs(e) >= day.ctx["cut"] and abs(e) > 0)
         side, why = take(e, fired, r["symbol"], short_ok, day.taken())
         day.log(base | {"status": "decided", "inputs": inp, "e": e, "fired": fired, "side": side, "skip": why,
+                        "vote_e": _vote_e(inp),
                         "entry_iex": entry, "entry_iex_t": trades[r["symbol"]][1], "prev_c": c["prev_c"],
                         "dv20": c["dv20"], "etb": r["symbol"] in short_ok})
 
