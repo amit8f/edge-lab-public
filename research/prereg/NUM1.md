@@ -32,3 +32,11 @@ predictions on the same rows. Validation can't pass or fail NUM1: Numerai has se
 
 Validation correlation small and positive (about 0.01), close to Numerai's example model; forward score about zero.
 P(pass) about 0.15.
+
+## Amendment 1 (2026-11-24, before any NUM1 result)
+
+The first training run (sector1 run 45437928633) lost its runner after 45 minutes with no log, most likely out of
+memory: the full train file (4.33M rows) read as float64 does not fit in 16 GB. Change: read only the feature
+columns (as float32), the date and `target`, and train on every 4th weekly date (Numerai's own example does the
+same, since the 20-day targets of neighbouring weeks overlap). The job also gets 16 GB of swap. Model settings,
+target, validation and the forward test are unchanged.

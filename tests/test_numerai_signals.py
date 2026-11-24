@@ -21,3 +21,15 @@ def test_date_corr_perfect_and_summary():
     assert np.allclose(s.values, 1.0)
     by = S.summary(s)["by_year"]
     assert set(by) == {"2020", "2021"} and all(abs(v - 1) < 1e-9 for v in by.values())
+
+
+def test_read_keeps_features_as_float32_and_thins_dates(tmp_path):
+    df = pd.DataFrame({"numerai_ticker": ["A US"] * 8, "date": np.repeat(["d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8"], 1),
+                       "feature_a": np.arange(8, dtype=float), "feature_country": ["US"] * 8, "target": 0.5,
+                       "target_x_60": 0.1})
+    f = tmp_path / "t.parquet"
+    df.to_parquet(f)
+    got, feats = S.read(f, keep=("date", "target"))
+    assert feats == ["feature_a"] and list(got.columns) == ["date", "feature_a", "target"]
+    assert got["feature_a"].dtype == np.float32
+    assert S.thin_dates(got)["date"].tolist() == ["d1", "d5"]

@@ -54,6 +54,28 @@ def summary(s):
             "share_positive": float((s > 0).mean()), "by_year": {str(k): float(v) for k, v in s.groupby(s.index.str[:4]).mean().items()}}
 
 
+TRAIN_EVERY = 4                 # every 4th weekly date: the 20-day targets overlap (NUM1.md Amendment 1, memory)
+
+
+def read(f, keep=()):
+    """Only the feature columns (as float32) and `keep` columns of a Numerai parquet: the full train file does not
+    fit in a runner's 16 GB as float64."""
+    import pyarrow.parquet as pq
+    names = pq.read_schema(f).names
+    feats = features(names)
+    t = pq.read_table(f, columns=[c for c in names if c in feats or c in keep])
+    df = t.to_pandas(self_destruct=True)
+    del t
+    for c in feats:
+        df[c] = df[c].astype(np.float32, copy=False)
+    return df, feats
+
+
+def thin_dates(df, every=TRAIN_EVERY):
+    d = np.sort(df["date"].unique())
+    return df[df["date"].isin(d[::every])]
+
+
 def get(a, cache, name):
     f = Path(cache) / name
     if not f.exists():
@@ -65,17 +87,17 @@ def get(a, cache, name):
 def stage_train(cache, out):
     import lightgbm as lgb
     a = api()
-    tr = pd.read_parquet(get(a, cache, "train.parquet"))
-    feats = features(tr.columns)
-    tr = tr[tr[TARGET].notna()]
-    m = lgb.LGBMRegressor(**LGB).fit(tr[feats].astype(np.float32), tr[TARGET])
+    tr, feats = read(get(a, cache, "train.parquet"), keep=("date", TARGET))
+    tr = thin_dates(tr[tr[TARGET].notna()])
+    print(f"[num1] train rows {len(tr)}, dates {tr['date'].nunique()}, features {len(feats)}", flush=True)
+    m = lgb.LGBMRegressor(**LGB).fit(tr[feats], tr[TARGET])
     m.booster_.save_model(str(Path(cache) / "model.txt"))
     (Path(cache) / "model.json").write_text(json.dumps({"features": feats, "version": VERSION}))
     del tr
-    va = pd.read_parquet(get(a, cache, "validation.parquet"))
+    va, _ = read(get(a, cache, "validation.parquet"), keep=("date", TARGET, "data_type", "numerai_ticker"))
     va = va[(va["data_type"] == "validation") & va[TARGET].notna()].copy()
     va["date"] = va["date"].astype(str)
-    va["pred"] = m.predict(va[feats].astype(np.float32))
+    va["pred"] = m.predict(va[feats])
     rep = {"model": "LightGBM on Numerai Signals features", "features": len(feats), "params": LGB,
            "validation": summary(date_corr(va, "pred"))}
     va["us"] = va["numerai_ticker"].astype(str).str.endswith(" US")
