@@ -131,7 +131,11 @@ class Api:
         return news_history.fetch_window(start, end)
 
     def finbert(self):
-        return N.finbert_scorer(NX1_META)
+        # nx1_v1_meta.json keeps FinBERT's pin under "finbert"; the scorer reads a flat file with "revision".
+        import tempfile
+        flat = Path(tempfile.gettempdir()) / "pick2_bad_finbert_meta.json"
+        flat.write_text(json.dumps(json.loads(NX1_META.read_text())["finbert"]))
+        return N.finbert_scorer(flat)
 
 
 def daily_rows(api, symbols, first, last):
