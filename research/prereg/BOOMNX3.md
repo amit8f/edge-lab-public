@@ -46,3 +46,18 @@ The review asked whether NX3 only picks a kind of stock (volatile, cheap) rather
 every NX3 fired trade 2019-2025: controls = the same day's real news events NX3 did not fire on, same side, same
 price tier (<$5, $5-20, $20+) and same vol20 quintile (cut within the year). Reported: pick net minus matched
 control mean, by day, NW t; per side; 2024-Sep 2025 and 2019-2023 separately. No rule, no book.
+
+## Result (2026-11-24, run 45460184193): FAILED
+
+`research/results/BOOMNX3/BOOMNX3_result.json`. Test 2024-01 to 2025-09: 345 intersection longs on 192 days, net
++1.09% a trade (median -0.47%), daily NW t 1.45 (needs 2), +1.11 points over all NX3 longs (-0.02%, 6,158 trades).
+The t fails. The top 3 trades carry 65% of the profit, the fluke pattern. 80% of intersection trades boomed (8%+
+range) against 61% of all NX3 longs. With COST1's measured spreads (199 matched trades) the intersection goes from
++0.26% to -0.61% a trade; keeping only COST1's narrow-spread entries gives +1.41% on the ones left. 2019-2023 (second
+look): +0.18% a trade on 1,627, t 0.33. Reported: BOOM1 top 100 +0.38% (t 0.34); NX3-ALL-HI on the list +0.11%;
+NX3 shorts on BOOM1's list +0.87% a trade, t 0.92. The prediction (small, wins on gross, spreads eat it) held.
+
+Matched-control check: NX3's fired trades beat the same day's unfired news events with the same side, price tier
+and volatility quintile by +0.42% a trade in 2024-Sep 2025 (NW t 3.33, 433 days; longs +0.22% t 1.24, shorts +0.76%
+t 2.71) and +0.28% in 2019-2023 (t 2.82). So NX3 adds information beyond picking volatile, cheap stocks; it's the
+costs, not the call, that make its books lose.
