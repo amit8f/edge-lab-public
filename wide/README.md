@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6763.17 | -32.37% | 292 | 94 | short ADI, short AMD, short DELL, short HPE, short MU |
-| Coin flip on C's picks | $7790.31 | -22.10% | 290 | 137 | short ADI, short AMD, long DELL, long HPE, long MU |
-| C's prompt on Groq (K7) | $5550.08 | -44.50% | 585 | 143 | short ADI, short HPE, long MPWR, long RIOT, long ZS |
-| Coin flip on C-groq's picks | $8985.83 | -10.14% | 584 | 277 | long ADI, short HPE, short MPWR, long RIOT, short ZS |
-| C-groq's answers, acted on once a day (K8) | $8731.94 | -12.68% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
-| Coin flip on C-groq-slow's picks | $11930.66 | +19.31% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
-| C's answers, acted on once a day (K8) | $10395.76 | +3.96% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10648.50 | +6.49% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9316.35 | -6.84% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6794.93 | -32.05% | 292 | 94 | short ADI, short AMD, short DELL, short HPE, short MU |
+| Coin flip on C's picks | $7770.69 | -22.29% | 290 | 137 | short ADI, short AMD, long DELL, long HPE, long MU |
+| C's prompt on Groq (K7) | $5540.99 | -44.59% | 586 | 144 | short ADI, short INTC, long MPWR, long RIOT, long ZS |
+| Coin flip on C-groq's picks | $9008.70 | -9.91% | 585 | 278 | long ADI, long INTC, short MPWR, long RIOT, short ZS |
+| C-groq's answers, acted on once a day (K8) | $8674.67 | -13.25% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
+| Coin flip on C-groq-slow's picks | $11955.08 | +19.55% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
+| C's answers, acted on once a day (K8) | $10504.09 | +5.04% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10666.65 | +6.67% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9297.21 | -7.03% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-24 11:37 | short ADI, short AMD, short DELL, short HPE, short MU | none | All existing profitable short positions are maintained due to continued strong downward momentum across the semiconductor and tech sectors, with many stocks experiencing significant drops today. |
 | 2026-11-24 11:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 11:17 | short ADI, short AMD, short DELL, short HPE, short MU | none | All current short positions are profitable and the market continues to show strong downward momentum in these stocks. No changes are made to capitalize on the existing trend. |
 | 2026-11-24 11:07 | no answer, nothing changed | none | unreadable answer |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 11:2
 | 2026-11-20 15:07 | short APLD, short IREN, short MU, short NVDA, short WULF | bought SNDK @ $79.06; sold NVDA @ $128.20 | Closed SNDK due to extreme and suspicious price action. Maintained profitable short positions in APLD, IREN, MU, and WULF, which continue to show strong downtrends. Opened a new short position in NVDA based on its significant daily drop and negative regulatory news. |
 | 2026-11-20 14:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 14:47 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-20 14:37 | short APLD, short IREN, short MU, short SNDK, short WULF | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show strong downward momentum across daily and hourly charts, with some supported by negative news. |
