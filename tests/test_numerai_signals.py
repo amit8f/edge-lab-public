@@ -46,3 +46,14 @@ def test_export_and_model_dir(tmp_path, monkeypatch):
     assert S.model_dir(cache) == cache
     S.stage_export(cache, None)
     assert (S.MODEL_DIR / "model.txt").read_text() == "tree" and S.model_dir(cache) == S.MODEL_DIR
+
+
+def test_read_filters_each_batch(tmp_path):
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    f = tmp_path / "v.parquet"
+    pq.write_table(pa.table({"date": ["a", "a", "b"], "feature_x": [1.0, 2.0, 3.0], "target": [0.5, None, 0.25],
+                             "data_type": ["validation", "validation", "test"]}), f)
+    df, feats = S.read(f, keep=("date", "target", "data_type"),
+                       rows=lambda d: (d["data_type"] == "validation").to_numpy() & d["target"].notna().to_numpy())
+    assert list(df["feature_x"]) == [1.0] and df["feature_x"].dtype == "float32"
