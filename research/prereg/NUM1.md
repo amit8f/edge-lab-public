@@ -56,3 +56,5 @@ over 2,000 features plus a 16 GB swap file on the runner's small disk starves th
 12th weekly date (about a third of the rows) and a fixed random subset of at most 500 of the features (seed 7, chosen
 without looking at any score), validation reads the same features, and the job logs its peak memory. Model settings,
 target, validation and the forward test are unchanged.
+The swap file is also dropped (it can starve the runner), and the training step gets a 150-minute limit so a stall
+ends with a log instead of a lost runner.
