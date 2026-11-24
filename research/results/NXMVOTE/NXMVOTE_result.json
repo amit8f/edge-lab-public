@@ -1,0 +1,149 @@
+{
+ "rule": "NXM-VOTE passes if the sized daily return minus a same-day random control has mean > 0 with NW t >= 2 and its own sized daily net > 0 (2024-01..2025-09)",
+ "voters": [
+  "LGBM",
+  "MLP",
+  "ENS",
+  "RFR"
+ ],
+ "choose_2019_2023_sized_daily_net": {
+  "2": -0.00025155850321440757,
+  "3": -5.346743946384562e-05,
+  "4": 0.0006286980517556304
+ },
+ "k": 4,
+ "test": {
+  "days": 433,
+  "pick_minus_control": {
+   "mean": 0.003626205749378237,
+   "se_nw": 0.0011014634168113914,
+   "t_nw": 3.292170846559463,
+   "days": 349
+  },
+  "trades": 1881,
+  "net_per_trade": 0.0047789349122873085,
+  "median_net": 0.00125379435741393,
+  "trades_per_day": 4.344110854503464,
+  "sized_daily_net": {
+   "mean": 0.0015349231487935126,
+   "se_nw": 0.0008245294928705091,
+   "t_nw": 1.8615745853430248,
+   "days": 433
+  },
+  "top3_share": 0.24042787255963818,
+  "per_side_net": {
+   "-1": 0.003930451236753474,
+   "1": 0.005792759047347573
+  }
+ },
+ "reported": {
+  "XGB": {
+   "trades": 10972,
+   "net_per_trade": -0.0001962658492930856,
+   "median_net": -0.002480613490469584,
+   "trades_per_day": 25.33949191685912,
+   "sized_daily_net": {
+    "mean": -0.00013068595609892306,
+    "se_nw": 0.0010078401852126923,
+    "t_nw": -0.12966932457782818,
+    "days": 433
+   },
+   "top3_share": null,
+   "vote_minus_this": {
+    "mean": 0.0016656091048924356,
+    "se_nw": 0.0009924151356576244,
+    "t_nw": 1.67833907912813,
+    "days": 433
+   },
+   "share_of_vote_trades_also_here": 0.8825093035619351
+  },
+  "LGBM": {
+   "trades": 12097,
+   "net_per_trade": -0.002117927244792204,
+   "median_net": -0.004436886105779251,
+   "trades_per_day": 27.937644341801384,
+   "sized_daily_net": {
+    "mean": -0.0007867093407871702,
+    "se_nw": 0.0011292466924337947,
+    "t_nw": -0.696667385486536,
+    "days": 433
+   },
+   "top3_share": null,
+   "vote_minus_this": {
+    "mean": 0.0023216324895806825,
+    "se_nw": 0.0010059418645484738,
+    "t_nw": 2.3079191466226217,
+    "days": 433
+   },
+   "share_of_vote_trades_also_here": 1.0
+  },
+  "MLP": {
+   "trades": 11478,
+   "net_per_trade": -0.0031782620706111773,
+   "median_net": -0.00436078559828405,
+   "trades_per_day": 26.5080831408776,
+   "sized_daily_net": {
+    "mean": -0.002734486698614516,
+    "se_nw": 0.0010141312678235833,
+    "t_nw": -2.6963833828760353,
+    "days": 433
+   },
+   "top3_share": null,
+   "vote_minus_this": {
+    "mean": 0.004269409847408028,
+    "se_nw": 0.0010131169166997403,
+    "t_nw": 4.214133410500896,
+    "days": 433
+   },
+   "share_of_vote_trades_also_here": 1.0
+  },
+  "ENS": {
+   "trades": 10884,
+   "net_per_trade": -0.001564687453694192,
+   "median_net": -0.003501739164852501,
+   "trades_per_day": 25.136258660508084,
+   "sized_daily_net": {
+    "mean": -0.0007428264265388669,
+    "se_nw": 0.001035977748478043,
+    "t_nw": -0.7170293258037199,
+    "days": 433
+   },
+   "top3_share": null,
+   "vote_minus_this": {
+    "mean": 0.0022777495753323793,
+    "se_nw": 0.0009129873066496221,
+    "t_nw": 2.494831591570542,
+    "days": 433
+   },
+   "share_of_vote_trades_also_here": 1.0
+  },
+  "RFR": {
+   "trades": 9390,
+   "net_per_trade": -0.0017165156364217723,
+   "median_net": -0.003858446463690573,
+   "trades_per_day": 21.68591224018476,
+   "sized_daily_net": {
+    "mean": -0.0010618937211965243,
+    "se_nw": 0.0008916203007069301,
+    "t_nw": -1.1909707757378238,
+    "days": 433
+   },
+   "top3_share": null,
+   "vote_minus_this": {
+    "mean": 0.0025968168699900367,
+    "se_nw": 0.0007422615977053343,
+    "t_nw": 3.4985197644846107,
+    "days": 433
+   },
+   "share_of_vote_trades_also_here": 1.0
+  },
+  "cost1_measured": {
+   "matched": 1282,
+   "share_of_trades": 0.6815523657628921,
+   "net_flat": 0.00747100349124064,
+   "net_measured": 0.0014585899556486836,
+   "net_measured_cost1_kept": 0.012684802588521692
+  }
+ },
+ "verdict": "passed"
+}

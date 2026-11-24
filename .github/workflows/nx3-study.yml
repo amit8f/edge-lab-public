@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) nxe (NXE, NXF and NXT, research/prereg/NXE.md, NXF.md, NXT.md), uncapped (NX3-ALL, research/prereg/NX3ALL.md) sizer (NXS-ML, research/prereg/NXS.md) highbar (NX3-HI, research/prereg/NX3HI.md) highbar_all (NX3-ALL-HI, research/prereg/NX3ALLHI.md) shortfix (SHORT-FIX, research/prereg/SHORTFIX.md) shortfix2 (SHORT-FIX2, research/prereg/SHORTFIX2.md) shortml (SHORT-ML, research/prereg/SHORTML.md) shortfast (SHORT-FAST, research/prereg/SHORTFAST.md) nxk (NXK-KNN and NXK-KRR, research/prereg/NXK.md) nxk2 (NXK2-CAT and NXK2-ET, research/prereg/NXK2.md) bars_cat / bars_krr (NX3-BARS table for CatBoost / KRR, descriptive) nxk_v1 (version 1 KRR and CatBoost models for their shadow books) chart_bars (daily chart inputs for NX3TA and CHART1) nx3ta (NX3TA, research/prereg/NX3TA.md) chart1 (CHART1, research/prereg/CHART1.md) shortall (SHORT-ALL, research/prereg/SHORTALL.md) dayfilter (DAYFILTER, research/prereg/DAYFILTER.md) sds (NX3-ALL-SDS, research/prereg/NX3SDS.md) boom1 (BOOM1, research/prereg/BOOM1.md) boom2_picks / boom2_minutes / boom2 (BOOM2, research/prereg/BOOM2.md) boom_928 / boom_shift / boom_pmcheck (BOOMSHORT.md Amendment 2) boomx / boomx_slices (BOOMX, research/prereg/BOOMX.md) dirgate, dirpeer_data, dirpeer (DIR-GATE, DIR-PEER, research/prereg/DIRECTION.md) dirflow_data, dirflow (DIR-FLOW, DIR-OFI) dirpath (DIR-SSTOP, DIR-BRKT, DIR-AGE, research/prereg/DIRECTION2.md) fast1 (FAST1, research/prereg/FAST1.md) models5 (VOL1, REGIME1, SURV1, research/prereg/VOL1.md, REGIME1.md, SURV1.md) qrange1 (QRANGE1, research/prereg/QRANGE1.md; rerun until done) anom1 (ANOM1, research/prereg/ANOM1.md) cost1 (COST1, research/prereg/COST1.md; rerun until done) or bars (NX3-BARS, research/prereg/NX3BARS.md; also writes NX3_fired_trades.csv)"
+        description: "all, events, minutes, train, extremes, models (NXM, research/prereg/NXM.md), tame (NXR, research/prereg/NXR.md) nxe (NXE, NXF and NXT, research/prereg/NXE.md, NXF.md, NXT.md), uncapped (NX3-ALL, research/prereg/NX3ALL.md) sizer (NXS-ML, research/prereg/NXS.md) highbar (NX3-HI, research/prereg/NX3HI.md) highbar_all (NX3-ALL-HI, research/prereg/NX3ALLHI.md) shortfix (SHORT-FIX, research/prereg/SHORTFIX.md) shortfix2 (SHORT-FIX2, research/prereg/SHORTFIX2.md) shortml (SHORT-ML, research/prereg/SHORTML.md) shortfast (SHORT-FAST, research/prereg/SHORTFAST.md) nxk (NXK-KNN and NXK-KRR, research/prereg/NXK.md) nxk2 (NXK2-CAT and NXK2-ET, research/prereg/NXK2.md) bars_cat / bars_krr (NX3-BARS table for CatBoost / KRR, descriptive) nxk_v1 (version 1 KRR and CatBoost models for their shadow books) chart_bars (daily chart inputs for NX3TA and CHART1) nx3ta (NX3TA, research/prereg/NX3TA.md) chart1 (CHART1, research/prereg/CHART1.md) shortall (SHORT-ALL, research/prereg/SHORTALL.md) dayfilter (DAYFILTER, research/prereg/DAYFILTER.md) sds (NX3-ALL-SDS, research/prereg/NX3SDS.md) boom1 (BOOM1, research/prereg/BOOM1.md) boom2_picks / boom2_minutes / boom2 (BOOM2, research/prereg/BOOM2.md) boom_928 / boom_shift / boom_pmcheck (BOOMSHORT.md Amendment 2) boomx / boomx_slices (BOOMX, research/prereg/BOOMX.md) dirgate, dirpeer_data, dirpeer (DIR-GATE, DIR-PEER, research/prereg/DIRECTION.md) dirflow_data, dirflow (DIR-FLOW, DIR-OFI) dirpath (DIR-SSTOP, DIR-BRKT, DIR-AGE, research/prereg/DIRECTION2.md) fast1 (FAST1, research/prereg/FAST1.md) models5 (VOL1, REGIME1, SURV1, research/prereg/VOL1.md, REGIME1.md, SURV1.md) qrange1 (QRANGE1, research/prereg/QRANGE1.md; rerun until done) anom1 (ANOM1, research/prereg/ANOM1.md) cost1 (COST1, research/prereg/COST1.md; rerun until done) surv1_export (SURV1-LONG's frozen model, research/prereg/SURV1LONG.md) nxvote (NXM-VOTE, research/prereg/NXMVOTE.md; rerun until done) or bars (NX3-BARS, research/prereg/NX3BARS.md; also writes NX3_fired_trades.csv)"
         required: false
         default: all
 
@@ -85,6 +85,14 @@ jobs:
           key: nxr-v1-${{ github.run_id }}
           restore-keys: nxr-v1-
 
+      - name: Restore NXM-VOTE's progress
+        if: inputs.stage == 'nxvote'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nxvote
+          key: nxvote-v1-${{ github.run_id }}
+          restore-keys: nxvote-v1-
+
       - name: Restore NXE's progress
         if: inputs.stage == 'nxe'
         uses: actions/cache/restore@v4
@@ -100,6 +108,13 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           STAGE: ${{ inputs.stage || 'all' }}
         run: |
+          if [ "$STAGE" = surv1_export ]; then
+            set -e
+            [ -f cache/nx1/nx3/models5/picks.parquet ] || PYTHONPATH=. .venv/bin/python -u -m tracks.news.models5_study --stage picks --cache cache/nx1
+            [ -f cache/nx1/nx3/models5/vol1_inputs.parquet ] || PYTHONPATH=. .venv/bin/python -u -m tracks.news.models5_study --stage vol1 --cache cache/nx1 --out /tmp/m5
+            PYTHONPATH=. .venv/bin/python -u -m tracks.news.models5_study --stage surv1_export --cache cache/nx1
+            exit 0
+          fi
           if [ "$STAGE" = cost1 ]; then
             # COST1: quotes resume from the saved NX3 cache; the rule runs once every month is fetched.
             set -e
@@ -186,6 +201,11 @@ jobs:
               --out research/results/NXM --budget-min 300
             exit 0
           fi
+          if [ "$STAGE" = nxvote ]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.news.nxvote_study --cache cache/nx1 --state cache/nxvote \
+              --out research/results/NXMVOTE --budget-min 300
+            exit 0
+          fi
           if [ "$STAGE" = tame ]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.news.nxr_study --cache cache/nx1 --state cache/nxr \
               --out research/results/NXR --budget-min 300
@@ -195,7 +215,7 @@ jobs:
             --out research/results/NX3 --budget-min 290
 
       - name: Save NX3's cache
-        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag' && inputs.stage != 'boom_freeze' && inputs.stage != 'boom_928' && inputs.stage != 'boom_shift' && inputs.stage != 'boom_pmcheck' && inputs.stage != 'boomx' && inputs.stage != 'boomx_slices' && inputs.stage != 'dirflow' && inputs.stage != 'dayfilter' && inputs.stage != 'sds' && inputs.stage != 'dirgate' && inputs.stage != 'dirpeer' && inputs.stage != 'dirpath' && inputs.stage != 'quiz' && inputs.stage != 's0' && inputs.stage != 'fast1' && inputs.stage != 'models5' && inputs.stage != 'anom1' && inputs.stage != 'boomcheck'
+        if: always() && inputs.stage != 'models' && inputs.stage != 'tame' && inputs.stage != 'nxe' && inputs.stage != 'uncapped' && inputs.stage != 'sizer' && inputs.stage != 'highbar' && inputs.stage != 'highbar_all' && inputs.stage != 'bars' && inputs.stage != 'shortfix' && inputs.stage != 'shortfix2' && inputs.stage != 'shortml' && inputs.stage != 'shortfast' && inputs.stage != 'nxk' && inputs.stage != 'nxk2' && inputs.stage != 'bars_cat' && inputs.stage != 'bars_krr' && inputs.stage != 'nxk_v1' && inputs.stage != 'nx3ta' && inputs.stage != 'chart1' && inputs.stage != 'shortall' && inputs.stage != 'boom1' && inputs.stage != 'boom2' && inputs.stage != 'boom2_diag' && inputs.stage != 'boom_freeze' && inputs.stage != 'boom_928' && inputs.stage != 'boom_shift' && inputs.stage != 'boom_pmcheck' && inputs.stage != 'boomx' && inputs.stage != 'boomx_slices' && inputs.stage != 'dirflow' && inputs.stage != 'dayfilter' && inputs.stage != 'sds' && inputs.stage != 'dirgate' && inputs.stage != 'dirpeer' && inputs.stage != 'dirpath' && inputs.stage != 'quiz' && inputs.stage != 's0' && inputs.stage != 'fast1' && inputs.stage != 'models5' && inputs.stage != 'anom1' && inputs.stage != 'nxvote' && inputs.stage != 'boomcheck'
         uses: actions/cache/save@v4
         with:
           path: cache/nx1/nx3
@@ -215,6 +235,13 @@ jobs:
           path: cache/nxr
           key: nxr-v1-${{ github.run_id }}
 
+      - name: Save NXM-VOTE's progress
+        if: always() && inputs.stage == 'nxvote'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/nxvote
+          key: nxvote-v1-${{ github.run_id }}
+
       - name: Save NXE's progress
         if: always() && inputs.stage == 'nxe'
         uses: actions/cache/save@v4
@@ -228,8 +255,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 research/results/FAST1 research/results/MODELS5 models/boom_short
-          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 research/results/FAST1 research/results/MODELS5 models/boom_short
+          mkdir -p research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 research/results/FAST1 research/results/MODELS5 research/results/NXMVOTE models/boom_short models/surv1
+          git add research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 research/results/FAST1 research/results/MODELS5 research/results/NXMVOTE models/boom_short models/surv1
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "NX3/NXM/NXR/NXE ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"

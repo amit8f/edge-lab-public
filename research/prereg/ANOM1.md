@@ -45,3 +45,13 @@ trees, all 60 sessions per tree, depth limit 6, seed 7), growing only the scored
 sessions' log relative volume; the two sums run over the last 5 sessions ending on the scored day. A stock without 60
 complete prior sessions in one segment gets an ordinary score (0.5, no alarm). Reported "anomaly alone" and "random"
 are within the same pool.
+
+## Result (2026-11-24, run 45421094347): FAILED
+
+`research/results/MODELS5/ANOM1_result.json`. 169,500 candidate rows (BOOM1's top 100 on each of 1,695 nights); the
+forest scored 93% (the rest lacked 60 clean sessions) and the CUSUM alarm fired on 12%. On 2019-2023 every weight
+made the picks worse (-0.8, -3.0 and -6.0 points a night for w = 0.25, 0.5, 1.0), so w = 0.25. Test 2024 to Sep 2025,
+437 nights: BOOM1's top 20 hit 8%+ on 64.7% of picks, ANOM1's on 63.4%; gain -1.3 points a night (NW t -4.58), about 3
+picks changed a night. Reported: the anomaly score alone picks 40.8% movers from the same pool against 36.6% for a
+random 20, and CUSUM first 53.6%. Unusual days carry some signal, but BOOM1's volatility inputs already hold it. As
+predicted, few picks change; unlike the prediction, the changes hurt.

@@ -1,0 +1,60 @@
+{
+ "rule": "COST1 passes if the sized daily return with the skip rule minus without it (measured costs) has mean > 0 with NW t >= 2 and the rule's own net per trade > 0 (2024-01..2025-09)",
+ "trades": 12673,
+ "entry_quote_share": 0.9530497908940266,
+ "exit_quote_share": 0.9981062100528683,
+ "measured_round_trip": {
+  "median": 0.005479138663376466,
+  "mean": 0.008830050300481012,
+  "p75": 0.011072944310836087,
+  "flat_main": 0.0041,
+  "by_price": {
+   "20+": 0.005007513980297605,
+   "5-20": 0.005757871287516199,
+   "penny": 0.006198380319499552
+  },
+  "by_time": {
+   "first 30 min": 0.00576036222567697,
+   "later": 0.0019838817151010667
+  }
+ },
+ "net_per_trade_2019_2025": {
+  "flat": 0.0007963854743259877,
+  "measured": -0.0034766790347247525
+ },
+ "choose_2019_2023": {
+  "0.0025": 0.0001185737098574478,
+  "0.005": 0.0006657571935546952,
+  "0.01": 0.0004588326759869568
+ },
+ "c": 0.005,
+ "test": {
+  "trades": 5022,
+  "skipped_share": 0.5053763440860215,
+  "gain_by_day": {
+   "mean": 0.0035155108294565715,
+   "se_nw": 0.0006919411717893386,
+   "t_nw": 5.080649877164512,
+   "days": 421
+  },
+  "own_net_per_trade": 0.006471108301557373,
+  "all_net_per_trade": -0.002840380806927087,
+  "skipped_net_per_trade": -0.011953753125869323,
+  "per_side_kept": {
+   "1": 0.011586768770398582,
+   "-1": 0.002222508929129927
+  }
+ },
+ "spread_model": {
+  "inputs": [
+   "log_px",
+   "log_dv",
+   "vol20",
+   "mins_open"
+  ],
+  "train": 5344,
+  "test": 6734,
+  "spearman_test": 0.7188734992157326
+ },
+ "verdict": "passed"
+}
