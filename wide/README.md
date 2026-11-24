@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6785.79 | -32.14% | 292 | 94 | short ADI, short AMD, short DELL, short HPE, short MU |
-| Coin flip on C's picks | $7768.11 | -22.32% | 290 | 137 | short ADI, short AMD, long DELL, long HPE, long MU |
-| C's prompt on Groq (K7) | $5539.27 | -44.61% | 584 | 143 | short ADI, long AMD, short HPE, long RIOT, long ZS |
-| Coin flip on C-groq's picks | $9024.49 | -9.76% | 583 | 277 | long ADI, long AMD, short HPE, long RIOT, short ZS |
-| C-groq's answers, acted on once a day (K8) | $8672.65 | -13.27% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
-| Coin flip on C-groq-slow's picks | $11925.29 | +19.25% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
-| C's answers, acted on once a day (K8) | $10506.43 | +5.06% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
-| Coin flip on C-slow's picks | $10676.30 | +6.76% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
-| Just hold SPY | $9286.47 | -7.14% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6776.04 | -32.24% | 292 | 94 | short ADI, short AMD, short DELL, short HPE, short MU |
+| Coin flip on C's picks | $7787.29 | -22.13% | 290 | 137 | short ADI, short AMD, long DELL, long HPE, long MU |
+| C's prompt on Groq (K7) | $5531.59 | -44.68% | 585 | 143 | short ADI, short HPE, long MPWR, long RIOT, long ZS |
+| Coin flip on C-groq's picks | $9000.70 | -9.99% | 584 | 277 | long ADI, short HPE, short MPWR, long RIOT, short ZS |
+| C-groq's answers, acted on once a day (K8) | $8679.68 | -13.20% | 64 | 29 | long LITE, long LRCX, long MPWR, long TSLA, long ZS |
+| Coin flip on C-groq-slow's picks | $11937.05 | +19.37% | 64 | 38 | long LITE, short LRCX, short MPWR, short TSLA, long ZS |
+| C's answers, acted on once a day (K8) | $10492.69 | +4.93% | 53 | 31 | short APLD, short IREN, short MU, short NVDA, short WULF |
+| Coin flip on C-slow's picks | $10685.66 | +6.86% | 53 | 29 | short APLD, long IREN, long MU, short NVDA, short WULF |
+| Just hold SPY | $9301.25 | -6.99% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-24 11:17 | short ADI, short AMD, short DELL, short HPE, short MU | none | All current short positions are profitable and the market continues to show strong downward momentum in these stocks. No changes are made to capitalize on the existing trend. |
 | 2026-11-24 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 10:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 10:47 | short ADI, short AMD, short DELL, short HPE, short MU | none | All current short positions are profitable and the market is broadly down today, indicating continued bearish sentiment. Maintaining all existing positions. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-24 11:0
 | 2026-11-20 14:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-20 14:37 | short APLD, short IREN, short MU, short SNDK, short WULF | none | Maintaining all existing short positions as they are profitable and the underlying stocks continue to show strong downward momentum across daily and hourly charts, with some supported by negative news. |
 | 2026-11-20 14:27 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-20 14:17 | no answer, nothing changed | none | unreadable answer |
