@@ -1,0 +1,57 @@
+# Nightly short-borrow log (tracks/tools/borrow_log.py): IBKR's public short-stock file (anonymous FTP, no
+# account) saved as one gzip CSV a day to the orphan branch `state-borrow`, so studies and books can charge
+# each short its real borrow fee. Taken before the US open, when NX3's shorts are entered.
+name: borrow-log
+
+on:
+  schedule:
+    - cron: "10 13 * * 1-5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: borrow-log
+  cancel-in-progress: false
+
+jobs:
+  log:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the state branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-borrow
+        run: bash deploy/state.sh restore
+
+      - name: Log today's borrow fees
+        run: PYTHONPATH=. .venv/bin/python -m tracks.tools.borrow_log --state state
+
+      - name: Save the state
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE_BRANCH: state-borrow
+          RUN_LABEL: borrow ${{ github.run_id }}
+        run: bash deploy/state.sh save
