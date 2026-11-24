@@ -54,3 +54,19 @@ pre-open news vs news during the session; EXEC-10 combined with COST1's skip (c 
 
 The closing auction saves about 0.1% a trade. Delaying saves about 0.3% of spread on the delayed trades but gives up
 more than that in drift, because NX3's edge is fastest in the first minutes. P(pass) about 0.25.
+
+## Result (2026-11-24, run 45467105332): FAILED
+
+`research/results/MODELS5/EXEC1_result.json`. 12,673 NX3-ALL-HI trades 2019-01 to 2025-09. T chosen on 2019-2023: 9:45
+(net per trade -0.19%, against -0.22% at 10:00 and -0.23% at 10:30). Test 2024-01 to 2025-09, 5,022 trades over 421
+days: 95% of trades enter before 9:45 and moved. On those, the entry half-spread fell from 0.88% to 0.37%, but the
+gross return they earned fell from +0.81% to +0.42% (the drift happens in the first minutes, as the prediction's
+second half said). Net per trade -0.22% -> -0.12%; sized daily gain +0.036%, NW t 0.60 (needs 2): failed. The gain is
+all in shorts (-0.35% -> -0.13%); longs got worse (-0.07% -> -0.12%). The delayed book still loses after measured costs.
+
+Closing auction (reported, not counted): the exit half-spread COST1 charged at 15:59 averaged 0.070% (median
+0.038%), so a market-on-close exit saves about 0.06-0.07% a trade: all years -0.35% -> -0.28%, test -0.28% -> -0.22%.
+Free but small; the prediction (about 0.1%) was a little high.
+
+Post hoc, not registered: with COST1's c = 0.5% skip applied to the 9:45 entries, 77% of trades are kept at +0.11% net
+a trade. Entering later, then skipping wide spreads, is a hypothesis for a new idea, not a finding.
