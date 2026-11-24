@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
         type: choice
-        options: ["1", "2", "boomcheck", "newsprobe", "warm", "backup"]
+        options: ["1", "2", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe"]
         default: "1"
 
 permissions: {}
@@ -93,6 +93,9 @@ jobs:
             echo "caches restored (keeps them from expiring): nx1 $(du -sh cache/nx1 | cut -f1), w1 $(du -sh cache/w1 2>/dev/null | cut -f1), sector1 $(du -sh cache/sector1 2>/dev/null | cut -f1)"
             exit 0
           fi
+          if [[ "$STAGE" == borrowprobe ]]; then
+            PYTHONPATH=. .venv/bin/python -m tracks.tools.borrow_log --print-only; exit 0
+          fi
           if [[ "$STAGE" == newsprobe ]]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.tools.news_probe
             exit 0
@@ -108,7 +111,7 @@ jobs:
           PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
-        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup'
+        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe'
         uses: actions/cache/save@v4
         with:
           path: cache/sector1
