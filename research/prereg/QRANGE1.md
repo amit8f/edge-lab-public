@@ -34,3 +34,15 @@ an NGBoost version of the same rule (exploratory).
 ## Prediction (written first)
 
 Stops still cut some winners. P(pass) about 0.15.
+
+## Amendment 1 (2026-11-24, code details, before any result)
+
+`tracks/news/models5_study.py`, stages `qpaths` and `qrange1`. The bracket is live from NX3's entry minute to the
+next close, so the path is the rest of day d after the entry plus the whole next session, from 1-minute SIP bars
+(`adjustment=raw`, zero-volume bars dropped); next-session prices are put on day d's basis with the daily
+all-adjusted / raw close ratio, as NX3's own exit is. F and A are the largest favourable and adverse excursion over
+that path. A minute bar that opens past either level fills at its open. Trades with no minute path are dropped from
+QRANGE1 and its next-close comparison alike. Inputs: ATR(14)/price at the prior close, NX3's vol20, penny flag
+(price < $5) as the price tier, side, confidence, gap = entry / prior all-adjusted close - 1, SPY's move at entry
+(`spy_open`). Predicted levels below 0.1% are set to 0.1%. An exit on day d is charged one day of borrow. The NGBoost
+version is not run (it would add a dependency for an exploratory line).

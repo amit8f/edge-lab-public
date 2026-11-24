@@ -1,7 +1,8 @@
 """VOL1 and REGIME1 (research/prereg/VOL1.md, REGIME1.md): NX3-ALL-HI's history re-sized by a GARCH volatility
-forecast, cut in a hidden-Markov "storm" regime, and SURV1's survival-model exits (research/prereg/SURV1.md).
+forecast, cut in a hidden-Markov "storm" regime, SURV1's survival-model exits (research/prereg/SURV1.md) and QRANGE1's
+quantile-model take profit and stop (research/prereg/QRANGE1.md; qpaths fetches each pick's minute path first).
 
-    python -m tracks.news.models5_study --stage picks|vol1|regime1|surv1 --cache cache/nx1 --out research/results/MODELS5
+    python -m tracks.news.models5_study --stage picks|vol1|regime1|surv1|qpaths|qrange1 --cache cache/nx1 --out research/results/MODELS5
 
 picks: NX3-ALL-HI's walk-forward picks (same models and seeds as NX3-ALL, confidence >= 1.5, uncapped, sized by
 confidence) with each trade's net after costs -> cache nx3/models5/picks.parquet. Choose years 2019-2023, one
@@ -409,6 +410,186 @@ def stage_surv1(cache, out):
     write(out, "SURV1_result.json", rep)
 
 
+# ---------- QRANGE1 (research/prereg/QRANGE1.md) ----------
+
+Q_TP_GRID, Q_SL = (0.5, 0.7), 0.9
+Q_LGB = dict(n_estimators=200, max_depth=4, learning_rate=0.05, random_state=7, verbose=-1)
+Q_INPUTS = ["atr", "vol20", "penny", "side", "conf", "gap", "spy_open"]
+Q_FLOOR = 0.001          # a predicted target or stop below 0.1% is set to 0.1%
+QPATHS = "qpaths"
+
+
+def q_side_path(o, h, l, entry, side):
+    """Minute bars -> per bar the open's signed return (fo), the best signed excursion (fh) and the worst
+    adverse excursion as a positive number (fa), all from the entry price in the trade's direction."""
+    o, h, l = (np.asarray(x, float) / entry - 1 for x in (o, h, l))
+    if side > 0:
+        return o, h, -l
+    return -o, -l, h
+
+
+def q_exit(fo, fh, fa, tp, sl, ret_end):
+    """Signed return and bar index of a trade with take profit tp and stop sl (both > 0). A bar that opens past
+    either level fills at its open (a gap); a bar touching both counts as the stop; else the logged next-close
+    return (index -1)."""
+    for k in range(len(fo)):
+        if -fo[k] >= sl or fo[k] >= tp:
+            return float(fo[k]), k
+        if fa[k] >= sl:
+            return -sl, k
+        if fh[k] >= tp:
+            return tp, k
+    return float(ret_end), -1
+
+
+def minute_hl(symbols, open_t, close_t, headers):
+    """{symbol: 1-minute SIP bars (t, o, h, l, c), adjustment=raw} for one session; zero-volume bars dropped."""
+    s = pd.Timestamp(open_t, tz=X.ET).tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
+    e = pd.Timestamp(close_t, tz=X.ET).tz_convert("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
+    out = {}
+    for i in range(0, len(symbols), X.SYM_CHUNK):
+        tok = None
+        while True:
+            q = {"symbols": ",".join(symbols[i:i + X.SYM_CHUNK]), "timeframe": "1Min", "start": s, "end": e,
+                 "feed": "sip", "adjustment": "raw", "limit": 10000}
+            if tok:
+                q["page_token"] = tok
+            j = X.alpaca.get(X.BARS_URL, q, headers=headers)
+            for sym, bs in (j.get("bars") or {}).items():
+                out.setdefault(sym, []).extend((b["t"], b["o"], b["h"], b["l"], b["c"], b["v"]) for b in bs if b["v"] > 0)
+            tok = j.get("next_page_token")
+            if not tok:
+                break
+    res = {}
+    for sym, rows in out.items():
+        d = pd.DataFrame(rows, columns=["t", "o", "h", "l", "c", "v"])
+        d["t"] = pd.to_datetime(d["t"], utc=True).dt.tz_convert(X.ET).dt.tz_localize(None)
+        res[sym] = d.sort_values("t").reset_index(drop=True)
+    return res
+
+
+def q_trades(cache):
+    """picks joined with their logged entry (price, time, gap, SPY move at entry, vol20)."""
+    d3 = X.nx3dir(cache)
+    p = pd.read_parquet(mdir(cache) / "picks.parquet")
+    cols = ["symbol", "d", "t", "entry", "entry_t", "prev_ac", "exit_ac", "spy_open", "vol20"]
+    ev = pd.concat([pd.read_parquet(f, columns=cols) for f in sorted((d3 / X.TRADES).glob("t_*.parquet"))],
+                   ignore_index=True).drop_duplicates(["symbol", "d", "t"])
+    p = p.merge(ev, on=["symbol", "d", "t"], how="left")
+    p["gap"] = p["entry"] / p["prev_ac"] - 1
+    return p
+
+
+def stage_qpaths(cache, deadline):
+    """Per pick, the minute path from entry to the next close (day d after the entry, then the next session in
+    day d's raw prices), one file per month of entries."""
+    import time
+    p = q_trades(cache)
+    ses = X.sessions(X.calendar(cache)).set_index("date")
+    h = X.alpaca_headers()
+    out = mdir(cache) / QPATHS
+    for m, gm in p.groupby(p["d"].dt.to_period("M")):
+        f = out / f"q_{m}.parquet"
+        if f.exists():
+            continue
+        if time.monotonic() > deadline:
+            return False
+        syms = sorted(set(gm["symbol"]))
+        dc = X.daily_closes(syms, gm["d"].min(), gm["next"].max(), h)
+        rows = []
+        for d, g in gm.groupby("d"):
+            s0, s1 = ses.loc[d], ses.loc[g["next"].iloc[0]]
+            b0 = minute_hl(sorted(set(g["symbol"])), s0["open_t"], s0["close_t"], h)
+            b1 = minute_hl(sorted(set(g["symbol"])), s1["open_t"], s1["close_t"], h)
+            for r in g.itertuples(index=False):
+                x0, x1 = b0.get(r.symbol), b1.get(r.symbol)
+                try:
+                    raw_d, all_d = dc[(r.symbol, d)]
+                    raw_n, all_n = dc[(r.symbol, r.next)]
+                except KeyError:
+                    continue
+                if x0 is None or x1 is None or not (raw_d > 0 and raw_n > 0 and all_d > 0) or not r.entry > 0:
+                    continue
+                x0 = x0[x0["t"] >= r.entry_t]
+                k = (all_n / raw_n) / (all_d / raw_d)
+                o = np.r_[x0["o"], x1["o"] * k]
+                hh = np.r_[x0["h"], x1["h"] * k]
+                ll = np.r_[x0["l"], x1["l"] * k]
+                if not len(x0) or not np.isfinite(o).all():
+                    continue
+                fo, fh, fa = q_side_path(o, hh, ll, r.entry, r.side)
+                rows.append({"symbol": r.symbol, "d": d, "t": r.t, "n_day0": len(x0),
+                             "fo": fo.astype("float32"), "fh": fh.astype("float32"), "fa": fa.astype("float32"),
+                             "end": r.side * (x1["c"].iloc[-1] * k / r.entry - 1)})
+        N.atomic_parquet(pd.DataFrame(rows), f)
+        print(f"[qpaths] {m}: {len(gm)} picks, {len(rows)} paths")
+    return True
+
+
+def q_net(p, tp, sl):
+    """Net per trade under the bracket (tp, sl arrays), and which exit fired (1 target, -1 stop, 0 next close)."""
+    net, hit = np.zeros(len(p)), np.zeros(len(p), int)
+    for i, r in enumerate(p.itertuples(index=False)):
+        g, k = q_exit(r.fo, r.fh, r.fa, tp[i], sl[i], r.side * r.ret)
+        days = 1 if 0 <= k < r.n_day0 else r.days
+        net[i] = g - N.cost_frac([r.price], [r.side < 0], [days])[0]
+        hit[i] = 0 if k < 0 else (1 if g > 0 else -1)
+    return net, hit
+
+
+def stage_qrange1(cache, out):
+    import lightgbm as lgb
+    p = q_trades(cache)
+    p = p.merge(pd.read_parquet(mdir(cache) / "vol1_inputs.parquet")[["symbol", "d", "t", "atr"]],
+                on=["symbol", "d", "t"], how="left")
+    files = sorted((mdir(cache) / QPATHS).glob("q_*.parquet"))
+    missing = set(p["d"].dt.to_period("M").astype(str)) - {f.stem[2:] for f in files}
+    if missing:
+        raise SystemExit(f"qpaths unfinished: {len(missing)} months missing; run --stage qpaths again")
+    qp = pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
+    n_picks = len(p)
+    p = p.merge(qp, on=["symbol", "d", "t"], how="inner").reset_index(drop=True)
+    p["penny"] = (p["price"] < 5).astype(float)
+    p["F"] = [float(np.max(x)) for x in p["fh"]]
+    p["A"] = [float(np.max(x)) for x in p["fa"]]
+    end_err = (p["end"] - p["side"] * p["ret"]).abs()
+    tr = (p["year"] <= 2022).to_numpy()
+    Xs = p[Q_INPUTS].astype(float)
+    pred = {}
+    for name, col, q in [("F0.5", "F", 0.5), ("F0.7", "F", 0.7), ("A0.9", "A", Q_SL)]:
+        m = lgb.LGBMRegressor(objective="quantile", alpha=q, **Q_LGB).fit(Xs[tr], p.loc[tr, col])
+        pred[name] = np.maximum(m.predict(Xs), Q_FLOOR)
+    sl = pred["A0.9"]
+    sel = (p["year"] == 2023).to_numpy()
+    choose, calib = {}, {"stop_A0.9": float((p.loc[sel, "A"] > sl[sel]).mean())}
+    for q in Q_TP_GRID:
+        n, h = q_net(p[sel], pred[f"F{q}"][sel], sl[sel])
+        choose[str(q)] = {"net_per_trade": float(n.mean()), "target_hit": float((h == 1).mean()),
+                          "stop_hit": float((h == -1).mean())}
+        calib[f"target_F{q}"] = float((p.loc[sel, "F"] > pred[f"F{q}"][sel]).mean())
+    qtp = float(max(Q_TP_GRID, key=lambda q: choose[str(q)]["net_per_trade"]))
+    te = p["year"].isin(TEST).to_numpy()
+    pt = p[te].reset_index(drop=True)
+    n, h = q_net(pt, pred[f"F{qtp}"][te], sl[te])
+    base = pt["net"].to_numpy(float)
+    diff = pd.DataFrame({"d": pt["d"], "x": n - base}).groupby("d")["x"].mean()
+    own = pd.DataFrame({"d": pt["d"], "x": n}).groupby("d")["x"].mean()
+    gd, go = tstat(diff.to_numpy()), tstat(own.to_numpy())
+    rep = {"rule": "QRANGE1 passes if net per trade minus next-close NX3-ALL-HI on the same trades is > 0 with day-clustered "
+                   "t >= 2 and 300+ trades, and its own net per trade > 0 (2024-01..2025-09)",
+           "picks": int(n_picks), "with_minute_path": int(len(p)),
+           "qa_path_end_vs_logged_ret": {"median_abs": float(end_err.median()), "share_over_1pct": float((end_err > 0.01).mean())},
+           "choose_2023": choose, "q_tp": qtp, "calibration_2023_share_beyond": calib,
+           "test": {"trades": int(te.sum()), "gain_vs_next_close_by_day": gd, "own_net_by_day": go,
+                    "mean_net_per_trade": float(n.mean()), "next_close_net_per_trade": float(base.mean()),
+                    "target_hit": float((h == 1).mean()), "stop_hit": float((h == -1).mean()),
+                    "median_target": float(np.median(pred[f"F{qtp}"][te])), "median_stop": float(np.median(sl[te])),
+                    "per_side": {int(s_): float(n[(pt["side"] == s_).to_numpy()].mean()) for s_ in (1, -1)}},
+           "ngboost": "not run (exploratory; would add a dependency)"}
+    rep["verdict"] = "passed" if (gd["mean"] > 0 and gd["t_nw"] >= 2 and te.sum() >= 300 and n.mean() > 0) else "failed"
+    write(out, "QRANGE1_result.json", rep)
+
+
 def write(out, name, rep):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -418,13 +599,16 @@ def write(out, name, rep):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["picks", "vol1", "regime1", "surv1"])
+    ap.add_argument("--stage", required=True, choices=["picks", "vol1", "regime1", "surv1", "qpaths", "qrange1"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/MODELS5")
+    ap.add_argument("--minutes", type=float, default=300)
     a = ap.parse_args()
     cache = Path(a.cache)
     {"picks": lambda: stage_picks(cache), "vol1": lambda: stage_vol1(cache, a.out),
-     "regime1": lambda: stage_regime1(cache, a.out), "surv1": lambda: stage_surv1(cache, a.out)}[a.stage]()
+     "regime1": lambda: stage_regime1(cache, a.out), "surv1": lambda: stage_surv1(cache, a.out),
+     "qpaths": lambda: stage_qpaths(cache, __import__("time").monotonic() + 60 * a.minutes),
+     "qrange1": lambda: stage_qrange1(cache, a.out)}[a.stage]()
 
 
 if __name__ == "__main__":

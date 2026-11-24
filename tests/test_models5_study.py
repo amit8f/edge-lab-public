@@ -62,3 +62,22 @@ def test_surv_path_and_exit():
     assert M.surv_exit(sig, np.full(5, 0.9), 0.4) == 2      # target reached at close 3
     assert M.surv_exit(sig, np.full(5, 0.1), 0.4) == 0      # low chance: out at NX3's normal close
     assert M.surv_exit(np.zeros(5), np.full(5, 0.9), 0.4) == 4
+
+
+def test_q_side_path_long_and_short():
+    fo, fh, fa = M.q_side_path([100, 102], [103, 104], [99, 97], 100.0, 1)
+    assert np.allclose(fo, [0, 0.02]) and np.allclose(fh, [0.03, 0.04]) and np.allclose(fa, [0.01, 0.03])
+    fo, fh, fa = M.q_side_path([100, 102], [103, 104], [99, 97], 100.0, -1)
+    assert np.allclose(fo, [0, -0.02]) and np.allclose(fh, [0.01, 0.03]) and np.allclose(fa, [0.03, 0.04])
+
+
+def test_q_exit_order_of_events():
+    fo, fh, fa = np.array([0.0, 0.0]), np.array([0.01, 0.05]), np.array([0.005, 0.01])
+    assert M.q_exit(fo, fh, fa, 0.04, 0.02, 0.003) == (0.04, 1)          # target in bar 1
+    fa2 = np.array([0.005, 0.03])
+    assert M.q_exit(fo, fh, fa2, 0.04, 0.02, 0.003) == (-0.02, 1)        # both in one bar: the stop
+    assert M.q_exit(fo, fh, fa, 0.10, 0.10, 0.003) == (0.003, -1)        # neither: logged next-close return
+    gap = np.array([0.0, -0.05])
+    assert M.q_exit(gap, np.array([0.0, 0.0]), np.array([0.0, 0.06]), 0.04, 0.02, 0.0) == (-0.05, 1)  # gap through the stop
+    up = np.array([0.0, 0.06])
+    assert M.q_exit(up, np.array([0.0, 0.07]), np.array([0.0, 0.0]), 0.04, 0.02, 0.0) == (0.06, 1)   # gap past the target
