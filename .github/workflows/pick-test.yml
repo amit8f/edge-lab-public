@@ -59,6 +59,12 @@ jobs:
           key: nx1-v1-none
           restore-keys: nx1-v1-
 
+      - name: Bring back the old headline months from the encrypted backup if the cache lost them
+        env:
+          EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: bash deploy/news_restore.sh cache/nx1/g1/news
+
       - name: Restore PICK fit's cache (read only, for the sizing top)
         if: inputs.stage == 'test'
         uses: actions/cache/restore@v4

@@ -88,6 +88,17 @@ def _book(name, idea, target, closed, open_, realized=None, unreal=None, size=No
 
 # ---------- books ----------
 
+DRIFT_HIST = Path("research/results/NX3/NX3_fired_trades.csv")   # walk-forward fired trades 2019-2025, after costs
+
+
+def drift_check(nets, min_conf):
+    """CUSUM drift alarm of a book's closed trades against NX3's fired history at the same confidence bar."""
+    from dashboard.drift import drift
+    if not DRIFT_HIST.exists():
+        return None
+    h = pd.read_csv(DRIFT_HIST)
+    return drift([x for x in nets if x is not None], h.loc[h["conf"] >= min_conf, "net"].to_numpy(float))
+
 def nx3_books(st):
     root = st / "state-nx3" / "nx3"
     log = root / "nx3"              # the ledger's files: nx3/days/<day>.json, nx3/settled/<day>.json
@@ -101,6 +112,7 @@ def nx3_books(st):
         open_n = len((_json(log / "days" / f"{days[-1]}.json") or {}).get("picks", []))
     out.append(_book("NX3", "NX3", 100, len(picks), open_n, realized=sum(500 * (t["net"] or 0) for t in picks),
                      size=5000.0, account="EL-NX3", first_day="2026-10-29",
+                     drift=_safe(drift_check, [t.get("net") for t in picks], 1.0),
                      excluded_days=[s["day"] for s in settled if s and s.get("excluded")]))
     msettled = [_json(f) for f in sorted((root / "nxm" / "settled").glob("*.json"))]
     mdays = sorted((root / "nxm" / "days").glob("*.json"))
@@ -127,20 +139,21 @@ def nx3_books(st):
     alast = _json(adays[-1]) if adays and adays[-1].stem > max((x["day"] for x in asettled if x), default="") else None
     out.append(_book("NX3-ALL", "NX3-ALL", 30, len(tr), len((alast or {}).get("picks", [])),
                      realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in tr), size=5000.0,
-                     first_day="2026-11-02"))
+                     first_day="2026-11-02", drift=_safe(drift_check, [t.get("net") for t in tr], 1.0)))
     hsettled = [_json(f) for f in sorted((root / "nx3hi" / "settled").glob("*.json"))]
     hdays = sorted((root / "nx3hi" / "days").glob("*.json"))
     htr = [t for x in hsettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
     hlast = _json(hdays[-1]) if hdays and hdays[-1].stem > max((x["day"] for x in hsettled if x), default="") else None
     out.append(_book("NX3-HI", "NX3-HI", 100, len(htr), len((hlast or {}).get("picks", [])),
-                     realized=sum(500 * (t.get("net") or 0) for t in htr), size=5000.0, first_day="2026-11-04"))
+                     realized=sum(500 * (t.get("net") or 0) for t in htr), size=5000.0, first_day="2026-11-04",
+                     drift=_safe(drift_check, [t.get("net") for t in htr], 1.5)))
     gsettled = [_json(f) for f in sorted((root / "nx3allhi" / "settled").glob("*.json"))]
     gdays = sorted((root / "nx3allhi" / "days").glob("*.json"))
     gtr = [t for x in gsettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
     glast = _json(gdays[-1]) if gdays and gdays[-1].stem > max((x["day"] for x in gsettled if x), default="") else None
     out.append(_book("NX3-ALL-HI", "NX3-ALL-HI", 30, len(gtr), len((glast or {}).get("picks", [])),
                      realized=sum(5000 * (t.get("w") or 0) * (t.get("net") or 0) for t in gtr), size=5000.0,
-                     first_day="2026-11-04"))
+                     first_day="2026-11-04", drift=_safe(drift_check, [t.get("net") for t in gtr], 1.5)))
     ssettled = [_json(f) for f in sorted((root / "nx3sds" / "settled").glob("*.json"))]
     str_ = [t for x in ssettled if x for t in x.get("trades", []) if t.get("role") == "picks"]
     sopen = len((alast or {}).get("picks", [])) if (alast or {}).get("day", "") >= "2026-11-10" else 0

@@ -33,3 +33,19 @@ Share of days in the storm state; state flips per year; per-year results; longs 
 ## Prediction (written first)
 
 Storm days are few (about 15%), the cut trims the worst days but also some of the best rebounds. P(pass) about 0.2.
+
+## Amendment 1 (2026-11-24, code details, before any result)
+
+`tracks/news/models5_study.py`. Inputs: SPY daily log return and its 20-day standard deviation (annualised) from the
+all-adjusted close. The storm state is the HMM state with the higher mean volatility. Day d uses the state filtered
+through the close before d (a forward filter written out by hand, so no later day can leak in). When a storm day
+trades only one side, the 60% side cap can't apply; that day is only cut to 50% gross. Worst day, gains and own net
+are measured per dollar of plain NX3-ALL-HI's gross for that day.
+
+## Result (2026-11-24, run 45382657914): FAILED
+
+`research/results/MODELS5/REGIME1_result.json`. One look at 2024-01..2025-09 (421 days). The HMM called 33% of test
+days stormy (the plain vol switch 8%). It did shrink the worst 1% day from -12.1% to -8.5% of plain gross, but it gave
+up more on the good days: paired gain -0.06% a day (NW t -0.79), and -0.06% a day vs the plain vol switch. Own net per
+dollar of gross: plain +0.11% a day (t 0.50), REGIME1 +0.05% (t 0.27). As predicted, the cut trims bad days and
+rebounds alike; no shadow book.

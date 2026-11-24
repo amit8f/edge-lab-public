@@ -34,3 +34,19 @@ Per year; longs and shorts; worst 1% day; how often the clip binds; GARCH fit fa
 ## Prediction (written first)
 
 GARCH and ATR weights rank risk almost the same, so VOL1 beats plain sizing a little and ties ATR. P(pass) about 0.2.
+
+## Amendment 1 (2026-11-24, code details, before any result)
+
+`tracks/news/models5_study.py`. GARCH uses log returns of the all-adjusted close from the stock's latest unbroken
+segment before the entry day; a fit that doesn't converge counts as missing and the trade takes its ATR value.
+The ATR baseline uses ATR(14)/close at the prior session's close. A trade with neither keeps its base size.
+
+## Result (2026-11-24, run 45382657914): FAILED
+
+`research/results/MODELS5/VOL1_result.json`. 12,673 NX3-ALL-HI trades 2019 to Sep 2025; one look at 2024-01..2025-09
+(5,022 trades, 421 days). GARCH sizing cut the book's Sharpe from 0.79 to 0.15 (difference -0.64, month-bootstrap CI
+-1.31..-0.11): it shifts money to calm stocks, and NX3's edge sits in the volatile ones. It did beat the ATR baseline
+(+0.14, CI -0.09..+0.43, not significant) and shrank the worst 1% day from -5.2% to -3.8% of the book, but its own net
+per dollar was about zero (t -0.02). GARCH failed to fit on 3.4% of trades (ATR used). Reporting bug, no effect on the
+verdict: `clip_bind_share` reads 0 because it compares weights after the daily rescale. As predicted, risk-equal
+sizing doesn't help this book; no shadow book.

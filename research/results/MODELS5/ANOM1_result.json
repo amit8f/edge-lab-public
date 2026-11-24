@@ -1,0 +1,31 @@
+{
+ "rule": "ANOM1 passes if the nightly share of the top 20 moving 8%+, ANOM1 minus BOOM1 alone, has mean > 0 and Newey-West t >= 2 (2024-01..2025-09)",
+ "pool_per_night": 100,
+ "rows": 169500,
+ "if_scored_share": 0.9265250737463127,
+ "cusum_alarm_share": 0.12264896755162241,
+ "choose_2019_2023_gain": {
+  "0.25": -0.008267090620031795,
+  "0.5": -0.029848966613672492,
+  "1.0": -0.060453100158982524
+ },
+ "w": 0.25,
+ "test": {
+  "nights": 437,
+  "boom1_hit": 0.6474828375286041,
+  "anom1_hit": 0.634096109839817,
+  "gain": {
+   "mean": -0.013386727688787185,
+   "se_nw": 0.0029212882711351046,
+   "t_nw": -4.582474047857522,
+   "days": 437
+  },
+  "picks_changed_per_night": 3.0274599542334095
+ },
+ "reported": {
+  "anomaly_alone_in_pool_hit": 0.40812356979405034,
+  "random_20_of_pool_hit": 0.36624713958810073,
+  "cusum_first_hit": 0.5359267734553776
+ },
+ "verdict": "failed"
+}

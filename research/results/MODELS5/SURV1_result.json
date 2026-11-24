@@ -1,0 +1,52 @@
+{
+ "rule": "SURV1 passes if net per trade minus next-close NX3-ALL-HI on the same trades is > 0 with day-clustered t >= 2 and 300+ trades, and its own net per trade > 0 (2024-01..2025-09)",
+ "trades_with_5_day_path": 12649,
+ "hazard_rows_train": 13700,
+ "hazard_rate_train": 0.07,
+ "choose_2023": {
+  "0.3": {
+   "net_per_trade": 0.00287938709361862,
+   "held_past_day1": 0.197327852004111
+  },
+  "0.4": {
+   "net_per_trade": 0.0027101731740032334,
+   "held_past_day1": 0.16032887975334018
+  },
+  "0.5": {
+   "net_per_trade": 0.0025125585135875694,
+   "held_past_day1": 0.13514902363823228
+  }
+ },
+ "pstar": 0.3,
+ "test": {
+  "trades": 5019,
+  "gain_vs_next_close_by_day": {
+   "mean": 0.0003079294279610761,
+   "se_nw": 0.0006430108440632565,
+   "t_nw": 0.4788868349641447,
+   "days": 421
+  },
+  "own_net_by_day": {
+   "mean": 0.0012319016173882016,
+   "se_nw": 0.0022208922278150523,
+   "t_nw": 0.5546877070213196,
+   "days": 421
+  },
+  "mean_net_per_trade": 0.0011462382957898843,
+  "next_close_net_per_trade": 0.001860791320774287,
+  "held_past_day1": 0.2199641362821279,
+  "mean_days_held": 1.3385136481370792,
+  "per_side": {
+   "1": 0.003856832255757427,
+   "-1": -0.0013476325816859922
+  }
+ },
+ "km_reach_target_by_close": [
+  0.3230294884971144,
+  0.3906237647244841,
+  0.43299865602023874,
+  0.46232903786860624,
+  0.48731124990117797
+ ],
+ "verdict": "failed"
+}
