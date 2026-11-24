@@ -49,3 +49,10 @@ Addendum 2 (same day, still before any result): the third run (45455760774) lost
 likely while reading the whole validation file at once after training. Rows are now filtered while each batch is
 read (validation rows with a target only; training rows with a target), and validation is predicted in batches.
 Nothing about the model or the test changes.
+
+Addendum 3 (2026-11-24, still before any result): the fourth run (45467307124) trained for 3 hours 41 minutes and then
+the runner lost communication with the server, with no log. The cause is probably memory: about 1 million rows of
+over 2,000 features plus a 16 GB swap file on the runner's small disk starves the runner. The job now trains on every
+12th weekly date (about a third of the rows) and a fixed random subset of at most 500 of the features (seed 7, chosen
+without looking at any score), validation reads the same features, and the job logs its peak memory. Model settings,
+target, validation and the forward test are unchanged.

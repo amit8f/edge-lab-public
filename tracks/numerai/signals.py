@@ -54,17 +54,32 @@ def summary(s):
             "share_positive": float((s > 0).mean()), "by_year": {str(k): float(v) for k, v in s.groupby(s.index.str[:4]).mean().items()}}
 
 
-TRAIN_EVERY = 4                 # every 4th weekly date: the 20-day targets overlap (NUM1.md Amendment 1, memory)
+TRAIN_EVERY = 12                # every 12th weekly date: the 20-day targets overlap (NUM1.md Amendments 1 and 3)
+MAX_FEATURES = 500              # a seeded random subset of the features (NUM1.md Amendment 3)
+FEATURE_SEED = 7
 
 
-def read(f, keep=(), every=1, rows=None):
+def pick_features(feats, limit=MAX_FEATURES, seed=FEATURE_SEED):
+    """A seeded random subset of at most `limit` features, in file order; all of them if there are fewer."""
+    if limit is None or len(feats) <= limit:
+        return list(feats)
+    keep = set(np.random.default_rng(seed).choice(len(feats), size=limit, replace=False).tolist())
+    return [c for i, c in enumerate(feats) if i in keep]
+
+
+def peak_rss_gb():
+    import resource
+    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6      # kB on Linux
+
+
+def read(f, keep=(), every=1, rows=None, use=None):
     """Only the feature columns (as float32) and `keep` columns of a Numerai parquet, read in batches; with every > 1
     only every n-th date is kept; `rows(df)` (a boolean mask) filters each batch as it is read. The full train file
     does not fit in a runner's 16 GB as float64."""
     import pyarrow.parquet as pq
     pf = pq.ParquetFile(f)
     names = pf.schema_arrow.names
-    feats = features(names)
+    feats = list(use) if use is not None else pick_features(features(names))
     dates = None
     if every > 1:
         d = np.sort(pq.read_table(f, columns=["date"]).column("date").to_pandas().unique())
@@ -98,12 +113,14 @@ def stage_train(cache, out):
     a = api()
     tr, feats = read(get(a, cache, "train.parquet"), keep=("date", TARGET), every=TRAIN_EVERY,
                      rows=lambda df: df[TARGET].notna().to_numpy())
-    print(f"[num1] train rows {len(tr)}, dates {tr['date'].nunique()}, features {len(feats)}", flush=True)
+    print(f"[num1] train rows {len(tr)}, dates {tr['date'].nunique()}, features {len(feats)}, "
+          f"peak memory {peak_rss_gb():.1f} GB", flush=True)
     m = lgb.LGBMRegressor(**LGB).fit(tr[feats], tr[TARGET])
+    print(f"[num1] fitted, peak memory {peak_rss_gb():.1f} GB", flush=True)
     m.booster_.save_model(str(Path(cache) / "model.txt"))
     (Path(cache) / "model.json").write_text(json.dumps({"features": feats, "version": VERSION}))
     del tr
-    va, _ = read(get(a, cache, "validation.parquet"), keep=("date", TARGET, "data_type", "numerai_ticker"),
+    va, _ = read(get(a, cache, "validation.parquet"), keep=("date", TARGET, "data_type", "numerai_ticker"), use=feats,
                  rows=lambda df: (df["data_type"] == "validation").to_numpy() & df[TARGET].notna().to_numpy())
     va["date"] = va["date"].astype(str)
     va["pred"] = np.concatenate([m.predict(va[feats].iloc[i:i + 200_000]) for i in range(0, len(va), 200_000)])

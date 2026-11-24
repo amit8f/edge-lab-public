@@ -32,7 +32,7 @@ def test_read_keeps_features_as_float32_and_thins_dates(tmp_path):
     got, feats = S.read(f, keep=("date", "target"))
     assert feats == ["feature_a"] and list(got.columns) == ["date", "feature_a", "target"]
     assert got["feature_a"].dtype == np.float32
-    assert S.thin_dates(got)["date"].tolist() == ["d1", "d5"]
+    assert S.thin_dates(got, every=4)["date"].tolist() == ["d1", "d5"]
     thin, _ = S.read(f, keep=("date", "target"), every=4)
     assert thin["date"].tolist() == ["d1", "d5"] and thin["feature_a"].tolist() == [0.0, 4.0]
 
@@ -57,3 +57,19 @@ def test_read_filters_each_batch(tmp_path):
     df, feats = S.read(f, keep=("date", "target", "data_type"),
                        rows=lambda d: (d["data_type"] == "validation").to_numpy() & d["target"].notna().to_numpy())
     assert list(df["feature_x"]) == [1.0] and df["feature_x"].dtype == "float32"
+
+
+def test_pick_features_is_a_seeded_subset_in_file_order():
+    feats = [f"feature_{i}" for i in range(50)]
+    a, b = S.pick_features(feats, limit=10), S.pick_features(feats, limit=10)
+    assert a == b and len(a) == 10 and a == [c for c in feats if c in set(a)]
+    assert S.pick_features(feats[:5], limit=10) == feats[:5]
+
+
+def test_read_uses_only_the_given_features(tmp_path):
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    f = tmp_path / "t.parquet"
+    pq.write_table(pa.table({"date": ["a", "b"], "feature_a": [1.0, 2.0], "feature_b": [3.0, 4.0], "target": [0.1, 0.2]}), f)
+    df, feats = S.read(f, keep=("date", "target"), use=["feature_b"])
+    assert feats == ["feature_b"] and "feature_a" not in df.columns
