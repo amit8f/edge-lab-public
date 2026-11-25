@@ -70,3 +70,15 @@ Addendum 5 (2026-11-25, still before any result): the download stage worked (3.6
 the correlations, because the validation frame still carried all 500 feature columns (about 5 GB) and was copied for the
 US-only subset. The code now keeps only date, target, ticker and prediction after predicting. No setting, target, split
 or score changes; this is a memory bug fix.
+
+## Result: validation (2026-11-25; reported only, it can't pass or fail NUM1)
+
+The seventh run (45519194739) finished: LightGBM, 361,584 training rows (every 12th date), 500 features, validation
+2019 on, 399 dates, 2,660,746 rows. Mean per-date Spearman 0.0292 (sd 0.0158, Sharpe 1.85, positive on 97% of dates);
+Numerai's example predictions on the same rows 0.0360 (Sharpe 1.98). US names only: 0.0252 (Sharpe 0.99, positive on
+83%). By year 0.017 to 0.044, never negative. Our model is about 19% below Numerai's example, expected after
+thinning to a third of the rows and a quarter of the features. The prediction written first (about 0.01) was too low.
+Validation is in-sample for Numerai's data design, so this says the pipeline works, not that the edge is real.
+
+First live submission: round 1405 (data date 2026-11-23), 7,068 tickers, submission id 0a48e16f. The forward test
+(60 resolved rounds, NW t >= 2) is the only pass/fail; the daily job on main submits once this branch is merged.
