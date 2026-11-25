@@ -179,6 +179,15 @@ def test_hi_books_live_picks_and_open_marks():
     assert books[1]["open"] == 1 and abs(books[1]["pnl_pct"] - 1.0) < 1e-9      # 5000 * 0.1 * 10% = 50
 
 
+def test_vote_and_cost1_open_trades_are_marked_like_nx3():
+    day = {"settled": False, "events": [{"entry_iex": 10.0, "last_price": 11.0,
+           "arms": {"VOTE": {"side": 1, "w": 0.1}, "COST1": {"side": -1, "w": 0.05, "pending": "spread not read yet"}}}]}
+    books = [{"name": "NXM-VOTE", "size": 5000.0, "realized": 0.0}, {"name": "COST1", "size": 5000.0, "realized": 0.0}]
+    B.mark_open_nx3(books, [day])
+    assert books[0]["open"] == 1 and abs(books[0]["pnl_pct"] - 1.0) < 1e-9
+    assert books[1]["open"] == 1 and abs(books[1]["pnl_pct"] + 0.5) < 1e-9
+
+
 def test_agent_arm_picks_take_skip_flip(tmp_path):
     (tmp_path / "nx3agent" / "days").mkdir(parents=True)
     (tmp_path / "nx3agent" / "settled").mkdir(parents=True)

@@ -192,8 +192,8 @@ def nx3_books(st):
 def mark_open_nx3(books, days):
     """NX3 and NX3-ALL ledger books show settled results only; add the trades still open (days not settled yet) marked
     at the latest price against the IEX price at decision, before costs, so the card is the overall P&L."""
-    un = {"NX3": 0.0, "NX3-ALL": 0.0, "NX3-HI": 0.0, "NX3-ALL-HI": 0.0}
-    n = {"NX3": 0, "NX3-ALL": 0, "NX3-HI": 0, "NX3-ALL-HI": 0}
+    un = {"NX3": 0.0, "NX3-ALL": 0.0, "NX3-HI": 0.0, "NX3-ALL-HI": 0.0, "NXM-VOTE": 0.0, "COST1": 0.0}
+    n = {"NX3": 0, "NX3-ALL": 0, "NX3-HI": 0, "NX3-ALL-HI": 0, "NXM-VOTE": 0, "COST1": 0}
     for d in days:
         if d.get("settled") or d.get("excluded"):
             continue
@@ -217,6 +217,11 @@ def mark_open_nx3(books, days):
             if g and g.get("side") and g.get("w"):
                 un["NX3-ALL-HI"] += 5000 * g["w"] * g["side"] * mv
                 n["NX3-ALL-HI"] += 1
+            for arm, name in (("VOTE", "NXM-VOTE"), ("COST1", "COST1")):      # same marking; COST1's open trades
+                x = (e.get("arms") or {}).get(arm)                                  # are NX3-ALL-HI's, spread not read yet
+                if x and x.get("side") and x.get("w"):
+                    un[name] += 5000 * x["w"] * x["side"] * mv
+                    n[name] += 1
     allname = {f"{a}-ALL": f"{ARM_IDEA.get(a, 'NXM')}-{a}-ALL" for a in NX3_ARMS}
     for d in days:
         if d.get("settled") or d.get("excluded"):
