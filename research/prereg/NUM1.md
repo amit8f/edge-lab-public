@@ -64,3 +64,9 @@ lost its runner after 51 minutes too, again with no log, so memory in training i
 download from a lost training run, a separate stage `numeraidata` only downloads the three files into the cache (time,
 size and peak memory logged per file); training then reads them from the cache. Nothing about the model, the target,
 the validation or the forward test changes.
+
+Addendum 5 (2026-11-25, still before any result): the download stage worked (3.6 GB in about 70 s). The sixth run
+(45518330043) trained and predicted (peak 6.5 GB, 2,660,746 validation rows) and then lost its runner while computing
+the correlations, because the validation frame still carried all 500 feature columns (about 5 GB) and was copied for the
+US-only subset. The code now keeps only date, target, ticker and prediction after predicting. No setting, target, split
+or score changes; this is a memory bug fix.

@@ -136,7 +136,8 @@ def stage_train(cache, out):
                  rows=lambda df: (df["data_type"] == "validation").to_numpy() & df[TARGET].notna().to_numpy())
     va["date"] = va["date"].astype(str)
     va["pred"] = np.concatenate([m.predict(va[feats].iloc[i:i + 200_000]) for i in range(0, len(va), 200_000)])
-    print(f"[num1] validation rows {len(va)}, dates {va['date'].nunique()}", flush=True)
+    va = va[["date", TARGET, "numerai_ticker", "pred"]].copy()      # drop the 500 feature columns before the correlations
+    print(f"[num1] validation rows {len(va)}, dates {va['date'].nunique()}, peak memory {peak_rss_gb():.1f} GB", flush=True)
     rep = {"model": "LightGBM on Numerai Signals features", "features": len(feats), "params": LGB,
            "validation": summary(date_corr(va, "pred"))}
     va["us"] = va["numerai_ticker"].astype(str).str.endswith(" US")
