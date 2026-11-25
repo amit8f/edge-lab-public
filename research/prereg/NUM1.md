@@ -49,3 +49,36 @@ Addendum 2 (same day, still before any result): the third run (45455760774) lost
 likely while reading the whole validation file at once after training. Rows are now filtered while each batch is
 read (validation rows with a target only; training rows with a target), and validation is predicted in batches.
 Nothing about the model or the test changes.
+
+Addendum 3 (2026-11-24, still before any result): the fourth run (45467307124) trained for 3 hours 41 minutes and then
+the runner lost communication with the server, with no log. The cause is probably memory: about 1 million rows of
+over 2,000 features plus a 16 GB swap file on the runner's small disk starves the runner. The job now trains on every
+12th weekly date (about a third of the rows) and a fixed random subset of at most 500 of the features (seed 7, chosen
+without looking at any score), validation reads the same features, and the job logs its peak memory. Model settings,
+target, validation and the forward test are unchanged.
+The swap file is also dropped (it can starve the runner), and the training step gets a 150-minute limit so a stall
+ends with a log instead of a lost runner.
+
+Addendum 4 (2026-11-24, still before any result): the fifth run (45505018055, every 12th date, 500 features, no swap)
+lost its runner after 51 minutes too, again with no log, so memory in training is not the proven cause. To tell a lost
+download from a lost training run, a separate stage `numeraidata` only downloads the three files into the cache (time,
+size and peak memory logged per file); training then reads them from the cache. Nothing about the model, the target,
+the validation or the forward test changes.
+
+Addendum 5 (2026-11-25, still before any result): the download stage worked (3.6 GB in about 70 s). The sixth run
+(45518330043) trained and predicted (peak 6.5 GB, 2,660,746 validation rows) and then lost its runner while computing
+the correlations, because the validation frame still carried all 500 feature columns (about 5 GB) and was copied for the
+US-only subset. The code now keeps only date, target, ticker and prediction after predicting. No setting, target, split
+or score changes; this is a memory bug fix.
+
+## Result: validation (2026-11-25; reported only, it can't pass or fail NUM1)
+
+The seventh run (45519194739) finished: LightGBM, 361,584 training rows (every 12th date), 500 features, validation
+2019 on, 399 dates, 2,660,746 rows. Mean per-date Spearman 0.0292 (sd 0.0158, Sharpe 1.85, positive on 97% of dates);
+Numerai's example predictions on the same rows 0.0360 (Sharpe 1.98). US names only: 0.0252 (Sharpe 0.99, positive on
+83%). By year 0.017 to 0.044, never negative. Our model is about 19% below Numerai's example, expected after
+thinning to a third of the rows and a quarter of the features. The prediction written first (about 0.01) was too low.
+Validation is in-sample for Numerai's data design, so this says the pipeline works, not that the edge is real.
+
+First live submission: round 1405 (data date 2026-11-23), 7,068 tickers, submission id 0a48e16f. The forward test
+(60 resolved rounds, NW t >= 2) is the only pass/fail; the daily job on main submits once this branch is merged.

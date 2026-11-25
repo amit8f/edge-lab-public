@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves) or 2 (earnings, news, rates, oil)"
         type: choice
-        options: ["1", "2", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe", "newsrestore", "numeraiprobe", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
@@ -111,12 +111,10 @@ jobs:
             echo "caches restored (keeps them from expiring): nx1 $(du -sh cache/nx1 | cut -f1), w1 $(du -sh cache/w1 2>/dev/null | cut -f1), sector1 $(du -sh cache/sector1 2>/dev/null | cut -f1)"
             exit 0
           fi
-          if [[ "$STAGE" == numeraitrain || "$STAGE" == numeraisubmit || "$STAGE" == numeraiexport ]]; then
-            if [[ "$STAGE" == numeraitrain ]]; then   # a memory spike slows the job instead of killing the runner
-              sudo fallocate -l 16G /mnt/num.swap && sudo chmod 600 /mnt/num.swap && sudo mkswap /mnt/num.swap >/dev/null && sudo swapon /mnt/num.swap && free -g
-            fi
+          if [[ "$STAGE" == numeraidata || "$STAGE" == numeraitrain || "$STAGE" == numeraisubmit || "$STAGE" == numeraiexport ]]; then
+            free -g; df -h /mnt | tail -1
             uv pip install --python .venv/bin/python -q numerapi==3.1.1
-            PYTHONPATH=. .venv/bin/python -u -m tracks.numerai.signals --stage ${STAGE#numerai} --cache cache/numerai --out research/results/NUM1
+            PYTHONPATH=. timeout 150m .venv/bin/python -u -m tracks.numerai.signals --stage ${STAGE#numerai} --cache cache/numerai --out research/results/NUM1
             exit 0
           fi
           if [[ "$STAGE" == numeraiprobe ]]; then
@@ -152,7 +150,7 @@ jobs:
           key: sector1-v1-${{ github.run_id }}
 
       - name: Save NUM1's Numerai cache
-        if: inputs.stage == 'numeraitrain' && success()
+        if: (inputs.stage == 'numeraitrain' || inputs.stage == 'numeraidata') && success()
         uses: actions/cache/save@v4
         with:
           path: cache/numerai

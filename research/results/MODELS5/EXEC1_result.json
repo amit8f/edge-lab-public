@@ -1,0 +1,57 @@
+{
+ "rule": "EXEC-10 passes if the sized daily return with the delay minus without it (entry half-spread measured, no exit spread) has mean > 0 with NW t >= 2 and the delayed book's own net per trade > 0 (2024-01..2025-09)",
+ "trades": 12673,
+ "test_trades": 5022,
+ "closing_auction": {
+  "exit_half_spread_mean": 0.0007031526465083585,
+  "exit_half_spread_median": 0.0003835826620636665,
+  "net_per_trade_quote_exit": -0.0034766790347247525,
+  "net_per_trade_auction_exit": -0.0028446121335383005,
+  "test_quote_exit": -0.002840380806927087,
+  "test_auction_exit": -0.0021538087636743903
+ },
+ "choose_2019_2023": {
+  "09:45": -0.0019195235418786667,
+  "10:00": -0.0021538735882228586,
+  "10:30": -0.0023391139648668863
+ },
+ "T": "09:45",
+ "test": {
+  "gain_by_day": {
+   "mean": 0.0003561772325230374,
+   "se_nw": 0.0005935579212671058,
+   "t_nw": 0.6000715680159456,
+   "days": 421
+  },
+  "own_net_per_trade": -0.0012092789579628428,
+  "base_net_per_trade": -0.0021538087636743903,
+  "moved_share": 0.9502190362405416,
+  "moved": {
+   "trades": 4772,
+   "gross_before": 0.008105514293534993,
+   "gross_after": 0.004227789057736707,
+   "half_spread_before": 0.008776966534355854,
+   "half_spread_after": 0.003749678115527776
+  },
+  "per_side": {
+   "1": {
+    "base": -0.0006742842179191473,
+    "delayed": -0.0011524548418578775
+   },
+   "-1": {
+    "base": -0.003513478818141857,
+    "delayed": -0.0012614998212538023
+   }
+  },
+  "pre_open_news": {
+   "trades": 4126,
+   "base": -0.0010063084917775282,
+   "delayed": -0.0008298152134530736
+  },
+  "with_cost1_skip": {
+   "kept_share": 0.7676224611708483,
+   "own_net_per_trade": 0.0010654447811800458
+  }
+ },
+ "verdict": "failed"
+}

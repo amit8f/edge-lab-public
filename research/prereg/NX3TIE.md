@@ -38,3 +38,16 @@ the flat cost for NX3 and NX3-TIE; per year; longs and shorts separately; the sh
 
 The tie-break changes slots on about a third of days, picks higher-confidence events, and adds about +0.1% a day over
 NX3 with a paired t near 1.5. P(pass) about 0.45.
+
+## Result (2026-11-24, run 45476008061): FAILED
+
+`research/results/NX3/NX3TIE_walkforward.json`. Walk-forward 2019-2025, 1,677 pick days, 8,208 picks each. NX3-TIE
+picks minus control +0.60% a day, NW t 4.69 (NX3 itself +0.59%, t 4.99), so the first condition passes. NX3-TIE minus
+NX3 on shared days +0.015% a day, NW t 0.20 (needs 1.5): failed. The tie-break changed at least one slot on 1,327 of
+1,677 days (79%, the prediction said a third); symbols starting with "A" fell from 33% of picks to 11%. Flat-cost net
+per trade +0.047% -> +0.086% (longs +0.13% -> +0.19%, shorts -0.065% -> -0.048%). By year the two arms are within noise
+(TIE better in 2019, 2023, 2025; worse in 2020, 2024).
+
+So the alphabetical order costs nothing measurable in history. One loose end: the 2026-11-20 check of 15 live days
+found 87% of capped picks starting with "A", against 33% in history; the cause is not found and nothing here explains
+it. No shadow book. NX3 and the running books are unchanged.
