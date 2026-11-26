@@ -117,3 +117,48 @@ cache had been evicted. Summary JSON: `research/results/SECTOR1/SECTOR1_stage2.j
 What this suggests (hypotheses only, each would be a new registration): direction can be read from the news type
 (deal up, offering down) while earnings direction needs the content; half of big moves come without news, so a
 boom finder needs market and sector inputs, not just headlines; Energy moves should be read against oil first.
+
+## Amendment 2 (2026-11-26, before any stage-3 number exists): stage 3, how much of each move is explained by what
+
+Source: Amit, 2026-11-26 ("compile a list of everything that makes a stock move ... come back with a % of each, for the
+entire stock base and for each sector"). Still descriptive only, not counted. Same universe, sectors and years
+(2019-2023; nothing from 2024 on is read, so the 2024-01..2025-09 test period and the holdout stay untouched).
+
+**1. Common part (Shapley R-squared, so the blocks add up and order doesn't matter).** Per stock with at least 250
+days, OLS of the daily return on four blocks: market (equal-weight universe return), big stocks (equal-weight return
+of the 10 stocks with the highest previous-day 20-day dollar volume, the stock itself left out), sector (stage 1's
+leave-one-out sector mean) and style (Fama-French SMB, HML, RMW, CMA and momentum, daily, Ken French library). Each
+block's Shapley share of R-squared over all 16 subsets. Reported per sector and for all stocks as the
+variance-weighted share (sum over stocks of block share x variance / total variance) and as the median over stocks.
+
+**2. Stock-specific part, split by what happened that day.** The residual of the full model, each stock-day put in
+the first group that applies: earnings window (8-K item 2.02, stage 2's rule); news by type in this order: deal,
+offering, FDA, earnings or guidance, analyst, contract, other news (stage 2's keyword lists and window); other 8-K
+(any other 8-K item, filed that day or the day before); offering filing (S-1, S-3, 424B*); insider filing (Form 4);
+other SEC filing (any other form); heavy volume with none of the above (volume at least 2x its median of the 20
+previous days); quiet (the rest). Per group: share of stock-days, share of the residual's sum of squares, share of all
+the sector's |return| >= 8% days.
+
+The answer table then splits 100% of each sector's return variance into: market, big stocks, sector, style, and the
+stock-specific groups above. (In-sample per-stock fits; with an intercept the parts add to 100%.)
+
+**3. Market-wide days.** Share of the equal-weight market's sum of squares that falls on its top 5% and top 10% of
+days by |return| (how concentrated market moves are). Macro calendars (Fed days, CPI, jobs) are not in the data and
+are left out (stated limit).
+
+**4. Charts: how much of tomorrow is predictable from today's chart.** Features known at the close of day t-1 (1, 5,
+20 and 60-day returns, distance to the 20-day high and low, 20-day volatility, day range, volume over its 20-day
+median, the market's and the sector's 1-day return). Target: day-t return minus the day-t market return. LightGBM
+(300 trees, learning rate 0.03, 31 leaves, seed 7), fit on 2019-2021, scored on 2022-2023: out-of-sample R-squared
+(against a zero forecast) and the mean daily rank correlation, all stocks and per sector. Same-day volume vs |return|
+is reported as a coincident link only (squared correlation of log volume ratio with |residual|).
+
+**Limits stated in advance.** Shares describe 2019-2023 and the PICK main universe ($5+, $5M/day), not penny stocks.
+News is Benzinga headlines only. Filing dates have no time of day. Keyword types are crude. In-sample R-squared
+overstates the common part a little (9 regressors, about 1,000 days per stock). "Explained" means "moved together on
+the same day", not cause; only part 4 measures prediction.
+
+**Prediction (written first).** Common part 25-40% of variance (market 15-25%, sector 5-15% with Energy and Utilities
+highest, big stocks 1-3%, style 3-6%); stock-specific 60-75%. Of all variance: earnings windows 8-12%, news days 20-30%,
+filings 3-6%, heavy volume with no news 5-10%, quiet days 30-40%. Chart out-of-sample R-squared at or below 0.2% in
+every sector, rank correlation near 0.01.
