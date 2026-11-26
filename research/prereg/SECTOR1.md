@@ -330,3 +330,24 @@ volatility), FOMC-day and pre-FOMC drift up, turn-of-month up, VIXY's next-day f
 after-hours moves continuing into the next session's open but not past it. Combined models: out-of-sample
 R-squared below 1%, hit rate 50-53%, nothing clearly profitable after costs. Size (stage 4) stays much easier than
 direction.
+
+## Stage 5 result (2026-11-26, run 45793794208; descriptive, not counted)
+
+2,776 sign-target cells scored on 2022-2023. 58 reached t >= 2 (2.1%), against about 2.3% expected by chance: as a
+group, the day-before signs carry no more direction than coin flips. Combined models (all signs together): ridge hit
+rate 46-57% across the 17 targets, out-of-sample R-squared below zero for every one (-2% to -20%), no net t above 1.8;
+LightGBM 44-55%, no net t above 1.9. The prediction (near chance, combined R-squared below 1%) holds.
+
+What held in both periods (same direction 2019-2021 and 2022-2023; few days, so hypotheses only):
+- Day before a market holiday: SPY +0.37% / +0.21% (19 test days, 68% up), QQQ +0.34% / +0.28%, VIXY -1.56% / -1.37%
+  versus other days (t -2.7 / -2.3).
+- Day before an FOMC statement: SPY +0.46% / +0.16%, VIXY -1.21% / -1.80% (t below 2 in each period).
+- FOMC day: TLT +0.58% / +0.77% (16 test days, 81% up; t 1.8 / 3.3).
+- Jobs-report Friday: XLE +0.79% / +1.10% and USO +0.73% / +1.39% (24 test days, 75% up; test t 3.8 / 3.1).
+What did not hold: the strong next-day reversal of 2019-2021 (SPY today vs SPY tomorrow, correlation -0.28) is gone
+in 2022-2023 (+0.02); VIXY, HYG, TLT, oil, dollar, gold, breadth, headline counts and tone, Bitcoin, after-hours and
+pre-market moves all sit between 47% and 53% for SPY, QQQ and the seven.
+
+Red flags, not edges: UUP's after-hours move reverses by the next close (t 6.7), most likely stale or wide after-hours
+prints in a thin ETF (bid-ask bounce), not tradable. AAPL's big after-hours up moves continued next session (71% of
+24 days), but none of the other six shows it, so it is likely luck.
