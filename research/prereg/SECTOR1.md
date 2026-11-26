@@ -393,3 +393,23 @@ time for SPY on CPI days and mostly for TLT, weakly; FOMC's first half hour reve
 press conference starts at 14:30); nothing passes t >= 2 in both periods. Part B: a small positive next-day catch-up
 (Hou 2007 found it mostly in small, neglected stocks), below 0.10% a day for the spread, gone after 0.20% costs, and
 event trades right 51-53% of the time.
+
+## Stage 6 result (2026-11-26, run 45800578077; descriptive, not counted)
+
+Part A (release days; 35 / 24 CPI, 35 / 23 jobs, 23 / 16 scheduled FOMC days in 2019-2021 / 2022-2023). The first
+half-hour reaction averages 0.54% for SPY and 0.44% for TLT on CPI mornings, 0.35% / 0.53% on jobs mornings, 0.37% /
+0.27% after FOMC statements. Whether the rest of the day follows it has no stable answer: correlations flip sign
+between the periods for most targets, and no target-signal cell is right in both periods by a clear margin.
+Closest to a pattern (hypotheses only):
+- CPI: the next day follows the morning reaction (SPY correlation +0.30 / +0.46, QQQ +0.10 / +0.44; 67% of 2022-23
+  CPI days for both), but the 2019-21 hit rate was 46-51%, so the direction rule itself didn't hold in 2019-21.
+- FOMC: the stocks' first half hour reversed by the close in 2022-23 (SPY -0.36, QQQ -0.49, the seven -0.47 to
+  -0.53) but only weakly in 2019-21 (-0.16 to +0.30); USO faded its reaction in both (70% / 81% of days, t 2.25).
+None of this is tradable evidence with 16-24 days.
+
+Part B (slow followers; 2,500-stock W1 universe). No catch-up. The catch-up-gap sort earned +0.07% / +0.04% a day
+gross (t 1.6 / 0.9), -0.33% / -0.36% after costs. Event trades (leaders moved 2%+, a quiet follower lagged them)
+went the leaders' way 47.6% (2019-21) and 50.5% (2022-23) of the time the next day, net -0.39% / -0.17% a trade;
+small followers, leaders with or without news, and 5-day holds were no better. The regression put a negative weight
+on the leaders' move (-0.05). The prediction (tiny, gone after costs) holds: at a daily horizon, stocks have already
+caught up with their industry leaders by the close.
