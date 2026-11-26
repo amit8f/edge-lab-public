@@ -162,3 +162,47 @@ the same day", not cause; only part 4 measures prediction.
 highest, big stocks 1-3%, style 3-6%); stock-specific 60-75%. Of all variance: earnings windows 8-12%, news days 20-30%,
 filings 3-6%, heavy volume with no news 5-10%, quiet days 30-40%. Chart out-of-sample R-squared at or below 0.2% in
 every sector, rank correlation near 0.01.
+
+## Stage 3 result (2026-11-26, run 45776393346; descriptive, not counted)
+
+Bug fix before reading any number: the first run (45775887902) crashed because the per-stock row stored the sector
+block's share under the same key as the sector code; the code is now kept apart. Summary JSON:
+`research/results/SECTOR1/SECTOR1_stage3.json`. 2,183 stocks have the 250+ full days the fit needs (stage 1 had
+3,440 stocks in total; short-lived ones drop out).
+
+Share of each sector's daily return variance, 2019-2023 (rows add to 100% up to rounding):
+
+| sector | stocks | market | big stocks | sector | style | earnings | news | filings | heavy volume, no news | quiet days |
+|---|---|---|---|---|---|---|---|---|---|---|
+| All stocks | 2183 | 12% | 6% | 15% | 10% | 10% | 17% | 8% | 4% | 18% |
+| Health | 298 | 7% | 4% | 11% | 8% | 10% | 28% | 8% | 4% | 19% |
+| Telecom | 31 | 10% | 5% | 12% | 7% | 12% | 19% | 10% | 5% | 21% |
+| Consumer nondurables | 84 | 11% | 5% | 12% | 9% | 15% | 15% | 8% | 3% | 21% |
+| Shops | 168 | 12% | 6% | 15% | 9% | 12% | 18% | 8% | 2% | 18% |
+| Other | 392 | 12% | 6% | 13% | 10% | 8% | 15% | 6% | 7% | 22% |
+| Business equipment | 356 | 11% | 9% | 14% | 9% | 16% | 15% | 8% | 3% | 15% |
+| Chemicals | 60 | 14% | 6% | 16% | 10% | 9% | 13% | 9% | 3% | 20% |
+| Consumer durables | 49 | 13% | 7% | 16% | 10% | 10% | 19% | 6% | 3% | 15% |
+| Manufacturing | 183 | 14% | 7% | 16% | 10% | 10% | 14% | 8% | 3% | 19% |
+| Utilities | 75 | 13% | 5% | 24% | 8% | 5% | 16% | 8% | 3% | 19% |
+| Money | 420 | 16% | 7% | 19% | 13% | 6% | 14% | 8% | 3% | 16% |
+| Energy | 67 | 10% | 4% | 34% | 11% | 5% | 12% | 7% | 2% | 15% |
+
+News is split by type in the JSON. All stocks: deal 2.0%, offering 0.5%, FDA 1.6% (Health 8.3%), earnings or guidance
+headlines 3.7%, analyst 1.0%, contract 0.3%, other headlines 8.4%. Filings: insider (Form 4) 3.9%, other 8-K 1.8%, other
+forms 1.9%, offering filings 0.2%. Quiet days are 58% of stock-days and hold 18% of variance; earnings windows are 3% of
+days and hold 10% (Business equipment 16%, Consumer nondurables 15%, Energy and Utilities 5%).
+
+- Common part 43% overall: Energy 59% (sector alone 34%, oil), Money 54%, Utilities 50%; Health 31%, Telecom 35%.
+- Market moves are concentrated: the top 5% of days hold 50% of the equal-weight market's sum of squares, the top 1%
+  hold 29%.
+- Same-day volume vs |stock-specific move|: squared correlation 0.11 (coincident only).
+- Charts: out-of-sample R-squared of next-day market-adjusted returns from t-1 chart features is negative in every sector
+  (all -0.46%, worse than predicting zero), mean daily rank correlation 0.001. Telecom's 0.36 rank correlation is from
+  very few days with 30+ telecom stocks and is noise. The model leaned mostly on yesterday's market return.
+
+Prediction check: common part 43%, above the 25-40% predicted; market 12% (predicted 15-25%, lower) while big stocks
+(6%) and style (10%) took more than predicted, since Shapley splits what they share with the market; sector 15% with
+Energy and Utilities highest (right). Earnings 10% (right), news 17% (predicted 20-30%, lower), filings 8% (predicted
+3-6%, higher), heavy volume with no news 4% (predicted 5-10%), quiet days 18% (predicted 30-40%, lower). Charts at or
+below 0.2% (right: below zero).
