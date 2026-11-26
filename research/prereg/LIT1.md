@@ -133,3 +133,24 @@ search, pair seeding and choice alike (the test rules are unchanged; they alread
 - Ranking uses the Wilson lower bound with the sample size set to the number of distinct days (wins = win rate x days),
   so a setup spread over many days ranks above one with the same win rate on few days.
 The 60% win, n >= 150 / 60 and net > 0 rules stay. Only 2019-2021 numbers were seen before this was written.
+
+## Result (2026-11-26, sector1.yml runs 45806625845 search, 45807815317 choose, 45807991834 test): FAIL
+
+Search 2019-2021 (Amendment 3 rules): 163 conditions, 123,332 setups scored, 733 kept; the leaders were "buy a stock
+that crashed" longs at 65-71% wins (base rate 49.6% long, 47.0% short). Choice 2022-2023: 1 of the 500 best kept
+setups still had 60%+ wins: long when the 20-day return is in its top 10%, the 60-day return in its bottom 25% and
+today's range in its bottom 25% (2019-21 62% of 244, 2022-23 61% of 180, +0.36%/trade net).
+One test 2024-01 .. 2025-09, three-checks-a-day exit:
+
+| check | result | needed |
+|---|---|---|
+| win rate | 38.3% of 282 | >= 60% (70% goal) |
+| mean net / trade | -0.06%, day-clustered t 0.26 | > 0, t >= 3 |
+| trades | 282 (0.64 a day) | >= 100 |
+| vs random (once-a-day exit) | +0.12% vs random mean +0.16%, p95 +0.62% | above p95 |
+| FF5 + momentum alpha | -1.2%/month, t -1.16 | t >= 2 |
+
+Deflated Sharpe 0.006 on 207 trials. Reported, not deciding: once-a-day exit 36.9% wins +0.12%; fixed bracket exit
++0.01%. 242 of the 282 trades lit up in May 2025 (the rebound after April's tariff crash); 2024 had 24 trades at 54%
+wins. The setup is a market-rebound burst, the same failure Amendment 3 removed from the search, which reappeared in
+the test because the 10% one-day cap applies to search and choice only. Count stays 192 (207 with phase 1).
