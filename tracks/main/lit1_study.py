@@ -493,6 +493,19 @@ def stage_search(cache):
     (Path(cache) / "candidates.json").write_text(json.dumps({"cuts": cuts, "names": names, "candidates": keep[:5000],
                                                               "summary": summary}, default=float))
     print(f"[lit1] search summary {summary}", flush=True)
+    # QA (Amendment 3 check): base rates and how many distinct days the leading candidates light up on
+    for side, net in nets.items():
+        x = net[np.isfinite(net)]
+        print(f"[lit1] qa base side {side}: n {len(x)} win {(x > 0).mean():.3f} net {x.mean():.4f}", flush=True)
+    dates = d["date"].to_numpy()
+    idx = {k: i for i, k in enumerate(names)}
+    for r in keep[:25]:
+        ii = [idx[c] for c in r["conds"]]
+        on, was = A[:, ii].all(axis=1), P[:, ii].all(axis=1)
+        lu = (on & ~was) & np.isfinite(nets[r["side"]])
+        days = pd.Series(dates[lu]).value_counts()
+        print(f"[lit1] qa top {r['conds']} side {r['side']} n {r['n']} win {r['win']:.3f} net {r['net']:.4f} "
+              f"days {len(days)} biggest-day share {days.iloc[0] / days.sum():.2f}", flush=True)
     return summary
 
 
