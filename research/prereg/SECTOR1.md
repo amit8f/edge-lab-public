@@ -274,3 +274,59 @@ squared moves, 48% for SPY.
 Prediction check: big stocks and SPY dominate everything except XLE (oil) and XLU (right; XLRE is not rate-driven at
 the daily level, wrong). Size predictable (right, better than predicted: 0.5-0.8). Direction not predictable (right);
 intraday momentum, which we thought might survive for SPY, did not in 2022-2023 (consistent with Zhang-Hua 2024).
+
+## Amendment 4 (2026-11-26, before any stage-5 number exists): stage 5, signs the day before that point to tomorrow's direction
+
+Source: Amit, 2026-11-26 ("find what drives the direction ... what makes the 7 biggest stocks move a certain way ...
+an edge the day before ... where the market will move the next day ... also for the oil and fear"). Still
+descriptive only, not counted; any trading rule that comes out of it is a new registration tested forward.
+2019-2023 only; fit or choose on 2019-2021, score once on 2022-2023. Nothing from 2024 on is read.
+
+**Targets (17).** SPY, QQQ, IWM; AAPL, MSFT, NVDA, AMZN, GOOGL, META, TSLA; XLE, USO (oil); VIXY (fear); TLT
+(rates); HYG (credit); GLD; UUP (dollar). Same 5-minute bars and cache as stage 4.
+
+**Family A, signs known at the 16:00 close of day t; target the close-to-close return of day t+1.**
+- Market: today's SPY, QQQ, IWM returns; SPY's last half hour; SPY's gap and open-to-close split; SPY 5- and 20-day
+  returns; SPY close vs its 20-day high; SPY log realized variance and its change vs its 22-day mean.
+- Fear and credit: VIXY today and 5 days; HYG today; HYG minus SPY.
+- Rates, oil, dollar, gold: TLT, USO, UUP, GLD today; TLT and USO 5 days.
+- Big stocks: the seven's equal-weight return, minus SPY, and how many of the seven rose.
+- Rotation: IWM minus SPY, XLU minus XLK, XLY minus XLP.
+- Breadth (W1 universe, about 2,500 US stocks): share that rose; new 20-day highs minus new lows, as a share.
+- News (Benzinga headlines in session t, i.e. 16:00 t-1 to 16:00 t): log count, all stocks and the seven,
+  each minus its 60-day mean; a word-list tone (positive words minus negative words, per headline, averaged).
+- Crypto: BTCUSDT (Binance public archive, hourly) from the previous US close to this one.
+- Target's own: its return today, 5 days, last half hour, log realized variance change (big-7 and ETF targets).
+- Calendar, about day t+1 (all public in advance): Monday, Friday, turn of month (last trading day or first three),
+  monthly options expiry (third Friday), day before a market holiday, FOMC statement day, day before FOMC, CPI day,
+  jobs-report day (dates in research/macro_dates_2019_2023.csv, from the Fed and BLS archives), a big-7
+  earnings reaction day (8-K item 2.02, first trading day on or after filing), the target's own earnings day.
+
+**Family B, signs known by 09:25 on day t+1; target the open-to-close return of day t+1.** After-hours moves
+(16:00-20:00 close) of SPY, QQQ, the seven and the target; BTC from 16:00 to 09:00 ET; overnight headlines (created
+16:00 t to 09:30 t+1): count and tone, all and the seven; pre-market moves (as stage 4) of SPY and the target.
+Also, for after-hours signs only, a target from the 20:00 price to the t+1 close (what someone trading at 20:00
+would get).
+
+**Tests, per target, per sign.**
+1. Alone: slope fit by OLS on 2019-2021, predicted sign traded on 2022-2023: correlation, hit rate, mean net per day
+   after 0.02% (ETFs) or 0.05% (the seven) round trip, Newey-West t (lag 5).
+2. Extremes ("when we see it"): the top and bottom 10% of the sign, cut on 2019-2021; the direction each tail had
+   in 2019-2021; in 2022-2023, days in the tails, share that moved that way, mean net, t.
+3. Calendar flags: mean next-day return on flagged vs other days, both periods, and trading the 2019-2021 sign.
+4. Together: ridge (as stage 4) and LightGBM (small, fixed settings) on all family-A signs for close-to-close, all
+   family-B signs for open-to-close; out-of-sample R-squared, hit rate, net, t.
+Multiple testing: report how many sign-target cells reach t >= 2 in 2022-2023 with the same direction as 2019-2021,
+against the about 2.5% one would see by chance.
+
+**Limits stated in advance.** About 500 test days: a true 52% hit rate cannot be told apart from 50% (the 95% band
+is about +/-4.4 points). 2022 was a bear year and 2023 a bull year. BTC has weekends, so Monday's BTC move spans
+three days. Word-list tone is crude. Macro dates are release days without the surprise (consensus forecasts are not
+free); we measure "on CPI day the market moves more / which way", not "a hot CPI".
+
+**Prediction (written first).** Almost nothing survives: perhaps 5-10% of cells reach t >= 2 with the right sign,
+near chance. The most likely survivors: short-term reversal of SPY and QQQ after big down days (bigger in high
+volatility), FOMC-day and pre-FOMC drift up, turn-of-month up, VIXY's next-day fall after a spike, and the seven's
+after-hours moves continuing into the next session's open but not past it. Combined models: out-of-sample
+R-squared below 1%, hit rate 50-53%, nothing clearly profitable after costs. Size (stage 4) stays much easier than
+direction.
