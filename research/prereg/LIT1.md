@@ -83,3 +83,21 @@ the deflated Sharpe with 207 trials.
 
 Pass: a $5,000 ledger shadow book (no orders), each family its own line; penny ($1-5, $1M/day) gets its own
 amendment before any penny number. Fail: written up, no book. Holdout from 2025-10-01 untouched.
+
+## Amendment 1 (2026-11-26, same day, before any LIT1 number exists): more free data
+
+Source: Amit, 2026-11-26 ("check if you need more data from elsewhere"). Added conditions, all point in time:
+- **Insider trades** from the SEC's quarterly Insider Transactions Data Sets (Forms 3/4/5, 2018Q4-2025Q3, free):
+  per stock, open-market purchases (code P) and sales (code S) by officers and directors, counted by filing date
+  (a Form 4 counts on day t when filed on or before t; Forms accepted until 22:00 keep their date, as CLAUDE.md
+  says, so day t uses filings dated <= t only when the nightly job runs after 22:00, which the forward book does).
+  Flags: any purchase filed in the last 5 sessions; purchases above $100k in the last 20 sessions; any sale in the
+  last 5 sessions; net purchase dollars over 20 sessions >= p90 / <= p10 (cut on 2019-2021). This replaces "Form 4
+  filed" (which only says a form exists).
+- **Release days**: Fed statement day, the day before it, CPI day, jobs-report day, about day t+1 (as SECTOR1 stage
+  5), from research/macro_dates_2019_2023.csv plus a 2024-2025 file from the same Fed and BLS archives, committed
+  before the test is run. This replaces the sentence that left them out.
+- **Cross-asset state**, daily from Alpaca SIP bars (`adjustment=all`): today's and 5-day returns of VIXY, USO, TLT
+  and UUP, each cut at p10/p25/p75/p90 like the other continuous signs.
+Not available free, so not used: analyst earnings-estimate history (FMP's free key returns only recent quarters),
+option prices, short interest (FINRA's terms forbid machine-learning use).
