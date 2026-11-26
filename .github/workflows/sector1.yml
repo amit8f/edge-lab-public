@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
@@ -59,7 +59,7 @@ jobs:
           restore-keys: nx1-v1-
 
       - name: Bring back the old headline months from the encrypted backup if the cache lost them
-        if: inputs.stage == '2' || inputs.stage == '3' || inputs.stage == '4' || inputs.stage == 'backup'
+        if: inputs.stage == '2' || inputs.stage == '3' || inputs.stage == '4' || inputs.stage == '5' || inputs.stage == 'backup'
         env:
           EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
@@ -139,8 +139,8 @@ jobs:
           w1=cache/w1; [[ -d cache/w1/w1/daily ]] || w1=cache/nx1
           [[ -d $w1/w1/daily ]] || { echo "::error::W1's daily cache is missing"; exit 1; }
           echo "W1 data from $w1: $(ls $w1/w1) / news: $(ls $w1/g1/news 2>/dev/null | wc -l) months"
-          mod=tracks.main.sector1_study; [[ "$STAGE" == 2 ]] && mod=tracks.main.sector2_study; [[ "$STAGE" == 3 ]] && mod=tracks.main.sector3_study; [[ "$STAGE" == 4 ]] && mod=tracks.main.sector4_study
-          PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 || "$STAGE" == 3 || "$STAGE" == 4 ]] && echo --minutes 280)
+          mod=tracks.main.sector1_study; [[ "$STAGE" == 2 ]] && mod=tracks.main.sector2_study; [[ "$STAGE" == 3 ]] && mod=tracks.main.sector3_study; [[ "$STAGE" == 4 ]] && mod=tracks.main.sector4_study; [[ "$STAGE" == 5 ]] && mod=tracks.main.sector5_study
+          PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 || "$STAGE" == 3 || "$STAGE" == 4 || "$STAGE" == 5 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
         if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore' && inputs.stage != 'numeraiprobe' && !startsWith(inputs.stage, 'numerai')
