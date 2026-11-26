@@ -351,3 +351,45 @@ pre-market moves all sit between 47% and 53% for SPY, QQQ and the seven.
 Red flags, not edges: UUP's after-hours move reverses by the next close (t 6.7), most likely stale or wide after-hours
 prints in a thin ETF (bid-ask bounce), not tradable. AAPL's big after-hours up moves continued next session (71% of
 24 days), but none of the other six shows it, so it is likely luck.
+
+## Amendment 5 (2026-11-26, before any stage-6 number exists): stage 6, surprises and slow followers
+
+Source: Amit, 2026-11-26 ("there must be some underlying thing that makes them move" ... "do them", for options 2
+and 3 of the reply that followed stage 5). Descriptive only, not counted; any rule that comes out of it is a new
+registration tested forward. 2019-2023 only; directions chosen on 2019-2021, scored once on 2022-2023.
+
+**Part A, the surprise on release days.** Consensus forecasts are not in our free data, so the surprise is measured
+by the market's own first reaction (the standard event-study proxy): on CPI and jobs-report days (08:30 ET), the move
+from 08:30 (close of the 08:25 bar) to 09:00 (close of the 08:55 bar) of TLT and SPY; on FOMC statement days
+(14:00 ET), the move from 14:00 (close of the 13:55 bar) to 14:30 (close of the 14:25 bar). Dates from
+research/macro_dates_2019_2023.csv (the unscheduled 2020 FOMC moves dropped, since they came outside 14:00). Targets
+(same 5-minute SIP bars as stage 4, `adjustment=all`): SPY, QQQ, IWM, the seven, XLE, USO, VIXY, TLT, HYG, GLD, UUP.
+For each event type and target: (1) does the rest of the day follow the first reaction (09:00 to the 16:00 close for
+08:30 releases, 14:30 to 16:00 for FOMC)? (2) does the next day (close to close) follow it? Signals: the SPY
+reaction, the TLT reaction, and the target's own reaction. Report the correlation in each period, the share of days
+that follow the 2019-2021 direction in 2022-2023, the mean net after 0.02% (ETFs) or 0.05% (the seven), and the same
+on the "big surprise" half (|TLT reaction| above its 2019-2021 median).
+
+**Part B, slow followers (W1 universe, about 2,500 stocks, daily).** Each stock's group is its SIC 3-digit industry
+when that industry has at least 6 stocks that day, else its Fama-French 12 sector. Leaders: the 3 stocks of the group
+with the highest previous-day 20-day dollar volume; followers: the others. Leader move L = the leaders' mean return
+that day (the stock itself left out); catch-up gap = L minus the follower's own return.
+1. Sort: each day, followers ranked by catch-up gap; long the top 10%, short the bottom 10%; next-day and next-5-day
+   returns of the spread, with Newey-West t, gross and after 0.20% round trip per side.
+2. Events ("when we see it"): leaders move at least 2% (either way) and the follower moved less than half of that
+   in the same direction, with no Benzinga headline naming the follower that session; trade the follower in the
+   leaders' direction for 1 and 5 days. Share right, mean net, trades per day, t; also split by follower size (below
+   and above the median dollar volume) and by whether the leaders had their own news.
+3. Regression check: next-day return on L, own return and the market's equal-weight return, fit 2019-2021,
+   correlation of its forecast with the outcome in 2022-2023.
+Labels need the next 5 trading days, so feature days stop 5 trading days before 2023-12-31.
+
+**Limits stated in advance.** About 24-36 release days of each type per period: these are hypotheses at best.
+Pre-market prints at 08:30-09:00 are thinner than regular hours. Part B uses current SIC codes (as stages 1-3) and
+daily closes, so a follower that catches up during the same afternoon is missed.
+
+**Prediction (written first).** Part A: the first reaction continues through the rest of the day about 55% of the
+time for SPY on CPI days and mostly for TLT, weakly; FOMC's first half hour reverses as often as it continues (the
+press conference starts at 14:30); nothing passes t >= 2 in both periods. Part B: a small positive next-day catch-up
+(Hou 2007 found it mostly in small, neglected stocks), below 0.10% a day for the spread, gone after 0.20% costs, and
+event trades right 51-53% of the time.
