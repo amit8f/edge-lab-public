@@ -102,8 +102,8 @@ def spread_series(d, col, y, q=0.1):
 
 def part_a(cache):
     h = alpaca_headers()
-    px = {s: pd.concat([clock_prices(b) for y in S1.YEARS if len(b := S4.fetch(s, y, cache, h))])
-          for s in TARGETS}
+    px = {s: clock_prices(pd.concat([b for y in S1.YEARS if len(b := S4.fetch(s, y, cache, h))], ignore_index=True))
+          for s in TARGETS}   # one pivot: a day can span two yearly files (UTC vs ET)
     close = {s: at(p, 960) for s, p in px.items()}
     macro = pd.read_csv(S5.MACRO_CSV)
     macro = macro[macro["scheduled"].astype(str).str.lower() == "true"]
