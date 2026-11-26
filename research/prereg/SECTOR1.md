@@ -248,3 +248,29 @@ job). 2022-2023 is one rate-hike regime. Many cells: anything that looks good he
 XLU and XLRE (rates). Part B: size is predictable (out-of-sample R-squared 30-50% for log realized variance, about half
 of the top-20% days caught); direction is not: pre-market and lead-lag R-squared below 1%, intraday momentum about 1%
 for SPY with a hit rate near 52%, none clearly profitable after 0.02% except perhaps SPY's last half hour.
+
+## Stage 4 result (2026-11-26, run 45778410647; descriptive, not counted)
+
+Summary JSON: `research/results/SECTOR1/SECTOR1_stage4.json`. 1,237 days, 2019-2023; big-stock earnings days (an 8-K
+2.02 from one of the seven on the day or the day before) are 16.6% of days.
+
+**Part A, same day.** Shapley R-squared of close-to-close returns. SPY: big stocks 38%, credit and fear (HYG, VIXY)
+43%, rates 3%, oil 3%, dollar and gold 1% (88% in all; VIXY and HYG move with the market the same minute, so they
+mirror the move more than cause it). Sector ETFs: SPY 29-41%, big stocks 7% (XLE) to 34-39% (XLK, QQQ), oil 22% for
+XLE and 1-3% elsewhere, rates 1-4% everywhere (daily TLT moves are mostly priced through the market itself). Least
+explained: XLU 63%, XLE 65%. Big-stock earnings days hold 9-15% of each ETF's squared moves on 16.6% of days (less than
+their share of days), except XLC 21% and XLY/QQQ/XLK 14-15%. Overnight (close to open) is 26% (XLU) to 53% (XLF) of
+squared moves, 48% for SPY.
+
+**Part B, early signs, scored once on 2022-2023.**
+1. Size of the day is predictable: out-of-sample R-squared of log realized variance 0.49 (XLU) to 0.81 (XLY), SPY 0.71;
+   the predicted top 20% catch 57-69% of the actual top-20% days (random would catch 20%).
+2. Direction from the pre-market: out-of-sample R-squared negative for every ETF (-0.4% to -2.7%), hit rates 46-53%;
+   no ETF has a positive net at 0.02% with t >= 2 (XLV and XLB are significantly negative).
+3. Intraday momentum (first half hour and overnight -> last half hour): negative out-of-sample R-squared everywhere
+   (SPY -0.85%, hit 52.4%), net negative after 0.02% for all 14.
+4. Lead-lag (every symbol's first half hour -> 10:00-16:00): out-of-sample R-squared -2.5% to -15.8%, nothing positive.
+
+Prediction check: big stocks and SPY dominate everything except XLE (oil) and XLU (right; XLRE is not rate-driven at
+the daily level, wrong). Size predictable (right, better than predicted: 0.5-0.8). Direction not predictable (right);
+intraday momentum, which we thought might survive for SPY, did not in 2022-2023 (consistent with Zhang-Hua 2024).
