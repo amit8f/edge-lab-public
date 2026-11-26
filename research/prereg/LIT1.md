@@ -101,3 +101,21 @@ Source: Amit, 2026-11-26 ("check if you need more data from elsewhere"). Added c
   and UUP, each cut at p10/p25/p75/p90 like the other continuous signs.
 Not available free, so not used: analyst earnings-estimate history (FMP's free key returns only recent quarters),
 option prices, short interest (FINRA's terms forbid machine-learning use).
+
+## Amendment 2 (2026-11-26, same day, before any LIT1 number exists): implementation details
+
+Written while coding, before anything is run:
+- **Holdout edge.** No row dated after 2025-09-30 is read. A test trade's 10-day window must end by 2025-09-30, so
+  test light-ups stop 11 trading days before it; search and choice windows likewise stay inside their own periods
+  (a 2021 light-up whose window runs into 2022 is dropped from the search; same at the 2023 edge).
+- **"Still on" at 15:55** uses the day's conditions computed from its daily close (5 minutes later than the 15:55
+  price), since recomputing every condition at 15:55 would need minute data for the whole universe.
+- **Random control** (pass rule 4) compares like with like on the once-a-day exit: LIT1's trades and 200 random
+  draws (same day, same side, a random universe stock with no trade open, the same family's conditions deciding
+  "still on") all use the once-a-day exit on daily bars, since 5-minute bars for 200 x the trade count are too much
+  to fetch. LIT1 passes rule 4 when its once-a-day mean net is above the draws' 95th percentile.
+- **Lower bound** = Wilson 95% lower bound of the win rate on the trade count.
+- **Conditions** with fewer than 1% of rows "on" in 2019-2021 are dropped before the search (they cannot reach 150
+  light-ups in a triple).
+- **Alpha** (rule 11): the monthly mean of daily trade net (each trade's net booked on its exit day, longs and
+  shorts as traded) on FF5 + momentum, HAC lags 3, `core.stats.factor_alpha`.
