@@ -119,3 +119,17 @@ Written while coding, before anything is run:
   light-ups in a triple).
 - **Alpha** (rule 11): the monthly mean of daily trade net (each trade's net booked on its exit day, longs and
   shorts as traded) on FF5 + momentum, HAC lags 3, `core.stats.factor_alpha`.
+
+## Amendment 3 (2026-11-26): one-day setups (written after the 2019-2021 search summary, before any 2022-2023 or test number)
+
+What was seen: the first search run kept 25,775 setups (21% of 123,332 scored) and its best won 98.5%. A QA print
+(base win rate 49.6% long, 47.0% short) showed the 25 leading setups each light up on a single day (for example
+2020's March rebound and a 2021 Fed day), with 700-1,300 stocks at once. Market-wide conditions ("share of stocks up
+today in its bottom 10%") turn on for every stock together, so 150 light-ups can be one day. That is one bet, not 150,
+and it breaks Amit's goal of 0-5 trades a day. The search and choice rules counted trades, not days. Fix, applied to
+search, pair seeding and choice alike (the test rules are unchanged; they already use a day-clustered t):
+- A setup must light up on at least 40 distinct days in 2019-2021 (20 in 2022-2023), and its busiest day may hold at
+  most 10% of its light-ups.
+- Ranking uses the Wilson lower bound with the sample size set to the number of distinct days (wins = win rate x days),
+  so a setup spread over many days ranks above one with the same win rate on few days.
+The 60% win, n >= 150 / 60 and net > 0 rules stay. Only 2019-2021 numbers were seen before this was written.

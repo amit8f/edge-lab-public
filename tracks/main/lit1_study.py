@@ -49,6 +49,7 @@ TYPE_FLAGS = [f"t_{k}" for k in S2.TYPES]
 FLAGS = TYPE_FLAGS + ["earn", "k8_other", "f_offer", "ins_buy5", "ins_bigbuy20", "ins_sell5", "c_mon", "c_fri",
                       "c_tom", "c_preholiday", "c_opex", "c_fomc", "c_fomc_eve", "c_cpi", "c_jobs"]
 MIN_TRAIN, MIN_CHOOSE, MIN_WIN, TOP_PAIRS, TOP_CHOOSE, MAX_FAM = 150, 60, 0.60, 300, 500, 10
+MIN_DAYS_TRAIN, MIN_DAYS_CHOOSE, MAX_DAY_SHARE = 40, 20, 0.10   # Amendment 3
 CHECKS = (690, 840, 955)          # 11:30, 14:00, 15:55 ET (minute of day at which the price is read)
 SEED, DRAWS = 192, 200
 
@@ -200,11 +201,23 @@ def light(on, prev):
     return on & ~was
 
 
-def setup_stats(lu, net):
-    x = net[lu]
-    x = x[np.isfinite(x)]
+def setup_stats(lu, net, dcode=None):
+    """Trade stats of the light-ups; with day codes also distinct days, the busiest day's share and the Wilson lower
+    bound on the day count (Amendment 3)."""
+    ok = lu & np.isfinite(net)
+    x = net[ok]
     n, w = len(x), int((x > 0).sum())
-    return {"n": n, "win": w / n if n else 0.0, "net": float(x.mean()) if n else 0.0, "lo": wilson_lo(w, n)}
+    s = {"n": n, "win": w / n if n else 0.0, "net": float(x.mean()) if n else 0.0, "lo": wilson_lo(w, n)}
+    if dcode is not None:
+        c = np.bincount(dcode[ok]) if n else np.zeros(1, int)
+        days = int((c > 0).sum())
+        s.update(days=days, top_share=float(c.max() / n) if n else 1.0,
+                 lo=wilson_lo(s["win"] * days, days))
+    return s
+
+
+def spread_ok(s, min_days):
+    return s["days"] >= min_days and s["top_share"] <= MAX_DAY_SHARE
 
 
 # ---------- data stage ----------
@@ -448,6 +461,7 @@ def stage_search(cache):
     prev = prev_index(d)
     P = np.asfortranarray(np.where((prev >= 0)[:, None], A[np.maximum(prev, 0)], False))
     nets = {1: d["net_long"].to_numpy(float), -1: d["net_short"].to_numpy(float)}
+    dcode = pd.factorize(d["date"])[0]
     print(f"[lit1] search: {len(d)} rows, {len(names)} conditions", flush=True)
     res = []
 
@@ -459,7 +473,7 @@ def stage_search(cache):
             was &= P[:, i]
         lu = on & ~was
         for side, net in nets.items():
-            s = setup_stats(lu, net)
+            s = setup_stats(lu, net, dcode)
             res.append({"conds": [names[i] for i in idx], "side": side, **s})
         return res[-2:]
     t0 = time.monotonic()
@@ -468,7 +482,7 @@ def stage_search(cache):
         score((i,))
     for i, j in combinations(range(len(names)), 2):
         for r in score((i, j)):
-            if r["n"] >= MIN_TRAIN:
+            if r["n"] >= MIN_TRAIN and spread_ok(r, MIN_DAYS_TRAIN):
                 pair_scores[r["side"]].append((r["lo"], i, j))
     print(f"[lit1] pairs done {time.monotonic() - t0:.0f} s", flush=True)
     for side in (1, -1):
@@ -479,10 +493,11 @@ def stage_search(cache):
                     continue
                 on = A[:, i] & A[:, j] & A[:, k]
                 was = P[:, i] & P[:, j] & P[:, k]
-                s = setup_stats(on & ~was, nets[side])
+                s = setup_stats(on & ~was, nets[side], dcode)
                 res.append({"conds": sorted([names[i], names[j], names[k]]), "side": side, **s})
     print(f"[lit1] triples done {time.monotonic() - t0:.0f} s, {len(res)} scored", flush=True)
-    keep = [r for r in res if r["n"] >= MIN_TRAIN and r["win"] >= MIN_WIN and r["net"] > 0]
+    keep = [r for r in res if r["n"] >= MIN_TRAIN and r["win"] >= MIN_WIN and r["net"] > 0
+            and spread_ok(r, MIN_DAYS_TRAIN)]
     uniq = {}
     for r in keep:
         uniq.setdefault((tuple(sorted(r["conds"])), r["side"]), r)
@@ -505,7 +520,7 @@ def stage_search(cache):
         lu = (on & ~was) & np.isfinite(nets[r["side"]])
         days = pd.Series(dates[lu]).value_counts()
         print(f"[lit1] qa top {r['conds']} side {r['side']} n {r['n']} win {r['win']:.3f} net {r['net']:.4f} "
-              f"days {len(days)} biggest-day share {days.iloc[0] / days.sum():.2f}", flush=True)
+              f"days {len(days)} biggest-day share {days.iloc[0] / days.sum():.2f} lo {r['lo']:.3f}", flush=True)
     return summary
 
 
@@ -523,14 +538,15 @@ def stage_choose(cache, out):
     d = load(cache, pd.Timestamp("2022-01-01"), CHOOSE_END, BASE_COLS + CONT + FLAGS)
     assert d["date"].min() >= pd.Timestamp("2022-01-01") and d["exit_date"].max() <= CHOOSE_END
     prev = prev_index(d)
+    dcode = pd.factorize(d["date"])[0]
     rows = []
     for r in cand["candidates"][:TOP_CHOOSE]:
         on = setup_on(d, cand["cuts"], r["conds"])
         lu = light(on, prev)
-        s = setup_stats(lu, d["net_long" if r["side"] == 1 else "net_short"].to_numpy(float))
+        s = setup_stats(lu, d["net_long" if r["side"] == 1 else "net_short"].to_numpy(float), dcode)
         rows.append({**r, "choose": s, "_lu": np.flatnonzero(lu)})
     ok = [r for r in rows if r["choose"]["n"] >= MIN_CHOOSE and r["choose"]["win"] >= MIN_WIN
-          and r["choose"]["net"] > 0]
+          and r["choose"]["net"] > 0 and spread_ok(r["choose"], MIN_DAYS_CHOOSE)]
     ok.sort(key=lambda r: -r["choose"]["lo"])
     picked = []
     for r in ok:

@@ -82,3 +82,13 @@ def test_cut_conditions():
     df = pd.DataFrame({f: np.arange(10.0) for f in S.CONT} | {f: [True] * 10 for f in S.FLAGS})
     c = S.cut_conditions(df, {"r1": [1, 2, 7, 8]})
     assert c["r1<=p10"].sum() == 2 and c["r1>=p90"].sum() == 2 and c["earn"].all()
+
+
+def test_setup_stats_counts_days_and_ranks_on_days():
+    from tracks.main.lit1_study import setup_stats, spread_ok
+    net = np.r_[np.full(100, 0.01), np.full(100, 0.01)]
+    dcode = np.r_[np.zeros(100, int), np.arange(1, 101)]
+    one_day = setup_stats(np.r_[np.ones(100, bool), np.zeros(100, bool)], net, dcode)
+    spread = setup_stats(np.r_[np.zeros(100, bool), np.ones(100, bool)], net, dcode)
+    assert one_day["days"] == 1 and one_day["top_share"] == 1.0 and not spread_ok(one_day, 40)
+    assert spread["days"] == 100 and spread_ok(spread, 40) and spread["lo"] > one_day["lo"]
