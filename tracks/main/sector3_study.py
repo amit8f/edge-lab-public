@@ -28,7 +28,7 @@ NEWS_ORDER = ["deal", "offering", "fda", "earnings", "analyst", "contract"]     
 EVENTS = (["earn"] + [f"news_{k}" for k in NEWS_ORDER] + ["news_other", "other_8k", "offering_filing", "insider",
           "other_filing", "heavy_volume", "quiet"])
 CHART = ["r1", "r5", "r20", "r60", "hi20", "lo20", "vol20", "rng1", "vr1", "mkt1", "sec1"]
-LGB = dict(n_estimators=300, learning_rate=0.03, num_leaves=31, random_state=7, verbose=-1, n_jobs=4)
+LGB = {"n_estimators": 300, "learning_rate": 0.03, "num_leaves": 31, "random_state": 7, "verbose": -1, "n_jobs": 4}
 
 
 # ---------- pure helpers (tested) ----------
@@ -235,7 +235,7 @@ def main():
         sh = shapley(y, {k: x[v].to_numpy(float) for k, v in BLOCKS.items()})
         res = residuals(y, x[cols].to_numpy(float))
         resid[x.index.to_numpy()] = res
-        rows.append({"symbol": sym, "sector": int(x["sector"].mode().iloc[0]), "var": float(y.var()) * len(y),
+        rows.append({"symbol": sym, "code": int(x["sector"].mode().iloc[0]), "var": float(y.var()) * len(y),
                      **{k: sh[k] for k in BLOCKS}, "full": sh["full"]})
     d["resid"] = resid
     st = pd.DataFrame(rows)
@@ -254,14 +254,14 @@ def main():
                   "share_of_stock_specific": float(g["r2e"].sum().get(k, 0.0) / idio_tot),
                   "share_of_8pct_days": float(((f["group"] == k) & f["big8"]).sum() / max(f["big8"].sum(), 1))}
               for k in EVENTS}
-        return {"stocks": int(len(s)), "stock_days": int(len(f)), "common": common,
+        return {"stocks": len(s), "stock_days": len(f), "common": common,
                 "stock_specific": float(idio_share), "median_r2": {k: float(s[k].median()) for k in BLOCKS},
                 "median_full_r2": float(s["full"].median()), "events": ev,
                 "coincident_volume_r2": float(np.corrcoef(np.log(f["vr"].clip(0.05, 50).fillna(1)),
                                                           f["resid"].abs())[0, 1] ** 2)}
     out = {"all": breakdown(st, fit), "sectors": {}}
-    for sec, s in st.groupby("sector"):
-        out["sectors"][industry.NAMES[int(sec)]] = breakdown(s, fit[fit["symbol"].isin(s["symbol"])])
+    for sec, s in st.groupby("code"):
+        out["sectors"][industry.NAMES.get(int(sec), f"code {int(sec)}")] = breakdown(s, fit[fit["symbol"].isin(s["symbol"])])
 
     # ---- part 3: how concentrated market moves are ----
     m = mk.loc[mk.index.year.isin(list(S1.YEARS))]
@@ -276,11 +276,11 @@ def main():
     import lightgbm as lgb
     mdl = lgb.LGBMRegressor(**LGB).fit(tr[CHART].astype("float32"), tr["y"])
     te["p"] = mdl.predict(te[CHART].astype("float32"))
-    ch = {"all": {"rows": int(len(te)), "oos_r2": oos_r2(te["y"].to_numpy(), te["p"].to_numpy()),
+    ch = {"all": {"rows": len(te), "oos_r2": oos_r2(te["y"].to_numpy(), te["p"].to_numpy()),
                   "rank_ic": rank_ic(te, "p", "y")},
           "importance": dict(zip(CHART, [int(v) for v in mdl.booster_.feature_importance("gain")], strict=True))}
     for sec, x in te.groupby("sector"):
-        ch[industry.NAMES[int(sec)]] = {"rows": int(len(x)), "oos_r2": oos_r2(x["y"].to_numpy(), x["p"].to_numpy()),
+        ch[industry.NAMES.get(int(sec), f"code {int(sec)}")] = {"rows": len(x), "oos_r2": oos_r2(x["y"].to_numpy(), x["p"].to_numpy()),
                                          "rank_ic": rank_ic(x, "p", "y")}
     out["charts"] = ch
     out["note"] = ("2019-2023, PICK main universe ($5+, $5M/day), FF12 from current SIC codes. Common part: per-stock "
