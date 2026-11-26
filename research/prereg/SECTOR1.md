@@ -206,3 +206,45 @@ Prediction check: common part 43%, above the 25-40% predicted; market 12% (predi
 Energy and Utilities highest (right). Earnings 10% (right), news 17% (predicted 20-30%, lower), filings 8% (predicted
 3-6%, higher), heavy volume with no news 4% (predicted 5-10%), quiet days 18% (predicted 30-40%, lower). Charts at or
 below 0.2% (right: below zero).
+
+## Amendment 3 (2026-11-26, before any stage-4 number exists): stage 4, what moves the market and the sectors, and which early signs see it coming
+
+Source: Amit, 2026-11-26 ("you didn't say what moves the shared forces ... catch it early, see and notify and react ...
+before or during the market day"). Still descriptive only, not counted; any trading rule from it is a new registration.
+2019-2023 only, as before; fit or choose on 2019-2021, score once on 2022-2023.
+
+**Data.** Alpaca SIP 5-minute bars, `adjustment=all`, 04:00-20:00 ET, zero-volume bars dropped, for: SPY, QQQ, IWM;
+the sector ETFs XLE, XLF, XLK, XLU, XLV, XLI, XLB, XLP, XLY, XLRE, XLC (XLC from its 2018 launch); macro proxies USO
+(oil), TLT (long Treasuries), UUP (dollar), HYG (credit), GLD (gold), VIXY (VIX futures); the seven largest stocks
+AAPL, MSFT, NVDA, AMZN, GOOGL, META, TSLA. Per day: previous close (last regular bar at or before 16:00), pre-market
+price (last bar before 09:30), open (first regular bar), 10:00, 15:30 and close prices; the day's realized variance
+from regular-session 5-minute returns. Big-stock earnings nights: an 8-K item 2.02 filed by one of the seven on day
+t-1 or t (W1 filings, as stage 2).
+
+**Part A, what moves them (same day, not prediction).** Shapley R-squared of each ETF's close-to-close return on six
+blocks: SPY (left out for SPY itself), the seven big stocks' equal-weight return, rates (TLT), oil (USO), dollar and
+gold (UUP, GLD), credit and fear (HYG, VIXY). Also: share of each ETF's sum of squared returns on big-stock earnings
+days, and the overnight (close to open) share of its squared moves.
+
+**Part B, early signs (prediction, fit 2019-2021, scored 2022-2023), per target ETF.** Ridge regression (alpha chosen
+by 5-fold time-series CV on 2019-2021 from 0.1, 1, 10, 100), features standardised on 2019-2021:
+1. Size of the day: target log of the regular-session realized variance; features at 09:30: yesterday's, the last
+   5 days' and the last 22 days' log realized variance, |pre-market move| of the ETF, SPY and VIXY, and the big-stock
+   earnings-night flag. Report out-of-sample R-squared and the share of 2022-2023's top-20% days caught by the
+   predicted top 20%.
+2. Direction from the pre-market: target open-to-close return; features: the pre-market moves (previous close to
+   09:29) of the ETF, SPY, QQQ, TLT, USO, VIXY.
+3. Intraday momentum (Gao, Han, Li and Zhou 2018): target the last half hour (15:30-16:00); features: the overnight
+   move and the first half hour (09:30-10:00) of the ETF and of SPY.
+4. Lead-lag: target 10:00-16:00; features: every listed symbol's 09:30-10:00 return.
+For 2-4: out-of-sample R-squared (against a zero forecast), correlation, sign hit rate, and the mean net return of
+trading the predicted sign (cost 0.02% round trip for these ETFs, also shown at 0.20%), with a Newey-West t (lag 5).
+
+**Limits stated in advance.** Macro calendars (Fed, CPI, jobs) are not in our data: part A sees their effect only
+through rates, dollar and fear proxies. ETFs and the biggest stocks only, no single-stock early signs (that is NX3's
+job). 2022-2023 is one rate-hike regime. Many cells: anything that looks good here is a hypothesis.
+
+**Prediction (written first).** Part A: SPY plus the big stocks explain most of every sector ETF except XLE (oil),
+XLU and XLRE (rates). Part B: size is predictable (out-of-sample R-squared 30-50% for log realized variance, about half
+of the top-20% days caught); direction is not: pre-market and lead-lag R-squared below 1%, intraday momentum about 1%
+for SPY with a hit rate near 52%, none clearly profitable after 0.02% except perhaps SPY's last half hour.
