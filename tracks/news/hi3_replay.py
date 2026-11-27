@@ -290,16 +290,17 @@ class Xgb:
         return self._e(X)
 
 
-def stage_report(cache, out):
+def stage_report(cache, out, parts=("replay", "live"), name="HI3"):
+    """Settle every day file's arms; parts[0] is the deciding part (HI3K reuses this with gap/overlap)."""
     models = M.load() | {"XGB": Xgb()}
     api = L.Api()
-    cal = api.calendar(pd.Timestamp("2026-01-01").date(), pd.Timestamp("2026-12-31").date())
+    cal = api.calendar(pd.Timestamp("2025-01-01").date(), pd.Timestamp("2026-12-31").date())
     cal["date"] = pd.to_datetime(cal["date"])
     caldates = pd.DatetimeIndex(cal["date"])
     today = pd.Timestamp.now(tz=ET).tz_localize(None).normalize()
     sdir = Path(cache) / "settled"
     sdir.mkdir(parents=True, exist_ok=True)
-    trades, days = [], {"replay": [], "live": []}
+    trades, days = [], {p: [] for p in parts}
     for f in sorted((Path(cache) / "days").glob("*.json")):
         rec = json.loads(f.read_text())
         d = pd.Timestamp(rec["day"])
@@ -329,28 +330,28 @@ def stage_report(cache, out):
         if len(t):
             trades.append(t)
     tr = pd.concat(trades, ignore_index=True) if trades else pd.DataFrame(columns=["arm", "part", "role", "day", "side", "net"])
+    N.atomic_parquet(tr, Path(cache) / "trades.parquet")
     res = {"window": json.loads((Path(cache) / "window.json").read_text()) if (Path(cache) / "window.json").exists()
            else None, "sessions": {k: [v[0], v[-1], len(v)] if v else None for k, v in days.items()}, "arms": {}}
     for m, v in ARMS:
         a = f"{m}-{v}"
         res["arms"][a] = {part: summarize(tr[(tr["arm"] == a) & (tr["part"] == part)], days[part])
-                          for part in ("replay", "live")}
-        both = tr[(tr["arm"] == a)]
-        res["arms"][a]["all"] = summarize(both, days["replay"] + days["live"])
+                          for part in parts}
+        res["arms"][a]["all"] = summarize(tr[tr["arm"] == a], [d for p in parts for d in days[p]])
     for m in MODELS:     # HI minus plain on shared pick days (replay), reported
-        tp, th = (tr[(tr["arm"] == f"{m}-{v}") & (tr["role"] == "picks") & (tr["part"] == "replay")]
+        tp, th = (tr[(tr["arm"] == f"{m}-{v}") & (tr["role"] == "picks") & (tr["part"] == parts[0])]
                   .groupby("day")["net"].mean() for v in ("plain", "HI"))
         diff = (th - tp).dropna()
-        res["arms"][f"{m}-HI"]["hi_minus_plain_replay"] = (
+        res["arms"][f"{m}-HI"][f"hi_minus_plain_{parts[0]}"] = (
             dict(zip(("mean", "se", "t"), nw_tstat(diff.to_numpy(), 5))) if len(diff) > 2 else None)
     Path(out).mkdir(parents=True, exist_ok=True)
-    tmp = Path(out) / "HI3.tmp"
+    tmp = Path(out) / f"{name}.tmp"
     tmp.write_text(json.dumps(res, indent=1, default=float))
-    tmp.replace(Path(out) / "HI3.json")
+    tmp.replace(Path(out) / f"{name}.json")
     for a, r in res["arms"].items():
         print(f"[hi3] {a}: " + " | ".join(f"{p} {r[p].get('trades')} tr, pmc {r[p].get('pick_minus_control')}, "
                                           f"t {r[p].get('t')}, win {r[p].get('win')}, pnl {r[p].get('pnl_usd')}"
-                                          for p in ("replay", "live")), flush=True)
+                                          for p in parts), flush=True)
     return res
 
 
