@@ -189,9 +189,10 @@ def news_days_all(cache, info):
     return nd
 
 
-def replay_day(api, cal, ses, ev, nd):
-    """The day's decided events (nx3_live.decide's records, inputs from SIP)."""
-    ctx, market = L.stock_context(api, sorted(set(ev["symbol"])), ses["prev"], cal)
+def replay_day(api, cal, ses, ev, nd, listed):
+    """The day's decided events (nx3_live.decide's records, inputs from SIP). As in nx3_live.poll, only symbols
+    Alpaca lists as assets are looked up (others, e.g. foreign codes in Benzinga's tags, are 'not listed')."""
+    ctx, market = L.stock_context(api, sorted(set(ev["symbol"]) & listed), ses["prev"], cal)
     syms = sorted(set(ev["symbol"]) & set(ctx))
     bars = S.day_bars(syms + ["SPY"], ses["date"], ses["open_t"], ses["close_t"], api.h) if syms else {}
     spy_b = bars.get("SPY", pd.DataFrame(columns=["t", "o", "c", "v"]))
@@ -199,6 +200,9 @@ def replay_day(api, cal, ses, ev, nd):
     for r in ev.sort_values(["t", "symbol"], kind="stable").to_dict("records"):
         base = {"key": f"{r['symbol']}|{r['d']:%Y-%m-%d}", "symbol": r["symbol"], "d": r["d"], "t": r["t"]}
         c = ctx.get(r["symbol"])
+        if r["symbol"] not in listed:
+            out.append(base | {"status": "not listed"})
+            continue
         if c is None or not c["uni"]:
             out.append(base | {"status": "not in universe"})
             continue
@@ -239,6 +243,7 @@ def stage_build(cache, budget_min):
     print(f"[hi3] news from {start}; replay {days['date'].min():%Y-%m-%d} .. {days['date'].max():%Y-%m-%d}, "
           f"{len(days)} sessions", flush=True)
     nd = news_days_all(cache, info)
+    listed = set(api.assets()["symbol"])
     ev_all = S.session_events(rows, days.reset_index(drop=True))
     out = Path(cache) / "days"
     out.mkdir(parents=True, exist_ok=True)
@@ -249,7 +254,7 @@ def stage_build(cache, budget_min):
         if time.monotonic() > deadline:
             return False
         ev = ev_all[ev_all["d"] == s["date"]]
-        dec = replay_day(api, cal, s, ev, nd) if len(ev) else []
+        dec = replay_day(api, cal, s, ev, nd, listed) if len(ev) else []
         tmp = f.with_suffix(".tmp")
         tmp.write_text(json.dumps({"day": f"{s['date']:%Y-%m-%d}", "part": "replay", "events": dec}, default=L._js))
         tmp.replace(f)

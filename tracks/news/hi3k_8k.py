@@ -201,6 +201,7 @@ def stage_build(cache, budget_min):
     ses = S.sessions(cal)
     days = ses[(ses["date"] >= GAP[0]) & (ses["date"] <= OVERLAP[1])]
     nd = R.news_days_all(cache, info)
+    listed = set(api.assets()["symbol"])
     ev_all = S.session_events(rows, days.reset_index(drop=True))
     out = Path(cache) / "days"
     out.mkdir(parents=True, exist_ok=True)
@@ -211,7 +212,7 @@ def stage_build(cache, budget_min):
         if time.monotonic() > deadline:
             return False
         ev = ev_all[ev_all["d"] == s["date"]]
-        dec = R.replay_day(api, cal, s, ev, nd) if len(ev) else []
+        dec = R.replay_day(api, cal, s, ev, nd, listed) if len(ev) else []
         part = "gap" if s["date"] <= GAP[1] else "overlap"
         tmp = f.with_suffix(".tmp")
         tmp.write_text(json.dumps({"day": f"{s['date']:%Y-%m-%d}", "part": part, "events": dec}, default=L._js))
