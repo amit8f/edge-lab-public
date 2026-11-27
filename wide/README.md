@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 11:27 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 11:37 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6564.14 | -34.36% | 306 | 97 | long ANT, long AXON, long COHR, long DELL, long SNDK |
-| Coin flip on C's picks | $7779.97 | -22.20% | 304 | 146 | short ANT, long AXON, short COHR, short DELL, long SNDK |
-| C's prompt on Groq (K7) | $4942.78 | -50.57% | 630 | 156 | long APP, long AXON, long COHR, long NU, long RBLX |
-| Coin flip on C-groq's picks | $8918.89 | -10.81% | 628 | 299 | short APP, short AXON, short COHR, short NU, short RBLX |
-| C-groq's answers, acted on once a day (K8) | $8114.48 | -18.86% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
-| Coin flip on C-groq-slow's picks | $11969.72 | +19.70% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
-| C's answers, acted on once a day (K8) | $9568.15 | -4.32% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
-| Coin flip on C-slow's picks | $10807.48 | +8.07% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
-| Just hold SPY | $9441.63 | -5.58% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6598.70 | -34.01% | 306 | 97 | long ANT, long AXON, long COHR, long DELL, long SNDK |
+| Coin flip on C's picks | $7787.19 | -22.13% | 304 | 146 | short ANT, long AXON, short COHR, short DELL, long SNDK |
+| C's prompt on Groq (K7) | $4948.77 | -50.51% | 632 | 158 | long APP, long AXON, long PLTR, long QCOM, long RBLX |
+| Coin flip on C-groq's picks | $8893.66 | -11.06% | 630 | 299 | short APP, short AXON, long PLTR, short QCOM, short RBLX |
+| C-groq's answers, acted on once a day (K8) | $8120.38 | -18.80% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
+| Coin flip on C-groq-slow's picks | $11994.24 | +19.94% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
+| C's answers, acted on once a day (K8) | $9532.76 | -4.67% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
+| Coin flip on C-slow's picks | $10828.45 | +8.28% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
+| Just hold SPY | $9459.86 | -5.40% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-27 11:37 | long ANT, long AXON, long COHR, long DELL, long SNDK | none | Maintaining all five existing long positions due to strong positive momentum across the board today, with all positions either profitable or near breakeven. |
 | 2026-11-27 11:27 | long ANT, long AXON, long COHR, long DELL, long SNDK | none | Maintaining all current long positions due to strong daily and hourly momentum across the board, with positive news supporting some holdings. |
 | 2026-11-27 11:17 | long ANT, long AXON, long COHR, long DELL, long SNDK | none | Maintaining all current long positions due to strong positive momentum today and overall profitability, expecting continued upward movement. |
 | 2026-11-27 11:07 | long ANT, long AXON, long COHR, long DELL, long SNDK | sold SHOP @ $141.90; bought DELL @ $316.85 | Maintaining strong long positions in SNDK, COHR, ANT, and AXON due to continued upward momentum. Replaced SHOP with DELL to capitalize on its strong daily performance and positive analyst news. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 11:2
 | 2026-11-24 09:47 | long AAOI, long TSLA, long ZS | sold APLD @ $12.83; sold CRWV @ $44.92; sold DELL @ $300.80; sold NVDA @ $155.75; bought AAOI @ $41.01; bought TSLA @ $387.44 | Selling all losing positions to cut losses and reallocating capital to ZS, AAOI, and TSLA, which are showing positive momentum and favorable news in a generally down market. |
 | 2026-11-23 15:59 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-23 15:47 | no answer, nothing changed | none | unreadable answer |
