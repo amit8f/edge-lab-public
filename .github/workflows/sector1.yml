@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
@@ -112,6 +112,34 @@ jobs:
             GH_TOKEN="$EVIDENCE_TOKEN" gh release create "$tag" /tmp/benzinga_news.tar.gz.enc /tmp/benzinga_news.sha256 \
               --repo amit8f/edge-lab --title "Benzinga news months backup ($n months)" \
               --notes "Encrypted copy of NX1's cached Benzinga headline months (cache/nx1/g1/news). Alpaca stopped serving old news in 2026. See edge-lab-public sector1.yml stage backup."
+            GH_TOKEN="$EVIDENCE_TOKEN" gh release view "$tag" --repo amit8f/edge-lab --json assets --jq '.assets[]|.name+" "+(.size|tostring)'
+            exit 0
+          fi
+          if [[ "$STAGE" == backup2026 ]]; then
+            # HI3.md (2026-11-27): Alpaca now keeps only about the last 6-7 months of news and the window rolls
+            # forward, so save 2026-04 .. this month (complete months only are kept by name; this month is partial)
+            # as an encrypted release asset, same passphrase as the backup above.
+            PYTHONPATH=. .venv/bin/python -u -c "
+          import pandas as pd
+          from pathlib import Path
+          from tracks.main.longterm import news_history as H
+          out = Path('cache/news2026'); out.mkdir(parents=True, exist_ok=True)
+          now = pd.Timestamp.now(tz='UTC')
+          for m in pd.period_range('2026-04', now.strftime('%Y-%m'), freq='M'):
+              df = H.fetch_month(str(m))
+              days = pd.to_datetime(df['created_at'], utc=True).dt.normalize().nunique() if len(df) else 0
+              print(f'[backup2026] {m}: {len(df)} articles on {days} days', flush=True)
+              if len(df):
+                  df.to_parquet(out / f'news_{m}.parquet')
+          "
+            n=$(ls cache/news2026/news_*.parquet | wc -l)
+            [[ $n -ge 1 ]] || { echo "::error::no 2026 news months"; exit 1; }
+            tag="news-2026-backup-$(date -u +%Y%m%d)"
+            tar -C cache -cf - news2026 | gzip -1 | openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:ALPACA_API_SECRET_KEY -out /tmp/benzinga_news_2026.tar.gz.enc
+            ( cd cache/news2026 && sha256sum news_*.parquet ) > /tmp/benzinga_news_2026.sha256
+            GH_TOKEN="$EVIDENCE_TOKEN" gh release create "$tag" /tmp/benzinga_news_2026.tar.gz.enc /tmp/benzinga_news_2026.sha256 \
+              --repo amit8f/edge-lab --title "Benzinga news 2026 backup ($n months)" \
+              --notes "Encrypted Alpaca Benzinga headline months from 2026-04 (HI3.md). Same passphrase as news-backup-20261121."
             GH_TOKEN="$EVIDENCE_TOKEN" gh release view "$tag" --repo amit8f/edge-lab --json assets --jq '.assets[]|.name+" "+(.size|tostring)'
             exit 0
           fi
