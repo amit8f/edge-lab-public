@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 09:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 09:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6594.44 | -34.06% | 300 | 96 | short MRVL, short MU, short NVDA |
-| Coin flip on C's picks | $7662.66 | -23.37% | 298 | 143 | long MRVL, long MU, long NVDA |
-| C's prompt on Groq (K7) | $4994.97 | -50.05% | 618 | 153 | short AAOI, short AXTI, short CLS, long RBLX, long TEAM |
-| Coin flip on C-groq's picks | $9043.65 | -9.56% | 616 | 293 | long AAOI, short AXTI, short CLS, short RBLX, long TEAM |
-| C-groq's answers, acted on once a day (K8) | $8399.79 | -16.00% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
-| Coin flip on C-groq-slow's picks | $11825.51 | +18.26% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
-| C's answers, acted on once a day (K8) | $9895.24 | -1.05% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
-| Coin flip on C-slow's picks | $10532.33 | +5.32% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
-| Just hold SPY | $9384.98 | -6.15% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6526.67 | -34.73% | 300 | 96 | short MRVL, short MU, short NVDA, short VRTX |
+| Coin flip on C's picks | $7737.08 | -22.63% | 298 | 143 | long MRVL, long MU, long NVDA, long VRTX |
+| C's prompt on Groq (K7) | $4912.27 | -50.88% | 621 | 153 | long AXON, long LITE, long NU, long RBLX, long TEAM |
+| Coin flip on C-groq's picks | $8986.08 | -10.14% | 619 | 294 | long AXON, short LITE, long NU, short RBLX, long TEAM |
+| C-groq's answers, acted on once a day (K8) | $8246.48 | -17.54% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
+| Coin flip on C-groq-slow's picks | $11816.71 | +18.17% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
+| C's answers, acted on once a day (K8) | $9732.15 | -2.68% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
+| Coin flip on C-slow's picks | $10677.43 | +6.77% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
+| Just hold SPY | $9393.58 | -6.06% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-27 09:57 | short MRVL, short MU, short NVDA, short VRTX | sold VRTX @ $511.84 | Closed losing MRVL short, maintained profitable MU and NVDA shorts, and opened a new short on VRTX due to strong negative momentum. Re-entered MRVL short based on overall negative trend and analyst downgrade. |
 | 2026-11-27 09:47 | short MRVL, short MU, short NVDA | bought DELL @ $306.44; bought HPE @ $41.73 | Closed losing short positions in DELL and HPE due to strong upward trends. Maintained profitable shorts in MRVL, MU, and NVDA, with NVDA's position reinforced by new export controls and a downward trend. |
 | 2026-11-25 10:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-25 10:37 | short DELL, short HPE, short MRVL, short MU, short NVDA | none | Maintaining all existing short positions in MU, MRVL, DELL, HPE, and NVDA as they are all profitable and the market continues to show strong downward momentum, especially in the tech/semiconductor sector. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 09:4
 | 2026-11-23 14:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 14:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 14:17 | long COHR, long ENTG, long MPWR, long NVDA, long ZS | none | Maintaining all five existing long positions as they are showing strong daily gains and positive momentum, despite some recent pullbacks from hourly highs or mixed news. |
-| 2026-11-23 14:07 | no answer, nothing changed | none | unreadable answer |
