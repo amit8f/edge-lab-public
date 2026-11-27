@@ -14,10 +14,12 @@ CAT -3.3%, capped 3+3 books). The live part of this test therefore only describe
 ## Data window
 
 The Phase 2 holdout (label dates from 2025-10-01) is opened here at the owner's request, for these six arms only.
-Alpaca no longer serves Benzinga news from Oct 2025 to about mid 2026 (probe 2026-11-21) and our backup stops at
-Sep 2025, so that stretch cannot be tested with the same news source and is not used.
-- **Replay (decides):** the first month from 2026-06 on in which Alpaca returns articles for every trading day is
-  the news start N. Novelty needs 30 calendar days of earlier news, so replay sessions run from the first session at
+Alpaca now serves Benzinga news only from about May 2026 (probe run 45996703595, 2026-11-27: one window per month,
+none Sep 2025 to mid April 2026, full pages from 2026-05-15 on; the window seems to roll forward) and our backup
+stops at Sep 2025. Oct 2025 to April 2026 is not used here unless the same Benzinga feed is found elsewhere; if it
+is, it gets its own amendment before any of its numbers exist.
+- **Replay (decides):** the first calendar month from 2026-04 on in which Alpaca returns articles on every trading
+  day is the news start N. Novelty needs 30 calendar days of earlier news, so replay sessions run from the first session at
   least 31 days after N through 2026-10-28 (the day before the live books began).
 - **Live (reported, not deciding):** the same six arms re-made from NX3's logged decided events, 2026-10-29 to the
   last settled session.
