@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 10:47 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 10:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6593.76 | -34.06% | 305 | 97 | long ANT, long AXON, long COHR, long SHOP, long SNDK |
-| Coin flip on C's picks | $7806.41 | -21.94% | 303 | 146 | short ANT, long AXON, short COHR, long SHOP, long SNDK |
-| C's prompt on Groq (K7) | $4969.15 | -50.31% | 624 | 153 | long APP, long AXON, long QCOM, long RBLX, long SNDK |
-| Coin flip on C-groq's picks | $8944.34 | -10.56% | 622 | 295 | short APP, long AXON, long QCOM, short RBLX, short SNDK |
-| C-groq's answers, acted on once a day (K8) | $8123.17 | -18.77% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
-| Coin flip on C-groq-slow's picks | $11904.77 | +19.05% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
-| C's answers, acted on once a day (K8) | $9581.12 | -4.19% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
-| Coin flip on C-slow's picks | $10824.09 | +8.24% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
-| Just hold SPY | $9453.35 | -5.47% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6581.38 | -34.19% | 305 | 97 | long ANT, long AXON, long COHR, long SHOP, long SNDK |
+| Coin flip on C's picks | $7797.94 | -22.02% | 303 | 146 | short ANT, long AXON, short COHR, long SHOP, long SNDK |
+| C's prompt on Groq (K7) | $4959.07 | -50.41% | 625 | 154 | long APP, long AXON, long META, long QCOM, long RBLX |
+| Coin flip on C-groq's picks | $8950.21 | -10.50% | 623 | 295 | short APP, long AXON, short META, long QCOM, short RBLX |
+| C-groq's answers, acted on once a day (K8) | $8123.76 | -18.76% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
+| Coin flip on C-groq-slow's picks | $11912.24 | +19.12% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
+| C's answers, acted on once a day (K8) | $9583.41 | -4.17% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
+| Coin flip on C-slow's picks | $10806.25 | +8.06% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
+| Just hold SPY | $9450.61 | -5.49% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-27 10:57 | long ANT, long AXON, long COHR, long SHOP, long SNDK | none | Maintaining all existing long positions due to strong positive momentum today and profitability across the board. |
 | 2026-11-27 10:47 | long ANT, long AXON, long COHR, long SHOP, long SNDK | none | Maintaining all existing long positions due to continued strong upward momentum and profitability across the board. No new positions are opened as current holdings are performing well. |
 | 2026-11-27 10:37 | long ANT, long AXON, long COHR, long SHOP, long SNDK | bought MU @ $633.33; bought VRTX @ $525.90; bought AXON @ $366.10; bought SHOP @ $142.03 | Closed losing VRTX short and surging MU short. Maintained profitable ANT, COHR, and SNDK longs. Initiated new long positions in AXON and SHOP due to strong positive momentum and favorable hourly trends. |
 | 2026-11-27 10:27 | long ANT, long COHR, short MU, long SNDK, short VRTX | sold DELL @ $312.25; bought ANT @ $89.71 | Maintaining long positions in COHR and SNDK due to strong breakouts, and short positions in MU and VRTX as they continue to trend downwards. Initiating a new long position in ANT based on strong positive momentum and news. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 10:4
 | 2026-11-23 15:37 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:27 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:17 | long APLD, long CRWV, long DELL, long NVDA, long ZS | none | Maintaining current long positions in NVDA, DELL, ZS, CRWV, and APLD due to strong daily gains, positive news catalysts, and favorable hourly trends, anticipating continued upward momentum. |
-| 2026-11-23 15:07 | no answer, nothing changed | none | unreadable answer |
