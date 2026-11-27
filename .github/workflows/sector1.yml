@@ -8,13 +8,13 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "benzingaprobe", "k8peek", "k8fetch", "k8build", "k8report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "benzingaprobe", "hi3now", "k8peek", "k8fetch", "k8build", "k8report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
 
 concurrency:
-  group: ${{ (inputs.stage == 'massiveprobe' || inputs.stage == 'benzingaprobe' || inputs.stage == 'k8peek') && 'sector1-probe' || (startsWith(inputs.stage, 'k8') && 'sector1-k8' || 'sector1') }}
+  group: ${{ (inputs.stage == 'massiveprobe' || inputs.stage == 'benzingaprobe' || inputs.stage == 'k8peek' || inputs.stage == 'hi3now') && 'sector1-probe' || (startsWith(inputs.stage, 'k8') && 'sector1-k8' || 'sector1') }}
   cancel-in-progress: false
 
 jobs:
@@ -49,7 +49,7 @@ jobs:
           uv pip install --python .venv/bin/python transformers==5.18.0
 
       - name: Restore HI3's cache (2026 news, headline rows, replay days, settled trades)
-        if: startsWith(inputs.stage, 'hi3')
+        if: startsWith(inputs.stage, 'hi3') && inputs.stage != 'hi3now'
         uses: actions/cache/restore@v4
         with:
           path: cache/hi3
@@ -73,7 +73,7 @@ jobs:
           restore-keys: hi3-v1-
 
       - name: NX3's live state (logged decided events) for HI3's live part
-        if: inputs.stage == 'hi3live'
+        if: inputs.stage == 'hi3live' || inputs.stage == 'hi3now'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           ref: state-nx3
@@ -206,6 +206,13 @@ jobs:
             PYTHONPATH=. timeout 320m .venv/bin/python -u -m tracks.news.hi3k_8k --stage ${STAGE#k8} --cache cache/hi3k --out research/results/HI3K --hi3-cache cache/hi3 --budget-min 290
             exit 0
           fi
+          if [[ "$STAGE" == hi3now ]]; then
+            # HI3's live part alone (NX3's logged days since 2026-10-29), while the replay build still runs
+            for st in live report; do
+              PYTHONPATH=. .venv/bin/python -u -m tracks.news.hi3_replay --stage $st --cache cache/hi3now --out research/results/HI3/live_only --state state-nx3
+            done
+            exit 0
+          fi
           if [[ "$STAGE" == hi3* ]]; then
             # research/prereg/HI3.md: build (2026 replay days) -> live (NX3's logged days) -> report (settle, numbers)
             PYTHONPATH=. timeout 320m .venv/bin/python -u -m tracks.news.hi3_replay --stage ${STAGE#hi3} --cache cache/hi3 --out research/results/HI3 --state state-nx3 --budget-min 290
@@ -266,7 +273,7 @@ jobs:
           key: lit1-v1-${{ github.run_id }}
 
       - name: Save HI3's cache
-        if: always() && startsWith(inputs.stage, 'hi3')
+        if: always() && startsWith(inputs.stage, 'hi3') && inputs.stage != 'hi3now'
         uses: actions/cache/save@v4
         with:
           path: cache/hi3
