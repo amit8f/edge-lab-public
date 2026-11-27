@@ -117,7 +117,12 @@ def title(raw):
 
 def fetch_day(d, tick):
     """One day's 8-K press releases -> (articles, funnel counts)."""
-    idx = sec.daily_form_index(d)
+    try:
+        idx = sec.daily_form_index(d)
+    except RuntimeError as e:     # extra federal closures (e.g. 2025-12-24) have no index and answer 403
+        if "HTTP 403" not in str(e):
+            raise
+        idx = None
     if idx is None:
         return None, None
     k = idx[(idx["form"] == "8-K") & idx["cik"].isin(tick)]
