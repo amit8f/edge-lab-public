@@ -8,13 +8,13 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "benzingaprobe", "k8fetch", "k8build", "k8report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "benzingaprobe", "k8peek", "k8fetch", "k8build", "k8report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
 
 concurrency:
-  group: ${{ (inputs.stage == 'massiveprobe' || inputs.stage == 'benzingaprobe') && 'sector1-probe' || (startsWith(inputs.stage, 'k8') && 'sector1-k8' || 'sector1') }}
+  group: ${{ (inputs.stage == 'massiveprobe' || inputs.stage == 'benzingaprobe' || inputs.stage == 'k8peek') && 'sector1-probe' || (startsWith(inputs.stage, 'k8') && 'sector1-k8' || 'sector1') }}
   cancel-in-progress: false
 
 jobs:
@@ -189,6 +189,16 @@ jobs:
           fi
           if [[ "$STAGE" == massiveprobe ]]; then
             PYTHONPATH=. .venv/bin/python -u -m tracks.tools.massive_probe
+            exit 0
+          fi
+          if [[ "$STAGE" == k8peek ]]; then
+            PYTHONPATH=. .venv/bin/python -u -c "
+          import pandas as pd; from core import sec; from tracks.news import hi3k_8k as K
+          tick = K.ticker_by_cik(sec.get(K.TICKERS).json())
+          for d in ('2025-10-15', '2026-02-10'):
+              arts, fun = K.fetch_day(pd.Timestamp(d), tick); print(d, fun, flush=True)
+              for x in arts.head(25).itertuples(): print(' ', x.symbols, x.created_at, x.headline, flush=True)
+          "
             exit 0
           fi
           if [[ "$STAGE" == k8* ]]; then
