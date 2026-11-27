@@ -58,3 +58,13 @@ longs and shorts apart, HI minus plain on shared days, and the top 5 trades' sha
 
 Plain arms: pick minus control positive but under t 1.5 (few days). HI arms: fewer trades, higher net per trade,
 similar t. CatBoost below LightGBM and Ensemble, as in the live books.
+
+## Amendment 1 (2026-11-27, same day, before any HI3 number exists): all the news models
+
+Amit, 2026-11-27: "check all the models on this data also and the HI I asked you". Added, with the same rules (plain
+and HI, same test): NX3's own XGBoost (version 1, `nx3_v1_news.json`, its frozen fire cut) and the other live NXM /
+NXR / NXK arms (LIN, MLP, XGBR, RFR, KRR). 18 arms in all; arm numbers 1-6 stay as above, then XGB, LIN, MLP, XGBR,
+RFR, KRR (plain, HI) take 7-18. With 18 tests at t >= 1.5 about one would pass by chance, so a single pass is read as
+noise unless its HI and plain arms agree. Still one idea (count 193).
+Also: if Massive's free news (or Benzinga's AWS feed) turns out to carry Benzinga headlines for Oct 2025 - Apr 2026,
+that stretch is added as its own reported part under a later amendment, written before its numbers exist.

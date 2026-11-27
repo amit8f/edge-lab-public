@@ -28,9 +28,9 @@ from tracks.news import nxm_live as M
 
 ET = S.ET
 FIRST_MONTH, LIVE_FIRST, REPLAY_LAST = "2026-04", "2026-10-29", pd.Timestamp("2026-10-28")
-MODELS = ("LGBM", "CAT", "ENS")
+MODELS = ("LGBM", "CAT", "ENS", "XGB", "LIN", "MLP", "XGBR", "RFR", "KRR")     # Amendment 1 added the last six
 HI = 1.5
-ARMS = [(m, v) for m in MODELS for v in ("plain", "HI")]     # arm numbers 1..6 in this order
+ARMS = [(m, v) for m in MODELS for v in ("plain", "HI")]     # arm numbers 1..18 in this order
 MIN_DAYS_IN_MONTH = 0.9      # a month is "full" when articles appear on >= 90% of its weekdays
 NOVELTY_GAP = 31
 
@@ -279,8 +279,19 @@ def stage_live(cache, state):
 
 # ---------- report ----------
 
+class Xgb:
+    """NX3's own version 1 XGBoost news model with its frozen fire cut (nx3_live.Api.effect)."""
+
+    def __init__(self):
+        self.cut = float(json.loads(L.META.read_text())["fire_cut"])
+        self._e = L.Api.effect(None)
+
+    def effect(self, X):
+        return self._e(X)
+
+
 def stage_report(cache, out):
-    models = M.load()
+    models = M.load() | {"XGB": Xgb()}
     api = L.Api()
     cal = api.calendar(pd.Timestamp("2026-01-01").date(), pd.Timestamp("2026-12-31").date())
     cal["date"] = pd.to_datetime(cal["date"])
