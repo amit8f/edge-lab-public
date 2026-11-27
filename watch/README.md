@@ -1,6 +1,6 @@
 # SYS2 all-day picker (shadow books, no orders)
 
-Last pass 2026-11-27T10:25 ET: 36 flagged of 3387, 10 sent to the agents. research/prereg/SYS2.md
+Last pass 2026-11-27T10:30 ET: 32 flagged of 3387, 10 sent to the agents. research/prereg/SYS2.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
