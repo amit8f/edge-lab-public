@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 11:07 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 11:17 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6569.60 | -34.30% | 306 | 97 | long ANT, long AXON, long COHR, long DELL, long SNDK |
-| Coin flip on C's picks | $7773.54 | -22.26% | 304 | 146 | short ANT, long AXON, short COHR, short DELL, long SNDK |
-| C's prompt on Groq (K7) | $4939.12 | -50.61% | 628 | 156 | long ANT, long APP, long COHR, long RBLX, long SNDK |
-| Coin flip on C-groq's picks | $8960.67 | -10.39% | 626 | 298 | short ANT, short APP, short COHR, short RBLX, long SNDK |
-| C-groq's answers, acted on once a day (K8) | $8109.74 | -18.90% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
-| Coin flip on C-groq-slow's picks | $11905.21 | +19.05% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
-| C's answers, acted on once a day (K8) | $9552.04 | -4.48% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
-| Coin flip on C-slow's picks | $10838.44 | +8.38% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
-| Just hold SPY | $9445.02 | -5.55% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6544.51 | -34.55% | 306 | 97 | long ANT, long AXON, long COHR, long DELL, long SNDK |
+| Coin flip on C's picks | $7781.29 | -22.19% | 304 | 146 | short ANT, long AXON, short COHR, short DELL, long SNDK |
+| C's prompt on Groq (K7) | $4927.44 | -50.73% | 630 | 156 | long APP, long AXON, long COHR, long NU, long RBLX |
+| Coin flip on C-groq's picks | $8946.61 | -10.53% | 628 | 299 | short APP, short AXON, short COHR, short NU, short RBLX |
+| C-groq's answers, acted on once a day (K8) | $8134.75 | -18.65% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
+| Coin flip on C-groq-slow's picks | $11931.65 | +19.32% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
+| C's answers, acted on once a day (K8) | $9575.70 | -4.24% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
+| Coin flip on C-slow's picks | $10805.55 | +8.06% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
+| Just hold SPY | $9436.68 | -5.63% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-27 11:17 | long ANT, long AXON, long COHR, long DELL, long SNDK | none | Maintaining all current long positions due to strong positive momentum today and overall profitability, expecting continued upward movement. |
 | 2026-11-27 11:07 | long ANT, long AXON, long COHR, long DELL, long SNDK | sold SHOP @ $141.90; bought DELL @ $316.85 | Maintaining strong long positions in SNDK, COHR, ANT, and AXON due to continued upward momentum. Replaced SHOP with DELL to capitalize on its strong daily performance and positive analyst news. |
 | 2026-11-27 10:57 | long ANT, long AXON, long COHR, long SHOP, long SNDK | none | Maintaining all existing long positions due to strong positive momentum today and profitability across the board. |
 | 2026-11-27 10:47 | long ANT, long AXON, long COHR, long SHOP, long SNDK | none | Maintaining all existing long positions due to continued strong upward momentum and profitability across the board. No new positions are opened as current holdings are performing well. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 11:0
 | 2026-11-23 15:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:47 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-23 15:37 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-23 15:27 | no answer, nothing changed | none | unreadable answer |
