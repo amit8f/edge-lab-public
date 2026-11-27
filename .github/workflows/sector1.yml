@@ -8,13 +8,13 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "benzingaprobe", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
 
 concurrency:
-  group: ${{ inputs.stage == 'massiveprobe' && 'sector1-probe' || 'sector1' }}
+  group: ${{ (inputs.stage == 'massiveprobe' || inputs.stage == 'benzingaprobe') && 'sector1-probe' || 'sector1' }}
   cancel-in-progress: false
 
 jobs:
@@ -65,7 +65,7 @@ jobs:
           persist-credentials: false
 
       - name: Restore W1's daily cache (read only)
-        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && inputs.stage != 'massiveprobe' }}
+        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && inputs.stage != 'massiveprobe' && inputs.stage != 'benzingaprobe' }}
         uses: actions/cache/restore@v4
         with:
           path: cache/w1
@@ -73,7 +73,7 @@ jobs:
           restore-keys: w1-v1-
 
       - name: Fall back to the NX1 cache, which holds a copy of W1's data (caches get evicted)
-        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && inputs.stage != 'massiveprobe' && hashFiles('cache/w1/w1/daily/**') == '' }}
+        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && inputs.stage != 'massiveprobe' && inputs.stage != 'benzingaprobe' && hashFiles('cache/w1/w1/daily/**') == '' }}
         uses: actions/cache/restore@v4
         with:
           path: cache/nx1
@@ -119,6 +119,7 @@ jobs:
           NUMERAI_PUBLIC_ID: ${{ secrets.NUMERAI_PUBLIC_ID }}
           NUMERAI_SECRET_KEY: ${{ secrets.NUMERAI_SECRET_KEY }}
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+          BENZINGA_API_KEY: ${{ secrets.BENZINGA_API_KEY }}
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
@@ -164,6 +165,10 @@ jobs:
               --repo amit8f/edge-lab --title "Benzinga news 2026 backup ($n months)" \
               --notes "Encrypted Alpaca Benzinga headline months from 2026-04 (HI3.md). Same passphrase as news-backup-20261121."
             GH_TOKEN="$EVIDENCE_TOKEN" gh release view "$tag" --repo amit8f/edge-lab --json assets --jq '.assets[]|.name+" "+(.size|tostring)'
+            exit 0
+          fi
+          if [[ "$STAGE" == benzingaprobe ]]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.tools.benzinga_probe
             exit 0
           fi
           if [[ "$STAGE" == massiveprobe ]]; then
@@ -216,7 +221,7 @@ jobs:
           PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 || "$STAGE" == 3 || "$STAGE" == 4 || "$STAGE" == 5 || "$STAGE" == 6 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
-        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore' && inputs.stage != 'numeraiprobe' && !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && inputs.stage != 'backup2026' && inputs.stage != 'massiveprobe'
+        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore' && inputs.stage != 'numeraiprobe' && !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && inputs.stage != 'backup2026' && inputs.stage != 'massiveprobe' && inputs.stage != 'benzingaprobe'
         uses: actions/cache/save@v4
         with:
           path: cache/sector1
