@@ -1,10 +1,10 @@
 # SYS2B scout picker (shadow books, no orders)
 
-Last pass 2026-11-27T12:30 ET: 457 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
+Last pass 2026-11-27T12:35 ET: 449 events touched, 0 scout calls, 0 finalists. research/prereg/SYS2B.md
 
 | Book | Equity | Return | Closed trades | Won | Holding | Status |
 |---|---|---|---|---|---|---|
-| SCOUT-MAIN | $4,724.58 | -5.51% | 103 | 43 | short ABX, long BA, long BKU, long CRWD, long GEO, long GNL, long HAS, long NVS | paused |
-| SCOUT-MAIN-coin | $4,657.15 | -6.86% | 102 | 37 | short ABX, short BA, short BKU, long CRWD, short DXYZ, long GEO, short GNL, short HAS, long NVS | ok |
+| SCOUT-MAIN | $4,726.32 | -5.47% | 103 | 43 | short ABX, long BA, long BKU, long CRWD, long GEO, long GNL, long HAS, long NVS | paused |
+| SCOUT-MAIN-coin | $4,656.34 | -6.87% | 102 | 37 | short ABX, short BA, short BKU, long CRWD, short DXYZ, long GEO, short GNL, short HAS, long NVS | ok |
 | SCOUT-PENNY | $446.58 | -10.68% | 34 | 9 | cash | paused |
 | SCOUT-PENNY-coin | $461.84 | -7.63% | 34 | 12 | cash | ok |
