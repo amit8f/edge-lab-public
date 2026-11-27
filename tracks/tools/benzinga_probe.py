@@ -26,14 +26,14 @@ def page(d, p):
 
 if __name__ == "__main__":
     now = pd.Timestamp.now(tz="UTC").tz_localize(None)
-    for m in pd.period_range("2025-09", now.strftime("%Y-%m"), freq="M"):
+    for m in [pd.Period(x, "M") for x in ("2025-10", "2026-01", "2026-04", "2026-07")]:
         d = pd.Timestamp(f"{m}-15")
         while d.weekday() >= 5:
             d += pd.Timedelta(days=1)
         if d >= now:
             continue
         n, tick, first, last = 0, 0, None, None
-        for p in range(20):
+        for p in range(120):
             j = page(d, p)
             if not j:
                 break
@@ -42,7 +42,7 @@ if __name__ == "__main__":
                 tick += bool(a.get("stocks"))
                 first = first or a.get("created")
                 last = a.get("created")
-            if len(j) < 100:
+            if len(j) == 0:
                 break
-        print(f"[benzinga] {d:%Y-%m-%d}: {n} articles{' (20-page cap)' if n >= 2000 else ''}, {tick} with tickers, "
+        print(f"[benzinga] {d:%Y-%m-%d}: {n} articles{' (page cap)' if p == 119 else ''} in {p + 1} pages, {tick} with tickers, "
               f"{first} .. {last}", flush=True)
