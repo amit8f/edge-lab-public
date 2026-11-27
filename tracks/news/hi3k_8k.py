@@ -150,6 +150,8 @@ def stage_fetch(cache, budget_min):
         tmp.write_text(json.dumps(funnel))
         tmp.replace(funnel_f)
         print(f"[hi3k day] {d:%Y-%m-%d}: {fun}", flush=True)
+        for x in arts.head(3).itertuples():     # public SEC filings: a few titles show the parser works
+            print(f"[hi3k title] {x.symbols} {x.created_at}: {x.headline}", flush=True)
     for m in pd.period_range(FIRST_DAY, LAST_DAY, freq="M"):
         parts = [pd.read_parquet(g) for g in sorted(dd.glob(f"{m}-*.parquet"))]
         N.atomic_parquet(pd.concat(parts, ignore_index=True).drop_duplicates("id"), nd / f"news_{m}.parquet")
