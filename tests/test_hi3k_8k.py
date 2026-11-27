@@ -45,3 +45,10 @@ def test_overlap_share(tmp_path):
     tr = pd.DataFrame({"arm": ["X"] * 3, "part": ["overlap"] * 3, "role": ["picks"] * 3, "day": ["2026-06-01"] * 3,
                        "symbol": ["AAA", "BBB", "CCC"]})
     assert abs(K.overlap_share(tr, tmp_path)["X"] - 1 / 3) < 1e-12
+
+
+def test_title_joins_broken_lines_and_skips_contacts():
+    raw = ("<p>Investors: Jane Roe, VP, Investor Relations - 201-847-6927</p>"
+           "<p>Bank7 Corp. (NASDAQ: BSVN) today announced results for the quarter ended in September</p>"
+           "<p>Adagio Medical Announces Pricing of up to Approximately</p><p>$25 Million Private Placement</p>")
+    assert K.title(raw) == "Adagio Medical Announces Pricing of up to Approximately $25 Million Private Placement"

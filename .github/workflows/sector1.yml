@@ -61,8 +61,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: cache/hi3k
-          key: hi3k-v1-${{ github.run_id }}
-          restore-keys: hi3k-v1-
+          key: hi3k-v2-${{ github.run_id }}
+          restore-keys: hi3k-v2-
 
       - name: HI3's replay days for HI3K's overlap check
         if: inputs.stage == 'k8report'
@@ -277,7 +277,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: cache/hi3k
-          key: hi3k-v1-${{ github.run_id }}
+          key: hi3k-v2-${{ github.run_id }}
 
       - name: Save NUM1's Numerai cache
         if: (inputs.stage == 'numeraitrain' || inputs.stage == 'numeraidata') && success()

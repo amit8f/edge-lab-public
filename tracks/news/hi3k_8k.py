@@ -82,13 +82,33 @@ def text_lines(raw):
     return [" ".join(ln.split()) for ln in t.splitlines() if ln.strip()]
 
 
+PHONE = re.compile(r"\(?\d{3}\)?[-. ]\d{3}[-.]\d{4}")
+BODY = re.compile(r"\((nasdaq|nyse|otc)|today announced|today reported|exhibit 99|^item \d|^(investors?|media|analysts?):",
+                  re.IGNORECASE)
+JOIN_END = re.compile(r"\b(of|for|to|and|or|with|the|a|an|in|on|at|by|from|approximately|its|up)$|[,;:&–-]$", re.IGNORECASE)
+
+
+def skip(ln):
+    return bool(BOILER.match(ln) or DATE_LINE.match(ln) or BODY.search(ln) or PHONE.search(ln) or "@" in ln
+                or "http" in ln.lower())
+
+
+def nwords(ln):
+    return len(re.findall(r"[A-Za-z][A-Za-z'&.-]*", ln))
+
+
 def title(raw):
-    """A press release's title: the first line with MIN_WORDS..MAX_WORDS words after boilerplate, or None."""
-    for ln in text_lines(raw)[:80]:
-        if BOILER.match(ln) or DATE_LINE.match(ln) or "@" in ln or "http" in ln.lower():
+    """A press release's title: the first line with MIN_WORDS..MAX_WORDS words after boilerplate, or None. A title
+    broken over lines (ending in "of", "for", a comma, ...) takes the next line when the whole stays <= MAX_WORDS."""
+    lines = text_lines(raw)[:80]
+    for i, ln in enumerate(lines):
+        if skip(ln) or len(ln.split()) > MAX_WORDS:
             continue
-        words = re.findall(r"[A-Za-z][A-Za-z'&.-]*", ln)
-        if MIN_WORDS <= len(words) <= MAX_WORDS and len(ln.split()) <= MAX_WORDS:
+        while JOIN_END.search(ln) and i + 1 < len(lines) and not skip(lines[i + 1]) \
+                and len((ln + " " + lines[i + 1]).split()) <= MAX_WORDS:
+            i += 1
+            ln = ln + " " + lines[i]
+        if nwords(ln) >= MIN_WORDS:
             return ln
     return None
 

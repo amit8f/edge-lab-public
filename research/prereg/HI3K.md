@@ -53,3 +53,11 @@ HI3's list per arm and part; the funnel (8-Ks, with EX-99, with a title, events,
 Far fewer events a day than Benzinga (a few hundred 8-Ks against about 1,900 articles), mostly earnings releases.
 Picks minus control positive for the stronger HI3 models but under t 1.5 on most arms; overlap agrees in sign with
 the Benzinga replay for most models.
+
+## Parser check (2026-11-27, before any HI3K number exists)
+
+A peek at two days' titles (run 46008342702, no model run) showed contact lines, "(NASDAQ: X) today announced" body
+lines and titles split over two lines slipping through. The title rule now also skips lines with a phone number, an
+exchange tag, "today announced/reported", "exhibit 99", "Item N" or an "Investors:/Media:" label, and joins a line
+ending in "of", "for", "and", a comma and the like with the next line while the whole stays within 40 words. The
+fetch restarts from scratch under the new rule.
