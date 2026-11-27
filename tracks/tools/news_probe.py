@@ -11,6 +11,13 @@ if __name__ == "__main__":
     f = "%Y-%m-%dT%H:%M:%SZ"
     wins = WINDOWS + [((now - pd.Timedelta(days=d)).strftime(f), (now - pd.Timedelta(days=d) + pd.Timedelta(hours=6)).strftime(f))
                       for d in (1, 3, 7, 14, 30, 60, 120, 240, 400)]
+    # one weekday window per month, Sep 2025 .. now (HI3.md: where Alpaca's history starts again)
+    for m in pd.period_range("2025-09", now.strftime("%Y-%m"), freq="M"):
+        day = pd.Timestamp(f"{m}-15")
+        while day.weekday() >= 5:
+            day += pd.Timedelta(days=1)
+        if day.tz_localize("UTC") < now:
+            wins.append((f"{day:%Y-%m-%d}T13:00:00Z", f"{day:%Y-%m-%d}T19:00:00Z"))
     for s, e in wins:
         for sort in ("asc", "desc"):
             p = {"start": s, "sort": sort, "limit": 50, "include_content": "false"}
