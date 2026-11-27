@@ -1,23 +1,24 @@
 # $10,000 AI bot C: whole market, up to 5 stocks (paper, K4)
 
-Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 12:57 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
+Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 12:59 ET.** Paper money only; fills use real-time IEX prices (16-minute-old SIP prices when IEX has nothing newer) with costs. The coin-flip book buys or shorts the same stocks at the same moments in a random direction: C has to beat it to show skill (research/prereg/K4.md).
 
 | Book | Equity | Return | Closed trades | Won | Holding now |
 |---|---|---|---|---|---|
-| AI bot C (whole market, up to 5 stocks) | $6644.40 | -33.56% | 308 | 97 | long ANT, long COHR, long MU, long SNDK, long TSLA |
-| Coin flip on C's picks | $7715.59 | -22.84% | 306 | 146 | short ANT, short COHR, short MU, long SNDK, short TSLA |
-| C's prompt on Groq (K7) | $4882.55 | -51.17% | 638 | 160 | long APP, long AXON, long NU, long QCOM, long RBLX |
-| Coin flip on C-groq's picks | $8959.20 | -10.41% | 635 | 302 | short APP, short AXON, long NU, long QCOM, short RBLX |
-| C-groq's answers, acted on once a day (K8) | $8134.96 | -18.65% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
-| Coin flip on C-groq-slow's picks | $12096.60 | +20.97% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
-| C's answers, acted on once a day (K8) | $9541.89 | -4.58% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
-| Coin flip on C-slow's picks | $10821.58 | +8.22% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
-| Just hold SPY | $9465.85 | -5.34% | 0 | 0 | long SPY |
+| AI bot C (whole market, up to 5 stocks) | $6571.86 | -34.28% | 308 | 97 | long ANT, long COHR, long MU, long SNDK, long TSLA |
+| Coin flip on C's picks | $7729.15 | -22.71% | 306 | 146 | short ANT, short COHR, short MU, long SNDK, short TSLA |
+| C's prompt on Groq (K7) | $4891.50 | -51.08% | 639 | 160 | long APP, long MPWR, long NU, long QCOM, long RBLX |
+| Coin flip on C-groq's picks | $8991.08 | -10.09% | 636 | 303 | short APP, long MPWR, long NU, long QCOM, short RBLX |
+| C-groq's answers, acted on once a day (K8) | $8141.14 | -18.59% | 69 | 30 | short ADI, short AXTI, short HPE, long MRNA, long RVMD |
+| Coin flip on C-groq-slow's picks | $12084.50 | +20.85% | 69 | 42 | long ADI, long AXTI, short HPE, long MRNA, long RVMD |
+| C's answers, acted on once a day (K8) | $9509.77 | -4.90% | 57 | 32 | short ADI, short DELL, short HPE, short MRVL, short MU |
+| Coin flip on C-slow's picks | $10797.57 | +7.98% | 57 | 31 | short ADI, long DELL, long HPE, long MRVL, long MU |
+| Just hold SPY | $9491.64 | -5.08% | 0 | 0 | long SPY |
 
 ## C's decisions, newest first
 
 | Time (ET) | Wants | Trades | Why |
 |---|---|---|---|
+| 2026-11-27 12:59 | long ANT, long COHR, long MU, long SNDK, long TSLA | none | Maintaining all current long positions due to strong daily performance, positive news, and clear upward trends in hourly closes for most holdings, indicating continued momentum. |
 | 2026-11-27 12:57 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-27 12:47 | long ANT, long COHR, long MU, long SNDK, long TSLA | sold AXON @ $364.02; bought TSLA @ $398.40 | Maintaining long positions in ANT, COHR, and SNDK due to strong momentum. Keeping MU based on positive news despite a slight hourly dip. Selling AXON due to underperformance and opening a new long position in TSLA based on positive news and strong daily/hourly performance. |
 | 2026-11-27 12:37 | long ANT, long AXON, long COHR, long MU, long SNDK | none | Maintaining all existing long positions due to strong positive momentum and hourly gains across the board, with positive news for ANT and MU. |
@@ -77,4 +78,3 @@ Started 2026-10-19 09:48 ET with $10,000 per book. **Last update 2026-11-27 12:5
 | 2026-11-24 11:17 | short ADI, short AMD, short DELL, short HPE, short MU | none | All current short positions are profitable and the market continues to show strong downward momentum in these stocks. No changes are made to capitalize on the existing trend. |
 | 2026-11-24 11:07 | no answer, nothing changed | none | unreadable answer |
 | 2026-11-24 10:57 | no answer, nothing changed | none | unreadable answer |
-| 2026-11-24 10:47 | short ADI, short AMD, short DELL, short HPE, short MU | none | All current short positions are profitable and the market is broadly down today, indicating continued bearish sentiment. Maintaining all existing positions. |
