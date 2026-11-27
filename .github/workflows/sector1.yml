@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
@@ -42,8 +42,30 @@ jobs:
           uv venv --python 3.12.10 .venv
           uv pip install --python .venv/bin/python -r requirements.txt
 
+      - name: CPU-only torch and transformers for FinBERT (HI3 replay, same pins as nx3-live)
+        if: inputs.stage == 'hi3build'
+        run: |
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
+
+      - name: Restore HI3's cache (2026 news, headline rows, replay days, settled trades)
+        if: startsWith(inputs.stage, 'hi3')
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/hi3
+          key: hi3-v1-${{ github.run_id }}
+          restore-keys: hi3-v1-
+
+      - name: NX3's live state (logged decided events) for HI3's live part
+        if: inputs.stage == 'hi3live'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: state-nx3
+          path: state-nx3
+          persist-credentials: false
+
       - name: Restore W1's daily cache (read only)
-        if: ${{ !startsWith(inputs.stage, 'numerai') }}
+        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') }}
         uses: actions/cache/restore@v4
         with:
           path: cache/w1
@@ -51,7 +73,7 @@ jobs:
           restore-keys: w1-v1-
 
       - name: Fall back to the NX1 cache, which holds a copy of W1's data (caches get evicted)
-        if: ${{ !startsWith(inputs.stage, 'numerai') && hashFiles('cache/w1/w1/daily/**') == '' }}
+        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && hashFiles('cache/w1/w1/daily/**') == '' }}
         uses: actions/cache/restore@v4
         with:
           path: cache/nx1
@@ -143,6 +165,11 @@ jobs:
             GH_TOKEN="$EVIDENCE_TOKEN" gh release view "$tag" --repo amit8f/edge-lab --json assets --jq '.assets[]|.name+" "+(.size|tostring)'
             exit 0
           fi
+          if [[ "$STAGE" == hi3* ]]; then
+            # research/prereg/HI3.md: build (2026 replay days) -> live (NX3's logged days) -> report (settle, numbers)
+            PYTHONPATH=. timeout 320m .venv/bin/python -u -m tracks.news.hi3_replay --stage ${STAGE#hi3} --cache cache/hi3 --out research/results/HI3 --state state-nx3 --budget-min 290
+            exit 0
+          fi
           if [[ "$STAGE" == warm ]]; then
             echo "caches restored (keeps them from expiring): nx1 $(du -sh cache/nx1 | cut -f1), w1 $(du -sh cache/w1 2>/dev/null | cut -f1), sector1 $(du -sh cache/sector1 2>/dev/null | cut -f1)"
             exit 0
@@ -184,7 +211,7 @@ jobs:
           PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 || "$STAGE" == 3 || "$STAGE" == 4 || "$STAGE" == 5 || "$STAGE" == 6 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
-        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore' && inputs.stage != 'numeraiprobe' && !startsWith(inputs.stage, 'numerai')
+        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore' && inputs.stage != 'numeraiprobe' && !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && inputs.stage != 'backup2026'
         uses: actions/cache/save@v4
         with:
           path: cache/sector1
@@ -196,6 +223,13 @@ jobs:
         with:
           path: cache/lit1
           key: lit1-v1-${{ github.run_id }}
+
+      - name: Save HI3's cache
+        if: always() && startsWith(inputs.stage, 'hi3')
+        uses: actions/cache/save@v4
+        with:
+          path: cache/hi3
+          key: hi3-v1-${{ github.run_id }}
 
       - name: Save NUM1's Numerai cache
         if: (inputs.stage == 'numeraitrain' || inputs.stage == 'numeraidata') && success()
@@ -210,7 +244,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NUM1 research/results/LIT1 models/num1 && git add research/results/SECTOR1 research/results/NUM1 research/results/LIT1 models/num1
+          mkdir -p research/results/NUM1 research/results/LIT1 research/results/HI3 models/num1 && git add research/results/SECTOR1 research/results/NUM1 research/results/LIT1 research/results/HI3 models/num1
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
           git commit -q -m "SECTOR1 stage ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
