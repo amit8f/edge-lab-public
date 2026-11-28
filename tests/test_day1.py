@@ -232,3 +232,27 @@ def test_non_fractionable_entry_retries_whole_shares():
     orders = []
     res = D.send(B(), D.entry_order(pos), orders)
     assert res[0] == 403
+
+
+class HeldBroker(FakeBroker):
+    def __init__(self, held):
+        super().__init__()
+        self.h = held
+
+    def held(self):
+        return dict(self.h)
+
+
+def test_sells_never_ask_for_more_than_held_and_orphans_are_sold(tmp_path):
+    st = D.State(tmp_path)
+    day = pd.Timestamp("2026-11-30")
+    st.save("positions.json", [
+        {"role": "bot", "symbol": "ABTC", "qty": 34.0426, "end": "2026-11-30", "date": "2026-11-27"},
+        {"role": "bot", "symbol": "KEEP", "qty": 5.0, "end": "2026-12-03", "date": "2026-11-27"},
+        {"role": "bot", "symbol": "GONE", "qty": 3.0, "end": "2026-11-30", "date": "2026-11-27"}])
+    br = HeldBroker({"ABTC": 33.15851602, "KEEP": 5.0, "ARRY": 36.45})
+    D.send_moc(st, br, day)
+    sells = {b["symbol"]: b["qty"] for b in br.sent if b["side"] == "sell"}
+    assert sells == {"ABTC": "33.1585", "ARRY": "36.45"}
+    log = st.load("2026-11-30/moc.json", [])
+    assert any(r.get("message") == "account holds none" and r["body"]["symbol"] == "GONE" for r in log)

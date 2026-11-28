@@ -200,6 +200,11 @@ class Broker:
     def order(self, body):
         return alpaca.post(f"{alpaca.TRADE}/orders", body, headers=self.h)
 
+    def held(self):
+        """Long shares the account holds now, by symbol."""
+        return {p["symbol"]: float(p["qty"]) for p in alpaca.get(f"{alpaca.TRADE}/positions", {}, headers=self.h)
+                if float(p["qty"]) > 0}
+
 
 def broker():
     h = accounts.headers(ACCOUNT)
@@ -228,6 +233,15 @@ def send(br, body, sink):
         sink.append({"body": body, "sent": False})
         return None
     try:
+        if body["side"] == "sell" and hasattr(br, "held"):
+            # a notional buy fills a few hundredths of a share less than usd / price, so selling the ledger's qty
+            # was refused ("insufficient qty") and left the shares in the account for weeks (2026-11-28 fix):
+            # a sell never asks for more than the account holds, and nothing is sent when it holds none
+            have = br.held().get(body["symbol"], 0.0)
+            if have <= 0:
+                sink.append({"body": body, "sent": False, "message": "account holds none"})
+                return None
+            body = body | {"qty": f"{min(float(body['qty']), have):g}"}
         code, js = br.order(body)
         sink.append({"body": body, "http": code, "status": js.get("status"),
                      "message": None if code < 300 else js.get("message")})
@@ -417,10 +431,29 @@ def send_moc(st, br, d):
     if sent is not None:
         return
     orders = []
-    for p in st.load("positions.json", []):
+    pos = st.load("positions.json", [])
+    for p in pos:
         if p["role"] == "bot" and p["end"] == f"{d:%Y-%m-%d}":
             send(br, exit_order(p, True, "moc"), orders)
+    sell_orphans(br, pos, d, orders)
     st.save(f"{d:%Y-%m-%d}/moc.json", orders)
+
+
+def sell_orphans(br, pos, d, orders):
+    """Sells account shares the book doesn't hold after today (left behind by a refused exit). The book's own
+    record is unchanged: it already closed those trades at their exit price."""
+    if br is None or not hasattr(br, "held"):
+        return
+    try:
+        held = br.held()
+    except Exception as e:  # noqa: BLE001 - orders never stop the ledger book
+        orders.append({"orphans": "positions read failed", "error": f"{type(e).__name__}: {e}"[:200]})
+        return
+    keep = {p["symbol"] for p in pos if p["role"] == "bot" and p["end"] > f"{d:%Y-%m-%d}"}
+    for sym, q in sorted(held.items()):
+        if sym not in keep:
+            send(br, {"symbol": sym, "side": "sell", "qty": f"{q:g}", "type": "market", "time_in_force": "day",
+                      "client_order_id": f"day1-{d:%Y%m%d}-{sym}-orphan"}, orders)
 
 
 def after_close(st, api, d):
