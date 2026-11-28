@@ -288,7 +288,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/LONG research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 research/results/FAST1 research/results/MODELS5 research/results/NXMVOTE research/results/BOOMNX3 models/boom_short models/surv1
+          mkdir -p research/results/LONG research/results/VETO1 research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 research/results/FAST1 research/results/MODELS5 research/results/NXMVOTE research/results/BOOMNX3 models/boom_short models/surv1
           git add research/results/LONG research/results/VETO1 research/results/NX3 research/results/NXM research/results/NXR research/results/NXE research/results/NXF research/results/NXS research/results/CHART1 research/results/BOOM1 research/results/BOOM2 research/results/DIR research/results/BOOMX research/results/S0 research/results/FAST1 research/results/MODELS5 research/results/NXMVOTE research/results/BOOMNX3 models/boom_short models/surv1
           git diff --cached --quiet && { echo "No results yet (stage unfinished); rerun to continue"; exit 0; }
           git commit -q -m "NX3/NXM/NXR/NXE ${{ inputs.stage }} results (run ${{ github.run_id }})"

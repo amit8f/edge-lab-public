@@ -292,7 +292,9 @@ def stage_jumpcut(cache, out):
     p = p[p["exit_5"].notna() & (p["exit_5"] <= N.LAST_EXIT)].reset_index(drop=True)
     lo = cap_longs(p)
     lo = lo[lo["year"].isin(CHOOSE)]
+    j = (lo["price"] / lo["prev_c"] - 1).replace([np.inf, -np.inf], np.nan).dropna()
     rep = {"years": list(CHOOSE), "buys": len(lo), "jump_cut": jump_cut(lo),
+           "share_zero": float((j == 0).mean()), "share_above": float((j > jump_cut(lo)).mean()),
            "pre_open_share": float(((lo["entry_t"] - lo["d"]) <= pd.Timedelta(hours=9, minutes=31)).mean())}
     write(out, "jump_cut.json", rep)
 
