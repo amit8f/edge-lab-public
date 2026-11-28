@@ -27,3 +27,24 @@ A pass gets a log-only forward copy on NX3-HI's live buys.
 ## Prediction
 
 P(pass) 0.2: the cell was the best of about 40 LONG1 cells, so most of it is likely luck; HI3K's buys lost overall.
+
+## Amendment 1 (2026-11-28, before any JUMP1 result)
+
+The first `jumpcut` run (46143805444) found the 2/3 quantile of jump among 2,137 NX3 buys in 2019-2023 is exactly
+0.0: 75% of those buys came from pre-open news, and many enter at a price equal to the prior close, so jump = 0 ties
+sit on the boundary. With `>=`, every zero-jump buy would count as "high jump", which is far more than the
+registered top third. Fix: a buy is high-jump only when jump > cut (strictly above). The cut itself stays the
+registered 2/3 quantile. `jump_cut.json` now also records the share of zero jumps and the share above the cut.
+That run's job also failed to commit (the VETO1 results folder was missing from the mkdir list); fixed. No JUMP1
+number had been computed when this was decided.
+
+## Amendment 2 (2026-11-28, before any JUMP1 result)
+
+The re-run (46144278250) showed every 2019-2023 buy has price / prev_c - 1 = 0 exactly (share_zero 1.0): in that
+cache `price` is the reference close, not the entry. So the bar was measuring nothing. Bug fix: the cut now uses the
+same jump JUMP1 reads from the HI3/HI3K inputs, (1 + r_open)(1 + r_react) - 1, for the same 2019-2023 buys, still
+the 2/3 quantile, still strictly above. No JUMP1 number exists yet.
+
+Side effect found: LONG1's descriptive "jump_before_entry" cells (low / mid / high, run 46130873541) used the same
+zero column, and its tertiles were cut by row order (rank method "first"), so those cells carry no information about
+jumps. That LONG1 hint (big jump +0.94% vs small -0.95%) is void. LONG1's other cells are unaffected.

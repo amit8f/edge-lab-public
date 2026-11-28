@@ -100,3 +100,7 @@ or 5 sessions: +0.22% / +0.23% (t 0.9 / 0.8). Predictions: LONG1's cost part rig
 POST-HOC, NOT REGISTERED: "pre-open news and a big jump before entry" is the best LONG1 cell pair. It was found on
 2019-2023 and the 2024-2025 window is now spent, so it can only be tested on independent data (HI3's Jun-Oct 2026
 replay, HI3K's 8-K feed, or forward), as a new registration.
+
+## Bug note (2026-11-28)
+
+LONG1's `jump_before_entry` cells are void: price / prev_c was always 0 in the cache and the tertiles were cut by row order. See research/prereg/JUMP1.md, Amendment 2. Logged, not rerun; the other LONG1 cells and LONG2-5 verdicts are unaffected.

@@ -53,7 +53,7 @@ def buys(cache, source):
 def verdict(b, cut):
     """The primary test on pooled buys `b` (net, mins_open, jump, day)."""
     b = b.dropna(subset=["net"])
-    sel = (b["mins_open"].astype(float) <= PRE_OPEN_MIN) & (b["jump"].astype(float) >= cut)
+    sel = (b["mins_open"].astype(float) <= PRE_OPEN_MIN) & (b["jump"].astype(float) > cut)
     j, rest = b[sel], b[~sel]
     out = {"buys": len(b), "jump1": len(j), "rest": len(rest)}
     if len(j) < MIN_TRADES:
@@ -84,7 +84,7 @@ def main():
     cells = {}
     for name, m in {"pre_open": b["mins_open"].astype(float) <= PRE_OPEN_MIN,
                     "later": b["mins_open"].astype(float) > PRE_OPEN_MIN}.items():
-        for jn, jm in {"high_jump": b["jump"].astype(float) >= cut, "other_jump": b["jump"].astype(float) < cut}.items():
+        for jn, jm in {"high_jump": b["jump"].astype(float) > cut, "other_jump": b["jump"].astype(float) <= cut}.items():
             x = b[m & jm]["net"].dropna()
             cells[f"{name}/{jn}"] = {"n": len(x), "net": float(x.mean()) if len(x) else None}
     res["cells"] = cells
