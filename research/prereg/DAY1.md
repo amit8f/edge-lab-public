@@ -143,5 +143,10 @@ P&L (dashboard Accounts) was wrong from 2026-11-03 until this fix.
 day. AIOK on 2026-11-27 was booked at 8.98, a 2026-11-25 print, while it traded near 5.4 (the EL-NX3 account
 filled at 5.39), so the book would have shown about -43% on a trade that never happened at that price. Fix: a
 trade from an earlier day is not a price (the stock is skipped as "no quote"), and an open position entered on such
-a print is closed at zero and marked "excluded: stale entry price". Only AIOK (2026-11-27) is affected among open
-positions.
+a print is closed at zero and marked "excluded: stale entry price". Open positions affected: AIOK, ROCK and NX (2026-11-27).
+
+2026-11-28, scale: the stale print hit 23 of the 67 closed bot trades (2026-11-02 to 2026-11-25), nearly all on
+news before the open, so the book "bought" at the previous day's last trade and counted the morning gap as profit.
+Those 23 made +$99 of the book's +$116. The ledger stays as written (append-only); the forward test and the
+dashboard leave out every bot and twin trade whose entry print is from an earlier day (book +$17, +1.7%, on 44
+trades). CHR-P's own book had 71 such triggers out of 4,803 (1.5%), fixed from 2026-11-30 the same way.
