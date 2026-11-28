@@ -1,0 +1,186 @@
+# AUTO2-AUTO4 (research/prereg/AUTO2.md): self-improving loops for NX3-HI (auto2), the Ensemble (auto3) and LightGBM
+# (auto4), each on its own branch named after it. Same rules as AUTO1: an AI proposes one change to the loop's
+# candidate.py, the frozen harness2 scores it offline (no secrets, no network), keep if +0.05 Sharpe. Live models never
+# import auto/. check (2023) and test (2024-01..2025-09) are run once per loop, by hand.
+name: auto-models
+
+on:
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "prepare (event table, run on the research branch), loop, check (2023, once) or test (once)"
+        required: false
+        default: loop
+      loop:
+        description: "auto2, auto3, auto4 or all"
+        required: false
+        default: all
+      trials:
+        description: "trials per loop this run"
+        required: false
+        default: "15"
+
+permissions: {}
+
+env:
+  MAX_TRIALS: "200"
+
+jobs:
+  prepare:
+    if: github.repository != 'amit8f/edge-lab' && inputs.stage == 'prepare'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+      - name: Restore NX3's cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1/nx3
+          key: nx3-v1-none
+          restore-keys: nx3-v1-
+          fail-on-cache-miss: true
+      - name: Build the event table (real and placebo events)
+        run: PYTHONPATH=. .venv/bin/python -u -m auto.harness2 --stage prepare --cache cache/nx1 --events cache/auto2/events.parquet
+      - uses: actions/cache/save@v4
+        with:
+          path: cache/auto2
+          key: auto2-v1-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: auto2-events
+          path: cache/auto2/events.parquet
+          retention-days: 90
+
+  run:
+    if: github.repository != 'amit8f/edge-lab' && inputs.stage != 'prepare'
+    strategy:
+      fail-fast: false
+      matrix:
+        loop: [auto2, auto3, auto4]
+    concurrency:
+      group: auto-models-${{ matrix.loop }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    steps:
+      - name: Skip loops not asked for
+        id: want
+        run: |
+          w="${{ inputs.loop || 'all' }}"
+          [ "$w" = all ] || [ "$w" = "${{ matrix.loop }}" ] && echo "go=1" >> "$GITHUB_OUTPUT" || echo "go=0" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        if: steps.want.outputs.go == '1'
+        with:
+          fetch-depth: 0
+
+      - name: Switch to the loop's branch
+        if: steps.want.outputs.go == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin "${{ matrix.loop }}" >/dev/null; then
+            git fetch -q origin "${{ matrix.loop }}" && git checkout -q -B "${{ matrix.loop }}" FETCH_HEAD
+          else
+            git checkout -q -B "${{ matrix.loop }}" && git push -q -u origin "${{ matrix.loop }}"
+          fi
+
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        if: steps.want.outputs.go == '1'
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        if: steps.want.outputs.go == '1'
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore the event table
+        id: events
+        if: steps.want.outputs.go == '1'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/auto2
+          key: auto2-v1-none
+          restore-keys: auto2-v1-
+
+      - name: Fetch the event table from the last prepare run
+        if: steps.want.outputs.go == '1' && steps.events.outputs.cache-matched-key == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          id=$(gh run list -R "$GITHUB_REPOSITORY" -w auto-models.yml --status success --limit 50 --json databaseId \
+                 --jq '.[].databaseId' | while read r; do
+                   gh api "repos/$GITHUB_REPOSITORY/actions/runs/$r/artifacts" --jq '.artifacts[].name' | grep -qx auto2-events && { echo "$r"; break; }
+                 done)
+          [ -n "$id" ] || { echo "::error::no prepare run with the auto2-events artifact; dispatch stage prepare on the research branch"; exit 1; }
+          gh run download "$id" -R "$GITHUB_REPOSITORY" -n auto2-events -D cache/auto2
+
+      - name: Keep a cached copy on this branch
+        if: steps.want.outputs.go == '1' && steps.events.outputs.cache-matched-key == '' && matrix.loop == 'auto2'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/auto2
+          key: auto2-v1-${{ github.run_id }}
+
+      - name: Trials
+        if: steps.want.outputs.go == '1' && (inputs.stage == 'loop' || inputs.stage == '')
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          N: ${{ inputs.trials || '15' }}
+          L: ${{ matrix.loop }}
+        run: |
+          T="research/results/${L^^}/trials.jsonl"
+          C="auto/loops/$L/candidate.py"
+          LIMIT=$([ "$L" = auto3 ] && echo 1800 || echo 900)
+          mkdir -p "$(dirname "$T")"
+          sandbox() {   # the candidate runs with no secrets and no network
+            sudo unshare -n -- sudo -u "$USER" env -i PATH="$PATH" HOME="$HOME" PYTHONPATH=. \
+              timeout "$LIMIT" .venv/bin/python -m auto.harness2 --stage tune --loop "$L" --events cache/auto2/events.parquet --candidate "$1"
+          }
+          for i in $(seq 1 "$N"); do
+            done_n=$( [ -f "$T" ] && wc -l < "$T" || echo 0 )
+            [ "$done_n" -ge "$MAX_TRIALS" ] && { echo "$L reached $MAX_TRIALS trials; run stage check"; break; }
+            if [ "$done_n" -eq 0 ]; then
+              cp "auto/loops/$L/start.py" /tmp/new.py && echo '{"idea": "starting recipe (the frozen model)"}' > /tmp/idea.json
+            else
+              PYTHONPATH=. .venv/bin/python -m auto.agent --program auto/program2.md --candidate "$C" --trials "$T" --out /tmp/new.py > /tmp/idea.json || { echo "agent failed (quota?)"; break; }
+            fi
+            sandbox /tmp/new.py > /tmp/score.json 2>/tmp/err.txt || true
+            [ -s /tmp/score.json ] || tail -c 300 /tmp/err.txt | tr '\n' ' ' > /tmp/score.json
+            PYTHONPATH=. .venv/bin/python -m auto.decide --new /tmp/new.py --idea-json /tmp/idea.json --score-json /tmp/score.json --candidate "$C" --trials "$T"
+            git add "$T" "$C" && git commit -q -m "${L^^} trial $done_n" || true
+            [ $((i % 5)) -eq 0 ] && git push -q origin "$L" || true
+          done
+          git push -q origin "$L"
+
+      - name: Check or test (once each, by hand)
+        if: steps.want.outputs.go == '1' && (inputs.stage == 'check' || inputs.stage == 'test')
+        env:
+          L: ${{ matrix.loop }}
+        run: |
+          out="research/results/${L^^}/${{ inputs.stage }}.json"
+          PYTHONPATH=. .venv/bin/python -u -m auto.harness2 --stage ${{ inputs.stage }} --loop "$L" --events cache/auto2/events.parquet | tee "$out"
+          git add "$out" && git commit -q -m "${L^^} ${{ inputs.stage }} (run ${{ github.run_id }})" && git push -q origin "$L"
