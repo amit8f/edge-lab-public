@@ -8,12 +8,15 @@ import argparse
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 from tracks.news import llm
 
 HISTORY = 15
-GROQ_MODEL, GEMINI_MODEL = "openai/gpt-oss-120b", "gemini-2.5-flash"
+# free models, each with its own daily quota, tried in order
+GROQ_MODELS = ("openai/gpt-oss-120b", "moonshotai/kimi-k2-instruct", "qwen/qwen3-32b", "llama-3.3-70b-versatile")
+GEMINI_MODELS = ("gemini-2.5-flash", "gemini-2.5-flash-lite")
 
 
 def prompt(program, src, trials):
@@ -32,20 +35,27 @@ def extract(text):
 
 
 def ask(text):
-    body = {"model": GROQ_MODEL, "temperature": 0.7, "reasoning_effort": "medium",
-            "messages": [{"role": "user", "content": text}]}
     if os.environ.get("GROQ_API_KEY"):
+        head = {"Authorization": f"Bearer {os.environ['GROQ_API_KEY'].strip()}"}
+        for model in GROQ_MODELS:
+            body = {"model": model, "temperature": 0.7, "messages": [{"role": "user", "content": text}],
+                    **({"reasoning_effort": "medium"} if "gpt-oss" in model else {})}
+            try:
+                j = llm._post("https://api.groq.com/openai/v1/chat/completions", head, body, "groq")
+                return j["choices"][0]["message"]["content"]
+            except (llm.QuotaExhausted, RuntimeError, OSError) as e:
+                print(f"[agent] {model}: {str(e)[:120]}", file=sys.stderr)
+    for model in GEMINI_MODELS:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
         try:
-            j = llm._post("https://api.groq.com/openai/v1/chat/completions",
-                          {"Authorization": f"Bearer {os.environ['GROQ_API_KEY'].strip()}"}, body, "groq")
-            return j["choices"][0]["message"]["content"]
-        except llm.QuotaExhausted:
-            pass
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
-    j = llm._post(url, {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip()},
-                  {"contents": [{"role": "user", "parts": [{"text": text}]}], "generationConfig": {"temperature": 0.7}},
-                  "gemini")
-    return "".join(p.get("text", "") for p in (j.get("candidates") or [{}])[0].get("content", {}).get("parts", []))
+            j = llm._post(url, {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip()},
+                          {"contents": [{"role": "user", "parts": [{"text": text}]}],
+                           "generationConfig": {"temperature": 0.7}}, "gemini")
+            parts = (j.get("candidates") or [{}])[0].get("content", {}).get("parts", [])
+            return "".join(p.get("text", "") for p in parts)
+        except (llm.QuotaExhausted, RuntimeError, OSError) as e:
+            print(f"[agent] {model}: {str(e)[:120]}", file=sys.stderr)
+    raise llm.QuotaExhausted("every free model is out of quota")
 
 
 def main():
@@ -53,10 +63,11 @@ def main():
     ap.add_argument("--candidate", default="auto/candidate.py")
     ap.add_argument("--trials", default="research/results/AUTO1/trials.jsonl")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--program", default=str(Path(__file__).parent / "program.md"))
     a = ap.parse_args()
     tf = Path(a.trials)
     trials = [json.loads(x) for x in tf.read_text().splitlines() if x.strip()] if tf.exists() else []
-    program = (Path(__file__).parent / "program.md").read_text()
+    program = Path(a.program).read_text()
     idea, code = extract(ask(prompt(program, Path(a.candidate).read_text(), trials)))
     Path(a.out).write_text(code or "")
     print(json.dumps({"idea": idea, "has_code": code is not None}))
