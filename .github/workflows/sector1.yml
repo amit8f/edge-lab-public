@@ -286,7 +286,7 @@ jobs:
           key: hi3-v1-${{ github.run_id }}
 
       - name: Save HI3K's cache
-        if: always() && (inputs.stage == 'k8fetch' || inputs.stage == 'k8build')
+        if: always() && (inputs.stage == 'k8fetch' || inputs.stage == 'k8build' || inputs.stage == 'k8report')
         uses: actions/cache/save@v4
         with:
           path: cache/hi3k
