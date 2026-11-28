@@ -123,7 +123,7 @@ def load(cache):
     cols = ["symbol", "d", "t", "prev_c", *X.INPUTS]
     ev = pd.concat([pd.read_parquet(f, columns=cols) for f in sorted((X.nx3dir(cache) / X.TRADES).glob("t_*.parquet"))],
                    ignore_index=True).drop_duplicates(["symbol", "d", "t"])
-    p = p.merge(ev, on=["symbol", "d", "t"], how="left")
+    p = p.drop(columns=[c for c in cols[3:] if c in p.columns]).merge(ev, on=["symbol", "d", "t"], how="left")
     caldates = pd.DatetimeIndex(X.calendar(cache)["date"]).sort_values()
     i = caldates.searchsorted(p["d"])
     for k in HOLDS:
