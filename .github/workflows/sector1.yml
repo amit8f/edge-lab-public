@@ -8,13 +8,13 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "benzingaprobe", "hi3now", "k8peek", "k8fetch", "k8build", "k8report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
 
 concurrency:
-  group: sector1
+  group: ${{ (inputs.stage == 'massiveprobe' || inputs.stage == 'benzingaprobe' || inputs.stage == 'k8peek' || inputs.stage == 'hi3now') && 'sector1-probe' || (startsWith(inputs.stage, 'k8') && 'sector1-k8' || 'sector1') }}
   cancel-in-progress: false
 
 jobs:
@@ -42,8 +42,46 @@ jobs:
           uv venv --python 3.12.10 .venv
           uv pip install --python .venv/bin/python -r requirements.txt
 
+      - name: CPU-only torch and transformers for FinBERT (HI3 replay, same pins as nx3-live)
+        if: inputs.stage == 'hi3build' || inputs.stage == 'k8build'
+        run: |
+          uv pip install --python .venv/bin/python torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python transformers==5.18.0
+
+      - name: Restore HI3's cache (2026 news, headline rows, replay days, settled trades)
+        if: startsWith(inputs.stage, 'hi3') && inputs.stage != 'hi3now'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/hi3
+          key: hi3-v1-${{ github.run_id }}
+          restore-keys: hi3-v1-
+
+      - name: Restore HI3K's cache (8-K press releases, headline rows, replay days, settled trades)
+        if: startsWith(inputs.stage, 'k8')
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/hi3k
+          key: hi3k-v2-${{ github.run_id }}
+          restore-keys: hi3k-v2-
+
+      - name: HI3's replay days for HI3K's overlap check
+        if: inputs.stage == 'k8report'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/hi3
+          key: hi3-v1-${{ github.run_id }}
+          restore-keys: hi3-v1-
+
+      - name: NX3's live state (logged decided events) for HI3's live part
+        if: inputs.stage == 'hi3live' || inputs.stage == 'hi3now'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: state-nx3
+          path: state-nx3
+          persist-credentials: false
+
       - name: Restore W1's daily cache (read only)
-        if: ${{ !startsWith(inputs.stage, 'numerai') }}
+        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && !startsWith(inputs.stage, 'k8') && inputs.stage != 'massiveprobe' && inputs.stage != 'benzingaprobe' }}
         uses: actions/cache/restore@v4
         with:
           path: cache/w1
@@ -51,7 +89,7 @@ jobs:
           restore-keys: w1-v1-
 
       - name: Fall back to the NX1 cache, which holds a copy of W1's data (caches get evicted)
-        if: ${{ !startsWith(inputs.stage, 'numerai') && hashFiles('cache/w1/w1/daily/**') == '' }}
+        if: ${{ !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && !startsWith(inputs.stage, 'k8') && inputs.stage != 'massiveprobe' && inputs.stage != 'benzingaprobe' && hashFiles('cache/w1/w1/daily/**') == '' }}
         uses: actions/cache/restore@v4
         with:
           path: cache/nx1
@@ -96,6 +134,8 @@ jobs:
           EVIDENCE_TOKEN: ${{ secrets.EVIDENCE_TOKEN }}
           NUMERAI_PUBLIC_ID: ${{ secrets.NUMERAI_PUBLIC_ID }}
           NUMERAI_SECRET_KEY: ${{ secrets.NUMERAI_SECRET_KEY }}
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+          BENZINGA_API_KEY: ${{ secrets.BENZINGA_API_KEY }}
           STAGE: ${{ inputs.stage }}
         run: |
           set -o pipefail
@@ -113,6 +153,69 @@ jobs:
               --repo amit8f/edge-lab --title "Benzinga news months backup ($n months)" \
               --notes "Encrypted copy of NX1's cached Benzinga headline months (cache/nx1/g1/news). Alpaca stopped serving old news in 2026. See edge-lab-public sector1.yml stage backup."
             GH_TOKEN="$EVIDENCE_TOKEN" gh release view "$tag" --repo amit8f/edge-lab --json assets --jq '.assets[]|.name+" "+(.size|tostring)'
+            exit 0
+          fi
+          if [[ "$STAGE" == backup2026 ]]; then
+            # HI3.md (2026-11-27): Alpaca now keeps only about the last 6-7 months of news and the window rolls
+            # forward, so save 2026-04 .. this month (complete months only are kept by name; this month is partial)
+            # as an encrypted release asset, same passphrase as the backup above.
+            PYTHONPATH=. .venv/bin/python -u -c "
+          import pandas as pd
+          from pathlib import Path
+          from tracks.main.longterm import news_history as H
+          out = Path('cache/news2026'); out.mkdir(parents=True, exist_ok=True)
+          now = pd.Timestamp.now(tz='UTC')
+          for m in pd.period_range('2026-04', now.strftime('%Y-%m'), freq='M'):
+              df = H.fetch_month(str(m))
+              days = pd.to_datetime(df['created_at'], utc=True).dt.normalize().nunique() if len(df) else 0
+              print(f'[backup2026] {m}: {len(df)} articles on {days} days', flush=True)
+              if len(df):
+                  df.to_parquet(out / f'news_{m}.parquet')
+          "
+            n=$(ls cache/news2026/news_*.parquet | wc -l)
+            [[ $n -ge 1 ]] || { echo "::error::no 2026 news months"; exit 1; }
+            tag="news-2026-backup-$(date -u +%Y%m%d)"
+            tar -C cache -cf - news2026 | gzip -1 | openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:ALPACA_API_SECRET_KEY -out /tmp/benzinga_news_2026.tar.gz.enc
+            ( cd cache/news2026 && sha256sum news_*.parquet ) > /tmp/benzinga_news_2026.sha256
+            GH_TOKEN="$EVIDENCE_TOKEN" gh release create "$tag" /tmp/benzinga_news_2026.tar.gz.enc /tmp/benzinga_news_2026.sha256 \
+              --repo amit8f/edge-lab --title "Benzinga news 2026 backup ($n months)" \
+              --notes "Encrypted Alpaca Benzinga headline months from 2026-04 (HI3.md). Same passphrase as news-backup-20261121."
+            GH_TOKEN="$EVIDENCE_TOKEN" gh release view "$tag" --repo amit8f/edge-lab --json assets --jq '.assets[]|.name+" "+(.size|tostring)'
+            exit 0
+          fi
+          if [[ "$STAGE" == benzingaprobe ]]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.tools.benzinga_probe
+            exit 0
+          fi
+          if [[ "$STAGE" == massiveprobe ]]; then
+            PYTHONPATH=. .venv/bin/python -u -m tracks.tools.massive_probe
+            exit 0
+          fi
+          if [[ "$STAGE" == k8peek ]]; then
+            PYTHONPATH=. .venv/bin/python -u -c "
+          import pandas as pd; from core import sec; from tracks.news import hi3k_8k as K
+          tick = K.ticker_by_cik(sec.get(K.TICKERS).json())
+          for d in ('2025-10-15', '2026-02-10'):
+              arts, fun = K.fetch_day(pd.Timestamp(d), tick); print(d, fun, flush=True)
+              for x in arts.head(25).itertuples(): print(' ', x.symbols, x.created_at, x.headline, flush=True)
+          "
+            exit 0
+          fi
+          if [[ "$STAGE" == k8* ]]; then
+            # research/prereg/HI3K.md: fetch (EDGAR 8-K press releases) -> build (HI3's replay) -> report
+            PYTHONPATH=. timeout 320m .venv/bin/python -u -m tracks.news.hi3k_8k --stage ${STAGE#k8} --cache cache/hi3k --out research/results/HI3K --hi3-cache cache/hi3 --budget-min 290
+            exit 0
+          fi
+          if [[ "$STAGE" == hi3now ]]; then
+            # HI3's live part alone (NX3's logged days since 2026-10-29), while the replay build still runs
+            for st in live report; do
+              PYTHONPATH=. .venv/bin/python -u -m tracks.news.hi3_replay --stage $st --cache cache/hi3now --out research/results/HI3/live_only --state state-nx3
+            done
+            exit 0
+          fi
+          if [[ "$STAGE" == hi3* ]]; then
+            # research/prereg/HI3.md: build (2026 replay days) -> live (NX3's logged days) -> report (settle, numbers)
+            PYTHONPATH=. timeout 320m .venv/bin/python -u -m tracks.news.hi3_replay --stage ${STAGE#hi3} --cache cache/hi3 --out research/results/HI3 --state state-nx3 --budget-min 290
             exit 0
           fi
           if [[ "$STAGE" == warm ]]; then
@@ -156,7 +259,7 @@ jobs:
           PYTHONPATH=. .venv/bin/python -u -m "$mod" --w1 "$w1" --out research/results/SECTOR1 --cache cache/sector1 $([[ "$STAGE" == 2 || "$STAGE" == 3 || "$STAGE" == 4 || "$STAGE" == 5 || "$STAGE" == 6 ]] && echo --minutes 280)
 
       - name: Save the SIC cache
-        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore' && inputs.stage != 'numeraiprobe' && !startsWith(inputs.stage, 'numerai')
+        if: always() && inputs.stage != 'warm' && inputs.stage != 'newsprobe' && inputs.stage != 'boomcheck' && inputs.stage != 'backup' && inputs.stage != 'borrowprobe' && inputs.stage != 'newsrestore' && inputs.stage != 'numeraiprobe' && !startsWith(inputs.stage, 'numerai') && !startsWith(inputs.stage, 'hi3') && !startsWith(inputs.stage, 'k8') && inputs.stage != 'backup2026' && inputs.stage != 'massiveprobe' && inputs.stage != 'benzingaprobe'
         uses: actions/cache/save@v4
         with:
           path: cache/sector1
@@ -168,6 +271,20 @@ jobs:
         with:
           path: cache/lit1
           key: lit1-v1-${{ github.run_id }}
+
+      - name: Save HI3's cache
+        if: always() && startsWith(inputs.stage, 'hi3') && inputs.stage != 'hi3now'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/hi3
+          key: hi3-v1-${{ github.run_id }}
+
+      - name: Save HI3K's cache
+        if: always() && (inputs.stage == 'k8fetch' || inputs.stage == 'k8build')
+        uses: actions/cache/save@v4
+        with:
+          path: cache/hi3k
+          key: hi3k-v2-${{ github.run_id }}
 
       - name: Save NUM1's Numerai cache
         if: (inputs.stage == 'numeraitrain' || inputs.stage == 'numeraidata') && success()
@@ -182,7 +299,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NUM1 research/results/LIT1 models/num1 && git add research/results/SECTOR1 research/results/NUM1 research/results/LIT1 models/num1
+          mkdir -p research/results/NUM1 research/results/LIT1 research/results/HI3 research/results/HI3K models/num1 && git add research/results/SECTOR1 research/results/NUM1 research/results/LIT1 research/results/HI3 research/results/HI3K models/num1
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
           git commit -q -m "SECTOR1 stage ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
