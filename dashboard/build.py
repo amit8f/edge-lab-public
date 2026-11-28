@@ -51,7 +51,8 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
               "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-BIG", "CRY-MEME", "CRY-NEWMEME", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
-              "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1", "SURV1-LONG", "COST1", "NXM-VOTE", "NUM1"}
+              "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1", "SURV1-LONG", "COST1", "NXM-VOTE", "NUM1",
+              "AUTO1", "AUTO2", "AUTO3", "AUTO4"}
 
 
 def _json(p):
@@ -510,6 +511,28 @@ def boomshort_days(st, n=5):
     return out
 
 
+LOOPS = [("AUTO1", "auto1", "NX3's events, buys only"), ("AUTO2", "auto2", "NX3-HI"), ("AUTO3", "auto3", "Ensemble"),
+         ("AUTO4", "auto4", "LightGBM")]
+LOOP_MAX = 200
+
+
+def loops(st):
+    """The self-improving loops (research/prereg/AUTO1.md, AUTO2.md): tries so far, starting and best kept score
+    (Sharpe after costs, 2020-2022) and the last few tries, from each loop's own branch."""
+    out = []
+    for name, branch, start in LOOPS:
+        rows = _jsonl(st / branch / "research" / "results" / name / "trials.jsonl") or []
+        kept = [r for r in rows if r.get("kept") and r.get("score") is not None]
+        out.append({"name": name, "branch": branch, "start_from": start, "trials": len(rows), "max": LOOP_MAX,
+                    "start_score": kept[0]["score"] if kept else None,
+                    "best_score": max((r["score"] for r in kept), default=None),
+                    "kept": max(len(kept) - 1, 0),
+                    "last": [{"n": r.get("n"), "idea": (r.get("idea") or "")[:160], "score": r.get("score"),
+                              "kept": bool(r.get("kept")), "error": (r.get("error") or "")[:120] or None,
+                              "time": r.get("time")} for r in rows[-5:]][::-1]})
+    return out
+
+
 def day1_book(st):
     """DAY1, the all-day $1,000 bot (research/prereg/DAY1.md): the last logged day's equity and its twin's."""
     days = sorted((st / "state-day1" / "day1" / "ledger" / "days").glob("*.json"))
@@ -518,7 +541,13 @@ def day1_book(st):
         return []
     closed = sum(1 for f in days for x in (_json(f) or {}).get("closed", []) if x.get("role") == "bot")
     open_n = sum(1 for x in last.get("open", []) if x.get("role") == "bot")
-    return [_book("DAY1", "DAY1", 100, closed, open_n, realized=last["equity"] - 1000.0, size=1000.0,
+    # a position entered on a stale IEX print (AIOK on 2026-11-27) is excluded at zero by the bot's next close
+    # (research/prereg/DAY1.md, bug fix log); take its mark out of the equity shown until then
+    bad = [p for p in last.get("open", []) if p.get("role") == "bot" and p.get("entry_t")
+           and pd.Timestamp(p["entry_t"]).tz_convert("America/New_York").date().isoformat() != p.get("date")]
+    px = latest_prices({p["symbol"] for p in bad}) if bad else {}
+    fix = -sum(p["usd"] * (px[p["symbol"]] / p["entry"] - 1) for p in bad if px.get(p["symbol"]))
+    return [_book("DAY1", "DAY1", 100, closed, open_n, realized=last["equity"] + fix - 1000.0, size=1000.0,
                   account="EL-DAY1", unit="trades", twin_pnl_pct=(last["twin_equity"] - 1000.0) / 10.0,
                   days=len(days))]
 
@@ -816,8 +845,11 @@ def nx3_days(st, cache):
         ctrl = {c["symbol"]: c.get("side") for c in rec.get("control", [])}
         arms = arm_picks(root, day, rows)
         ev = []
+        stale = {} if settled else stale_entries(day, rows, picked={k for p in arms.values() for k in p})
         for r in rows:
             x = {k: r.get(k) for k in SLIM}
+            if r["symbol"] in stale:         # a print from an earlier day is not the price at decision
+                x["entry_stale"], x["entry_iex"] = x.get("entry_iex"), stale[r["symbol"]]
             x["arms"] = {a: p[r["symbol"]] for a, p in arms.items() if r["symbol"] in p}
             x["result"] = res.get((r["symbol"], "picks"))
             x["next_move"] = None if moves is None else moves.get(r["symbol"])
@@ -836,6 +868,30 @@ def nx3_days(st, cache):
         for e in d["events"]:
             e["last_price"] = px.get(e["symbol"])
     return out[::-1]
+
+
+def stale_entries(day, rows, picked=(), get=None):
+    """{symbol: SIP price at decision} for picks whose IEX price was a print from an earlier day (AIOK on
+    2026-11-27 showed 8.98, a 2026-11-25 print, while it traded near 5.4). Only for open marks: settled days use
+    the ledger's SIP entry."""
+    get = get or alpaca_get
+    out = {}
+    for r in rows:
+        t = r.get("entry_iex_t")
+        if not (r.get("side") or r.get("fired") or r["symbol"] in picked) or not t or not r.get("decided_at"):
+            continue
+        try:
+            if pd.Timestamp(t).tz_convert("America/New_York").date().isoformat() == day:
+                continue
+            at = pd.Timestamp(r["decided_at"]).tz_localize("America/New_York").floor("min").tz_convert("UTC")
+        except (ValueError, TypeError):
+            continue
+        j = get("/stocks/bars", {"symbols": r["symbol"], "timeframe": "1Min", "feed": "sip", "adjustment": "raw",
+                                 "start": at.strftime("%Y-%m-%dT%H:%M:%SZ"), "limit": 1})
+        bars = ((j or {}).get("bars") or {}).get(r["symbol"]) or []
+        if bars:
+            out[r["symbol"]] = float(bars[0]["o"])
+    return out
 
 
 def arm_picks(root, day, rows=()):
@@ -1066,7 +1122,8 @@ def build(states, out, repo_root=".", repo=None, token=None):
            "adaptive": adaptive_status(st), "accounts": account_rows(), "jobs": job_rows(repo, token),
            "timeouts": workflow_timeouts(repo_root),
            "nx3": nx3, "boomshort": _safe(boomshort_days, st) or [],
-           "boom": _safe(boom_tab, st, b1days) or None, "ideas": ideas(repo_root, books)}
+           "boom": _safe(boom_tab, st, b1days) or None, "ideas": ideas(repo_root, books),
+           "loops": _safe(loops, st) or []}
     Path(out).mkdir(parents=True, exist_ok=True)
     tmp = Path(out) / "summary.json.tmp"
     tmp.write_text(json.dumps(_clean(res), separators=(",", ":"), default=str))
