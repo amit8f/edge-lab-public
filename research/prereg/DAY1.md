@@ -133,7 +133,7 @@ Sunday report.
 2026-11-28: the Alpaca paper account (EL-DAY1) held 8 longs the ledger book had already closed (RYAAY, BOTJ, TAC,
 BNTX, ARRY, ABTC, FROG, LMRI, exits from 2026-11-03 to 2026-11-12). A $-amount (notional) buy fills a few hundredths
 of a share less than usd / price, the exit asked to sell the larger number, and Alpaca refused it ("insufficient qty").
-The stuck shares then used up the account's buying power, so every buy from 2026-11-24 on was refused as well. ABTC
+The stuck shares then used up the account's buying power, so from 2026-11-06 on almost every new buy was refused as well (55 of 62). ABTC
 was down 37% in the account. Fix: a sell never asks for more shares than the account holds, and once a session, before
 the close, the bot sells any account shares the book no longer holds. The ledger book, its costs and the forward
 test are unchanged: the ledger already closed each trade at its exit price, so no day is excluded. The account's own
