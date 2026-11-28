@@ -167,7 +167,7 @@ class Api:
             j = alpaca.get("https://data.alpaca.markets/v2/stocks/trades/latest",
                            {"symbols": ",".join(syms[i:i + 200]), "feed": "iex"}, headers=self.h)
             for s, tr in (j.get("trades") or {}).items():
-                if tr and tr.get("p"):
+                if tr and tr.get("p") and alpaca.traded_today(tr.get("t")):
                     out[s] = (float(tr["p"]), str(tr.get("t")))
         return out
 

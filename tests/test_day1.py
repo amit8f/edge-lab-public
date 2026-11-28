@@ -232,3 +232,41 @@ def test_non_fractionable_entry_retries_whole_shares():
     orders = []
     res = D.send(B(), D.entry_order(pos), orders)
     assert res[0] == 403
+
+
+class HeldBroker(FakeBroker):
+    def __init__(self, held):
+        super().__init__()
+        self.h = held
+
+    def held(self):
+        return dict(self.h)
+
+
+def test_sells_never_ask_for_more_than_held_and_orphans_are_sold(tmp_path):
+    st = D.State(tmp_path)
+    day = pd.Timestamp("2026-11-30")
+    st.save("positions.json", [
+        {"role": "bot", "symbol": "ABTC", "qty": 34.0426, "end": "2026-11-30", "date": "2026-11-27"},
+        {"role": "bot", "symbol": "KEEP", "qty": 5.0, "end": "2026-12-03", "date": "2026-11-27"},
+        {"role": "bot", "symbol": "GONE", "qty": 3.0, "end": "2026-11-30", "date": "2026-11-27"}])
+    br = HeldBroker({"ABTC": 33.15851602, "KEEP": 5.0, "ARRY": 36.45})
+    D.send_moc(st, br, day)
+    sells = {b["symbol"]: b["qty"] for b in br.sent if b["side"] == "sell"}
+    assert sells == {"ABTC": "33.1585", "ARRY": "36.45"}
+    log = st.load("2026-11-30/moc.json", [])
+    assert any(r.get("message") == "account holds none" and r["body"]["symbol"] == "GONE" for r in log)
+
+
+def test_stale_iex_print_is_not_a_price_and_stale_entries_are_excluded(tmp_path):
+    from core import alpaca
+    now = pd.Timestamp("2026-11-27 09:40", tz="America/New_York")
+    assert alpaca.traded_today("2026-11-27T14:39:00Z", now)
+    assert not alpaca.traded_today("2026-11-25T20:59:23.777249605Z", now)
+    st = D.State(tmp_path)
+    st.save("positions.json", [{"role": "bot", "symbol": "AIOK", "qty": 22.0, "usd": 200.0, "entry": 8.98,
+                                "entry_t": "2026-11-25T20:59:23.777249605Z", "date": "2026-11-27",
+                                "end": "2026-11-30", "round_trip": 0.002}])
+    assert D.after_close(st, FakeApi({}, closes={"AIOK": 4.5}), pd.Timestamp("2026-11-27")) is True
+    cl = st.load("closed.json", [])
+    assert cl[0]["exit_why"].startswith("excluded") and cl[0]["pnl"] == 0.0 and st.load("positions.json", []) == []
