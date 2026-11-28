@@ -283,8 +283,14 @@ def stage_run(cache, out):
 def jump_cut(lo):
     """JUMP1's fixed bar (research/prereg/JUMP1.md): the top-third boundary of the jump already made before entry
     (entry price / previous close - 1) among NX3-HI's buys in LONG1's years."""
-    j = (lo["price"] / lo["prev_c"] - 1).replace([np.inf, -np.inf], np.nan).dropna()
-    return float(j.quantile(2 / 3))
+    return float(jumps(lo).quantile(2 / 3))
+
+
+def jumps(lo):
+    """Entry price / previous close - 1, from the decided inputs as JUMP1 reads them: (1 + r_open)(1 + r_react) - 1.
+    (price / prev_c is always 0 here: price is the reference close, not the entry.)"""
+    j = (1 + lo["r_open"].astype(float)) * (1 + lo["r_react"].astype(float)) - 1
+    return j.replace([np.inf, -np.inf], np.nan).dropna()
 
 
 def stage_jumpcut(cache, out):
@@ -292,9 +298,9 @@ def stage_jumpcut(cache, out):
     p = p[p["exit_5"].notna() & (p["exit_5"] <= N.LAST_EXIT)].reset_index(drop=True)
     lo = cap_longs(p)
     lo = lo[lo["year"].isin(CHOOSE)]
-    j = (lo["price"] / lo["prev_c"] - 1).replace([np.inf, -np.inf], np.nan).dropna()
+    j = jumps(lo)
     rep = {"years": list(CHOOSE), "buys": len(lo), "jump_cut": jump_cut(lo),
-           "share_zero": float((j == 0).mean()), "share_above": float((j > jump_cut(lo)).mean()),
+           "share_zero": float((j == 0).mean()), "share_above": float((j > jump_cut(lo)).mean()), "with_jump": len(j),
            "pre_open_share": float(((lo["entry_t"] - lo["d"]) <= pd.Timedelta(hours=9, minutes=31)).mean())}
     write(out, "jump_cut.json", rep)
 
