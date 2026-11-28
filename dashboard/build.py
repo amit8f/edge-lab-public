@@ -533,23 +533,39 @@ def loops(st):
     return out
 
 
+def _stale(p):
+    """A DAY1 position whose entry price was an IEX print from an earlier day (bug fixed 2026-11-28)."""
+    try:
+        return bool(p.get("entry_t")) and \
+            pd.Timestamp(p["entry_t"]).tz_convert("America/New_York").date().isoformat() != p.get("date")
+    except (ValueError, TypeError):
+        return False
+
+
 def day1_book(st):
-    """DAY1, the all-day $1,000 bot (research/prereg/DAY1.md): the last logged day's equity and its twin's."""
+    """DAY1, the all-day $1,000 bot (research/prereg/DAY1.md): the last logged day's equity and its twin's, less
+    every trade entered on a stale IEX print (excluded by the 2026-11-28 bug fix; the ledger itself is unchanged)."""
     days = sorted((st / "state-day1" / "day1" / "ledger" / "days").glob("*.json"))
     last = _json(days[-1]) if days else None
     if not last:
         return []
-    closed = sum(1 for f in days for x in (_json(f) or {}).get("closed", []) if x.get("role") == "bot")
-    open_n = sum(1 for x in last.get("open", []) if x.get("role") == "bot")
-    # a position entered on a stale IEX print (AIOK on 2026-11-27) is excluded at zero by the bot's next close
-    # (research/prereg/DAY1.md, bug fix log); take its mark out of the equity shown until then
-    bad = [p for p in last.get("open", []) if p.get("role") == "bot" and p.get("entry_t")
-           and pd.Timestamp(p["entry_t"]).tz_convert("America/New_York").date().isoformat() != p.get("date")]
-    px = latest_prices({p["symbol"] for p in bad}) if bad else {}
-    fix = -sum(p["usd"] * (px[p["symbol"]] / p["entry"] - 1) for p in bad if px.get(p["symbol"]))
-    return [_book("DAY1", "DAY1", 100, closed, open_n, realized=last["equity"] + fix - 1000.0, size=1000.0,
-                  account="EL-DAY1", unit="trades", twin_pnl_pct=(last["twin_equity"] - 1000.0) / 10.0,
-                  days=len(days))]
+    allc = [x for f in days for x in (_json(f) or {}).get("closed", [])]
+    bad_open = [p for p in last.get("open", []) if p.get("role") in ("bot", "twin") and _stale(p)]
+    px = latest_prices({p["symbol"] for p in bad_open}) if bad_open else {}
+    fix = {"bot": 0.0, "twin": 0.0}
+    for x in allc:
+        if x.get("role") in fix and _stale(x) and not str(x.get("exit_why", "")).startswith("excluded"):
+            fix[x["role"]] -= x.get("pnl") or 0.0
+    for p in bad_open:
+        if px.get(p["symbol"]):
+            fix[p["role"]] -= p["usd"] * (px[p["symbol"]] / p["entry"] - 1)
+    closed = sum(1 for x in allc if x.get("role") == "bot" and not _stale(x))
+    excl = sum(1 for x in allc if x.get("role") == "bot" and _stale(x))
+    open_n = sum(1 for x in last.get("open", []) if x.get("role") == "bot" and not _stale(x))
+    return [_book("DAY1", "DAY1", 100, closed, open_n, realized=last["equity"] + fix["bot"] - 1000.0, size=1000.0,
+                  account="EL-DAY1", unit="trades",
+                  twin_pnl_pct=(last["twin_equity"] + fix["twin"] - 1000.0) / 10.0, days=len(days),
+                  excluded=excl)]
 
 
 def nx1_book(st):
