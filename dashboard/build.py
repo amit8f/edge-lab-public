@@ -49,7 +49,7 @@ WATCH = [("PICK-MAIN", "SYS2", "state-watch", "watch/books.json", 30), ("PICK-PE
 AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state-ai", "combo/books.json", "B"),
       ("WIDE-C", "K4", "state-wide", "wide/books.json", "C"),
       ("WIDE-C-groq", "K7", "state-wide", "wide/books.json", "C-groq")]
-LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
+LIVE_IDEAS = {"JUMP1", "NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
               "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-BIG", "CRY-MEME", "CRY-NEWMEME", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1", "SURV1-LONG", "COST1", "NXM-VOTE", "NUM1",
               "AUTO1", "AUTO2", "AUTO3", "AUTO4", "NX3-FRESH"}
@@ -232,6 +232,46 @@ def fresh_books(st, first_day=FRESH_FIRST_DAY):
                          note="NX3's picks minus those decided on an IEX price from an earlier day",
                          base_usd=sum(500 * (t.get("net") or 0) for t in all_), skipped=len(all_) - len(kept)))
     return out
+
+
+JUMP_FIRST_DAY = "2026-11-30"       # JUMP1's forward shadow book counts from this day (research/prereg/JUMP1.md, Amendment 3)
+JUMP_CUT = 0.09317343173431736      # research/results/LONG/jump_cut.json (2019-2023 top third, fixed)
+
+
+def jump_keys(day_dir, cut=JUMP_CUT):
+    """Symbols of a day's decided events with news by 9:31 and entry more than `cut` above the previous close."""
+    out = set()
+    for r in _jsonl(day_dir / "decisions.jsonl"):
+        x = r.get("inputs") or {}
+        mo, ro, rr = x.get("mins_open"), x.get("r_open"), x.get("r_react")
+        if r.get("status") != "decided" or None in (mo, ro, rr):
+            continue
+        try:
+            if float(mo) <= 1.0 and (1 + float(ro)) * (1 + float(rr)) - 1 > cut:
+                out.add(r["symbol"])
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def jump_books(st, first_day=JUMP_FIRST_DAY):
+    """JUMP1-FWD: NX3-HI's ledger buys on pre-open news after a big jump, $500 each, from first_day; the card also
+    carries NX3-HI's other buys over the same days."""
+    root = st / "state-nx3" / "nx3"
+    kept, rest = [], []
+    for f in sorted((root / "nx3hi" / "settled").glob("*.json")):
+        x = _json(f)
+        if not x or x.get("excluded") or x.get("day", "") < first_day:
+            continue
+        hit = jump_keys(root / "days" / x["day"])
+        for t in x.get("trades", []):
+            if t.get("role") == "picks" and (t.get("side") or 0) > 0:
+                (kept if t.get("symbol") in hit else rest).append(t)
+    def usd(ts):
+        return sum(500 * (t.get("net") or 0) for t in ts)
+    return [_book("JUMP1-FWD", "JUMP1", 30, len(kept), 0, realized=usd(kept), size=5000.0, first_day=first_day,
+                  base="NX3-HI other buys", note="NX3-HI buys on news by 9:31 that already jumped over 9.3%",
+                  base_usd=usd(rest), skipped=len(rest))]
 
 
 def mark_open_nx3(books, days):
@@ -1189,7 +1229,7 @@ def last_change(repo_root, names):
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     b1days = _safe(boom1_days, st)
-    books = (nx3_books(st) + _safe(fresh_books, st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(crybasket_books, st) + _safe(newmeme_book, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + _safe(fresh_books, st) + _safe(jump_books, st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(crybasket_books, st) + _safe(newmeme_book, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:

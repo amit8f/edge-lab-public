@@ -51,3 +51,23 @@ def test_wire_leads_match_by_title_and_skip_first_reads():
     assert len(m) == 2 and m.loc["PR Newswire", "lead_s"] == 90 and m.loc["Business Wire", "lead_s"] == -10
     s = W.summary(W.leads(w, bz))
     assert s["all"]["matched"] == 2 and s["all"]["share_earlier_60s"] == 0.5
+
+
+def test_jump_book_keeps_only_preopen_big_jump_buys(tmp_path):
+    import json as js
+
+    from dashboard import build as B
+    root = tmp_path / "state-nx3" / "nx3"
+    day = root / "days" / "2026-12-01"
+    day.mkdir(parents=True)
+    dec = [{"status": "decided", "symbol": "AAA", "inputs": {"mins_open": 0.0, "r_open": 0.10, "r_react": 0.0}},
+           {"status": "decided", "symbol": "BBB", "inputs": {"mins_open": 0.0, "r_open": 0.02, "r_react": 0.0}},
+           {"status": "decided", "symbol": "CCC", "inputs": {"mins_open": 45.0, "r_open": 0.20, "r_react": 0.0}}]
+    (day / "decisions.jsonl").write_text("\n".join(js.dumps(x) for x in dec))
+    sd = root / "nx3hi" / "settled"
+    sd.mkdir(parents=True)
+    tr = [{"symbol": s, "role": "picks", "side": 1, "net": 0.02} for s in ("AAA", "BBB", "CCC")]
+    (sd / "2026-12-01.json").write_text(js.dumps({"day": "2026-12-01", "trades": tr}))
+    (sd / "2026-11-27.json").write_text(js.dumps({"day": "2026-11-27", "trades": tr}))   # before the start: ignored
+    (card,) = B.jump_books(tmp_path)
+    assert card["closed"] == 1 and card["skipped"] == 2 and abs(card["realized"] - 10.0) < 1e-9
