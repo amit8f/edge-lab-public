@@ -52,3 +52,17 @@ A failure at 1 or 2 ends the idea; a new harness or a new score is a new registr
 
 The loop finds 2019-2022 gains easily (that's what search does), and most of them don't survive 2023. P(pass check 1)
 about 0.3, P(pass 2 as well) about 0.1.
+
+## Amendment 1 (2026-11-28, before any trial ran)
+
+Amit asked (2026-11-28) for the buy search to try "different models, different inputs" informed by what traders,
+books and papers use. Research notes: `/mnt/project-files/research_notes/Better news buy signals/` (practitioner
+rules, academic evidence, ML setups). Changes, all made before trial 0:
+
+1. `program.md` gets an idea menu from that research (inputs, targets, models to try one at a time).
+2. The event table adds `entry`, `prev_ac`, `prev_c`, `dv20`, so a candidate can compute the jump before entry.
+3. Safety fixes found while building: `score()` no longer receives the outcome columns (`net`, `ret`, `next`, `days`),
+   and the harness rejects a candidate whose scores change when the frame is cut at a random time (a look-ahead
+   within the day, such as same-day ranks that include later events).
+
+Nothing else changes: same score, same keep margin, same checks.

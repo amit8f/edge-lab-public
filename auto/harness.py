@@ -24,6 +24,9 @@ FEATURES = ["n_articles", "lm_neg", "lm_pos", "lm_net", "fb_pos", "fb_neg", "fb_
             "head_len", "f_earnings", "f_guidance", "f_analyst_up", "f_analyst_down", "f_offering", "f_merger", "f_fda",
             "f_contract", "f_legal", "f_bankruptcy", "f_dividend", "f_executive", "time_bucket", "novelty", "r1", "r5",
             "r20", "vol20", "log_dv", "log_px", "spy_r1", "spy_r5", "mins_open", "r_open", "r_react", "rv30", "spy_open"]
+EXTRA = ["entry", "prev_ac", "prev_c", "dv20"]    # Amendment 1: lets a candidate compute the jump before entry
+OUTCOME = ["net", "ret", "next", "days"]           # never passed to score()
+LEAK_CUTS = 6
 TUNE_YEARS, CHECK_YEARS, TEST_YEARS = (2020, 2021, 2022), (2023,), (2024, 2025)
 CAP, KEEP_MARGIN, PURGE_DAYS = 3, 0.05, 14
 LAST_EXIT = pd.Timestamp("2025-09-30")
@@ -98,6 +101,19 @@ def deflated_sharpe(sr_daily, trial_srs_daily, n_obs, skew, kurt):
     return float(norm.cdf((sr_daily - sr0) * math.sqrt(n_obs - 1) / den))
 
 
+def leak_check(cand, model, frame, scores, seed=0):
+    """Amendment 1: a row's score may use only that row and rows at or before its time. Score the frame cut at a
+    few times; rows kept must score the same as in the full frame. Returns the first cut time that differs, else None."""
+    rng = np.random.default_rng(seed)
+    ts = np.sort(frame["t"].unique())
+    for cut in rng.choice(ts, size=min(LEAK_CUTS, len(ts)), replace=False):
+        keep = (frame["t"] <= cut).to_numpy()
+        part = np.asarray(cand.score(model, frame[keep].reset_index(drop=True)), float)
+        if part.shape != (keep.sum(),) or not np.allclose(part, scores[keep], rtol=1e-6, atol=1e-9, equal_nan=True):
+            return pd.Timestamp(cut)
+    return None
+
+
 def walk_forward(events, cand, years):
     daily, trades, per = [], 0, {}
     for y in years:
@@ -107,9 +123,13 @@ def walk_forward(events, cand, years):
         if te.empty:
             continue
         m = cand.fit(tr.reset_index(drop=True))
-        s = np.asarray(cand.score(m, te.reset_index(drop=True)), float)
+        blind = te.drop(columns=[c for c in OUTCOME if c in te.columns]).reset_index(drop=True)
+        s = np.asarray(cand.score(m, blind), float)
         if s.shape != (len(te),):
             raise ValueError(f"score() returned shape {s.shape}, need ({len(te)},)")
+        bad = leak_check(cand, m, blind, s, seed=y)
+        if bad is not None:
+            raise ValueError(f"score() uses rows after a row's own time (cut {bad}); rejected")
         dly, n = book(te.reset_index(drop=True), s)
         daily.append(dly)
         trades += n
@@ -125,7 +145,7 @@ def stage_prepare(cache, out):
     """Real NX3 events 2016-10..2025-09 with NX3's 37 inputs and each event's long net after flat IBKR costs."""
     from tracks.news import nx1_study as N
     from tracks.news import nx3_study as X
-    cols = ["symbol", "d", "t", "kind", "next", "price", "days", "ret", *FEATURES]
+    cols = ["symbol", "d", "t", "kind", "next", "price", "days", "ret", *FEATURES, *EXTRA]
     ev = pd.concat([pd.read_parquet(f, columns=cols) for f in sorted((X.nx3dir(cache) / X.TRADES).glob("t_*.parquet"))],
                    ignore_index=True)
     ev = ev[(ev["kind"] == "real") & np.isfinite(ev["ret"]) & (ev["next"] <= LAST_EXIT)]

@@ -71,3 +71,32 @@ def test_walk_forward_trains_only_on_earlier_years():
     res, _ = H.walk_forward(ev, C, (2020, 2021, 2022))
     assert all(s < pd.Timestamp(f"{y}-01-01") - pd.Timedelta(days=13) for s, y in zip(seen, (2020, 2021, 2022), strict=True))
     assert res["trades"] == len(ev[ev["d"].dt.year >= 2020])
+
+
+def test_score_never_sees_outcomes_and_leaks_are_rejected():
+    import pytest
+
+    d = pd.bdate_range("2019-01-02", "2020-12-31")
+    ev = pd.DataFrame({"d": d.repeat(3), "t": d.repeat(3) + pd.to_timedelta(np.tile([600, 610, 620], len(d)), "m"),
+                       "next": d.repeat(3) + pd.Timedelta(days=1), "net": 0.001, "x": np.arange(len(d) * 3, dtype=float)})
+
+    class Peek:
+        @staticmethod
+        def fit(tr):
+            return None
+
+        @staticmethod
+        def score(m, f):
+            assert "net" not in f.columns and "ret" not in f.columns
+            return np.ones(len(f))
+
+    class DayMax:     # uses later rows of the same day: a leak
+        fit = Peek.fit
+
+        @staticmethod
+        def score(m, f):
+            return f.groupby("d")["x"].transform("max").to_numpy() - f["x"].to_numpy() - 0.5
+
+    H.walk_forward(ev, Peek, (2020,))
+    with pytest.raises(ValueError, match="after a row"):
+        H.walk_forward(ev, DayMax, (2020,))
