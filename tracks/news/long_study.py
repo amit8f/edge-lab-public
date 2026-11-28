@@ -280,6 +280,23 @@ def stage_run(cache, out):
     write(out, "LONG.json", rep)
 
 
+def jump_cut(lo):
+    """JUMP1's fixed bar (research/prereg/JUMP1.md): the top-third boundary of the jump already made before entry
+    (entry price / previous close - 1) among NX3-HI's buys in LONG1's years."""
+    j = (lo["price"] / lo["prev_c"] - 1).replace([np.inf, -np.inf], np.nan).dropna()
+    return float(j.quantile(2 / 3))
+
+
+def stage_jumpcut(cache, out):
+    p = load(cache)
+    p = p[p["exit_5"].notna() & (p["exit_5"] <= N.LAST_EXIT)].reset_index(drop=True)
+    lo = cap_longs(p)
+    lo = lo[lo["year"].isin(CHOOSE)]
+    rep = {"years": list(CHOOSE), "buys": len(lo), "jump_cut": jump_cut(lo),
+           "pre_open_share": float(((lo["entry_t"] - lo["d"]) <= pd.Timedelta(hours=9, minutes=31)).mean())}
+    write(out, "jump_cut.json", rep)
+
+
 def write(out, name, rep):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -289,11 +306,11 @@ def write(out, name, rep):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["run"])
+    ap.add_argument("--stage", required=True, choices=["run", "jumpcut"])
     ap.add_argument("--cache", default="cache/nx1")
     ap.add_argument("--out", default="research/results/LONG")
     a = ap.parse_args()
-    stage_run(Path(a.cache), a.out)
+    (stage_jumpcut if a.stage == "jumpcut" else stage_run)(Path(a.cache), a.out)
 
 
 if __name__ == "__main__":
