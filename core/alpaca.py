@@ -43,6 +43,18 @@ def get(url, params, headers=None, tries=8):
     raise RuntimeError(f"{url}: no answer after {tries} tries")
 
 
+def traded_today(t, now=None):
+    """True when an Alpaca trade time `t` (RFC 3339, UTC) falls on today's New York date. A thin stock's latest IEX
+    trade can be days old (AIOK on 2026-11-27: a 2026-11-25 print at 8.98 while it traded near 5.4), and such a
+    print is not a price."""
+    try:
+        d = pd.Timestamp(t).tz_convert("America/New_York").date()
+    except (ValueError, TypeError):
+        return False
+    now = pd.Timestamp.now(tz="America/New_York") if now is None else pd.Timestamp(now)
+    return d == (now.tz_convert("America/New_York") if now.tzinfo else now).date()
+
+
 def trading_calendar(start, end):
     d = pd.DataFrame(get(f"{TRADE}/calendar", {"start": str(start), "end": str(end)}))
     d["date"] = pd.to_datetime(d["date"])

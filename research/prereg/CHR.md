@@ -80,3 +80,9 @@ own mean +0.01% > 0), so it goes forward under the Oct 24 near-miss rule. Histor
   minimum commission applied at the real position size. Open exposure counts every position until its 5th session
   settles, even if a stop or target was touched earlier (conservative). Sizes are flat fractions of $1,000 (no
   compounding).
+
+## Bug fix (2026-11-28)
+
+The live scorer took the latest IEX trade as the price even when it was from an earlier day (seen in DAY1: AIOK on
+2026-11-27 priced at a 2026-11-25 print 66% above where it traded). From 2026-11-30 a trade from an earlier day is
+ignored, so such a stock has no price and is skipped. Earlier logged days are unchanged.

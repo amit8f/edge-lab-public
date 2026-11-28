@@ -138,3 +138,10 @@ was down 37% in the account. Fix: a sell never asks for more shares than the acc
 the close, the bot sells any account shares the book no longer holds. The ledger book, its costs and the forward
 test are unchanged: the ledger already closed each trade at its exit price, so no day is excluded. The account's own
 P&L (dashboard Accounts) was wrong from 2026-11-03 until this fix.
+
+2026-11-28 (second fix): the bot priced entries at the latest IEX trade even when that trade was from an earlier
+day. AIOK on 2026-11-27 was booked at 8.98, a 2026-11-25 print, while it traded near 5.4 (the EL-NX3 account
+filled at 5.39), so the book would have shown about -43% on a trade that never happened at that price. Fix: a
+trade from an earlier day is not a price (the stock is skipped as "no quote"), and an open position entered on such
+a print is closed at zero and marked "excluded: stale entry price". Only AIOK (2026-11-27) is affected among open
+positions.

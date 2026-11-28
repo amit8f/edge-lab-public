@@ -469,7 +469,12 @@ def after_close(st, api, d):
     keep = []
     for p in pos:
         c = closes.get(p["symbol"])
-        if p["end"] <= ds and c is not None:
+        if p.get("entry_t") and not alpaca.traded_today(p["entry_t"], pd.Timestamp(p["date"]).tz_localize(ET)):
+            # entered on a stale IEX print from an earlier day (bug fixed 2026-11-28): not a real price, so the
+            # trade is excluded at zero rather than booked
+            closed.append(p | {"exit_px": p["entry"], "exit_day": ds, "exit_why": "excluded: stale entry price",
+                               "net": 0.0, "pnl": 0.0})
+        elif p["end"] <= ds and c is not None:
             closed.append(close_rec(p, c, ds, "time"))
         else:
             keep.append(p)
@@ -511,7 +516,7 @@ class Api:
             j = alpaca.get("https://data.alpaca.markets/v2/stocks/trades/latest",
                            {"symbols": ",".join(syms[i:i + 200]), "feed": "iex"}, headers=self.h)
             for s, tr in (j.get("trades") or {}).items():
-                if tr and tr.get("p"):
+                if tr and tr.get("p") and alpaca.traded_today(tr.get("t")):
                     out[s] = (float(tr["p"]), str(tr.get("t")))
         return out
 
