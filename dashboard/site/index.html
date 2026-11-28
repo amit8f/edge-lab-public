@@ -97,6 +97,9 @@
     <div class="feedhead"><h2>Tasks</h2><span class="muted small" id="qupdated"></span></div>
     <p class="muted small">Steps done out of all steps, in the agreed order. A running step counts as half.</p>
     <div id="tasks" class="grid"></div>
+    <h2>Self-improving loops</h2>
+    <p class="muted small">Each loop lets an AI change one copy of a model, on its own branch, and keeps a change only if it scores at least 0.05 higher on 2020-2022 (Sharpe after costs). The live models are never touched. After 200 tries the best copy gets one look at 2023 against the model it started from, with a penalty for every try.</p>
+    <div id="loops" class="grid"></div>
   </section>
 
   <section id="tab-books" class="tab" hidden>

@@ -820,6 +820,7 @@ function runRow(run) {
 }
 function renderProgress() {
   if (!$("running")) return;
+  renderLoops();
   $("running").replaceChildren(...(RUNS.length ? RUNS.map(runRow) : [el("div", { class: "muted small", text: "nothing running right now" })]));
   if (!QUEUE) { $("tasks").replaceChildren(el("div", { class: "muted small", text: "task list not available yet" })); return; }
   $("qupdated").textContent = `updated ${ilStamp(new Date(QUEUE.updated))} Israel`;
@@ -840,6 +841,22 @@ function renderProgress() {
           live ? runRow(live) : null);
       })));
   }));
+}
+
+function renderLoops() {
+  if (!$("loops") || !SUMMARY) return;
+  const L = SUMMARY.loops || [];
+  const f = x => (x == null ? "–" : x.toFixed(2));
+  $("loops").replaceChildren(...(L.length ? L.map(l => el("div", { class: "card task" },
+    el("div", { class: "top2" }, el("span", { class: "name", text: l.name }),
+      el("span", { class: "muted", text: `${l.trials} of ${l.max} tries` })),
+    el("div", { class: "muted small", text: `starts from ${l.start_from} · branch ${l.branch}` }),
+    progressBar(l.trials / l.max),
+    el("div", { class: "kv small" }, el("span", { text: `start ${f(l.start_score)}` }),
+      el("span", { class: l.best_score > l.start_score ? "up" : "muted", text: `best ${f(l.best_score)} · ${l.kept} kept` })),
+    el("ol", { class: "steps" }, ...l.last.map(r => el("li", { class: r.kept ? "done" : "" },
+      el("span", { text: `${r.kept ? "✓" : r.error ? "✗" : "○"} #${r.n} ${r.idea || r.error || ""} (${f(r.score)})` })))))) :
+    [el("div", { class: "muted small", text: "no loop has run yet" })]));
 }
 
 // ---------- tabs and start ----------

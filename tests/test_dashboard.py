@@ -396,3 +396,32 @@ def test_pick2bad_book(tmp_path):
                                               "min_trades": 30, "judged": "2027-12-31"}))
     b = DB.pick2bad_book(tmp_path)[0]
     assert b["closed"] == 2 and abs(b["pnl_pct"] - 1.0) < 1e-9 and "1 of 5 days" in b["note"] and "-1.00%" in b["note"]
+
+
+def test_loops_read_each_branch_trials(tmp_path):
+    import json as _j
+
+    from dashboard import build as B
+    f = tmp_path / "auto2" / "research" / "results" / "AUTO2"
+    f.mkdir(parents=True)
+    rows = [{"n": 0, "idea": "start", "score": 0.2, "kept": True}, {"n": 1, "idea": "a", "score": 0.1, "kept": False},
+            {"n": 2, "idea": "b", "score": 0.4, "kept": True}]
+    (f / "trials.jsonl").write_text("".join(_j.dumps(r) + "\n" for r in rows))
+    L = {x["name"]: x for x in B.loops(tmp_path)}
+    assert L["AUTO2"]["trials"] == 3 and L["AUTO2"]["start_score"] == 0.2 and L["AUTO2"]["best_score"] == 0.4
+    assert L["AUTO2"]["kept"] == 1 and L["AUTO2"]["last"][0]["n"] == 2 and L["AUTO1"]["trials"] == 0
+
+
+def test_stale_iex_print_is_replaced_by_the_sip_price_at_decision():
+    from dashboard import build as B
+    rows = [{"symbol": "AIOK", "side": 1, "entry_iex": 8.98, "entry_iex_t": "2026-11-25T20:59:23.7Z",
+             "decided_at": "2026-11-27T09:39:55.58"},
+            {"symbol": "OK", "side": 1, "entry_iex": 10.0, "entry_iex_t": "2026-11-27T14:39:00Z",
+             "decided_at": "2026-11-27T09:39:55"}]
+    asked = []
+
+    def get(path, p):
+        asked.append(p)
+        return {"bars": {p["symbols"]: [{"o": 5.39}]}}
+    assert B.stale_entries("2026-11-27", rows, get=get) == {"AIOK": 5.39}
+    assert asked[0]["start"] == "2026-11-27T14:39:00Z" and asked[0]["feed"] == "sip"
