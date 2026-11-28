@@ -8,7 +8,7 @@ on:
       stage:
         description: "1 (daily moves), 2 (earnings, news, rates, oil) 3 (variance breakdown) or 4 (market and sector early signs)"
         type: choice
-        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "massiveprobe", "benzingaprobe", "hi3now", "k8peek", "k8fetch", "k8build", "k8report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
+        options: ["1", "2", "3", "4", "5", "6", "lit1data", "lit1search", "lit1choose", "lit1test", "boomcheck", "newsprobe", "warm", "backup", "backup2026", "hi3build", "hi3live", "hi3report", "hi3jump1", "massiveprobe", "benzingaprobe", "hi3now", "k8peek", "k8fetch", "k8build", "k8report", "borrowprobe", "newsrestore", "numeraiprobe", "numeraidata", "numeraitrain", "numeraisubmit", "numeraiexport"]
         default: "1"
 
 permissions: {}
@@ -57,7 +57,7 @@ jobs:
           restore-keys: hi3-v1-
 
       - name: Restore HI3K's cache (8-K press releases, headline rows, replay days, settled trades)
-        if: startsWith(inputs.stage, 'k8')
+        if: startsWith(inputs.stage, 'k8') || inputs.stage == 'hi3jump1'
         uses: actions/cache/restore@v4
         with:
           path: cache/hi3k
@@ -206,6 +206,12 @@ jobs:
             PYTHONPATH=. timeout 320m .venv/bin/python -u -m tracks.news.hi3k_8k --stage ${STAGE#k8} --cache cache/hi3k --out research/results/HI3K --hi3-cache cache/hi3 --budget-min 290
             exit 0
           fi
+          if [[ "$STAGE" == hi3jump1 ]]; then
+            # research/prereg/JUMP1.md: HI3's and HI3K's saved buys, LONG1's fixed jump bar; no download
+            PYTHONPATH=. .venv/bin/python -u -m tracks.news.jump1_study --hi3 cache/hi3 --hi3k cache/hi3k \
+              --cut research/results/LONG/jump_cut.json --out research/results/JUMP1
+            exit 0
+          fi
           if [[ "$STAGE" == hi3now ]]; then
             # HI3's live part alone (NX3's logged days since 2026-10-29), while the replay build still runs
             for st in live report; do
@@ -273,7 +279,7 @@ jobs:
           key: lit1-v1-${{ github.run_id }}
 
       - name: Save HI3's cache
-        if: always() && startsWith(inputs.stage, 'hi3') && inputs.stage != 'hi3now'
+        if: always() && startsWith(inputs.stage, 'hi3') && inputs.stage != 'hi3now' && inputs.stage != 'hi3jump1'
         uses: actions/cache/save@v4
         with:
           path: cache/hi3
@@ -299,7 +305,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p research/results/NUM1 research/results/LIT1 research/results/HI3 research/results/HI3K models/num1 && git add research/results/SECTOR1 research/results/NUM1 research/results/LIT1 research/results/HI3 research/results/HI3K models/num1
+          mkdir -p research/results/NUM1 research/results/LIT1 research/results/HI3 research/results/HI3K research/results/JUMP1 models/num1 && git add research/results/SECTOR1 research/results/NUM1 research/results/LIT1 research/results/HI3 research/results/HI3K research/results/JUMP1 models/num1
           git diff --cached --quiet && { echo "Nothing new to commit"; exit 0; }
           git commit -q -m "SECTOR1 stage ${{ inputs.stage }} results (run ${{ github.run_id }})"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"

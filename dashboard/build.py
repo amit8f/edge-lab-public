@@ -52,7 +52,7 @@ AI = [("AI-B", "K2", "state-ai", "ai/books.json", "B"), ("COMBO-B", "K6", "state
 LIVE_IDEAS = {"NX3", "NX1", "P1", "P2", "P4", "M3", "M4", "M6", "M8", "M10", "P3", "R1", "I1F", "A1F", "META3",
               "SYS1", "SYS2", "SYS2B", "K3", "L1", "NXM", "NXR", "NXK", "NXK2", "NX3-ALL", "NX3-HI", "NX3-ALL-HI", "NX3-AGENT", "NX2", "SP1", "CHR-P", "DAY1", "BOOM-SHORT", "BOOM1", "CRY-TREND", "CRY-TREND-VT", "CRY-BIG", "CRY-MEME", "CRY-NEWMEME", "CRY-DAY-FWD", "CRY-WIDE", "CRY-MOM", "PICK2-BAD",
               "K4", "K5", "K6", "K7", "K8", "CR1", "SM1", "FLIP1", "SURV1-LONG", "COST1", "NXM-VOTE", "NUM1",
-              "AUTO1", "AUTO2", "AUTO3", "AUTO4"}
+              "AUTO1", "AUTO2", "AUTO3", "AUTO4", "NX3-FRESH"}
 
 
 def _json(p):
@@ -187,6 +187,50 @@ def nx3_books(st):
     out.append(_book("NX3-AGENT", "NX3-AGENT", 100, sum(x.get("taken") or 0 for x in gsettled if x),
                      sum(e.get("action") != "SKIP" for e in (alast2 or {}).get("events", [])),
                      realized=sum(x.get("book_pnl") or 0 for x in gsettled if x), size=5000.0, first_day="2026-11-05"))
+    return out
+
+
+FRESH_FIRST_DAY = "2026-11-30"      # NX3-FRESH's forward test counts from this day (research/prereg/NX3FRESH.md)
+
+
+def stale_keys(day_dir):
+    """Symbols of a day's decided events whose IEX price at decision was a print from an earlier day."""
+    out = set()
+    for r in _jsonl(day_dir / "decisions.jsonl"):
+        t = r.get("entry_iex_t")
+        if r.get("status") != "decided" or not t:
+            continue
+        try:
+            if pd.Timestamp(t).tz_convert("America/New_York").date().isoformat() != day_dir.name:
+                out.add(r["symbol"])
+        except (ValueError, TypeError):
+            continue
+    return out
+
+
+def fresh_books(st, first_day=FRESH_FIRST_DAY):
+    """NX3-FRESH and NX3-HI-FRESH: the NX3 and NX3-HI ledger books without the picks decided on a stale IEX print
+    (slots not refilled), from first_day; each card also carries its base book over the same days."""
+    root = st / "state-nx3" / "nx3"
+    out = []
+    for name, base, sub in (("NX3-FRESH", "NX3", "nx3"), ("NX3-HI-FRESH", "NX3-HI", "nx3hi")):
+        sdir = root / sub / "settled"
+        kept, all_ = [], []
+        for f in sorted(sdir.glob("*.json")):
+            x = _json(f)
+            if not x or x.get("excluded") or x.get("day", "") < first_day:
+                continue
+            bad = stale_keys(root / "days" / x["day"])
+            for t in x.get("trades", []):
+                if t.get("role") != "picks":
+                    continue
+                all_.append(t)
+                if t.get("symbol") not in bad:
+                    kept.append(t)
+        out.append(_book(name, "NX3-FRESH", 30, len(kept), 0, realized=sum(500 * (t.get("net") or 0) for t in kept),
+                         size=5000.0, first_day=first_day, base=base,
+                         note="NX3's picks minus those decided on an IEX price from an earlier day",
+                         base_usd=sum(500 * (t.get("net") or 0) for t in all_), skipped=len(all_) - len(kept)))
     return out
 
 
@@ -1145,7 +1189,7 @@ def last_change(repo_root, names):
 def build(states, out, repo_root=".", repo=None, token=None):
     st = Path(states)
     b1days = _safe(boom1_days, st)
-    books = (nx3_books(st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(crybasket_books, st) + _safe(newmeme_book, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
+    books = (nx3_books(st) + _safe(fresh_books, st) + paper_books(st) + nx1_book(st) + _safe(chrp_book, st) + _safe(day1_book, st) + _safe(boomshort_book, st) + _safe(crytrend_book, st) + _safe(crytrendvt_book, st) + _safe(crybasket_books, st) + _safe(newmeme_book, st) + _safe(pick2bad_book, st) + _safe(crydayfwd_book, st) + _safe(cryslow_books, st) + _safe(boom1_book, st, None, b1days) + watch_books(st) + log_books(st) + _safe(fwd_books, st)
              + ai_books(st))
     for b in books:
         if b["name"] in SIM_FILES:
