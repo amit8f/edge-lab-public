@@ -1,0 +1,130 @@
+# AUTO1 (research/prereg/AUTO1.md): autoresearch-style loop on its own branch, auto1. An AI proposes one change to
+# auto/candidate.py; the frozen harness scores it offline (no secrets, no network); keep if +0.05 Sharpe, else throw
+# away. Live models never import auto/. check (2023) and test (2024-01..2025-09) are run once each, by hand.
+name: auto1
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "prepare (build the event table once), loop, check (2023, once) or test (2024-01..2025-09, once)"
+        required: false
+        default: loop
+      trials:
+        description: "trials this run (loop)"
+        required: false
+        default: "40"
+
+permissions: {}
+
+concurrency:
+  group: auto1
+  cancel-in-progress: false
+
+env:
+  MAX_TRIALS: "200"
+
+jobs:
+  run:
+    if: github.repository != 'amit8f/edge-lab'
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    steps:
+      - name: Check out the code (branch auto1 when it exists)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Switch to auto1
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin auto1 >/dev/null; then
+            git fetch -q origin auto1 && git checkout -q -B auto1 FETCH_HEAD
+          else
+            git checkout -q -B auto1 && git push -q -u origin auto1
+          fi
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7  # v10.2.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
+
+      - name: Python and packages
+        run: |
+          uv python install 3.12.10
+          uv venv --python 3.12.10 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+
+      - name: Restore NX3's cache (prepare, check, test)
+        if: inputs.stage == 'prepare' || inputs.stage == 'check' || inputs.stage == 'test'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/nx1/nx3
+          key: nx3-v1-none
+          restore-keys: nx3-v1-
+          fail-on-cache-miss: true
+
+      - name: Restore AUTO1's event table
+        if: inputs.stage != 'prepare'
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/auto1
+          key: auto1-v1-none
+          restore-keys: auto1-v1-
+          fail-on-cache-miss: true
+
+      - name: Build the event table
+        if: inputs.stage == 'prepare'
+        run: PYTHONPATH=. .venv/bin/python -u -m auto.harness --stage prepare --cache cache/nx1 --events cache/auto1/events.parquet
+
+      - name: Save AUTO1's event table
+        if: inputs.stage == 'prepare'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/auto1
+          key: auto1-v1-${{ github.run_id }}
+
+      - name: Trials
+        if: inputs.stage == 'loop' || inputs.stage == ''
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          N: ${{ inputs.trials || '40' }}
+        run: |
+          T=research/results/AUTO1/trials.jsonl
+          mkdir -p research/results/AUTO1
+          sandbox() {   # the candidate runs with no secrets and no network
+            sudo unshare -n -- sudo -u "$USER" env -i PATH="$PATH" HOME="$HOME" PYTHONPATH=. \
+              timeout 600 .venv/bin/python -m auto.harness --stage tune --events cache/auto1/events.parquet --candidate "$1"
+          }
+          for i in $(seq 1 "$N"); do
+            done_n=$( [ -f "$T" ] && wc -l < "$T" || echo 0 )
+            [ "$done_n" -ge "$MAX_TRIALS" ] && { echo "AUTO1 reached $MAX_TRIALS trials; run stage check"; break; }
+            if [ "$done_n" -eq 0 ]; then
+              cp auto/candidate.py /tmp/new.py && echo '{"idea": "starting candidate"}' > /tmp/idea.json
+            else
+              PYTHONPATH=. .venv/bin/python -m auto.agent --candidate auto/candidate.py --trials "$T" --out /tmp/new.py > /tmp/idea.json || { echo "agent failed (quota?)"; break; }
+            fi
+            sandbox /tmp/new.py > /tmp/score.json 2>/tmp/err.txt || true
+            [ -s /tmp/score.json ] || tail -c 300 /tmp/err.txt | tr '\n' ' ' > /tmp/score.json
+            PYTHONPATH=. .venv/bin/python -m auto.decide --new /tmp/new.py --idea-json /tmp/idea.json --score-json /tmp/score.json
+            git add "$T" auto/candidate.py && git commit -q -m "AUTO1 trial $done_n" || true
+            [ $((i % 5)) -eq 0 ] && git push -q origin auto1 || true
+          done
+          git push -q origin auto1
+
+      - name: Check or test (once each, by hand)
+        if: inputs.stage == 'check' || inputs.stage == 'test'
+        run: |
+          mkdir -p research/results/AUTO1
+          PYTHONPATH=. .venv/bin/python -u -m auto.harness --stage ${{ inputs.stage }} --cache cache/nx1 \
+            --events cache/auto1/events.parquet --candidate auto/candidate.py \
+            --trials research/results/AUTO1/trials.jsonl | tee research/results/AUTO1/${{ inputs.stage }}.json
+          git add research/results/AUTO1 && git commit -q -m "AUTO1 ${{ inputs.stage }} (run ${{ github.run_id }})" && git push -q origin auto1
