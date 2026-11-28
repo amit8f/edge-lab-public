@@ -824,10 +824,28 @@ def skipped_moves(day, nxt, rows):
 def latest_prices(symbols):
     if not symbols:
         return {}
-    out, syms = {}, sorted(symbols)
+    out, syms, old = {}, sorted(symbols), []
+    today = datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York")).date().isoformat()
     for i in range(0, len(syms), 200):
         j = alpaca_get("/stocks/trades/latest", {"symbols": ",".join(syms[i:i + 200]), "feed": "iex"}) or {}
-        out.update({s: t.get("p") for s, t in (j.get("trades") or {}).items()})
+        for s, t in (j.get("trades") or {}).items():
+            out[s] = t.get("p")
+            try:
+                fresh = pd.Timestamp(t.get("t")).tz_convert("America/New_York").date().isoformat() == today
+            except (ValueError, TypeError):
+                fresh = False
+            if not fresh:
+                old.append(s)
+    # a thin stock's latest IEX print can be from hours or days ago (AIOK on 2026-11-27: IEX 5.12, closed 4.52):
+    # for those, and on days the market is shut, use the last SIP daily close (16 minutes delayed in session)
+    stale = sorted(set(old) | (set(syms) - set(out)))
+    if stale:
+        end = (datetime.now(timezone.utc) - timedelta(minutes=16)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        start = (datetime.now(timezone.utc) - timedelta(days=10)).strftime("%Y-%m-%d")
+        for i in range(0, len(stale), 100):
+            for s, c in daily_closes(stale[i:i + 100], start, end, "raw").items():
+                if c:
+                    out[s] = c[max(c)]
     return out
 
 

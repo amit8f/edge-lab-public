@@ -425,3 +425,14 @@ def test_stale_iex_print_is_replaced_by_the_sip_price_at_decision():
         return {"bars": {p["symbols"]: [{"o": 5.39}]}}
     assert B.stale_entries("2026-11-27", rows, get=get) == {"AIOK": 5.39}
     assert asked[0]["start"] == "2026-11-27T14:39:00Z" and asked[0]["feed"] == "sip"
+
+
+def test_latest_prices_use_the_sip_close_when_the_iex_print_is_old(monkeypatch):
+    from dashboard import build as B
+
+    def get(path, p):
+        if path == "/stocks/trades/latest":
+            return {"trades": {"AIOK": {"p": 5.12, "t": "2020-01-02T15:00:00Z"}}}
+        return {"bars": {"AIOK": [{"t": "2026-11-26T05:00:00Z", "c": 5.0}, {"t": "2026-11-27T05:00:00Z", "c": 4.52}]}}
+    monkeypatch.setattr(B, "alpaca_get", get)
+    assert B.latest_prices({"AIOK"}) == {"AIOK": 4.52}
