@@ -48,3 +48,16 @@ the 2/3 quantile, still strictly above. No JUMP1 number exists yet.
 Side effect found: LONG1's descriptive "jump_before_entry" cells (low / mid / high, run 46130873541) used the same
 zero column, and its tertiles were cut by row order (rank method "first"), so those cells carry no information about
 jumps. That LONG1 hint (big jump +0.94% vs small -0.95%) is void. LONG1's other cells are unaffected.
+
+## Amendment 3 (2026-11-28): forward shadow book under the near-miss rule
+
+JUMP1 failed narrowly on history (daily t 1.94 vs 2, gap t 1.32 vs 1.5; IDEAS.md). Amit said continue (2026-11-28)
+to the offered forward book, so under the near-miss rule (PR #65) it gets a log-only shadow book; this is the same
+idea (count stays 204), not a new one, and no real money.
+
+- Book JUMP1-FWD: every NX3-HI ledger buy (role picks, side > 0) whose decided inputs have mins_open <= 1 and
+  (1 + r_open)(1 + r_react) - 1 > 0.0932 (the fixed 2019-2023 bar), $500 a trade at NX3-HI's own settled net,
+  from 2026-11-30. Built on the dashboard from state-nx3 (no new orders, no new account).
+- Verdict at 30 such buys (expected to take months: about one a week in the replays): pass = own net > 0 and
+  JUMP1-FWD minus NX3-HI's other buys > 0 per trade with Welch t >= 1.5. Reported with the running idea count.
+- Prediction: 0.25.
