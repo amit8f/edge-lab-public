@@ -78,3 +78,25 @@ LONG1: most of the buys' loss is spread on trades in the first minutes; gross is
 big jump already made do worst. LONG2: fails (EXEC1 showed the drift is in the first minutes), P(pass) 0.15. LONG3:
 small gain, P 0.25. LONG4: fails, the buys have too little signal left after NX3, P 0.15. LONG5: P 0.25. Expected
 passes about 0.8 of 4.
+
+## Result (2026-11-28, run 46130873541): LONG2-LONG5 all FAILED
+
+`research/results/LONG/LONG.json`. 12,673 NX3-ALL-HI trades 2019-01 to 2025-09; 3,079 NX3-HI buys (3 a day). Test
+2024-01 to 2025-09: plain NX3-HI buys +0.19% a trade, daily NW t 0.35 (421 days, 942 buys).
+
+- LONG2 (T = 10:00): skips 44% of buys; own +0.16% a trade, t 0.46; gain over plain -0.005%/day, t -0.02. Failed.
+- LONG3 (5 sessions): own +0.03% a trade, t -0.57; gain -0.39%/day, t -1.11. Failed.
+- LONG4: kept 45% of buys; own -0.23% a trade, t -0.61; gain t -0.98. Failed (2020-2023 check was +0.45%, t 1.32).
+- LONG5 (rule "calm", on 92% of test days): own +0.31% a trade, t 0.80; gain +0.15%/day, t 1.30 (needs 1.5). Failed,
+  the closest.
+
+LONG1 (descriptive, 2019-2023, 2,137 buys): gross +0.88% a trade, net +0.01%, so costs take nearly all of it. By news
+time: before or at the open +0.34% (1,606), 9:31-11:00 -1.03% (t -3.4, 430), after 11:00 -0.92% (101). By the jump
+already made before entry: low third -0.95% (t -3.1), middle +0.04%, high third +0.94% (t 2.9), the opposite of the
+prediction (buys that had already jumped did best). By year: 2020 -1.60% (t -3.9), 2022 +0.88%, 2023 +0.99%. Holding 3
+or 5 sessions: +0.22% / +0.23% (t 0.9 / 0.8). Predictions: LONG1's cost part right, its jump part wrong; 0 of 4 passed
+(expected 0.8).
+
+POST-HOC, NOT REGISTERED: "pre-open news and a big jump before entry" is the best LONG1 cell pair. It was found on
+2019-2023 and the 2024-2025 window is now spent, so it can only be tested on independent data (HI3's Jun-Oct 2026
+replay, HI3K's 8-K feed, or forward), as a new registration.
